@@ -4,7 +4,6 @@ import unittest
 import persistent
 import zope.security.proxy
 
-from zeit.cms.content.interfaces import WRITEABLE_ALWAYS
 import zeit.cms.content.xmlsupport
 
 
@@ -51,21 +50,3 @@ class PersistentTest(unittest.TestCase):
             self.p._p_jar = mock.Mock()
 
         self.assertRaises(AttributeError, set_jar)
-
-
-class LivePropertyXMLSync(zeit.cms.testing.ZeitCmsTestCase):
-    def setUp(self):
-        super().setUp()
-        manager = zope.component.getUtility(zeit.cms.content.interfaces.ILivePropertyManager)
-        manager.register_live_property('foo', 'bar', WRITEABLE_ALWAYS)
-
-    def test_always_writeable_writes_workingcopy_value_to_xml(self):
-        content = self.repository['testcontent']
-        properties = zeit.connector.interfaces.IWebDAVProperties(content)
-        properties[('foo', 'bar')] = 'one'
-        with zeit.cms.checkout.helper.checked_out(content) as co:
-            wc_properties = zeit.connector.interfaces.IWebDAVProperties(co)
-            wc_properties[('foo', 'bar')] = 'two'
-        content = self.repository['testcontent']
-        attr = content.xml.xpath('//head/attribute[@name="foo"]')[0]
-        self.assertEqual('two', attr.text)

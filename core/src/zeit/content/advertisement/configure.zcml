@@ -6,7 +6,6 @@
 
   <class class=".advertisement.Advertisement">
     <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
-    <implements interface="zeit.cms.content.interfaces.IDAVPropertiesInXML "/>
     <require
       interface=".interfaces.IAdvertisement"
       permission="zope.View"

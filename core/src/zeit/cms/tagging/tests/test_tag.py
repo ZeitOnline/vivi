@@ -2,10 +2,8 @@
 from unittest import mock
 import unittest
 
-import lxml.etree
 import zope.component
 
-from zeit.cms.checkout.helper import checked_out
 import zeit.cms.interfaces
 import zeit.cms.tagging.interfaces
 import zeit.cms.tagging.tag
@@ -121,36 +119,6 @@ class TestCMSContentWiring(
         whitelist = zope.component.queryUtility(zeit.cms.tagging.interfaces.IWhitelist)
         tag = ICMSContent(whitelist.get('Bärlin').uniqueId)
         self.assertEqual('Bärlin', tag.label)
-
-
-class TestSyncToXML(
-    zeit.cms.testing.ZeitCmsBrowserTestCase, zeit.cms.tagging.testing.TaggingHelper
-):
-    def test_copies_tags_to_head(self):
-        self.setup_tags('foo')
-        with checked_out(self.repository['testcontent']):
-            pass
-        self.assertEllipsis(
-            '...<tag...>foo</tag>...',
-            lxml.etree.tostring(self.repository['testcontent'].xml.find('head'), encoding=str),
-        )
-
-    def test_reuses_existing_tag_node(self):
-        self.setup_tags('foo')
-        with checked_out(self.repository['testcontent']):
-            pass
-        with checked_out(self.repository['testcontent']):
-            pass
-        head = lxml.etree.tostring(self.repository['testcontent'].xml.find('head'), encoding=str)
-        self.assertEqual(2, head.count('rankedTags'))
-
-    def test_leaves_xml_without_head_alone(self):
-        content = self.repository['testcontent']
-        content.xml.remove(content.xml.find('head'))
-        self.setup_tags('foo')
-        with self.assertNothingRaised():
-            # Need to fake checkin, since other handlers re-create the <head>.
-            zeit.cms.tagging.tag.add_ranked_tags_to_head(content)
 
 
 class TagTest(zeit.retresco.testing.FunctionalTestCase):

@@ -20,7 +20,6 @@
 
   <class class=".centerpage.CenterPage">
     <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
-    <implements interface="zeit.cms.content.interfaces.IDAVPropertiesInXML" />
     <require
       interface=".interfaces.ICenterPage"
       permission="zope.View" />

@@ -9,7 +9,6 @@ import zope.interface
 import zope.interface.verify
 import zope.lifecycleevent
 
-from zeit.cms.checkout.helper import checked_out
 from zeit.cms.tagging.tag import Tag
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.retresco.tagger import Tagger
@@ -288,99 +287,6 @@ class TestTagger(zeit.retresco.testing.FunctionalTestCase, zeit.retresco.testing
         tagger = Tagger(content)
         node = tagger.to_xml()
         self.assertEqual('rankedTags', node.tag)
-
-    def test_rankedTags_dav_property_should_not_be_added_to_xml_directly(self):
-        content = create_testcontent()
-        self.set_tags(
-            content,
-            """
-<tag uuid="uid-karenduve">Karen Duve</tag>
-<tag uuid="uid-berlin">Berlin</tag>
-""",
-        )
-        zope.interface.alsoProvides(content, zeit.cms.content.interfaces.IDAVPropertiesInXML)
-        sync = zeit.cms.content.interfaces.IDAVPropertyXMLSynchroniser(content)
-        sync.sync()
-        dav_attribs = '\n'.join(str(a) for a in content.xml.findall('head/attribute'))
-        self.assertNotIn('rankedTags', dav_attribs)
-
-    def test_existing_tags_should_cause_rankedTags_to_be_added_to_xml(self):
-        repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
-        repository['content'] = create_testcontent()
-        with checked_out(repository['content']) as content:
-            self.set_tags(
-                content,
-                """
-    <tag uuid="uid-karenduve">Karen Duve</tag>
-    <tag uuid="uid-berlin">Berlin</tag>
-    """,
-            )
-        self.assertEqual(
-            ['Karen Duve', 'Berlin'],
-            [x.text for x in repository['content'].xml.find('head/rankedTags').getchildren()],
-        )
-
-    def test_no_tags_cause_rankedTags_element_to_be_removed_from_xml(self):
-        content = create_testcontent()
-        E = lxml.builder.E
-        content.xml.find('head').append(E.rankedTags('bla bla bla'))
-        repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
-        repository['content'] = content
-        with checked_out(repository['content']):
-            # cycle
-            pass
-        self.assertEqual(None, repository['content'].xml.find('head/rankedTags'))
-        self.assertEqual(None, repository['content'].xml.find('head/empty'))
-
-    def test_checkin_should_not_fail_with_no_tags_and_no_rankedTags_element(self):
-        repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
-        repository['content'] = create_testcontent()
-        with checked_out(repository['content']):
-            # cycle
-            pass
-
-    def test_disabled_tags_should_be_removed_from_xml(self):
-        repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
-        repository['content'] = create_testcontent()
-        with checked_out(repository['content']) as content:
-            self.set_tags(
-                content,
-                """
-    <tag uuid="uid-karenduve">Karen Duve</tag>
-    <tag uuid="uid-berlin">Berlin</tag>
-    """,
-            )
-            tagger = Tagger(content)
-            del tagger['☃Berlin']
-        self.assertEqual(
-            ['Karen Duve'],
-            [x.text for x in repository['content'].xml.find('head/rankedTags').getchildren()],
-        )
-
-    def test_rankedTags_in_xml_should_be_updated_on_modified_event(self):
-        repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
-        repository['content'] = create_testcontent()
-        with checked_out(repository['content']) as content:
-            self.set_tags(
-                content,
-                """
-    <tag uuid="uid-karenduve">Karen Duve</tag>
-    <tag uuid="uid-berlin">Berlin</tag>
-    """,
-            )
-            zope.lifecycleevent.modified(content)
-            self.assertEqual(
-                ['Karen Duve', 'Berlin'],
-                [x.text for x in content.xml.find('head/rankedTags').getchildren()],
-            )
-
-    def test_modified_event_should_leave_non_content_alone(self):
-        # regression #12394
-        dummy = type('Dummy', (object,), {})
-        zope.interface.alsoProvides(dummy, zeit.cms.content.interfaces.IXMLRepresentation)
-        with mock.patch('zeit.cms.tagging.tag.add_ranked_tags_to_head') as handler:
-            zope.lifecycleevent.modified(dummy)
-            self.assertFalse(handler.called)
 
     def test_set_pinned_should_update_tab_separated_property(self):
         content = create_testcontent()

@@ -38,17 +38,18 @@ Fill out the form:
 
 Verify the source:
 
->>> browser.getLink('Source').click()
->>> print(browser.getControl('Source').value.replace('\r', '').replace('<attribute', '\n<attribute'))
-<testtype>
-  <head>...
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="html-meta-title">HTML title</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="html-meta-description">HTML description</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="html-meta-robots">noindex</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="html-meta-hide-timestamp">no</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="seo-disable-intext-links">yes</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="seo-keyword-entity-type">free</attribute>
-...
+>>> print(browser.getControl('HTML title').value)
+HTML title
+>>> print(browser.getControl('HTML description').value)
+HTML description
+>>> print(browser.getControl('Meta robots').value)
+noindex
+>>> print(browser.getControl('Keyword entity type').displayValue)
+['entity-type-free']
+>>> print(browser.getControl('Disable intext links').value)
+on
+>>> print(browser.getControl('Disable enrich').value)
+on
 
 >>> content = getRootFolder()['workingcopy']['zope.user']['testcontent']
 >>> import zeit.retresco.interfaces

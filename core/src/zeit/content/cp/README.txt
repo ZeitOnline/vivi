@@ -17,7 +17,7 @@ The ancient XML representation looked as follows:
 
 >>> print(zeit.cms.testing.xmltotext(cp.xml))
 <centerpage... type="homepage"...>
-  <head>...
+  <head/>
   <body>
     <cluster area="feature" kind="duo">
       <region area="lead" kind="major"/>
@@ -79,11 +79,10 @@ OG-Metadata
 >>> print(zeit.cms.testing.xmltotext(cp.xml))
 <centerpage...>
   <head>
-...
     <og_meta>
-       <og_title...>Isch bin da Title</og_title>
-       <og_description...>Hier geht die Description</og_description>
-       <og_image...>yo-man.jpg</og_image>
+      <og_title>Isch bin da Title</og_title>
+      <og_description>Hier geht die Description</og_description>
+      <og_image>yo-man.jpg</og_image>
     </og_meta>
   ...
 </centerpage>

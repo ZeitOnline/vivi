@@ -48,9 +48,8 @@ True
 The source has not changed:
 
 >>> print(zeit.cms.testing.xmltotext(content.xml))
-<testtype...>
-  <head>...
-   </head>
+<testtype>
+  <head/>
   <body/>
 </testtype>
 
@@ -183,7 +182,6 @@ After sending the event the metadata is updated:
       <reference type="intern" href="http://xml.zeit.de/related"/>
       <reference type="intern" href="http://xml.zeit.de/related2"/>
     </references>
-    ...
   </head>
   <body/>
 </testtype>

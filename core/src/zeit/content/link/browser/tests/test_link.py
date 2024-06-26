@@ -39,7 +39,6 @@ class TestForm(zeit.content.link.testing.BrowserTestCase):
          """,
             xml,
         )
-        self.assertTrue('name="ressort">Leben</attribute' in xml)
         b.getLink('Checkin').click()
         self.assertFalse('There were errors' in b.contents)
         self.assertTrue('/2006/gocept.link' in b.url)

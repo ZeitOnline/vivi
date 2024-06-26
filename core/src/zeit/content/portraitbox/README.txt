@@ -70,28 +70,3 @@ Verify the interface:
 >>> zope.interface.verify.verifyObject(
 ...     zeit.content.portraitbox.interfaces.IPortraitbox, pb)
 True
-
-
-Referencing using IPortraitboxReference
-=======================================
-
-The IPortraitboxReference adapter allows referencing of portrait boxes in XML
-content:
-
->>> import zeit.cms.testcontenttype.testcontenttype
->>> content = zeit.cms.testcontenttype.testcontenttype.ExampleContentType()
->>> pb_ref = zeit.content.portraitbox.interfaces.IPortraitboxReference(
-...     content)
->>> repository['pb'] = pb
->>> pb_ref.portraitbox = pb
->>> print(zeit.cms.testing.xmltotext(content.xml))
-<testtype>
-  <head>
-    <attribute ns="http://namespaces.zeit.de/CMS/document"
-        name="artbox_portrait">http://xml.zeit.de/pb</attribute>
-  </head>
-  <body/>
-</testtype>
-
->>> pb_ref.portraitbox == pb
-True

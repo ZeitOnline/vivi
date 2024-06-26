@@ -1,3 +1,4 @@
+import lxml.etree
 import zope.component
 
 import zeit.cms.checkout.helper
@@ -60,11 +61,12 @@ class TestHelper(zeit.cms.testing.ZeitCmsTestCase):
 
         def cycle_without_ignore_raises():
             with zeit.cms.checkout.helper.checked_out(content) as co:
-                # Change the etag to provoke a conflict
+                co.xml.replace(co.xml.find('body'), lxml.etree.fromstring('<body>bar</body>'))
                 zeit.connector.interfaces.IWebDAVProperties(co)[('getetag', 'DAV:')] = 'foo'
 
         self.assertRaises(zeit.cms.repository.interfaces.ConflictError, cycle_without_ignore_raises)
         with zeit.cms.checkout.helper.checked_out(content, ignore_conflicts=True) as co:
             # Change the etag to provoke a conflict. No exception will be
             # raised due to ignore_conflicts=True
+            co.xml.replace(co.xml.find('body'), lxml.etree.fromstring('<body>foo</body>'))
             zeit.connector.interfaces.IWebDAVProperties(co)[('getetag', 'DAV:')] = 'foo'

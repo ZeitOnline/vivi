@@ -83,11 +83,9 @@ It takes precedence over the freetext authors:
 ...     zope.lifecycleevent.modified(co, zope.lifecycleevent.Attributes(
 ...         ICommonMetadata, 'authorships', 'authors'))
 >>> print(zeit.cms.testing.xmltotext(repository['testcontent'].xml))
-<testtype...>
+<testtype>
   <head>
     <author href="http://xml.zeit.de/shakespeare" hdok=""/>
-    <attribute ... name="author">William Shakespeare</attribute>
-    ...
   </head>
   <body/>
 </testtype>
@@ -95,14 +93,9 @@ It takes precedence over the freetext authors:
 >>> with zeit.cms.checkout.helper.checked_out(repository['testcontent']) as co:
 ...     co.authorships = []
 ...     co.authors = ['Charles Dickens']
->>> print(zeit.cms.testing.xmltotext(repository['testcontent'].xml))
-<testtype...>
-  <head>
-    <attribute ... name="author">Charles Dickens</attribute>
-    ...
-  </head>
-  <body/>
-</testtype>
+>>> content = repository['testcontent']
+>>> print(content.authors)
+('Charles Dickens',)
 
 Changes to author objects are propagated to content on checkin:
 

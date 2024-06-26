@@ -135,12 +135,6 @@ def add_token(context, event):
     reginfo.reported_error = ''
 
 
-@grok.subscribe(zeit.cms.content.interfaces.ISynchronisingDAVPropertyToXMLEvent)
-def ignore_private_token(event):
-    if event.namespace == 'http://namespaces.zeit.de/CMS/vgwort' and event.name != 'public_token':
-        event.veto()
-
-
 @grok.subscribe(zeit.cms.interfaces.ICMSContent, zope.lifecycleevent.IObjectCopiedEvent)
 def remove_vgwort_properties_after_copy(context, event):
     # This is internals; users may not edit token and report properties anyway.

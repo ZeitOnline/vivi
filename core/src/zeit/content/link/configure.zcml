@@ -6,7 +6,6 @@
 
   <class class=".link.Link">
     <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
-    <implements interface="zeit.cms.content.interfaces.IDAVPropertiesInXML "/>
     <require
       interface=".interfaces.ILink"
       permission="zope.View"

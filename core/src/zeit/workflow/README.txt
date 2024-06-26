@@ -200,8 +200,7 @@ Date first released
 
 
 When an object is published for the first time, the "date first released" is
-set by the workflow engine. We make sure that the date is also copied to the
-xml.
+set by the workflow engine.
 
 >>> import zeit.workflow.interfaces
 >>> article = repository['testcontent']
@@ -214,42 +213,23 @@ True
 >>> import zeit.cms.workflow.interfaces
 >>> publish = zeit.cms.workflow.interfaces.IPublish(article)
 >>> job_id = publish.publish(background=False)
+>>> modified = zeit.cms.workflow.interfaces.IModified(article)
 >>> workflow.date_first_released
 DateTime(...)
-
-We expect the value to be in the xml now as well (amongst others):
-
->>> print(zeit.cms.testing.xmltotext(repository['testcontent'].xml))
-<testtype...>
-  <head>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="date_first_released">...</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="date_last_published">...</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="last_modified_by">zope.user</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="published">yes</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/meta" name="type">testcontenttype</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="urgent">yes</attribute>
-    ...
-  </head>
-  <body/>
-</testtype>
-
+>>> workflow.date_last_published
+DateTime(...)
+>>> modified.last_modified_by
+'zope.user'
+>>> workflow.published
+True
+>>> workflow.urgent
+True
 
 When we de-publish the object, the status-flag is removed again:
 
 >>> job_id = publish.retract(background=False)
->>> print(zeit.cms.testing.xmltotext(repository['testcontent'].xml))
-<testtype...>
-  <head>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="date_first_released">...</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="date_last_published">...</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="last_modified_by">zope.user</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="published">no</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/meta" name="type">testcontenttype</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="urgent">yes</attribute>
-    ...
-  </head>
-  <body/>
-</testtype>
+>>> workflow.published
+False
 
 
 Recursive publish

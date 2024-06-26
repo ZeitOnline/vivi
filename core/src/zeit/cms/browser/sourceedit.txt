@@ -22,7 +22,7 @@ When we check out an object we can edit the source:
 testcontent – Edit source code
 >>> print(browser.getControl('XML').value)
 <testtype>
-  <head>...</head>
+  <head/>
   <body/>
 </testtype>
 

@@ -107,59 +107,6 @@ class Tag:
         return '<%s.%s %s>' % (self.__class__.__module__, self.__class__.__name__, self.uniqueId)
 
 
-XML_NS = 'http://namespaces.zeit.de/CMS/tagging'
-
-
-@grok.subscribe(zeit.cms.content.interfaces.ISynchronisingDAVPropertyToXMLEvent)
-def veto_tagging_properties(event):
-    if event.namespace == XML_NS:
-        event.veto()
-
-
-def add_ranked_tags_to_head(content):
-    tagger = zeit.cms.tagging.interfaces.ITagger(content, None)
-    if tagger:
-        tags = zope.security.proxy.removeSecurityProxy(tagger).to_xml()
-    else:
-        tags = None
-
-    xml = zope.security.proxy.removeSecurityProxy(content.xml)
-    head = xml.find('head')
-    if head is None:
-        return
-
-    # XXX Clean up content that was edited between ZO-4627 and ZO-4913
-    for node in head.findall('{%s}rankedTags' % XML_NS):
-        head.remove(node)
-
-    existing = head.find('{%s}rankedTags' % XML_NS)
-    if tags is not None:
-        if existing is not None:
-            head.replace(existing, tags)
-        else:
-            head.append(tags)
-    else:
-        if existing is not None:
-            head.remove(existing)
-
-
-@grok.subscribe(
-    zeit.cms.content.interfaces.IDAVPropertiesInXML,
-    zeit.cms.checkout.interfaces.IBeforeCheckinEvent,
-)
-def update_tags_on_checkin(content, event):
-    # ICMSContent.providedBy(content) is True implicitly, since otherwise one
-    # wouldn't be able to check it in.
-    add_ranked_tags_to_head(content)
-
-
-@grok.subscribe(zeit.cms.interfaces.ICMSContent, zope.lifecycleevent.ObjectModifiedEvent)
-def update_tags_on_modify(content, event):
-    if not zeit.cms.content.interfaces.IDAVPropertiesInXML.providedBy(content):
-        return
-    add_ranked_tags_to_head(content)
-
-
 @grok.adapter(str, name=zeit.cms.tagging.interfaces.ID_NAMESPACE)
 @grok.implementer(zeit.cms.interfaces.ICMSContent)
 def unique_id_to_tag(unique_id):

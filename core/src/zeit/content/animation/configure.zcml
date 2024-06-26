@@ -6,7 +6,6 @@
 
   <class class=".animation.Animation">
     <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
-    <implements interface="zeit.cms.content.interfaces.IDAVPropertiesInXML "/>
     <require
       interface=".interfaces.IAnimation"
       permission="zope.View"
