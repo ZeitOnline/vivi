@@ -12,6 +12,5 @@ def test_suite():
         'metadata.txt',
         'property.txt',
         'sources.txt',
-        'xmlsupport.txt',
         package='zeit.cms.content',
     )
