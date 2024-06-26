@@ -136,6 +136,8 @@ def tracer_from_product_config():
         config['otlp-url'],
         headers=headers,
     )
+    resource = provider.resource.attributes._dict
+    resource['host.name'] = os.environ.get('kubernetes.node_name', '')
     opentelemetry.trace.set_tracer_provider(provider)
 
     RequestsInstrumentor().instrument(tracer_provider=provider)
