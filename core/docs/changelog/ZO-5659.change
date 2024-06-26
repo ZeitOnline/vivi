@@ -1,0 +1,1 @@
+ZO-5659: Commit content cache after each document in vgwort report, to avoid conflict errors
