@@ -2,7 +2,6 @@ import contextlib
 import importlib.metadata
 import os
 import random
-import re
 import socket
 import time
 
@@ -125,16 +124,12 @@ def tracer_from_product_config():
     from zeit.cms.relstorage import RelStorageInstrumentor
     from zeit.cms.transaction import TransactionInstrumentor
 
-    hostname = socket.gethostname()
-    # We don't want the FQDN and date suffix.
-    hostname = re.split('([-]{1}[0-9]{3,})|(.zeit){1}', hostname)[0]
-
     config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
     provider = zeit.cms.tracing.OpenTelemetryTracerProvider(
         'vivi',
         importlib.metadata.version('vivi.core'),
         config['environment'],
-        hostname,
+        socket.gethostname(),
         config['otlp-url'],
         headers={
             'x-honeycomb-team': config['honeycomb-apikey'],
