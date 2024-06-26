@@ -14,6 +14,7 @@ from zeit.cms.workflow.interfaces import (
     IPublish,
     IPublishInfo,
 )
+from zeit.content.article.article import updateTextLengthOnChange
 from zeit.content.audio.testing import AudioBuilder
 import zeit.cms.content.interfaces
 import zeit.cms.content.reference
@@ -510,3 +511,21 @@ class AudioArticle(zeit.content.article.testing.FunctionalTestCase):
         assert self.article.body.values()[3].text == p2
         assert self.article.body.values()[4].text == ol
         assert self.article.body.values()[5].text == h
+
+
+class ArticleProperties(zeit.content.article.testing.FunctionalTestCase):
+    def test_article_text_length_is_updated_on_change(self):
+        article = self.get_article()
+        article.textLength = 0
+        updateTextLengthOnChange(article, object())
+        assert article.textLength == 37
+
+
+class ArticleSearchableText(zeit.content.article.testing.FunctionalTestCase):
+    def test_article_get_searchable_text(self):
+        article = self.get_article()
+        article.body.create_item('p').text = '<a href="http://foo">Link</a> und mehr Text</p>'
+        article.body.create_item('p').text = ''
+        article.body.create_item('p').text = 'Normaler Absatz'
+        adapter = zope.index.text.interfaces.ISearchableText(article)
+        assert adapter.getSearchableText() == ['Link', 'und mehr Text', 'Normaler Absatz']
