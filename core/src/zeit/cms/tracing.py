@@ -125,16 +125,16 @@ def tracer_from_product_config():
     from zeit.cms.transaction import TransactionInstrumentor
 
     config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
+    headers = {'x-honeycomb-team': config['honeycomb-apikey']}
+    if config.get('honeycomb-dataset'):
+        headers['x-honeycomb-dataset'] = config['honeycomb-dataset']
     provider = zeit.cms.tracing.OpenTelemetryTracerProvider(
         'vivi',
         importlib.metadata.version('vivi.core'),
         config['environment'],
         socket.gethostname(),
         config['otlp-url'],
-        headers={
-            'x-honeycomb-team': config['honeycomb-apikey'],
-            'x-honeycomb-dataset': config['honeycomb-dataset'],
-        },
+        headers=headers,
     )
     opentelemetry.trace.set_tracer_provider(provider)
 
