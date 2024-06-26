@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.193.0 (2024-06-26)
+--------------------
+
+- ZO-5573: Update opentelemetry to 1.25/0.46, including prometheus adjustments
+
+
 5.192.1 (2024-06-25)
 --------------------
 
