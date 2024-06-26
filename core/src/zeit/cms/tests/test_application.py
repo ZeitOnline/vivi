@@ -29,7 +29,7 @@ class Prometheus(zeit.cms.testing.ZeitCmsBrowserTestCase):
             b.open('http://localhost/metrics')
             assert b.headers.get('status') == '200 OK'
             metrics = [x.name for x in prometheus(b.contents)]
-            assert 'http_server_duration_ms' in metrics
+            assert 'http_server_duration_milliseconds' in metrics
 
         for _ in range(2):  # Hopefully cover bootstrapping cases
             with self.assertRaises(urllib.error.HTTPError) as info:
