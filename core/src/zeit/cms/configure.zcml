@@ -8,7 +8,7 @@
   <include package="grokcore.component" file="meta.zcml" />
   <include file="meta.zcml" />
 
-  <grok:grok package="." exclude="application browser celery cleanup generation otel_patch relstorage testcontenttype testing webtest zope" />
+  <grok:grok package="." exclude="application browser celery cleanup generation relstorage testcontenttype testing webtest zope" />
 
   <!-- Include requirements -->
   <include package="zeit.cms" file="securitypolicy.zcml" />
