@@ -36,6 +36,17 @@ class StandardMacros(zope.app.basicskin.standardmacros.StandardMacros):
         return title
 
     @property
+    def context_uniqueId(self):
+        return getattr(self.context, 'uniqueId', None)
+
+    @property
+    def context_uuid(self):
+        uuid = zeit.cms.content.interfaces.IUUID(self.context, None)
+        if not uuid:
+            return None
+        return uuid.shortened
+
+    @property
     def type_declaration(self):
         no_type = type('NoTypeDeclaration', (object,), {'type_identifier': 'unknown'})
         return zeit.cms.interfaces.ITypeDeclaration(self.context, no_type)
