@@ -77,29 +77,11 @@ class ImageReference(zeit.cms.content.reference.Reference):
         elif self.xml.get('src'):
             self.xml.set('src', self.target.uniqueId)
 
-    def update_metadata(self, suppress_errors=False):
-        super().update_metadata(suppress_errors)
-        for name in zope.schema.getFieldNames(zeit.content.image.interfaces.IImageMetadata):
-            if hasattr(self, name):
-                value = getattr(self, name, None)
-                if value is not None:
-                    setattr(self, name, value)
-
 
 @zope.component.adapter(zeit.cms.content.interfaces.ITemplate)
 @zope.interface.implementer(zeit.content.image.interfaces.IImages)
 def images_from_template(context):
     return ImagesAdapter(context)
-
-
-@zope.component.adapter(
-    zeit.cms.interfaces.ICMSContent, zeit.cms.checkout.interfaces.IBeforeCheckinEvent
-)
-def update_image_reference_on_checkin(context, event):
-    __traceback_info__ = (context.uniqueId,)
-    images = zeit.content.image.interfaces.IImages(context, None)
-    if isinstance(images, ImagesAdapter):
-        ImagesAdapter.image.update_metadata(images)
 
 
 @zope.component.adapter(zeit.cms.interfaces.ICMSContent)

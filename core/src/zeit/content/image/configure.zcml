@@ -176,7 +176,6 @@
     trusted="yes"
     />
   <adapter factory=".imagereference.images_from_template" />
-  <subscriber handler=".imagereference.update_image_reference_on_checkin" />
   <class class=".imagereference.ImagesAdapter">
     <require
       interface=".interfaces.IImages"

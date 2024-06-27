@@ -11,8 +11,6 @@
     name="related_suppress_errors" />
   <adapter factory=".related.related_references" name="zeit.cms.related" />
 
-  <subscriber handler=".related.update_related_on_checkin" />
-
   <class class=".related.RelatedContent">
     <require
       interface=".interfaces.IRelatedContent"

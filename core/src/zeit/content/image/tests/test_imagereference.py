@@ -33,7 +33,6 @@ class ImageReferenceTest(zeit.content.image.testing.FunctionalTestCase):
         ref.caption = 'localcaption'
         self.assertEqual('localtitle', ref.title)
         self.assertEqual('localcaption', ref.caption)
-        ref.update_metadata()
         self.assertEqual('localtitle', ref.title)
         self.assertEqual('localcaption', ref.caption)
 
@@ -45,11 +44,9 @@ class ImageReferenceTest(zeit.content.image.testing.FunctionalTestCase):
         ref = content.images.create(image)
         content.images = (ref,)
         self.assertEqual('originalorigin', ref.origin)
-        ref.update_metadata()
         self.assertEqual('originalorigin', ref.origin)
         with checked_out(ref.target) as co:
             IImageMetadata(co).origin = 'updatedorigin'
-        ref.update_metadata()
         self.assertEqual('updatedorigin', ref.origin)
 
     def test_empty_local_values_leave_original_ones_alone(self):
@@ -62,7 +59,6 @@ class ImageReferenceTest(zeit.content.image.testing.FunctionalTestCase):
         content.images = (ref,)
         self.assertEqual('originaltitle', ref.title)
         self.assertEqual('originalcaption', ref.caption)
-        ref.update_metadata()
         self.assertEqual('originaltitle', ref.title)
         self.assertEqual('originalcaption', ref.caption)
 

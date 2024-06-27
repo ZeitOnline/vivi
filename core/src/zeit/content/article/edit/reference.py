@@ -176,24 +176,6 @@ def reset_local_properties(context, event):
         context.references = value
 
 
-@grok.subscribe(
-    zeit.content.article.interfaces.IArticle, zeit.cms.checkout.interfaces.IBeforeCheckinEvent
-)
-def update_reference_metadata(article, event):
-    for block in article.body.values():
-        # XXX Do we need a more explicit connection from block instance to
-        # its "block type" interface?
-        iface = list(zope.interface.providedBy(block))[0]
-        if not issubclass(iface, zeit.content.article.edit.interfaces.IReference):
-            continue
-        if isinstance(iface['references'], zeit.cms.content.interfaces.ReferenceField):
-            cls = type((zope.security.proxy.getObject(block)))
-            cls.references.update_metadata(block)
-        elif block.references is not None:
-            # Re-assigning the old value updates xml metadata
-            block.references = block.references
-
-
 class SingleResource(zeit.cms.content.reference.SingleResource):
     def __set__(self, instance, value):
         saved_attributes = {

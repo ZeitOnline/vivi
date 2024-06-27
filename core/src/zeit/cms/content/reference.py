@@ -163,10 +163,6 @@ class ReferenceProperty:
             return []
         return list(node.getparent().iterchildren(node.tag))
 
-    def update_metadata(self, instance, suppress_errors=False):
-        for reference in self.__get__(instance, None):
-            reference.update_metadata(suppress_errors)
-
     @staticmethod
     def create_reference(source, attribute, target, xml_reference_name, suppress_errors=False):
         """Creates an IReference object.
@@ -261,11 +257,6 @@ class SingleReferenceProperty(ReferenceProperty):
             value = (value,)
         super().__set__(instance, value)
 
-    def update_metadata(self, instance, suppress_errors=False):
-        reference = self.__get__(instance, None)
-        if reference:
-            reference.update_metadata(suppress_errors)
-
 
 class SingleResource(SingleReferenceProperty):
     """Property descriptor for a single ICMSContent object. Uses IReference
@@ -283,12 +274,6 @@ class SingleResource(SingleReferenceProperty):
             reference = super().__get__(instance, None)
             value = reference.create(value)
         super().__set__(instance, value)
-        self.update_metadata(instance)
-
-    def update_metadata(self, instance, suppress_errors=False):
-        reference = super().__get__(instance, None)
-        if reference:
-            reference.update_metadata(suppress_errors)
 
 
 class MultiResource(ReferenceProperty):
@@ -312,22 +297,6 @@ class MultiResource(ReferenceProperty):
         # thus destroying any properties they might have had.
         value = tuple(references.create(x) for x in value)
         super().__set__(instance, value)
-        self.update_metadata(instance)
-
-    def update_metadata(self, instance, suppress_errors=False):
-        for reference in self.references(instance):
-            reference.update_metadata(suppress_errors)
-
-
-@grok.subscribe(zeit.cms.interfaces.ICMSContent, zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
-def update_metadata_on_checkin(context, event):
-    cls = type(context)
-    for name in dir(cls):
-        # other descriptors might not support reading them from the class,
-        # but the one that we want does.
-        attr = getattr(cls, name, None)
-        if isinstance(attr, ReferenceProperty):
-            attr.update_metadata(context)
 
 
 @zope.interface.implementer(zeit.cms.content.interfaces.IReferences)
@@ -430,12 +399,6 @@ class Reference(grok.MultiAdapter, zeit.cms.content.xmlsupport.Persistent):
         return ReferenceProperty.create_reference(
             self.__parent__, self.attribute, target, self.xml_reference_name, suppress_errors
         )
-
-    def update_metadata(self, suppress_errors=False):
-        if self.target is None:
-            return
-        self._update_target_unique_id()
-        self._p_changed = True
 
     def _update_target_unique_id(self):
         # Support renaming (see doc/implementation/move.txt).
