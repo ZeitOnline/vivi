@@ -8,7 +8,7 @@ from zeit.cms.admin.interfaces import IAdjustSemanticPublish
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.content.interfaces import ICommonMetadata
 from zeit.cms.i18n import MessageFactory as _
-from zeit.cms.redirect.interfaces import IRenameInfo
+from zeit.cms.repository.interfaces import IRenameInfo
 from zeit.cms.workflow.interfaces import IPublishInfo
 from zeit.content.image.interfaces import IImages
 from zeit.content.link.link import Link

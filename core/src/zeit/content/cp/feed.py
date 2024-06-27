@@ -12,7 +12,7 @@ import zeit.cms.content.interfaces
 import zeit.cms.content.property
 import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces
-import zeit.cms.redirect.interfaces
+import zeit.cms.repository.interfaces
 import zeit.cms.type
 import zeit.content.cp.interfaces
 
@@ -242,7 +242,7 @@ class FakeEntry:
         self.title = str(entry.find('title'))
 
 
-@grok.implementer(zeit.cms.redirect.interfaces.IRenameInfo)
+@grok.implementer(zeit.cms.repository.interfaces.IRenameInfo)
 class FakeRenameInfo(grok.Adapter):
     grok.context(FakeEntry)
 
