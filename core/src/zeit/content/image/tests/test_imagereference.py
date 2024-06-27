@@ -1,7 +1,3 @@
-from unittest import mock
-
-import zope.copypastemove.interfaces
-
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.content.reference import ReferenceProperty
 from zeit.cms.interfaces import ICMSContent
@@ -88,23 +84,3 @@ class ImageReferenceTest(zeit.content.image.testing.FunctionalTestCase):
         content = self.repository['testcontent']
         zeit.content.image.interfaces.IImages(content).fill_color = 'F00F00'
         assert len(content.xml.xpath('//head/image[@fill_color="F00F00"]')) == 1
-
-
-class MoveReferencesTest(zeit.content.image.testing.FunctionalTestCase):
-    def test_moving_image_updates_uniqueId_in_referencing_obj(self):
-        # This is basically the same test as zeit.cms.redirect.tests.test_move,
-        # but for image references instead of related references.
-        image = ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')
-        with checked_out(self.repository['testcontent']) as co:
-            zeit.content.image.interfaces.IImages(co).image = image
-
-        zope.copypastemove.interfaces.IObjectMover(image).moveTo(self.repository, 'changed')
-
-        content = self.repository['testcontent']
-        with mock.patch('zeit.cms.redirect.interfaces.ILookup') as lookup:
-            self.assertEqual(
-                'http://xml.zeit.de/changed',
-                zeit.content.image.interfaces.IImages(content).image.uniqueId,
-            )
-            self.assertFalse(lookup().find.called)
-        self.assertIn('http://xml.zeit.de/changed', zeit.cms.testing.xmltotext(content.xml))
