@@ -15,6 +15,7 @@ import zeit.content.image.interfaces
 import zeit.newsimport.interfaces
 import zeit.newsimport.news
 import zeit.newsimport.testing
+import zeit.workflow.testing
 
 
 FIND_IMAGE = 'zeit.newsimport.news.Image.find_existing_content'
@@ -521,6 +522,7 @@ class DPATOTMSTest(zeit.newsimport.testing.FunctionalTestCase):
         entry = self.dpa.get_entries()[0]
         zeit.newsimport.news.process_task(entry)
         transaction.commit()
+        zeit.workflow.testing.run_tasks()
         content = tms.index.call_args_list[-1][0][0]
         self.assertTrue(isinstance(content, zeit.content.article.article.Article))
         self.assertTrue(IPublishInfo(content).published)
