@@ -46,7 +46,7 @@ def update_referencing_objects(uniqueId):
     # argument, i.e. no ICMSContent object. In fact we do not need a complete
     # ICMSContent object at all at this point, only a dummy with an attribute
     # ``uniqueId``. This also helps with an edge case in
-    # ``zeit.cms.redirect.move.store_redirect``. There we need to update
+    # ``zeit.cms.repository.copypastemove.store_rename_info``. There we need to update
     # objects referencing the old name. But context already has the new name,
     # so adapting to ``ICMSContent`` will not do the job.
     context = Dummy()

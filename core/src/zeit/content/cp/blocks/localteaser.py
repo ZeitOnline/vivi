@@ -93,9 +93,6 @@ class LocalTeaserBlock(
     def updateOrder(self, order):
         pass
 
-    def updateMetadata(self, content):
-        type(self)._reference.update_metadata(self)
-
     # end IFeed
 
 

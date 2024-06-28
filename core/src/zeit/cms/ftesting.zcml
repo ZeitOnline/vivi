@@ -35,7 +35,6 @@
 
   <include package="zeit.cms.workflow" file="mock.zcml" />
   <include package="zeit.cms.tagging" file="mock.zcml" />
-  <include package="zeit.cms.redirect" file="service.zcml" />
 
   <include package="zeit.cms" file="ftesting-securitypolicy.zcml" />
 

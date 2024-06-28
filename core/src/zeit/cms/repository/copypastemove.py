@@ -1,9 +1,12 @@
+import os.path
+
 import grokcore.component as grok
 import zope.component
 import zope.container.interfaces
 import zope.copypastemove
 import zope.lifecycleevent
 
+from zeit.cms.content.interfaces import WRITEABLE_LIVE
 import zeit.cms.repository.interfaces
 
 
@@ -61,3 +64,28 @@ def delete_objectlog_on_move(context, event):
         return
     log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
     log.delete(zeit.cms.content.keyreference.UniqueIdKeyReference(event.oldParent, event.oldName))
+
+
+@zope.interface.implementer(zeit.cms.repository.interfaces.IRenameInfo)
+class RenameInfo(zeit.cms.content.dav.DAVPropertiesAdapter):
+    zeit.cms.content.dav.mapProperties(
+        zeit.cms.repository.interfaces.IRenameInfo,
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
+        ('previous_uniqueIds',),
+        writeable=WRITEABLE_LIVE,
+        use_default=True,
+    )
+
+
+@grok.subscribe(
+    zeit.cms.repository.interfaces.IRepositoryContent, zope.lifecycleevent.IObjectMovedEvent
+)
+def store_rename_info(context, event):
+    if not all([event.oldParent, event.newParent, event.oldName, event.newName]):
+        return
+    if zeit.cms.checkout.interfaces.IWorkingcopy.providedBy(event.newParent):
+        return
+    old_id = os.path.join(event.oldParent.uniqueId, event.oldName)
+    zeit.cms.repository.interfaces.IRenameInfo(context).previous_uniqueIds += (old_id,)
+    # We need to update objects referencing the old name.
+    zeit.cms.relation.corehandlers.update_referencing_objects.delay(old_id)

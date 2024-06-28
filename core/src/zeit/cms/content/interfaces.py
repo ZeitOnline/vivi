@@ -415,9 +415,6 @@ class IReference(
         """If our source has a reference to the given target
         (ICMSContent or uniqueId), return that, else return default."""
 
-    def update_metadata(suppress_errors=False):
-        """Run XMLReferenceUpdater on our XML node."""
-
 
 class IReferences(zope.interface.common.sequence.IReadSequence):
     def __iter__(self):

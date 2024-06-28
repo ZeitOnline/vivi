@@ -216,3 +216,12 @@ class IObjectReloadedEvent(zope.interface.interfaces.IObjectEvent):
 @zope.interface.implementer(IObjectReloadedEvent)
 class ObjectReloadedEvent(zope.interface.interfaces.ObjectEvent):
     pass
+
+
+class IRenameInfo(zope.interface.Interface):
+    previous_uniqueIds = zope.schema.Tuple(
+        title=_('previous uniqueIds of this ICMSContent'),
+        value_type=zope.schema.TextLine(),
+        required=False,
+        default=(),
+    )

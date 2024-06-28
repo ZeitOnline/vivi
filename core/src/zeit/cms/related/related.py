@@ -65,14 +65,3 @@ def related_references(context):
     if related is None:
         return None
     return [x for x in related.related if not zeit.content.cp.interfaces.ICenterPage.providedBy(x)]
-
-
-@zope.component.adapter(
-    zeit.cms.interfaces.ICMSContent, zeit.cms.checkout.interfaces.IBeforeCheckinEvent
-)
-def update_related_on_checkin(context, event):
-    """Update the related metadata before checkin."""
-    related = zeit.cms.related.interfaces.IRelatedContent(context, None)
-    if related is None:
-        return
-    RelatedContent.related.update_metadata(related)

@@ -94,5 +94,16 @@
       />
   </class>
 
+  <class class=".copypastemove.RenameInfo">
+    <require
+      interface=".interfaces.IRenameInfo"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IRenameInfo"
+      permission="zeit.RenameContent"
+      />
+  </class>
+
 </configure>
 

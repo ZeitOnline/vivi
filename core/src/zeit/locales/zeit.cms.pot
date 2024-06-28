@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Fri May 17 13:35:03 2024\n"
+"POT-Creation-Date: Thu Jun 27 11:57:55 2024\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -119,9 +119,9 @@ msgstr ""
 #: zeit/cms/browser/globalmenuitem.pt:5
 #: zeit/cms/browser/lightbox.pt:2
 #: zeit/cms/browser/main_template.pt:49
-#: zeit/cms/browser/main_template.pt:182
-#: zeit/cms/browser/main_template.pt:205
-#: zeit/cms/browser/main_template.pt:223
+#: zeit/cms/browser/main_template.pt:184
+#: zeit/cms/browser/main_template.pt:207
+#: zeit/cms/browser/main_template.pt:225
 #: zeit/cms/browser/menu-context-actions.pt:8
 #: zeit/cms/browser/menu-context-actions.pt:16
 #: zeit/cms/browser/menu-context-views.pt:8
@@ -258,7 +258,7 @@ msgstr ""
 #: zeit/cms/browser/listing.py:267
 #: zeit/cms/content/browser/template.py:39
 #: zeit/cms/content/interfaces.py:170
-#: zeit/cms/content/interfaces.py:465
+#: zeit/cms/content/interfaces.py:452
 #: zeit/cms/retractlog/browser/retractlog.py:23
 #: zeit/cms/retractlog/interfaces.py:25
 #: zeit/content/advertisement/interfaces.py:24
@@ -297,7 +297,7 @@ msgstr ""
 
 #: zeit/cms/browser/listing.py:270
 #: zeit/cms/content/interfaces.py:78
-#: zeit/cms/content/interfaces.py:557
+#: zeit/cms/content/interfaces.py:515
 #: zeit/content/volume/browser/toc-listing.pt:25
 #: zeit/content/volume/browser/toc_listing.py:39
 #: zeit/contentquery/interfaces.py:199
@@ -338,7 +338,7 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
-#: zeit/cms/browser/main_template.pt:181
+#: zeit/cms/browser/main_template.pt:183
 msgid "Add..."
 msgstr ""
 
@@ -456,32 +456,32 @@ msgstr ""
 msgid "\"${name}\" was already checked out."
 msgstr ""
 
-#: zeit/cms/checkout/browser/manager.py:80
+#: zeit/cms/checkout/browser/manager.py:89
 msgid "\"${name}\" has been checked in. Conflicts were ignored."
 msgstr ""
 
-#: zeit/cms/checkout/browser/manager.py:87
+#: zeit/cms/checkout/browser/manager.py:96
 msgid "\"${name}\" has been checked in."
 msgstr ""
 
-#: zeit/cms/checkout/browser/manager.py:111
-#: zeit/cms/repository/repository.py:310
+#: zeit/cms/checkout/browser/manager.py:120
+#: zeit/cms/repository/repository.py:309
 msgid "There was a conflict while adding ${name}"
 msgstr ""
 
-#: zeit/cms/checkout/browser/manager.py:150
+#: zeit/cms/checkout/browser/manager.py:170
 msgid "The object was removed from the repository."
 msgstr ""
 
-#: zeit/cms/checkout/browser/manager.py:236
+#: zeit/cms/checkout/browser/manager.py:256
 msgid "Checkout ^O"
 msgstr ""
 
-#: zeit/cms/checkout/browser/manager.py:248
+#: zeit/cms/checkout/browser/manager.py:268
 msgid "Checkin ^I"
 msgstr ""
 
-#: zeit/cms/checkout/interfaces.py:194
+#: zeit/cms/checkout/interfaces.py:201
 msgid "not allowed"
 msgstr ""
 
@@ -501,15 +501,15 @@ msgstr ""
 msgid "Cannot acquire lock"
 msgstr ""
 
-#: zeit/cms/checkout/manager.py:144
+#: zeit/cms/checkout/manager.py:151
 msgid "Unknown error"
 msgstr ""
 
-#: zeit/cms/checkout/manager.py:185
+#: zeit/cms/checkout/manager.py:192
 msgid "Checked in with semantic change"
 msgstr ""
 
-#: zeit/cms/checkout/manager.py:187
+#: zeit/cms/checkout/manager.py:194
 msgid "Checked in"
 msgstr ""
 
@@ -703,7 +703,7 @@ msgid "color scheme dark"
 msgstr ""
 
 #: zeit/cms/content/interfaces.py:71
-#: zeit/cms/content/interfaces.py:564
+#: zeit/cms/content/interfaces.py:522
 #: zeit/content/article/edit/interfaces.py:548
 #: zeit/content/article/interfaces.py:211
 #: zeit/content/volume/interfaces.py:36
@@ -719,7 +719,7 @@ msgid "Volume"
 msgstr ""
 
 #: zeit/cms/content/interfaces.py:82
-#: zeit/cms/content/interfaces.py:561
+#: zeit/cms/content/interfaces.py:519
 #: zeit/contentquery/interfaces.py:202
 msgid "Sub ressort"
 msgstr ""
@@ -893,19 +893,19 @@ msgstr ""
 msgid "XML Source"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:525
+#: zeit/cms/content/interfaces.py:483
 msgid "Last semantic change"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:529
+#: zeit/cms/content/interfaces.py:487
 msgid "Update last semantic change"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:548
+#: zeit/cms/content/interfaces.py:506
 msgid "Memo"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:553
+#: zeit/cms/content/interfaces.py:511
 #: zeit/content/audio/browser/object-details-body.pt:10
 #: zeit/content/audio/interfaces.py:39
 #: zeit/content/image/browser/image_view.pt:6
@@ -913,23 +913,23 @@ msgstr ""
 msgid "Type"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:566
+#: zeit/cms/content/interfaces.py:524
 msgid "Month"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:595
+#: zeit/cms/content/interfaces.py:553
 msgid "Caching time browser"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:597
+#: zeit/cms/content/interfaces.py:555
 msgid "Caching time server"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:619
+#: zeit/cms/content/interfaces.py:577
 msgid "Remote image URL"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:621
+#: zeit/cms/content/interfaces.py:579
 msgid "Remote timestamp URL"
 msgstr ""
 
@@ -1189,10 +1189,6 @@ msgstr ""
 msgid "Audio object update from simplecast"
 msgstr ""
 
-#: zeit/cms/redirect/interfaces.py:22
-msgid "previous uniqueIds of this ICMSContent"
-msgstr ""
-
 #: zeit/cms/related/interfaces.py:31
 msgid "Related content"
 msgstr ""
@@ -1354,6 +1350,10 @@ msgstr ""
 msgid "\"${name}\" is now shown in the navigation tree."
 msgstr ""
 
+#: zeit/cms/repository/interfaces.py:223
+msgid "previous uniqueIds of this ICMSContent"
+msgstr ""
+
 #: zeit/cms/repository/unknown.py:42
 msgid "Unknown Resource"
 msgstr ""
@@ -1426,7 +1426,7 @@ msgstr ""
 
 #: zeit/cms/workflow/browser/indicator.py:12
 #: zeit/cms/workflow/interfaces.py:48
-#: zeit/workflow/publish.py:480
+#: zeit/workflow/publish.py:505
 #: zeit/workflow/publishinfo.py:61
 msgid "Published"
 msgstr ""
@@ -1559,7 +1559,7 @@ msgstr ""
 #: zeit/content/cp/interfaces.py:638
 #: zeit/content/image/browser/configure.zcml:262
 #: zeit/content/image/browser/imagegroup.py:222
-#: zeit/content/image/image.py:130
+#: zeit/content/image/image.py:126
 #: zeit/content/portraitbox/interfaces.py:16
 #: zeit/wysiwyg/browser/resources/reference/image.pt:17
 msgid "Image"
@@ -1584,7 +1584,7 @@ msgstr ""
 msgid "Link address"
 msgstr ""
 
-#: zeit/content/animation/animation.py:48
+#: zeit/content/animation/animation.py:46
 #: zeit/content/animation/browser/configure.zcml:6
 #: zeit/content/article/edit/animation.py:19
 #: zeit/content/article/edit/interfaces.py:228
@@ -2046,7 +2046,7 @@ msgid "Variant Name"
 msgstr ""
 
 #: zeit/content/article/edit/interfaces.py:235
-#: zeit/content/article/edit/reference.py:77
+#: zeit/content/article/edit/reference.py:74
 #: zeit/content/gallery/browser/configure.zcml:61
 #: zeit/content/gallery/gallery.py:260
 msgid "Gallery"
@@ -2057,7 +2057,7 @@ msgid "Drag an image gallery here"
 msgstr ""
 
 #: zeit/content/article/edit/interfaces.py:253
-#: zeit/content/article/edit/reference.py:106
+#: zeit/content/article/edit/reference.py:103
 #: zeit/content/infobox/infobox.py:57
 #: zeit/content/infobox/interfaces.py:39
 msgid "Infobox"
@@ -2080,7 +2080,7 @@ msgid "wide"
 msgstr ""
 
 #: zeit/content/article/edit/interfaces.py:277
-#: zeit/content/article/edit/reference.py:149
+#: zeit/content/article/edit/reference.py:146
 #: zeit/content/portraitbox/interfaces.py:30
 #: zeit/content/portraitbox/portraitbox.py:29
 #: zeit/magazin/browser/configure.zcml:29
@@ -2816,7 +2816,7 @@ msgstr ""
 msgid "Jobbox Ticker Block"
 msgstr ""
 
-#: zeit/content/cp/blocks/localteaser.py:104
+#: zeit/content/cp/blocks/localteaser.py:101
 msgid "Overridable teaser"
 msgstr ""
 
@@ -3009,11 +3009,11 @@ msgstr ""
 msgid "Could not publish ${id} since it has validation errors."
 msgstr ""
 
-#: zeit/content/cp/centerpage.py:239
+#: zeit/content/cp/centerpage.py:177
 msgid "Centerpage 2009"
 msgstr ""
 
-#: zeit/content/cp/configure.zcml:143
+#: zeit/content/cp/configure.zcml:141
 msgid "Edit Area"
 msgstr ""
 
@@ -3941,7 +3941,7 @@ msgstr ""
 
 #: zeit/content/rawxml/browser/configure.zcml:6
 #: zeit/content/rawxml/browser/form.py:11
-#: zeit/content/rawxml/rawxml.py:25
+#: zeit/content/rawxml/rawxml.py:23
 msgid "Raw XML"
 msgstr ""
 
@@ -4463,6 +4463,7 @@ msgid "Payload Template"
 msgstr ""
 
 #: zeit/push/message.py:89
+#: zeit/workflow/publish_3rdparty.py:61
 msgid "Push notification for \"${name}\" sent. (Message: \"${message}\", Details: ${details})"
 msgstr ""
 
@@ -4470,7 +4471,7 @@ msgstr ""
 msgid "Error during push to ${name} ${details}: ${reason}"
 msgstr ""
 
-#: zeit/push/workflow.py:97
+#: zeit/push/workflow.py:94
 msgid "Error while sending ${type}: ${reason}"
 msgstr ""
 
@@ -4601,19 +4602,19 @@ msgstr ""
 msgid "Retry VGWort Report"
 msgstr ""
 
-#: zeit/vgwort/interfaces.py:47
+#: zeit/vgwort/interfaces.py:48
 msgid "Public VGWort token"
 msgstr ""
 
-#: zeit/vgwort/interfaces.py:49
+#: zeit/vgwort/interfaces.py:50
 msgid "Private VGWort token"
 msgstr ""
 
-#: zeit/vgwort/interfaces.py:54
+#: zeit/vgwort/interfaces.py:55
 msgid "Timestamp when the content object was reported to VGWort"
 msgstr ""
 
-#: zeit/vgwort/interfaces.py:58
+#: zeit/vgwort/interfaces.py:59
 msgid "Error message that occured while reporting"
 msgstr ""
 
@@ -4696,19 +4697,19 @@ msgstr ""
 msgid "Collective Publication of ${count} objects"
 msgstr ""
 
-#: zeit/workflow/publish.py:106
+#: zeit/workflow/publish.py:120
 msgid "Collective Retraction of ${count} objects"
 msgstr ""
 
-#: zeit/workflow/publish.py:201
+#: zeit/workflow/publish.py:226
 msgid "Objects with errors: ${objects}"
 msgstr ""
 
-#: zeit/workflow/publish.py:338
+#: zeit/workflow/publish.py:363
 msgid "The object ${name} is locked by ${user}."
 msgstr ""
 
-#: zeit/workflow/publish.py:563
+#: zeit/workflow/publish.py:588
 msgid "Retracted"
 msgstr ""
 
@@ -4733,19 +4734,19 @@ msgstr ""
 msgid "not necessary"
 msgstr ""
 
-#: zeit/workflow/timebased.py:136
+#: zeit/workflow/timebased.py:137
 msgid "timebased-publish-add"
 msgstr ""
 
-#: zeit/workflow/timebased.py:137
+#: zeit/workflow/timebased.py:138
 msgid "timebased-publish-cancel"
 msgstr ""
 
-#: zeit/workflow/timebased.py:138
+#: zeit/workflow/timebased.py:139
 msgid "timebased-retract-add"
 msgstr ""
 
-#: zeit/workflow/timebased.py:139
+#: zeit/workflow/timebased.py:140
 msgid "timebased-retract-cancel"
 msgstr ""
 
