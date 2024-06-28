@@ -286,6 +286,7 @@ class SQLDatabaseLayer(plone.testing.Layer):
         c = self['sql_connection']
         t = c.begin()
         zeit.connector.postgresql.METADATA.drop_all(c)
+        c.execute(sql('CREATE EXTENSION IF NOT EXISTS ltree'))
         zeit.connector.postgresql.METADATA.create_all(c)
         t.commit()
 

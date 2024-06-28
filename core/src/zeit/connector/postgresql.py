@@ -24,7 +24,6 @@ from sqlalchemy import (
     Index,
     Unicode,
     UnicodeText,
-    UniqueConstraint,
     Uuid,
     delete,
     insert,
@@ -57,6 +56,7 @@ from zeit.connector.interfaces import (
     MoveError,
 )
 from zeit.connector.lock import lock_is_foreign
+from zeit.connector.ltree import LtreeType, ltree
 import zeit.cms.cli
 import zeit.cms.interfaces
 import zeit.cms.tracing
@@ -221,18 +221,18 @@ class Connector:
         if uniqueid not in self.child_name_cache:
             self._reload_child_name_cache(uniqueid)
         for child in list(self.child_name_cache[uniqueid]):
-            yield (self._pathkey(child)[1], child)
+            yield (os.path.basename(child), child)
 
     def _reload_child_name_cache(self, uniqueid):
         if uniqueid == ID_NAMESPACE:
-            path_parent = ''
+            parent = ''
         else:
             if self._get_content(uniqueid, getlock=False) is None:
                 self.child_name_cache.pop(uniqueid, None)
                 return
-            path_parent = '/'.join(self._pathkey(uniqueid))
+            parent = str(ltree(uniqueid)) + '.'
         result = self.session.execute(
-            select(Content).where(Content.path_parent == path_parent)
+            select(Content).where(Content.path.lquery(parent + '*{1}'))
         ).scalars()
         self.child_name_cache[uniqueid] = set(x.uniqueid for x in result)
 
@@ -260,7 +260,7 @@ class Connector:
             if content.lock_status == LockStatus.FOREIGN:
                 raise LockedByOtherSystemError(uniqueid, f'{uniqueid} is already locked.')
 
-        (content.path_parent, content.path_name) = self._pathkey(uniqueid)
+        content.path = ltree(uniqueid)
         current = content.to_webdav()
 
         if not FEATURE_TOGGLES.find('disable_connector_body_checksum') and verify_etag and exists:
@@ -354,11 +354,10 @@ class Connector:
         self.session.execute(delete(Content).where(Content.id.in_([x.id for x in to_delete])))
 
     def _get_all_children(self, uniqueid):
-        parent = uniqueid.replace(ID_NAMESPACE, '', 1)
         query = (
             select(Content)
-            .where(Content.path_parent.startswith(parent))
-            .order_by(Content.path_parent)
+            .where(Content.path.lquery('%s.*{1,}' % ltree(uniqueid)))
+            .order_by(Content.path)
         )
         query = query.options(joinedload(Content.lock))
         return self.session.execute(query).scalars()
@@ -384,8 +383,7 @@ class Connector:
         return responses
 
     def _get_content(self, uniqueid, getlock=True):
-        parent, name = self._pathkey(uniqueid)
-        query = select(Content).where(Content.path_parent == parent, Content.path_name == name)
+        query = select(Content).where(Content.path == ltree(uniqueid))
         if getlock and self.support_locking:
             query = query.options(joinedload(Content.lock))
         return self.session.execute(query).scalars().one_or_none()
@@ -395,12 +393,6 @@ class Connector:
         if not uniqueid.startswith(ID_NAMESPACE):
             raise ValueError(f'The id {uniqueid} is invalid.')
         return uniqueid.rstrip('/')
-
-    @staticmethod
-    def _pathkey(uniqueid):
-        (path_parent, name) = os.path.split(uniqueid.replace(ID_NAMESPACE, '', 1))
-        path_parent = path_parent.rstrip('/')
-        return (path_parent, name)
 
     def copy(self, old_uniqueid, new_uniqueid):
         old_uniqueid = self._normalize(old_uniqueid)
@@ -425,7 +417,7 @@ class Connector:
             target.id = str(uuid4())
 
             uniqueid = content.uniqueid.replace(old_uniqueid, new_uniqueid)
-            (target.path_parent, target.path_name) = self._pathkey(uniqueid)
+            target.path = ltree(uniqueid)
             targets.append(target)
 
             if content.binary_body:
@@ -499,8 +491,7 @@ class Connector:
         for content in sources:
             source_uniqueid = content.uniqueid
             target_uniqueid = source_uniqueid.replace(old_uniqueid, new_uniqueid)
-            parent, name = self._pathkey(target_uniqueid)
-            updates.append({'id': content.id, 'path_parent': parent, 'path_name': name})
+            updates.append({'id': content.id, 'path': ltree(target_uniqueid)})
 
             self.property_cache.pop(source_uniqueid, None)
             self.property_cache[target_uniqueid] = content.to_webdav()
@@ -640,7 +631,11 @@ DBObject = sqlalchemy.orm.declarative_base(metadata=METADATA)
 class Content(DBObject):
     __tablename__ = 'properties'
     __table_args__ = (
-        UniqueConstraint('path_parent', 'path_name'),
+        Index(
+            f'ix_{__tablename__}_path',
+            'path',
+            postgresql_using='gist',
+        ),
         Index(
             f'ix_{__tablename__}_unsorted',
             'unsorted',
@@ -653,8 +648,7 @@ class Content(DBObject):
     type = Column(Unicode, nullable=False, server_default='unknown', index=True)
     is_collection = Column(Boolean, nullable=False, server_default='false')
 
-    path_parent = Column(Unicode, index=True)
-    path_name = Column(Unicode, index=True)
+    path = Column(LtreeType, unique=True)
 
     body = Column(UnicodeText)
 
@@ -684,7 +678,7 @@ class Content(DBObject):
 
     @property
     def uniqueid(self):
-        return f'{ID_NAMESPACE}{self.path_parent}/{self.path_name}'
+        return self.path.to_uniqueid()
 
     @property
     def lock_status(self):

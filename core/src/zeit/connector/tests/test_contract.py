@@ -865,14 +865,14 @@ class SQLProtocol:
         self.connector.session.delete(content)
 
     def add_in_storage(self, name):
-        from zeit.connector.postgresql import Content
+        from zeit.connector.postgresql import Content, ltree
 
         resource = self.get_resource(name)
         content = Content()
         content.from_webdav(resource.properties)
         content.type = resource.type
         content.is_collection = resource.is_collection
-        (content.path_parent, content.path_name) = self.connector._pathkey(resource.id)
+        content.path = ltree(resource.id)
         self.connector.session.add(content)
 
     def has_body_cache(self, uniqueid):
