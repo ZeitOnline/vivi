@@ -3,6 +3,20 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.194.0 (2024-06-28)
+--------------------
+
+- ZO-4274: Remove copy and paste xml mechanic for metadata
+
+- ZO-4275: removed deprecated zeit.cms.redirect
+
+- ZO-5659: Commit content cache after each document in vgwort report, to avoid conflict errors
+
+
+MAINT:
+- Add uuid to UI HTML as body/data attribute
+
+
 5.193.0 (2024-06-26)
 --------------------
 
