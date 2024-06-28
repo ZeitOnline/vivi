@@ -359,6 +359,7 @@ class Connector:
         query = (
             select(Content)
             .join(Path)
+            # XXX Currently not supported by index, causes table scan.
             .where(Path.parent_path.startswith(parent))
             .order_by(Path.parent_path)
         )
