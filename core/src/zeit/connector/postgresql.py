@@ -232,11 +232,8 @@ class Connector:
                 self.child_name_cache.pop(uniqueid, None)
                 return
             parent_path = '/'.join(self._pathkey(uniqueid))
-        result = [
-            (x.name, x.uniqueid)
-            for x in self.session.execute(select(Path).filter_by(parent_path=parent_path)).scalars()
-        ]
-        self.child_name_cache[uniqueid] = set(x[1] for x in result)
+        result = self.session.execute(select(Path).filter_by(parent_path=parent_path)).scalars()
+        self.child_name_cache[uniqueid] = set(x.uniqueid for x in result)
 
     def _update_parent_child_name_cache(self, uniqueid, operation):
         parent = os.path.split(uniqueid)[0]
