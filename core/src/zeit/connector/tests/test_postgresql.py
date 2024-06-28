@@ -33,8 +33,8 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
         )
         self.connector.add(res)
         props = self.connector._get_content(res.id)
-        self.assertEqual('foo', props.path.name)
-        self.assertEqual('/testing', props.path.parent_path)
+        self.assertEqual('foo', props.name)
+        self.assertEqual('/testing', props.parent_path)
         self.assertEqual('testing', props.type)
         self.assertEqual(False, props.is_collection)
         self.assertEqual('deadbeaf-c5aa-4232-837a-ae6701270436', props.id)
@@ -141,7 +141,7 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
             del self.connector[res.id]
 
     def test_delete_removes_rows_from_all_tables(self):
-        from zeit.connector.postgresql import Content, Path
+        from zeit.connector.postgresql import Content
 
         res = self.get_resource('foo', b'mybody')
         self.connector.add(res)
@@ -149,7 +149,6 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
         uuid = props.id
         del self.connector[res.id]
         transaction.commit()
-        self.assertEqual(None, self.connector.session.get(Path, self.connector._pathkey(res.id)))
         self.assertEqual(None, self.connector.session.get(Content, uuid))
 
     def test_search_for_uuid_uses_indexed_column(self):
@@ -234,8 +233,8 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
 
     def test_delete_content_with_lock_raises(self):
         """We intentionally have not declared `ON DELETE CASCADE` from Lock to
-        Content (there is one for Path though), to prevent accidental deletions
-        of locked content when operating directly on the DB.
+        Content, to prevent accidental deletions of locked content when
+        operating directly on the DB.
         """
         self._create_lock(1)
         content = self.connector._get_content('http://xml.zeit.de/testing/foo-1')
