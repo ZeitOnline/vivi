@@ -3,7 +3,7 @@
   xmlns:grok="http://namespaces.zope.org/grok">
 
   <include package="grokcore.component" file="meta.zcml" />
-  <grok:grok package="." exclude="gcsemulator testing" />
+  <grok:grok package="." exclude="gcsemulator generation migrations testing" />
 
   <!-- security -->
   <class class=".resource.WebDAVProperties">
