@@ -9,17 +9,18 @@ from sqlalchemy import create_engine, pool
 logging.basicConfig(level='INFO', format='%(asctime)s %(levelname)-5.5s %(name)s %(message)s')
 
 
-def run_migrations_offline() -> None:
+def run_migrations_offline(params) -> None:
     context.configure(
         url='postgresql://unused',
         literal_binds=True,
         dialect_opts={'paramstyle': 'named'},
         transaction_per_migration=True,
+        **params,
     )
     context.run_migrations()
 
 
-def run_migrations_online() -> None:
+def run_migrations_online(params) -> None:
     if getattr(context.config.cmd_opts, 'autogenerate', False):
         from zeit.connector.postgresql import METADATA
     else:
@@ -38,11 +39,13 @@ def run_migrations_online() -> None:
             connection=connection,
             target_metadata=METADATA,
             transaction_per_migration=True,
+            **params,
         )
         context.run_migrations()
 
 
+params = {'version_table': context.config.get_main_option('version_table')}
 if context.is_offline_mode():
-    run_migrations_offline()
+    run_migrations_offline(params)
 else:
-    run_migrations_online()
+    run_migrations_online(params)
