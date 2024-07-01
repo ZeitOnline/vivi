@@ -1,10 +1,9 @@
 import logging
+import os
 
 from alembic import context
-from sqlalchemy import engine_from_config, pool
+from sqlalchemy import create_engine, pool
 
-
-config = context.config
 
 # Use env-var based zeit.cms.logging instead?
 logging.basicConfig(level='INFO', format='%(asctime)s %(levelname)-5.5s %(name)s %(message)s')
@@ -13,9 +12,8 @@ target_metadata = None
 
 
 def run_migrations_offline() -> None:
-    url = config.get_main_option('sqlalchemy.url')
     context.configure(
-        url=url,
+        url='postgresql://unused',
         target_metadata=target_metadata,
         literal_binds=True,
         dialect_opts={'paramstyle': 'named'},
@@ -26,13 +24,15 @@ def run_migrations_offline() -> None:
 
 
 def run_migrations_online() -> None:
-    connectable = engine_from_config(
-        config.get_section(config.config_ini_section, {}),
-        prefix='sqlalchemy.',
-        poolclass=pool.NullPool,
-    )
+    args = context.get_x_argument(as_dictionary=True)
+    pgservice = args.get('service')
+    if pgservice:
+        dsn = f'postgresql://?service={pgservice}'
+    else:
+        dsn = os.environ['vivi_zeit.connector_dsn']
 
-    with connectable.connect() as connection:
+    engine = create_engine(dsn, poolclass=pool.NullPool)
+    with engine.connect() as connection:
         context.configure(connection=connection, target_metadata=target_metadata)
 
         with context.begin_transaction():
