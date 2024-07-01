@@ -5,9 +5,13 @@ import os
 from alembic import context
 from sqlalchemy import create_engine, pool
 
+import zeit.cms.cli
 
-# Use env-var based zeit.cms.logging instead?
-logging.basicConfig(level='INFO', format='%(asctime)s %(levelname)-5.5s %(name)s %(message)s')
+
+if 'logging.root.level' in os.environ:
+    zeit.cms.cli._configure_logging(os.environ)
+else:
+    logging.basicConfig(level='INFO', format='%(asctime)s %(levelname)-5.5s %(name)s %(message)s')
 
 
 def run_migrations_offline(params) -> None:
