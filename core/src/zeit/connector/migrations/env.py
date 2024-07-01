@@ -1,3 +1,4 @@
+from urllib.parse import parse_qsl, urlparse
 import logging
 import os
 
@@ -28,10 +29,19 @@ def run_migrations_online(params) -> None:
 
     args = context.get_x_argument(as_dictionary=True)
     pgservice = args.get('service')
-    if pgservice:
-        dsn = f'postgresql://?service={pgservice}'
-    else:
-        dsn = os.environ['vivi_zeit.connector_dsn']
+    if not pgservice:
+        query = dict(parse_qsl(urlparse(os.environ['vivi_zeit.connector_dsn']).query))
+        pgservice = query['service']
+
+    pgopt = ''
+    prefix = 'psql.'
+    config = context.config.get_section(context.config.config_ini_section)
+    for key, value in config.items():
+        if not key.startswith(prefix):
+            continue
+        key = key.replace(prefix, '', 1)
+        pgopt += f'-c%20{key}={value}%20'
+    dsn = f'postgresql:///?service={pgservice}&options={pgopt}'
 
     engine = create_engine(dsn, poolclass=pool.NullPool)
     with engine.connect() as connection:
