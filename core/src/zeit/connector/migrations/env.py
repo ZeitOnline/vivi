@@ -1,3 +1,4 @@
+from urllib.parse import parse_qsl, urlparse
 import logging
 import os
 
@@ -30,7 +31,9 @@ def run_migrations_online() -> None:
     if pgservice:
         dsn = f'postgresql://?service={pgservice}'
     else:
-        dsn = os.environ['vivi_zeit.connector_dsn']
+        query = dict(parse_qsl(urlparse(os.environ['vivi_zeit.connector_dsn']).query))
+        pgservice = query['service']
+    dsn = f'postgresql:///?service={pgservice}'
 
     engine = create_engine(dsn, poolclass=pool.NullPool)
     with engine.connect() as connection:
