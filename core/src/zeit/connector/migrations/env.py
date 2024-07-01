@@ -16,6 +16,7 @@ def run_migrations_offline() -> None:
         literal_binds=True,
         dialect_opts={'paramstyle': 'named'},
         transaction_per_migration=True,
+        **params,
     )
     context.run_migrations()
 
@@ -41,9 +42,12 @@ def run_migrations_online() -> None:
             connection=connection,
             target_metadata=METADATA,
             transaction_per_migration=True,
+            **params,
         )
         context.run_migrations()
 
+
+params = {'version_table': context.config.get_main_option('version_table')}
 
 if context.is_offline_mode():
     run_migrations_offline()
