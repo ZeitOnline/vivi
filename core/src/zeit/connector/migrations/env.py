@@ -14,10 +14,9 @@ def run_migrations_offline() -> None:
         url='postgresql://unused',
         literal_binds=True,
         dialect_opts={'paramstyle': 'named'},
+        transaction_per_migration=True,
     )
-
-    with context.begin_transaction():
-        context.run_migrations()
+    context.run_migrations()
 
 
 def run_migrations_online() -> None:
@@ -35,10 +34,12 @@ def run_migrations_online() -> None:
 
     engine = create_engine(dsn, poolclass=pool.NullPool)
     with engine.connect() as connection:
-        context.configure(connection=connection, target_metadata=METADATA)
-
-        with context.begin_transaction():
-            context.run_migrations()
+        context.configure(
+            connection=connection,
+            target_metadata=METADATA,
+            transaction_per_migration=True,
+        )
+        context.run_migrations()
 
 
 if context.is_offline_mode():
