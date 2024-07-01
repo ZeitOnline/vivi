@@ -1,4 +1,4 @@
-from logging.config import fileConfig
+import logging
 
 from alembic import context
 from sqlalchemy import engine_from_config, pool
@@ -6,8 +6,8 @@ from sqlalchemy import engine_from_config, pool
 
 config = context.config
 
-if config.config_file_name is not None:
-    fileConfig(config.config_file_name)
+# Use env-var based zeit.cms.logging instead?
+logging.basicConfig(level='INFO', format='%(asctime)s %(levelname)-5.5s %(name)s %(message)s')
 
 target_metadata = None
 
