@@ -182,6 +182,7 @@ test = [
 ]
 
 deploy = [
+    "alembic",
     "celery-redis-prometheus>=1.5.0.dev0",
     "flower",
     "fluent-logger",
