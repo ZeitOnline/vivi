@@ -49,6 +49,7 @@ def run_migrations_online(params) -> None:
 
     engine = create_engine(dsn, poolclass=pool.NullPool)
     with engine.connect() as connection:
+        logging.getLogger('alembic.runtime.migration').info('Connecting to %s', dsn)
         context.configure(
             connection=connection,
             target_metadata=METADATA,
