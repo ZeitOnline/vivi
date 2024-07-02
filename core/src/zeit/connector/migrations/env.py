@@ -36,7 +36,14 @@ def run_migrations_online() -> None:
     if pgservice:
         dsn = f'postgresql://?service={pgservice}'
     else:
-        query = dict(parse_qsl(urlparse(os.environ['vivi_zeit.connector_dsn']).query))
+        dsn = os.environ.get('alembic_dsn')
+        if not dsn:
+            dsn = os.environ.get(os.environ['alembic_dsn_variable'])
+        if not dsn:
+            raise KeyError(
+                'Must set env alembic_dsn or alembic_dsn_variable, or pass `-x service=`'
+            )
+        query = dict(parse_qsl(urlparse(dsn).query))
         pgservice = query['service']
     dsn = f'postgresql:///?service={pgservice}'
 
