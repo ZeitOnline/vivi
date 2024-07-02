@@ -31,11 +31,13 @@ def run_migrations_online(params) -> None:
     else:
         METADATA = None
 
-    args = context.get_x_argument(as_dictionary=True)
-    pgservice = args.get('service')
-    if not pgservice:
-        query = dict(parse_qsl(urlparse(os.environ['vivi_zeit.connector_dsn']).query))
-        pgservice = query['service']
+    dsn = os.environ.get('alembic_dsn')
+    if not dsn:
+        dsn = os.environ.get(os.environ.get('alembic_dsn_variable', 'missing'))
+    if not dsn:
+        raise KeyError('Must set env alembic_dsn or alembic_dsn_variable, or pass `-x service=`')
+    query = dict(parse_qsl(urlparse(dsn).query))
+    pgservice = query['service']
 
     pgopt = ''
     prefix = 'psql.'
