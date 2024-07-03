@@ -1,5 +1,5 @@
-import zeit.content.cp
 import zeit.content.cp.centerpage
+import zeit.content.cp.testing
 
 
 class TestHeaderImage(zeit.content.cp.testing.BrowserTestCase):
@@ -27,7 +27,7 @@ class TestHeaderImage(zeit.content.cp.testing.BrowserTestCase):
     def test_headerimage_animate_default_is_set(self):
         b = self.browser
         b.getLink('Edit block properties', index=0).click()
-        b.getControl('Image').value = 'http://xml.zeit.de/2006/DSC00109_2.JPG'
+        b.getControl('Image').value = 'http://xml.zeit.de/2007/03/group/'
         b.getControl('Apply').click()
         b.open(self.xml_url)
         self.assertEllipsis('...animate="False"...', b.contents)
@@ -35,7 +35,7 @@ class TestHeaderImage(zeit.content.cp.testing.BrowserTestCase):
     def test_headerimage_animate_true_is_set(self):
         b = self.browser
         b.getLink('Edit block properties', index=0).click()
-        b.getControl('Image').value = 'http://xml.zeit.de/2006/DSC00109_2.JPG'
+        b.getControl('Image').value = 'http://xml.zeit.de/2007/03/group/'
         b.getControl('Animate').selected = True
         b.getControl('Apply').click()
         b.open(self.content_url)
