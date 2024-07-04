@@ -6,11 +6,11 @@ cat articles_without_vgwort_payload.js | \
         jq -r '@text "http://xml.zeit.de" + .hits.hits[]._source.url' \
             > vgwort-nachzuegler-production
 """
-from datetime import datetime
 import argparse
 import logging
 import time
 
+import pendulum
 import zope.component
 
 import zeit.cms.interfaces
@@ -21,8 +21,8 @@ log = logging.getLogger(__name__)
 
 
 def in_maintenance_hours():
-    now = datetime.now()
-    today = datetime(now.year, now.month, now.day)
+    now = pendulum.now()
+    today = pendulum.datetime(now.year, now.month, now.day)
     four = today.replace(hour=3, minute=50)
     six = today.replace(hour=6, minute=10)
     return four <= now <= six

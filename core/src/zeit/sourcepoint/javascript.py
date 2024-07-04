@@ -1,9 +1,9 @@
 import ast
-import datetime
 import logging
 
 from zope.app.appsetup.product import getProductConfiguration
 from zope.cachedescriptors.property import Lazy as cachedproperty
+import pendulum
 import requests
 import zope.event
 
@@ -67,7 +67,7 @@ class JavaScript:
     def _store(self, content):
         obj = zeit.content.text.text.Text()
         filename = self.FILENAME.format(
-            prefix=self.prefix, now=datetime.datetime.now().strftime('%Y%m%d%H%M')
+            prefix=self.prefix, now=pendulum.now().strftime('%Y%m%d%H%M')
         )
         log.info('Storing new contents as %s/%s', self.folder_id, filename)
         obj.text = content

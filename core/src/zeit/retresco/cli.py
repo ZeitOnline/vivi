@@ -1,10 +1,10 @@
 import argparse
 import csv
-import datetime
 import logging
 import os.path
 import time
 
+import pendulum
 import zope.component
 
 import zeit.cms.cli
@@ -58,7 +58,7 @@ def delete_content_from_tms_indexes():
                 continue
 
     if errors:
-        current_time = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
+        current_time = pendulum.now().strftime('%Y%m%d%H%M%S')
         filename = os.path.expanduser(f'~/errors_{current_time}.txt')
         log.info(f'\n🚨 {len(set(errors))}. Writing {filename} ...')
         with open(filename, 'w') as f:
