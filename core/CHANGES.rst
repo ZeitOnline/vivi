@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.195.0 (2024-07-04)
+--------------------
+
+FIX:
+- Retry zodb conflict errors in objectlog sweep and other cronjobs
+
+
 5.194.0 (2024-06-28)
 --------------------
 

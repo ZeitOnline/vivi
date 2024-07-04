@@ -1,1 +1,0 @@
-Retry zodb conflict errors in objectlog sweep and other cronjobs
