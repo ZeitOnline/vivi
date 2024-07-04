@@ -559,5 +559,6 @@ def sweep():
     options = parser.parse_args()
     iface = resolve('zeit.connector.interfaces.' + options.cache)
     cache = zope.component.getUtility(iface)
-    cache.sweep(options.days * 24 * 3600)
+    for _ in zeit.cms.cli.commit_with_retry():
+        cache.sweep(options.days * 24 * 3600)
     log.info('Sweep end')

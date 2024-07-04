@@ -24,7 +24,8 @@ def update():
     options = parser.parse_args()
     log.info(f'Checking {options.source} JS')
     store = zope.component.getUtility(zeit.sourcepoint.interfaces.IJavaScript, name=options.source)
-    store.update()
+    for _ in zeit.cms.cli.commit_with_retry():
+        store.update()
 
 
 @zeit.cms.cli.runner(principal=zeit.cms.cli.from_config('zeit.sourcepoint', 'update-principal'))
@@ -35,5 +36,6 @@ def sweep():
     options = parser.parse_args()
     log.info(f'Sweep {options.source} start')
     store = zope.component.getUtility(zeit.sourcepoint.interfaces.IJavaScript, name=options.source)
-    store.sweep(keep=options.keep)
+    for _ in zeit.cms.cli.commit_with_retry():
+        store.sweep(keep=options.keep)
     log.info(f'Sweep {options.source} end')

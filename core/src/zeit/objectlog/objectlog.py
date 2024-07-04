@@ -126,5 +126,6 @@ def clean():
     options = parser.parse_args()
     log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
     logger.info('Cleaning objectlog, days=%s', options.days)
-    log.clean(datetime.timedelta(days=options.days))
+    for _ in zeit.cms.cli.commit_with_retry():
+        log.clean(datetime.timedelta(days=options.days))
     logger.info('done')
