@@ -200,7 +200,7 @@ class PublishRetractTask:
                     # Like zeit.cms.browser.error.ErrorView.message
                     args = getattr(error, 'args', None)
                     if args:
-                        errormessage = zope.i18n.translate(args[0], target_language='de')
+                        errormessage = zope.i18n.translate(_(args[0]), target_language='de')
                     else:
                         errormessage = str(error)
 
