@@ -1,6 +1,7 @@
 import argparse
 import importlib.resources
 import logging
+import os
 import time
 
 import zope.event
@@ -81,3 +82,12 @@ def wait_for_migrations():
     script = alembic.script.ScriptDirectory.from_config(config)
     with EnvironmentContext(config, script, fn=wait, dont_mutate=True):
         script.run_env()
+
+
+def alembic():
+    import alembic.config
+
+    os.environ['ALEMBIC_CONFIG'] = str(
+        importlib.resources.files(__package__) / 'migrations/alembic.ini'
+    )
+    alembic.config.main()
