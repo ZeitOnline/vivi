@@ -1,7 +1,7 @@
-from datetime import datetime
 import copy
 import unittest.mock as mock
 
+import pendulum
 import pytest
 
 from zeit.cms.interfaces import ICMSContent
@@ -80,7 +80,7 @@ class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
 
     def setUp(self):
         super().setUp()
-        current_date = datetime.now()
+        current_date = pendulum.now()
         self.unique_id = (
             f'http://xml.zeit.de/tts/{current_date.strftime("%Y-%m")}/{TTS_CREATED["uuid"]}'
         )

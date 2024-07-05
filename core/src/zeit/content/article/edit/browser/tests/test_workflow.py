@@ -1,8 +1,8 @@
 from unittest import mock
-import datetime
 import unittest
 
 from selenium.webdriver.common.keys import Keys
+import pendulum
 import transaction
 import zope.component
 
@@ -40,11 +40,11 @@ class CheckinSelenium(
         s.waitForElementPresent('css=.timer')
         s.waitForNotText('css=.timer', '')
         date_format = '%d.%m.%Y %H:%Mh'
-        timestamp = datetime.datetime.now().strftime(date_format)
+        timestamp = pendulum.now().strftime(date_format)
         if s.getText('css=.timer') != timestamp:
             # the minute has just changed, so we repeat with an updated
             # timestamp but don't expect this to happen again anytime soon
-            timestamp = datetime.datetime.now().strftime(date_format)
+            timestamp = pendulum.now().strftime(date_format)
             s.assertText('css=.timer', timestamp)
 
     def test_form_without_new_semantic_change_shows_last_timestamp(self):
@@ -53,7 +53,7 @@ class CheckinSelenium(
         s.waitForElementPresent('css=.timestamp')
         s.waitForNotText('css=.timestamp', '')
         date_format = '%d.%m.%Y %H:%Mh'
-        timestamp = datetime.datetime(2007, 1, 1, 9, 53).strftime(date_format)
+        timestamp = pendulum.datetime(2007, 1, 1, 9, 53).strftime(date_format)
         s.assertText('css=.timestamp', timestamp)
 
     def test_form_without_last_semantic_change_shows_current_timestamp(self):
@@ -62,11 +62,11 @@ class CheckinSelenium(
         s.waitForElementPresent('css=.timer')
         s.waitForNotText('css=.timer', '')
         date_format = '%d.%m.%Y %H:%Mh'
-        timestamp = datetime.datetime.now().strftime(date_format)
+        timestamp = pendulum.now().strftime(date_format)
         if s.getText('css=.timer') != timestamp:
             # the minute has just changed, so we repeat with an updated
             # timestamp but don't expect this to happen again anytime soon
-            timestamp = datetime.datetime.now().strftime(date_format)
+            timestamp = pendulum.now().strftime(date_format)
             s.assertText('css=.timer', timestamp)
 
     def test_validation_errors_are_removed_from_checkin_form_on_change(self):

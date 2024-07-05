@@ -1,7 +1,6 @@
-from datetime import datetime
 from unittest import mock
 
-import pytz
+import pendulum
 
 from zeit.brightcove.convert import Video as BCVideo
 from zeit.content.video.video import Video as CMSVideo
@@ -112,7 +111,7 @@ class VideoTest(zeit.brightcove.testing.FunctionalTestCase, zeit.cms.tagging.tes
     def test_converts_timestamps(self):
         bc = BCVideo()
         bc.data['created_at'] = '2017-05-15T08:24:55.916Z'
-        self.assertEqual(datetime(2017, 5, 15, 8, 24, 55, 916000, tzinfo=pytz.UTC), bc.date_created)
+        self.assertEqual(pendulum.datetime(2017, 5, 15, 8, 24, 55, 916000), bc.date_created)
 
     def test_only_strings_in_custom_fields(self):
         from zeit.content.author.author import Author
@@ -131,7 +130,7 @@ class VideoTest(zeit.brightcove.testing.FunctionalTestCase, zeit.cms.tagging.tes
         self.repository['a1'] = Author()
         cms = CMSVideo()
         bc = BCVideo()
-        next_year = datetime.now().year + 1
+        next_year = pendulum.now().year + 1
         bc.data = {
             'id': 'myvid',
             'name': 'title',
@@ -173,7 +172,7 @@ class VideoTest(zeit.brightcove.testing.FunctionalTestCase, zeit.cms.tagging.tes
             zeit.cms.related.interfaces.IRelatedContent(cms).related,
         )
         self.assertEqual('Chefsache', cms.serie.serienname)
-        self.assertEqual(datetime(next_year, 3, 13, 23, 0, tzinfo=pytz.UTC), cms.expires)
+        self.assertEqual(pendulum.datetime(next_year, 3, 13, 23, 0), cms.expires)
 
     def test_creates_deleted_video_on_notfound(self):
         with mock.patch('zeit.brightcove.connection.CMSAPI.get_video') as get:

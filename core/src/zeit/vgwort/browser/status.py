@@ -1,7 +1,7 @@
-from datetime import datetime, timedelta
 import re
 
 from zope.cachedescriptors.property import Lazy as cachedproperty
+import pendulum
 import zope.component
 
 import zeit.vgwort.interfaces
@@ -35,10 +35,11 @@ class Status:
     @cachedproperty
     def to_report_on(self):
         dfr = self.date_first_released
-        result = datetime(dfr.year, dfr.month, dfr.day) + timedelta(days=8)
-        now = datetime.now()
+        later = pendulum.datetime(dfr.year, dfr.month, dfr.day)
+        result = later.add(days=8)
+        now = pendulum.now()
         if result < now:
-            result = datetime(now.year, now.month, now.day)
+            result = pendulum.datetime(now.year, now.month, now.day)
         return result.strftime('%d.%m.%Y')
 
     def _format_date(self, date):

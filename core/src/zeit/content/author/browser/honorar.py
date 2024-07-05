@@ -1,10 +1,10 @@
 from urllib.parse import urlencode
-import datetime
 import io
 import json
 
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import gocept.form.grouped
+import pendulum
 import zope.component
 import zope.formlib.form
 import zope.formlib.interfaces
@@ -151,7 +151,7 @@ class HonorarReports(zeit.cms.browser.view.Base):
         self.request = request
 
     def __call__(self):
-        filedate = datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
+        filedate = pendulum.now().strftime('%Y-%m-%d-%H-%M-%S')
         filename = f'Hdok-geloeschteGCIDs_{filedate}.csv'
         self.request.response.setHeader('Content-Type', 'text/csv')
         self.request.response.setHeader('location', 'https://www.zeit.de')
