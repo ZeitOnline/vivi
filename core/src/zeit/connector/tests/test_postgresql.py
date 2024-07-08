@@ -35,6 +35,8 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
         props = self.connector._get_content(res.id)
         self.assertEqual('foo', props.path.name)
         self.assertEqual('/testing', props.path.parent_path)
+        self.assertEqual('foo', props.name)
+        self.assertEqual('/testing', props.parent_path)
         self.assertEqual('testing', props.type)
         self.assertEqual(False, props.is_collection)
         self.assertEqual('deadbeaf-c5aa-4232-837a-ae6701270436', props.id)
