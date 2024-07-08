@@ -199,7 +199,6 @@ deploy = [
     "python-json-logger",
     "relstorage",
     "repoze.vhm",
-    "slowlog",
     "waitress",
     "zeit.ldap",
 ]
@@ -216,7 +215,6 @@ zon = [
 ]
 deploy-zon = [
     "linesman==0.3.2+py3.4",
-    "slowlog==0.9+py3.2",
 ]
 test-zon = [
     "gocept.jasmine==0.7+py3.2",
