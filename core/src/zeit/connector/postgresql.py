@@ -672,6 +672,7 @@ class Path(DBObject):
 class Content(DBObject):
     __tablename__ = 'properties'
     __table_args__ = (
+        UniqueConstraint('parent_path', 'name'),
         Index(
             f'ix_{__tablename__}_unsorted',
             'unsorted',
@@ -694,6 +695,8 @@ class Content(DBObject):
         onupdate=sqlalchemy.func.now(),
         index=True,
     )
+    parent_path = Column(Unicode, index=True)
+    name = Column(Unicode, index=True)
 
     path = relationship(
         'Path',
