@@ -182,6 +182,7 @@ test = [
 ]
 
 deploy = [
+    "alembic",
     "celery-redis-prometheus>=1.5.0.dev0",
     "flower",
     "fluent-logger",
@@ -230,6 +231,8 @@ ui-zon = [
 ]
 
 [project.scripts]
+alembic-vivi = "zeit.connector.cli:alembic"
+alembic-vivi-wait = "zeit.connector.cli:wait_for_migrations"
 author-report-invalid-gcid = "zeit.content.author.honorar:report_invalid_gcid"
 change-volume-access = "zeit.content.volume.volume:change_access"
 clean-objectlog = "zeit.objectlog.objectlog:clean"
