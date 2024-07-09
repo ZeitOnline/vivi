@@ -157,6 +157,10 @@ def badgerfish(node):
         result[f'@{key}'] = value
 
     for child in children:
+        # https://lxml.de/FAQ.html#how-can-i-find-out-if-an-element-is-a-comment-or-pi
+        if not isinstance(child.tag, str):
+            continue
+
         child_tag = lxml.etree.QName(child.tag).localname
         sub = badgerfish(child)[child_tag]
         existing = result.get(child_tag)
