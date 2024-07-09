@@ -543,3 +543,6 @@ class BadgerfishTest(unittest.TestCase):
             {'a': {'$': 'before child'}}, self.badgerfish('<a>before <b>child</b></a>')
         )
         self.assertEqual({'a': {'$': 'child after'}}, self.badgerfish('<a><b>child</b> after</a>'))
+
+    def test_comment_is_removed(self):
+        self.assertEqual({'a': {}}, self.badgerfish('<a><!-- comment --></a>'))
