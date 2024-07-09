@@ -3,6 +3,16 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.0.0 (2024-07-09)
+------------------
+
+- ZO-4281: Set up alembic for database migrations
+
+- ZO-5613: Remove slowlog, it triggers python segfaults
+
+- ZO-5470: Always provide now timestamp with timezone information
+
+
 5.195.0 (2024-07-04)
 --------------------
 
