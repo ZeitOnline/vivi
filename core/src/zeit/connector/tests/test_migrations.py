@@ -50,10 +50,10 @@ class MigrationsTest(unittest.TestCase):
         metadata.create_all(engine, checkfirst=False)
         return result[0].splitlines()
 
-    def alembic_upgrade(self, connection, target='head'):
+    def alembic_upgrade(self, connection, name, target='head'):
         config = alembic.config.Config(
             importlib.resources.files(zeit.connector) / 'migrations/alembic.ini',
-            ini_section='predeploy',
+            ini_section=name,
         )
         script = alembic.script.ScriptDirectory.from_config(config)
         with EnvironmentContext(config=config, script=script) as context:
@@ -65,6 +65,7 @@ class MigrationsTest(unittest.TestCase):
             )
             context.run_migrations()
         connection.execute(sql('DROP TABLE alembic_version'))
+        connection.commit()
 
     def test_migrations_create_same_schema_as_from_scratch(self):
         self.createdb()
@@ -76,7 +77,10 @@ class MigrationsTest(unittest.TestCase):
 
         self.createdb()
         c = self.engine.connect()
-        self.alembic_upgrade(c)
+        self.alembic_upgrade(c, 'predeploy')
+        c.close()
+        c = self.engine.connect()
+        self.alembic_upgrade(c, 'postdeploy')
         migrations = self.dump_schema(c)
         c.close()
         self.dropdb()
