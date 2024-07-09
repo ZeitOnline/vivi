@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.1.0 (2024-07-09)
+------------------
+
+- ZO-5779: Skip XML comments in BigQuery JSON serialization
+
+
 6.0.0 (2024-07-09)
 ------------------
 
