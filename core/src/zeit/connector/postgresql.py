@@ -260,6 +260,8 @@ class Connector:
             if content.lock_status == LockStatus.FOREIGN:
                 raise LockedByOtherSystemError(uniqueid, f'{uniqueid} is already locked.')
 
+        if FEATURE_TOGGLES.find('write_to_new_columns_name_parent_path'):
+            (content.parent_path, content.name) = self._pathkey(uniqueid)
         (path.parent_path, path.name) = self._pathkey(uniqueid)
         current = content.to_webdav()
 
@@ -429,6 +431,8 @@ class Connector:
 
             uniqueid = content.uniqueid.replace(old_uniqueid, new_uniqueid)
             (parent_path, name) = self._pathkey(uniqueid)
+            if FEATURE_TOGGLES.find('write_to_new_columns_name_parent_path'):
+                (target.parent_path, target.name) = (parent_path, name)
             target.path = Path(id=target.id, parent_path=parent_path, name=name)
             targets.append(target)
 
@@ -500,12 +504,15 @@ class Connector:
                         f'Could not move {child.uniqueid} to {new_uniqueid}, because it is locked.',
                     )
 
+        path_updates = []
         updates = []
         for content in sources:
             source_uniqueid = content.uniqueid
             target_uniqueid = source_uniqueid.replace(old_uniqueid, new_uniqueid)
             parent, name = self._pathkey(target_uniqueid)
-            updates.append({'key': content.id, 'parent_path': parent, 'name': name})
+            path_updates.append({'key': content.id, 'parent_path': parent, 'name': name})
+            if FEATURE_TOGGLES.find('write_to_new_columns_name_parent_path'):
+                updates.append({'id': content.id, 'parent_path': parent, 'name': name})
 
             self.property_cache.pop(source_uniqueid, None)
             self.property_cache[target_uniqueid] = content.to_webdav()
@@ -521,8 +528,12 @@ class Connector:
         # <https://docs.sqlalchemy.org/en/20/orm/queryguide/dml.html
         #  #disabling-bulk-orm-update-by-primary-key-for-an-update-statement
         #  -with-multiple-parameter-sets>
-        self.session.connection().execute(update(Path).where(Path.id == bindparam('key')), updates)
+        self.session.connection().execute(
+            update(Path).where(Path.id == bindparam('key')), path_updates
+        )
         zope.sqlalchemy.mark_changed(self.session())
+        if FEATURE_TOGGLES.find('write_to_new_columns_name_parent_path'):
+            self.session.execute(update(Content), updates)
 
     def lock(self, uniqueid, principal, until):
         uniqueid = self._normalize(uniqueid)
@@ -671,6 +682,7 @@ class Path(DBObject):
 class Content(DBObject):
     __tablename__ = 'properties'
     __table_args__ = (
+        Index(f'ix_{__tablename__}_parent_path_name', 'parent_path', 'name', unique=True),
         Index(
             f'ix_{__tablename__}_unsorted',
             'unsorted',
@@ -693,6 +705,8 @@ class Content(DBObject):
         onupdate=sqlalchemy.func.now(),
         index=True,
     )
+    parent_path = Column(Unicode, index=True)
+    name = Column(Unicode, index=True)
 
     path = relationship(
         'Path',
