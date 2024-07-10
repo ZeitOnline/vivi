@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.2.0 (2024-07-10)
+------------------
+
+MAINT:
+- MAINT: Remove feature toggle `disable_connector_body_checksum`
+
+
 6.1.0 (2024-07-09)
 ------------------
 
