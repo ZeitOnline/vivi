@@ -46,7 +46,6 @@ import zope.component
 import zope.interface
 import zope.sqlalchemy
 
-from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.interfaces import DOCUMENT_SCHEMA_NS
 from zeit.cms.repository.interfaces import ConflictError
 from zeit.connector.interfaces import (
@@ -264,7 +263,7 @@ class Connector:
         (path.parent_path, path.name) = self._pathkey(uniqueid)
         current = content.to_webdav()
 
-        if not FEATURE_TOGGLES.find('disable_connector_body_checksum') and verify_etag and exists:
+        if verify_etag and exists:
             current_checksum = current[('body_checksum', INTERNAL_PROPERTY)]
             new_checksum = resource.properties.get(('body_checksum', INTERNAL_PROPERTY))
             if new_checksum is not None and current_checksum != new_checksum:
