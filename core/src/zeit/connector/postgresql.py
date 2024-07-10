@@ -43,6 +43,7 @@ import sqlalchemy
 import sqlalchemy.event
 import sqlalchemy.orm
 import transaction
+import zope.app.appsetup.product
 import zope.component
 import zope.interface
 import zope.sqlalchemy
@@ -79,7 +80,8 @@ def feature_toggle(key):
 
     Using feature toggles from a file which is stored inside the database
     inside the connector is unfortunately not possible"""
-    return os.environ.get(key) is not None
+    config = zope.app.appsetup.product.getProductConfiguration('zeit.connector')
+    return config.get(key) is not None
 
 
 class LockStatus(Enum):
