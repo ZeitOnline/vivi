@@ -1,1 +1,1 @@
-MAINT: Remove feature toggle
+MAINT: Remove feature toggle `disable_connector_body_checksum`
