@@ -6,6 +6,7 @@ from io import BytesIO, StringIO
 from logging import getLogger
 from uuid import uuid4
 import collections
+import functools
 import hashlib
 import itertools
 import json
@@ -46,7 +47,6 @@ import zope.component
 import zope.interface
 import zope.sqlalchemy
 
-from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.interfaces import DOCUMENT_SCHEMA_NS
 from zeit.cms.repository.interfaces import ConflictError
 from zeit.connector.interfaces import (
@@ -70,6 +70,16 @@ log = getLogger(__name__)
 
 
 ID_NAMESPACE = zeit.connector.interfaces.ID_NAMESPACE[:-1]
+
+
+@functools.cache
+def feature_toggle(key):
+    """Temp workaround to use feature toggles in connector instead of feature toggles
+    from zeit.cms.content.sources.
+
+    Using feature toggles from a file which is stored inside the database
+    inside the connector is unfortunately not possible"""
+    return os.environ.get(key) is not None
 
 
 class LockStatus(Enum):
@@ -261,7 +271,7 @@ class Connector:
             if content.lock_status == LockStatus.FOREIGN:
                 raise LockedByOtherSystemError(uniqueid, f'{uniqueid} is already locked.')
 
-        if FEATURE_TOGGLES.find('write_to_new_columns_name_parent_path'):
+        if feature_toggle('write_to_new_columns_name_parent_path'):
             (content.parent_path, content.name) = self._pathkey(uniqueid)
         (path.parent_path, path.name) = self._pathkey(uniqueid)
         current = content.to_webdav()
@@ -432,7 +442,7 @@ class Connector:
 
             uniqueid = content.uniqueid.replace(old_uniqueid, new_uniqueid)
             (parent_path, name) = self._pathkey(uniqueid)
-            if FEATURE_TOGGLES.find('write_to_new_columns_name_parent_path'):
+            if feature_toggle('write_to_new_columns_name_parent_path'):
                 (target.parent_path, target.name) = (parent_path, name)
             target.path = Path(id=target.id, parent_path=parent_path, name=name)
             targets.append(target)
@@ -512,7 +522,7 @@ class Connector:
             target_uniqueid = source_uniqueid.replace(old_uniqueid, new_uniqueid)
             parent, name = self._pathkey(target_uniqueid)
             path_updates.append({'key': content.id, 'parent_path': parent, 'name': name})
-            if FEATURE_TOGGLES.find('write_to_new_columns_name_parent_path'):
+            if feature_toggle('write_to_new_columns_name_parent_path'):
                 updates.append({'id': content.id, 'parent_path': parent, 'name': name})
 
             self.property_cache.pop(source_uniqueid, None)
@@ -533,7 +543,7 @@ class Connector:
             update(Path).where(Path.id == bindparam('key')), path_updates
         )
         zope.sqlalchemy.mark_changed(self.session())
-        if FEATURE_TOGGLES.find('write_to_new_columns_name_parent_path'):
+        if feature_toggle('write_to_new_columns_name_parent_path'):
             self.session.execute(update(Content), updates)
 
     def lock(self, uniqueid, principal, until):
