@@ -261,8 +261,9 @@ class Connector:
             if content.lock_status == LockStatus.FOREIGN:
                 raise LockedByOtherSystemError(uniqueid, f'{uniqueid} is already locked.')
 
-        (content.parent_path, content.name) = self._pathkey(uniqueid)
-        (path.parent_path, path.name) = (content.parent_path, content.name)
+        if FEATURE_TOGGLES.find('write_to_new_columns_name_parent_path'):
+            (content.parent_path, content.name) = self._pathkey(uniqueid)
+        (path.parent_path, path.name) = self._pathkey(uniqueid)
         current = content.to_webdav()
 
         if not FEATURE_TOGGLES.find('disable_connector_body_checksum') and verify_etag and exists:
@@ -430,8 +431,10 @@ class Connector:
             target.id = str(uuid4())
 
             uniqueid = content.uniqueid.replace(old_uniqueid, new_uniqueid)
-            (target.parent_path, target.name) = self._pathkey(uniqueid)
-            target.path = Path(id=target.id, parent_path=target.parent_path, name=target.name)
+            (parent_path, name) = self._pathkey(uniqueid)
+            if FEATURE_TOGGLES.find('write_to_new_columns_name_parent_path'):
+                (target.parent_path, target.name) = (parent_path, name)
+            target.path = Path(id=target.id, parent_path=parent_path, name=name)
             targets.append(target)
 
             if content.binary_body:
@@ -509,7 +512,8 @@ class Connector:
             target_uniqueid = source_uniqueid.replace(old_uniqueid, new_uniqueid)
             parent, name = self._pathkey(target_uniqueid)
             path_updates.append({'key': content.id, 'parent_path': parent, 'name': name})
-            updates.append({'id': content.id, 'parent_path': parent, 'name': name})
+            if FEATURE_TOGGLES.find('write_to_new_columns_name_parent_path'):
+                updates.append({'id': content.id, 'parent_path': parent, 'name': name})
 
             self.property_cache.pop(source_uniqueid, None)
             self.property_cache[target_uniqueid] = content.to_webdav()
@@ -529,7 +533,8 @@ class Connector:
             update(Path).where(Path.id == bindparam('key')), path_updates
         )
         zope.sqlalchemy.mark_changed(self.session())
-        self.session.execute(update(Content), updates)
+        if FEATURE_TOGGLES.find('write_to_new_columns_name_parent_path'):
+            self.session.execute(update(Content), updates)
 
     def lock(self, uniqueid, principal, until):
         uniqueid = self._normalize(uniqueid)

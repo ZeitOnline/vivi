@@ -9,6 +9,7 @@ import google.api_core.exceptions
 import pytz
 import transaction
 
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.repository.interfaces import ConflictError
 from zeit.connector.interfaces import INTERNAL_PROPERTY
 from zeit.connector.postgresql import Lock, _unlock_overdue_locks
@@ -31,6 +32,7 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
                 ('bar', 'http://namespaces.zeit.de/CMS/two'): 'bar',
             },
         )
+        FEATURE_TOGGLES.set('write_to_new_columns_name_parent_path')
         self.connector.add(res)
         props = self.connector._get_content(res.id)
         self.assertEqual('foo', props.path.name)
