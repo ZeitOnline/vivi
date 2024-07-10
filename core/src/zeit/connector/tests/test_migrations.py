@@ -1,5 +1,6 @@
 from difflib import unified_diff
 import importlib.resources
+import re
 import unittest
 
 from alembic.runtime.environment import EnvironmentContext
@@ -39,16 +40,21 @@ class MigrationsTest(unittest.TestCase):
         c.close()
 
     def dump_schema(self, connection):
+        def _dump(sql, *args, **kw):
+            text = str(sql.compile(dialect=engine.dialect))
+            text = re.sub(r'\n+', '\n', text)
+            result.append(text)
+
         metadata = sqlalchemy.MetaData()
         metadata.reflect(connection)
 
         result = []
         engine = sqlalchemy.create_mock_engine(
             'postgresql://',
-            lambda query, *args, **kw: result.append(str(query.compile(dialect=engine.dialect))),
+            executor=_dump,
         )
         metadata.create_all(engine, checkfirst=False)
-        return result[0].splitlines()
+        return sorted(result)
 
     def alembic_upgrade(self, connection, name, target='head'):
         config = alembic.config.Config(
