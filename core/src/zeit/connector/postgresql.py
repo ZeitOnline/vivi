@@ -683,7 +683,7 @@ class Path(DBObject):
 class Content(DBObject):
     __tablename__ = 'properties'
     __table_args__ = (
-        UniqueConstraint('parent_path', 'name'),
+        Index(f'ix_{__tablename__}_parent_path_name', 'parent_path', 'name', unique=True),
         Index(
             f'ix_{__tablename__}_unsorted',
             'unsorted',
