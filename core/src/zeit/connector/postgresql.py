@@ -26,7 +26,6 @@ from sqlalchemy import (
     UnicodeText,
     UniqueConstraint,
     Uuid,
-    bindparam,
     delete,
     insert,
     select,
@@ -226,14 +225,14 @@ class Connector:
 
     def _reload_child_name_cache(self, uniqueid):
         if uniqueid == ID_NAMESPACE:
-            parent_path = ''
+            parent = ''
         else:
             if self._get_content(uniqueid, getlock=False) is None:
                 self.child_name_cache.pop(uniqueid, None)
                 return
-            parent_path = '/'.join(self._pathkey(uniqueid))
-        result = self.session.execute(select(Path).filter_by(parent_path=parent_path)).scalars()
-        self.child_name_cache[uniqueid] = set(x.uniqueid for x in result)
+            parent = '/'.join(self._pathkey(uniqueid))
+        result = self.session.execute(select(Content).where(Content.parent_path == parent))
+        self.child_name_cache[uniqueid] = set(x.uniqueid for x in result.scalars())
 
     def _update_parent_child_name_cache(self, uniqueid, operation):
         parent = os.path.split(uniqueid)[0]
@@ -255,10 +254,8 @@ class Connector:
         if not exists:
             content = Content()
             self.session.add(content)
-        else:
-            path = content.path
-            if content.lock_status == LockStatus.FOREIGN:
-                raise LockedByOtherSystemError(uniqueid, f'{uniqueid} is already locked.')
+        elif content.lock_status == LockStatus.FOREIGN:
+            raise LockedByOtherSystemError(uniqueid, f'{uniqueid} is already locked.')
 
         (content.parent_path, content.name) = self._pathkey(uniqueid)
         current = content.to_webdav()
@@ -357,10 +354,8 @@ class Connector:
         parent = uniqueid.replace(ID_NAMESPACE, '', 1)
         query = (
             select(Content)
-            .join(Path)
-            # XXX Currently not supported by index, causes table scan.
-            .where(Path.parent_path.startswith(parent))
-            .order_by(Path.parent_path)
+            .where(Content.parent_path.startswith(parent))
+            .order_by(Content.parent_path)
         )
         query = query.options(joinedload(Content.lock))
         return self.session.execute(query).scalars()
@@ -387,11 +382,10 @@ class Connector:
 
     def _get_content(self, uniqueid, getlock=True):
         parent, name = self._pathkey(uniqueid)
-        query = select(Path).filter_by(parent_path=parent, name=name)
+        query = select(Content).where(Content.parent_path == parent, Content.name == name)
         if getlock and self.support_locking:
-            query = query.options(joinedload(Path.content).joinedload(Content.lock))
-        path = self.session.execute(query).scalars().one_or_none()
-        return path.content if path is not None else None
+            query = query.options(joinedload(Content.lock))
+        return self.session.execute(query).scalars().one_or_none()
 
     @staticmethod
     def _normalize(uniqueid):
@@ -428,8 +422,7 @@ class Connector:
             target.id = str(uuid4())
 
             uniqueid = content.uniqueid.replace(old_uniqueid, new_uniqueid)
-            (parent_path, name) = self._pathkey(uniqueid)
-            (target.parent_path, target.name) = (parent_path, name)
+            (target.parent_path, target.name) = self._pathkey(uniqueid)
             targets.append(target)
 
             if content.binary_body:
@@ -448,7 +441,6 @@ class Connector:
             raise google.cloud.exceptions.from_http_response(response)
 
         self._bulk_insert(Content, targets)
-        self._bulk_insert(Path, [x.path for x in targets])
 
         for content in targets:
             self.property_cache[content.uniqueid] = content.to_webdav()
@@ -596,9 +588,9 @@ class Connector:
         ):
             # Sorely needed performance optimization.
             uuid = expr.operands[-1].replace('urn:uuid:', '')
-            path = self.session.execute(select(Path).where(Path.id == uuid)).scalar()
-            if path is not None:
-                yield (path.uniqueid, '{urn:uuid:%s}' % path.id)
+            content = self.session.execute(select(Content).where(Content.id == uuid)).scalar()
+            if content is not None:
+                yield (content.uniqueid, '{urn:uuid:%s}' % content.id)
         else:
             query = select(Content).where(self._build_filter(expr))
             result = self.session.execute(query)
@@ -716,7 +708,7 @@ class Content(DBObject):
 
     @property
     def uniqueid(self):
-        return self.path.uniqueid
+        return f'{ID_NAMESPACE}{self.parent_path}/{self.name}'
 
     @property
     def lock_status(self):
@@ -748,14 +740,12 @@ class Content(DBObject):
 
     def from_webdav(self, props):
         if not self.id:
-            assert not self.path.id
             id = props.get(('uuid', self.NS + 'document'))
             if id is None:
                 id = str(uuid4())
             else:
                 id = id[10:-1]  # strip off `{urn:uuid:}`
             self.id = id
-            self.path.id = id
 
         type = props.get(('type', self.NS + 'meta'))
         if type:
