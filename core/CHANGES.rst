@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.3.0 (2024-07-11)
+------------------
+
+- ZO-5176: add parent_path and name column to table properties
+
+
 6.2.0 (2024-07-10)
 ------------------
 
