@@ -6,7 +6,6 @@ from io import BytesIO, StringIO
 from logging import getLogger
 from uuid import uuid4
 import collections
-import functools
 import hashlib
 import itertools
 import json
@@ -71,17 +70,6 @@ log = getLogger(__name__)
 
 
 ID_NAMESPACE = zeit.connector.interfaces.ID_NAMESPACE[:-1]
-
-
-@functools.cache
-def feature_toggle(key):
-    """Temp workaround to use feature toggles in connector instead of feature toggles
-    from zeit.cms.content.sources.
-
-    Using feature toggles from a file which is stored inside the database
-    inside the connector is unfortunately not possible"""
-    config = zope.app.appsetup.product.getProductConfiguration('zeit.connector')
-    return config.get(key) is not None
 
 
 class LockStatus(Enum):
@@ -266,16 +254,13 @@ class Connector:
         exists = content is not None
         if not exists:
             content = Content()
-            path = Path(content=content)
-            self.session.add(path)
+            self.session.add(content)
         else:
             path = content.path
             if content.lock_status == LockStatus.FOREIGN:
                 raise LockedByOtherSystemError(uniqueid, f'{uniqueid} is already locked.')
 
-        if feature_toggle('write-to-new-columns-name-parent-path'):
-            (content.parent_path, content.name) = self._pathkey(uniqueid)
-        (path.parent_path, path.name) = self._pathkey(uniqueid)
+        (content.parent_path, content.name) = self._pathkey(uniqueid)
         current = content.to_webdav()
 
         if verify_etag and exists:
@@ -444,9 +429,7 @@ class Connector:
 
             uniqueid = content.uniqueid.replace(old_uniqueid, new_uniqueid)
             (parent_path, name) = self._pathkey(uniqueid)
-            if feature_toggle('write-to-new-columns-name-parent-path'):
-                (target.parent_path, target.name) = (parent_path, name)
-            target.path = Path(id=target.id, parent_path=parent_path, name=name)
+            (target.parent_path, target.name) = (parent_path, name)
             targets.append(target)
 
             if content.binary_body:
@@ -517,15 +500,12 @@ class Connector:
                         f'Could not move {child.uniqueid} to {new_uniqueid}, because it is locked.',
                     )
 
-        path_updates = []
         updates = []
         for content in sources:
             source_uniqueid = content.uniqueid
             target_uniqueid = source_uniqueid.replace(old_uniqueid, new_uniqueid)
             parent, name = self._pathkey(target_uniqueid)
-            path_updates.append({'key': content.id, 'parent_path': parent, 'name': name})
-            if feature_toggle('write-to-new-columns-name-parent-path'):
-                updates.append({'id': content.id, 'parent_path': parent, 'name': name})
+            updates.append({'id': content.id, 'parent_path': parent, 'name': name})
 
             self.property_cache.pop(source_uniqueid, None)
             self.property_cache[target_uniqueid] = content.to_webdav()
@@ -536,17 +516,7 @@ class Connector:
             self._update_parent_child_name_cache(source_uniqueid, 'remove')
             self._update_parent_child_name_cache(target_uniqueid, 'add')
 
-        # We're updating the primary key itself, which the normal sqlalchemy
-        # "bulk update " API does not offer, so we have to user a lower level,
-        # <https://docs.sqlalchemy.org/en/20/orm/queryguide/dml.html
-        #  #disabling-bulk-orm-update-by-primary-key-for-an-update-statement
-        #  -with-multiple-parameter-sets>
-        self.session.connection().execute(
-            update(Path).where(Path.id == bindparam('key')), path_updates
-        )
-        zope.sqlalchemy.mark_changed(self.session())
-        if feature_toggle('write-to-new-columns-name-parent-path'):
-            self.session.execute(update(Content), updates)
+        self.session.execute(update(Content), updates)
 
     def lock(self, uniqueid, principal, until):
         uniqueid = self._normalize(uniqueid)
