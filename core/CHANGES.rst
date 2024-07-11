@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.4.0 (2024-07-11)
+------------------
+
+- ZO-5176: rename feature toggle to write-to-new-columns-name-parent-path
+
+
 6.3.0 (2024-07-11)
 ------------------
 
