@@ -273,7 +273,7 @@ class Connector:
             if content.lock_status == LockStatus.FOREIGN:
                 raise LockedByOtherSystemError(uniqueid, f'{uniqueid} is already locked.')
 
-        if feature_toggle('write_to_new_columns_name_parent_path'):
+        if feature_toggle('write-to-new-columns-name-parent-path'):
             (content.parent_path, content.name) = self._pathkey(uniqueid)
         (path.parent_path, path.name) = self._pathkey(uniqueid)
         current = content.to_webdav()
@@ -444,7 +444,7 @@ class Connector:
 
             uniqueid = content.uniqueid.replace(old_uniqueid, new_uniqueid)
             (parent_path, name) = self._pathkey(uniqueid)
-            if feature_toggle('write_to_new_columns_name_parent_path'):
+            if feature_toggle('write-to-new-columns-name-parent-path'):
                 (target.parent_path, target.name) = (parent_path, name)
             target.path = Path(id=target.id, parent_path=parent_path, name=name)
             targets.append(target)
@@ -524,7 +524,7 @@ class Connector:
             target_uniqueid = source_uniqueid.replace(old_uniqueid, new_uniqueid)
             parent, name = self._pathkey(target_uniqueid)
             path_updates.append({'key': content.id, 'parent_path': parent, 'name': name})
-            if feature_toggle('write_to_new_columns_name_parent_path'):
+            if feature_toggle('write-to-new-columns-name-parent-path'):
                 updates.append({'id': content.id, 'parent_path': parent, 'name': name})
 
             self.property_cache.pop(source_uniqueid, None)
@@ -545,7 +545,7 @@ class Connector:
             update(Path).where(Path.id == bindparam('key')), path_updates
         )
         zope.sqlalchemy.mark_changed(self.session())
-        if feature_toggle('write_to_new_columns_name_parent_path'):
+        if feature_toggle('write-to-new-columns-name-parent-path'):
             self.session.execute(update(Content), updates)
 
     def lock(self, uniqueid, principal, until):
