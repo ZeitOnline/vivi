@@ -207,11 +207,6 @@ zon = [
     "gocept.form==0.8.0+py3",
     "zope.app.locking==3.5.0+py3.1",
     "zope.xmlpickle==4.0.0+py3k1",  # https://github.com/ZeitOnline/zope.xmlpickle/tree/py3
-    # We created our own py310 wheels on devpi.zeit.de for these:
-    # lxml==4.2.3  # ZO-1328
-    # perfmetrics==3.2.0.post0  # ZO-1577
-    # zope.interface==5.4.0  # ZO-1580
-    # zope.hookable==5.1.0   # ZO-1580
 ]
 deploy-zon = [
     "linesman==0.3.2+py3.4",
