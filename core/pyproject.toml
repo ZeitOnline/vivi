@@ -37,6 +37,7 @@ dependencies = [
     "requests",
     "requests_file",
     "sqlalchemy>=2.0.0.dev0",
+    "greenlet",  # XXX sqlalchemy dependency, that pip-compile does not recognize
     "transaction",
     "webob",
     "werkzeug",
