@@ -28,7 +28,6 @@ class GalleryFormBase(zeit.push.browser.form.SocialBase, zeit.push.browser.form.
         _('Texts'),
         (
             'supertitle',
-            'byline',
             'title',
             'subtitle',
             'teaserTitle',

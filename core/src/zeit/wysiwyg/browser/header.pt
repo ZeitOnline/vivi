@@ -1,6 +1,5 @@
 <div class="wysiwyg-header">
   <div class="supertitle" tal:content="view/metadata/supertitle" />:
   <div class="title" tal:content="view/metadata/title" />
-  <div class="byline" tal:content="view/metadata/byline" />
   <div class="subtitle" tal:content="view/metadata/subtitle" />
 </div>

@@ -80,10 +80,6 @@ class CommonListRepresentation(BaseListRepresentation):
         return self.context.supertitle
 
     @zope.cachedescriptors.property.Lazy
-    def byline(self):
-        return self.context.byline
-
-    @zope.cachedescriptors.property.Lazy
     def ressort(self):
         return self.context.ressort
 
@@ -126,7 +122,6 @@ class CommonListRepresentation(BaseListRepresentation):
             'author',
             'title',
             'subtitle',
-            'byline',
             'ressort',
             'volume',
             'page',

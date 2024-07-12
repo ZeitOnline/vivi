@@ -63,7 +63,6 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
                 'doc_type': 'article',
                 'payload': {
                     'body': {
-                        'byline': 'Von Jochen Stahnke',
                         'subtitle': teaser,
                         'supertitle': 'Somalia',
                         'title': 'Rückkehr der Warlords',

@@ -46,7 +46,6 @@
   <body>
     <supertitle>Bundestagswahl 2021</supertitle>
     <title>Wahlergebnis in {{ name }}</title>
-    <byline/>
     <subtitle>Welcher Kandidat gewinnt, welche Partei holt die meisten Stimmen? Verfolgen Sie die Ergebnisse der Bundestagswahl im Wahlkreis {{ wahlkreis_id }} in dieser Übersicht.</subtitle>
   </body>
 </article>

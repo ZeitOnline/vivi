@@ -68,12 +68,3 @@ Channels
 'International Nahost;Wissen'
 >>> content.channels
 (('International', 'Nahost'), ('Wissen', None))
-
-None handling
-+++++++++++++
-
-Setting
-
->>> content.byline = None
->>> content.byline is None
-True
