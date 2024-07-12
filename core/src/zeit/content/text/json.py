@@ -1,10 +1,10 @@
 import logging
 
 from referencing.jsonschema import DRAFT202012
-import commentjson
 import grokcore.component as grok
 import jsonschema
 import openapi_schema_validator
+import rapidjson
 import referencing
 import requests
 import requests_file
@@ -27,7 +27,7 @@ log = logging.getLogger(__name__)
 class JSON(zeit.content.text.text.Text):
     @property
     def data(self):
-        return commentjson.loads(self.text)
+        return rapidjson.loads(self.text, parse_mode=rapidjson.PM_COMMENTS)
 
 
 class JSONType(zeit.content.text.text.TextType):

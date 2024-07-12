@@ -1,7 +1,7 @@
-import commentjson
 import pygments
 import pygments.formatters
 import pygments.lexers
+import rapidjson
 import zope.component
 import zope.formlib.form
 import zope.formlib.textwidgets
@@ -38,7 +38,7 @@ class JSONInputWidget(zope.formlib.textwidgets.TextAreaWidget):
     def _toFieldValue(self, input):
         value = super()._toFieldValue(input)
         try:
-            commentjson.loads(value)
+            rapidjson.loads(value, parse_mode=rapidjson.PM_COMMENTS)
         except Exception as e:
             raise zope.app.form.interfaces.ConversionError(e)
         return value

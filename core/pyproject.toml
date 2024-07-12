@@ -8,7 +8,6 @@ dependencies = [
     "btrees",
     "bugsnag",
     "collective.monkeypatcher",
-    "commentjson",
     "cryptography",  # so pyjwt can offer rsa
     "elasticsearch >=7.16.0, <8.0.0",  # ZO-2516
     "filetype",
@@ -32,6 +31,7 @@ dependencies = [
     "prometheus-client",
     "pyjwt>=2.0.0",
     "pyramid_dogpile_cache2",
+    "python-rapidjson",
     "pytz",
     "pyyaml",
     "requests",
