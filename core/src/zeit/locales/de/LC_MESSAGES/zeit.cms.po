@@ -702,7 +702,7 @@ msgstr "Subchannel"
 
 #: zeit/cms/content/interfaces.py:105
 msgid "Print ressort"
-msgstr "Ressort (Druck)"
+msgstr "Print-Ressort"
 
 #: zeit/cms/content/interfaces.py:123
 msgid "Authors (freetext)"
