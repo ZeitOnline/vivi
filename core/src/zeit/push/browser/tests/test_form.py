@@ -111,12 +111,12 @@ class SocialFormTest(zeit.push.testing.BrowserTestCase):
     def test_stores_mobile_image(self):
         self.open_form()
         b = self.browser
-        b.getControl('Mobile image').value = 'http://xml.zeit.de/2006/DSC00109_2.JPG'
+        b.getControl('Mobile image').value = 'http://xml.zeit.de/2007/03/group/'
         b.getControl('Apply').click()
         article = self.get_article()
         push = zeit.push.interfaces.IPushMessages(article)
         service = push.get(type='mobile')
-        self.assertEqual('http://xml.zeit.de/2006/DSC00109_2.JPG', service['image'])
+        self.assertEqual('http://xml.zeit.de/2007/03/group/', service['image'])
 
         self.open_form()
         b.getControl('Mobile image').value = ''

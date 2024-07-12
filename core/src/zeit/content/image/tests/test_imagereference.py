@@ -7,14 +7,6 @@ import zeit.content.image.interfaces
 import zeit.content.image.testing
 
 
-class ImageAssetTest(zeit.content.image.testing.FunctionalTestCase):
-    def test_IImages_accepts_IImage_for_backwards_compatibility(self):
-        with self.assertNothingRaised():
-            zeit.content.image.interfaces.IImages['image'].validate(
-                ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')
-            )
-
-
 class ImageReferenceTest(zeit.content.image.testing.FunctionalTestCase):
     def setUp(self):
         super().setUp()
