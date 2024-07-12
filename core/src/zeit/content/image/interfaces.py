@@ -368,17 +368,7 @@ class ImageGroupSource(zeit.cms.content.contentsource.CMSContentSource):
     check_interfaces = (IImageGroup,)
     name = 'image-groups'
 
-    def __contains__(self, value):
-        # backwards compatibility: IImages used to contain both IImage and
-        # IImageGroup, so there might still be content with IImage around
-        # which needs to be accessible.
-        if IImage.providedBy(value):
-            return True
-        return super().__contains__(value)
 
-
-# XXX this source still allows bare Image *and* ImageGroup, we should change
-# the source to ImageGroup-only and add a bw-compat-source
 imageGroupSource = ImageGroupSource()
 
 

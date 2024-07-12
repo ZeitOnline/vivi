@@ -52,13 +52,13 @@ class MobileFormTest(zeit.content.article.testing.BrowserTestCase):
     def test_sets_manual_flag_when_changing_image(self):
         self.open_form()
         b = self.browser
-        b.getControl(name='mobile.mobile_image').value = 'http://xml.zeit.de/2006/DSC00109_2.JPG'
+        b.getControl(name='mobile.mobile_image').value = 'http://xml.zeit.de/2007/03/group/'
         b.getControl('Payload Template').displayValue = ['Foo']
         b.getControl('Apply').click()
         article = self.get_article()
         push = zeit.push.interfaces.IPushMessages(article)
         service = push.get(type='mobile', variant='manual')
-        self.assertEqual('http://xml.zeit.de/2006/DSC00109_2.JPG', service['image'])
+        self.assertEqual('http://xml.zeit.de/2007/03/group/', service['image'])
         self.assertEqual(True, service['image_set_manually'])
 
     def test_shows_notice_for_author_push(self):
