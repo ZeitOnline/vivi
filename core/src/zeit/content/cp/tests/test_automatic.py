@@ -1044,7 +1044,6 @@ class AutomaticRSSTest(zeit.content.cp.testing.FunctionalTestCase):
         feed_xml = self.feed_xml()
         items = feed_xml.xpath('/rss/channel/item')
         item = zeit.content.cp.blocks.rss.RSSLink(items[0])
-        self.assertEqual(None, item.byline)
         with self.assertRaises(AttributeError):
             item.foo
 

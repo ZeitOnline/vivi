@@ -385,9 +385,7 @@ class OptionsA(zeit.edit.browser.form.InlineForm):
 class OptionsB(zeit.edit.browser.form.InlineForm):
     legend = ''
     prefix = 'options-b'
-    form_fields = FormFields(ICommonMetadata).select(
-        'year', 'volume', 'page', 'printRessort', 'byline'
-    )
+    form_fields = FormFields(ICommonMetadata).select('year', 'volume', 'page', 'printRessort')
 
     def setUpWidgets(self, *args, **kw):
         super().setUpWidgets(*args, **kw)

@@ -67,7 +67,6 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
     supertitle = zeit.cms.content.property.ObjectPathProperty(
         '.body.supertitle', ICommonMetadata['supertitle']
     )
-    byline = zeit.cms.content.property.ObjectPathProperty('.body.byline', ICommonMetadata['byline'])
 
     teaserTitle = zeit.cms.content.property.ObjectPathProperty(
         '.teaser.title', ICommonMetadata['teaserTitle']

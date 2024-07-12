@@ -249,7 +249,6 @@ class CommonMetadata(Converter):
             'supertitle': self.context.supertitle,
             'title': self.context.title,
             'subtitle': self.context.subtitle,
-            'byline': self.context.byline,
         }
         result['payload']['teaser'] = {
             'supertitle': self.context.teaserSupertitle,

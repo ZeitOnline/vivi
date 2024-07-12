@@ -17,7 +17,7 @@ import zeit.cms.clipboard.interfaces
 )
 @zope.interface.implementer(zeit.cms.browser.interfaces.IListRepresentation)
 class ClipListRepresentation(zeit.cms.browser.listing.BaseListRepresentation):
-    author = subtitle = byline = ressort = volume = page = year = None
+    author = subtitle = ressort = volume = page = year = None
     uniqueId = None
     searchableText = ''
 

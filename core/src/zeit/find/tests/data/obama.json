@@ -14,7 +14,6 @@
           "doc_id": "{urn:uuid:74252e2a-08e9-4f24-908d-20acea747eb4}",
           "payload": {
             "body": {
-              "byline": "Von Martin Bialecki, dpa",
               "supertitle": "Wegen Korruptionsvorw\u00fcrfen",
               "subtitle": "",
               "title": "US-Umweltbeh\u00f6rdenchef Pruitt geht nach Serie von Skandalen"
@@ -341,7 +340,6 @@
           "doc_id": "{urn:uuid:a71e46f9-6fe1-49fb-8164-c23a56551863}",
           "payload": {
             "body": {
-              "byline": "von Friedemann Bieber",
               "supertitle": "Einkommen",
               "subtitle": "Wo Einkommen ungleich verteilt sind, ist auch die soziale Mobilit\u00e4t gering. Aber bedingt sich das?",
               "title": "Die Gatsby-Kurve"
@@ -465,7 +463,6 @@
           "doc_id": "{urn:uuid:27a7fad0-8276-4a63-8e1c-03741e2d7eec}",
           "payload": {
             "body": {
-              "byline": "von Uwe Jean Heuser",
               "supertitle": "Al Gore",
               "subtitle": "Der US-Politiker und Umweltaktivist Al Gore glaubt, dass neue Technologie und aufgeschlossene B\u00fcrger das Klima retten werden.",
               "title": "\"Schneller, als man denkt\""
@@ -588,7 +585,6 @@
           "doc_id": "{urn:uuid:efe10969-b471-4f53-8c3c-1976df899701}",
           "payload": {
             "body": {
-              "byline": "von Heike Buchter",
               "supertitle": "US-Einwanderungspolitik",
               "subtitle": "An der Grenze zu Mexiko betreibt die amerikanische Regierung Fl\u00fcchtlingen gegen\u00fcber eine Null-Toleranz-Politik. Zum Nutzen einer ganzen Branche.",
               "title": "Einsperren und kassieren"
@@ -709,7 +705,6 @@
           "doc_id": "{urn:uuid:ad2dfc75-87a6-4bd1-ac06-f9e2f6a774fd}",
           "payload": {
             "body": {
-              "byline": "von Martin Klingst",
               "supertitle": "USA",
               "subtitle": "In den USA bekommen die Republikaner jetzt den Supreme Court unter ihre Kontrolle. Sie k\u00f6nnten das Land grundlegend ver\u00e4ndern und das Recht auf Abtreibung und die Ehe f\u00fcr alle kippen.",
               "title": "Im Namen des Pr\u00e4sidenten"
@@ -831,7 +826,6 @@
           "doc_id": "{urn:uuid:c50ff800-83eb-44bb-a233-7259c77fc65a}",
           "payload": {
             "body": {
-              "byline": "von J\u00f6rg Lau",
               "supertitle": "Nato",
               "subtitle": "Die Nato ist weltweit ohne ebenb\u00fcrtigen Gegner. Auf Angriffe aus dem Wei\u00dfen Haus ist sie nicht vorbereitet.",
               "title": "Trumps Sprengsatz"
@@ -1337,7 +1331,6 @@
           "doc_id": "{urn:uuid:f9fb58cb-c7f1-4edb-aadf-fab6b3b49101}",
           "payload": {
             "body": {
-              "byline": "von Kerstin Kohlenberg",
               "supertitle": "Familientrennung",
               "subtitle": "Donald Trumps Einwanderungspolitik zerrei\u00dft Familien und begeistert seine Anh\u00e4nger. Im S\u00fcden von Texas geraten Kinder zwischen alle Fronten.",
               "title": "An der Grenze des Rechts"
@@ -1650,7 +1643,6 @@
           "doc_id": "{urn:uuid:7957892f-9780-4f96-bff7-87869632f892}",
           "payload": {
             "body": {
-              "byline": "von Bernd Ulrich",
               "supertitle": "Angela Merkel",
               "subtitle": "Wenn Angela Merkel abtritt, steht nichts mehr zwischen den Deutschen und der Wirklichkeit. Sie sind darauf nicht gut vorbereitet.",
               "title": "Zeit zu gehen?"
@@ -1976,7 +1968,6 @@
           "doc_id": "{urn:uuid:afd55672-bc0b-4999-aca2-da4424310043}",
           "payload": {
             "body": {
-              "byline": "von Hanna Jacobs",
               "supertitle": "Margot K\u00e4\u00dfmann",
               "subtitle": "Sie war das Vorbild Tausender evangelischer Frauen \u2013 nun verabschiedet sich Margot K\u00e4\u00dfmann in den Ruhestand. Unsere Autorin wird sie vermissen. Ein offener Brief an das Idol ihrer Jugend",
               "title": "Danke, Margot!"
@@ -2202,7 +2193,6 @@
           "doc_id": "{urn:uuid:82448e76-54bf-4f31-94aa-505622809eca}",
           "payload": {
             "body": {
-              "byline": "von Daniel Haas",
               "supertitle": "Restaurant Portonovo",
               "subtitle": "Das Restaurant Portonovo feiert zehnj\u00e4hriges Jubil\u00e4um. Anmerkungen zum Hamburger Stil",
               "title": "Bravo!"
@@ -2428,7 +2418,6 @@
           "doc_id": "{urn:uuid:1dc37dff-2c3e-4d3f-bdb2-84a7c412d65b}",
           "payload": {
             "body": {
-              "byline": "von Holger Stark",
               "supertitle": "Datenschutz",
               "subtitle": "Facebook, Google und andere Konzerne sind zu m\u00e4chtig geworden. Es wird Zeit, unsere Daten zu verteidigen. So k\u00f6nnen Sie uns dabei helfen.",
               "title": "Achtung, Missbrauch!"
@@ -2847,7 +2836,6 @@
           "doc_id": "{urn:uuid:8d3ec435-78eb-4e40-8d44-edef62791471}",
           "payload": {
             "body": {
-              "byline": "Von Michael Donhauser, dpa",
               "supertitle": "Republikaner werden nerv\u00f6s",
               "subtitle": "",
               "title": "Weltweiter Aufschrei - Trump zieht bei Migration Notbremse"
@@ -3354,7 +3342,6 @@
           "doc_id": "{urn:uuid:8a01db63-b0bc-4b20-80a3-bc4c12497efe}",
           "payload": {
             "body": {
-              "byline": "von Silke Weber",
               "supertitle": "Ausstrahlung",
               "subtitle": "Worte reichen nicht. Auch Kleidung, K\u00f6rpersprache und das Aussehen beeinflussen, wie \u00fcberzeugend wir auf andere wirken \u2013 und wirken auf uns selbst zur\u00fcck.",
               "title": "Du bist, was du tr\u00e4gst"
@@ -3637,7 +3624,6 @@
           "doc_id": "{urn:uuid:27b61f78-d3ec-49ae-acd0-7c7fc57b9cf2}",
           "payload": {
             "body": {
-              "byline": "Von\u00a0Christiane Oelrich und Michael Donhauser, dpa",
               "supertitle": "Familien-Trennung an US-Grenze",
               "subtitle": "",
               "title": "Aufschrei \u00fcber Trumps Umgang mit Migrantenkindern"
@@ -4659,7 +4645,6 @@
           "doc_id": "{urn:uuid:eab60f73-23d1-4495-90f4-a577392e0c1f}",
           "payload": {
             "body": {
-              "byline": "Von Martin Bialecki, dpa",
               "supertitle": "Analyse",
               "subtitle": "",
               "title": "US-Reaktionen; Erst Feuer und Wut, jetzt alles gut?"
@@ -4860,7 +4845,6 @@
           "doc_id": "{urn:uuid:76113a02-d92a-4403-9bbd-e89e9ed34bb5}",
           "payload": {
             "body": {
-              "byline": "von Herfried M\u00fcnkler",
               "supertitle": "USA",
               "subtitle": "Das Imperium zerf\u00e4llt, weil es seine R\u00e4nder nicht achtet. Jetzt geht es in der Welt nur noch um Einflusszonen.",
               "title": "Der Abschied vom amerikanischen Zeitalter"
@@ -4982,7 +4966,6 @@
           "doc_id": "{urn:uuid:11ac1d0c-9410-4684-9581-c3d1e6af9fdc}",
           "payload": {
             "body": {
-              "byline": "von Thomas Assheuer",
               "supertitle": "Donald Trump",
               "subtitle": "Mit Donald Trump ist der beste Golfer aller Zeiten ins Wei\u00dfe Haus eingezogen. Wenn er als Spieler schummelt, dann ehrlich, auf der Grundlage hei\u00df geliebter Regeln.",
               "title": "Schlag gegen Schlag"

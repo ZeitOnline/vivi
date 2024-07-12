@@ -22,7 +22,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.4.1\n"
+"X-Generator: Poedit 3.4.4\n"
 
 #: zeit/addcentral/sidebar.pt:10 zeit/addcentral/sidebar.py:39
 #: zeit/cms/browser/form.py:220 zeit/cms/menu.zcml:17 zeit/cms/menu.zcml:24
@@ -678,7 +678,7 @@ msgstr "Subchannel"
 
 #: zeit/cms/content/interfaces.py:105
 msgid "Print ressort"
-msgstr "Ressort (Druck)"
+msgstr "Print-Ressort"
 
 #: zeit/cms/content/interfaces.py:123
 msgid "Authors (freetext)"

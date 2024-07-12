@@ -114,7 +114,7 @@ class WYSIWYGEdit(zeit.cms.browser.form.EditForm):
 
     form_fields = zope.formlib.form.FormFields(
         zeit.content.article.interfaces.IArticleMetadata
-    ).select('supertitle', 'title', 'byline', 'subtitle') + zope.formlib.form.FormFields(
+    ).select('supertitle', 'title', 'subtitle') + zope.formlib.form.FormFields(
         zeit.wysiwyg.interfaces.IHTMLContent
     )
 

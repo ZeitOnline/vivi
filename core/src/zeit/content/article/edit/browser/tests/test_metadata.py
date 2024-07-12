@@ -33,12 +33,16 @@ class HeadTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s._find('id=options-b.year').clear()
         s.waitForElementNotPresent('css=.field.dirty')
         s.type('id=options-b.year', '2010')
-        s.keyPress('id=options-b.volume', Keys.TAB)  # Trigger blur
+        s.keyPress('id=options-b.volume', Keys.TAB)
+        s.type('id=options-b.printRessort', 'Politik')
+        s.keyPress('id=options-b.printRessort', Keys.TAB)  # Trigger blur
         s.waitForElementNotPresent('css=.field.dirty')
         # Re-open the page and verify that the data is still there
         s.clickAndWait('link=Edit contents')
         s.waitForElementPresent('id=options-b.year')
         s.assertValue('id=options-b.year', '2010')
+        s.waitForElementPresent('id=options-b.year')
+        s.assertValue('id=options-b.printRessort', 'Politik')
 
     def test_form_should_save_selection_on_blur(self):
         s = self.selenium
@@ -75,7 +79,8 @@ class HeadTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s = self.selenium
         s.assertValue('id=options-b.year', '2007')
         s.type('id=options-b.year', 'ASDF')
-        s.keyPress('id=options-b.volume', Keys.TAB)  # Trigger blur
+        s.keyPress('id=options-b.volume', Keys.TAB)
+        s.keyPress('id=options-b.printRessort', Keys.TAB)  # Trigger blur
         s.waitForElementPresent('css=.inline-form div.error')
 
     def test_relateds_should_be_addable(self):

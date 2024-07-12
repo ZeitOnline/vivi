@@ -23,7 +23,6 @@ class CommonMetadataFormBase(zeit.cms.browser.form.CharlimitMixin):
         _('Texts'),
         (
             'supertitle',
-            'byline',
             'title',
             'subtitle',
             'teaserTitle',

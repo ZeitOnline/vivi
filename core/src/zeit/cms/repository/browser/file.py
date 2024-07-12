@@ -19,7 +19,7 @@ import zeit.cms.repository.interfaces
 @zope.component.adapter(zeit.cms.repository.interfaces.IFile, zeit.cms.browser.interfaces.ICMSLayer)
 @zope.interface.implementer(zeit.cms.browser.interfaces.IListRepresentation)
 class FileListRepresentation(zeit.cms.browser.listing.BaseListRepresentation):
-    author = title = subtitle = byline = ressort = volume = page = year = searchableText = None
+    author = title = subtitle = ressort = volume = page = year = searchableText = None
 
 
 class FileView:

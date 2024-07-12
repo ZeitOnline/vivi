@@ -101,9 +101,7 @@ class ICommonMetadata(zope.interface.Interface):
     )
     zope.interface.alsoProvides(channels.value_type, IChannelField)
 
-    printRessort = zope.schema.TextLine(
-        title=_('Print ressort'), readonly=True, required=False, default='n/a'
-    )
+    printRessort = zope.schema.TextLine(title=_('Print ressort'), required=False)
 
     # not required since e.g. Agenturmeldungen don't have an author, only
     # a copyright notice
@@ -161,11 +159,6 @@ class ICommonMetadata(zope.interface.Interface):
         required=False,
         max_length=70,
     )
-
-    # DEPRECATED, use authorships instead (still used by
-    # k4import/exporter.zeit.de to transmit author information *into* vivi,
-    # so Producing can manually convert it to authorships)
-    byline = zope.schema.TextLine(title=_('By line'), readonly=True, required=False)
 
     title = zope.schema.Text(title=_('Title'), missing_value='')
 

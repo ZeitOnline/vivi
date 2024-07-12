@@ -96,7 +96,7 @@ class Tree(zeit.cms.browser.tree.Tree):
 )
 @zope.interface.implementer(zeit.cms.browser.interfaces.IListRepresentation)
 class ClipboardListRepresentation(zeit.cms.browser.listing.BaseListRepresentation):
-    author = subtitle = byline = ressort = volume = page = year = None
+    author = subtitle = ressort = volume = page = year = None
 
     title = 'Clipboard'
     uniqueId = None

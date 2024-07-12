@@ -18,7 +18,6 @@ class FormBase:
         _('Texts'),
         (
             'supertitle',
-            'byline',
             'title',
             'subtitle',
             'teaserTitle',
