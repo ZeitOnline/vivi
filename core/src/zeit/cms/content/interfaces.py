@@ -101,9 +101,7 @@ class ICommonMetadata(zope.interface.Interface):
     )
     zope.interface.alsoProvides(channels.value_type, IChannelField)
 
-    printRessort = zope.schema.TextLine(
-        title=_('Print ressort'), readonly=True, required=False, default='n/a'
-    )
+    printRessort = zope.schema.TextLine(title=_('Print ressort'), required=False)
 
     # not required since e.g. Agenturmeldungen don't have an author, only
     # a copyright notice
