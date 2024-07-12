@@ -7,10 +7,12 @@ on:
     paths:
     - '.github/workflows/nightwatch.yaml'
     - 'smoketest/**'
+    - '!smoketest/k8s/base/versions/*'
   pull_request:
     paths:
     - '.github/workflows/nightwatch.yaml'
     - 'smoketest/**'
+    - '!smoketest/k8s/base/versions/*'
 
 jobs:
   build:
