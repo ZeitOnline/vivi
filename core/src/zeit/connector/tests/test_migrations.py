@@ -1,6 +1,10 @@
 from difflib import unified_diff
+from subprocess import PIPE
 import importlib.resources
+import io
+import os
 import re
+import subprocess
 import unittest
 
 from alembic.runtime.environment import EnvironmentContext
@@ -56,22 +60,30 @@ class MigrationsTest(unittest.TestCase):
         metadata.create_all(engine, checkfirst=False)
         return sorted(result)
 
-    def alembic_upgrade(self, connection, name, target='head'):
+    def alembic_upgrade(self, connection, name, target='head', **kw):
+        if connection is None:
+            kw['url'] = 'postgresql://unused'
+            kw['literal_binds'] = True
+            kw['dialect_ops'] = {'paramstyle': 'named'}
+
         config = alembic.config.Config(
             importlib.resources.files(zeit.connector) / 'migrations/alembic.ini',
             ini_section=name,
         )
         script = alembic.script.ScriptDirectory.from_config(config)
-        with EnvironmentContext(config=config, script=script) as context:
+        with EnvironmentContext(config=config, script=script, as_sql=connection is None) as context:
             context.configure(
                 connection=connection,
                 destination_rev=target,
                 fn=lambda rev, context: script._upgrade_revs(target, rev),
                 transaction_per_migration=True,
+                **kw,
             )
             context.run_migrations()
-        connection.execute(sql('DROP TABLE alembic_version'))
-        connection.commit()
+
+        if connection is not None:
+            connection.execute(sql('DROP TABLE alembic_version'))
+            connection.commit()
 
     def test_migrations_create_same_schema_as_from_scratch(self):
         self.createdb()
@@ -93,3 +105,19 @@ class MigrationsTest(unittest.TestCase):
 
         diff = unified_diff(scratch, migrations, n=5)
         self.assertEqual(scratch, migrations, '\n'.join(diff))
+
+    def test_lint_migrations_with_squawk(self):
+        buffer = io.StringIO()
+        for name in ['predeploy', 'postdeploy']:
+            self.alembic_upgrade(None, name, output_buffer=buffer)
+        sql = [x.strip() for x in buffer.getvalue().split(';')]
+        # squawk ignores any statements that refer to a newly created table
+        sql = [x for x in sql if not x.startswith('CREATE TABLE')]
+        sql = ';\n'.join(sql)
+
+        squawk = os.environ['SQUAWK_COMMAND']
+        proc = subprocess.Popen([squawk], stdout=PIPE, stderr=PIPE, stdin=PIPE)
+        stdout, stderr = proc.communicate(sql.encode('utf-8'))
+        if proc.returncode:
+            output = stdout.decode('utf-8') + stderr.decode('utf-8')
+            self.fail('squawk returned errors:\n' + output)
