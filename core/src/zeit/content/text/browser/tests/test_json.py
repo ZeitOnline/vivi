@@ -17,7 +17,7 @@ class JSONBrowserTest(zeit.content.text.testing.BrowserTestCase):
         b.getControl('File name').value = 'foo'
         b.getControl('Content').value = '{"foo":'
         b.getControl('Add').click()
-        self.assertEllipsis('...Unexpected token...', b.contents)
+        self.assertEllipsis('...Parse error at offset...: Invalid value...', b.contents)
 
         b.getControl('Content').value = '{"foo": "bar"}'
         b.getControl('Add').click()

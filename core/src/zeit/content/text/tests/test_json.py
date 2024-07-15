@@ -1,3 +1,4 @@
+import zeit.cms.checkout.helper
 import zeit.content.text.interfaces
 import zeit.content.text.json
 import zeit.content.text.testing
@@ -44,3 +45,15 @@ class JSONValidationTestCase(zeit.content.text.testing.FunctionalTestCase):
         validation.schema_url = zeit.content.text.testing.schema_url
         validation.field_name = 'overlord'
         validation.validate()
+
+
+class JSONTestCase(zeit.content.text.testing.FunctionalTestCase):
+    def test_json_supports_comments(self):
+        json_content = zeit.content.text.json.JSON()
+        json_content.text = '// this is a comment\n["{urn:uuid:d995ba5a}"]'
+        self.repository['json'] = json_content
+        with zeit.cms.checkout.helper.checked_out(self.repository['json']):
+            pass
+        content = self.repository['json']
+        self.assertEqual(content.text, '// this is a comment\n["{urn:uuid:d995ba5a}"]')
+        self.assertEqual(content.data, ['{urn:uuid:d995ba5a}'])
