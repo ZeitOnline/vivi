@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.5.0 (2024-07-15)
+------------------
+
+- ZO-4617: Only allow imagegroups as teasers, not single images
+
+- ZO-5737: rename field 'Ressort (Druck)' to 'Print-Ressort' and make editable, remove byline
+
+
 6.4.0 (2024-07-11)
 ------------------
 
