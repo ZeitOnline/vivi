@@ -62,7 +62,9 @@ def wait_for_migrations():
     # This in turn calls a worker function, which by default executes
     # migrations, but can be overridden by passing a custom function as `fn`.
     def wait(heads, context):
-        head_revision = script.as_revision_number('heads') or ()
+        poll_interval = context.opts['poll_interval']
+        head_revision = context.opts['script'].as_revision_number('heads') or ()
+
         db_is_current = False
         while not db_is_current:
             db_revision = context.get_current_heads()
@@ -70,9 +72,10 @@ def wait_for_migrations():
 
             if db_revision == head_revision:
                 break
-            log.info('DB is not current, will wait %s', options.poll_interval)
+            log.info('DB is not current, will wait %s', poll_interval)
             context.bind.rollback()
-            time.sleep(options.poll_interval)
+            time.sleep(poll_interval)
+
         return ()
 
     config = alembic.config.Config(
@@ -80,7 +83,9 @@ def wait_for_migrations():
         ini_section='predeploy',
     )
     script = alembic.script.ScriptDirectory.from_config(config)
-    with EnvironmentContext(config, script, fn=wait, dont_mutate=True):
+    with EnvironmentContext(
+        config, script, fn=wait, dont_mutate=True, poll_interval=options.poll_interval
+    ):
         script.run_env()
 
 
