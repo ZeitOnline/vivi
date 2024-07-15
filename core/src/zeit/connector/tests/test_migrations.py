@@ -72,7 +72,7 @@ def alembic_upgrade(connection, name, **kw):
         ini_section=name,
     )
     script = alembic.script.ScriptDirectory.from_config(config)
-    with EnvironmentContext(config=config, script=script, as_sql=connection is None) as context:
+    with EnvironmentContext(config, script, as_sql=connection is None) as context:
         context.configure(
             connection=connection,
             fn=lambda rev, context: script._upgrade_revs('head', rev),
