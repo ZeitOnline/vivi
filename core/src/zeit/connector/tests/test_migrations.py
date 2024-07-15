@@ -17,7 +17,7 @@ import sqlalchemy
 import zeit.connector.testing
 
 
-class MigrationsTest(unittest.TestCase):
+class DBTestCase(unittest.TestCase):
     layer = zeit.connector.testing.SQL_SERVER_LAYER
     dbname = 'vivi_migrations'
 
@@ -60,30 +60,33 @@ class MigrationsTest(unittest.TestCase):
         metadata.create_all(engine, checkfirst=False)
         return sorted(result)
 
-    def alembic_upgrade(self, connection, name, **kw):
-        if connection is None:
-            kw['url'] = 'postgresql://unused'
-            kw['literal_binds'] = True
-            kw['dialect_ops'] = {'paramstyle': 'named'}
 
-        config = alembic.config.Config(
-            importlib.resources.files(zeit.connector) / 'migrations/alembic.ini',
-            ini_section=name,
+def alembic_upgrade(connection, name, **kw):
+    if connection is None:
+        kw['url'] = 'postgresql://unused'
+        kw['literal_binds'] = True
+        kw['dialect_ops'] = {'paramstyle': 'named'}
+
+    config = alembic.config.Config(
+        importlib.resources.files(zeit.connector) / 'migrations/alembic.ini',
+        ini_section=name,
+    )
+    script = alembic.script.ScriptDirectory.from_config(config)
+    with EnvironmentContext(config=config, script=script, as_sql=connection is None) as context:
+        context.configure(
+            connection=connection,
+            fn=lambda rev, context: script._upgrade_revs('head', rev),
+            transaction_per_migration=True,
+            **kw,
         )
-        script = alembic.script.ScriptDirectory.from_config(config)
-        with EnvironmentContext(config=config, script=script, as_sql=connection is None) as context:
-            context.configure(
-                connection=connection,
-                fn=lambda rev, context: script._upgrade_revs('head', rev),
-                transaction_per_migration=True,
-                **kw,
-            )
-            context.run_migrations()
+        context.run_migrations()
 
-        if connection is not None:
-            connection.execute(sql('DROP TABLE alembic_version'))
-            connection.commit()
+    if connection is not None:
+        connection.execute(sql('DROP TABLE alembic_version'))
+        connection.commit()
 
+
+class MigrationsTest(DBTestCase):
     def test_migrations_create_same_schema_as_from_scratch(self):
         self.createdb()
         c = self.engine.connect()
@@ -94,10 +97,10 @@ class MigrationsTest(unittest.TestCase):
 
         self.createdb()
         c = self.engine.connect()
-        self.alembic_upgrade(c, 'predeploy')
+        alembic_upgrade(c, 'predeploy')
         c.close()
         c = self.engine.connect()
-        self.alembic_upgrade(c, 'postdeploy')
+        alembic_upgrade(c, 'postdeploy')
         migrations = self.dump_schema(c)
         c.close()
         self.dropdb()
@@ -105,10 +108,12 @@ class MigrationsTest(unittest.TestCase):
         diff = unified_diff(scratch, migrations, n=5)
         self.assertEqual(scratch, migrations, '\n'.join(diff))
 
+
+class MigrationsLint(unittest.TestCase):
     def test_lint_migrations_with_squawk(self):
         buffer = io.StringIO()
         for name in ['predeploy', 'postdeploy']:
-            self.alembic_upgrade(None, name, output_buffer=buffer)
+            alembic_upgrade(None, name, output_buffer=buffer)
         sql = [x.strip() for x in buffer.getvalue().split(';')]
         # squawk ignores any statements that refer to a newly created table
         sql = [x for x in sql if not x.startswith('CREATE TABLE')]
