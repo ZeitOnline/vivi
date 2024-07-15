@@ -3,6 +3,16 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.6.0 (2024-07-15)
+------------------
+
+- ZO-4165: Replace commentjson with rapidjson and support comments
+
+
+MAINT:
+- MAINT: remove needless class
+
+
 6.5.0 (2024-07-15)
 ------------------
 
