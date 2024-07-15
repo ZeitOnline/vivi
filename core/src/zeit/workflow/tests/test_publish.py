@@ -3,7 +3,6 @@ from io import StringIO
 from unittest import mock
 import json
 import logging
-import time
 
 from ZODB.POSException import ConflictError
 import gocept.testing.mock
@@ -101,19 +100,6 @@ class PublishTest(zeit.workflow.testing.FunctionalTestCase):
 
         with self.assertRaises(ConflictError):
             IPublish(article).publish(background=False)
-
-
-class FakePublishTask(zeit.workflow.publish.PublishRetractTask):
-    def __init__(self):
-        self.test_log = []
-
-    def _run(self, obj):
-        time.sleep(0.1)
-        self.test_log.append(obj)
-
-    @property
-    def jobid(self):
-        return None
 
 
 @zope.component.adapter(zeit.cms.interfaces.ICMSContent)
