@@ -64,12 +64,11 @@ def wait_for_migrations():
     def wait(heads, context):
         poll_interval = context.opts['poll_interval']
 
-        db_is_current = False
+        db_is_current = _db_is_current(context)
         while not db_is_current:
-            db_is_current = _db_is_current(context)
-            log.info('DB is not current, will wait %s', poll_interval)
             context.bind.rollback()
             time.sleep(poll_interval)
+            db_is_current = _db_is_current(context)
 
         return ()
 
@@ -85,10 +84,32 @@ def wait_for_migrations():
 
 
 def _db_is_current(context):
-    head_revision = context.opts['script'].as_revision_number('heads') or ()
+    from alembic.script.revision import ResolutionError
+
+    script = context.opts['script']
+    head_revision = script.as_revision_number('heads') or ()
     db_revision = context.get_current_heads()
-    log.info('Newest migration %s, DB version %s', head_revision, db_revision)
-    return db_revision == head_revision
+    # Like alembic.script.base._upgrade_revs, but readonly
+    todo = script.iterate_revisions(head_revision, db_revision, implicit_base=True)
+    try:
+        todo = len(list(todo))
+    except ResolutionError:
+        log.info(
+            'Newest migration %s, DB version %s unknown, assumed newer',
+            head_revision,
+            db_revision,
+        )
+        return True
+
+    wait = ', will wait %s' % context.opts.get('poll_interval') if todo else ''
+    log.info(
+        'Newest migration %s, DB version %s, %s steps remaining%s',
+        head_revision,
+        db_revision,
+        todo,
+        wait,
+    )
+    return not todo
 
 
 def alembic():
