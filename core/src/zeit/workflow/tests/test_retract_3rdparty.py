@@ -111,3 +111,12 @@ class Retract3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         )
         payload = data_factory.retract_json()
         assert payload is None
+
+    def test_index_now_retract(self):
+        article = self.repository['testcontent']
+        zope.interface.alsoProvides(article, zeit.content.cp.interfaces.ICenterPage)
+        data_factory = zope.component.getAdapter(
+            article, zeit.workflow.interfaces.IPublisherData, name='indexnow'
+        )
+        data = data_factory.retract_json()
+        assert data is None
