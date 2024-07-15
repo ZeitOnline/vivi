@@ -60,7 +60,7 @@ class MigrationsTest(unittest.TestCase):
         metadata.create_all(engine, checkfirst=False)
         return sorted(result)
 
-    def alembic_upgrade(self, connection, name, target='head', **kw):
+    def alembic_upgrade(self, connection, name, **kw):
         if connection is None:
             kw['url'] = 'postgresql://unused'
             kw['literal_binds'] = True
@@ -74,8 +74,7 @@ class MigrationsTest(unittest.TestCase):
         with EnvironmentContext(config=config, script=script, as_sql=connection is None) as context:
             context.configure(
                 connection=connection,
-                destination_rev=target,
-                fn=lambda rev, context: script._upgrade_revs(target, rev),
+                fn=lambda rev, context: script._upgrade_revs('head', rev),
                 transaction_per_migration=True,
                 **kw,
             )
