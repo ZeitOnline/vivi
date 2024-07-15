@@ -72,14 +72,14 @@ def alembic_upgrade(connection, name, **kw):
         ini_section=name,
     )
     script = alembic.script.ScriptDirectory.from_config(config)
-    with EnvironmentContext(config, script, as_sql=connection is None) as context:
-        context.configure(
-            connection=connection,
-            fn=lambda rev, context: script._upgrade_revs('head', rev),
-            transaction_per_migration=True,
-            **kw,
-        )
-        context.run_migrations()
+    context = EnvironmentContext(config, script, as_sql=connection is None)
+    context.configure(
+        connection=connection,
+        fn=lambda rev, context: script._upgrade_revs('head', rev),
+        transaction_per_migration=True,
+        **kw,
+    )
+    context.run_migrations()
 
     if connection is not None:
         connection.execute(sql('DROP TABLE alembic_version'))
