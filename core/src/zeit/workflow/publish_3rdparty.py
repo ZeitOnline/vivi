@@ -404,3 +404,23 @@ class PublisherData(grok.Adapter):
         if FEATURE_TOGGLES.find(f'disable_publisher_{name}'):
             return True
         return False
+
+
+class IndexNowMixin(LiveUrlMixin):
+    def publish_json(self):
+        return {'url': self.live_url}
+
+    def retract_json(self):
+        return None
+
+
+@grok.implementer(zeit.workflow.interfaces.IPublisherData)
+class ArticleIndexNow(grok.Adapter, IndexNowMixin):
+    grok.context(zeit.content.article.interfaces.IArticle)
+    grok.name('indexnow')
+
+
+@grok.implementer(zeit.workflow.interfaces.IPublisherData)
+class CenterPageIndexNow(grok.Adapter, IndexNowMixin):
+    grok.context(zeit.content.cp.interfaces.ICenterPage)
+    grok.name('indexnow')
