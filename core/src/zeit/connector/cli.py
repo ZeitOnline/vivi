@@ -63,15 +63,10 @@ def wait_for_migrations():
     # migrations, but can be overridden by passing a custom function as `fn`.
     def wait(heads, context):
         poll_interval = context.opts['poll_interval']
-        head_revision = context.opts['script'].as_revision_number('heads') or ()
 
         db_is_current = False
         while not db_is_current:
-            db_revision = context.get_current_heads()
-            log.info('Newest migration %s, DB version %s', head_revision, db_revision)
-
-            if db_revision == head_revision:
-                break
+            db_is_current = _db_is_current(context)
             log.info('DB is not current, will wait %s', poll_interval)
             context.bind.rollback()
             time.sleep(poll_interval)
@@ -87,6 +82,13 @@ def wait_for_migrations():
         config, script, fn=wait, dont_mutate=True, poll_interval=options.poll_interval
     ):
         script.run_env()
+
+
+def _db_is_current(context):
+    head_revision = context.opts['script'].as_revision_number('heads') or ()
+    db_revision = context.get_current_heads()
+    log.info('Newest migration %s, DB version %s', head_revision, db_revision)
+    return db_revision == head_revision
 
 
 def alembic():
