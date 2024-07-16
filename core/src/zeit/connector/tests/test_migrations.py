@@ -14,6 +14,7 @@ import alembic.config
 import alembic.script
 import sqlalchemy
 
+from zeit.connector.cli import _db_is_current
 import zeit.connector.testing
 
 
@@ -72,14 +73,14 @@ def alembic_upgrade(connection, name, **kw):
         ini_section=name,
     )
     script = alembic.script.ScriptDirectory.from_config(config)
-    with EnvironmentContext(config=config, script=script, as_sql=connection is None) as context:
-        context.configure(
-            connection=connection,
-            fn=lambda rev, context: script._upgrade_revs('head', rev),
-            transaction_per_migration=True,
-            **kw,
-        )
-        context.run_migrations()
+    context = EnvironmentContext(config, script, as_sql=connection is None)
+    context.configure(
+        connection=connection,
+        fn=lambda rev, context: script._upgrade_revs('head', rev),
+        transaction_per_migration=True,
+        **kw,
+    )
+    context.run_migrations()
 
     if connection is not None:
         connection.execute(sql('DROP TABLE alembic_version'))
@@ -125,3 +126,52 @@ class MigrationsLint(unittest.TestCase):
         if proc.returncode:
             output = stdout.decode('utf-8') + stderr.decode('utf-8')
             self.fail('squawk returned errors:\n' + output)
+
+
+class MigrationsWait(DBTestCase):
+    def setUp(self):
+        super().setUp()
+        self.createdb()
+        self.connection = self.engine.connect()
+
+    def tearDown(self):
+        self.connection.close()
+        self.dropdb()
+        super().tearDown()
+
+    def alembic_context(self, name):
+        config = alembic.config.Config(
+            importlib.resources.files(zeit.connector) / 'tests/fixtures/alembic/alembic.ini',
+            ini_section=name,
+        )
+        script = alembic.script.ScriptDirectory.from_config(config)
+        context = EnvironmentContext(config, script)
+        context.target = []  # Kludgy closure-based API
+        context.configure(
+            connection=self.connection,
+            fn=lambda rev, _: script._upgrade_revs(context.target[0], rev),
+        )
+        return context
+
+    def test_db_is_current_when_disk_revision_matches_exactly(self):
+        context = self.alembic_context('two')
+        context.target = ['000000000001']
+        context.run_migrations()
+        self.assertFalse(_db_is_current(context.get_context()))
+        context.target = ['000000000002']
+        context.run_migrations()
+        self.assertTrue(_db_is_current(context.get_context()))
+
+    def test_db_is_current_when_db_revision_is_unknown_on_disk(self):
+        context = self.alembic_context('three')
+        context.target = ['000000000003']
+        context.run_migrations()
+        context = self.alembic_context('two')
+        self.assertTrue(_db_is_current(context.get_context()))
+
+    def test_db_is_current_raises_when_revisions_conflict(self):
+        from alembic.script.revision import MultipleHeads
+
+        context = self.alembic_context('conflict')
+        with self.assertRaises(MultipleHeads):
+            _db_is_current(context.get_context())
