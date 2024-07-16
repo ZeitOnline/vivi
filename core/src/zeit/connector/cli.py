@@ -90,7 +90,7 @@ def _db_is_current(context):
     head_revision = script.as_revision_number('heads') or ()
     db_revision = context.get_current_heads()
     # Like alembic.script.base._upgrade_revs, but readonly
-    todo = script.iterate_revisions(head_revision, db_revision, implicit_base=True)
+    todo = script.iterate_revisions('head', db_revision, implicit_base=True)
     try:
         todo = len(list(todo))
     except ResolutionError:

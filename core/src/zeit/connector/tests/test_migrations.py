@@ -168,3 +168,10 @@ class MigrationsWait(DBTestCase):
         context.run_migrations()
         context = self.alembic_context('two')
         self.assertTrue(_db_is_current(context.get_context()))
+
+    def test_db_is_current_raises_when_revisions_conflict(self):
+        from alembic.script.revision import MultipleHeads
+
+        context = self.alembic_context('conflict')
+        with self.assertRaises(MultipleHeads):
+            _db_is_current(context.get_context())
