@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.7.0 (2024-07-16)
+------------------
+
+- ZO-5850: Don't wait if the DB revision is newer than what we know on disk
+
+
 6.6.0 (2024-07-15)
 ------------------
 

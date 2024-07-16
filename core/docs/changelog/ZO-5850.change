@@ -1,1 +1,0 @@
-ZO-5850: Don't wait if the DB revision is newer than what we know on disk
