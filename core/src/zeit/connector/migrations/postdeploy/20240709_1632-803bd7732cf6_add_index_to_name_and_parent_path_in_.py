@@ -5,6 +5,7 @@ Revises:
 Create Date: 2024-07-09 16:32:56.315221
 
 """
+
 from typing import Sequence, Union
 
 from alembic import op
@@ -25,6 +26,7 @@ def upgrade() -> None:
             ['name'],
             unique=False,
             postgresql_concurrently=True,
+            if_not_exists=True,
         )
         op.create_index(
             op.f('ix_properties_parent_path'),
@@ -32,6 +34,7 @@ def upgrade() -> None:
             ['parent_path'],
             unique=False,
             postgresql_concurrently=True,
+            if_not_exists=True,
         )
         op.create_index(
             op.f('ix_properties_parent_path_name'),
@@ -39,6 +42,7 @@ def upgrade() -> None:
             ['parent_path', 'name'],
             unique=True,
             postgresql_concurrently=True,
+            if_not_exists=True,
         )
 
 
