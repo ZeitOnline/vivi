@@ -13,6 +13,7 @@ import zope.interface
 
 from zeit.connector.connector import CannonicalId
 from zeit.connector.interfaces import ID_NAMESPACE
+import zeit.cms.config
 import zeit.connector.dav.interfaces
 import zeit.connector.interfaces
 import zeit.connector.resource
@@ -47,9 +48,7 @@ class Connector:
     @classmethod
     @zope.interface.implementer(zeit.connector.interfaces.IConnector)
     def factory(cls):
-        import zope.app.appsetup.product
-
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.connector') or {}
+        config = zeit.cms.config.package('zeit.connector')
         connector = cls(config['repository-path'])
         canonicalize = config.get('canonicalize-directories', None)
         if canonicalize is not None:

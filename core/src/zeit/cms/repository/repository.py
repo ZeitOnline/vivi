@@ -7,7 +7,6 @@ import gocept.cache.property
 import grokcore.component as grok
 import persistent
 import zope.annotation.interfaces
-import zope.app.appsetup.product
 import zope.component
 import zope.container.contained
 import zope.interface
@@ -17,6 +16,7 @@ import zope.securitypolicy.interfaces
 
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.repository.interfaces import IRepositoryContent
+import zeit.cms.config
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.section.interfaces
@@ -368,12 +368,7 @@ def cmscontentFactory(context):
 
     content = adapter(context.type)
     if content is None:
-        cms_config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
-        default_type = None
-        if cms_config:
-            default_type = cms_config.get('default-type')
-        if default_type is None:
-            default_type = 'unknown'
+        default_type = zeit.cms.config.get('zeit.cms', 'default-type', 'unknown')
         content = adapter(default_type)
 
     if content is not None:

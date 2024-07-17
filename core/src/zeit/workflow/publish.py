@@ -8,7 +8,6 @@ import pytz
 import transaction
 import transaction.interfaces
 import z3c.celery.celery
-import zope.app.appsetup.product
 import zope.component
 import zope.event
 import zope.i18n
@@ -20,6 +19,7 @@ from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR, CAN_RETRACT_ERROR, PRIORITY_LOW
 import zeit.cms.celery
 import zeit.cms.checkout.interfaces
+import zeit.cms.config
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.tracing
@@ -297,8 +297,9 @@ class PublishRetractTask:
 
     def recurse(self, method, start_obj, *args):
         """Apply method recursively on start_obj."""
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.workflow') or {}
-        DEPENDENCY_PUBLISH_LIMIT = int(config.get('dependency-publish-limit', 1))
+        DEPENDENCY_PUBLISH_LIMIT = int(
+            zeit.cms.config.get('zeit.workflow', 'dependency-publish-limit', 1)
+        )
         stack = [start_obj]
         seen = set()
         result = None

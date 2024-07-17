@@ -12,6 +12,7 @@ import zope.security.management
 
 from zeit.cms.interfaces import CONFIG_CACHE
 import zeit.cms.cli
+import zeit.cms.config
 import zeit.content.author.interfaces
 
 
@@ -144,7 +145,7 @@ def b64encode(text):
 
 @zope.interface.implementer(zeit.content.author.interfaces.IHonorar)
 def from_product_config():
-    config = zope.app.appsetup.product.getProductConfiguration('zeit.content.author')
+    config = zeit.cms.config.package('zeit.content.author')
     return Honorar(
         config['honorar-url-hdok'],
         config['honorar-url-blacklist'],

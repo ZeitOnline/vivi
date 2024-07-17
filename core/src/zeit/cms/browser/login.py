@@ -8,6 +8,7 @@ import zope.authentication.interfaces
 import zope.traversing.browser
 
 import zeit.cms.browser.resources
+import zeit.cms.config
 
 
 class Login:
@@ -44,8 +45,7 @@ class Login:
 
     @property
     def environment(self):
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
-        return config['environment']
+        return zeit.cms.config.required('zeit.cms', 'environment')
 
 
 class Logout:
@@ -58,8 +58,7 @@ class Logout:
             self._delete_sso_cookies()
 
     def _delete_sso_cookies(self):
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
-        prefix = config.get('sso-cookie-name-prefix')
+        prefix = zeit.cms.config.get('zeit.cms', 'sso-cookie-name-prefix')
         if prefix is None:
             return
         for cookie in self.request.cookies:
@@ -90,7 +89,7 @@ class SSOLogin:
         permission = self.request.form.get('permission', 'zope.View')
         if not self.request.interaction.checkPermission(permission, self.context):
             raise zope.security.interfaces.Unauthorized(permission)
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
+        config = zeit.cms.config.package('zeit.cms')
         principal = self.request.principal
         with open(config['sso-private-key-file']) as f:
             private_key = f.read()
@@ -120,10 +119,10 @@ class SSOLogin:
 
 def set_cookie_headers(name, value):
     # Inspired by zeit.web.member.security._set_cookie_headers()
-    config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
     cookie_helper = webob.cookies.CookieProfile(name, serializer=SIMPLE_SERIALIZER)
-    if config['sso-cookie-domain']:
-        domains = [config['sso-cookie-domain']]
+    domain = zeit.cms.config.required('zeit.cms', 'sso-cookie-domain')
+    if domain:
+        domains = [domain]
     else:
         # Applies only in tests and localhost environment; since at least
         # zope.testbrowser does not understand "Domain=localhost", sigh.

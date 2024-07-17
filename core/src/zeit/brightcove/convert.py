@@ -5,6 +5,7 @@ import zope.component
 
 from zeit.content.video.interfaces import IVideo
 import zeit.brightcove.resolve
+import zeit.cms.config
 import zeit.cms.content.field
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
@@ -272,8 +273,7 @@ class DeletedVideo(Video):
 @grok.implementer(zeit.cms.content.interfaces.IAddLocation)
 @grok.adapter(Video)
 def video_location(bcobj):
-    conf = zope.app.appsetup.product.getProductConfiguration('zeit.brightcove')
-    path = conf['video-folder']
+    path = zeit.cms.config.required('zeit.brightcove', 'video-folder')
     return zeit.cms.content.add.find_or_create_folder(
         *(path.split('/') + [bcobj.date_created.strftime('%Y-%m')])
     )

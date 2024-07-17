@@ -15,6 +15,7 @@ from zeit.cms.content.interfaces import IUUID
 from zeit.cms.content.property import ObjectPathAttributeProperty
 from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
+import zeit.cms.config
 import zeit.cms.interfaces
 import zeit.content.article.article
 import zeit.content.article.edit.block
@@ -131,12 +132,12 @@ class VideoTagesschauAPI:
         else:
             article_uri = '/'.join(uniqueId_parts)
         body = ' '.join(ISearchableText(article).getSearchableText())
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
+        live = urlparse(zeit.cms.config.required('zeit.cms', 'live-prefix')).hostname
         payload = {
             'article_custom_id': IUUID(article).id,
             'article_title': article.title,
             'article_text': body,
-            'article_uri': f'{urlparse(config["live-prefix"]).hostname}' f'{article_uri}',
+            'article_uri': f'{live}' f'{article_uri}',
         }
         return payload
 
@@ -202,7 +203,7 @@ class Video:
 
 @zope.interface.implementer(zeit.content.article.edit.interfaces.IVideoTagesschauAPI)
 def from_product_config():
-    config = zope.app.appsetup.product.getProductConfiguration('zeit.content.article')
+    config = zeit.cms.config.package('zeit.content.article')
     return VideoTagesschauAPI(config)
 
 

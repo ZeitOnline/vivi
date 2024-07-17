@@ -43,7 +43,6 @@ import sqlalchemy
 import sqlalchemy.event
 import sqlalchemy.orm
 import transaction
-import zope.app.appsetup.product
 import zope.component
 import zope.interface
 import zope.sqlalchemy
@@ -60,6 +59,7 @@ from zeit.connector.interfaces import (
 )
 from zeit.connector.lock import lock_is_foreign
 import zeit.cms.cli
+import zeit.cms.config
 import zeit.cms.interfaces
 import zeit.cms.tracing
 import zeit.connector.cache
@@ -80,8 +80,7 @@ def feature_toggle(key):
 
     Using feature toggles from a file which is stored inside the database
     inside the connector is unfortunately not possible"""
-    config = zope.app.appsetup.product.getProductConfiguration('zeit.connector')
-    return config.get(key) is not None
+    return zeit.cms.config.get('zeit.connector', key) is not None
 
 
 class LockStatus(Enum):
@@ -121,9 +120,7 @@ class Connector:
     @classmethod
     @zope.interface.implementer(zeit.connector.interfaces.IConnector)
     def factory(cls):
-        import zope.app.appsetup.product
-
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.connector') or {}
+        config = zeit.cms.config.package('zeit.connector')
         params = {}
         reconnect_tries = config.get('sql-reconnect-tries')
         if reconnect_tries is not None:
@@ -740,8 +737,9 @@ class Content(DBObject):
 
     @property
     def binary_body(self):
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.connector') or {}
-        binary_types = config.get('binary-types', 'image,file,unknown').split(',')
+        binary_types = zeit.cms.config.get(
+            'zeit.connector', 'binary-types', 'image,file,unknown'
+        ).split(',')
         return self.type in binary_types
 
     @property

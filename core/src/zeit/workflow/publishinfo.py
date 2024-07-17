@@ -1,12 +1,12 @@
 import re
 import urllib.parse
 
-import zope.app.appsetup.product
 import zope.component
 import zope.interface
 
 from zeit.cms.content.interfaces import WRITEABLE_LIVE
 from zeit.cms.i18n import MessageFactory as _
+import zeit.cms.config
 import zeit.cms.content.dav
 import zeit.cms.interfaces
 import zeit.cms.workflow.interfaces
@@ -83,8 +83,7 @@ class PublishInfo:
         return zeit.cms.workflow.interfaces.CAN_RETRACT_SUCCESS
 
     def matches_blacklist(self):
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.workflow') or {}
-        blacklist = re.split(', *', config.get('blacklist', ''))
+        blacklist = re.split(', *', zeit.cms.config.get('zeit.workflow', 'blacklist', ''))
         path = urllib.parse.urlparse(self.context.uniqueId).path
         for item in blacklist:
             if item and path.startswith(item):

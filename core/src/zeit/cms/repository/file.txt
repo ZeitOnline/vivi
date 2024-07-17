@@ -166,13 +166,10 @@ Integration
 Objects which are not categorised further are considered a file
 when specified accordingly :
 
+>>> import zeit.cms.config
 >>> import zeit.cms.testing
 >>> zeit.cms.testing.set_site()
->>> import zope.app.appsetup.product
->>> cms_config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
->>> 'default-type' in cms_config
-False
->>> cms_config['default-type'] = 'file'
+>>> zeit.cms.config.set('zeit.cms', 'default-type', 'file')
 
 >>> import zope.component
 >>> repository = zope.component.getUtility(
@@ -211,8 +208,3 @@ repository:
 >>> fh.read()
 b'Mary had a little lamb.'
 >>> fh.close()
-
-
-Clean up:
-
->>> del cms_config['default-type']

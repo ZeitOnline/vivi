@@ -14,6 +14,7 @@ import zope.security.proxy
 from zeit.cms.content.interfaces import IXMLRepresentation
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.checkout.interfaces
+import zeit.cms.config
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.workingcopy.interfaces
@@ -67,12 +68,11 @@ class CheckoutManager:
     def checkout(self, event=True, temporary=False, publishing=False):
         self._guard_checkout()
         lockable = zope.app.locking.interfaces.ILockable(self.context, None)
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
         if lockable is not None and not lockable.locked():
             timeout = 'checkout-lock-timeout'
             if temporary:
                 timeout += '-temporary'
-            timeout = int(config[timeout])
+            timeout = int(zeit.cms.config.required('zeit.cms', timeout))
             try:
                 lockable.lock(timeout=timeout)
             except zope.app.locking.interfaces.LockingError as e:
@@ -110,7 +110,7 @@ class CheckoutManager:
             )
 
         # XXX Debug helper, see ZO-859
-        log_body = config.get('checkout-log-body', '').lower() == 'true'
+        log_body = zeit.cms.config.get('zeit.cms', 'checkout-log-body', '').lower() == 'true'
         if log_body and IXMLRepresentation.providedBy(added):
             body = lxml.etree.tostring(added.xml, pretty_print=True, encoding=str)
             log.info('%s checked out %s:\n%s', self.principal.id, added, body)

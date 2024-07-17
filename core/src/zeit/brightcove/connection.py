@@ -2,10 +2,10 @@ import collections
 import logging
 
 import requests
-import zope.app.appsetup.product
 import zope.interface
 
 import zeit.brightcove.interfaces
+import zeit.cms.config
 import zeit.content.video.interfaces
 
 
@@ -136,7 +136,7 @@ class CMSAPI:
 
 
 def cms_from_product_config():
-    config = zope.app.appsetup.product.getProductConfiguration('zeit.brightcove')
+    config = zeit.cms.config.package('zeit.brightcove')
     return CMSAPI(
         config['api-url'],
         config['oauth-url'],
@@ -220,7 +220,7 @@ class PlaybackAPI:
 
 
 def playback_from_product_config():
-    config = zope.app.appsetup.product.getProductConfiguration('zeit.brightcove')
+    config = zeit.cms.config.package('zeit.brightcove')
     return PlaybackAPI(
         config['playback-url'], config['playback-policy-key'], float(config['playback-timeout'])
     )

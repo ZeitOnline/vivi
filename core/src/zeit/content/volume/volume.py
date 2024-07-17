@@ -13,6 +13,7 @@ import zope.schema
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import IPublish
 import zeit.cms.cli
+import zeit.cms.config
 import zeit.cms.content.dav
 import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces
@@ -80,8 +81,7 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
     def teaserText(self):
         text = self._teaserText
         if text is None:
-            config = zope.app.appsetup.product.getProductConfiguration('zeit.content.volume')
-            text = config['default-teaser-text']
+            text = zeit.cms.config.required('zeit.content.volume', 'default-teaser-text')
         return self.fill_template(text)
 
     @teaserText.setter
@@ -444,7 +444,7 @@ def _find_performing_articles_via_webtrekk(volume):
     api_date_format = '%Y-%m-%d %H:%M:%S'
     cr_metric_name = 'CR Bestellungen Abo (Artikelbasis)'
     order_metric_name = 'Anzahl Bestellungen mit Seitenbezug'
-    config = zope.app.appsetup.product.getProductConfiguration('zeit.content.volume')
+    config = zeit.cms.config.package('zeit.content.volume')
     info = zeit.cms.workflow.interfaces.IPublishInfo(volume)
     start = info.date_first_released
     stop = start + datetime.timedelta(weeks=3)

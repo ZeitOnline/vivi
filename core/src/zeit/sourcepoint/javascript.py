@@ -1,7 +1,6 @@
 import ast
 import logging
 
-from zope.app.appsetup.product import getProductConfiguration
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import pendulum
 import requests
@@ -9,6 +8,7 @@ import zope.event
 
 from zeit.cms.repository.interfaces import ObjectReloadedEvent
 from zeit.cms.workflow.interfaces import PRIORITY_LOW, IPublish
+import zeit.cms.config
 import zeit.cms.interfaces
 import zeit.content.text.text
 
@@ -29,7 +29,7 @@ class JavaScript:
 
     @classmethod
     def from_product_config(cls, name):
-        config = getProductConfiguration('zeit.sourcepoint')
+        config = zeit.cms.config.package('zeit.sourcepoint')
         return cls(
             config[f'{name}-javascript-folder'],
             config[f'{name}-url'],

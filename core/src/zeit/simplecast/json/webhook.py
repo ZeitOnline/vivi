@@ -2,11 +2,11 @@ import json
 import logging
 
 import opentelemetry.trace
-import zope.app.appsetup.product
 import zope.component
 
 from zeit.cms.content.sources import FEATURE_TOGGLES
 import zeit.cms.celery
+import zeit.cms.config
 import zeit.cms.tracing
 import zeit.content.audio.audio
 import zeit.simplecast.interfaces
@@ -23,8 +23,7 @@ class Notification:
 
     @property
     def _principal(self):
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.simplecast')
-        return config['principal']
+        return zeit.cms.config.required('zeit.simplecast', 'principal')
 
     def __call__(self):
         if not FEATURE_TOGGLES.find('simplecast_webhook'):
@@ -72,7 +71,7 @@ def SIMPLECAST_WEBHOOK_TASK(self, data: dict):
         try:
             simplecast.synchronize_episode(episode_id)
         except zeit.simplecast.interfaces.TechnicalError:
-            config = zope.app.appsetup.product.getProductConfiguration('zeit.simplecast')
+            config = zeit.cms.config.package('zeit.simplecast')
             self.retry(countdown=int(config['retry-delay-seconds']))
     else:
         log.info('Event %s not handled.', event)

@@ -3,6 +3,7 @@ import logging
 import requests
 import zope.interface
 
+import zeit.cms.config
 import zeit.push.interfaces
 
 
@@ -32,5 +33,5 @@ class Connection:
 
 @zope.interface.implementer(zeit.push.interfaces.IPushNotifier)
 def from_product_config():
-    config = zope.app.appsetup.product.getProductConfiguration('zeit.push')
+    config = zeit.cms.config.package('zeit.push')
     return Connection(config['grafana-url'], config['grafana-apikey'])

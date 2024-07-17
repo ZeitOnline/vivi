@@ -6,7 +6,6 @@ from zope.formlib.widget import CustomWidgetFactory
 import gocept.form.grouped
 import pendulum
 import zc.table.column
-import zope.app.appsetup.appsetup
 import zope.formlib.form
 import zope.publisher.interfaces
 
@@ -19,6 +18,7 @@ import zeit.cms.browser.form
 import zeit.cms.browser.listing
 import zeit.cms.browser.menu
 import zeit.cms.browser.view
+import zeit.cms.config
 import zeit.content.image.browser.form
 import zeit.content.image.image
 import zeit.content.image.imagegroup
@@ -68,10 +68,10 @@ class AddForm(
     )
 
     def __init__(self, *args, **kw):
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.content.image')
+        config = zeit.cms.config.package('zeit.content.image')
         if not config.get('mdb-api-url'):
             self.form_fields = self.form_fields.omit('mdb_blob')
-        self.max_size = config.get('max-image-size', 4000)
+        self.max_size = int(config.get('max-image-size', 4000))
         super().__init__(*args, **kw)
 
     def validate(self, action, data):

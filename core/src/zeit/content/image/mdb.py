@@ -9,6 +9,7 @@ import pendulum
 import requests
 import zope.interface
 
+import zeit.cms.config
 import zeit.content.image.interfaces
 
 
@@ -104,5 +105,5 @@ class FakeMDB(MDB):
 
 @zope.interface.implementer(zeit.content.image.interfaces.IMDB)
 def from_product_config():
-    config = zope.app.appsetup.product.getProductConfiguration('zeit.content.image')
+    config = zeit.cms.config.package('zeit.content.image')
     return MDB(config['mdb-api-url'], config['mdb-api-username'], config['mdb-api-password'])

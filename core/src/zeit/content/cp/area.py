@@ -9,6 +9,7 @@ from zeit.cms.content.cache import cached_on_content, content_cache
 from zeit.cms.content.property import ObjectPathAttributeProperty
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.cp.interfaces import IAutomaticTeaserBlock, ICenterPage, ITeaserBlock
+import zeit.cms.config
 import zeit.cms.content.property
 import zeit.cms.interfaces
 import zeit.content.cp.blocks.block
@@ -448,8 +449,6 @@ def prefill_metadata_from_referenced_cp(context, event):
         setattr(context, field, getattr(context.referenced_cp, field))
 
     if not context.read_more_url:
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
-        live_prefix = config['live-prefix']
         context.read_more_url = context.referenced_cp.uniqueId.replace(
-            zeit.cms.interfaces.ID_NAMESPACE, live_prefix
+            zeit.cms.interfaces.ID_NAMESPACE, zeit.cms.config.required('zeit.cms', 'live-prefix')
         )

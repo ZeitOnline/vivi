@@ -10,7 +10,6 @@ import pytz
 import requests_mock
 import transaction
 import z3c.celery.celery
-import zope.app.appsetup.product
 import zope.component
 import zope.i18n
 
@@ -22,6 +21,7 @@ from zeit.cms.related.interfaces import IRelatedContent
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.cms.testing import CommitExceptionDataManager
 from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
+import zeit.cms.config
 import zeit.cms.related.interfaces
 import zeit.cms.testing
 import zeit.cms.workflow.interfaces
@@ -119,10 +119,7 @@ class PublicationDependencies(zeit.workflow.testing.FunctionalTestCase):
         self.patches = gocept.testing.mock.Patches()
         self.populate_repository_with_dummy_content()
         self.setup_dates_so_content_is_publishable()
-        self.patches.add_dict(
-            zope.app.appsetup.product.getProductConfiguration('zeit.workflow'),
-            {'dependency-publish-limit': 2},
-        )
+        zeit.cms.config.set('zeit.workflow', 'dependency-publish-limit', 2)
         zope.component.getSiteManager().registerAdapter(RelatedDependency, name='related')
 
     def tearDown(self):

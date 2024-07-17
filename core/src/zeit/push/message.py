@@ -6,6 +6,7 @@ import zope.cachedescriptors.property
 import zope.component
 
 from zeit.cms.i18n import MessageFactory as _
+import zeit.cms.config
 import zeit.cms.interfaces
 import zeit.objectlog.interfaces
 import zeit.push.interfaces
@@ -67,9 +68,9 @@ class Message(grok.Adapter):
 
     @property
     def url(self):
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.push')
+        target = zeit.cms.config.required('zeit.push', 'push-target-url')
         return zeit.push.interfaces.IPushURL(self.context).replace(
-            zeit.cms.interfaces.ID_NAMESPACE, config['push-target-url']
+            zeit.cms.interfaces.ID_NAMESPACE, target
         )
 
     @staticmethod
@@ -136,16 +137,14 @@ class AccountData(grok.Adapter):
     # IPushNotifier.send() is also called text, which causes TypeError.
     @property
     def facebook_main_text(self):
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.push')
-        service = self.push.get(type='facebook', account=config['facebook-main-account'])
+        account = zeit.cms.config.required('zeit.push', 'facebook-main-account')
+        service = self.push.get(type='facebook', account=account)
         return service and service.get('override_text')
 
     @facebook_main_text.setter
     def facebook_main_text(self, value):
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.push')
-        self.push.set(
-            {'type': 'facebook', 'account': config['facebook-main-account']}, override_text=value
-        )
+        account = zeit.cms.config.required('zeit.push', 'facebook-main-account')
+        self.push.set({'type': 'facebook', 'account': account}, override_text=value)
 
     @property
     def mobile_enabled(self):

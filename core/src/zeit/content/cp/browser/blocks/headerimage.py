@@ -1,6 +1,7 @@
 import zope.formlib.form
 
 import zeit.cms.browser.view
+import zeit.cms.config
 import zeit.content.cp.browser.blocks.block
 import zeit.content.cp.interfaces
 
@@ -17,8 +18,9 @@ class Display(zeit.cms.browser.view.Base):
         if not self.context.image:
             return None
         repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.content.cp')
         return '%s%s/@@raw' % (
             self.url(repository),
-            self.context.image.variant_url(config['header-image-variant'], thumbnail=True),
+            self.context.image.variant_url(
+                zeit.cms.config.required('zeit.content.cp', 'header-image-variant'), thumbnail=True
+            ),
         )

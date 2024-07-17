@@ -4,6 +4,7 @@ import zope.formlib.form
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.image.transform import ImageTransform
 import zeit.cms.browser.form
+import zeit.cms.config
 import zeit.cms.repository.browser.file
 import zeit.content.image.browser.interfaces
 import zeit.content.image.image
@@ -45,8 +46,7 @@ class ImageFormBase(zeit.cms.repository.browser.file.FormBase):
 
 class Resize:
     def reduceToMaxImageSize(self, image):
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.content.image')
-        self.max_size = config.get('max-image-size', 4000)
+        self.max_size = int(zeit.cms.config.get('zeit.content.image', 'max-image-size', 4000))
         size = image.getImageSize()
         largest = max(size)
         if largest > self.max_size:

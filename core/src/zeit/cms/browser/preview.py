@@ -1,9 +1,11 @@
 import urllib.parse
 
-import zope.app.appsetup.product
+import zope.component
+import zope.interface
 
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
+import zeit.cms.config
 import zeit.cms.interfaces
 
 
@@ -12,8 +14,7 @@ def prefixed_url(prefix, unique_id):
     if not unique_id.startswith(zeit.cms.interfaces.ID_NAMESPACE):
         raise ValueError("UniqueId doesn't start with correct prefix")
     path = unique_id[len(zeit.cms.interfaces.ID_NAMESPACE) :]
-    cms_config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
-    prefix = cms_config[prefix]
+    prefix = zeit.cms.config.required('zeit.cms', prefix)
     if not prefix.endswith('/'):
         prefix = prefix + '/'
     return urllib.parse.urljoin(prefix, path)

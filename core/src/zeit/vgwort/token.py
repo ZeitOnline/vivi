@@ -7,7 +7,6 @@ import BTrees.Length
 import grokcore.component as grok
 import persistent
 import zc.queue
-import zope.app.appsetup.product
 import zope.component
 import zope.container.contained
 import zope.interface
@@ -17,6 +16,7 @@ import zope.security.proxy
 from zeit.cms.content.interfaces import WRITEABLE_LIVE
 from zeit.vgwort.interfaces import in_daily_maintenance_window
 import zeit.cms.cli
+import zeit.cms.config
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
 import zeit.cms.workflow.interfaces
@@ -80,18 +80,15 @@ class TokenService(grok.GlobalUtility):
     """
 
     def __init__(self):
-        if not self.config:
+        self.url = zeit.cms.config.get('zeit.vgwort', 'claim-token-url')
+        if not self.url:
             log.warning('No configuration found. Could not set up token service.')
-
-    @property
-    def config(self):
-        return zope.app.appsetup.product.getProductConfiguration('zeit.vgwort')
 
     # Make mutable by tests.
     ServerProxy = xmlrpc.client.ServerProxy
 
     def claim_token(self):
-        tokens = self.ServerProxy(self.config['claim-token-url'])
+        tokens = self.ServerProxy(self.url)
         return tokens.claim()
 
 
@@ -157,7 +154,7 @@ def order_tokens():
 
 
 def _order_tokens():
-    config = zope.app.appsetup.product.getProductConfiguration('zeit.vgwort')
+    config = zeit.cms.config.package('zeit.vgwort')
     ts = zope.component.getUtility(zeit.vgwort.interfaces.ITokens)
     if len(ts) < int(config['minimum-token-amount']):
         ts.order(int(config['order-token-amount']))

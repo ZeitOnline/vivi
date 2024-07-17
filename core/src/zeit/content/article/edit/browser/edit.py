@@ -11,6 +11,7 @@ from zeit.content.article.edit.browser.interfaces import VideoTagesschauNoResult
 from zeit.content.article.edit.videotagesschau import Video
 import zeit.cms.browser.manual
 import zeit.cms.browser.widget
+import zeit.cms.config
 import zeit.cms.interfaces
 import zeit.content.article.edit.header
 import zeit.content.article.edit.interfaces
@@ -277,10 +278,8 @@ class EditCitationComment(zeit.edit.browser.form.InlineForm):
 
     def setUpWidgets(self, *args, **kw):
         super().setUpWidgets(*args, **kw)
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.content.article')
-        self.widgets['url'].extra = 'data-comments-api-url={}'.format(
-            config['zeit-comments-api-url']
-        )
+        comments = zeit.cms.config.required('zeit.content.article', 'zeit-comments-api-url')
+        self.widgets['url'].extra = f'data-comments-api-url={comments}'
 
     @property
     def prefix(self):

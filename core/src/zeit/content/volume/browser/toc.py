@@ -6,7 +6,6 @@ import os.path
 import re
 import sys
 
-import zope.app.appsetup.product
 import zope.component
 import zope.site.site
 
@@ -14,6 +13,7 @@ from zeit.cms.browser.interfaces import IPreviewURL
 from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.browser.view
+import zeit.cms.config
 import zeit.cms.content.sources
 import zeit.cms.interfaces
 import zeit.connector.connector
@@ -54,10 +54,7 @@ class Toc(zeit.cms.browser.view.Base):
 
     def _get_ir_content(self):
         if FEATURE_TOGGLES.find('volume_toc_products_from_config'):
-            config = zope.app.appsetup.product.getProductConfiguration('zeit.content.volume')
-            products = [
-                PRODUCTS.find(x.strip()) for x in config.get('toc-product-ids', '').split(' ')
-            ]
+            products = [PRODUCTS.find(x) for x in self.product_ids]
         else:
             products = [self.context.product] + self.context.product.dependent_products
 
@@ -88,9 +85,9 @@ class Toc(zeit.cms.browser.view.Base):
     @property
     def product_ids(self):
         """List [First Product ID, Second ...]"""
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.content.volume')
-        ids_as_string = config.get('toc-product-ids')
-        return [product_id.strip() for product_id in ids_as_string.split(' ')]
+        products = zeit.cms.config.get('zeit.content.volume', 'toc-product-ids', '').split(' ')
+
+        return [x.strip() for x in products]
 
     def _create_toc_element(self, article):
         """

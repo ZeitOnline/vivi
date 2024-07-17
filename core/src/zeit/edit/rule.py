@@ -132,7 +132,7 @@ class RulesManager(grok.GlobalUtility):
     @CONFIG_CACHE.cache_on_arguments()
     def get_rules(self):
         rules = []
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.edit')
+        config = zeit.cms.config.package('zeit.edit')
         if not config:
             return []
         url = config.get('rules-url')

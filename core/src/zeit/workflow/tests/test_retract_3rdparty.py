@@ -3,6 +3,7 @@ import zope.component
 
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.workflow.interfaces import IPublish, IPublisher, IPublishInfo
+import zeit.cms.config
 import zeit.workflow.publisher
 import zeit.workflow.testing
 
@@ -78,8 +79,7 @@ class Retract3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
 
     def test_speechbert_ignore_genres(self):
         article = ICMSContent('http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept')
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.workflow')
-        config['speechbert-ignore-genres'] = 'rezept-vorstellung'
+        zeit.cms.config.set('zeit.workflow', 'speechbert-ignore-genres', 'rezept-vorstellung')
         data_factory = zope.component.getAdapter(
             article, zeit.workflow.interfaces.IPublisherData, name='speechbert'
         )
@@ -88,8 +88,7 @@ class Retract3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
 
     def test_speechbert_ignore_templates(self):
         article = ICMSContent('http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept')
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.workflow')
-        config['speechbert-ignore-templates'] = 'article'
+        zeit.cms.config.set('zeit.workflow', 'speechbert-ignore-templates', 'article')
         data_factory = zope.component.getAdapter(
             article, zeit.workflow.interfaces.IPublisherData, name='speechbert'
         )

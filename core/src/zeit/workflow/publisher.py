@@ -1,7 +1,7 @@
 import requests
-import zope.app.appsetup.product
 import zope.interface
 
+import zeit.cms.config
 import zeit.cms.workflow.interfaces
 import zeit.workflow.interfaces
 
@@ -20,13 +20,12 @@ class Publisher:
         if not items:
             return
 
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.workflow')
-        publisher_base_url = config['publisher-base-url']
+        publisher_base_url = zeit.cms.config.required('zeit.workflow', 'publisher-base-url')
         if not publisher_base_url.endswith('/'):
             publisher_base_url += '/'
 
         headers = {}
-        hostname = config.get('publisher-host')
+        hostname = zeit.cms.config.get('zeit.workflow', 'publisher-host')
         if hostname:
             headers['host'] = hostname
 

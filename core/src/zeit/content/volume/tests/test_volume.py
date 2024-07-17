@@ -6,7 +6,6 @@ import lxml.builder
 import lxml.etree
 import pytz
 import requests_mock
-import zope.app.appsetup.product
 import zope.component
 
 from zeit.cms.repository.folder import Folder
@@ -14,6 +13,7 @@ from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.cms.workflow.interfaces import IPublicationDependencies
 from zeit.content.image.testing import create_image_group
 from zeit.content.volume.volume import Volume
+import zeit.cms.config
 import zeit.cms.content.sources
 import zeit.cms.interfaces
 import zeit.cms.workflow.interfaces
@@ -324,10 +324,12 @@ class TestWebtrekkQuery(TestVolumeQueries):
         self.volume = volume
 
     def webtrekk(self, resp):
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.content.volume')
+        webtrekk_url = zeit.cms.config.required(
+            'zeit.content.volume', 'access-control-webtrekk-url'
+        )
         response = {'result': {'analysisData': resp}}
         m = requests_mock.Mocker()
-        m.post(config['access-control-webtrekk-url'], status_code=200, json=response)
+        m.post(webtrekk_url, status_code=200, json=response)
         return m
 
     def test_urls_are_filtered_according_to_config(self):

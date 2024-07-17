@@ -2,6 +2,7 @@ from zope.browserpage import ViewPageTemplateFile
 import zope.lifecycleevent
 
 import zeit.cms.browser.view
+import zeit.cms.config
 import zeit.edit.browser.editor
 import zeit.edit.browser.view
 
@@ -10,9 +11,9 @@ class Editor(zeit.edit.browser.editor.Editor):
     render = ViewPageTemplateFile('editor.pt')
 
     def __call__(self):
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.content.cp')
         zeit.content.cp.browser.resources.RemoteURLResource(
-            zeit.content.cp.browser.resources.lib, '/repository' + config['layout-css-path']
+            zeit.content.cp.browser.resources.lib,
+            '/repository' + zeit.cms.config.required('zeit.content.cp', 'layout-css-path'),
         ).need()
         return super().__call__()
 

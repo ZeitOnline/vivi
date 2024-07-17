@@ -9,9 +9,9 @@ import requests.auth
 import requests.exceptions
 import zeep
 import zeep.exceptions
-import zope.app.appsetup.product
 import zope.interface
 
+import zeit.cms.config
 import zeit.content.author.interfaces
 import zeit.vgwort.interfaces
 
@@ -204,7 +204,7 @@ class MessageService(VGWortWebService):
 
 def service_factory(TYPE):
     def factory():
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.vgwort')
+        config = zeit.cms.config.package('zeit.vgwort')
         return TYPE(config['vgwort-url'], config['username'], config['password'])
 
     factory = zope.interface.implementer(list(zope.interface.implementedBy(TYPE))[0])(factory)

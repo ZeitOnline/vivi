@@ -2,12 +2,12 @@ import argparse
 import logging
 
 import prometheus_client
-import zope.app.appsetup.product
 import zope.component
 
 from zeit.cms.interfaces import ICMSContent
 from zeit.content.article.interfaces import IArticle
 import zeit.cms.cli
+import zeit.cms.config
 import zeit.find.interfaces
 import zeit.push.interfaces
 import zeit.retresco.interfaces
@@ -42,8 +42,7 @@ class Counter(Metric, prometheus_client.Counter):
 
 
 def environment():
-    config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
-    return config['environment']
+    return zeit.cms.config.required('zeit.cms', 'environment')
 
 
 def elastic(kind):

@@ -6,6 +6,7 @@ import gocept.selenium
 import plone.testing
 import zope.interface
 
+import zeit.cms.config
 import zeit.cms.testing
 import zeit.content.image.testing
 import zeit.content.text.jinja
@@ -85,9 +86,9 @@ class UrbanairshipTemplateLayer(plone.testing.Layer):
             ).read_text('utf-8')
         with zeit.cms.testing.site(self['zodbApp']):
             with zeit.cms.testing.interaction():
-                cfg = zope.app.appsetup.product.getProductConfiguration('zeit.push')
+                folder = zeit.cms.config.required('zeit.push', 'push-payload-templates')
                 folder = zeit.cms.content.add.find_or_create_folder(
-                    *urllib.parse.urlparse(cfg['push-payload-templates']).path[1:].split('/')
+                    *urllib.parse.urlparse(folder).path[1:].split('/')
                 )
                 template = zeit.content.text.jinja.JinjaTemplate()
                 template.text = text

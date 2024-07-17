@@ -9,6 +9,7 @@ import zope.lifecycleevent
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
+import zeit.cms.config
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.content.article
@@ -25,8 +26,7 @@ class EditLayout:
 
     @property
     def image_path(self):
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.content.cp')
-        return config['layout-image-path']
+        return zeit.cms.config.required('zeit.content.cp', 'layout-image-path')
 
     @property
     def layouts(self):

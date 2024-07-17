@@ -373,9 +373,8 @@ class TopiclistUpdateTest(zeit.retresco.testing.FunctionalTestCase):
         text.text = ''
         self.repository['redirects'] = text
 
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.retresco')
-        config['topiclist'] = 'http://xml.zeit.de/topics'
-        config['topic-redirect-id'] = 'http://xml.zeit.de/redirects'
+        zeit.cms.config.set('zeit.retresco', 'topiclist', 'http://xml.zeit.de/topics')
+        zeit.cms.config.set('zeit.retresco', 'topic-redirect-id', 'http://xml.zeit.de/redirects')
 
         with mock.patch(
             'zeit.retresco.connection.TMS.get_all_topicpages',

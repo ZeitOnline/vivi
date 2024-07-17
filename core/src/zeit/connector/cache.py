@@ -20,6 +20,7 @@ import zope.security.proxy
 from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.connector.interfaces import CACHED_TIME_PROPERTY
 import zeit.cms.cli
+import zeit.cms.config
 import zeit.connector.interfaces
 
 
@@ -64,8 +65,7 @@ class Body(persistent.Persistent):
 
     @property
     def BUFFER_SIZE(self):
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.connector') or {}
-        return int(config.get('body-cache-blob-threshold', 10 * 1024))
+        return int(zeit.cms.config.get('zeit.connector', 'body-cache-blob-threshold', 10 * 1024))
 
     def open(self, mode='r'):
         assert mode == 'r'

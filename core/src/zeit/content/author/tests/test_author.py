@@ -9,6 +9,7 @@ import zope.event
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.content.interfaces import ICommonMetadata
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
+import zeit.cms.config
 import zeit.cms.interfaces
 import zeit.content.author.author
 import zeit.content.author.interfaces
@@ -144,13 +145,12 @@ class BiographyQuestionsTest(zeit.content.author.testing.FunctionalTestCase):
 class SSOIdConnectTest(zeit.content.author.testing.FunctionalTestCase):
     def setUp(self):
         super().setUp()
-        self.config = zope.app.appsetup.product.getProductConfiguration('zeit.content.author')
         self.author = zeit.content.author.author.Author()
         self.author.email = 'peter.schmidt@zeit.de'
         self.author.sso_connect = True
 
     def acs(self, email, **json):
-        base = self.config['sso-api-url']
+        base = zeit.cms.config.required('zeit.content.author', 'sso-api-url')
         url = '{}/users/{}'.format(base, urllib.parse.quote(email.encode('utf8')))
         m = requests_mock.Mocker()
         m.get(url, status_code=200, json=json)

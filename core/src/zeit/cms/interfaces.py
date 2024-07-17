@@ -5,7 +5,6 @@ import re
 
 import pyramid_dogpile_cache2
 import pytz
-import zope.app.appsetup.product
 import zope.i18nmessageid
 import zope.interface
 import zope.interface.common.sequence
@@ -13,6 +12,7 @@ import zope.schema
 import zope.security
 
 from zeit.cms.i18n import MessageFactory as _
+import zeit.cms.config
 
 
 DOCUMENT_SCHEMA_NS = 'http://namespaces.zeit.de/CMS/document'
@@ -75,11 +75,11 @@ class InvalidLinkTarget(zope.schema.ValidationError):
 def valid_link_target(value):
     if not value:
         return True
-    config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
-    if 'invalid-link-targets' not in config:
+    domains = zeit.cms.config.get('zeit.cms', 'invalid-link-targets')
+    if not domains:
         return True
     host = urlparse(value).netloc
-    for invalid in config['invalid-link-targets'].split(' '):
+    for invalid in domains.split(' '):
         if host == invalid:
             raise InvalidLinkTarget()
     return True

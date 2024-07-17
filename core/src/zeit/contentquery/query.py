@@ -10,6 +10,7 @@ import zope.interface
 
 from zeit.cms.content.cache import content_cache
 from zeit.contentquery.configuration import CustomQueryProperty
+import zeit.cms.config
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.content.article.article
@@ -566,10 +567,13 @@ class TopicpageQuery(ContentQuery):
         )
 
     def _resolve(self, doc):
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.retresco')
         return zeit.cms.interfaces.ICMSContent(
             '%s%s/%s'
-            % (zeit.cms.interfaces.ID_NAMESPACE[:-1], config['topicpage-prefix'], doc['id']),
+            % (
+                zeit.cms.interfaces.ID_NAMESPACE[:-1],
+                zeit.cms.config.required('zeit.retresco', 'topicpage-prefix'),
+                doc['id'],
+            ),
             None,
         )
 

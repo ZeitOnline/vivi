@@ -22,6 +22,7 @@ from zeit.connector.interfaces import (
     MoveError,
 )
 from zeit.connector.lock import lock_is_foreign
+import zeit.cms.config
 import zeit.connector.cache
 import zeit.connector.dav.interfaces
 import zeit.connector.filesystem
@@ -57,9 +58,7 @@ class Connector(zeit.connector.filesystem.Connector):
     @classmethod
     @zope.interface.implementer(zeit.connector.interfaces.IConnector)
     def factory(cls):
-        import zope.app.appsetup.product
-
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.connector') or {}
+        config = zeit.cms.config.package('zeit.connector')
         connector = super().factory()
         connector.detect_mime_type = config.get('detect-mime-type', True)
         connector.ignore_locking = config.get('ignore-locking', False)

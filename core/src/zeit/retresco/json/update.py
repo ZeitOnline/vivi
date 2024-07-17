@@ -1,10 +1,9 @@
 import json
 import logging
 
-import zope.app.appsetup.product
-
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.celery
+import zeit.cms.config
 import zeit.cms.content.contentuuid
 import zeit.cms.content.interfaces
 import zeit.objectlog.interfaces
@@ -33,9 +32,10 @@ class UpdateKeywords:
             message = 'JSON body with parameter doc_ids (list of uuids) required'
             return 400, message
 
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.retresco')
         for doc_id in doc_ids:
-            update_async.delay(doc_id, _principal_id_=config['index-principal'])
+            update_async.delay(
+                doc_id, _principal_id_=zeit.cms.config.required('zeit.retresco', 'index-principal')
+            )
         return 200, 'OK'
 
 

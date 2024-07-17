@@ -2,12 +2,12 @@ import logging
 
 import grokcore.component as grok
 import lxml.builder
-import zope.app.appsetup.product
 import zope.interface
 
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.checkout.interfaces import ICheckinManager
 from zeit.cms.workflow.interfaces import PRIORITY_HOMEPAGE, IPublish
+import zeit.cms.config
 import zeit.push.interfaces
 import zeit.push.message
 
@@ -64,8 +64,7 @@ class Banner:
 
 @zope.interface.implementer(zeit.push.interfaces.IBanner)
 def homepage_banner():
-    config = zope.app.appsetup.product.getProductConfiguration('zeit.push')
-    return Banner(config['homepage-banner-uniqueid'])
+    return Banner(zeit.cms.config.required('zeit.push', 'homepage-banner-uniqueid'))
 
 
 def get_breaking_news_article():
