@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.8.0 (2024-07-17)
+------------------
+
+FIX:
+- Be defensive when no product config exists for a package
+
+
 6.7.0 (2024-07-16)
 ------------------
 
