@@ -187,6 +187,9 @@ def validate_article(context, event):
     ]
     for iface in interfaces:
         err = zope.schema.getValidationErrors(iface, iface(context)) or []
+        if err:
+            # breakpoint()
+            pass
         errors.extend([(iface[k], v) for k, v in err])
     # XXX using a separate event handler would be cleaner, but we only support
     # retrieving a single error (last_validation_error), so this doesn't work.

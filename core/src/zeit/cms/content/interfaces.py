@@ -291,6 +291,15 @@ def hex_literal(value):
         return True
 
 
+def valid_type(source):
+    if not isinstance(source, zeit.content.image.imagegroup.ImageGroup):
+        # raise ImageNotAnImageGroup()
+        raise zeit.cms.interfaces.ValidationError(
+            _('Teaser image must be an image group (not single image)')
+        )
+    return True
+
+
 WRITEABLE_ON_CHECKIN = object()
 WRITEABLE_LIVE = object()
 WRITEABLE_ALWAYS = object()

@@ -378,6 +378,19 @@ class IThumbnails(zope.container.interfaces.IReadContainer):
     source_image = zope.schema.Choice(source=bareImageSource)
 
 
+class ImageNotAnImageGroup(zope.schema.ValidationError):
+    __doc__ = _('Teaser image must be an image group (not single image)')
+
+
+def valid_type(source):
+    if not isinstance(source, zeit.content.image.imagegroup.ImageGroup):
+        # raise ImageNotAnImageGroup()
+        raise zeit.cms.interfaces.ValidationError(
+            _('Teaser image must be an image group (not single image)')
+        )
+    return True
+
+
 class IImages(zope.interface.Interface):
     """An object which references images."""
 
@@ -386,6 +399,8 @@ class IImages(zope.interface.Interface):
         description=_('Drag an image group here'),
         required=False,
         source=imageGroupSource,
+        # constraint=valid_type
+        constraint=zeit.cms.content.interfaces.valid_type,
     )
 
     fill_color = zope.schema.TextLine(
