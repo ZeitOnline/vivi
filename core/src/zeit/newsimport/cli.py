@@ -10,6 +10,7 @@ import gocept.runner
 import zope.component
 
 import zeit.cms.cli
+import zeit.cms.config
 import zeit.newsimport.interfaces
 import zeit.newsimport.metrics as metrics
 import zeit.newsimport.news
@@ -38,7 +39,7 @@ def import_dpa_news_api(args=None):
 
     @gocept.runner.transaction_per_item
     def importer():
-        env = zope.app.appsetup.product.getProductConfiguration('zeit.cms')['environment']
+        env = zeit.cms.config.required('zeit.cms', 'environment')
         env = 'production' if env == 'production' else 'staging'
         getInteraction().participations[0]._zeit_connector_referrer = (
             'http://%s/runner/import_dpa_news' % socket.getfqdn()
@@ -52,10 +53,10 @@ def import_dpa_news_api(args=None):
             process = functools.partial(zeit.newsimport.news.process_task, entry, args.profile)
             yield process
 
-        config_zni = zope.app.appsetup.product.getProductConfiguration('zeit.newsimport')
-        push_gateway = config_zni.get('push_gateway', 'https://prometheus-pushgw.ops.zeit.de')
         push_to_gateway(
-            push_gateway,
+            zeit.cms.config.get(
+                'zeit.newsimport', 'push_gateway', 'https://prometheus-pushgw.ops.zeit.de'
+            ),
             job='vivi-newsimport',
             registry=metrics.REGISTRY,
             grouping_key={'environment_zni': env},

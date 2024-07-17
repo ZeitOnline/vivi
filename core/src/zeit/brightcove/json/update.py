@@ -1,9 +1,8 @@
 import json
 import logging
 
-import zope.app.appsetup.product
-
 import zeit.brightcove.update
+import zeit.cms.config
 
 
 log = logging.getLogger(__name__)
@@ -30,7 +29,7 @@ class Notification:
         data = json.loads(body)
         if data.get('event') != 'video-change' or not data.get('video'):
             return
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.brightcove')
         zeit.brightcove.update.import_video_async.delay(
-            data.get('video'), _principal_id_=config['index-principal']
+            data.get('video'),
+            _principal_id_=zeit.cms.config.required('zeit.brightcove', 'index-principal'),
         )

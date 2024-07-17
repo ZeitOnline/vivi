@@ -1,7 +1,6 @@
 import importlib.metadata
 import json
 
-import zope.app.appsetup.product
 import zope.app.basicskin.standardmacros
 import zope.component
 import zope.location.interfaces
@@ -12,6 +11,7 @@ import zeit.cms.browser
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.resources
 import zeit.cms.checkout.interfaces
+import zeit.cms.config
 import zeit.cms.repository.interfaces
 import zeit.cms.section.interfaces
 
@@ -72,8 +72,7 @@ class StandardMacros(zope.app.basicskin.standardmacros.StandardMacros):
 
     @property
     def environment(self):
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
-        return config['environment']
+        return zeit.cms.config.required('zeit.cms', 'environment')
 
     @property
     def vivi_version(self):

@@ -2,14 +2,14 @@ import zope.interface
 import zope.schema
 
 from zeit.cms.i18n import MessageFactory as _
+import zeit.cms.config
 import zeit.cms.content.contentsource
 import zeit.cms.interfaces
 
 
 class RelatableContentSource(zeit.cms.content.contentsource.CMSContentSource):
     def get_check_interfaces(self):
-        conf = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
-        types = conf.get('relatable-content-types', '*')
+        types = zeit.cms.config.get('zeit.cms', 'relatable-content-types', '*')
         if types == '*':
             return super().get_check_interfaces()
         result = []

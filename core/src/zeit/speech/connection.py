@@ -3,7 +3,6 @@ from typing import Optional
 import logging
 
 import pytz
-import zope.app.appsetup.product
 import zope.component
 import zope.event
 import zope.interface
@@ -17,6 +16,7 @@ from zeit.content.article.interfaces import IArticle
 from zeit.content.audio.audio import AUDIO_SCHEMA_NS, Audio
 from zeit.content.audio.interfaces import IAudio, IAudioReferences, ISpeechInfo
 from zeit.speech.errors import AudioReferenceError
+import zeit.cms.config
 import zeit.cms.interfaces
 import zeit.cms.repository.folder
 import zeit.connector.interfaces
@@ -30,13 +30,10 @@ AUDIO_ID = SearchVar('article_uuid', AUDIO_SCHEMA_NS)
 
 @zope.interface.implementer(zeit.speech.interfaces.ISpeech)
 class Speech:
-    def __init__(self):
-        self.config = zope.app.appsetup.product.getProductConfiguration('zeit.speech')
-
     def _get_target_folder(self, article_uuid: str) -> IFolder:
         """Returns the folder corresponding to the article's first release date."""
         repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
-        speech_folder = self.config['speech-folder']
+        speech_folder = zeit.cms.config.required('zeit.speech', 'speech-folder')
 
         article = zeit.cms.interfaces.ICMSContent(IUUID(article_uuid))
         # XXX Ensure we have current data (especially: date_first_released),

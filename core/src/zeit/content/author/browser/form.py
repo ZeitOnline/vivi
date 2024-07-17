@@ -13,6 +13,7 @@ from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.author.browser.interfaces import DuplicateAuthorWarning
 import zeit.cms.browser.form
+import zeit.cms.config
 import zeit.content.author.author
 import zeit.content.author.interfaces
 import zeit.content.image.interfaces
@@ -206,8 +207,7 @@ class AddContextfree(zeit.cms.browser.form.AddForm):
 
     @property
     def author_folder(self):
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.content.author')
-        author_folder = config['author-folder']
+        author_folder = zeit.cms.config.required('zeit.content.author', 'author-folder')
         return [x for x in author_folder.split('/') if x]
 
     def update(self):

@@ -4,12 +4,13 @@ import random
 import struct
 import sys
 
-import zope.app.appsetup.product
 import zope.component
 import zope.interface
 import zope.publisher.interfaces.browser
 import zope.security
 import zope.traversing.interfaces
+
+import zeit.cms.config
 
 
 @zope.component.adapter(
@@ -55,8 +56,7 @@ class TicketIssuer:
 
 
 def get_hash(rnd, principal):
-    config = zope.app.appsetup.product.getProductConfiguration('zeit.content.gallery')
-    secret = config['ticket-secret']
+    secret = zeit.cms.config.required('zeit.content.gallery', 'ticket-secret')
     ticket_hash = hashlib.sha224()
 
     for element in (secret, str(rnd), principal):

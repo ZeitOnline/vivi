@@ -13,6 +13,7 @@ from zeit.content.author.interfaces import IAuthor
 from zeit.content.image.interfaces import IImageGroup
 from zeit.workflow.publishinfo import id_to_principal
 import zeit.cms.browser.interfaces
+import zeit.cms.config
 import zeit.cms.content.interfaces
 import zeit.cms.related.interfaces
 import zeit.cms.workflow.interfaces
@@ -59,12 +60,10 @@ class ArticleContentForms(zeit.edit.browser.form.FoldableFormGroup):
 
     @property
     def invalid_link_targets(self):
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
-        if 'invalid-link-targets' not in config:
-            result = []
-        else:
-            result = config.get('invalid-link-targets', '').split(' ')
-        return json.dumps(result)
+        domains = zeit.cms.config.get('zeit.cms', 'invalid-link-targets', [])
+        if domains:
+            domains = domains.split(' ')
+        return json.dumps(domains)
 
 
 class ArticleContentHead(zeit.edit.browser.form.InlineForm, zeit.cms.browser.form.CharlimitMixin):

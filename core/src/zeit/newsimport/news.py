@@ -227,8 +227,8 @@ class ArticleEntry(Entry):
         topicbox.supertitle = 'Aktuelles'
         topicbox.title = 'Schlagzeilen'
 
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
-        topicbox.link = '{}/news/index'.format(config['live-prefix'].rstrip('/'))
+        www = zeit.cms.config.required('zeit.cms', 'live-prefix').rstrip('/')
+        topicbox.link = f'{www}/news/index'
         topicbox.link_text = 'Mehr Schlagzeilen'
         topicbox.automatic_type = 'related-api'
         topicbox.topicpage_filter = 'dpa-import'

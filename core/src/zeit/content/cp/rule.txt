@@ -8,11 +8,9 @@ XXX this is supposed to be user documentation. writeme
 
 >>> import tempfile
 >>> import pyramid_dogpile_cache2
+>>> import zeit.cms.config
 >>> rules_file, rules_filename = tempfile.mkstemp()
->>> import zope.app.appsetup.product
->>> config = zope.app.appsetup.product.getProductConfiguration(
-...     'zeit.edit')
->>> config['rules-url'] = 'file://%s' % rules_filename
+>>> zeit.cms.config.set('zeit.edit', 'rules-url', f'file://{rules_filename}')
 
 >>> def create_rules(rules_str):
 ...     rules_file = open(rules_filename, 'w')

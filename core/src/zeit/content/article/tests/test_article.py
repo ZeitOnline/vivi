@@ -16,6 +16,7 @@ from zeit.cms.workflow.interfaces import (
 )
 from zeit.content.article.article import updateTextLengthOnChange
 from zeit.content.audio.testing import AudioBuilder
+import zeit.cms.config
 import zeit.cms.content.interfaces
 import zeit.cms.content.reference
 import zeit.cms.interfaces
@@ -385,8 +386,7 @@ class ArticleSpeechbertTest(zeit.content.article.testing.FunctionalTestCase):
         article = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept'
         )
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.workflow')
-        config['speechbert-ignore-genres'] = 'rezept-vorstellung'
+        zeit.cms.config.set('zeit.workflow', 'speechbert-ignore-genres', 'rezept-vorstellung')
         IPublish(article).publish()
         checksum = zeit.content.article.interfaces.ISpeechbertChecksum(article)
         assert not checksum.checksum

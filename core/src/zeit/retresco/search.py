@@ -7,6 +7,7 @@ import requests.utils
 import zope.dottedname.resolve
 import zope.interface
 
+import zeit.cms.config
 import zeit.cms.interfaces
 import zeit.retresco.interfaces
 
@@ -101,7 +102,7 @@ def date_range(start, end):
 @zope.interface.implementer(zeit.retresco.interfaces.IElasticsearch)
 def from_product_config():
     """Get the utility configured with data from the product config."""
-    config = zope.app.appsetup.product.getProductConfiguration('zeit.retresco')
+    config = zeit.cms.config.package('zeit.retresco')
     return Elasticsearch(
         config['elasticsearch-url'],
         config['elasticsearch-index'],

@@ -5,6 +5,7 @@ import lxml.etree
 import pyramid_dogpile_cache2
 import zope.interface
 
+import zeit.cms.config
 import zeit.cms.content.sources
 import zeit.cms.interfaces
 import zeit.cms.testing
@@ -174,9 +175,10 @@ class FeatureToggleTest(zeit.cms.testing.ZeitCmsTestCase):
     def test_allows_overriding_values(self):
         toggles = zeit.cms.content.sources.FeatureToggleSource()(None)
         toggles.factory.config_url = 'toggle'
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
-        config['toggle'] = 'file://%s/feature-toggle-grouped.xml' % importlib.resources.files(
-            'zeit.cms.content'
+        zeit.cms.config.set(
+            'zeit.cms',
+            'toggle',
+            'file://%s/feature-toggle-grouped.xml' % importlib.resources.files('zeit.cms.content'),
         )
         self.assertFalse(toggles.find('example'))
         toggles.set('example')

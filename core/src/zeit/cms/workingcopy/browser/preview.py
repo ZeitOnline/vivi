@@ -4,6 +4,7 @@ import urllib.request
 import zope.component
 
 import zeit.cms.browser.preview
+import zeit.cms.config
 import zeit.cms.interfaces
 import zeit.connector.interfaces
 
@@ -30,8 +31,8 @@ class WorkingcopyPreview(zeit.cms.browser.preview.Preview):
         workingcopy = self.url(
             zope.component.getUtility(zeit.cms.workingcopy.interfaces.IWorkingcopyLocation)
         )
+        prefix = zeit.cms.config.required('zeit.cms', 'friebert-wc-preview-prefix')
         workingcopy_path = fullpath.replace(workingcopy, '')
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
-        workingcopy_path = config['friebert-wc-preview-prefix'] + workingcopy_path
+        workingcopy_path = prefix + workingcopy_path
         url = url.replace(repository_path, workingcopy_path)
         return url

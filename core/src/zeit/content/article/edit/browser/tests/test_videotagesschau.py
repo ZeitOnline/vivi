@@ -6,6 +6,7 @@ import lxml.etree
 import zope.component
 
 from zeit.cms.content.sources import FEATURE_TOGGLES
+import zeit.cms.config
 import zeit.content.article.edit.browser.testing
 import zeit.content.article.edit.interfaces
 import zeit.content.article.edit.videotagesschau
@@ -184,8 +185,9 @@ class Form2(zeit.content.article.testing.FunctionalTestCase):
         )
         article.title = 'Tagesschaurelevanter Artikel'
         zeit.cms.content.interfaces.IUUID(article).id = 'myid'
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.content.article')
-        api = zeit.content.article.edit.videotagesschau.VideoTagesschauAPI(config)
+        api = zeit.content.article.edit.videotagesschau.VideoTagesschauAPI(
+            zeit.cms.config.package('zeit.content.article')
+        )
         payload = api._prepare_payload(article)
         self.assertEqual('myid', payload['article_custom_id'])
         self.assertEqual('Tagesschaurelevanter Artikel', payload['article_title'])
@@ -215,8 +217,9 @@ class Form2(zeit.content.article.testing.FunctionalTestCase):
         )
         article.title = 'Tagesschaurelevanter Artikel'
         zeit.cms.content.interfaces.IUUID(article).id = 'myid'
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.content.article')
-        api = zeit.content.article.edit.videotagesschau.VideoTagesschauAPI(config)
+        api = zeit.content.article.edit.videotagesschau.VideoTagesschauAPI(
+            zeit.cms.config.package('zeit.content.article')
+        )
         FEATURE_TOGGLES.unset('ard_sync_api')
         with mock.patch(
             'zeit.content.article.edit.' 'videotagesschau.VideoTagesschauAPI._request'

@@ -3,6 +3,7 @@ import logging
 import requests
 import zope.interface
 
+import zeit.cms.config
 import zeit.newsimport.interfaces
 
 
@@ -34,10 +35,8 @@ class DPA:
 
 
 def set_up_weblines_profile():
-    config = zope.app.appsetup.product.getProductConfiguration('zeit.newsimport')
-    return DPA(config['weblines-url'])
+    return DPA(zeit.cms.config.required('zeit.newsimport', 'weblines-url'))
 
 
 def set_up_nextline_profile():
-    config = zope.app.appsetup.product.getProductConfiguration('zeit.newsimport')
-    return DPA(config['nextline-url'])
+    return DPA(zeit.cms.config.required('zeit.newsimport', 'nextline-url'))

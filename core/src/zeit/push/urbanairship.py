@@ -12,10 +12,10 @@ import bugsnag
 import grokcore.component as grok
 import pytz
 import requests
-import zope.app.appsetup.product
 import zope.interface
 import zope.lifecycleevent
 
+import zeit.cms.config
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.content.article.interfaces
@@ -156,8 +156,8 @@ class Message(zeit.push.message.Message):
         image = self.config.get('image')
         if not image:
             return None
-        cfg = zope.app.appsetup.product.getProductConfiguration('zeit.push')
-        return image.replace(zeit.cms.interfaces.ID_NAMESPACE, cfg['mobile-image-url'])
+        url = zeit.cms.config.required('zeit.push', 'mobile-image-url')
+        return image.replace(zeit.cms.interfaces.ID_NAMESPACE, url)
 
     @property
     def app_link(self):
@@ -180,7 +180,7 @@ class Message(zeit.push.message.Message):
 
 @zope.interface.implementer(zeit.push.interfaces.IPushNotifier)
 def from_product_config():
-    config = zope.app.appsetup.product.getProductConfiguration('zeit.push')
+    config = zeit.cms.config.package('zeit.push')
     return Connection(
         config['urbanairship-base-url'].rstrip('/'),
         config['urbanairship-application-key'],

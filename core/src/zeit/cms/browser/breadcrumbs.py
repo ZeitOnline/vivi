@@ -1,4 +1,3 @@
-import zope.app.appsetup.product
 import zope.cachedescriptors.property
 import zope.location.interfaces
 import zope.traversing.api
@@ -6,6 +5,7 @@ import zope.traversing.api
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.browser.view
 import zeit.cms.checkout.interfaces
+import zeit.cms.config
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 
@@ -89,7 +89,6 @@ class Breadcrumbs(zeit.cms.browser.view.Base):
 
     @zope.cachedescriptors.property.Lazy
     def _use_common_metadata(self):
-        cms_config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
         return (
-            cms_config and cms_config.get('breadcrumbs-use-common-metadata', '').lower() == 'true'
+            zeit.cms.config.get('zeit.cms', 'breadcrumbs-use-common-metadata', '').lower() == 'true'
         )

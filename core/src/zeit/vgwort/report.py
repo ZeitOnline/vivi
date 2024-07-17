@@ -4,12 +4,12 @@ import logging
 import grokcore.component as grok
 import pytz
 import ZODB.POSException
-import zope.app.appsetup.product
 import zope.interface
 
 from zeit.cms.content.interfaces import WRITEABLE_LIVE
 from zeit.vgwort.interfaces import in_daily_maintenance_window
 import zeit.cms.cli
+import zeit.cms.config
 import zeit.cms.content.dav
 import zeit.cms.interfaces
 import zeit.find.interfaces
@@ -23,7 +23,7 @@ log = logging.getLogger(__name__)
 @zope.interface.implementer(zeit.vgwort.interfaces.IReportableContentSource)
 class ReportableContentSource(grok.GlobalUtility):
     def __iter__(self):
-        age = self.config['days-before-report']
+        age = zeit.cms.config.required('zeit.vgwort', 'days-before-report')
         age = datetime.date.today() - datetime.timedelta(days=int(age))
         age = age.isoformat()
 
@@ -82,10 +82,6 @@ class ReportableContentSource(grok.GlobalUtility):
         errors = zeit.retresco.update.index(content)
         if errors:
             raise errors[0]
-
-    @property
-    def config(self):
-        return zope.app.appsetup.product.getProductConfiguration('zeit.vgwort')
 
 
 class ReportInfo(zeit.cms.content.dav.DAVPropertiesAdapter):

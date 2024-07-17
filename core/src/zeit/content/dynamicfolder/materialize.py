@@ -8,6 +8,7 @@ from zeit.cms.repository.interfaces import IRepositoryContent
 from zeit.connector.interfaces import IWebDAVReadProperties, IWebDAVWriteProperties
 from zeit.content.dynamicfolder.interfaces import IMaterializedContent, IVirtualContent
 import zeit.cms.celery
+import zeit.cms.config
 import zeit.cms.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.cms.workingcopy.interfaces
@@ -29,8 +30,9 @@ class CloneArmy(zeit.cms.content.dav.DAVPropertiesAdapter):
 
 
 def materialize_content(folder):
-    config = zope.app.appsetup.product.getProductConfiguration('zeit.content.dynamicfolder') or {}
-    batch_size = config.get('materialized-publish-batch-size', 100)
+    batch_size = int(
+        zeit.cms.config.get('zeit.content.dynamicfolder', 'materialized-publish-batch-size', 100)
+    )
 
     to_regenerate = []
     regenerate_count = 0
@@ -106,8 +108,9 @@ def _materialize(content):
 
 
 def publish_content(folder):
-    config = zope.app.appsetup.product.getProductConfiguration('zeit.content.dynamicfolder') or {}
-    batch_size = config.get('materialized-publish-batch-size', 100)
+    batch_size = int(
+        zeit.cms.config.get('zeit.content.dynamicfolder', 'materialized-publish-batch-size', 100)
+    )
     publish = zeit.cms.workflow.interfaces.IPublish(folder)
     count = 0
     objects = []

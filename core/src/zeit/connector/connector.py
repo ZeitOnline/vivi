@@ -16,6 +16,7 @@ import zope.cachedescriptors.property
 import zope.interface
 
 from zeit.connector.interfaces import CACHED_TIME_PROPERTY, ID_NAMESPACE, IPersistentCache
+import zeit.cms.config
 import zeit.connector.cache
 import zeit.connector.dav.davconnection
 import zeit.connector.dav.davresource
@@ -769,9 +770,7 @@ class Connector:
     @classmethod
     @zope.interface.implementer(zeit.connector.interfaces.IConnector)
     def factory(cls):
-        import zope.app.appsetup.product
-
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.connector')
+        config = zeit.cms.config.package('zeit.connector')
         return cls({'default': config['document-store'], 'search': config['document-store-search']})
 
 

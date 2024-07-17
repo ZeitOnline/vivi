@@ -4,10 +4,11 @@ import logging
 import grokcore.component as grok
 import lxml.etree
 import pendulum
-import zope.app.appsetup.product
+import zope.component
 
 from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
+import zeit.cms.config
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.type
@@ -75,8 +76,7 @@ class Airship(grok.Adapter):
         }
 
     def _absolute_expiry(self, pushes):
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.push')
-        expire_interval = int(config['urbanairship-expire-interval'])
+        expire_interval = int(zeit.cms.config.required('zeit.push', 'urbanairship-expire-interval'))
 
         now = pendulum.now()
         # See https://docs.urbanairship.com/api/ua/#schemas-pushobject
@@ -131,8 +131,7 @@ class BigQueryMixin:
 
     @property
     def live_url(self):
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
-        live_prefix = config['live-prefix']
+        live_prefix = zeit.cms.config.required('zeit.cms', 'live-prefix')
         return self.context.uniqueId.replace(zeit.cms.interfaces.ID_NAMESPACE, live_prefix)
 
 
@@ -199,8 +198,7 @@ class VideoBigQuery(grok.Adapter, BigQueryMixin):
 
     @property
     def live_url(self):
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
-        live_prefix = config['live-prefix']
+        live_prefix = zeit.cms.config.required('zeit.cms', 'live-prefix')
         return self.context.live_url_base.replace(zeit.cms.interfaces.ID_NAMESPACE, live_prefix)
 
 
@@ -251,10 +249,6 @@ class IgnoreMixin:
         """defined with grok.name"""
         return self.__class__.__dict__['grokcore.component.directive.name']
 
-    @property
-    def config(self):
-        return zope.app.appsetup.product.getProductConfiguration('zeit.workflow') or {}
-
     def ignore(self, method):
         if self.context.product and self.context.product.is_news:
             return True
@@ -265,7 +259,11 @@ class IgnoreMixin:
         return False
 
     def is_on_ignorelist(self, attribute, setting):
-        ignore_list = self.config.get(f'{self.name}-ignore-{setting}', '').lower().split()
+        ignore_list = (
+            zeit.cms.config.get('zeit.workflow', f'{self.name}-ignore-{setting}', '')
+            .lower()
+            .split()
+        )
         value = getattr(self.context, attribute)
         return value and value.lower() in ignore_list
 
@@ -289,8 +287,7 @@ class Speechbert(grok.Adapter, IgnoreMixin):
         image = zeit.content.image.interfaces.IImages(self.context).image
         if not image:
             return None
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.cms') or {}
-        prefix = config.get('image-live-prefix', '').strip('/')
+        prefix = zeit.cms.config.get('zeit.cms', 'image-live-prefix', '').strip('/')
         variant_url = image.variant_url('')  # ZO-2856: no slug
         if not variant_url:
             return None

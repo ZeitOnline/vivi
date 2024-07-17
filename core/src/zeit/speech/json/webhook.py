@@ -2,12 +2,12 @@ import json
 import logging
 
 import opentelemetry.trace
-import zope.app.appsetup.product
 import zope.component
 
 from zeit.cms.content.sources import FEATURE_TOGGLES
 import zeit.cms.celery
 import zeit.cms.checkout.interfaces
+import zeit.cms.config
 import zeit.cms.tracing
 import zeit.content.audio.audio
 import zeit.speech.interfaces
@@ -28,8 +28,7 @@ class Notification:
 
     @property
     def _principal(self):
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.speech')
-        return config['principal']
+        return zeit.cms.config.required('zeit.speech', 'principal')
 
     def __call__(self):
         if not FEATURE_TOGGLES.find('speech_webhook'):
@@ -62,7 +61,7 @@ def SPEECH_WEBHOOK_TASK(self, payload: dict):
         elif payload['event'] == 'AUDIO_DELETED':
             speech.delete(payload)
     except zeit.cms.checkout.interfaces.CheckinCheckoutError:
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.speech')
+        config = zeit.cms.config.package('zeit.speech')
         self.retry(
             countdown=int(config['retry-delay-seconds']), max_retries=int(config['max-retries'])
         )

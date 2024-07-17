@@ -12,6 +12,7 @@ import zope.security.proxy
 from zeit.cms.content.property import ObjectPathProperty
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.author.interfaces import IAuthor
+import zeit.cms.config
 import zeit.cms.content.interfaces
 import zeit.cms.content.property
 import zeit.cms.content.reference
@@ -178,7 +179,7 @@ def update_ssoid(context, event):
 
 
 def request_acs(email):
-    config = zope.app.appsetup.product.getProductConfiguration('zeit.content.author')
+    config = zeit.cms.config.package('zeit.content.author')
     url = config['sso-api-url'] + '/users/' + urllib.parse.quote(email.encode('utf8'))
     auth = (config['sso-user'], config['sso-password'])
     try:

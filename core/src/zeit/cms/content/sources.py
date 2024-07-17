@@ -6,7 +6,6 @@ import os
 import urllib.request
 import xml.sax.saxutils
 
-from zope.app.appsetup.product import getProductConfiguration
 import lxml.objectify
 import pyramid_dogpile_cache2
 import zc.sourcefactory.basic
@@ -18,6 +17,7 @@ import zope.security.proxy
 
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.interfaces import CONFIG_CACHE, FEATURE_CACHE
+import zeit.cms.config
 import zeit.cms.interfaces
 import zeit.connector.interfaces
 
@@ -48,14 +48,12 @@ class OverridableURLConfiguration:
 
     @property
     def url(self):
-        config = getProductConfiguration(self.product_configuration) or {}
         try:
-            return config[self.config_url]
+            return zeit.cms.config.required(self.product_configuration, self.config_url)
         except KeyError:
             if self.default_filename is NotImplemented:
                 raise
-            config = getProductConfiguration('zeit.cms')
-            base = config['config-base-url'].rstrip('/')
+            base = zeit.cms.config.required('zeit.cms', 'config-base-url').rstrip('/')
             return '%s/%s' % (base, self.default_filename)
 
 
@@ -259,8 +257,8 @@ class FolderItemSource(zc.sourcefactory.basic.BasicSourceFactory):
 
     @property
     def folder(self):
-        config = getProductConfiguration(self.product_configuration)
-        return zeit.cms.interfaces.ICMSContent(config[self.config_url])
+        id = zeit.cms.config.required(self.product_configuration, self.config_url)
+        return zeit.cms.interfaces.ICMSContent(id)
 
     def getValues(self):
         values = self.folder.values()

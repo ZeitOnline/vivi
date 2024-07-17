@@ -2,10 +2,10 @@ import json
 
 import grokcore.component as grok
 import zc.sourcefactory.factories
-import zope.app.appsetup.product
 import zope.dottedname.resolve
 import zope.interface
 
+import zeit.cms.config
 import zeit.cms.content.sources
 
 
@@ -24,8 +24,7 @@ class API:
         return json.dumps(serialize())
 
     def map_short_name(self, name, default=None):
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
-        for item in config['source-api-mapping'].split(' '):
+        for item in zeit.cms.config.required('zeit.cms', 'source-api-mapping').split(' '):
             key, value = item.split('=')
             if name == key:
                 return value

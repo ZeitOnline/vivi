@@ -6,6 +6,7 @@ import requests
 import zope.component
 import zope.interface
 
+import zeit.cms.config
 import zeit.cms.content.interfaces
 import zeit.reach.interfaces
 import zeit.retresco.interfaces
@@ -64,7 +65,7 @@ class Reach:
 
 @zope.interface.implementer(zeit.reach.interfaces.IReach)
 def from_product_config():
-    config = zope.app.appsetup.product.getProductConfiguration('zeit.reach')
+    config = zeit.cms.config.package('zeit.reach')
     return Reach(config['url'], config['freeze-now'] or None)
 
 

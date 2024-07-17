@@ -1,5 +1,4 @@
-import zope.app.appsetup
-
+import zeit.cms.config
 import zeit.content.link.link
 import zeit.content.link.testing
 
@@ -44,8 +43,7 @@ class TestForm(zeit.content.link.testing.BrowserTestCase):
         self.assertTrue('/2006/gocept.link' in b.url)
 
     def test_checks_for_invalid_hostnames(self):
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
-        config['invalid-link-targets'] = 'example.com other.com'
+        zeit.cms.config.set('zeit.cms', 'invalid-link-targets', 'example.com other.com')
         b = self.browser
         b.open('http://localhost/++skin++vivi/repository/2006/')
         menu = b.getControl(name='add_menu')

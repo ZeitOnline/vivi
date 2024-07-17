@@ -1,7 +1,7 @@
-from zope.app.appsetup.product import getProductConfiguration
 from zope.interface import implementer
 
 from zeit.find.interfaces import ICMSSearch
+import zeit.cms.config
 import zeit.retresco.search
 
 
@@ -25,7 +25,7 @@ class Elasticsearch(zeit.retresco.search.Elasticsearch):
 @implementer(ICMSSearch)
 def from_product_config():
     """Get the utility configured with data from the product config."""
-    config = getProductConfiguration('zeit.find')
+    config = zeit.cms.config.package('zeit.find')
     return Elasticsearch(config['elasticsearch-url'], config['elasticsearch-index'])
 
 

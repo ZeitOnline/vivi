@@ -2,7 +2,6 @@ import logging
 
 import pendulum
 import requests
-import zope.app.appsetup.product
 import zope.component
 import zope.interface
 
@@ -11,6 +10,7 @@ from zeit.cms.workflow.interfaces import PRIORITY_LOW, IPublish, IPublishInfo
 from zeit.connector.search import SearchVar
 from zeit.content.audio.interfaces import IAudio, IPodcastEpisodeInfo
 import zeit.cms.checkout.helper
+import zeit.cms.config
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.tracing
@@ -44,7 +44,7 @@ class Simplecast:
     }
 
     def __init__(self, timeout=None):
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.simplecast')
+        config = zeit.cms.config.package('zeit.simplecast')
         self.api_url = config['simplecast-url']
         self.api_token = f"Bearer {config['simplecast-token']}"
         self.timeout = timeout or int(config.get('timeout', 1))
@@ -96,8 +96,7 @@ class Simplecast:
     def folder(self, episode_create_at):
         """Podcast should end up in this folder by default"""
         repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.simplecast')
-        podcasts = config['podcast-folder']
+        podcasts = zeit.cms.config.required('zeit.simplecast', 'podcast-folder')
         date_created = pendulum.parse(episode_create_at)
         yyyy_mm = date_created.strftime('%Y-%m')
         if podcasts not in repository:

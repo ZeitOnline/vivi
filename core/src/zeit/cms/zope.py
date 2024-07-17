@@ -8,13 +8,14 @@ import grokcore.component as grok
 import ZODB
 import zodburi
 import zope.app.appsetup.appsetup
-import zope.app.appsetup.product
 import zope.component
 import zope.component.hooks
 import zope.configuration.config
 import zope.configuration.xmlconfig
 import zope.event
 import zope.processlifetime
+
+import zeit.cms.config
 
 
 def bootstrap(settings):
@@ -28,13 +29,9 @@ def configure_product_config(settings):
     for key, value in settings.items():
         if not key.startswith('vivi_'):
             continue
-
-        ignored, package, setting = key.split('_')
-        if zope.app.appsetup.product.getProductConfiguration(package) is None:
-            zope.app.appsetup.product.setProductConfiguration(package, {})
-        config = zope.app.appsetup.product.getProductConfiguration(package)
-        value = maybe_convert_egg_url(value)
-        config[setting] = value
+        _, package, key = key.split('_')
+        config = zeit.cms.config.package(package)
+        config[key] = maybe_convert_egg_url(value)
 
 
 def maybe_convert_egg_url(url):
@@ -114,16 +111,15 @@ class DelayedInitZODB:
 def configure_dogpile_cache(event):
     import pyramid_dogpile_cache2
 
-    config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
-    regions = config['cache-regions']
+    regions = zeit.cms.config.required('zeit.cms', 'cache-regions')
     if not regions:
         return
     settings = {'dogpile_cache.regions': regions}
     for region in re.split(r'\s*,\s*', regions):
-        settings['dogpile_cache.%s.backend' % region] = 'dogpile.cache.memory'
-        settings['dogpile_cache.%s.expiration_time' % region] = config[
-            'cache-expiration-%s' % region
-        ]
+        settings[f'dogpile_cache.{region}.backend'] = 'dogpile.cache.memory'
+        settings[f'dogpile_cache.{region}.expiration_time'] = zeit.cms.config.get(
+            'zeit.cms', f'cache-expiration-{region}'
+        )
     pyramid_dogpile_cache2.configure_dogpile_cache(settings)
 
 
@@ -135,7 +131,7 @@ else:
 
     @grok.subscribe(ZCMLLoaded)
     def set_passwords(event):
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.cms.principals')
+        config = zeit.cms.config.package('zeit.cms.principals')
         if not config:
             return
         registry = zope.principalregistry.principalregistry.principalRegistry

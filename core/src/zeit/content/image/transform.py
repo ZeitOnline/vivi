@@ -1,11 +1,11 @@
 import PIL.Image
 import PIL.ImageColor
 import PIL.ImageEnhance
-import zope.app.appsetup.product
 import zope.component
 import zope.interface
 import zope.security.proxy
 
+import zeit.cms.config
 import zeit.cms.repository.folder
 import zeit.cms.workflow.interfaces
 import zeit.connector.interfaces
@@ -192,7 +192,7 @@ class ImageTransform:
 @zope.component.adapter(zeit.content.image.interfaces.IImage)
 @zope.interface.implementer(zeit.content.image.interfaces.IPersistentThumbnail)
 def persistent_thumbnail_factory(context):
-    config = zope.app.appsetup.product.getProductConfiguration('zeit.content.image') or {}
+    config = zeit.cms.config.package('zeit.content.image')
     method_name = config.get('thumbnail-method', 'thumbnail')
     width = config.get('thumbnail-width', 50)
     if width:

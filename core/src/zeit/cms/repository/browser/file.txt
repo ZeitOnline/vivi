@@ -3,11 +3,8 @@ File views
 
 Set the file as default type:
 
->>> import zope.app.appsetup.product
->>> cms_config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
->>> 'default-type' in cms_config
-False
->>> cms_config['default-type'] = 'file'
+>>> import zeit.cms.config
+>>> zeit.cms.config.set('zeit.cms', 'default-type', 'file')
 
 
 Viewing, downloading and changing files
@@ -257,9 +254,3 @@ When adding a file it is possible to explicitly set the file name:
 >>> browser.getControl('Add').click()
 >>> browser.url
 'http://localhost/++skin++cms/workingcopy/zope.user/medium-pig.txt/@@edit.html'
-
-
-Clean up
-++++++++
-
->>> del cms_config['default-type']

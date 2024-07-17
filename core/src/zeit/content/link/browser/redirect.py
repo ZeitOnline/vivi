@@ -13,6 +13,7 @@ from zeit.cms.workflow.interfaces import IPublishInfo
 from zeit.content.image.interfaces import IImages
 from zeit.content.link.link import Link
 import zeit.cms.browser.menu
+import zeit.cms.config
 
 
 class ISchema(zope.interface.Interface):
@@ -44,11 +45,11 @@ class Redirect(zeit.cms.browser.lightbox.Form):
         container[name] = Link()
         link = container[name]
 
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
         with checked_out(link, temporary=False) as target:
             self.copy_values(self.context, target)
             target.url = self.context.uniqueId.replace(
-                zeit.cms.interfaces.ID_NAMESPACE, config['live-prefix']
+                zeit.cms.interfaces.ID_NAMESPACE,
+                zeit.cms.config.required('zeit.cms', 'live-prefix'),
             )
         self.adjust_workflow(self.context, link)
         self.context = link  # also sets nextURL

@@ -8,6 +8,7 @@ import zope.component
 
 from zeit.cms.content.interfaces import WRITEABLE_ALWAYS
 from zeit.cms.tagging.tag import Tag
+import zeit.cms.config
 import zeit.cms.content.dav
 import zeit.cms.tagging.interfaces
 import zeit.connector.interfaces
@@ -224,8 +225,7 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
     @cachedproperty
     def links(self):
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
-        live_prefix = config['live-prefix']
+        live_prefix = zeit.cms.config.required('zeit.cms', 'live-prefix')
         result = {}
         for tag in tms.get_article_topiclinks(self.context, published=False):
             if tag.link:

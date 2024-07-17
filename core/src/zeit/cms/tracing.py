@@ -10,9 +10,9 @@ from opentelemetry.instrumentation.utils import http_status_to_status_code
 from opentelemetry.trace.status import Status
 import opentelemetry.context
 import opentelemetry.trace
-import zope.app.appsetup.product
 import zope.interface
 
+import zeit.cms.config
 import zeit.cms.interfaces
 
 
@@ -119,12 +119,11 @@ def default_tracer():
 @zope.interface.implementer(zeit.cms.interfaces.ITracer)
 def tracer_from_product_config():
     from opentelemetry.instrumentation.requests import RequestsInstrumentor
-    import zope.app.appsetup.product
 
     from zeit.cms.relstorage import RelStorageInstrumentor
     from zeit.cms.transaction import TransactionInstrumentor
 
-    config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
+    config = zeit.cms.config.package('zeit.cms')
     headers = {'x-honeycomb-team': config['honeycomb-apikey']}
     if config.get('honeycomb-dataset'):
         headers['x-honeycomb-dataset'] = config['honeycomb-dataset']
@@ -181,8 +180,7 @@ def use_span(module, *args, **kw):
 
 
 def apply_samplerate_productconfig(module, config_module, key, context):
-    config = zope.app.appsetup.product.getProductConfiguration(config_module)
-    samplerate = int(config.get(key, 1))
+    samplerate = int(zeit.cms.config.get(config_module, key, 1))
     return apply_samplerate(module, samplerate, context)
 
 
@@ -202,7 +200,7 @@ def record_span(span, status_code, body):
 def anonymize(value):
     if not value:
         return ''
-    config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
+    config = zeit.cms.config.package('zeit.cms')
     key = config.get('honeycomb-personal-data-key')
     if not key:  # Better to send irreversibly encrypted data than cleartext.
         key = Fernet.generate_key()
