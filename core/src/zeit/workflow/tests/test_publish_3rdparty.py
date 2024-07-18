@@ -541,3 +541,17 @@ class BadgerfishTest(unittest.TestCase):
 
     def test_comment_is_removed(self):
         self.assertEqual({'a': {}}, self.badgerfish('<a><!-- comment --></a>'))
+
+
+class IndexNowPayloadTest(zeit.workflow.testing.FunctionalTestCase):
+    def test_index_now_payload_article(self):
+        article = self.repository['testcontent']
+        zope.interface.alsoProvides(article, zeit.content.article.interfaces.IArticle)
+        data = zeit.workflow.testing.publish_json(article, 'indexnow')
+        self.assertEqual('http://localhost/live-prefix/testcontent', data['url'])
+
+    def test_index_now_payload_centerpage(self):
+        article = self.repository['testcontent']
+        zope.interface.alsoProvides(article, zeit.content.cp.interfaces.ICenterPage)
+        data = zeit.workflow.testing.publish_json(article, 'indexnow')
+        self.assertEqual('http://localhost/live-prefix/testcontent', data['url'])

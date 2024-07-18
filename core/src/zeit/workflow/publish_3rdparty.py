@@ -107,7 +107,14 @@ class AuthorDashboard(grok.Adapter):
         return None
 
 
-class BigQueryMixin:
+class LiveUrlMixin:
+    @property
+    def live_url(self):
+        live_prefix = zeit.cms.config.required('zeit.cms', 'live-prefix')
+        return self.context.uniqueId.replace(zeit.cms.interfaces.ID_NAMESPACE, live_prefix)
+
+
+class BigQueryMixin(LiveUrlMixin):
     def publish_json(self):
         tms = zeit.retresco.interfaces.ITMSRepresentation(self.context)()
         if tms is None:
@@ -128,11 +135,6 @@ class BigQueryMixin:
                 'document': {'uuid': uuid.id},
             }
         }
-
-    @property
-    def live_url(self):
-        live_prefix = zeit.cms.config.required('zeit.cms', 'live-prefix')
-        return self.context.uniqueId.replace(zeit.cms.interfaces.ID_NAMESPACE, live_prefix)
 
 
 def badgerfish(node):
@@ -402,3 +404,23 @@ class PublisherData(grok.Adapter):
         if FEATURE_TOGGLES.find(f'disable_publisher_{name}'):
             return True
         return False
+
+
+class IndexNowMixin(LiveUrlMixin):
+    def publish_json(self):
+        return {'url': self.live_url}
+
+    def retract_json(self):
+        return None
+
+
+@grok.implementer(zeit.workflow.interfaces.IPublisherData)
+class ArticleIndexNow(grok.Adapter, IndexNowMixin):
+    grok.context(zeit.content.article.interfaces.IArticle)
+    grok.name('indexnow')
+
+
+@grok.implementer(zeit.workflow.interfaces.IPublisherData)
+class CenterPageIndexNow(grok.Adapter, IndexNowMixin):
+    grok.context(zeit.content.cp.interfaces.ICenterPage)
+    grok.name('indexnow')
