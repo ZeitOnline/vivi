@@ -110,10 +110,11 @@ else:
             # In client mode, they are already initialized.
             settings = zeit.cms.cli.SETTINGS
             if not settings:  # worker or other celery command
-                settings = os.environ.copy()
+                settings = {}
                 filename = os.environ.get('CELERY_CONFIG_MODULE')
                 if filename:
                     settings.update(zeit.cms.cli._parse_paste_ini(filename))
+                settings.update(os.environ)
                 zcml = zope.app.appsetup.appsetup.getConfigContext()
                 if zcml is None or not zcml.hasFeature('zeit.cms.testing'):
                     zeit.cms.cli.configure(settings)
