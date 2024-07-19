@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.10.0 (2024-07-19)
+-------------------
+
+- ZO-883: add pillow-avif-plugin to requirements.txt
+
+
 6.9.0 (2024-07-19)
 ------------------
 
