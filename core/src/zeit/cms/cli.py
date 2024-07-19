@@ -96,6 +96,11 @@ def configure(settings):
         settings[new] = value
         del settings[old]
 
+    # Kludge for local environment that uses paste.ini files
+    pgservicefile = settings.get('pgservicefile')
+    if pgservicefile:
+        os.environ['PGSERVICEFILE'] = pgservicefile
+
     SETTINGS = settings
     _configure_logging(settings)
 
