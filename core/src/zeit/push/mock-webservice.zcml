@@ -4,7 +4,6 @@
 
   <utility factory=".testing.PushNotifier" name="urbanairship" />
   <utility factory=".testing.PushNotifier" name="homepage" />
-  <utility factory=".testing.PushNotifier" name="influxdb" />
   <utility factory=".testing.PushNotifier" name="grafana" />
 
 </configure>
