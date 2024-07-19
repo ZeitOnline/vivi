@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.9.0 (2024-07-19)
+------------------
+
+- ZO-5548: add IndexNow implementation for publish article and publish centerpage
+
+
 6.8.0 (2024-07-17)
 ------------------
 
