@@ -125,21 +125,18 @@ def glob(adapts):
 
 
 @grok.implementer(zeit.edit.interfaces.IRulesManager)
-class RulesManager(grok.GlobalUtility):
+class RulesManager(grok.GlobalUtility, zeit.cms.content.sources.OverridableURLConfiguration):
+    product_configuration = 'zeit.edit'
+    config_url = 'rules-url'
+    default_filename = 'centerpage-validation-rules.py'
+
     def __init__(self):
         self._rules = []
 
     @CONFIG_CACHE.cache_on_arguments()
     def get_rules(self):
         rules = []
-        config = zeit.cms.config.package('zeit.edit')
-        if not config:
-            return []
-        url = config.get('rules-url')
-        if not url:
-            return []
-        file_rules = zeit.cms.content.sources.load(url)
-        log.info('Loading rules from %s' % url)
+        file_rules = zeit.cms.content.sources.load(self.url)
         noop = True
         rule = []
         start_line = 0

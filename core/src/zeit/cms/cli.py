@@ -82,6 +82,25 @@ def configure(settings):
     global SETTINGS
     if SETTINGS:
         log.warning('zeit.cms.cli.configure() called twice')
+
+    # Shells support only [a-z-A-Z0-9_] in environment variable names,
+    # but pyramid and friends needs `.`, and vivi product config needs `-`.
+    # See <https://stackoverflow.com/a/36992531>
+    updates = []
+    for key, value in settings.items():
+        if not ('__dot__' in key or '__dash__' in key):
+            continue
+        new = key.replace('__dot__', '.').replace('__dash__', '-')
+        updates.append((key, new, value))
+    for old, new, value in updates:
+        settings[new] = value
+        del settings[old]
+
+    # Kludge for local environment that uses paste.ini files
+    pgservicefile = settings.get('pgservicefile')
+    if pgservicefile:
+        os.environ['PGSERVICEFILE'] = pgservicefile
+
     SETTINGS = settings
     _configure_logging(settings)
 

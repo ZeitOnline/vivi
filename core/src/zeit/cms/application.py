@@ -58,8 +58,8 @@ class Application:
     tracing_exclude = ['/@@health-check$', '/%40%40health-check$', '/metrics$']
 
     def __call__(self, global_conf=None, **local_conf):
-        settings = os.environ.copy()
-        settings.update(local_conf)
+        settings = local_conf
+        settings.update(os.environ)
         zeit.cms.cli.configure(settings)
         log.info('Configuring ZCA')
         zeit.cms.zope.configure_product_config(settings)
