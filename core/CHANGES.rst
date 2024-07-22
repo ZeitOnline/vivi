@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.11.0 (2024-07-22)
+-------------------
+
+- ZO-5659: Fix programming mistake in vgwort report cronjob
+
+- ZO-5830: Give environment variables precendence over paste.ini settings
+
+
 6.10.0 (2024-07-19)
 -------------------
 
