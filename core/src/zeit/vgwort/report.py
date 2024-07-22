@@ -111,7 +111,7 @@ def report_new_documents():
             info = zeit.vgwort.interfaces.IReportInfo(content)
             data = {
                 x: getattr(info, x)
-                for x in zope.schema.getFieldNames(zope.vgwort.interfaces.IReportInfo)
+                for x in zope.schema.getFieldNames(zeit.vgwort.interfaces.IReportInfo)
             }
             for _ in zeit.cms.cli.commit_with_retry():
                 for key, value in data.items():
