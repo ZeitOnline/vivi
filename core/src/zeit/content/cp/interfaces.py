@@ -31,7 +31,6 @@ log = logging.getLogger(__name__)
 
 
 DAV_NAMESPACE = 'http://namespaces.zeit.de/CMS/zeit.content.cp'
-TEASER_ID_NAMESPACE = 'http://teaser.vivi.zeit.de/'
 
 
 zope.security.checker.BasicTypes[fractions.Fraction] = zope.security.checker.NoProxy
