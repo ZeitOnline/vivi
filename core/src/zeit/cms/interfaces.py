@@ -17,9 +17,7 @@ import zeit.cms.config
 
 DOCUMENT_SCHEMA_NS = 'http://namespaces.zeit.de/CMS/document'
 META_SCHEMA_NS = 'http://namespaces.zeit.de/CMS/meta'
-QPS_SCHEMA_NS = 'http://namespaces.zeit.de/QPS/attributes'
 ID_NAMESPACE = 'http://xml.zeit.de/'
-TEASER_NAMESPACE = 'http://xml.zeit.de/CMS/Teaser'
 PRINT_NAMESPACE = 'http://namespaces.zeit.de/CMS/print'
 IR_NAMESPACE = 'http://namespaces.zeit.de/CMS/interred'
 ZEITWEB_NAMESPACE = 'http://namespaces.zeit.de/CMS/zeit.web'
