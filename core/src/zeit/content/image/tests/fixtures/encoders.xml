@@ -9,4 +9,7 @@
   <encoder type="webp">
     <param name="quality" xsi:type="xsd:int">85</param>
   </encoder>
+  <encoder type="avif">
+    <param name="quality" xsi:type="xsd:int">85</param>
+  </encoder>
 </encoders>
