@@ -264,3 +264,21 @@ class CreateVariantImageTest(zeit.content.image.testing.FunctionalTestCase):
         variant = Variant(id='wide', focus_x=0.5, focus_y=0.5, zoom=1, aspect_ratio='1:1')
         image = self.transform.create_variant_image(variant, size=(0, 0), fill_color='ffffff')
         self.assertEqual((8, 8), image.getImageSize())
+
+    def test_encoder_parameters_configuration_loads_correctly(self):
+        configuration = zeit.content.image.interfaces.ENCODER_PARAMETERS.values()
+        self.assertEqual(
+            {
+                'jpg': {'quality': 85, 'optimize': True, 'progressive': True},
+                'webp': {'quality': 85},
+                'avif': {'quality': 85},
+            },
+            configuration,
+        )
+
+    def test_encoder_parameters_are_configurable(self):
+        group = zeit.content.image.testing.create_image_group_with_master_image()
+        variants = group.create_variant_image(
+            zeit.content.image.interfaces.IVariants(group)['default'], format='JPEG'
+        )
+        self.assertLess(variants.size, group['master-image.jpg'].size)
