@@ -71,6 +71,7 @@ def parse_paste_ini():
 
 def _parse_paste_ini(paste_ini):
     paste = ConfigParser()
+    paste.optionxform = str  # Don't lower-case keys
     paste.read(paste_ini)
     return dict(paste.items('application:main'))
 
