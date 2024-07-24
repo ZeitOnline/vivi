@@ -98,6 +98,12 @@ jobs:
         run: |
             cd deployment
             ./batou deploy gha
+      - name: test local server process
+        run: |
+          health=$(curl -w "%{http_code}" --unix-socket deployment/work/zope/zope.sock http://localhost/@@health-check)
+          if [[ "$health" != "OK200" ]]; then
+              exit 1
+          fi
       - name: display log output
         if: failure()
         run: |
