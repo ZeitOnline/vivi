@@ -97,7 +97,7 @@ def configure(settings):
         del settings[old]
 
     # Kludge for local environment that uses paste.ini files
-    pgservicefile = settings.get('pgservicefile')
+    pgservicefile = settings.get('PGSERVICEFILE')
     if pgservicefile:
         os.environ['PGSERVICEFILE'] = pgservicefile
 
