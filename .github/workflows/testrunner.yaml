@@ -94,7 +94,7 @@ jobs:
           curl -fsSL https://github.com/mozilla/geckodriver/releases/download/v0.34.0/geckodriver-v0.34.0-linux64.tar.gz \
           | tar -xzv geckodriver && sudo mv geckodriver /usr/local/bin/geckodriver
 
-      - name: ./batou deploy local
+      - name: ./batou deploy gha
         run: |
             cd deployment
             ./batou deploy gha
