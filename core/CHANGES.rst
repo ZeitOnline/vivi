@@ -3,6 +3,20 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.12.0 (2024-07-25)
+-------------------
+
+- ZO-5830: paste settings are case sensitive
+
+
+FIX:
+- Fix image-encoders.xml config file format so it actually works
+
+
+MAINT:
+- DEV-852, ZO-5801: Remove obsolete namespaces
+
+
 6.11.0 (2024-07-22)
 -------------------
 
