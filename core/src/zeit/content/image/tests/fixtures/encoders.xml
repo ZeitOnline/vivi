@@ -2,7 +2,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <encoder type="jpg">
-    <param name="quality" xsi:type="xsd:int">85</param>
+    <param name="quality" xsi:type="xsd:int">50</param>
     <param name="optimize" xsi:type="xsd:boolean">true</param>
     <param name="progressive" xsi:type="xsd:boolean">true</param>
   </encoder>

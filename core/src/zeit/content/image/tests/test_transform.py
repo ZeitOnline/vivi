@@ -1,5 +1,6 @@
 from pprint import pformat
 import importlib.resources
+import io
 
 import PIL.Image
 import PIL.ImageDraw
@@ -264,3 +265,15 @@ class CreateVariantImageTest(zeit.content.image.testing.FunctionalTestCase):
         variant = Variant(id='wide', focus_x=0.5, focus_y=0.5, zoom=1, aspect_ratio='1:1')
         image = self.transform.create_variant_image(variant, size=(0, 0), fill_color='ffffff')
         self.assertEqual((8, 8), image.getImageSize())
+
+    def test_encoder_parameters_are_configurable(self):
+        group = zeit.content.image.testing.create_image_group_with_master_image()
+        transform = zeit.content.image.interfaces.ITransform(group['master-image.jpg'])
+        highquality = io.BytesIO()
+        img = transform.image.copy()
+        img.thumbnail((200, 200))
+        img.save(highquality, 'JPEG', quality=75)
+        highquality.seek(0)
+        configured = transform.thumbnail(200, 200)
+
+        self.assertLess(len(configured.open().read()), len(highquality.read()))
