@@ -435,7 +435,7 @@ class EncoderParameters(zeit.cms.content.sources.CachedXMLBase):
     def values(self):
         result = {}
         for encoder in self._get_tree().iterfind('encoder'):
-            result[encoder.get('name')] = params = {}
+            result[encoder.get('format')] = params = {}
             for node in encoder.iterfind('param'):
                 params[node.get('name')] = node.pyval
         return result
