@@ -46,6 +46,7 @@ import zope.sqlalchemy
 
 from zeit.cms.interfaces import DOCUMENT_SCHEMA_NS
 from zeit.cms.repository.interfaces import ConflictError
+from zeit.connector.content import CommonMetadata
 from zeit.connector.interfaces import (
     INTERNAL_PROPERTY,
     CopyError,
@@ -68,6 +69,15 @@ log = getLogger(__name__)
 
 
 ID_NAMESPACE = zeit.connector.interfaces.ID_NAMESPACE[:-1]
+
+
+def feature_toggle(key):
+    """Temp workaround to use feature toggles in connector instead of feature toggles
+    from zeit.cms.content.sources.
+
+    Using feature toggles from a file which is stored inside the database
+    inside the connector is unfortunately not possible"""
+    return zeit.cms.config.get('zeit.connector', key) is not None
 
 
 class LockStatus(Enum):
@@ -606,10 +616,21 @@ class Connector:
             (var, value) = expr.operands
             name = var.name
             namespace = var.namespace.replace(Content.NS, '', 1)
+            column = self._column_by_namespace(namespace, name)
+            if column is not None:
+                return column == value
             value = json.dumps(str(value))  # Apply correct quoting for jsonpath.
             return Content.unsorted.path_match(f'$.{namespace}.{name} == {value}')
         else:
             raise RuntimeError(f'Unknown operand {op!r} while building search query')
+
+    @staticmethod
+    def _column_by_namespace(namespace, name):
+        if not feature_toggle('connector_read_metadata_columns'):
+            return None
+        for column in sqlalchemy.orm.class_mapper(Content).columns:
+            if namespace == column.info.get('namespace') and name == column.info.get('name'):
+                return column
 
     def invalidate_cache(self, uniqueid):
         content = self._get_content(uniqueid)
@@ -632,7 +653,7 @@ METADATA = sqlalchemy.MetaData()
 DBObject = sqlalchemy.orm.declarative_base(metadata=METADATA)
 
 
-class Content(DBObject):
+class Content(DBObject, CommonMetadata):
     __tablename__ = 'properties'
     __table_args__ = (
         Index(
@@ -707,6 +728,13 @@ class Content(DBObject):
         props[('is_collection', INTERNAL_PROPERTY)] = self.is_collection
         props[('body_checksum', INTERNAL_PROPERTY)] = self._body_checksum()
 
+        if feature_toggle('connector_read_metadata_columns'):
+            for column in sqlalchemy.orm.class_mapper(type(self)).columns:
+                namespace, name = column.info.get('namespace'), column.info.get('name')
+                if namespace is None:
+                    continue
+                props[(name, self.NS + namespace)] = getattr(self, column.name)
+
         if self.lock:
             props[('lock_principal', INTERNAL_PROPERTY)] = self.lock.principal
             props[('lock_until', INTERNAL_PROPERTY)] = self.lock.until
@@ -724,9 +752,20 @@ class Content(DBObject):
                 id = id[10:-1]  # strip off `{urn:uuid:}`
             self.id = id
 
-        type = props.get(('type', self.NS + 'meta'))
-        if type:
-            self.type = type
+        typ = props.get(('type', self.NS + 'meta'))
+        if typ:
+            self.type = typ
+
+        if feature_toggle('connector_write_metadata_columns'):
+            for column in sqlalchemy.orm.class_mapper(type(self)).columns:
+                namespace, name = column.info.get('namespace'), column.info.get('name')
+                if namespace is None:
+                    continue
+                value = props.get((name, self.NS + namespace), self)
+                if value is not self:
+                    setattr(self, column.name, value)
+
+        self.access = props.get(('access', self.NS + 'document'))
 
         unsorted = collections.defaultdict(dict)
         for (k, ns), v in props.items():

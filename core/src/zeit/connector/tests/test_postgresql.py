@@ -297,3 +297,27 @@ class ContractChecksum(zeit.connector.testing.SQLTest):
         self.connector.add(res)
         res = self.connector['http://xml.zeit.de/testing/foo']
         self.assertEqual(None, res.properties[self.CHECK_PROPERTY])
+
+
+class PropertiesColumnTest(zeit.connector.testing.SQLTest):
+    NS = 'http://namespaces.zeit.de/CMS/'
+
+    def test_properties_can_be_stored_in_separate_columns(self):
+        res = self.add_resource('foo', properties={('access', self.NS + 'document'): 'foo'})
+        self.assertEqual('foo', res.properties[('access', self.NS + 'document')])
+        content = self.connector._get_content(res.id)
+        self.assertEqual('foo', content.access)
+
+    def test_search_looks_in_columns_or_unsorted_depending_on_toggle(self):
+        zeit.cms.config.set('zeit.connector', 'connector_write_metadata_columns', True)
+
+        res = self.add_resource('foo', properties={('access', self.NS + 'document'): 'foo'})
+        access = SearchVar('access', 'http://namespaces.zeit.de/CMS/document')
+        for toggle in [False, True]:
+            zeit.cms.config.set('zeit.connector', 'connector_read_metadata_columns', toggle)
+            if toggle:
+                self.connector._get_content(res.id).unsorted = {}
+                transaction.commit()
+            result = self.connector.search([access], access == 'foo')
+            unique_id, uuid = next(result)
+            self.assertEqual(res.id, unique_id)
