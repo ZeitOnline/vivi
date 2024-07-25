@@ -6,7 +6,6 @@ from io import BytesIO, StringIO
 from logging import getLogger
 from uuid import uuid4
 import collections
-import functools
 import hashlib
 import itertools
 import json
@@ -73,7 +72,6 @@ log = getLogger(__name__)
 ID_NAMESPACE = zeit.connector.interfaces.ID_NAMESPACE[:-1]
 
 
-@functools.cache
 def feature_toggle(key):
     """Temp workaround to use feature toggles in connector instead of feature toggles
     from zeit.cms.content.sources.
