@@ -13,13 +13,14 @@ mapping from the internal value to unicode just uses `unicode()`.
 
 A plain text field:
 
+>>> from zeit.connector.resource import PropertyKey
 >>> import zeit.connector.resource
 >>> import zeit.cms.content.interfaces
 >>> import zope.schema
 >>> props = zeit.connector.resource.WebDAVProperties()
 >>> def get_converter(field):
 ...     return zope.component.getMultiAdapter(
-...         (field, props), zeit.cms.content.interfaces.IDAVPropertyConverter)
+...         (field, props, PropertyKey('unused', 'unused')), zeit.cms.content.interfaces.IDAVPropertyConverter)
 
 >>> text_field = zope.schema.Text()
 >>> converter = get_converter(text_field)
@@ -649,7 +650,7 @@ Event: <zeit.cms.content.interfaces.DAVPropertyChangedEvent object at 0x...>
     Name: title
     Field: <zope.schema._bootstrapfields.TextLine object at 0x...>
 >>> dict(content.properties)
-{('title', 'myns'): 'Mary had a little lamb.'}
+{PropertyKey(name='title', namespace='myns'): 'Mary had a little lamb.'}
 
 
 When we set the title to None again, the property will be marked as to be
@@ -663,7 +664,7 @@ Event: <zeit.cms.content.interfaces.DAVPropertyChangedEvent object at 0x...>
     Name: title
     Field: <zope.schema._bootstrapfields.TextLine object at 0x...>
 >>> dict(content.properties)
-{('title', 'myns'): DeleteProperty}
+{PropertyKey(name='title', namespace='myns'): DeleteProperty}
 >>> content.title is None
 True
 

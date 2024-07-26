@@ -1,3 +1,5 @@
+import collections
+
 import persistent.mapping
 import zope.interface
 
@@ -36,6 +38,9 @@ class ReadOnlyWebDAVProperties(WebDAVProperties):
 
     def popitem(self, *args, **kwargs):
         raise RuntimeError('Cannot write on ReadOnlyWebDAVProperties')
+
+
+PropertyKey = collections.namedtuple('PropertyKey', ('name', 'namespace'))
 
 
 @zope.interface.implementer(zeit.connector.interfaces.IResource)

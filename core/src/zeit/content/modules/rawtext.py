@@ -88,9 +88,10 @@ class EmbedParameters(
 
     def _converter(self, name):
         props = zeit.cms.content.property.DAVConverterWrapper.DUMMY_PROPERTIES
+        key = zeit.cms.content.property.DAVConverterWrapper.DUMMY_PROPERTYKEY
         field = self.fields.get(name, zope.schema.TextLine())
         return zope.component.queryMultiAdapter(
-            (field, props), zeit.cms.content.interfaces.IDAVPropertyConverter
+            (field, props, key), zeit.cms.content.interfaces.IDAVPropertyConverter
         )
 
     def keys(self):

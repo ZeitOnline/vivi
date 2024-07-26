@@ -29,14 +29,18 @@ class TestDAVConverterWrapper(unittest.TestCase):
         idpc = mock.Mock()
         zope.component.getSiteManager().registerAdapter(
             idpc,
-            required=(zope.interface.Interface, zope.interface.Interface),
+            required=(
+                zope.interface.Interface,
+                zope.interface.Interface,
+                zope.interface.Interface,
+            ),
             provided=zeit.cms.content.interfaces.IDAVPropertyConverter,
         )
         value = wrap.__get__(mock.sentinel.instance, mock.sentinel.class_)
         # Field is being bound
         field.bind.assert_called_with(mock.sentinel.instance)
         bound_field = field.bind.return_value
-        idpc.assert_called_with(bound_field, wrap.DUMMY_PROPERTIES)
+        idpc.assert_called_with(bound_field, wrap.DUMMY_PROPERTIES, wrap.DUMMY_PROPERTYKEY)
         converter = idpc.return_value
         converter.fromProperty.assert_called_with(prop.__get__.return_value)
         self.assertEqual(converter.fromProperty.return_value, value)
@@ -52,14 +56,18 @@ class TestDAVConverterWrapper(unittest.TestCase):
         idpc = mock.Mock()
         zope.component.getSiteManager().registerAdapter(
             idpc,
-            required=(zope.interface.Interface, zope.interface.Interface),
+            required=(
+                zope.interface.Interface,
+                zope.interface.Interface,
+                zope.interface.Interface,
+            ),
             provided=zeit.cms.content.interfaces.IDAVPropertyConverter,
         )
         wrap.__set__(mock.sentinel.instance, mock.sentinel.value)
         # Field is being bound
         field.bind.assert_called_with(mock.sentinel.instance)
         bound_field = field.bind.return_value
-        idpc.assert_called_with(bound_field, wrap.DUMMY_PROPERTIES)
+        idpc.assert_called_with(bound_field, wrap.DUMMY_PROPERTIES, wrap.DUMMY_PROPERTYKEY)
         converter = idpc.return_value
         converter.toProperty.assert_called_with(mock.sentinel.value)
         prop.__set__.assert_called_with(mock.sentinel.instance, converter.toProperty.return_value)

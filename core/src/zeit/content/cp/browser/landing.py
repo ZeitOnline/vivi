@@ -9,6 +9,7 @@ import zope.component
 
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.gallery.interfaces import IGallery
+import zeit.cms.content.property
 import zeit.connector.resource
 import zeit.content.cp.interfaces
 import zeit.edit.browser.landing
@@ -19,7 +20,6 @@ class BodyLandingZone(zeit.edit.browser.landing.LandingZone):
     """LandingZone to create a Region (potentially with areas inside it)."""
 
     block_type = zeit.edit.browser.view.Form('block_type')
-    DUMMY_PROPS = zeit.connector.resource.WebDAVProperties()
 
     def update(self):
         self.areas = self.block_params.pop('areas', [])
@@ -31,11 +31,13 @@ class BodyLandingZone(zeit.edit.browser.landing.LandingZone):
             area = self.block.create_item('area')
             area.kind = config.pop('kind')
             for name, value in config.items():
+                props = zeit.cms.content.property.DAVConverterWrapper.DUMMY_PROPERTIES
+                key = zeit.cms.content.property.DAVConverterWrapper.DUMMY_PROPERTYKEY
                 field = zeit.content.cp.interfaces.IArea[name].bind(area)
                 # We (ab)use the DAV type conversion for a `fromUnicode` that
                 # supports Sources, because the mechanics are all there already
                 converter = zope.component.getMultiAdapter(
-                    (field, self.DUMMY_PROPS), zeit.cms.content.interfaces.IDAVPropertyConverter
+                    (field, props, key), zeit.cms.content.interfaces.IDAVPropertyConverter
                 )
                 value = converter.fromProperty(value)
                 field.set(area, value)

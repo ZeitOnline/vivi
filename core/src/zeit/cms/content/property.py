@@ -7,6 +7,7 @@ import zope.component
 import zope.schema.interfaces
 
 from zeit.cms.content.util import create_parent_nodes
+from zeit.connector.resource import PropertyKey
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.connector.resource
@@ -245,6 +246,7 @@ class DAVConverterWrapper:
     """Wraps a property and converts data using dav convert."""
 
     DUMMY_PROPERTIES = zeit.connector.resource.WebDAVProperties()
+    DUMMY_PROPERTYKEY = PropertyKey('always-deserialize-strings', '')
 
     def __init__(self, wrapped_property, field):
         self.wrapped_property = wrapped_property
@@ -265,5 +267,6 @@ class DAVConverterWrapper:
     def get_converter(self, instance):
         field = self.field.bind(instance)
         return zope.component.getMultiAdapter(
-            (field, self.DUMMY_PROPERTIES), zeit.cms.content.interfaces.IDAVPropertyConverter
+            (field, self.DUMMY_PROPERTIES, self.DUMMY_PROPERTYKEY),
+            zeit.cms.content.interfaces.IDAVPropertyConverter,
         )
