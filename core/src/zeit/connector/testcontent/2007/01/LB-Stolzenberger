@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <article>
   <head>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="banner">yes</attribute>
@@ -12,6 +12,6 @@
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="jobname">LB_Stolzenberger</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="author">Anne Krohn</attribute>
   </head>
-  <body><bu><strong>Der Flaschensammler  ist mir ähnlich</strong><strong>Von Frank Stolzenberger, 42, Ludwigshafen</strong></bu><p>Henning Sußebach: »Hoffmanns Blick auf die Welt«, ZEIT Nr. 48, LEBEN</p>
-		<p>Henning Sußebach hat im Ressort Leben die Geschichte vom Flaschensammler Oliver Hoffmann aufgeschrieben, der am Rande der Gesellschaft lebt und sich mit dem Verkauf von Pfandgut über Wasser hält. Als ich den Artikel las, merkte ich schnell, wie seelenverwandt mir Hoffmann ist. Wir erblickten fast zum gleichen Zeitpunkt das Licht der Welt, wuchsen mit <em>Bravo-</em> und Pink-Floyd-Postern auf. Jedoch hatte ich das Glück, in meinen Eltern Sponsoren gefunden zu haben, die mir Freiheit und Bildung zugestanden und mich bis heute fördern. Ich war, wie Hoffmann, bei der Luftwaffe, fand in Stabsunteroffizieren Vorbilder. Doch konnte ich, anders als er, finanziell unabhängig bleiben. Wie schnell hätte mein Leben aber so verlaufen können wie das des Flaschensammlers. </p></body>
+  <body><bu><strong>Der Flaschensammler  ist mir Ã¤hnlich</strong><strong>Von Frank Stolzenberger, 42, Ludwigshafen</strong></bu><p>Henning SuÃŸebach: Â»Hoffmanns Blick auf die WeltÂ«, ZEIT Nr. 48, LEBEN</p>
+		<p>Henning SuÃŸebach hat im Ressort Leben die Geschichte vom Flaschensammler Oliver Hoffmann aufgeschrieben, der am Rande der Gesellschaft lebt und sich mit dem Verkauf von Pfandgut Ã¼ber Wasser hÃ¤lt. Als ich den Artikel las, merkte ich schnell, wie seelenverwandt mir Hoffmann ist. Wir erblickten fast zum gleichen Zeitpunkt das Licht der Welt, wuchsen mit <em>Bravo-</em> und Pink-Floyd-Postern auf. Jedoch hatte ich das GlÃ¼ck, in meinen Eltern Sponsoren gefunden zu haben, die mir Freiheit und Bildung zugestanden und mich bis heute fÃ¶rdern. Ich war, wie Hoffmann, bei der Luftwaffe, fand in Stabsunteroffizieren Vorbilder. Doch konnte ich, anders als er, finanziell unabhÃ¤ngig bleiben. Wie schnell hÃ¤tte mein Leben aber so verlaufen kÃ¶nnen wie das des Flaschensammlers. </p></body>
 </article>

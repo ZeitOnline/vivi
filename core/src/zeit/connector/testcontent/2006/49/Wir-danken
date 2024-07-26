@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <article>
   <head>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="banner">yes</attribute>
@@ -24,6 +24,6 @@
     <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="page">56</attribute>
   </head>
   <body>
-    <p><strong>Wir danken</strong>Sina Giesecke und Helene Durst (Gestaltung und Layout) sowie Melanie Böge (Bild- redaktion). Die Illustrationen stammen von Alexandra Kardinar und Volker Schlecht. Das  Streitgespräch fotografierte Dominik Gigler</p>
+    <p><strong>Wir danken</strong>Sina Giesecke und Helene Durst (Gestaltung und Layout) sowie Melanie BÃ¶ge (Bild- redaktion). Die Illustrationen stammen von Alexandra Kardinar und Volker Schlecht. Das  StreitgesprÃ¤ch fotografierte Dominik Gigler</p>
   </body>
 </article>

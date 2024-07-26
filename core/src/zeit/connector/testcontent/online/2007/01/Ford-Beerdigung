@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <article>
   <head>
 <!-- CMS/document -->
@@ -51,20 +51,20 @@
   <body>
     <supertitle>USA</supertitle>
     <title>Ford wird beigesetzt</title>
-    <subtitle>Ex-US-Präsident Gerald Ford wird am Mittwoch in seinem Heimatort beerdigt</subtitle>
-    <p>Als einen Mann »mit Charakter, Mut und Bescheidenheit« hat US-Präsident George W. Bush in einem Staatsakt am Dienstag den gestorbenen Expräsidenten Gerald Ford gewürdigt. Bush sprach vor 3000 geladenen Gästen in der Nationalen Kathedrale in Washington - der Höhepunkt sechstägiger Trauerfeierlichkeiten für Ford. Dieser hatte 1974 die Nachfolge des wegen des Watergate- Skandals zurückgetretenen Richard Nixon angetreten und seinen Vorgänger dann amnestiert. Bush sprach in seiner Rede von einer »harten und anständigen Entscheidung«, die Ford wahrscheinlich mit seiner folgenden Niederlage gegen Jimmy Carter bei der Präsidentschaftswahl bezahlt habe.<br/></p>
-    <p>Carter sowie die Expräsidenten George Bush Senior und Bill Clinton gehörten ebenso zu den Trauergästen wie Nancy Reagan, die Witwe des vor zweieinhalb Jahren gestorbenen Ronald Reagan. Deutschland war durch den Gesandten Johannes Haindl vertreten.<br/></p>
-    <p>In einer der bewegendsten Szenen der Trauerfeier hatte Bush die von tiefem Schmerz gezeichnete, aber zugleich äußerst würdevoll wirkende 88-jährige Witwe Betty Ford am Arm in das Gotteshaus geführt. Danach folgte der in die Nationalflagge gehüllte Sarg mit dem Leichnam Fords, der in der Nacht zum Mittwoch vergangener Woche im Alter von 93 Jahren gestorben und seit Samstagabend im Washingtoner Kapitol aufgebahrt gewesen war. Tausende Bürger hatten dort die Gelegenheit genutzt, von Ford Abschied zu nehmen. Der Andrang im Kapitol war aber deutlich geringer als vor zweieinhalb Jahren bei der Aufbahrung von Reagan im Kongressgebäude.<br/></p>
-    <p>Entsprechend dem Wunsch von Ford waren insgesamt die Trauerfeierlichkeiten weitaus schlichter als jene vor zweieinhalb Jahren. So wurde Fords Sarg auch mit einem Leichenwagen zur Kathedrale gebracht, während bei Reagan eine von Pferden gezogene Lafette benutzt wurde. Seine letzte Ruhestätte wird Ford an diesem Mittwoch auf dem Gelände seiner Präsidenten-Bibliothek in Grand Rapids (Michigan) finden, wo er aufwuchs.</p>
+    <subtitle>Ex-US-PrÃ¤sident Gerald Ford wird am Mittwoch in seinem Heimatort beerdigt</subtitle>
+    <p>Als einen Mann Â»mit Charakter, Mut und BescheidenheitÂ« hat US-PrÃ¤sident George W. Bush in einem Staatsakt am Dienstag den gestorbenen ExprÃ¤sidenten Gerald Ford gewÃ¼rdigt. Bush sprach vor 3000 geladenen GÃ¤sten in der Nationalen Kathedrale in Washington - der HÃ¶hepunkt sechstÃ¤giger Trauerfeierlichkeiten fÃ¼r Ford. Dieser hatte 1974 die Nachfolge des wegen des Watergate- Skandals zurÃ¼ckgetretenen Richard Nixon angetreten und seinen VorgÃ¤nger dann amnestiert. Bush sprach in seiner Rede von einer Â»harten und anstÃ¤ndigen EntscheidungÂ«, die Ford wahrscheinlich mit seiner folgenden Niederlage gegen Jimmy Carter bei der PrÃ¤sidentschaftswahl bezahlt habe.<br/></p>
+    <p>Carter sowie die ExprÃ¤sidenten George Bush Senior und Bill Clinton gehÃ¶rten ebenso zu den TrauergÃ¤sten wie Nancy Reagan, die Witwe des vor zweieinhalb Jahren gestorbenen Ronald Reagan. Deutschland war durch den Gesandten Johannes Haindl vertreten.<br/></p>
+    <p>In einer der bewegendsten Szenen der Trauerfeier hatte Bush die von tiefem Schmerz gezeichnete, aber zugleich Ã¤uÃŸerst wÃ¼rdevoll wirkende 88-jÃ¤hrige Witwe Betty Ford am Arm in das Gotteshaus gefÃ¼hrt. Danach folgte der in die Nationalflagge gehÃ¼llte Sarg mit dem Leichnam Fords, der in der Nacht zum Mittwoch vergangener Woche im Alter von 93 Jahren gestorben und seit Samstagabend im Washingtoner Kapitol aufgebahrt gewesen war. Tausende BÃ¼rger hatten dort die Gelegenheit genutzt, von Ford Abschied zu nehmen. Der Andrang im Kapitol war aber deutlich geringer als vor zweieinhalb Jahren bei der Aufbahrung von Reagan im KongressgebÃ¤ude.<br/></p>
+    <p>Entsprechend dem Wunsch von Ford waren insgesamt die Trauerfeierlichkeiten weitaus schlichter als jene vor zweieinhalb Jahren. So wurde Fords Sarg auch mit einem Leichenwagen zur Kathedrale gebracht, wÃ¤hrend bei Reagan eine von Pferden gezogene Lafette benutzt wurde. Seine letzte RuhestÃ¤tte wird Ford an diesem Mittwoch auf dem GelÃ¤nde seiner PrÃ¤sidenten-Bibliothek in Grand Rapids (Michigan) finden, wo er aufwuchs.</p>
   </body>
   <teaser>
     <title>Ford wird beigesetzt</title>
-    <text>Ex-US-Präsident Gerald Ford wird am Mittwoch in seinem Heimatort beerdigt</text>
+    <text>Ex-US-PrÃ¤sident Gerald Ford wird am Mittwoch in seinem Heimatort beerdigt</text>
     <text_length>18</text_length>
   </teaser>
   <indexteaser>
     <title>Gerald Ford</title>
-    <text>Der Ex-US-Präsident wird am Mittwoch beerdigt</text>
+    <text>Der Ex-US-PrÃ¤sident wird am Mittwoch beerdigt</text>
     <text_length>45</text_length>
     <title_length>11</title_length>
   </indexteaser>

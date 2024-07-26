@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <centerpage style="newcp">
   <head>
 <!-- CMS/document -->
@@ -49,7 +49,7 @@
         <block href="" id="" layout="" priority="1">
           <supertitle href="">Aktien, Zinsen, Konjunktur</supertitle>
           <title>Welt in Zahlen</title>
-          <text>Der japanische Aktienmarkt schwächelt, dafür geht es der kanadischen Wirtschaft umso besser und die Deutschen wollen offenbar für ein gutes Weihnachtsgeschäft sorgen. Die Übersicht in Grafiken.</text>
+          <text>Der japanische Aktienmarkt schwÃ¤chelt, dafÃ¼r geht es der kanadischen Wirtschaft umso besser und die Deutschen wollen offenbar fÃ¼r ein gutes WeihnachtsgeschÃ¤ft sorgen. Die Ãœbersicht in Grafiken.</text>
         </block>
       </container>
     </column>
@@ -59,39 +59,39 @@
           <title>Starker Dow Jones</title>
           <text>Seit drei Monaten ist die Entwicklung nun stabil: Auch im November setzte der Dow&#13;
 Jones seinen Kursanstieg fort. In diesem Monat gelang ihm sogar ein&#13;
-Jahreshoch. Danach schwächte sich die Aufwärtsbewegung zwar etwas ab.&#13;
-Doch der Index behauptete sich weiterhin gut.<br/><br/>Den aktuellen Stand von <a href="http://www.zeit.de/finanzen/kursabfrage?sym=DJI.DJX" class="dax">Dow Jones</a>, <a href="http://www.zeit.de/finanzen/kursabfrage?sym=NDX.X.NQI" class="dax">Nasdaq</a>, <a href="http://www.zeit.de/finanzen/kursabfrage?sym=N225.TWI" class="dax">Nikkei</a>, <a href="http://www.zeit.de/finanzen/kursabfrage?sym=DAX.IND" class="dax">Dax</a>, <a href="http://www.zeit.de/finanzen/kursabfrage?sym=TDXP.IND" class="dax">TecDax</a> und <a href="http://www.zeit.de/finanzen/kursabfrage?sym=SX5E.DJX" class="dax">Euro Stoxx 50</a> erhalten Sie beim Klick auf die Icons. Einen aktuellen Marktüberblick <a href="http://www.zeit.de/finanzen/marktueberblick">finden Sie hier.</a></text>
-          <image expires="" src="/cms/work/bilder/2006/49/aktuell/bildergalerien/weltinzahlen/01.gif" width="380" align="left" alt="" border="" href="" layout="" vspace=""><copyright>© ZEIT-Grafik/Quelle: Datastream</copyright> BILD </image>
+Jahreshoch. Danach schwÃ¤chte sich die AufwÃ¤rtsbewegung zwar etwas ab.&#13;
+Doch der Index behauptete sich weiterhin gut.<br/><br/>Den aktuellen Stand von <a href="http://www.zeit.de/finanzen/kursabfrage?sym=DJI.DJX" class="dax">Dow Jones</a>, <a href="http://www.zeit.de/finanzen/kursabfrage?sym=NDX.X.NQI" class="dax">Nasdaq</a>, <a href="http://www.zeit.de/finanzen/kursabfrage?sym=N225.TWI" class="dax">Nikkei</a>, <a href="http://www.zeit.de/finanzen/kursabfrage?sym=DAX.IND" class="dax">Dax</a>, <a href="http://www.zeit.de/finanzen/kursabfrage?sym=TDXP.IND" class="dax">TecDax</a> und <a href="http://www.zeit.de/finanzen/kursabfrage?sym=SX5E.DJX" class="dax">Euro Stoxx 50</a> erhalten Sie beim Klick auf die Icons. Einen aktuellen MarktÃ¼berblick <a href="http://www.zeit.de/finanzen/marktueberblick">finden Sie hier.</a></text>
+          <image expires="" src="/cms/work/bilder/2006/49/aktuell/bildergalerien/weltinzahlen/01.gif" width="380" align="left" alt="" border="" href="" layout="" vspace=""><copyright>Â© ZEIT-Grafik/Quelle: Datastream</copyright> BILD </image>
         </block>
         <block>
-          <title>Japan schwächelt</title>
-          <text>Während die die Geschäfte auf den Aktienmärkten in Singapur und Hongkong  in den vergangenen vier Wochen gut liefen, zeigte sich der japanische Nikkei wenig kraftvoll. Die Phase, wärend der der Index in den vergangenen zwei Jahren stetig anstieg, scheint vorerst vorbei.</text>
-          <image expires="" src="/cms/work/bilder/2006/49/aktuell/bildergalerien/weltinzahlen/02.gif" width="380" align="left" alt="" border="" href="" layout="" vspace=""><copyright>© ZEIT-Grafik/Quelle: Datastream</copyright> BILD </image>
+          <title>Japan schwÃ¤chelt</title>
+          <text>WÃ¤hrend die die GeschÃ¤fte auf den AktienmÃ¤rkten in Singapur und Hongkong  in den vergangenen vier Wochen gut liefen, zeigte sich der japanische Nikkei wenig kraftvoll. Die Phase, wÃ¤rend der der Index in den vergangenen zwei Jahren stetig anstieg, scheint vorerst vorbei.</text>
+          <image expires="" src="/cms/work/bilder/2006/49/aktuell/bildergalerien/weltinzahlen/02.gif" width="380" align="left" alt="" border="" href="" layout="" vspace=""><copyright>Â© ZEIT-Grafik/Quelle: Datastream</copyright> BILD </image>
         </block>
         <block>
-          <title>Frohes Weihnachtsgeschäft </title>
-          <text>Das Konsumklima in Deutschland ist so gut wie seit fünf Jahren nicht&#13;
+          <title>Frohes WeihnachtsgeschÃ¤ft </title>
+          <text>Das Konsumklima in Deutschland ist so gut wie seit fÃ¼nf Jahren nicht&#13;
 mehr. Der Konsumklimaindikator prognostiziert nach 9,3 Punkten im&#13;
-November für Dezember einen Wert von 9,4 Punkten. Dies ist der höchste&#13;
-Wert seit fünf Jahren. Immer mehr Menschen neigen dazu, sich neue Dinge anzuschaffen - das wirkt positiv auf das Konsumklima und ist ein verheißungsvolles Vorzeichen für ein ertragreiches Weihnachtsgeschäft.&#13;
-Doch dahinter steckt offenbar auch rationales Kalkül: Die Erhöhung der Mehrwertsteuer rückt immer näher.</text>
-          <image expires="" src="/cms/work/bilder/2006/49/aktuell/bildergalerien/weltinzahlen/03.gif" width="380" align="left" alt="" border="" href="" layout="" vspace=""><copyright>© ZEIT-Grafik/Quelle: Datastream</copyright> BILD </image>
+November fÃ¼r Dezember einen Wert von 9,4 Punkten. Dies ist der hÃ¶chste&#13;
+Wert seit fÃ¼nf Jahren. Immer mehr Menschen neigen dazu, sich neue Dinge anzuschaffen - das wirkt positiv auf das Konsumklima und ist ein verheiÃŸungsvolles Vorzeichen fÃ¼r ein ertragreiches WeihnachtsgeschÃ¤ft.&#13;
+Doch dahinter steckt offenbar auch rationales KalkÃ¼l: Die ErhÃ¶hung der Mehrwertsteuer rÃ¼ckt immer nÃ¤her.</text>
+          <image expires="" src="/cms/work/bilder/2006/49/aktuell/bildergalerien/weltinzahlen/03.gif" width="380" align="left" alt="" border="" href="" layout="" vspace=""><copyright>Â© ZEIT-Grafik/Quelle: Datastream</copyright> BILD </image>
         </block>
         <block>
           <title>Gutes Klima</title>
-          <text>Es gab nur wenige Zeiten, in denen es der kanadischen Wirtschaft besser ging als heute. Das Land besitzt die besten Wirtschaftsdaten der G8 und befindet sich außerdem in der zweitlängsten Phase der wirtschaftlichen Expansion. Finanzminister Jim Flaherty hat nun sogar das Ziel ausgegeben, Kanada solle im Jahr 2021 frei von Netto-Schulden sein.&#13;
-<br/><br/><a href="http://www.zeit.de/finanzen/marktueberblick">Kurse und Indizes</a> - <em>Die wichtigsten Marktdaten im Überblick</em> »<br/><br/><a href="http://www.zeit.de/finanzen/index">Finanzen</a> - <em>Mehr Tipps für Ihr Geld »</em><br/><br/></text>
-          <image expires="" src="/cms/work/bilder/2006/49/aktuell/bildergalerien/weltinzahlen/04.gif" width="380" align="left" alt="" border="" href="" layout="" vspace=""><copyright>© ZEIT-Grafik/Quelle: Datastream</copyright> BILD </image>
+          <text>Es gab nur wenige Zeiten, in denen es der kanadischen Wirtschaft besser ging als heute. Das Land besitzt die besten Wirtschaftsdaten der G8 und befindet sich auÃŸerdem in der zweitlÃ¤ngsten Phase der wirtschaftlichen Expansion. Finanzminister Jim Flaherty hat nun sogar das Ziel ausgegeben, Kanada solle im Jahr 2021 frei von Netto-Schulden sein.&#13;
+<br/><br/><a href="http://www.zeit.de/finanzen/marktueberblick">Kurse und Indizes</a> - <em>Die wichtigsten Marktdaten im Ãœberblick</em> Â»<br/><br/><a href="http://www.zeit.de/finanzen/index">Finanzen</a> - <em>Mehr Tipps fÃ¼r Ihr Geld Â»</em><br/><br/></text>
+          <image expires="" src="/cms/work/bilder/2006/49/aktuell/bildergalerien/weltinzahlen/04.gif" width="380" align="left" alt="" border="" href="" layout="" vspace=""><copyright>Â© ZEIT-Grafik/Quelle: Datastream</copyright> BILD </image>
         </block>
       </container>
     </column>
-    <subtitle>Der japanische Aktienmarkt schwächelt, dafür geht es der kanadischen Wirtschaft umso besser, und die Deutschen wollen offenbar für ein gutes Weihnachtsgeschäft sorgen. Die Übersicht in Grafiken</subtitle>
+    <subtitle>Der japanische Aktienmarkt schwÃ¤chelt, dafÃ¼r geht es der kanadischen Wirtschaft umso besser, und die Deutschen wollen offenbar fÃ¼r ein gutes WeihnachtsgeschÃ¤ft sorgen. Die Ãœbersicht in Grafiken</subtitle>
     <supertitle>Aktien, Zinsen, Konjunktur</supertitle>
     <title>Welt in Zahlen</title>
   </body>
   <teaser>
     <title>Welt in Zahlen</title>
-    <text>Der japanische Aktienmarkt schwächelt, dafür geht es der kanadischen Wirtschaft umso besser, und die Deutschen wollen offenbar für ein gutes Weihnachtsgeschäft sorgen. Die Übersicht in Grafiken</text>
+    <text>Der japanische Aktienmarkt schwÃ¤chelt, dafÃ¼r geht es der kanadischen Wirtschaft umso besser, und die Deutschen wollen offenbar fÃ¼r ein gutes WeihnachtsgeschÃ¤ft sorgen. Die Ãœbersicht in Grafiken</text>
   </teaser>
   <indexteaser>
     <title>Titel Galerie</title>

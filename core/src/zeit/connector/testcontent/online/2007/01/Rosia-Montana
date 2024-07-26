@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <article>
   <head>
 <!-- CMS/document -->
@@ -38,7 +38,7 @@
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="show_commentthread">no</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="status">OK</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="author"> Jonas Linke</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="author">Christine Székely</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="author">Christine SzÃ©kely</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="topic">International</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="topic">Wirtschaft</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="title">Einmischung als Willkommensgeschenk</attribute>
@@ -54,41 +54,41 @@
   <body>
     <supertitle font-size="20">Umwelt</supertitle>
     <title>Einmischung als Willkommensgeschenk</title>
-    <subtitle>Wenn am 1. Januar 2007 Rumänien der Europäischen Union beitritt, bringt es nicht nur weitere 22 Mio. Bürger mit, sondern auch einen neuen ökologischen Brennpunkt: Die Bergbauregion um Rosia Montana, wo das europaweit größte Goldabbauprojekt geplant ist.</subtitle>
-    <byline>Von Jonas Linke und Christine Székely</byline>
-    <p>Rosia Montana klingt nicht nur romantisch, das kleine rumänische Dorf liegt in den Westkarpaten, etwa 130 km von Cluj-Napoca entfernt. Bei Touristen ist das Gebirge vor allem wegen seinen vielfältigen und idyllischen Landschaften sehr beliebt &#8211; so lässt sich kaum vermuten, dass der südöstliche Teil dennoch seit vielen Jahren an den ökologischen Folgen des Goldabbaus krankt. </p>
+    <subtitle>Wenn am 1. Januar 2007 RumÃ¤nien der EuropÃ¤ischen Union beitritt, bringt es nicht nur weitere 22 Mio. BÃ¼rger mit, sondern auch einen neuen Ã¶kologischen Brennpunkt: Die Bergbauregion um Rosia Montana, wo das europaweit grÃ¶ÃŸte Goldabbauprojekt geplant ist.</subtitle>
+    <byline>Von Jonas Linke und Christine SzÃ©kely</byline>
+    <p>Rosia Montana klingt nicht nur romantisch, das kleine rumÃ¤nische Dorf liegt in den Westkarpaten, etwa 130 km von Cluj-Napoca entfernt. Bei Touristen ist das Gebirge vor allem wegen seinen vielfÃ¤ltigen und idyllischen Landschaften sehr beliebt &#8211; so lÃ¤sst sich kaum vermuten, dass der sÃ¼dÃ¶stliche Teil dennoch seit vielen Jahren an den Ã¶kologischen Folgen des Goldabbaus krankt. </p>
     <p>
 
-Das Gebiet um Rosia Montana gilt als die bedeutendste Gold-Lagerstätte in Europa und der Abbau hat jahrtausendelange Tradition. Bereits die römischen Kolonialherren ließen hier ihre Sklaven in den Mienen schuften, um das begehrte Element zutage zu fördern. Später setzten die österreichisch-ungarischen Herrscher und nach dem Zweiten Weltkrieg die staatliche Bergbaufirma Minvest S.A. Deva den intensiven Abbau fort. </p>
+Das Gebiet um Rosia Montana gilt als die bedeutendste Gold-LagerstÃ¤tte in Europa und der Abbau hat jahrtausendelange Tradition. Bereits die rÃ¶mischen Kolonialherren lieÃŸen hier ihre Sklaven in den Mienen schuften, um das begehrte Element zutage zu fÃ¶rdern. SpÃ¤ter setzten die Ã¶sterreichisch-ungarischen Herrscher und nach dem Zweiten Weltkrieg die staatliche Bergbaufirma Minvest S.A. Deva den intensiven Abbau fort. </p>
     <p>
 
-Als eine der Bedingungen für die Aufnahme in die EU musste die Grube im Juni 2006 jedoch wegen Umweltverschmutzender Methoden geschlossen werden. 1996 lag jedoch das kanadische Unternehmen Gabriel Resources einen Konzeptentwurf für ein neues, privates Abbauprojekt nach den neuesten Standards vor. In der Folge kam es zu einem Joint Venture zwischen Gabriel Resources und staatlichen Bergbaugesellschaft, der &#8222;Rosia Montana Gold Corporation&#8220; (RMGC). Gabriel Resources ist mit 80% daran beteiligt, während Rumänien die restlichen 20% innehält. </p>
+Als eine der Bedingungen fÃ¼r die Aufnahme in die EU musste die Grube im Juni 2006 jedoch wegen Umweltverschmutzender Methoden geschlossen werden. 1996 lag jedoch das kanadische Unternehmen Gabriel Resources einen Konzeptentwurf fÃ¼r ein neues, privates Abbauprojekt nach den neuesten Standards vor. In der Folge kam es zu einem Joint Venture zwischen Gabriel Resources und staatlichen Bergbaugesellschaft, der &#8222;Rosia Montana Gold Corporation&#8220; (RMGC). Gabriel Resources ist mit 80% daran beteiligt, wÃ¤hrend RumÃ¤nien die restlichen 20% innehÃ¤lt. </p>
     <p>
 
-Geplant ist nun der Abbau von rund 300 Tonnen Gold und 1600 Tonnen Silber innerhalb der nächsten 17 Jahre. Da der Goldanteil mittlerweile nur noch bei 1,5 g pro Tonne Gestein liegt, soll das Gold im Tagebau durch die Methode der Cyanidlaugung gewonnen werden. Cyanid ist das Salz der hochgiftigen Blausäure und kommt in der Natur nur in äußerst geringen Konzentrationen vor. Die Aufnahme bereits minimaler Mengen führt über die Blockade der Atemwege zum sofortigen Erstickungstod. Insgesamt soll während des Abbaus in vier Bergmassiven im offenen Tagebau gegraben, das Gestein zerkleinert und das Gold mit dem Salz der Blausäure in Lösung gebracht werden. </p>
+Geplant ist nun der Abbau von rund 300 Tonnen Gold und 1600 Tonnen Silber innerhalb der nÃ¤chsten 17 Jahre. Da der Goldanteil mittlerweile nur noch bei 1,5 g pro Tonne Gestein liegt, soll das Gold im Tagebau durch die Methode der Cyanidlaugung gewonnen werden. Cyanid ist das Salz der hochgiftigen BlausÃ¤ure und kommt in der Natur nur in Ã¤uÃŸerst geringen Konzentrationen vor. Die Aufnahme bereits minimaler Mengen fÃ¼hrt Ã¼ber die Blockade der Atemwege zum sofortigen Erstickungstod. Insgesamt soll wÃ¤hrend des Abbaus in vier Bergmassiven im offenen Tagebau gegraben, das Gestein zerkleinert und das Gold mit dem Salz der BlausÃ¤ure in LÃ¶sung gebracht werden. </p>
     <p>
 
-Die Planungen sehen vor, das mit Cyanidresten und Schwermetallen angereicherte Restgestein im benachbarten Corna-Tal, unweit der Stadt Abrud abzulagern und durch einen 185 m hohen Staudamm von der Umgebung abzuschirmen. Das Projekt fordert nicht nur seinen ökologischen Tribut, sondern auch Opfer von der lokalen Bevölkerung: Eine Voraussetzung für die Durchführung des Projektes ist die Umsiedlung von mehr als 2000 Menschen aus rund 900 Haushalten, deren Grundstücke auf dem zukünftigen Projektgelände liegen. Verkaufs- und Umsiedlungswillige werden über lukrative Angebote geworben. Es locken neue Häuser mit fließendem Wasser, Elektrizität und sanitären Einrichtungen, die heute in den meisten Haushalten fehlen oder stark heruntergekommen sind. Insgesamt sind bereits 40% der Grundstücke verkauft, einige Unentschlossene warten auf eine Erhöhung der Preise, während sich die hartnäckigen Verweigerer in der lokalen NGO Alburnus Maior (lat. Rosia Montana) engagieren. </p>
+Die Planungen sehen vor, das mit Cyanidresten und Schwermetallen angereicherte Restgestein im benachbarten Corna-Tal, unweit der Stadt Abrud abzulagern und durch einen 185 m hohen Staudamm von der Umgebung abzuschirmen. Das Projekt fordert nicht nur seinen Ã¶kologischen Tribut, sondern auch Opfer von der lokalen BevÃ¶lkerung: Eine Voraussetzung fÃ¼r die DurchfÃ¼hrung des Projektes ist die Umsiedlung von mehr als 2000 Menschen aus rund 900 Haushalten, deren GrundstÃ¼cke auf dem zukÃ¼nftigen ProjektgelÃ¤nde liegen. Verkaufs- und Umsiedlungswillige werden Ã¼ber lukrative Angebote geworben. Es locken neue HÃ¤user mit flieÃŸendem Wasser, ElektrizitÃ¤t und sanitÃ¤ren Einrichtungen, die heute in den meisten Haushalten fehlen oder stark heruntergekommen sind. Insgesamt sind bereits 40% der GrundstÃ¼cke verkauft, einige Unentschlossene warten auf eine ErhÃ¶hung der Preise, wÃ¤hrend sich die hartnÃ¤ckigen Verweigerer in der lokalen NGO Alburnus Maior (lat. Rosia Montana) engagieren. </p>
     <p>
 
-Doch würden dadurch einzigartige und teilweise noch unzureichend erforschte archäologische Schätze unwiederbringlich zerstört werden. Denn die meisten der unterirdischen Galerien, Heiligtümer und Inschriften, die vom Wirken der Römer zeugen, wurden noch nicht einmal freigelegt. Der Wert ist für die archäologische Forschung unermesslich, denn Rosia Montana ist die einzige noch erhaltene römische Bergbausiedlung der Welt. </p>
+Doch wÃ¼rden dadurch einzigartige und teilweise noch unzureichend erforschte archÃ¤ologische SchÃ¤tze unwiederbringlich zerstÃ¶rt werden. Denn die meisten der unterirdischen Galerien, HeiligtÃ¼mer und Inschriften, die vom Wirken der RÃ¶mer zeugen, wurden noch nicht einmal freigelegt. Der Wert ist fÃ¼r die archÃ¤ologische Forschung unermesslich, denn Rosia Montana ist die einzige noch erhaltene rÃ¶mische Bergbausiedlung der Welt. </p>
     <p>
 
-Laut Rosia Montana Gold Corporation sollen während der Konstruktionsphase mehr als 1200 Arbeitsplätze geschaffen werden, für die Abbauphase werden weitere 600 in Aussicht gestellt. Die rumänische Regierung zieht mit und lässt sich durch 2% Dividende und geringfügige Steuereinnahmen locken. Über die gesamtwirtschaftliche Aufwertung der Region hinaus wirbt die RMGC auf ihrer Homepage unter dem Slogan &#8218;Learn the true Story&#8217; für die Restaurierung der Kulturgüter. Das historische Zentrum wurde als Schutzzone ausgewiesen und soll bewahrt und restauriert werden. </p>
+Laut Rosia Montana Gold Corporation sollen wÃ¤hrend der Konstruktionsphase mehr als 1200 ArbeitsplÃ¤tze geschaffen werden, fÃ¼r die Abbauphase werden weitere 600 in Aussicht gestellt. Die rumÃ¤nische Regierung zieht mit und lÃ¤sst sich durch 2% Dividende und geringfÃ¼gige Steuereinnahmen locken. Ãœber die gesamtwirtschaftliche Aufwertung der Region hinaus wirbt die RMGC auf ihrer Homepage unter dem Slogan &#8218;Learn the true Story&#8217; fÃ¼r die Restaurierung der KulturgÃ¼ter. Das historische Zentrum wurde als Schutzzone ausgewiesen und soll bewahrt und restauriert werden. </p>
     <p>
 
-Den verheißungsvoll klingenden Vorteilen, die von der RMGC angeführt werden, stellen sich breite Teile der rumänischen Öffentlichkeit, die Rumänische Akademie der Wissenschaften, zahlreiche Nicht-Regierungsorganisationen sowie verschiedene Kirchen entgegen. Die Rumänische Akademie, die höchste wissenschaftliche Instanz im Land, hat nach eigenen Studien Anfang des Jahres bereits zum zweiten Mal eine Erklärung gegen das Projekt abgegeben. Darin wird eine Abkehr von dem Projekt empfohlen, da &#8222;die vermeintlichen Vorteile keinesfalls die Risiken und kollateralen Effekte rechtfertigen&#8220; und dadurch das Projekt dem öffentlichen Interesse widerspricht und als unrentabel für die nationale Wirtschaft angesehen werden kann. Die Akademie ruft daher &#8222;alle kompetenten Autoritäten dazu auf, den Projektplan sorgfältig zu analysieren, neutrale Spezialisten aus dem In- und Ausland und der spezialisierten europäischen Institutionen einzusetzen, bevor ein solch kontroverses und gefährliches Projekt erlaubt wird.&#8220; </p>
+Den verheiÃŸungsvoll klingenden Vorteilen, die von der RMGC angefÃ¼hrt werden, stellen sich breite Teile der rumÃ¤nischen Ã–ffentlichkeit, die RumÃ¤nische Akademie der Wissenschaften, zahlreiche Nicht-Regierungsorganisationen sowie verschiedene Kirchen entgegen. Die RumÃ¤nische Akademie, die hÃ¶chste wissenschaftliche Instanz im Land, hat nach eigenen Studien Anfang des Jahres bereits zum zweiten Mal eine ErklÃ¤rung gegen das Projekt abgegeben. Darin wird eine Abkehr von dem Projekt empfohlen, da &#8222;die vermeintlichen Vorteile keinesfalls die Risiken und kollateralen Effekte rechtfertigen&#8220; und dadurch das Projekt dem Ã¶ffentlichen Interesse widerspricht und als unrentabel fÃ¼r die nationale Wirtschaft angesehen werden kann. Die Akademie ruft daher &#8222;alle kompetenten AutoritÃ¤ten dazu auf, den Projektplan sorgfÃ¤ltig zu analysieren, neutrale Spezialisten aus dem In- und Ausland und der spezialisierten europÃ¤ischen Institutionen einzusetzen, bevor ein solch kontroverses und gefÃ¤hrliches Projekt erlaubt wird.&#8220; </p>
     <p>
 
-Es bleibt abzuwarten, ob der EU-Beitritt der Ausbeutung Rumäniens entgegenwirken kann. Für Rumänien hieße es die Auseinandersetzung und Anwendung der europäischen Prinzipien, zu denen das Land sich verpflichtet hat. Für Europa Hilfeleistung durch gesteigerte Wahrnehmung der südosteuropäischen Realität jenseits von Dracula und Vogelgrippe. Oder anders: Einmischung als Willkommensgeschenk. </p>
+Es bleibt abzuwarten, ob der EU-Beitritt der Ausbeutung RumÃ¤niens entgegenwirken kann. FÃ¼r RumÃ¤nien hieÃŸe es die Auseinandersetzung und Anwendung der europÃ¤ischen Prinzipien, zu denen das Land sich verpflichtet hat. FÃ¼r Europa Hilfeleistung durch gesteigerte Wahrnehmung der sÃ¼dosteuropÃ¤ischen RealitÃ¤t jenseits von Dracula und Vogelgrippe. Oder anders: Einmischung als Willkommensgeschenk. </p>
   </body>
   <teaser>
     <title>Einmischung als Willkommensgeschenk</title>
-    <text>Wenn am 1. Januar 2007 Rumänien der Europäischen Union beitritt, bringt es nicht nur weitere 22 Mio. Bürger mit, sondern auch einen neuen ökologischen Brennpunkt: Die Bergbauregion um Rosia Montana, wo das europaweit größte Goldabbauprojekt geplant ist.</text>
+    <text>Wenn am 1. Januar 2007 RumÃ¤nien der EuropÃ¤ischen Union beitritt, bringt es nicht nur weitere 22 Mio. BÃ¼rger mit, sondern auch einen neuen Ã¶kologischen Brennpunkt: Die Bergbauregion um Rosia Montana, wo das europaweit grÃ¶ÃŸte Goldabbauprojekt geplant ist.</text>
   </teaser>
   <indexteaser>
-    <title>Rumänien</title>
-    <text>Rosia Montana, das europaweit größte Goldabbauprojekt</text>
+    <title>RumÃ¤nien</title>
+    <text>Rosia Montana, das europaweit grÃ¶ÃŸte Goldabbauprojekt</text>
     <text_length>53</text_length>
     <title_length>8</title_length>
   </indexteaser>

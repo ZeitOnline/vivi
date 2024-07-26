@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <article>
   <head>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="banner">yes</attribute>
@@ -28,6 +28,6 @@
       <strong>Tim Bond </strong>
       <strong/>
     </bu>
-    <p>»Amerika hat sich  von einer Demokratie  zu einer Plutokratie  gewandelt, zu einer  Herrschaft der Reichen« </p>
+    <p>Â»Amerika hat sich  von einer Demokratie  zu einer Plutokratie  gewandelt, zu einer  Herrschaft der ReichenÂ« </p>
   </body>
 </article>

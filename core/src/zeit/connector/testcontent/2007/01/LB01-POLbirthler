@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <article>
   <head>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="banner">yes</attribute>
@@ -23,7 +23,7 @@
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="page">18</attribute>
     <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="page">18</attribute>
   </head>
-  <body>		<title>Diener vieler Herren </title><subtitle>Joachim Walther: »Immer im Dienst«, ZEIT Nr. 50</subtitle>
-		<p>Ihr Artikel wäre womöglich stichhaltiger, wenn Sie die Geschichte der nachrichtendienstlichen Behörden in Bezug auf die antidemokratischen Mitarbeiter mit eingebracht hätten. Ist nicht der BND selbst von einem hochrangigen Nazi- Offizier aufgebaut worden, und bestand nicht nahezu das gesamte Offizierskorps der Bundeswehr von 1955 aus Staatsdienern der ersten deutschen Diktatur?</p>
-		<p>Kann es also nicht sein, dass nicht nur die Birthler-Behörde, sondern auch andere Apparate der Bundesrepublik gestern wie heute von Mitarbeitern beider deutscher Diktaturen durchzogen werden? Vielleicht sollte dies bei einer nüchternen Betrachtung des Themas mit einbezogen werden.</p><p>Andre Heck und andere Schüler  des Philosophiekurses 13, AJG St. Wendel</p></body>
+  <body>		<title>Diener vieler Herren </title><subtitle>Joachim Walther: Â»Immer im DienstÂ«, ZEIT Nr. 50</subtitle>
+		<p>Ihr Artikel wÃ¤re womÃ¶glich stichhaltiger, wenn Sie die Geschichte der nachrichtendienstlichen BehÃ¶rden in Bezug auf die antidemokratischen Mitarbeiter mit eingebracht hÃ¤tten. Ist nicht der BND selbst von einem hochrangigen Nazi- Offizier aufgebaut worden, und bestand nicht nahezu das gesamte Offizierskorps der Bundeswehr von 1955 aus Staatsdienern der ersten deutschen Diktatur?</p>
+		<p>Kann es also nicht sein, dass nicht nur die Birthler-BehÃ¶rde, sondern auch andere Apparate der Bundesrepublik gestern wie heute von Mitarbeitern beider deutscher Diktaturen durchzogen werden? Vielleicht sollte dies bei einer nÃ¼chternen Betrachtung des Themas mit einbezogen werden.</p><p>Andre Heck und andere SchÃ¼ler  des Philosophiekurses 13, AJG St. Wendel</p></body>
 </article>

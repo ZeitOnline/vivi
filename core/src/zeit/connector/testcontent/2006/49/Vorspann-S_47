@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <article>
   <head>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="banner">yes</attribute>
@@ -24,6 +24,6 @@
     <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="page">47</attribute>
   </head>
   <body>
-    <p>Bulle und Bär, Geier und Hamster &#8211; auf den  Finanzmärkten geht  es tierisch und  ungezähmt zu, zeigen  unsere Illustratoren. Dieses GeldSpezial führt durch die Wildnis der Fonds  und Zertifikate</p>
+    <p>Bulle und BÃ¤r, Geier und Hamster &#8211; auf den  FinanzmÃ¤rkten geht  es tierisch und  ungezÃ¤hmt zu, zeigen  unsere Illustratoren. Dieses GeldSpezial fÃ¼hrt durch die Wildnis der Fonds  und Zertifikate</p>
   </body>
 </article>

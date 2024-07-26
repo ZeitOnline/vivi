@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <article>
   <head>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="new_comments">1</attribute>
@@ -8,7 +8,7 @@
     <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="year">2006</attribute>
     <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="page">40</attribute>
 
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="author">Drösser</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="author">DrÃ¶sser</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="banner">yes</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="comments">1</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="copyrights">DIE ZEIT, 20.12.2006 Nr. 52</attribute>
@@ -25,26 +25,26 @@
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="year">2006</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="in_rankings">yes</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="status">OK</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="title">Reis ins Kröpfchen</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="title">Reis ins KrÃ¶pfchen</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="last-modified-by">droesser</attribute>
   </head>
   <body>
     <supertitle>Stimmt's</supertitle>
-    <title>Reis ins Kröpfchen</title>
-    <subtitle>Wir wollten nach altem Brauch vor dem Standesamt das Brautpaar mit Reis bewerfen. Aber die Braut schrie entsetzt auf: »Nein! Die armen Tauben!« Schadet es den Vögeln, wenn sie Reiskörner aufpicken? Gretchen Weichmann, Hille</subtitle>
-    <p>Der Mythos sagt, die Reiskörner würden im Körper der Vögel aufquellen, und die Tiere stürben dann qualvoll. Die Befürchtung ist völlig aus der Luft gegriffen. Viele Vögel fressen Reis in der freien Natur, etwa Wildgänse, die sich auf ihrer langen Wanderschaft auf Reisfeldern den Magen stopfen. Die Reiskörner dort unterscheiden sich prinzipiell nicht von denen, die wir im Supermarkt kaufen. Zwar stimmt es, dass Reiskörner ihr Volumen verdoppeln können, wenn sie feucht werden. Aber das passiert auch in der Natur, und Vögelmägen sind offenbar flexibel.</p>
-    <p>Trotzdem gibt es natürlich Gründe, von dem Brauch abzusehen. So haben manche Leute etwas dagegen, dass man mit Essen um sich wirft. Vor allem aber wirken Reiskörner am Boden wie kleine Kugellager, auf denen Menschen leicht ausrutschen können. Und Brautpaar und Gäste sollen ja noch heil zur Hochzeitsparty kommen. <strong>Christoph Drösser</strong></p>
-    <p>Die Adressen für »Stimmt&#8217;s«-Fragen: DIE ZEIT, Stimmt&#8217;s?,  20079 Hamburg oder <a href="mailto:stimmts@zeit.de">stimmts@zeit.de</a>.  Das »Stimmt&#8217;s?«-Archiv: <a href="http://www.zeit.de/stimmts">www.zeit.de/stimmts</a><br/><br/>Audio   <a href="http://www.zeit.de/audio">www.zeit.de/audio</a></p>
+    <title>Reis ins KrÃ¶pfchen</title>
+    <subtitle>Wir wollten nach altem Brauch vor dem Standesamt das Brautpaar mit Reis bewerfen. Aber die Braut schrie entsetzt auf: Â»Nein! Die armen Tauben!Â« Schadet es den VÃ¶geln, wenn sie ReiskÃ¶rner aufpicken? Gretchen Weichmann, Hille</subtitle>
+    <p>Der Mythos sagt, die ReiskÃ¶rner wÃ¼rden im KÃ¶rper der VÃ¶gel aufquellen, und die Tiere stÃ¼rben dann qualvoll. Die BefÃ¼rchtung ist vÃ¶llig aus der Luft gegriffen. Viele VÃ¶gel fressen Reis in der freien Natur, etwa WildgÃ¤nse, die sich auf ihrer langen Wanderschaft auf Reisfeldern den Magen stopfen. Die ReiskÃ¶rner dort unterscheiden sich prinzipiell nicht von denen, die wir im Supermarkt kaufen. Zwar stimmt es, dass ReiskÃ¶rner ihr Volumen verdoppeln kÃ¶nnen, wenn sie feucht werden. Aber das passiert auch in der Natur, und VÃ¶gelmÃ¤gen sind offenbar flexibel.</p>
+    <p>Trotzdem gibt es natÃ¼rlich GrÃ¼nde, von dem Brauch abzusehen. So haben manche Leute etwas dagegen, dass man mit Essen um sich wirft. Vor allem aber wirken ReiskÃ¶rner am Boden wie kleine Kugellager, auf denen Menschen leicht ausrutschen kÃ¶nnen. Und Brautpaar und GÃ¤ste sollen ja noch heil zur Hochzeitsparty kommen. <strong>Christoph DrÃ¶sser</strong></p>
+    <p>Die Adressen fÃ¼r Â»Stimmt&#8217;sÂ«-Fragen: DIE ZEIT, Stimmt&#8217;s?,  20079 Hamburg oder <a href="mailto:stimmts@zeit.de">stimmts@zeit.de</a>.  Das Â»Stimmt&#8217;s?Â«-Archiv: <a href="http://www.zeit.de/stimmts">www.zeit.de/stimmts</a><br/><br/>Audio   <a href="http://www.zeit.de/audio">www.zeit.de/audio</a></p>
 
   </body>
   <indexteaser>
     <text_length>34</text_length>
     <title_length>9</title_length>
-    <text>Tödliche Reiskörner für die Tauben</text>
+    <text>TÃ¶dliche ReiskÃ¶rner fÃ¼r die Tauben</text>
     <title>Stimmt's?</title>
   </indexteaser>
   <teaser>
-    <text>Man soll bei Hochzeiten keinen Reis werfen, weil davon die Tauben sterben können</text>
-    <title>Reis ins Kröpfchen</title>
+    <text>Man soll bei Hochzeiten keinen Reis werfen, weil davon die Tauben sterben kÃ¶nnen</text>
+    <title>Reis ins KrÃ¶pfchen</title>
   </teaser>
 </article>

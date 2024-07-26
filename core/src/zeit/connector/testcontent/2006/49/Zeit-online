@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <article>
   <head>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="banner">yes</attribute>
@@ -23,5 +23,5 @@
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="page">16</attribute>
     <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="page">16</attribute>
   </head>
-  <body>		<p>ZEIT  i  ONLINE</p><title>Honigkuchen-Pferdchen</title><p>Der Adventskalender von  International Pony: Die Band bloggt  im Netzmagazin Zuender</p><p>www.zeit.de/zuender</p><title>Kunst der Langsamkeit</title><p>Warum Tomma Abts den  Turner-Preis verdient hätte.  Ein Essay in Text und Bild</p><p>www.zeit.de/2006/abts</p></body>
+  <body>		<p>ZEIT  i  ONLINE</p><title>Honigkuchen-Pferdchen</title><p>Der Adventskalender von  International Pony: Die Band bloggt  im Netzmagazin Zuender</p><p>www.zeit.de/zuender</p><title>Kunst der Langsamkeit</title><p>Warum Tomma Abts den  Turner-Preis verdient hÃ¤tte.  Ein Essay in Text und Bild</p><p>www.zeit.de/2006/abts</p></body>
 </article>

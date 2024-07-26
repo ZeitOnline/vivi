@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <centerpage style="newcp">
   <head>
 <!-- CMS/document -->
@@ -55,8 +55,8 @@
         <block href="" id="" layout="" priority="1">
           <supertitle href="">Mehrwertsteuer</supertitle>
           <title>Steueroasen des Alltags</title>
-          <text>Seit Jahresanfang müssen wir uns mit einer höheren Mehrwertsteuer&#13;
-herumplagen. Welche Produkte gibt es noch zum ermäßigten Steuersatz, wann zahlen wir mehr?&#13;
+          <text>Seit Jahresanfang mÃ¼ssen wir uns mit einer hÃ¶heren Mehrwertsteuer&#13;
+herumplagen. Welche Produkte gibt es noch zum ermÃ¤ÃŸigten Steuersatz, wann zahlen wir mehr?&#13;
 Eine Bildergalerie</text>
           <byline>von Jann Wilken</byline>
         </block>
@@ -65,42 +65,42 @@ Eine Bildergalerie</text>
     <column layout="right">
       <container>
         <block>
-          <text>Die Große Koalition wollte es so: Vom 1. Januar an liegt die&#13;
-Mehrwertsteuer bei 19 Prozent, drei Prozent höher als im vergangenen&#13;
-Jahr. Das gilt allerdings nicht immer. Für einige Produkte wird nach&#13;
-wie vor der ermäßigte Steuersatz von 7 Prozent angelegt. Doch für welche? Eine Spurensuche<br/><br/><strong>Zum Thema</strong><br/><a href="http://www.zeit.de/online/2007/01/bildergalerie-mehrwertsteuer" target="_blank">Griff ins Portemonnaie. Kleine Geschichte der Mehrwertsteuer »</a><br/><br/><a href="http://www.zeit.de/online/2006/50/bildergalerie-statistiken" target="_blank">Preistreiber Steuer? Ein Überblick in Grafiken »</a></text>
+          <text>Die GroÃŸe Koalition wollte es so: Vom 1. Januar an liegt die&#13;
+Mehrwertsteuer bei 19 Prozent, drei Prozent hÃ¶her als im vergangenen&#13;
+Jahr. Das gilt allerdings nicht immer. FÃ¼r einige Produkte wird nach&#13;
+wie vor der ermÃ¤ÃŸigte Steuersatz von 7 Prozent angelegt. Doch fÃ¼r welche? Eine Spurensuche<br/><br/><strong>Zum Thema</strong><br/><a href="http://www.zeit.de/online/2007/01/bildergalerie-mehrwertsteuer" target="_blank">Griff ins Portemonnaie. Kleine Geschichte der Mehrwertsteuer Â»</a><br/><br/><a href="http://www.zeit.de/online/2006/50/bildergalerie-statistiken" target="_blank">Preistreiber Steuer? Ein Ãœberblick in Grafiken Â»</a></text>
         </block>
         <block>
-          <image expires="2100-01-01" src="/cms/work/bilder/2007/01/aktuell/bildergalerien/galerie-mehrwertsteuer/01-bundestagsentsch-600.jpg" width="600" align="center"><bu>Der Bundestag hat es entschieden und will mit dem Geld, das er mehr einnimmt, auch den Bundeshaushalt sanieren - jedenfalls zum Teil</bu><copyright>© <a href="http://www.9mal13.de" target="_blank">Jann Wilken</a> für ZEIT online</copyright> BILD </image>
+          <image expires="2100-01-01" src="/cms/work/bilder/2007/01/aktuell/bildergalerien/galerie-mehrwertsteuer/01-bundestagsentsch-600.jpg" width="600" align="center"><bu>Der Bundestag hat es entschieden und will mit dem Geld, das er mehr einnimmt, auch den Bundeshaushalt sanieren - jedenfalls zum Teil</bu><copyright>Â© <a href="http://www.9mal13.de" target="_blank">Jann Wilken</a> fÃ¼r ZEIT online</copyright> BILD </image>
         </block>
         <block>
-          <image expires="2100-01-01" src="/cms/work/bilder/2007/01/aktuell/bildergalerien/galerie-mehrwertsteuer/02-lebensmittel-brot-600.jpg" width="600" align="center"><bu>Lebensmittel: Brot wird weiterhin geringer besteuert</bu><copyright>© <a href="http://www.9mal13.de" target="_blank">Jann Wilken</a> für ZEIT online</copyright> BILD </image>
+          <image expires="2100-01-01" src="/cms/work/bilder/2007/01/aktuell/bildergalerien/galerie-mehrwertsteuer/02-lebensmittel-brot-600.jpg" width="600" align="center"><bu>Lebensmittel: Brot wird weiterhin geringer besteuert</bu><copyright>Â© <a href="http://www.9mal13.de" target="_blank">Jann Wilken</a> fÃ¼r ZEIT online</copyright> BILD </image>
         </block>
         <block>
-          <image expires="2100-01-01" src="/cms/work/bilder/2007/01/aktuell/bildergalerien/galerie-mehrwertsteuer/03-milch-600.jpg" width="600" align="center"><bu>Lebensmittel: Auch diese Kühe kann die Steuer nicht beeindrucken: Milch bleibt bei 7 Prozent</bu><copyright>© <a href="http://www.9mal13.de" target="_blank">Jann Wilken</a> für ZEIT online</copyright> BILD </image>
+          <image expires="2100-01-01" src="/cms/work/bilder/2007/01/aktuell/bildergalerien/galerie-mehrwertsteuer/03-milch-600.jpg" width="600" align="center"><bu>Lebensmittel: Auch diese KÃ¼he kann die Steuer nicht beeindrucken: Milch bleibt bei 7 Prozent</bu><copyright>Â© <a href="http://www.9mal13.de" target="_blank">Jann Wilken</a> fÃ¼r ZEIT online</copyright> BILD </image>
         </block>
         <block>
-          <image expires="2100-01-01" src="/cms/work/bilder/2007/01/aktuell/bildergalerien/galerie-mehrwertsteuer/04-leitungswasser-600.jpg" width="600" align="center"><bu>Leitungswasser - eine Steueroase des Alltags</bu><copyright>© <a href="http://www.9mal13.de" target="_blank">Jann Wilken</a> für ZEIT online</copyright> BILD </image>
+          <image expires="2100-01-01" src="/cms/work/bilder/2007/01/aktuell/bildergalerien/galerie-mehrwertsteuer/04-leitungswasser-600.jpg" width="600" align="center"><bu>Leitungswasser - eine Steueroase des Alltags</bu><copyright>Â© <a href="http://www.9mal13.de" target="_blank">Jann Wilken</a> fÃ¼r ZEIT online</copyright> BILD </image>
         </block>
         <block>
-          <image expires="2100-01-01" src="/cms/work/bilder/2007/01/aktuell/bildergalerien/galerie-mehrwertsteuer/05-blumen-600.jpg" width="600" align="center"><bu>Blumen bleiben weiterhin preiswert - keine Ausrede für Ehemuffel</bu><copyright>© <a href="http://www.9mal13.de" target="_blank">Jann Wilken</a> für ZEIT online</copyright> BILD </image>
+          <image expires="2100-01-01" src="/cms/work/bilder/2007/01/aktuell/bildergalerien/galerie-mehrwertsteuer/05-blumen-600.jpg" width="600" align="center"><bu>Blumen bleiben weiterhin preiswert - keine Ausrede fÃ¼r Ehemuffel</bu><copyright>Â© <a href="http://www.9mal13.de" target="_blank">Jann Wilken</a> fÃ¼r ZEIT online</copyright> BILD </image>
         </block>
         <block>
-          <image expires="2100-01-01" src="/cms/work/bilder/2007/01/aktuell/bildergalerien/galerie-mehrwertsteuer/06-wurst-600.jpg" width="600" align="center"><bu>Eine Extrawurst: 19 Prozent Mehrwertsteuer für eine Portion Fleisch</bu><copyright>© <a href="http://www.9mal13.de" target="_blank">Jann Wilken</a> für ZEIT online</copyright> BILD </image>
+          <image expires="2100-01-01" src="/cms/work/bilder/2007/01/aktuell/bildergalerien/galerie-mehrwertsteuer/06-wurst-600.jpg" width="600" align="center"><bu>Eine Extrawurst: 19 Prozent Mehrwertsteuer fÃ¼r eine Portion Fleisch</bu><copyright>Â© <a href="http://www.9mal13.de" target="_blank">Jann Wilken</a> fÃ¼r ZEIT online</copyright> BILD </image>
         </block>
         <block>
-          <image expires="2100-01-01" src="/cms/work/bilder/2007/01/aktuell/bildergalerien/galerie-mehrwertsteuer/07-nahverkehr-600.jpg" width="600" align="center"><bu>Nahverkehr weiterhin zu günstigen Konditionen</bu><copyright>© <a href="http://www.9mal13.de" target="_blank">Jann Wilken</a> für ZEIT online</copyright> BILD </image>
+          <image expires="2100-01-01" src="/cms/work/bilder/2007/01/aktuell/bildergalerien/galerie-mehrwertsteuer/07-nahverkehr-600.jpg" width="600" align="center"><bu>Nahverkehr weiterhin zu gÃ¼nstigen Konditionen</bu><copyright>Â© <a href="http://www.9mal13.de" target="_blank">Jann Wilken</a> fÃ¼r ZEIT online</copyright> BILD </image>
         </block>
       </container>
     </column>
     <subtitle_length>170</subtitle_length>
-    <subtitle>Seit Jahresanfang müssen wir uns mit einer höheren Mehrwertsteuer herumplagen. Welche Produkte gibt es noch zum ermäßigten Steuersatz, wann zahlen wir mehr? Bildergalerie</subtitle>
+    <subtitle>Seit Jahresanfang mÃ¼ssen wir uns mit einer hÃ¶heren Mehrwertsteuer herumplagen. Welche Produkte gibt es noch zum ermÃ¤ÃŸigten Steuersatz, wann zahlen wir mehr? Bildergalerie</subtitle>
     <supertitle>Mehrwertsteuer</supertitle>
     <title>Steueroasen des Alltags</title>
   </body>
   <teaser>
     <title>Steueroasen des Alltags</title>
-    <text>Seit Jahresanfang müssen wir uns mit einer höheren Mehrwertsteuer herumplagen. Welche Produkte gibt es noch zum ermäßigten Steuersatz, wann zahlen wir mehr? Bildergalerie</text>
+    <text>Seit Jahresanfang mÃ¼ssen wir uns mit einer hÃ¶heren Mehrwertsteuer herumplagen. Welche Produkte gibt es noch zum ermÃ¤ÃŸigten Steuersatz, wann zahlen wir mehr? Bildergalerie</text>
     <text_length>170</text_length>
   </teaser>
   <indexteaser>

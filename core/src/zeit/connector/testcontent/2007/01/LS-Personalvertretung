@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <article>
   <head>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="new_comments">1</attribute>
@@ -25,32 +25,32 @@
     <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="status">OK</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="topic">Deutschland</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="topic">Politik</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="title">Gegenwind für Rüttgers</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="title">Gegenwind fÃ¼r RÃ¼ttgers</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="last-modified-by">greven</attribute>
     <attribute name="revision" ns="http://namespaces.zeit.de/CMS/document">6</attribute>
-  <references count="2"><reference source="auto" type="intern" year="2006" issue="47" publication="ZEIT online" href="cms:/cms/work/online/2006/47/Ruettgers-Oettinger"><title>Eins rechts, eins links</title><description>Sozial plus liberal gleich politische Mitte? So scheint die CDU zu rechnen, um ihre Spaltung zu überwinden. Der Parteitag soll&#8217;s nun umsetzen.</description></reference><reference source="auto" type="intern" year="2006" issue="07" publication="ZEIT online" href="cms:/cms/work/online/2006/07/aktuellestunde"><title>Realtitätsverlust gegen Kuschelsozialismus</title><description>Scharfe Rhetorik prägte heute die Aktuelle Stunde im Bundestag zum Thema Rente ab 67</description></reference></references></head>
+  <references count="2"><reference source="auto" type="intern" year="2006" issue="47" publication="ZEIT online" href="cms:/cms/work/online/2006/47/Ruettgers-Oettinger"><title>Eins rechts, eins links</title><description>Sozial plus liberal gleich politische Mitte? So scheint die CDU zu rechnen, um ihre Spaltung zu Ã¼berwinden. Der Parteitag soll&#8217;s nun umsetzen.</description></reference><reference source="auto" type="intern" year="2006" issue="07" publication="ZEIT online" href="cms:/cms/work/online/2006/07/aktuellestunde"><title>RealtitÃ¤tsverlust gegen Kuschelsozialismus</title><description>Scharfe Rhetorik prÃ¤gte heute die Aktuelle Stunde im Bundestag zum Thema Rente ab 67</description></reference></references></head>
   <body>
     <supertitle>CDU</supertitle>
-    <title>Gegenwind für Rüttgers</title>
-    <subtitle>Der CDU-Ministerpräsident, eigentlich auf Sozialtrip, will in Nordrhein-Westfalen die Mitbestimmung stutzen &#8211; und erntet Widerstand in der eigenen Partei</subtitle>
+    <title>Gegenwind fÃ¼r RÃ¼ttgers</title>
+    <subtitle>Der CDU-MinisterprÃ¤sident, eigentlich auf Sozialtrip, will in Nordrhein-Westfalen die Mitbestimmung stutzen &#8211; und erntet Widerstand in der eigenen Partei</subtitle>
     <byline>Von Michael Schlieben</byline>
-    <p>Schon blöd, da profiliert man sich als »Arbeiterführer der Republik«, gibt monatelang das »soziale Gewissen der Großen Koalition« &#8211; und auf einmal bekommt man Ärger mit dem Arbeitnehmerflügel der eigenen Partei. <image expires="2100-01-01" src="/cms/work/bilder/2007/01/aktuell/teaser_artikel/ruettgers-210.jpg" width="210" align="left" alt="" border="" href="" layout="" vspace=""><bu>Auf dem CDU-Parteitag in Dresden wurde er abgewatscht. Jetzt hat Rüttgers Ärger im eigenen CDU-Landesverband</bu><copyright>© Andreas Rentz/Getty Images</copyright> BILD </image></p>
-    <p>Jürgen Rüttgers &#8211; christdemokratisches Enfant terrible im Jahr 2006 &#8211; geht schweren Zeiten entgegen, zumindest nach Ansicht der CDA, der Sozialausschüsse der CDU.</p>
-    <p>Elke Hannack, Vorsitzende der DGB-Gewerkschafter innerhalb der CDA, sagt: »Rüttgers hat sein Wort gebrochen«, und kündigt »Aktionen und Demonstrationen« für das kommende Jahr an. Dieter Heimann, Landesvorsitzender der ver.di-Arbeitsgruppe der CDA, spricht von einer »explosionsartigen Stimmung«. </p>
-    <p>Worum geht es? Die schwarz-gelbe Landesregierung will sparen, die Verwaltung effizienter machen, den voluminösen Apparat von rund 400000 im öffentlichen Dienst Beschäftigten in NRW entschlacken &#8211; was man eben so macht als neue, bürgerlich-liberale Regierung, zumal nach 39 sozialdemokratischen Regierungsjahren. </p>
-    <p>Entzündet hat sich der Streit an einer geplanten Gesetzesänderung. Das FDP-geführte Innenministerium hatte Ende Oktober mit einem Eckpunktepapier nebst Presseerklärung ein »modernes Mitbestimmungsrecht im öffentlichen Dienst« angekündigt. Der Tenor der Erklärung: Die Betriebsräte des Landes hätten zu viel Einfluss. Jeden neuen Amtslaptop müsse man sich von diesen Störenfrieden genehmigen lassen, was offenbar mühsam ist. Wenn eine neue Technik eingeführt werden solle, klagte der Minister, könne darüber nicht erst jahrelang diskutiert werden. Auch die Mitbestimmung bei Personalmaßnahmen sei effizienzhemmend. Jeder Einstellung eines neuen Amtsleiters müsse »der Personalrat zustimmen«.</p>
-    <p>Diese Beispiele des Innenministers seien »schlichtweg getürkt«, klagt Therese Viehof, stellvertretende Vorsitzende der CDA-Arbeitsgruppe des Deutschen Beamtenbundes. Im Namen dreier CDA-Arbeitsgruppen hat sie einen Brief an Ministerpräsident Rüttgers und Arbeitsminister Karl-Josef Laumann &#8211; der pikanterweiser Vorsitzender der CDA ist &#8211; verfasst. Nach geltendem Recht bestünde für den Personalrat bei Führungskräften keine Mitbestimmung, argumentiert Viehof &#8211; wovon sich auch der Innenminister durch einen Blick ins Personalvertretungsgesetz leicht hätte überzeugen können. Vielmehr solle durch falsche Angaben der Eindruck erzeugt werden, die Betriebsräte seien notorische Blockierer und Verhinderer. </p>
-    <p>Innenminister Ingo Wolf (FDP) will sich zu dem Vorwurf vorerst öffentlich nicht äußern. Man beantworte gerade das CDA-Schreiben, teilt eine Sprecherin auf Anfrage mit. </p>
-    <p>Derweil weicht die Landesregierung ins Politisch-Allgemeine aus. Regierungssprecher Andreas Krautscheid weist darauf hin, dass die »Besitzstände der Arbeitnehmervertreter in den letzten Jahren« ganz allgemein immens gewachsen seien. Deren Rechte seien die umfassendsten in der ganzen Republik, man fahre die Mitbestimmung lediglich auf Bundesniveau zurück. Auch der Fraktionsvorsitzende der CDU im Düsseldorfer Landtag, Helmut Stahl, spricht von einer momentan »überdehnten, übermöblierten« Verwaltung. </p>
-    <p>Die CDA-Frau Elke Hannack ist vor allem von Jürgen Rüttgers enttäuscht. Dieser habe versprochen, die Arbeitnehmervertreter in diesen »gewiss notwendigen« Prozess einzubinden. Und nun würde man von seinen Reformvorhaben, in unfreundlichem Duktus, durch die Presse informiert. »Ein Skandal« sei das, klagt Hannack. Sie verweist auf das Machtpotenzial der CDA in Nordrhein-Westfalen, der fast die Hälfte der Landtagsabgeordneten angehören, und fordert nachdrücklich, ihre Organisation bei der Ausarbeitung des Gesetzes zu beteiligen. </p>
-    <p>Schließlich, und jetzt wird es grundsätzlich, sei Mitbestimmung ja nichts Schlechtes, so Hannack, sondern an sich sehr sinnvoll. Die christdemokratischen Gewerkschafter betonen »den Friedenscharakter« ihrer Arbeit und bieten zu belegen an, dass sie in der Vergangenheit Konflikte im Vorfeld entschärft hätten. »Wir waren immer stolz auf unsere ausgeprägte Mitbestimmung in NRW«, so Hannack. </p>
-    <p>Ganz spurlos scheinen die Genossen-Jahre an dem Land tatsächlich nicht vorübergegangen zu sein.<br/><br/>
+    <p>Schon blÃ¶d, da profiliert man sich als Â»ArbeiterfÃ¼hrer der RepublikÂ«, gibt monatelang das Â»soziale Gewissen der GroÃŸen KoalitionÂ« &#8211; und auf einmal bekommt man Ã„rger mit dem ArbeitnehmerflÃ¼gel der eigenen Partei. <image expires="2100-01-01" src="/cms/work/bilder/2007/01/aktuell/teaser_artikel/ruettgers-210.jpg" width="210" align="left" alt="" border="" href="" layout="" vspace=""><bu>Auf dem CDU-Parteitag in Dresden wurde er abgewatscht. Jetzt hat RÃ¼ttgers Ã„rger im eigenen CDU-Landesverband</bu><copyright>Â© Andreas Rentz/Getty Images</copyright> BILD </image></p>
+    <p>JÃ¼rgen RÃ¼ttgers &#8211; christdemokratisches Enfant terrible im Jahr 2006 &#8211; geht schweren Zeiten entgegen, zumindest nach Ansicht der CDA, der SozialausschÃ¼sse der CDU.</p>
+    <p>Elke Hannack, Vorsitzende der DGB-Gewerkschafter innerhalb der CDA, sagt: Â»RÃ¼ttgers hat sein Wort gebrochenÂ«, und kÃ¼ndigt Â»Aktionen und DemonstrationenÂ« fÃ¼r das kommende Jahr an. Dieter Heimann, Landesvorsitzender der ver.di-Arbeitsgruppe der CDA, spricht von einer Â»explosionsartigen StimmungÂ«. </p>
+    <p>Worum geht es? Die schwarz-gelbe Landesregierung will sparen, die Verwaltung effizienter machen, den voluminÃ¶sen Apparat von rund 400000 im Ã¶ffentlichen Dienst BeschÃ¤ftigten in NRW entschlacken &#8211; was man eben so macht als neue, bÃ¼rgerlich-liberale Regierung, zumal nach 39 sozialdemokratischen Regierungsjahren. </p>
+    <p>EntzÃ¼ndet hat sich der Streit an einer geplanten GesetzesÃ¤nderung. Das FDP-gefÃ¼hrte Innenministerium hatte Ende Oktober mit einem Eckpunktepapier nebst PresseerklÃ¤rung ein Â»modernes Mitbestimmungsrecht im Ã¶ffentlichen DienstÂ« angekÃ¼ndigt. Der Tenor der ErklÃ¤rung: Die BetriebsrÃ¤te des Landes hÃ¤tten zu viel Einfluss. Jeden neuen Amtslaptop mÃ¼sse man sich von diesen StÃ¶renfrieden genehmigen lassen, was offenbar mÃ¼hsam ist. Wenn eine neue Technik eingefÃ¼hrt werden solle, klagte der Minister, kÃ¶nne darÃ¼ber nicht erst jahrelang diskutiert werden. Auch die Mitbestimmung bei PersonalmaÃŸnahmen sei effizienzhemmend. Jeder Einstellung eines neuen Amtsleiters mÃ¼sse Â»der Personalrat zustimmenÂ«.</p>
+    <p>Diese Beispiele des Innenministers seien Â»schlichtweg getÃ¼rktÂ«, klagt Therese Viehof, stellvertretende Vorsitzende der CDA-Arbeitsgruppe des Deutschen Beamtenbundes. Im Namen dreier CDA-Arbeitsgruppen hat sie einen Brief an MinisterprÃ¤sident RÃ¼ttgers und Arbeitsminister Karl-Josef Laumann &#8211; der pikanterweiser Vorsitzender der CDA ist &#8211; verfasst. Nach geltendem Recht bestÃ¼nde fÃ¼r den Personalrat bei FÃ¼hrungskrÃ¤ften keine Mitbestimmung, argumentiert Viehof &#8211; wovon sich auch der Innenminister durch einen Blick ins Personalvertretungsgesetz leicht hÃ¤tte Ã¼berzeugen kÃ¶nnen. Vielmehr solle durch falsche Angaben der Eindruck erzeugt werden, die BetriebsrÃ¤te seien notorische Blockierer und Verhinderer. </p>
+    <p>Innenminister Ingo Wolf (FDP) will sich zu dem Vorwurf vorerst Ã¶ffentlich nicht Ã¤uÃŸern. Man beantworte gerade das CDA-Schreiben, teilt eine Sprecherin auf Anfrage mit. </p>
+    <p>Derweil weicht die Landesregierung ins Politisch-Allgemeine aus. Regierungssprecher Andreas Krautscheid weist darauf hin, dass die Â»BesitzstÃ¤nde der Arbeitnehmervertreter in den letzten JahrenÂ« ganz allgemein immens gewachsen seien. Deren Rechte seien die umfassendsten in der ganzen Republik, man fahre die Mitbestimmung lediglich auf Bundesniveau zurÃ¼ck. Auch der Fraktionsvorsitzende der CDU im DÃ¼sseldorfer Landtag, Helmut Stahl, spricht von einer momentan Â»Ã¼berdehnten, Ã¼bermÃ¶bliertenÂ« Verwaltung. </p>
+    <p>Die CDA-Frau Elke Hannack ist vor allem von JÃ¼rgen RÃ¼ttgers enttÃ¤uscht. Dieser habe versprochen, die Arbeitnehmervertreter in diesen Â»gewiss notwendigenÂ« Prozess einzubinden. Und nun wÃ¼rde man von seinen Reformvorhaben, in unfreundlichem Duktus, durch die Presse informiert. Â»Ein SkandalÂ« sei das, klagt Hannack. Sie verweist auf das Machtpotenzial der CDA in Nordrhein-Westfalen, der fast die HÃ¤lfte der Landtagsabgeordneten angehÃ¶ren, und fordert nachdrÃ¼cklich, ihre Organisation bei der Ausarbeitung des Gesetzes zu beteiligen. </p>
+    <p>SchlieÃŸlich, und jetzt wird es grundsÃ¤tzlich, sei Mitbestimmung ja nichts Schlechtes, so Hannack, sondern an sich sehr sinnvoll. Die christdemokratischen Gewerkschafter betonen Â»den FriedenscharakterÂ« ihrer Arbeit und bieten zu belegen an, dass sie in der Vergangenheit Konflikte im Vorfeld entschÃ¤rft hÃ¤tten. Â»Wir waren immer stolz auf unsere ausgeprÃ¤gte Mitbestimmung in NRWÂ«, so Hannack. </p>
+    <p>Ganz spurlos scheinen die Genossen-Jahre an dem Land tatsÃ¤chlich nicht vorÃ¼bergegangen zu sein.<br/><br/>
 <strong>Zum Thema</strong><br/>
 
 
-<a href="http://www.zeit.de/online/2006/48/Merkel-Wahl">CDU-Parteitag</a> -<em> Die Ministerpräsidenten erhielten einen kräftigen Dämpfer »</em><br/><br/><a href="http://www.zeit.de/news/deutschland">Aktuelle Nachrichten aus Deutschland »</a>
+<a href="http://www.zeit.de/online/2006/48/Merkel-Wahl">CDU-Parteitag</a> -<em> Die MinisterprÃ¤sidenten erhielten einen krÃ¤ftigen DÃ¤mpfer Â»</em><br/><br/><a href="http://www.zeit.de/news/deutschland">Aktuelle Nachrichten aus Deutschland Â»</a>
 
-<br/><br/><a href="http://www.zeit.de/deutschland">Innenpolitik:</a><em> Analysen und Hintergründe »</em>
+<br/><br/><a href="http://www.zeit.de/deutschland">Innenpolitik:</a><em> Analysen und HintergrÃ¼nde Â»</em>
 
 
 
@@ -60,13 +60,13 @@
 </p>
   </body>
   <indexteaser>
-    <text>Rüttgers will in NRW die Mitbestimmung stutzen</text>
+    <text>RÃ¼ttgers will in NRW die Mitbestimmung stutzen</text>
     <text_length>46</text_length>
     <title>Gegenwind</title>
     <title_length>9</title_length>
   </indexteaser>
   <teaser>
-    <text>Der CDU-Ministerpräsident, eigentlich auf Sozialtrip, will in Nordrhein-Westfalen die Mitbestimmung stutzen &#8211; viele Parteifreunde grollen. </text>
-    <title>Gegenwind für Rüttgers</title>
+    <text>Der CDU-MinisterprÃ¤sident, eigentlich auf Sozialtrip, will in Nordrhein-Westfalen die Mitbestimmung stutzen &#8211; viele Parteifreunde grollen. </text>
+    <title>Gegenwind fÃ¼r RÃ¼ttgers</title>
   </teaser>
 </article>

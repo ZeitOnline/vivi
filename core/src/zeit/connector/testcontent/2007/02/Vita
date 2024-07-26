@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <article>
   <head>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="banner">yes</attribute>
@@ -24,5 +24,5 @@
     <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="page">32</attribute>
   </head>
   <body>		<title>Maren Kroymann</title>
-		<p>war die erste Frau mit eigener Satiresendung im öffentlich-rechtlichen Fernsehen. Von 1993 bis 1997 trat sie als »Nachtschwester Kroymann« auf, nachdem sie zuvor als »Mascha aus der Maske« und in »Holgers Waschsalon« durch intelligent-lakonischen Humor bestochen hatte. Kroymann, geboren 1949 in Niedersachsen, arbeitete als Theaterschauspielerin, Diseuse, Entertainerin. Sie spielte Hauptrollen in den ARD-Serien »Oh Gott, Herr Pfarrer!« und »Vera Wesskamp«, war in Kinofilmen wie Hape Kerkelings »Kein Pardon« und Sönke Wortmanns »Das Superweib« zu sehen.</p></body>
+		<p>war die erste Frau mit eigener Satiresendung im Ã¶ffentlich-rechtlichen Fernsehen. Von 1993 bis 1997 trat sie als Â»Nachtschwester KroymannÂ« auf, nachdem sie zuvor als Â»Mascha aus der MaskeÂ« und in Â»Holgers WaschsalonÂ« durch intelligent-lakonischen Humor bestochen hatte. Kroymann, geboren 1949 in Niedersachsen, arbeitete als Theaterschauspielerin, Diseuse, Entertainerin. Sie spielte Hauptrollen in den ARD-Serien Â»Oh Gott, Herr Pfarrer!Â« und Â»Vera WesskampÂ«, war in Kinofilmen wie Hape Kerkelings Â»Kein PardonÂ« und SÃ¶nke Wortmanns Â»Das SuperweibÂ« zu sehen.</p></body>
 </article>

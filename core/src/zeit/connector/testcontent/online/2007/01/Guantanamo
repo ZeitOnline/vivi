@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <article>
   <head>
 <!-- CMS/document -->
@@ -41,9 +41,9 @@
     <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="status">OK</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="topic">International</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="topic">Politik</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="title">Berichte über Folter</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="title">Berichte Ã¼ber Folter</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="last-modified-by">schweizer</attribute>
-  <references count="4"><reference source="auto" type="intern" year="2006" issue="42" publication="ZEIT online" href="cms:/cms/work/online/2006/42/Kurnaz"><title>Das Martyrium des Murat Kurnaz</title><description>Der ehemalige Guantánamo-Häftling schildert unmenschliche Torturen &#8211; ist seiner Anklage zu trauen? Sehr viel spricht dafür.</description></reference><reference source="auto" type="intern" year="2005" issue="48" publication="ZEIT" href="cms:/cms/work/2005/48/Folteropfer"><title>Operation Nasenschlauch</title><description>UN-Ermittler untersuchen neue Vorwürfe aus Guantánamo &#8211; und werden von den USA daran gehindert</description></reference><reference source="auto" type="intern" year="2005" issue="23" publication="ZEIT online" href="cms:/cms/work/2005/23/guantanamo"><title>Albtraum Guantánamo</title><description>Weit weg von der Heimat, vielfach ohne Rechtsbeistand und ohne Aussicht auf ein Ende ihrer Haft vegetieren viele Gefangene in Guantánamo schon seit drei Jahren vor sich hin. Für Washington wird das Lager immer mehr zum Dilemma. US-Senator Joseph Biden fordert nun die Schließung</description></reference><reference source="auto" type="intern" year="2006" issue="11" publication="ZEIT online" href="cms:/cms/work/online/2006/11/bildergalerie_guantanamo"><title>Hotel Guantánamo</title><description>Ein Häftling hängt sich auf, weil er die Isolation nicht mehr erträgt? Dabei hatte er doch zuvor Pizza bekommen! Eine skurrile Bilderreise durch das berühmteste amerikanische Gefangenenlager. Alle Fotos stammen vom US-Verteidigungsministerium.</description></reference></references>
+  <references count="4"><reference source="auto" type="intern" year="2006" issue="42" publication="ZEIT online" href="cms:/cms/work/online/2006/42/Kurnaz"><title>Das Martyrium des Murat Kurnaz</title><description>Der ehemalige GuantÃ¡namo-HÃ¤ftling schildert unmenschliche Torturen &#8211; ist seiner Anklage zu trauen? Sehr viel spricht dafÃ¼r.</description></reference><reference source="auto" type="intern" year="2005" issue="48" publication="ZEIT" href="cms:/cms/work/2005/48/Folteropfer"><title>Operation Nasenschlauch</title><description>UN-Ermittler untersuchen neue VorwÃ¼rfe aus GuantÃ¡namo &#8211; und werden von den USA daran gehindert</description></reference><reference source="auto" type="intern" year="2005" issue="23" publication="ZEIT online" href="cms:/cms/work/2005/23/guantanamo"><title>Albtraum GuantÃ¡namo</title><description>Weit weg von der Heimat, vielfach ohne Rechtsbeistand und ohne Aussicht auf ein Ende ihrer Haft vegetieren viele Gefangene in GuantÃ¡namo schon seit drei Jahren vor sich hin. FÃ¼r Washington wird das Lager immer mehr zum Dilemma.Â US-Senator Joseph Biden fordert nun die SchlieÃŸung</description></reference><reference source="auto" type="intern" year="2006" issue="11" publication="ZEIT online" href="cms:/cms/work/online/2006/11/bildergalerie_guantanamo"><title>Hotel GuantÃ¡namo</title><description>Ein HÃ¤ftling hÃ¤ngt sich auf, weil er die Isolation nicht mehr ertrÃ¤gt? Dabei hatte er doch zuvor Pizza bekommen! Eine skurrile Bilderreise durch das berÃ¼hmteste amerikanische Gefangenenlager. Alle Fotos stammen vom US-Verteidigungsministerium.</description></reference></references>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="color_scheme">Redaktion</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="foldable">yes</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="countings">yes</attribute>
@@ -52,38 +52,38 @@
 </head>
   <body>
     <supertitle>Guantanamo</supertitle>
-    <title>Berichte über Folter</title>
+    <title>Berichte Ã¼ber Folter</title>
     <subtitle>Mitarbeiter der amerikanischen Bundespolizei FBI haben im &#13;
-US-Gefangenenlager Guantánamo Bay auf Kuba mindestens 26 Fälle von möglichen &#13;
-Häftlingsmisshandlungen beobachtet.</subtitle>
+US-Gefangenenlager GuantÃ¡namo Bay auf Kuba mindestens 26 FÃ¤lle von mÃ¶glichen &#13;
+HÃ¤ftlingsmisshandlungen beobachtet.</subtitle>
     <p>Dies geht aus Dokumenten hervor, die am Dienstag auf der Internetseite des &#13;
-FBI veröffentlicht wurden. Demnach sind FBI-Mitarbeiter Zeugen von aggressiven &#13;
-Misshandlungen und besonders harten Verhörmethoden durch Mitarbeiter anderer &#13;
-US-Dienste und Vetragsmitarbeiter in Guantánamo geworden.<br/><image align="center" image_id="/cms/work/bilder/2007/01/aktuell/teaser_artikel/guantanamo-410.jpg" expires="2100-01-01" src="/cms/work/bilder/2007/01/aktuell/teaser_artikel/guantanamo-410.jpg"><title/><bu>Wärter in Guantánamo</bu><copyright>© Paul J. Richards/AFP/Getty Images</copyright></image></p>
-    <p>Mehrfach hätten FBI-Mitarbeiter gesehen, »wie Gefangene an Händen und Füßen &#13;
-gefesselt in Embryonalstellung am Boden der Verhörräume über 18, 24 oder mehr &#13;
-Stunden ohne Nahrung oder Wasser« gelegen hätten. Vielfach hätten die hilflosen &#13;
-Häftlinge dabei im eigenen Urin und Kot liegen müssen. Andere Gefangene seien &#13;
-bei heruntergeregelter Klimaanlage »zitternd vor Kälte« oder in ungelüfteten, &#13;
-brütend heißen Räumen eingesperrt worden. In einem Fall sei »der Kopf eines &#13;
-vollbärtigen Häftlings mit Klebeband umwickelt« worden, einen weiteren habe man &#13;
-in eine israelische Flagge gehüllt.<br/></p>
+FBI verÃ¶ffentlicht wurden. Demnach sind FBI-Mitarbeiter Zeugen von aggressiven &#13;
+Misshandlungen und besonders harten VerhÃ¶rmethoden durch Mitarbeiter anderer &#13;
+US-Dienste und Vetragsmitarbeiter in GuantÃ¡namo geworden.<br/><image align="center" image_id="/cms/work/bilder/2007/01/aktuell/teaser_artikel/guantanamo-410.jpg" expires="2100-01-01" src="/cms/work/bilder/2007/01/aktuell/teaser_artikel/guantanamo-410.jpg"><title/><bu>WÃ¤rter in GuantÃ¡namo</bu><copyright>Â© Paul J. Richards/AFP/Getty Images</copyright></image></p>
+    <p>Mehrfach hÃ¤tten FBI-Mitarbeiter gesehen, Â»wie Gefangene an HÃ¤nden und FÃ¼ÃŸen &#13;
+gefesselt in Embryonalstellung am Boden der VerhÃ¶rrÃ¤ume Ã¼ber 18, 24 oder mehr &#13;
+Stunden ohne Nahrung oder WasserÂ« gelegen hÃ¤tten. Vielfach hÃ¤tten die hilflosen &#13;
+HÃ¤ftlinge dabei im eigenen Urin und Kot liegen mÃ¼ssen. Andere Gefangene seien &#13;
+bei heruntergeregelter Klimaanlage Â»zitternd vor KÃ¤lteÂ« oder in ungelÃ¼fteten, &#13;
+brÃ¼tend heiÃŸen RÃ¤umen eingesperrt worden. In einem Fall sei Â»der Kopf eines &#13;
+vollbÃ¤rtigen HÃ¤ftlings mit Klebeband umwickeltÂ« worden, einen weiteren habe man &#13;
+in eine israelische Flagge gehÃ¼llt.<br/></p>
     <p>Die Dokumente basieren auf der Befragung aller 493 FBI- Mitarbeiter, die nach &#13;
-den Terroranschlägen vom 11. September 2001 in dem Gefangenenlager waren. Die &#13;
+den TerroranschlÃ¤gen vom 11. September 2001 in dem Gefangenenlager waren. Die &#13;
 Untersuchung habe auch ergeben, dass kein FBI-Mitarbeiter an Misshandlungen oder &#13;
-fragwürdigen Verhörmethoden beteiligt gewesen sei, heißt es in dem Bericht. &#13;
+fragwÃ¼rdigen VerhÃ¶rmethoden beteiligt gewesen sei, heiÃŸt es in dem Bericht. &#13;
 <br/></p>
     <p>170&#13;
 </p>
   </body>
   <teaser>
-    <title>Berichte über Folter</title>
-    <text>Mitarbeiter der amerikanischen Bundespolizei FBI haben im US-Gefangenenlager Guantánamo Bay auf Kuba mindestens 26 Fälle von möglichen Häftlingsmisshandlungen beobachtet.</text>
+    <title>Berichte Ã¼ber Folter</title>
+    <text>Mitarbeiter der amerikanischen Bundespolizei FBI haben im US-Gefangenenlager GuantÃ¡namo Bay auf Kuba mindestens 26 FÃ¤lle von mÃ¶glichen HÃ¤ftlingsmisshandlungen beobachtet.</text>
     <text_length>170</text_length>
   </teaser>
   <indexteaser>
-    <title>Guantánamo</title>
-    <text>FBI berichtet über Misshandlungen</text>
+    <title>GuantÃ¡namo</title>
+    <text>FBI berichtet Ã¼ber Misshandlungen</text>
     <text_length>33</text_length>
     <title_length>10</title_length>
   </indexteaser>

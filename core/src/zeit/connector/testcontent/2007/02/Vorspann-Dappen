@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <article>
   <head>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="new_comments">1</attribute>
@@ -29,12 +29,12 @@
     <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="last-modified-by">zinkant</attribute>
   </head>
   <body>
-    <subtitle>Ob Larve, Käfer oder Qualle &#8211; die  Geschöpfe aus der</subtitle>
+    <subtitle>Ob Larve, KÃ¤fer oder Qualle &#8211; die  GeschÃ¶pfe aus der</subtitle>
     <subtitle>Werkstatt des Modellbauers  </subtitle>
     <p>Hans Dappen</p>
-    <subtitle>sind zwar überlebensgroß, aber sonst täuschend echt und als </subtitle>
+    <subtitle>sind zwar Ã¼berlebensgroÃŸ, aber sonst tÃ¤uschend echt und als </subtitle>
     <subtitle>Exponate in Museen gern gesehen </subtitle>
-    <subtitle>Von Tanja Krämer</subtitle>
+    <subtitle>Von Tanja KrÃ¤mer</subtitle>
     <subtitle_length>52</subtitle_length>
   </body>
   <indexteaser>

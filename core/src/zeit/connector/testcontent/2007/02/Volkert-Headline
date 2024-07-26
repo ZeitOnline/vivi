@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <article>
   <head>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="banner">yes</attribute>
@@ -23,6 +23,6 @@
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="page">2</attribute>
     <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="page">2</attribute>
   </head>
-  <body>		<title>»Ich stand auf der Lokomotive«</title><subtitle>Der Mann im Zentrum der Ermittlungen bei Volkswagen, der Mann mit den Lustreisen, der Mann hinter Peter Hartz. Erstmals spricht Klaus Volkert,  der frühere Chef des VW-Betriebsrates, ausführlich über die Korruptionsaffäre und seine Zeit im Gefängnis Von stefan willeke</subtitle>
-		<title>Drei Wochen U-Haft</title><bu>machen Volkert zu einer Art Vertrauensmann der Gefangenen. Er notiert sich ganze Lebensgeschichten, einem Häftling hilft er, Briefe zu schreiben. Bald wäre er so weit, mit der Anstaltsleitung zu verhandeln</bu></body>
+  <body>		<title>Â»Ich stand auf der LokomotiveÂ«</title><subtitle>Der Mann im Zentrum der Ermittlungen bei Volkswagen, der Mann mit den Lustreisen, der Mann hinter Peter Hartz. Erstmals spricht Klaus Volkert,  der frÃ¼here Chef des VW-Betriebsrates, ausfÃ¼hrlich Ã¼ber die KorruptionsaffÃ¤re und seine Zeit im GefÃ¤ngnis Von stefan willeke</subtitle>
+		<title>Drei Wochen U-Haft</title><bu>machen Volkert zu einer Art Vertrauensmann der Gefangenen. Er notiert sich ganze Lebensgeschichten, einem HÃ¤ftling hilft er, Briefe zu schreiben. Bald wÃ¤re er so weit, mit der Anstaltsleitung zu verhandeln</bu></body>
 </article>

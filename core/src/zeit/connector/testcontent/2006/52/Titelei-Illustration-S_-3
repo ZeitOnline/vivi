@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <article>
   <head>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="banner">yes</attribute>
@@ -24,8 +24,8 @@
     <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="page">3</attribute>
   </head>
   <body>
-    <title>Oh, Ihr Fröhlichen </title>
-    <subtitle>2006 war ein Jahr der Kinder &#8211; selten haben Politiker so viel über sie gesprochen. Die Berliner Künstlerin <strong>Sybille Hein</strong> skizziert in ihrer  Bildergeschichte auf dieser Seite den Weg eines Kindes von der Geburt an &#8211; und das Ende der Freiheit seiner Eltern. </subtitle>
-    <subtitle><strong>Auf den folgenden Seiten: </strong>Warum wir Kinder oft nur als Problem sehen. Wie die zwölfjährige Julia aus Tel Aviv das Jahr erlebt hat.  Und warum Lewis und Annabel von einer Großfamilie träumen  <strong>Seite 4&#8211;6</strong> </subtitle>
+    <title>Oh, Ihr FrÃ¶hlichen </title>
+    <subtitle>2006 war ein Jahr der Kinder &#8211; selten haben Politiker so viel Ã¼ber sie gesprochen. Die Berliner KÃ¼nstlerin <strong>Sybille Hein</strong> skizziert in ihrer  Bildergeschichte auf dieser Seite den Weg eines Kindes von der Geburt an &#8211; und das Ende der Freiheit seiner Eltern. </subtitle>
+    <subtitle><strong>Auf den folgenden Seiten: </strong>Warum wir Kinder oft nur als Problem sehen. Wie die zwÃ¶lfjÃ¤hrige Julia aus Tel Aviv das Jahr erlebt hat.  Und warum Lewis und Annabel von einer GroÃŸfamilie trÃ¤umen  <strong>Seite 4&#8211;6</strong> </subtitle>
   </body>
 </article>

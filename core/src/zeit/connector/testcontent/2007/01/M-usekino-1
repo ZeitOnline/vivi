@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <article>
   <head>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="banner">yes</attribute>
@@ -9,7 +9,7 @@
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="type">article</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="status">import</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="last-modified-by">import</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="jobname">Mäusekino 1</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="jobname">MÃ¤usekino 1</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="author"></attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="ressort">Wissen</attribute>
     <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="ressort">Wissen</attribute>
@@ -23,5 +23,5 @@
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="page">29</attribute>
     <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="page">29</attribute>
   </head>
-  <body>		<p>Die Geisterburg</p><p>18 Monate lang gruben Archäologen nach der Keimzelle  Hamburgs, der Hammaburg.  Doch sie bleibt verschollen   <strong>Seite 33</strong></p></body>
+  <body>		<p>Die Geisterburg</p><p>18 Monate lang gruben ArchÃ¤ologen nach der Keimzelle  Hamburgs, der Hammaburg.  Doch sie bleibt verschollen   <strong>Seite 33</strong></p></body>
 </article>

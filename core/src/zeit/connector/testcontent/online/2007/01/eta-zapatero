@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <article>
   <head>
 <!-- CMS/document -->
@@ -39,9 +39,9 @@
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="in_rankings">yes</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="show_commentthread">no</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="status">OK</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="title">Dialog als Unmöglichkeit</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="title">Dialog als UnmÃ¶glichkeit</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="last-modified-by">husmann</attribute>
-  <references count="4"><reference source="auto" type="intern" year="2006" issue="09" publication="ZEIT online" href="cms:/cms/work/online/2006/09/Baskenland"><title>"En mi nombre ¡no!"</title><description>Mehr als hunderttausend Spanier riefen die Regierung auf, mit der baskischen Terrororganisation keine Verhandlungen zu führen</description></reference><reference source="auto" type="intern" year="2004" issue="13" publication="ZEIT" href="cms:/cms/work/2004/13/Baskenland"><title>Die Angst des Sündenbocks</title><description>Viele Basken sind erschüttert über den Verdacht gegen die Eta. Einige trauen sich nicht mehr nach Spanien</description></reference><reference source="auto" type="intern" year="2007" issue="01" publication="ZEIT online" href="cms:/cms/work/online/2007/01/eta-zapatero-kommentar"><title>Dialog abgebrochen</title><description>Nach einem schweren Anschlag der Terrorgruppe Eta hat die spanische Regierung den Friedensprozess für beendet erklärt. Dennoch muss eine politische Lösung gefunden werden</description></reference><reference source="auto" type="intern" year="2005" issue="20" publication="ZEIT online" href="cms:/cms/work/2005/20/Baskenland"><title>Madrid will Dialog mit ETA wieder aufnehmen</title><description>Zuvor soll die Separatisten-Organisation jedoch die Waffen niederlegen. Terrorexperten sehen darauf aber keinen Hinweis - im Gegenteil</description></reference></references><keywordset>
+  <references count="4"><reference source="auto" type="intern" year="2006" issue="09" publication="ZEIT online" href="cms:/cms/work/online/2006/09/Baskenland"><title>"En mi nombre Â¡no!"</title><description>Mehr als hunderttausend Spanier riefen die Regierung auf, mit der baskischen Terrororganisation keine Verhandlungen zu fÃ¼hren</description></reference><reference source="auto" type="intern" year="2004" issue="13" publication="ZEIT" href="cms:/cms/work/2004/13/Baskenland"><title>Die Angst des SÃ¼ndenbocks</title><description>Viele Basken sind erschÃ¼ttert Ã¼ber den Verdacht gegen die Eta. Einige trauen sich nicht mehr nach Spanien</description></reference><reference source="auto" type="intern" year="2007" issue="01" publication="ZEIT online" href="cms:/cms/work/online/2007/01/eta-zapatero-kommentar"><title>Dialog abgebrochen</title><description>Nach einem schweren Anschlag der Terrorgruppe Eta hat die spanische Regierung den Friedensprozess fÃ¼r beendet erklÃ¤rt. Dennoch muss eine politische LÃ¶sung gefunden werden</description></reference><reference source="auto" type="intern" year="2005" issue="20" publication="ZEIT online" href="cms:/cms/work/2005/20/Baskenland"><title>Madrid will Dialog mit ETA wieder aufnehmen</title><description>Zuvor soll die Separatisten-Organisation jedoch die Waffen niederlegen. Terrorexperten sehen darauf aber keinen Hinweis - im Gegenteil</description></reference></references><keywordset>
 	<keyword source="auto" intaxo="yes">Terrorismus</keyword>
 	<keyword source="auto" intaxo="yes">Innere Sicherheit</keyword>
 	<keyword source="auto" intaxo="yes">Innenpolitik</keyword>
@@ -60,22 +60,22 @@
 </head>
   <body>
     <supertitle font-size="20">SPANIEN</supertitle>
-    <title>Dialog als Unmöglichkeit</title>
+    <title>Dialog als UnmÃ¶glichkeit</title>
     <subtitle>Nach dem Bombenanschlag am Madrider Flughafen demonstrieren Tausende gegen die ETA. Die Proteste richten sich auch gegen Zapatero </subtitle>
-    <p>Einen Tag nach dem Autobombenanschlag der baskischen Untergrundorganisation ETA auf den Großflughafen von Madrid haben Tausende Spanier gegen den Terror protestiert. Sie kamen im ganzen Land am Sonntag zu Schweigekundgebungen vor den Rathäusern zusammen. Im Zentrum von Madrid demonstrierten zudem Hunderte Terroropfer gegen die Regierung und forderten den Rücktritt von Ministerpräsident José Luis Rodríguez Zapatero. Er hätte der ETA keine Friedensverhandlungen anbieten dürfen und müsse nun jeden Dialog mit den Terroristen abbrechen, skandierten sie. Zu der Kundgebung hatte Spaniens größter Verband von Terroropfern (AVT) aufgerufen, der der konservativen Opposition nahe steht. </p>
+    <p>Einen Tag nach dem Autobombenanschlag der baskischen Untergrundorganisation ETA auf den GroÃŸflughafen von Madrid haben Tausende Spanier gegen den Terror protestiert. Sie kamen im ganzen Land am Sonntag zu Schweigekundgebungen vor den RathÃ¤usern zusammen. Im Zentrum von Madrid demonstrierten zudem Hunderte Terroropfer gegen die Regierung und forderten den RÃ¼cktritt von MinisterprÃ¤sident JosÃ© Luis RodrÃ­guez Zapatero. Er hÃ¤tte der ETA keine Friedensverhandlungen anbieten dÃ¼rfen und mÃ¼sse nun jeden Dialog mit den Terroristen abbrechen, skandierten sie. Zu der Kundgebung hatte Spaniens grÃ¶ÃŸter Verband von Terroropfern (AVT) aufgerufen, der der konservativen Opposition nahe steht. </p>
     <p>
 
-Nach dem Attentat wurden immer noch zwei Menschen vermisst. Es sei zu befürchten, dass sie ums Leben gekommen sind, teilten die spanischen Rettungskräfte mit. Die beiden 19 und 35 Jahre alten Männer aus Ecuador wurden unter den Trümmern des Parkhauses vermutet, wo der in einem Lieferwagen versteckte Sprengsatz am Samstag detoniert war. Sie waren am Flughafen, um Verwandte abzuholen. </p>
+Nach dem Attentat wurden immer noch zwei Menschen vermisst. Es sei zu befÃ¼rchten, dass sie ums Leben gekommen sind, teilten die spanischen RettungskrÃ¤fte mit. Die beiden 19 und 35 Jahre alten MÃ¤nner aus Ecuador wurden unter den TrÃ¼mmern des Parkhauses vermutet, wo der in einem Lieferwagen versteckte Sprengsatz am Samstag detoniert war. Sie waren am Flughafen, um Verwandte abzuholen. </p>
     <p>
 
-Die ETA setzte nach Angaben der Ermittler 500 bis 800 Kilogramm Sprengstoff ein. Es war damit eine der gewaltigsten Bomben, die je von der Separatistenorganisation gelegt worden sind. Bei dem Anschlag waren 26 Menschen leicht verletzt worden. Die Feuerwehr setzte bei der Suche nach den beiden Vermissten schweres Gerät ein. Es gelte, rund 40.000 Tonnen Schutt zu beseitigen, hieß es. Die Bergungsarbeiten könnten noch Tage dauern. </p>
+Die ETA setzte nach Angaben der Ermittler 500 bis 800 Kilogramm Sprengstoff ein. Es war damit eine der gewaltigsten Bomben, die je von der Separatistenorganisation gelegt worden sind. Bei dem Anschlag waren 26 Menschen leicht verletzt worden. Die Feuerwehr setzte bei der Suche nach den beiden Vermissten schweres GerÃ¤t ein. Es gelte, rund 40.000 Tonnen Schutt zu beseitigen, hieÃŸ es. Die Bergungsarbeiten kÃ¶nnten noch Tage dauern. </p>
     <p>
 
-Mit dem Attentat hatte die ETA ihre vor neun Monaten verkündete »Waffenruhe« beendet. Als Reaktion setzte Zapatero den Friedensprozess mit der baskischen Untergrundorganisation bis auf weiteres aus. Er ordnete an, alle Verhandlungsbemühungen mit der ETA einzustellen. Eine Wiederaufnahme des Dialogs sei nur möglich, wenn die Organisation ihren Willen zur Abkehr vom Terror unter Beweis stelle, sagte Zapatero. </p>
+Mit dem Attentat hatte die ETA ihre vor neun Monaten verkÃ¼ndete Â»WaffenruheÂ« beendet. Als Reaktion setzte Zapatero den Friedensprozess mit der baskischen Untergrundorganisation bis auf weiteres aus. Er ordnete an, alle VerhandlungsbemÃ¼hungen mit der ETA einzustellen. Eine Wiederaufnahme des Dialogs sei nur mÃ¶glich, wenn die Organisation ihren Willen zur Abkehr vom Terror unter Beweis stelle, sagte Zapatero. </p>
     <subtitle_length>130</subtitle_length>
   </body>
   <teaser>
-    <title>Dialog als Unmöglichkeit</title>
+    <title>Dialog als UnmÃ¶glichkeit</title>
     <text>Nach dem Bombenanschlag am Madrider Flughafen demonstrieren Tausende gegen die ETA. Die Proteste richten sich auch gegen Zapatero </text>
     <text_length>130</text_length>
   </teaser>

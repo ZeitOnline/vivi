@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <article>
   <head>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="banner">yes</attribute>
@@ -23,5 +23,5 @@
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="page">21</attribute>
     <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="page">21</attribute>
   </head>
-  <body>		<title>Die Rückkehr der Retter</title><subtitle>Eine neue Garde von Milliardären und Wissenschaftlern will die Armut abschaffen. Warum soll es diesmal gelingen? Von thomas Fischermann und Claas Pieper</subtitle></body>
+  <body>		<title>Die RÃ¼ckkehr der Retter</title><subtitle>Eine neue Garde von MilliardÃ¤ren und Wissenschaftlern will die Armut abschaffen. Warum soll es diesmal gelingen? Von thomas Fischermann und Claas Pieper</subtitle></body>
 </article>

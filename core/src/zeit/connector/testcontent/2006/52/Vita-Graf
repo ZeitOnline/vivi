@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <article>
   <head>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="banner">yes</attribute>
@@ -24,5 +24,5 @@
     <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="page">45</attribute>
   </head>
   <body><title>Friedrich Wilhelm Graf</title>
-		<p>lehrt in München und ist einer der einflussreichsten deutschen Theologen. Der 58-Jährige bekam 1999 den Leibniz-Preis der Deutschen Forschungsgemeinschaft verliehen. Zuletzt von ihm erschienen ist »Der Protestantismus &#8211; Geschichte und Gegenwart« </p></body>
+		<p>lehrt in MÃ¼nchen und ist einer der einflussreichsten deutschen Theologen. Der 58-JÃ¤hrige bekam 1999 den Leibniz-Preis der Deutschen Forschungsgemeinschaft verliehen. Zuletzt von ihm erschienen ist Â»Der Protestantismus &#8211; Geschichte und GegenwartÂ« </p></body>
 </article>

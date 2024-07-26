@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <article>
   <head>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="new_comments">1</attribute>
@@ -30,21 +30,21 @@
   <body>
     <supertitle>Draussen</supertitle>
     <title>Sehnsucht nach den Bergen</title>
-    <subtitle>Florian Grassl aus Strasshof pendelt zwischen München und Jakarta </subtitle>
-    <p>Ein Niederösterreicher in Indonesien: Der Techniker und Manager Florian Grassl, 31,  gehört zu den weltweit umworbenen Schlüsselkräften im Mobilfunkgeschäft.  Dass daraus viele Reisen resultieren, nimmt er bereitwillig in Kauf. </p>
-    <p><strong>Weltberühmt.</strong> Aufgewachsen bin ich in Strasshof an der Nordbahn, bei Gänserndorf. Früher musste ich erklären, wo ich herkomme. Aber seit Natascha Kampusch in Strasshof ihrem Entführer entwischt ist, ist diese kleine Ortschaft ja weltberühmt.</p>
-    <p>Mittlerweile lebe ich in München. Zumindest habe ich da eine Wohnung, in der meine Sachen stehen. Mehr als die Hälfte meiner Zeit verbringe ich aber auf Reisen &#8211; überwiegend in Asien, ein bisschen in Europa. Ich reise projektbezogen, suche mir also in dem Sinn kein Reiseziel aus. Trotzdem muss ich sagen, dass Jakarta eine besondere Herausforderung ist: Eine Zehnmillionenstadt, in der es keinen öffentlichen Verkehr und deshalb unfassbare Umweltverschmutzung gibt, zehrt an den Kräften. Man arbeitet zwar sechs Tage die Woche zehn bis zwölf Stunden täglich. Weil man sich wegen der Luftverschmutzung aber auch am Wochenende <em>indoors</em> aufhält, irgendwo in einer Shopping Mall, wird die Sehnsucht nach den Bergen, nach der Natur manchmal übermächtig.</p>
+    <subtitle>Florian Grassl aus Strasshof pendelt zwischen MÃ¼nchen und Jakarta </subtitle>
+    <p>Ein NiederÃ¶sterreicher in Indonesien: Der Techniker und Manager Florian Grassl, 31,  gehÃ¶rt zu den weltweit umworbenen SchlÃ¼sselkrÃ¤ften im MobilfunkgeschÃ¤ft.  Dass daraus viele Reisen resultieren, nimmt er bereitwillig in Kauf. </p>
+    <p><strong>WeltberÃ¼hmt.</strong> Aufgewachsen bin ich in Strasshof an der Nordbahn, bei GÃ¤nserndorf. FrÃ¼her musste ich erklÃ¤ren, wo ich herkomme. Aber seit Natascha Kampusch in Strasshof ihrem EntfÃ¼hrer entwischt ist, ist diese kleine Ortschaft ja weltberÃ¼hmt.</p>
+    <p>Mittlerweile lebe ich in MÃ¼nchen. Zumindest habe ich da eine Wohnung, in der meine Sachen stehen. Mehr als die HÃ¤lfte meiner Zeit verbringe ich aber auf Reisen &#8211; Ã¼berwiegend in Asien, ein bisschen in Europa. Ich reise projektbezogen, suche mir also in dem Sinn kein Reiseziel aus. Trotzdem muss ich sagen, dass Jakarta eine besondere Herausforderung ist: Eine Zehnmillionenstadt, in der es keinen Ã¶ffentlichen Verkehr und deshalb unfassbare Umweltverschmutzung gibt, zehrt an den KrÃ¤ften. Man arbeitet zwar sechs Tage die Woche zehn bis zwÃ¶lf Stunden tÃ¤glich. Weil man sich wegen der Luftverschmutzung aber auch am Wochenende <em>indoors</em> aufhÃ¤lt, irgendwo in einer Shopping Mall, wird die Sehnsucht nach den Bergen, nach der Natur manchmal Ã¼bermÃ¤chtig.</p>
 <!--empty-->
-    <p><strong>Global verbunden.</strong> Mein Job in Jakarta ist eine Herausforderung. In Indonesien wurden neue Mobilfunklizenzen vergeben. Einer der Betreiber hat nun von unserer Firma, Siemens Networks, die Betriebsabteilung aufbauen lassen. Als Produktmanager bin ich an der Schnittstelle zwischen Technik und Business hart gefordert. Wir haben eine dreistellige Anzahl von lokalen Ingenieuren, die nach unseren Plänen arbeiten. Daraus ergibt sich eine sehr komplexe Managementaufgabe. </p>
-    <p>Eigentlich komme ich aber von der technischen Seite in dieses Geschäft. Ich habe an der TU Wien und der University of Illinois  studiert und war für Ericsson in Stockholm noch im technischen Bereich dieser Branche tätig. In Wien habe ich dann bei Hutchison im Controlling gearbeitet. Jetzt kommen alle drei Ebenen dieses Geschäfts zusammen, die technische, die wirtschaftliche und die juristische. Und das liegt mir sehr. </p>
-    <p>Im Grunde bin ich kein Technikfreak. Zwar hat mich das Telefon als Kind schon fasziniert. Aber ebendeshalb, weil ich bald verstanden habe, dass nicht jedes Gerät mit jedem anderen per Kabel verbunden ist. Ich fand es spannend, dass es da ein System gibt; heute weiß ich im Detail, wie das funktioniert. Mein Handy verwende ich trotzdem so wie andere Menschen auch: Ich telefoniere, benutze das Telefonbuch, die Weckfunktion, außerdem die Weltzeituhr. Aber von diesem ganzen Firlefanz rundherum müssen auch mich die Anbieter erst noch überzeugen.</p>
+    <p><strong>Global verbunden.</strong> Mein Job in Jakarta ist eine Herausforderung. In Indonesien wurden neue Mobilfunklizenzen vergeben. Einer der Betreiber hat nun von unserer Firma, Siemens Networks, die Betriebsabteilung aufbauen lassen. Als Produktmanager bin ich an der Schnittstelle zwischen Technik und Business hart gefordert. Wir haben eine dreistellige Anzahl von lokalen Ingenieuren, die nach unseren PlÃ¤nen arbeiten. Daraus ergibt sich eine sehr komplexe Managementaufgabe. </p>
+    <p>Eigentlich komme ich aber von der technischen Seite in dieses GeschÃ¤ft. Ich habe an der TU Wien und der University of Illinois  studiert und war fÃ¼r Ericsson in Stockholm noch im technischen Bereich dieser Branche tÃ¤tig. In Wien habe ich dann bei Hutchison im Controlling gearbeitet. Jetzt kommen alle drei Ebenen dieses GeschÃ¤fts zusammen, die technische, die wirtschaftliche und die juristische. Und das liegt mir sehr. </p>
+    <p>Im Grunde bin ich kein Technikfreak. Zwar hat mich das Telefon als Kind schon fasziniert. Aber ebendeshalb, weil ich bald verstanden habe, dass nicht jedes GerÃ¤t mit jedem anderen per Kabel verbunden ist. Ich fand es spannend, dass es da ein System gibt; heute weiÃŸ ich im Detail, wie das funktioniert. Mein Handy verwende ich trotzdem so wie andere Menschen auch: Ich telefoniere, benutze das Telefonbuch, die Weckfunktion, auÃŸerdem die Weltzeituhr. Aber von diesem ganzen Firlefanz rundherum mÃ¼ssen auch mich die Anbieter erst noch Ã¼berzeugen.</p>
     <p>Aufgezeichnet von <strong>Ernst Schmiederer</strong>
  <br/><br/>
 
-      <a href="http://www.zeit.de/international#oesterreich"> Dieser Artikel wurde für die  wöchentliche Österreich-Ausgabe der ZEIT geschrieben »</a>
+      <a href="http://www.zeit.de/international#oesterreich"> Dieser Artikel wurde fÃ¼r die  wÃ¶chentliche Ã–sterreich-Ausgabe der ZEIT geschrieben Â»</a>
       <br/>
       <br/>
-      <a href="http://blog.zeit.de/oesterreich">Nachrichten aus dem Zentrum: Das Österreich-Blog auf ZEIT online »</a></p>
+      <a href="http://blog.zeit.de/oesterreich">Nachrichten aus dem Zentrum: Das Ã–sterreich-Blog auf ZEIT online Â»</a></p>
   </body>
   <indexteaser>
     <text_length>25</text_length>
@@ -53,7 +53,7 @@
     <title>Draussen</title>
   </indexteaser>
   <teaser>
-    <text>Florian Grassl aus Strasshof pendelt zwischen München und Jakarta </text>
+    <text>Florian Grassl aus Strasshof pendelt zwischen MÃ¼nchen und Jakarta </text>
     <title>Sehnsucht nach den Bergen</title>
   </teaser>
 </article>

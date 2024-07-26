@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <article>
   <head>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="banner">yes</attribute>
@@ -12,6 +12,6 @@
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="jobname">1. Mai</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="author">Fischermann</attribute>
   </head>
-  <body><p><strong>Bolivien verstaatlicht die Förderung von Öl und Gas </strong></p>
-		<p>Manche verspotteten ihn schon zuvor als den »kleinen Bruder von Hugo Chávez«. Tatsächlich eifert der bolivianische Präsident Evo Morales seinem linkspopulistischen Amtskollegen aus Venezuela nach: Er verstaatlicht die Förderung von Öl und Gas. Jetzt streicht Bolivien 70 bis 80 Prozent der Energiegewinne ein, und damit saniert Morales, frei nach seinem Vorbild Chávez, den Staatshaushalt und legt Sozialprogramme auf. Seine Akzeptanz beim Volk bleibt groß &#8211; und eigenartigerweise auch die bei den meisten enteigneten Ölkonzernen. Die können nämlich gut rechnen. Angesichts der hohen Ölpreise zahlt es sich weiter aus, zähneknirschend mit Morales Geschäfte zu machen. </p></body>
+  <body><p><strong>Bolivien verstaatlicht die FÃ¶rderung von Ã–l und Gas </strong></p>
+		<p>Manche verspotteten ihn schon zuvor als den Â»kleinen Bruder von Hugo ChÃ¡vezÂ«. TatsÃ¤chlich eifert der bolivianische PrÃ¤sident Evo Morales seinem linkspopulistischen Amtskollegen aus Venezuela nach: Er verstaatlicht die FÃ¶rderung von Ã–l und Gas. Jetzt streicht Bolivien 70 bis 80 Prozent der Energiegewinne ein, und damit saniert Morales, frei nach seinem Vorbild ChÃ¡vez, den Staatshaushalt und legt Sozialprogramme auf. Seine Akzeptanz beim Volk bleibt groÃŸ &#8211; und eigenartigerweise auch die bei den meisten enteigneten Ã–lkonzernen. Die kÃ¶nnen nÃ¤mlich gut rechnen. Angesichts der hohen Ã–lpreise zahlt es sich weiter aus, zÃ¤hneknirschend mit Morales GeschÃ¤fte zu machen. </p></body>
 </article>

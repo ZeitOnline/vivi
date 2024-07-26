@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <article>
   <head>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="banner">yes</attribute>
@@ -23,5 +23,5 @@
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="page">45</attribute>
     <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="page">45</attribute>
   </head>
-  <body>		<p>Die Idealistin</p><p>Das Leben der Emma McCune &#8211;  oder: Das Helfen hat auch  eine Kehrseite  Von Ursula März    <strong>Seite 47</strong></p></body>
+  <body>		<p>Die Idealistin</p><p>Das Leben der Emma McCune &#8211;  oder: Das Helfen hat auch  eine Kehrseite  Von Ursula MÃ¤rz    <strong>Seite 47</strong></p></body>
 </article>
