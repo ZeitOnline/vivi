@@ -20,11 +20,8 @@
   <include package="zeit.cms.testcontenttype" />
   <include package="zeit.cms.testcontenttype.browser" />
 
-  <meta:provides feature="zeit.connector.mock" />
+  <meta:provides feature="zeit.connector.sql.zope" />
   <include package="zeit.connector" file="service.zcml" />
-  <subscriber
-    handler="zeit.cms.testing.reset_connector"
-    for="zeit.cms.testing.ResetMocks" />
 
   <subscriber
     handler="zeit.cms.workflow.mock.reset"

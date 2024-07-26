@@ -10,15 +10,19 @@ from zeit.content.dynamicfolder.folder import RepositoryDynamicFolder
 import zeit.cms.repository.folder
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
+import zeit.connector.testing
 import zeit.content.cp.testing
 
 
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(zeit.content.cp.testing.CONFIG_LAYER,))
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
+    bases=(zeit.content.cp.testing.CONFIG_LAYER, zeit.connector.testing.SQL_CONFIG_LAYER)
+)
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
+DB_LAYER = zeit.connector.testing.SQLDatabaseLayer(bases=(ZOPE_LAYER,), populate_testcontent=False)
 
 
 class DynamicLayer(plone.testing.Layer):
-    defaultBases = (ZOPE_LAYER,)
+    defaultBases = (DB_LAYER,)
 
     def __init__(self, path, files):
         super().__init__()

@@ -213,6 +213,7 @@ class TestDynamicFolder(zeit.content.dynamicfolder.testing.FunctionalTestCase):
         with checked_out(self.folder['xanten']) as co:
             self.assertEqual('seo-title', zeit.seo.interfaces.ISEO(co).html_title)
             zeit.seo.interfaces.ISEO(co).html_title = 'changed'
+        transaction.commit()
         self.assertEqual('changed', zeit.seo.interfaces.ISEO(self.folder['xanten']).html_title)
 
     def test_does_not_break_on_erroneous_config(self):
