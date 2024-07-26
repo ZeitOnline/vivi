@@ -16,6 +16,7 @@ from zeit.cms.content.interfaces import ISemanticChange
 from zeit.cms.interfaces import ITypeDeclaration
 from zeit.cms.workflow.interfaces import IPublicationStatus
 from zeit.connector.interfaces import DeleteProperty
+from zeit.connector.resource import PropertyKey
 from zeit.content.image.interfaces import IImageMetadata
 from zeit.retresco.interfaces import DAV_NAMESPACE_BASE
 from zeit.wochenmarkt.interfaces import IRecipeCategoriesWhitelist
@@ -162,19 +163,21 @@ class CMSContent(Converter):
                 continue
 
             field = None
-            prop = zeit.cms.content.dav.PROPERTY_REGISTRY.get((name, ns))
+            key = PropertyKey(name, ns)
+            prop = zeit.cms.content.dav.PROPERTY_REGISTRY.get(key)
             if prop is not None:
                 field = prop.field
                 field = field.bind(self.context)
 
             converter = zope.component.queryMultiAdapter(
-                (field, self.DUMMY_ES_PROPERTIES), zeit.cms.content.interfaces.IDAVPropertyConverter
+                (field, self.DUMMY_ES_PROPERTIES, key),
+                zeit.cms.content.interfaces.IDAVPropertyConverter,
             )
             # Only perform type conversion if we have a json-specific one.
             if converter.__class__.__module__ == 'zeit.retresco.content':
                 try:
                     davconverter = zope.component.getMultiAdapter(
-                        (field, properties), zeit.cms.content.interfaces.IDAVPropertyConverter
+                        (field, properties, key), zeit.cms.content.interfaces.IDAVPropertyConverter
                     )
                     pyval = davconverter.fromProperty(value)
                     value = converter.toProperty(pyval)

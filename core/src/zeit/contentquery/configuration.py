@@ -70,8 +70,9 @@ class CustomQueryProperty:
         field = IConfiguration['query'].value_type.type_interface[selector]
         field = field.bind(ICMSContent(context))
         props = zeit.cms.content.property.DAVConverterWrapper.DUMMY_PROPERTIES
+        key = zeit.cms.content.property.DAVConverterWrapper.DUMMY_PROPERTYKEY
         return zope.component.getMultiAdapter(
-            (field, props), zeit.cms.content.interfaces.IDAVPropertyConverter
+            (field, props, key), zeit.cms.content.interfaces.IDAVPropertyConverter
         )
 
 

@@ -16,7 +16,8 @@
   <adapter factory=".dav.CollectionTextLineProperty"
     for="zope.schema.interfaces.ICollection
     zope.schema.interfaces.IChoice
-    zope.interface.Interface" />
+    zope.interface.Interface
+    zeit.connector.resource.PropertyKey" />
   <adapter factory=".dav.GenericProperty" />
   <adapter factory=".dav.GenericCollectionProperty" />
 

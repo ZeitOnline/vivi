@@ -248,6 +248,7 @@ def provide_interface():
     import zope.proxy
 
     from zeit.cms.type import _provides_dav_property
+    from zeit.connector.resource import PropertyKey
     import zeit.cms.content.interfaces
     import zeit.cms.interfaces
     import zeit.connector.interfaces
@@ -277,14 +278,12 @@ def provide_interface():
     # LiveProperties.__setitem__ that actually set the value
     read_properties = zeit.cms.interfaces.IWebDAVReadProperties(content)
     field = _provides_dav_property.field.bind(content)
+    key = PropertyKey(_provides_dav_property.name, _provides_dav_property.namespace)
     converter = zope.component.getMultiAdapter(
-        (field, read_properties), zeit.cms.content.interfaces.IDAVPropertyConverter
+        (field, read_properties, key), zeit.cms.content.interfaces.IDAVPropertyConverter
     )
     dav_value = converter.toProperty(content.__provides__)
-    connector.changeProperties(
-        content.uniqueId,
-        {(_provides_dav_property.name, _provides_dav_property.namespace): dav_value},
-    )
+    connector.changeProperties(content.uniqueId, {key: dav_value})
 
     # Committing is not technically necessary (neither DAV nor the connector care),
     # but it's good form, and if it's there, nobody will be confused as to why it's

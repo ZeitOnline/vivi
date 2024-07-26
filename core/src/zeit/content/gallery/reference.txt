@@ -39,7 +39,7 @@ The gallery is now noted in the webdav properties of `content`:
 >>> import zeit.connector.interfaces
 >>> properties = zeit.connector.interfaces.IWebDAVProperties(content)
 >>> dict(properties)
-{('artbox_gallery', 'http://namespaces.zeit.de/CMS/document'): 'http://xml.zeit.de/gallery'}
+{PropertyKey(name='artbox_gallery', namespace='http://namespaces.zeit.de/CMS/document'): 'http://xml.zeit.de/gallery'}
 
 
 The browse location of a gallery reference depends on the adapted object and

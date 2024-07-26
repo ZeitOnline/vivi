@@ -8,6 +8,7 @@ import zope.component
 import zope.schema.interfaces
 
 from zeit.cms.repository.interfaces import AfterObjectConstructedEvent
+from zeit.connector.resource import PropertyKey
 import zeit.cms.interfaces
 import zeit.connector.interfaces
 import zeit.content.author.author
@@ -244,7 +245,7 @@ class JSONType(grok.MultiAdapter):
 
     grok.baseclass()
 
-    def __init__(self, context, content):
+    def __init__(self, context, properties, propertykey):
         pass
 
     def fromProperty(self, value):
@@ -258,6 +259,7 @@ class Bool(JSONType):
     grok.adapts(
         zope.schema.Bool,  # IFromUnicode is parallel to IBool
         zeit.retresco.interfaces.IElasticDAVProperties,
+        PropertyKey,
     )
 
 
@@ -265,6 +267,7 @@ class Int(JSONType):
     grok.adapts(
         zope.schema.Int,  # IFromUnicode is parallel to IInt
         zeit.retresco.interfaces.IElasticDAVProperties,
+        PropertyKey,
     )
 
 
@@ -274,13 +277,15 @@ class CollectionTextLine(grok.MultiAdapter):
         zope.schema.interfaces.ICollection,
         zope.schema.interfaces.ITextLine,
         zeit.retresco.interfaces.IElasticDAVProperties,
+        PropertyKey,
     )
 
     # Taken from zeit.cms.content.dav.CollectionTextLineProperty
-    def __init__(self, context, value_type, content):
+    def __init__(self, context, value_type, properties, propertykey):
         self.context = context
         self.value_type = value_type
-        self.content = content
+        self.properties = properties
+        self.propertykey = propertykey
         self._type = context._type
         if isinstance(self._type, tuple):
             # XXX this is way hacky
@@ -288,13 +293,15 @@ class CollectionTextLine(grok.MultiAdapter):
 
     def fromProperty(self, value):
         typ = zope.component.getMultiAdapter(
-            (self.value_type, self.content), zeit.cms.content.interfaces.IDAVPropertyConverter
+            (self.value_type, self.properties, self.propertykey),
+            zeit.cms.content.interfaces.IDAVPropertyConverter,
         )
         return self._type([typ.fromProperty(x) for x in value])
 
     def toProperty(self, value):
         typ = zope.component.getMultiAdapter(
-            (self.value_type, self.content), zeit.cms.content.interfaces.IDAVPropertyConverter
+            (self.value_type, self.properties, self.propertykey),
+            zeit.cms.content.interfaces.IDAVPropertyConverter,
         )
         return [typ.toProperty(x) for x in value]
 
@@ -304,6 +311,7 @@ class CollectionChoice(CollectionTextLine):
         zope.schema.interfaces.ICollection,
         zope.schema.interfaces.IChoice,
         zeit.retresco.interfaces.IElasticDAVProperties,
+        PropertyKey,
     )
 
 
@@ -312,4 +320,5 @@ class CollectionChannels(CollectionTextLine):
         zope.schema.interfaces.ICollection,
         zeit.cms.content.interfaces.IChannelField,
         zeit.retresco.interfaces.IElasticDAVProperties,
+        PropertyKey,
     )

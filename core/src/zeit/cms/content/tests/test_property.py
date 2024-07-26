@@ -29,7 +29,7 @@ class TestDAVConverterWrapper(unittest.TestCase):
         idpc = mock.Mock()
         zope.component.getSiteManager().registerAdapter(
             idpc,
-            required=(zope.interface.Interface, zope.interface.Interface),
+            required=(zope.interface.Interface, zope.interface.Interface, zope.interface.Interface),
             provided=zeit.cms.content.interfaces.IDAVPropertyConverter,
         )
         value = wrap.__get__(mock.sentinel.instance, mock.sentinel.class_)
