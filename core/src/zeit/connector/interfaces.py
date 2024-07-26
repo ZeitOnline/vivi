@@ -235,6 +235,13 @@ class IWebDAVProperties(IWebDAVReadProperties, IWebDAVWriteProperties):
     """Combined read and write interface for webdav properties."""
 
 
+class ISQLProperties(IWebDAVProperties):
+    """Marker to differentiate SQL connector, so for transition period
+    IDAVPropertyConverter can treat properties that already have their own
+    columns (and thus need different type conversion) differently.
+    """
+
+
 class IResource(zope.interface.Interface):
     """Represents a resource in the webdav.
 

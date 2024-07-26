@@ -90,6 +90,7 @@ class LockStatus(Enum):
 @zope.interface.implementer(zeit.connector.interfaces.ICachingConnector)
 class Connector:
     resource_class = zeit.connector.resource.CachedResource
+    properties_class = zeit.connector.resource.ReadOnlySQLProperties
 
     def __init__(
         self,
@@ -160,6 +161,7 @@ class Connector:
             lambda: properties,
             partial(self._get_body, uniqueid),
             is_collection=properties[('is_collection', INTERNAL_PROPERTY)],
+            properties_cls=self.properties_class,
         )
 
     property_cache = TransactionBoundCache('_v_property_cache', zeit.connector.cache.PropertyCache)
