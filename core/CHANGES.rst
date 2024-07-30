@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.13.0 (2024-07-30)
+-------------------
+
+- ZO-5407_ZO-5408: script for replacing deprecated teaser layouts (vivi-depl)
+
+- ZO-5817-5884: script rm-outdated-parquet-areas.py
+
+
 6.12.0 (2024-07-25)
 -------------------
 
