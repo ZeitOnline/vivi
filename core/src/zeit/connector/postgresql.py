@@ -233,14 +233,18 @@ class Connector:
 
     def _reload_child_name_cache(self, uniqueid):
         if uniqueid == ID_NAMESPACE:
-            parent_path = ''
+            parent = ''
         else:
             if self._get_content(uniqueid, getlock=False) is None:
                 self.child_name_cache.pop(uniqueid, None)
                 return
-            parent_path = '/'.join(self._pathkey(uniqueid))
-        result = self.session.execute(select(Path).filter_by(parent_path=parent_path)).scalars()
-        self.child_name_cache[uniqueid] = set(x.uniqueid for x in result)
+            parent = '/'.join(self._pathkey(uniqueid))
+        if feature_toggle('read-from-new-columns-name-parent-path'):
+            table = Content
+        else:
+            table = Path
+        result = self.session.execute(select(table).filter_by(parent_path=parent))
+        self.child_name_cache[uniqueid] = set(x.uniqueid for x in result.scalars())
 
     def _update_parent_child_name_cache(self, uniqueid, operation):
         parent = os.path.split(uniqueid)[0]
@@ -365,13 +369,21 @@ class Connector:
 
     def _get_all_children(self, uniqueid):
         parent = uniqueid.replace(ID_NAMESPACE, '', 1)
-        query = (
-            select(Content)
-            .join(Path)
-            # XXX Currently not supported by index, causes table scan.
-            .where(Path.parent_path.startswith(parent))
-            .order_by(Path.parent_path)
-        )
+        if feature_toggle('read-from-new-columns-name-parent-path'):
+            query = (
+                select(Content)
+                # XXX Currently not supported by index, causes table scan.
+                .where(Content.parent_path.startswith(parent))
+                .order_by(Content.parent_path)
+            )
+        else:
+            query = (
+                select(Content)
+                .join(Path)
+                # XXX Currently not supported by index, causes table scan.
+                .where(Path.parent_path.startswith(parent))
+                .order_by(Path.parent_path)
+            )
         query = query.options(joinedload(Content.lock))
         return self.session.execute(query).scalars()
 
@@ -397,11 +409,17 @@ class Connector:
 
     def _get_content(self, uniqueid, getlock=True):
         parent, name = self._pathkey(uniqueid)
-        query = select(Path).filter_by(parent_path=parent, name=name)
-        if getlock and self.support_locking:
-            query = query.options(joinedload(Path.content).joinedload(Content.lock))
-        path = self.session.execute(query).scalars().one_or_none()
-        return path.content if path is not None else None
+        if feature_toggle('read-from-new-columns-name-parent-path'):
+            query = select(Content).filter_by(parent_path=parent, name=name)
+            if getlock and self.support_locking:
+                query = query.options(joinedload(Content.lock))
+            return self.session.execute(query).scalars().one_or_none()
+        else:
+            query = select(Path).filter_by(parent_path=parent, name=name)
+            if getlock and self.support_locking:
+                query = query.options(joinedload(Path.content).joinedload(Content.lock))
+            path = self.session.execute(query).scalars().one_or_none()
+            return path.content if path is not None else None
 
     @staticmethod
     def _normalize(uniqueid):
@@ -621,9 +639,13 @@ class Connector:
         ):
             # Sorely needed performance optimization.
             uuid = expr.operands[-1].replace('urn:uuid:', '')
-            path = self.session.execute(select(Path).where(Path.id == uuid)).scalar()
-            if path is not None:
-                yield (path.uniqueid, '{urn:uuid:%s}' % path.id)
+            if feature_toggle('read-from-new-columns-name-parent-path'):
+                table = Content
+            else:
+                table = Path
+            content = self.session.execute(select(table).where(table.id == uuid)).scalar()
+            if content is not None:
+                yield (content.uniqueid, '{urn:uuid:%s}' % content.id)
         else:
             query = select(Content).where(self._build_filter(expr))
             result = self.session.execute(query)
@@ -742,7 +764,10 @@ class Content(DBObject):
 
     @property
     def uniqueid(self):
-        return self.path.uniqueid
+        if feature_toggle('read-from-new-columns-name-parent-path'):
+            return f'{ID_NAMESPACE}{self.parent_path}/{self.name}'
+        else:
+            return self.path.uniqueid
 
     @property
     def lock_status(self):
