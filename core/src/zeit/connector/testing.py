@@ -332,6 +332,16 @@ class SQLDatabaseLayer(plone.testing.Layer):
         del self['sql_nested']
 
 
+class SQLDatabaseTogglesLayer(plone.testing.Layer):
+    def __init__(self, name='SQLDatabaseTogglesLayer', module=None, bases=()):
+        super().__init__(name=name, module=module, bases=bases)
+
+    def setUp(self):
+        zeit.cms.config.set('zeit.connector', 'write-to-new-columns-name-parent-path', True)
+        zeit.cms.config.set('zeit.connector', 'read-from-new-columns-name-parent-path', True)
+        super().setUp()
+
+
 SQL_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     features=['zeit.connector.sql'], bases=(zeit.cms.testing.CONFIG_LAYER, SQL_CONFIG_LAYER)
 )
@@ -344,6 +354,8 @@ ZOPE_SQL_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
 )
 ZOPE_SQL_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZOPE_SQL_ZCML_LAYER,))
 ZOPE_SQL_CONNECTOR_LAYER = SQLDatabaseLayer(bases=(ZOPE_SQL_ZOPE_LAYER,))
+
+ZOPE_SQL_CONNECTOR_LAYER_TOGGLES = SQLDatabaseTogglesLayer(bases=(ZOPE_SQL_CONNECTOR_LAYER,))
 
 
 class TestCase(zeit.cms.testing.FunctionalTestCase):
@@ -395,6 +407,10 @@ class SQLTest(TestCase):
 
 class ZopeSQLTest(TestCase):
     layer = ZOPE_SQL_CONNECTOR_LAYER
+
+
+class ZopeSQLTogglesTest(TestCase):
+    layer = ZOPE_SQL_CONNECTOR_LAYER_TOGGLES
 
 
 def FunctionalDocFileSuite(*paths, **kw):

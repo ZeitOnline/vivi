@@ -905,11 +905,6 @@ class ContractSQL(
     copy_inherited_functions(ContractSearch, locals())
     # not implemented copy_inherited_functions(ContractCache, locals())
 
-    def setUp(self):
-        super().setUp()
-        zeit.cms.config.set('zeit.connector', 'write-to-new-columns-name-parent-path', True)
-        zeit.cms.config.set('zeit.connector', 'read-from-new-columns-name-parent-path', True)
-
 
 class ContractZopeSQL(
     SQLProtocol,
@@ -919,6 +914,22 @@ class ContractZopeSQL(
     ContractSearch,
     ContractCache,
     zeit.connector.testing.ZopeSQLTest,
+):
+    copy_inherited_functions(ContractReadWrite, locals())
+    copy_inherited_functions(ContractCopyMove, locals())
+    copy_inherited_functions(ContractLock, locals())
+    copy_inherited_functions(ContractSearch, locals())
+    copy_inherited_functions(ContractCache, locals())
+
+
+class ContractZopeSQLwithToggels(
+    SQLProtocol,
+    ContractReadWrite,
+    ContractCopyMove,
+    ContractLock,
+    ContractSearch,
+    ContractCache,
+    zeit.connector.testing.ZopeSQLTogglesTest,
 ):
     copy_inherited_functions(ContractReadWrite, locals())
     copy_inherited_functions(ContractCopyMove, locals())
