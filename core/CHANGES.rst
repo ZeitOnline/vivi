@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.14.0 (2024-07-31)
+-------------------
+
+- ZO-5697: Read from new properties colummns parent_path and name
+
+
 6.13.0 (2024-07-30)
 -------------------
 
