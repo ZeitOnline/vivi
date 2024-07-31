@@ -18,6 +18,7 @@ from zeit.connector.interfaces import (
 )
 from zeit.connector.resource import Resource
 from zeit.connector.testing import ROOT, copy_inherited_functions
+import zeit.cms.config
 import zeit.connector.interfaces
 import zeit.connector.testing
 
@@ -873,6 +874,8 @@ class SQLProtocol:
         content.from_webdav(resource.properties)
         content.type = resource.type
         content.is_collection = resource.is_collection
+        (content.parent_path, content.name) = self.connector._pathkey(resource.id)
+        self.connector.session.add(content)
         (path.parent_path, path.name) = self.connector._pathkey(resource.id)
         self.connector.session.add(path)
 
@@ -901,6 +904,11 @@ class ContractSQL(
     copy_inherited_functions(ContractLock, locals())
     copy_inherited_functions(ContractSearch, locals())
     # not implemented copy_inherited_functions(ContractCache, locals())
+
+    def setUp(self):
+        super().setUp()
+        zeit.cms.config.set('zeit.connector', 'write-to-new-columns-name-parent-path', True)
+        zeit.cms.config.set('zeit.connector', 'read-from-new-columns-name-parent-path', True)
 
 
 class ContractZopeSQL(
