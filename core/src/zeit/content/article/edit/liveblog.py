@@ -28,6 +28,12 @@ class Liveblog(zeit.content.article.edit.block.Block):
         zeit.content.article.edit.interfaces.ILiveblog['collapse_preceding_content'],
         use_default=True,
     )
+    show_timeline_in_teaser = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.',
+        'show-timeline-in-teaser',
+        zeit.content.article.edit.interfaces.ILiveblog['show_timeline_in_teaser'],
+        use_default=True,
+    )
 
     LIVEBLOG_VERSION_UPDATE = datetime(2018, 8, 6, tzinfo=pytz.UTC)
 

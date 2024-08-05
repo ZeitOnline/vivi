@@ -266,6 +266,10 @@ class ITickarooLiveblog(zeit.edit.interfaces.IBlock):
         title=_('Collapse preceding content'), default=True, required=False
     )
 
+    show_timeline_in_teaser = zope.schema.Bool(
+        title=_('Show liveblog in teaser'), default=True, required=False
+    )
+
     status = zope.schema.Choice(
         title=_('Liveblog status'), source=LiveblogSource('*//status'), required=True
     )
