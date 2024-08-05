@@ -152,7 +152,7 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
         uuid = props.id
         del self.connector[res.id]
         transaction.commit()
-        self.assertEqual(None, self.connector.session.get(Path, self.connector._pathkey(res.id)))
+        self.assertEqual(None, self.connector.session.get(Path, uuid))
         self.assertEqual(None, self.connector.session.get(Content, uuid))
 
     def test_search_for_uuid_uses_indexed_column(self):

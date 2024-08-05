@@ -699,14 +699,13 @@ class Path(DBObject):
     __tablename__ = 'paths'
     __table_args__ = (UniqueConstraint('parent_path', 'name', 'id'),)
 
-    parent_path = Column(Unicode, primary_key=True, index=True)
-    name = Column(Unicode, primary_key=True)
+    parent_path = Column(Unicode, index=True)
+    name = Column(Unicode, index=True)
 
     id = Column(
         Uuid(as_uuid=False),
         ForeignKey('properties.id', ondelete='cascade'),
-        nullable=False,
-        index=True,
+        primary_key=True,
     )
     content = relationship('Content', uselist=False, lazy='raise_on_sql', back_populates='path')
 
