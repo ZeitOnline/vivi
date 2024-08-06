@@ -336,10 +336,19 @@ class SQLDatabaseTogglesLayer(SQLDatabaseLayer):
     def __init__(self, name='SQLDatabaseTogglesLayer', module=None, bases=()):
         super().__init__(name=name, module=module, bases=bases)
 
-    def setUp(self):
+    def enable_toggles(self):
         zeit.cms.config.set('zeit.connector', 'write-to-new-columns-name-parent-path', True)
         zeit.cms.config.set('zeit.connector', 'read-from-new-columns-name-parent-path', True)
+
+    def setUp(self):
+        self.enable_toggles()
         super().setUp()
+
+    def testSetUp(self):
+        # Have to repeat this here, because SQL_CONFIG_LAYER/ProductConfigLayer
+        # restores *its* setUp-state during its testSetUp. Sigh.
+        self.enable_toggles()
+        super().testSetUp()
 
 
 SQL_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
@@ -355,7 +364,7 @@ ZOPE_SQL_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
 ZOPE_SQL_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZOPE_SQL_ZCML_LAYER,))
 ZOPE_SQL_CONNECTOR_LAYER = SQLDatabaseLayer(bases=(ZOPE_SQL_ZOPE_LAYER,))
 
-ZOPE_SQL_CONNECTOR_LAYER_TOGGLES = SQLDatabaseTogglesLayer(bases=(ZOPE_SQL_CONNECTOR_LAYER,))
+ZOPE_SQL_CONNECTOR_LAYER_TOGGLES = SQLDatabaseTogglesLayer(bases=(ZOPE_SQL_ZOPE_LAYER,))
 
 
 class TestCase(zeit.cms.testing.FunctionalTestCase):
