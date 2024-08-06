@@ -425,6 +425,10 @@ class ILiveblog(IBlock):
         title=_('Collapse preceding content'), default=True, required=False
     )
 
+    show_timeline_in_teaser = zope.schema.Bool(
+        title=_('Show liveblog in teaser'), default=True, required=False
+    )
+
 
 class ITickarooLiveblog(IBlock, zeit.content.modules.interfaces.ITickarooLiveblog):
     pass
