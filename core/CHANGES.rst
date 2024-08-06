@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.16.0 (2024-08-06)
+-------------------
+
+- ZO-5697: Revert explicit paths table joining, it does not actually give us more information
+
+
 6.15.0 (2024-08-06)
 -------------------
 

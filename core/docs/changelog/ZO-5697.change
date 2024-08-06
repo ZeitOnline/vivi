@@ -1,1 +1,0 @@
-ZO-5697: Revert explicit paths table joining, it does not actually give us more information
