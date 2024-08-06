@@ -332,7 +332,7 @@ class SQLDatabaseLayer(plone.testing.Layer):
         del self['sql_nested']
 
 
-class SQLDatabaseTogglesLayer(plone.testing.Layer):
+class SQLDatabaseTogglesLayer(SQLDatabaseLayer):
     def __init__(self, name='SQLDatabaseTogglesLayer', module=None, bases=()):
         super().__init__(name=name, module=module, bases=bases)
 
