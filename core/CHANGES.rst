@@ -3,6 +3,16 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.15.0 (2024-08-06)
+-------------------
+
+- ZO-5697: Make usage of paths table fully explicit
+
+- ZO-5809: Add show_timeline_in_teaser option to liveblog module
+
+- ZO-5817-5885: script for replacing region/areas with/in kind=parquet
+
+
 6.14.0 (2024-07-31)
 -------------------
 
