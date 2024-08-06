@@ -384,7 +384,6 @@ class Connector:
                 .where(Path.parent_path.startswith(parent))
                 .order_by(Path.parent_path)
             )
-            query = query.options(joinedload(Content.path))
         query = query.options(joinedload(Content.lock))
         return self.session.execute(query).scalars()
 
@@ -419,9 +418,6 @@ class Connector:
             query = select(Path).filter_by(parent_path=parent, name=name)
             if getlock and self.support_locking:
                 query = query.options(joinedload(Path.content).joinedload(Content.lock))
-            else:
-                query = query.options(joinedload(Path.content))
-            query = query.options(joinedload(Path.content).joinedload(Content.path))
             path = self.session.execute(query).scalars().one_or_none()
             return path.content if path is not None else None
 
@@ -652,8 +648,6 @@ class Connector:
                 yield (content.uniqueid, '{urn:uuid:%s}' % content.id)
         else:
             query = select(Content).where(self._build_filter(expr))
-            if not feature_toggle('read-from-new-columns-name-parent-path'):
-                query = query.options(joinedload(Content.path))
             result = self.session.execute(query)
             for item in result.scalars():
                 data = [item.uniqueid]
@@ -699,15 +693,16 @@ class Path(DBObject):
     __tablename__ = 'paths'
     __table_args__ = (UniqueConstraint('parent_path', 'name', 'id'),)
 
-    parent_path = Column(Unicode, index=True)
-    name = Column(Unicode, index=True)
+    parent_path = Column(Unicode, primary_key=True, index=True)
+    name = Column(Unicode, primary_key=True)
 
     id = Column(
         Uuid(as_uuid=False),
         ForeignKey('properties.id', ondelete='cascade'),
-        primary_key=True,
+        nullable=False,
+        index=True,
     )
-    content = relationship('Content', uselist=False, lazy='raise_on_sql', back_populates='path')
+    content = relationship('Content', uselist=False, lazy='joined', back_populates='path')
 
     @property
     def uniqueid(self):
@@ -746,7 +741,7 @@ class Content(DBObject):
     path = relationship(
         'Path',
         uselist=False,
-        lazy='raise_on_sql',
+        lazy='joined',
         back_populates='content',
         cascade='all, delete-orphan',
         passive_deletes=True,  # Handled in DB, Path.id has ondelete=cascade
