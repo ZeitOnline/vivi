@@ -24,9 +24,7 @@ from sqlalchemy import (
     Index,
     Unicode,
     UnicodeText,
-    UniqueConstraint,
     Uuid,
-    bindparam,
     delete,
     insert,
     select,
@@ -70,15 +68,6 @@ log = getLogger(__name__)
 
 
 ID_NAMESPACE = zeit.connector.interfaces.ID_NAMESPACE[:-1]
-
-
-def feature_toggle(key):
-    """Temp workaround to use feature toggles in connector instead of feature toggles
-    from zeit.cms.content.sources.
-
-    Using feature toggles from a file which is stored inside the database
-    inside the connector is unfortunately not possible"""
-    return zeit.cms.config.get('zeit.connector', key) is not None
 
 
 class LockStatus(Enum):
@@ -239,11 +228,7 @@ class Connector:
                 self.child_name_cache.pop(uniqueid, None)
                 return
             parent = '/'.join(self._pathkey(uniqueid))
-        if feature_toggle('read-from-new-columns-name-parent-path'):
-            table = Content
-        else:
-            table = Path
-        result = self.session.execute(select(table).filter_by(parent_path=parent))
+        result = self.session.execute(select(Content).filter_by(parent_path=parent))
         self.child_name_cache[uniqueid] = set(x.uniqueid for x in result.scalars())
 
     def _update_parent_child_name_cache(self, uniqueid, operation):
@@ -265,16 +250,12 @@ class Connector:
         exists = content is not None
         if not exists:
             content = Content()
-            path = Path(content=content)
-            self.session.add(path)
+            self.session.add(content)
         else:
-            path = content.path
             if content.lock_status == LockStatus.FOREIGN:
                 raise LockedByOtherSystemError(uniqueid, f'{uniqueid} is already locked.')
 
-        if feature_toggle('write-to-new-columns-name-parent-path'):
-            (content.parent_path, content.name) = self._pathkey(uniqueid)
-        (path.parent_path, path.name) = self._pathkey(uniqueid)
+        (content.parent_path, content.name) = self._pathkey(uniqueid)
         current = content.to_webdav()
 
         if verify_etag and exists:
@@ -369,22 +350,13 @@ class Connector:
 
     def _get_all_children(self, uniqueid):
         parent = uniqueid.replace(ID_NAMESPACE, '', 1)
-        if feature_toggle('read-from-new-columns-name-parent-path'):
-            query = (
-                select(Content)
-                # XXX Currently not supported by index, causes table scan.
-                .where(Content.parent_path.startswith(parent))
-                .order_by(Content.parent_path)
-            )
-        else:
-            query = (
-                select(Content)
-                .join(Path)
-                # XXX Currently not supported by index, causes table scan.
-                .where(Path.parent_path.startswith(parent))
-                .order_by(Path.parent_path)
-            )
-        query = query.options(joinedload(Content.lock))
+        query = (
+            select(Content)
+            # XXX Currently not supported by index, causes table scan.
+            .where(Content.parent_path.startswith(parent))
+            .order_by(Content.parent_path)
+            .options(joinedload(Content.lock))
+        )
         return self.session.execute(query).scalars()
 
     def _gcs_batch(self, span_name, ids, function):
@@ -409,17 +381,10 @@ class Connector:
 
     def _get_content(self, uniqueid, getlock=True):
         parent, name = self._pathkey(uniqueid)
-        if feature_toggle('read-from-new-columns-name-parent-path'):
-            query = select(Content).filter_by(parent_path=parent, name=name)
-            if getlock and self.support_locking:
-                query = query.options(joinedload(Content.lock))
-            return self.session.execute(query).scalars().one_or_none()
-        else:
-            query = select(Path).filter_by(parent_path=parent, name=name)
-            if getlock and self.support_locking:
-                query = query.options(joinedload(Path.content).joinedload(Content.lock))
-            path = self.session.execute(query).scalars().one_or_none()
-            return path.content if path is not None else None
+        query = select(Content).filter_by(parent_path=parent, name=name)
+        if getlock and self.support_locking:
+            query = query.options(joinedload(Content.lock))
+        return self.session.execute(query).scalars().one_or_none()
 
     @staticmethod
     def _normalize(uniqueid):
@@ -457,9 +422,7 @@ class Connector:
 
             uniqueid = content.uniqueid.replace(old_uniqueid, new_uniqueid)
             (parent_path, name) = self._pathkey(uniqueid)
-            if feature_toggle('write-to-new-columns-name-parent-path'):
-                (target.parent_path, target.name) = (parent_path, name)
-            target.path = Path(id=target.id, parent_path=parent_path, name=name)
+            (target.parent_path, target.name) = (parent_path, name)
             targets.append(target)
 
             if content.binary_body:
@@ -478,7 +441,6 @@ class Connector:
             raise google.cloud.exceptions.from_http_response(response)
 
         self._bulk_insert(Content, targets)
-        self._bulk_insert(Path, [x.path for x in targets])
 
         for content in targets:
             self.property_cache[content.uniqueid] = content.to_webdav()
@@ -530,15 +492,12 @@ class Connector:
                         f'Could not move {child.uniqueid} to {new_uniqueid}, because it is locked.',
                     )
 
-        path_updates = []
         updates = []
         for content in sources:
             source_uniqueid = content.uniqueid
             target_uniqueid = source_uniqueid.replace(old_uniqueid, new_uniqueid)
             parent, name = self._pathkey(target_uniqueid)
-            path_updates.append({'key': content.id, 'parent_path': parent, 'name': name})
-            if feature_toggle('write-to-new-columns-name-parent-path'):
-                updates.append({'id': content.id, 'parent_path': parent, 'name': name})
+            updates.append({'id': content.id, 'parent_path': parent, 'name': name})
 
             self.property_cache.pop(source_uniqueid, None)
             self.property_cache[target_uniqueid] = content.to_webdav()
@@ -548,18 +507,7 @@ class Connector:
                 self.child_name_cache[target_uniqueid] = set()
             self._update_parent_child_name_cache(source_uniqueid, 'remove')
             self._update_parent_child_name_cache(target_uniqueid, 'add')
-
-        # We're updating the primary key itself, which the normal sqlalchemy
-        # "bulk update " API does not offer, so we have to user a lower level,
-        # <https://docs.sqlalchemy.org/en/20/orm/queryguide/dml.html
-        #  #disabling-bulk-orm-update-by-primary-key-for-an-update-statement
-        #  -with-multiple-parameter-sets>
-        self.session.connection().execute(
-            update(Path).where(Path.id == bindparam('key')), path_updates
-        )
-        zope.sqlalchemy.mark_changed(self.session())
-        if feature_toggle('write-to-new-columns-name-parent-path'):
-            self.session.execute(update(Content), updates)
+        self.session.execute(update(Content), updates)
 
     def lock(self, uniqueid, principal, until):
         uniqueid = self._normalize(uniqueid)
@@ -639,11 +587,7 @@ class Connector:
         ):
             # Sorely needed performance optimization.
             uuid = expr.operands[-1].replace('urn:uuid:', '')
-            if feature_toggle('read-from-new-columns-name-parent-path'):
-                table = Content
-            else:
-                table = Path
-            content = self.session.execute(select(table).where(table.id == uuid)).scalar()
+            content = self.session.execute(select(Content).where(Content.id == uuid)).scalar()
             if content is not None:
                 yield (content.uniqueid, '{urn:uuid:%s}' % content.id)
         else:
@@ -689,26 +633,6 @@ METADATA = sqlalchemy.MetaData()
 DBObject = sqlalchemy.orm.declarative_base(metadata=METADATA)
 
 
-class Path(DBObject):
-    __tablename__ = 'paths'
-    __table_args__ = (UniqueConstraint('parent_path', 'name', 'id'),)
-
-    parent_path = Column(Unicode, primary_key=True, index=True)
-    name = Column(Unicode, primary_key=True)
-
-    id = Column(
-        Uuid(as_uuid=False),
-        ForeignKey('properties.id', ondelete='cascade'),
-        nullable=False,
-        index=True,
-    )
-    content = relationship('Content', uselist=False, lazy='joined', back_populates='path')
-
-    @property
-    def uniqueid(self):
-        return f'{ID_NAMESPACE}{self.parent_path}/{self.name}'
-
-
 class Content(DBObject):
     __tablename__ = 'properties'
     __table_args__ = (
@@ -735,17 +659,10 @@ class Content(DBObject):
         onupdate=sqlalchemy.func.now(),
         index=True,
     )
+
     parent_path = Column(Unicode, index=True)
     name = Column(Unicode, index=True)
 
-    path = relationship(
-        'Path',
-        uselist=False,
-        lazy='joined',
-        back_populates='content',
-        cascade='all, delete-orphan',
-        passive_deletes=True,  # Handled in DB, Path.id has ondelete=cascade
-    )
     lock = relationship(
         'Lock',
         uselist=False,
@@ -764,10 +681,7 @@ class Content(DBObject):
 
     @property
     def uniqueid(self):
-        if feature_toggle('read-from-new-columns-name-parent-path'):
-            return f'{ID_NAMESPACE}{self.parent_path}/{self.name}'
-        else:
-            return self.path.uniqueid
+        return f'{ID_NAMESPACE}{self.parent_path}/{self.name}'
 
     @property
     def lock_status(self):
@@ -799,14 +713,12 @@ class Content(DBObject):
 
     def from_webdav(self, props):
         if not self.id:
-            assert not self.path.id
             id = props.get(('uuid', self.NS + 'document'))
             if id is None:
                 id = str(uuid4())
             else:
                 id = id[10:-1]  # strip off `{urn:uuid:}`
             self.id = id
-            self.path.id = id
 
         type = props.get(('type', self.NS + 'meta'))
         if type:
