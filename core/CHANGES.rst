@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.17.0 (2024-08-07)
+-------------------
+
+- WCM-247: Remove obsolete table paths
+
+
 6.16.0 (2024-08-06)
 -------------------
 
