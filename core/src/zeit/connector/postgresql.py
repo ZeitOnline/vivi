@@ -352,7 +352,6 @@ class Connector:
         parent = uniqueid.replace(ID_NAMESPACE, '', 1)
         query = (
             select(Content)
-            # XXX Currently not supported by index, causes table scan.
             .where(Content.parent_path.startswith(parent))
             .order_by(Content.parent_path)
             .options(joinedload(Content.lock))
@@ -636,6 +635,11 @@ DBObject = sqlalchemy.orm.declarative_base(metadata=METADATA)
 class Content(DBObject):
     __tablename__ = 'properties'
     __table_args__ = (
+        Index(
+            f'ix_{__tablename__}_parent_path_pattern',
+            'parent_path',
+            postgresql_ops={'parent_path': 'varchar_pattern_ops'},
+        ),
         Index(f'ix_{__tablename__}_parent_path_name', 'parent_path', 'name', unique=True),
         Index(
             f'ix_{__tablename__}_unsorted',
@@ -660,7 +664,7 @@ class Content(DBObject):
         index=True,
     )
 
-    parent_path = Column(Unicode, index=True)
+    parent_path = Column(Unicode)
     name = Column(Unicode, index=True)
 
     lock = relationship(
