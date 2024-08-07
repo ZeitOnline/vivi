@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.19.0 (2024-08-07)
+-------------------
+
+MAINT:
+- Update opentelemetry library to 1.26
+
+
 6.18.0 (2024-08-07)
 -------------------
 
