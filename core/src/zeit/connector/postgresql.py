@@ -665,7 +665,7 @@ class Content(DBObject):
     )
 
     parent_path = Column(Unicode)
-    name = Column(Unicode, index=True)
+    name = Column(Unicode)
 
     lock = relationship(
         'Lock',
