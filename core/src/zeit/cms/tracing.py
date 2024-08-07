@@ -67,7 +67,7 @@ class OpenTelemetryTracerProvider(TracerProvider):
     # Even though TracerProvider declares kwargs,
     # opentelemetry.trace.get_tracer() passes them as positional, so we cannot
     # use `**kw` here, sigh.
-    def get_tracer(self, name, version=None, schema_url=None):
+    def get_tracer(self, name, version=None, schema_url=None, attributes=None):
         if not name:
             name = __name__
         return DelayedInitializationTracer(self, name, version, schema_url)
