@@ -1,0 +1,33 @@
+<configure
+   xmlns="http://namespaces.zope.org/zope"
+   xmlns:meta="http://namespaces.zope.org/meta"
+   i18n_domain="zope">
+
+  <meta:provides feature="zeit.cms.testing" />
+
+  <include package="zeit.cms" file="ui.zcml" />
+  <include package="zeit.cms" />
+  <include package="zeit.cms.browser" />
+  <include package="zeit.cms.tagging.browser" />
+  <include package="zeit.cms.testcontenttype" />
+  <include package="zeit.cms.testcontenttype.browser" />
+
+  <meta:provides feature="zeit.connector.sql.zope" />
+  <include package="zeit.connector" file="service.zcml" />
+  <subscriber
+    handler="zeit.cms.testing.reset_connector"
+    for="zeit.cms.testing.ResetMocks" />
+
+  <subscriber
+    handler="zeit.cms.workflow.mock.reset"
+    for="zeit.cms.testing.ResetMocks" />
+  <subscriber
+    handler="pyramid_dogpile_cache2.clear"
+    for="zeit.cms.testing.ResetMocks" />
+
+  <include package="zeit.cms.workflow" file="mock.zcml" />
+  <include package="zeit.cms.tagging" file="mock.zcml" />
+
+  <include package="zeit.cms" file="ftesting-securitypolicy.zcml" />
+
+</configure>
