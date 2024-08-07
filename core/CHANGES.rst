@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.18.0 (2024-08-07)
+-------------------
+
+- WCM-276: Create index to support parent_path prefix matches
+
+
 6.17.0 (2024-08-07)
 -------------------
 
