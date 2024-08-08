@@ -1,3 +1,4 @@
+from zeit.cms.checkout.helper import checked_out
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import zeit.cms.testing
 import zeit.connector.testing
@@ -18,3 +19,6 @@ class MetadataColumnTest(zeit.cms.testing.FunctionalTestCase):
             {('overscrolling', 'http://namespaces.zeit.de/CMS/document'): True},
         )
         self.assertIs(True, self.repository['testcontent'].overscrolling)
+
+        with checked_out(self.repository['testcontent']):
+            pass

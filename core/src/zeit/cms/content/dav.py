@@ -17,6 +17,7 @@ import zope.schema.interfaces
 import zope.xmlpickle
 
 from zeit.cms.content.interfaces import WRITEABLE_ON_CHECKIN
+from zeit.connector.postgresql import Connector as SQLConnector
 from zeit.connector.resource import PropertyKey
 import zeit.cms.content.caching
 import zeit.cms.content.interfaces
@@ -298,6 +299,13 @@ class ChoicePropertyWithIterableVocabulary:
         raise ValueError(value)
 
 
+def is_sql(key):
+    connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+    if not isinstance(connector, SQLConnector):
+        return False
+    return connector._column_by_namespace(*key) is not None
+
+
 @zope.component.adapter(
     zope.schema.Bool, zeit.connector.interfaces.IWebDAVReadProperties, PropertyKey
 )
@@ -305,13 +313,20 @@ class ChoicePropertyWithIterableVocabulary:
 class BoolProperty:
     def __init__(self, context, properties, propertykey):
         self.context = context
+        self.is_sql = is_sql(propertykey)
 
     def fromProperty(self, value):
+        if self.is_sql:
+            return value
+
         if value.lower() in ('yes', 'true'):
             return True
         return False
 
     def toProperty(self, value):
+        if self.is_sql:
+            return value
+
         if value:
             return 'yes'
         return 'no'
