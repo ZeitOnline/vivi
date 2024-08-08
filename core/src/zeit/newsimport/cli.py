@@ -55,7 +55,9 @@ def import_dpa_news_api(args=None):
 
         push_to_gateway(
             zeit.cms.config.get(
-                'zeit.newsimport', 'push_gateway', 'https://prometheus-pushgw.ops.zeit.de'
+                'zeit.newsimport',
+                'push_gateway',
+                'http://pushgateway.cluster-infra.svc.cluster.local:9091',
             ),
             job='vivi-newsimport',
             registry=metrics.REGISTRY,
