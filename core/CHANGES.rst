@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.20.0 (2024-08-08)
+-------------------
+
+MAINT:
+- ZO-141: Switch newsimport pushgateway from VMs to k8s
+
+
 6.19.0 (2024-08-07)
 -------------------
 
