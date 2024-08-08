@@ -22,6 +22,7 @@ from zeit.connector.interfaces import (
     MoveError,
 )
 from zeit.connector.lock import lock_is_foreign
+from zeit.connector.postgresql import Connector as SQLConnector
 import zeit.cms.config
 import zeit.connector.cache
 import zeit.connector.dav.interfaces
@@ -341,10 +342,12 @@ class Connector(zeit.connector.filesystem.Connector):
                 continue
             if value is zeit.connector.interfaces.DeleteProperty:
                 stored_properties.pop((name, namespace), None)
-            elif not isinstance(value, str):  # XXX mimic DAV behaviour
+                continue
+
+            column = SQLConnector._column_by_namespace(name, namespace)
+            if column is None and not isinstance(value, str):  # XXX mimic DAV behaviour
                 raise ValueError('Expected str, got %s: %r' % (type(value), value))
-            else:
-                stored_properties[(name, namespace)] = value
+            stored_properties[(name, namespace)] = value
         self._properties[id] = stored_properties
 
 

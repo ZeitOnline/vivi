@@ -618,7 +618,7 @@ class Connector:
             (var, value) = expr.operands
             name = var.name
             namespace = var.namespace.replace(Content.NS, '', 1)
-            column = self._column_by_namespace(namespace, name)
+            column = self._column_by_namespace(name, namespace)
             if column is not None:
                 return column == value
             value = json.dumps(str(value))  # Apply correct quoting for jsonpath.
@@ -627,9 +627,10 @@ class Connector:
             raise RuntimeError(f'Unknown operand {op!r} while building search query')
 
     @staticmethod
-    def _column_by_namespace(namespace, name):
+    def _column_by_namespace(name, namespace):
         if not feature_toggle('connector_read_metadata_columns'):
             return None
+        namespace = namespace.replace(Content.NS, '', 1)
         for column in sqlalchemy.orm.class_mapper(Content).columns:
             if namespace == column.info.get('namespace') and name == column.info.get('name'):
                 return column

@@ -6,6 +6,7 @@ import logging
 import os
 import os.path
 
+from sqlalchemy import Boolean
 import gocept.cache.property
 import lxml.etree
 import zope.app.file.image
@@ -13,6 +14,7 @@ import zope.interface
 
 from zeit.connector.connector import CannonicalId
 from zeit.connector.interfaces import ID_NAMESPACE
+from zeit.connector.postgresql import Connector as SQLConnector
 import zeit.cms.config
 import zeit.connector.dav.interfaces
 import zeit.connector.interfaces
@@ -277,6 +279,13 @@ class Connector:
             return properties
 
         properties.update(parse_properties(xml))
+        for key, value in properties.items():
+            column = SQLConnector._column_by_namespace(*key)
+            if column is None:
+                continue
+            if column.type == Boolean:
+                properties[key] = value.lower() in ('yes', 'true')
+
         self.property_cache[id] = properties
         return properties
 
