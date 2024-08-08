@@ -17,7 +17,12 @@ import zeit.cms.related.interfaces
 import zeit.cms.tagging.tag
 import zeit.cms.tagging.testing
 import zeit.cms.testing
+import zeit.content.article.article
+import zeit.content.audio.audio
 import zeit.content.author.author
+import zeit.content.cp.centerpage
+import zeit.content.gallery.gallery
+import zeit.content.video.video
 import zeit.objectlog.interfaces
 import zeit.workflow.interfaces
 import zeit.workflow.publish
@@ -89,9 +94,7 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         self.assertTrue(IPublishInfo(article).published)
 
     def test_video_contains_seo_slug_in_url(self):
-        from zeit.content.video.video import Video
-
-        video = Video()
+        video = zeit.content.video.video.Video()
         video.supertitle = 'seo slug'
         video.title = 'cookies'
         video.uniqueId = 'http://xml.zeit.de/video'
@@ -103,11 +106,6 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         )
 
     def test_bigquery_adapters_are_registered(self):
-        import zeit.content.article.article
-        import zeit.content.cp.centerpage
-        import zeit.content.gallery.gallery
-        import zeit.content.video.video
-
         article = zeit.content.article.article.Article()
         assert (
             zope.component.queryAdapter(
@@ -137,6 +135,23 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             is not None
         )
 
+    def test_datascience_adapters_are_registered(self):
+        adapters = [
+            zeit.content.article.article.Article(),
+            zeit.content.cp.centerpage.CenterPage(),
+            zeit.content.gallery.gallery.Gallery(),
+            zeit.content.video.video.Video(),
+            zeit.content.audio.audio.Audio(),
+            zeit.content.author.author.Author(),
+        ]
+        for adapter in adapters:
+            assert (
+                zope.component.queryAdapter(
+                    adapter, zeit.workflow.interfaces.IPublisherData, name='datascience'
+                )
+                is not None
+            )
+
     def test_comments_are_published(self):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         self.assertFalse(IPublishInfo(article).published)
@@ -157,10 +172,6 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         self.assertTrue(IPublishInfo(article).published)
 
     def test_comments_adapters_are_registered(self):
-        import zeit.content.article.article
-        import zeit.content.gallery.gallery
-        import zeit.content.video.video
-
         article = zeit.content.article.article.Article()
         assert (
             zope.component.queryAdapter(
@@ -555,3 +566,51 @@ class IndexNowPayloadTest(zeit.workflow.testing.FunctionalTestCase):
         zope.interface.alsoProvides(article, zeit.content.cp.interfaces.ICenterPage)
         data = zeit.workflow.testing.publish_json(article, 'indexnow')
         self.assertEqual('http://localhost/live-prefix/testcontent', data['url'])
+
+
+class DatasciencePayloadTest(zeit.workflow.testing.FunctionalTestCase):
+    layer = zeit.content.article.testing.LAYER
+
+    def test_datascience_payload_article(self):
+        article = zeit.content.article.testing.create_article()
+        p = article.body.create_item('p')
+        p.text = 'foo'
+        article = self.repository['article'] = article
+        payload = zeit.workflow.testing.publish_json(article, 'datascience')
+        self.assertEqual(payload['body'], lxml.etree.tostring(article.xml, encoding=str))
+
+    def test_datascience_payload_centerpage(self):
+        cp = self.repository['testcontent']
+        zope.interface.alsoProvides(cp, zeit.content.cp.interfaces.ICenterPage)
+        data = zeit.workflow.testing.publish_json(cp, 'datascience')
+        self.assertEqual(data['body'], lxml.etree.tostring(cp.xml, encoding=str))
+
+    def test_datascience_payload_gallery(self):
+        gallery = self.repository['testcontent']
+        zope.interface.alsoProvides(gallery, zeit.content.gallery.interfaces.IGallery)
+        data = zeit.workflow.testing.publish_json(gallery, 'datascience')
+        self.assertEqual(data['body'], lxml.etree.tostring(gallery.xml, encoding=str))
+
+    def test_datascience_payload_author(self):
+        author = zeit.content.author.author.Author()
+        author.uniqueId = 'http://xml.zeit.de/author'
+        author.firstname = 'Hans'
+        author.lastname = 'Wurst'
+        data = zeit.workflow.testing.publish_json(author, 'datascience')
+        self.assertEqual(data['body'], lxml.etree.tostring(author.xml, encoding=str))
+
+    def test_datascience_payload_audio(self):
+        from zeit.content.audio.testing import AudioBuilder
+
+        audio = AudioBuilder().build()
+        audio = self.repository['audio'] = audio
+        data = zeit.workflow.testing.publish_json(audio, 'datascience')
+        self.assertEqual(data['body'], lxml.etree.tostring(audio.xml, encoding=str))
+
+    def test_datascience_payload_video(self):
+        from zeit.content.video.testing import video_factory
+
+        video = next(video_factory(self))
+        video = self.repository['video'] = video
+        data = zeit.workflow.testing.publish_json(video, 'datascience')
+        self.assertEqual(data['body'], lxml.etree.tostring(video.xml, encoding=str))
