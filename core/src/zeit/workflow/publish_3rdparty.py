@@ -424,3 +424,32 @@ class ArticleIndexNow(grok.Adapter, IndexNowMixin):
 class CenterPageIndexNow(grok.Adapter, IndexNowMixin):
     grok.context(zeit.content.cp.interfaces.ICenterPage)
     grok.name('indexnow')
+
+
+class SemanticSearchBucketMixin(LiveUrlMixin):
+    def publish_json(self):
+        tms = zeit.retresco.interfaces.ITMSRepresentation(self.context)()
+        if tms is None:
+            return None
+        properties = tms.get('payload', {})
+        properties.setdefault('meta', {})['url'] = self.live_url
+        properties['tagging'] = {k: v for k, v in tms.items() if k.startswith('rtr_')}
+        return {
+            'metadata': properties,
+            'body': self.context.xml.find('body')['body'],
+        }
+
+    def retract_json(self):
+        uuid = zeit.cms.content.interfaces.IUUID(self.context)
+        return {
+            'properties': {
+                'meta': {'url': self.live_url},
+                'document': {'uuid': uuid.id},
+            }
+        }
+
+
+@grok.implementer(zeit.workflow.interfaces.IPublisherData)
+class ArticleSemanticSearchBucket(grok.Adapter, SemanticSearchBucketMixin):
+    grok.context(zeit.content.article.interfaces.IArticle)
+    grok.name('semanticsearchbucket')
