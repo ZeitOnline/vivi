@@ -286,8 +286,8 @@ class SQLDatabaseLayer(plone.testing.Layer):
         # Create tables
         c = self['sql_connection']
         t = c.begin()
-        zeit.connector.models.METADATA.drop_all(c)
-        zeit.connector.models.METADATA.create_all(c)
+        zeit.connector.models.Base.metadata.drop_all(c)
+        zeit.connector.models.Base.metadata.create_all(c)
         t.commit()
 
     def tearDown(self):

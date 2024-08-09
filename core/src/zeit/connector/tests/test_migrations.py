@@ -92,7 +92,7 @@ class MigrationsTest(DBTestCase):
     def test_migrations_create_same_schema_as_from_scratch(self):
         self.createdb()
         c = self.engine.connect()
-        zeit.connector.models.METADATA.create_all(c)
+        zeit.connector.models.Base.metadata.create_all(c)
         scratch = self.dump_schema(c)
         c.close()
         self.dropdb()

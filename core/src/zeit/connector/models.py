@@ -6,7 +6,6 @@ import hashlib
 from sqlalchemy import (
     TIMESTAMP,
     Boolean,
-    Column,
     ForeignKey,
     Index,
     Unicode,
@@ -14,7 +13,7 @@ from sqlalchemy import (
     Uuid,
 )
 from sqlalchemy.dialects.postgresql import JSONB
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import mapped_column, relationship
 import pytz
 import sqlalchemy
 
@@ -25,11 +24,12 @@ import zeit.connector.interfaces
 
 ID_NAMESPACE = zeit.connector.interfaces.ID_NAMESPACE[:-1]
 
-METADATA = sqlalchemy.MetaData()
-DBObject = sqlalchemy.orm.declarative_base(metadata=METADATA)
+
+class Base(sqlalchemy.orm.DeclarativeBase):
+    pass
 
 
-class Content(DBObject):
+class Content(Base):
     __tablename__ = 'properties'
     __table_args__ = (
         Index(
@@ -46,23 +46,23 @@ class Content(DBObject):
         ),
     )
 
-    id = Column(Uuid(as_uuid=False), primary_key=True)
-    type = Column(Unicode, nullable=False, server_default='unknown', index=True)
-    is_collection = Column(Boolean, nullable=False, server_default='false')
+    id = mapped_column(Uuid(as_uuid=False), primary_key=True)
+    type = mapped_column(Unicode, nullable=False, server_default='unknown', index=True)
+    is_collection = mapped_column(Boolean, nullable=False, server_default='false')
 
-    body = Column(UnicodeText)
+    body = mapped_column(UnicodeText)
 
-    unsorted = Column(JSONB)
+    unsorted = mapped_column(JSONB)
 
-    last_updated = Column(
+    last_updated = mapped_column(
         TIMESTAMP(timezone=True),
         server_default=sqlalchemy.func.now(),
         onupdate=sqlalchemy.func.now(),
         index=True,
     )
 
-    parent_path = Column(Unicode)
-    name = Column(Unicode)
+    parent_path = mapped_column(Unicode)
+    name = mapped_column(Unicode)
 
     lock = relationship(
         'Lock',
@@ -145,12 +145,12 @@ class Content(DBObject):
         return alg.hexdigest()
 
 
-class Lock(DBObject):
+class Lock(Base):
     __tablename__ = 'locks'
 
-    id = Column(Uuid(as_uuid=False), ForeignKey('properties.id'), primary_key=True)
-    principal = Column(Unicode, nullable=False)
-    until = Column(TIMESTAMP(timezone=True), nullable=False)
+    id = mapped_column(Uuid(as_uuid=False), ForeignKey('properties.id'), primary_key=True)
+    principal = mapped_column(Unicode, nullable=False)
+    until = mapped_column(TIMESTAMP(timezone=True), nullable=False)
 
     content = relationship('Content', uselist=False, lazy='noload', back_populates='lock')
 
