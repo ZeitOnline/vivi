@@ -201,6 +201,8 @@ else:
 
     @celery.signals.task_prerun.connect(weak=False)
     def apply_samplerate(*args, **kw):
+        opentelemetry.trace.get_current_span().set_attributes({'celery.args': str(kw.get('args'))})
+
         context = zeit.cms.tracing.apply_samplerate_productconfig(
             'zeit.cms.relstorage',
             'zeit.cms',
