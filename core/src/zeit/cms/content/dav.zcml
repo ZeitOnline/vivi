@@ -10,7 +10,6 @@
   <adapter factory=".dav.ChoicePropertyWithIterableVocabulary" />
   <adapter factory=".dav.BoolProperty" />
   <adapter factory=".dav.DatetimeProperty" />
-  <adapter factory=".dav.DateProperty" />
   <adapter factory=".dav.CollectionProperty" />
   <adapter factory=".dav.CollectionTextLineProperty" />
   <adapter factory=".dav.CollectionTextLineProperty"
