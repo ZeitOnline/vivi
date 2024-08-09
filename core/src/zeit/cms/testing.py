@@ -150,7 +150,12 @@ class ZCMLLayer(plone.testing.Layer):
     defaultBases = (LOGGING_LAYER,)
 
     def __init__(
-        self, config_file='ftesting.zcml', features=(), name='ZCMLLayer', module=None, bases=()
+        self,
+        config_file='ftesting.zcml',
+        features=('zeit.connector.mock',),
+        name='ZCMLLayer',
+        module=None,
+        bases=(),
     ):
         if module is None:
             module = inspect.stack()[1][0].f_globals['__name__']

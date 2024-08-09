@@ -20,7 +20,6 @@
   <include package="zeit.cms.testcontenttype" />
   <include package="zeit.cms.testcontenttype.browser" />
 
-  <meta:provides feature="zeit.connector.mock" />
   <include package="zeit.connector" file="service.zcml" />
   <subscriber
     handler="zeit.cms.testing.reset_connector"
