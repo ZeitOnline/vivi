@@ -203,11 +203,9 @@ else:
     def apply_samplerate(*args, **kw):
         opentelemetry.trace.get_current_span().set_attributes({'celery.args': str(kw.get('args'))})
 
+        initial = opentelemetry.context.get_current()
         context = zeit.cms.tracing.apply_samplerate_productconfig(
-            'zeit.cms.relstorage',
-            'zeit.cms',
-            'samplerate-zodb',
-            opentelemetry.context.get_current(),
+            'zeit.cms.relstorage', 'zeit.cms', 'samplerate-zodb', initial
         )
         context = zeit.cms.tracing.apply_samplerate_productconfig(
             'zeit.connector.postgresql.tracing', 'zeit.cms', 'samplerate-sql', context
@@ -215,7 +213,7 @@ else:
         context = zeit.cms.tracing.apply_samplerate_productconfig(
             'zeit.workflow.publish', 'zeit.cms', 'samplerate-publish', context
         )
-        if context is not None:
+        if context is not initial:
             token = opentelemetry.context.attach(context)
             task = otel_celery.retrieve_task(kw)
             # This is a bit of a semantic misuse, but mechanically it's

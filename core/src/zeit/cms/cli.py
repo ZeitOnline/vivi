@@ -140,16 +140,17 @@ else:
             self._is_running = True
 
             while self._is_running:
+                initial = opentelemetry.context.get_current()
                 context = zeit.cms.tracing.apply_samplerate_productconfig(
                     'zeit.cms.relstorage',
                     'zeit.cms',
                     'samplerate-zodb',
-                    opentelemetry.context.get_current(),
+                    initial,
                 )
                 context = zeit.cms.tracing.apply_samplerate_productconfig(
                     'zeit.connector.postgresql.tracing', 'zeit.cms', 'samplerate-sql', context
                 )
-                if context is not None:
+                if context is not initial:
                     context = opentelemetry.context.attach(context)
 
                 ticks = None
