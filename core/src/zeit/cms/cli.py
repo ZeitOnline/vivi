@@ -140,18 +140,27 @@ else:
             self._is_running = True
 
             while self._is_running:
-                initial = opentelemetry.context.get_current()
                 context = zeit.cms.tracing.apply_samplerate_productconfig(
                     'zeit.cms.relstorage',
                     'zeit.cms',
                     'samplerate-zodb',
-                    initial,
+                    opentelemetry.context.get_current(),
                 )
                 context = zeit.cms.tracing.apply_samplerate_productconfig(
                     'zeit.connector.postgresql.tracing', 'zeit.cms', 'samplerate-sql', context
                 )
-                if context is not initial:
-                    context = opentelemetry.context.attach(context)
+                context = opentelemetry.context.set_value(
+                    # See opentelemetry.instrumentation.sqlcommenter_utils
+                    'SQLCOMMENTER_ORM_TAGS_AND_VALUES',
+                    {
+                        'application': 'vivi',
+                        'controller': 'cli',
+                        'route': self.worker.__name__,
+                        # 'action':
+                    },
+                    context,
+                )
+                context = opentelemetry.context.attach(context)
 
                 ticks = None
                 self.begin()
