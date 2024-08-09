@@ -322,7 +322,7 @@ class Connector:
             to_delete.extend(self._get_all_children(content.uniqueid))
 
             for child in to_delete:
-                if child.lock and lock_is_foreign(child.lock.principal):
+                if child.lock and child.lock.status == LockStatus.FOREIGN:
                     raise LockedByOtherSystemError(
                         child.uniqueid, f'Could not delete {child.uniqueid}, because it is locked.'
                     )
@@ -476,7 +476,7 @@ class Connector:
                 f'Could not move {old_uniqueid} to {new_uniqueid}, because target already exists.',
             )
         if content.lock:
-            if lock_is_foreign(content.lock.principal):
+            if content.lock.status == LockStatus.FOREIGN:
                 raise LockedByOtherSystemError(old_uniqueid, f'{old_uniqueid} is already locked.')
             del content.lock
 
@@ -485,7 +485,7 @@ class Connector:
             sources.extend(self._get_all_children(content.uniqueid))
 
             for child in sources:
-                if child.lock and lock_is_foreign(child.lock.principal):
+                if child.lock and child.lock.status == LockStatus.FOREIGN:
                     raise LockedByOtherSystemError(
                         old_uniqueid,
                         f'Could not move {child.uniqueid} to {new_uniqueid}, because it is locked.',
@@ -536,7 +536,7 @@ class Connector:
         lock = self._get_content(uniqueid).lock
         if not lock:
             return
-        if lock_is_foreign(lock.principal):
+        if lock.status == LockStatus.FOREIGN:
             raise LockedByOtherSystemError(uniqueid, f'{uniqueid} is already locked.')
         self.session.delete(lock)
         self._update_lock_cache(uniqueid, None)
