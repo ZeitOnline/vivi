@@ -1,3 +1,5 @@
+from enum import Enum
+
 import zope.interface
 import zope.interface.common.mapping
 import zope.schema
@@ -325,3 +327,10 @@ class IResourceInvalidatedEvent(zope.interface.Interface):
 class ResourceInvalidatedEvent:
     def __init__(self, id):
         self.id = id
+
+
+class LockStatus(Enum):
+    NONE = 0
+    FOREIGN = 1
+    OWN = 2
+    TIMED_OUT = 3

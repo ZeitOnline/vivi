@@ -15,6 +15,7 @@ import alembic.script
 import sqlalchemy
 
 from zeit.connector.cli import _db_is_current
+import zeit.connector.models
 import zeit.connector.testing
 
 
@@ -91,7 +92,7 @@ class MigrationsTest(DBTestCase):
     def test_migrations_create_same_schema_as_from_scratch(self):
         self.createdb()
         c = self.engine.connect()
-        zeit.connector.postgresql.METADATA.create_all(c)
+        zeit.connector.models.Base.metadata.create_all(c)
         scratch = self.dump_schema(c)
         c.close()
         self.dropdb()
