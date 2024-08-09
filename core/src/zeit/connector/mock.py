@@ -13,6 +13,7 @@ import pytz
 import zope.event
 
 from zeit.connector.connector import CannonicalId
+from zeit.connector.filesystem import DefaultConverter
 from zeit.connector.interfaces import (
     ID_NAMESPACE,
     UUID_PROPERTY,
@@ -20,8 +21,10 @@ from zeit.connector.interfaces import (
     LockedByOtherSystemError,
     LockingError,
     MoveError,
+    feature_toggle,
 )
 from zeit.connector.lock import lock_is_foreign
+from zeit.connector.models import Content
 import zeit.cms.config
 import zeit.connector.cache
 import zeit.connector.dav.interfaces
@@ -326,6 +329,9 @@ class Connector(zeit.connector.filesystem.Connector):
         properties = self._properties.get(id)
         if properties is None:
             properties = super()._get_properties(id)
+        else:
+            properties = properties.copy()
+            self._convert_sql_types(properties)
         return properties
 
     def _set_properties(self, id, properties):
@@ -339,10 +345,17 @@ class Connector(zeit.connector.filesystem.Connector):
                 continue
             if value is zeit.connector.interfaces.DeleteProperty:
                 stored_properties.pop((name, namespace), None)
-            elif not isinstance(value, str):  # XXX mimic DAV behaviour
-                raise ValueError('Expected str, got %s: %r' % (type(value), value))
+                continue
+
+            if feature_toggle('write_metadata_columns'):
+                column = Content.column_by_name(name, namespace)
+                converter = zeit.connector.filesystem.IConverter(column)
+                value = converter.serialize(value)
             else:
-                stored_properties[(name, namespace)] = value
+                converter = DefaultConverter(None)
+            if isinstance(converter, DefaultConverter) and not isinstance(value, str):
+                raise ValueError('Expected str, got %s: %r' % (type(value), value))
+            stored_properties[(name, namespace)] = value
         self._properties[id] = stored_properties
 
 

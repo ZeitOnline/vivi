@@ -8,7 +8,6 @@ from zope.cachedescriptors.property import Lazy as cachedproperty
 from zope.component import getUtility
 
 from zeit.cms.content.sources import FEATURE_TOGGLES
-from zeit.connector.filesystem import Connector
 from zeit.connector.interfaces import IConnector
 
 
@@ -18,6 +17,8 @@ log = getLogger(__name__)
 class ContentCache:
     @cachedproperty
     def cache(self):
+        from zeit.connector.filesystem import Connector
+
         size = environ.get('CONTENT_CACHE_SIZE')
         check = environ.get('CONTENT_CACHE_CHECK')
         connector = getUtility(IConnector)

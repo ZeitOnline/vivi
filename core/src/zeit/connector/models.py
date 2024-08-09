@@ -38,7 +38,15 @@ class CommonMetadata:
     )
 
 
-class Content(Base, CommonMetadata):
+class ZeitWeb:
+    overscrolling_enabled = mapped_column(
+        Boolean,
+        info={'namespace': 'document', 'name': 'overscrolling'},
+        deferred=True,
+    )
+
+
+class Content(Base, CommonMetadata, ZeitWeb):
     __tablename__ = 'properties'
     __table_args__ = (
         Index(
