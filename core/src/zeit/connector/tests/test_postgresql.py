@@ -11,7 +11,8 @@ import transaction
 
 from zeit.cms.repository.interfaces import ConflictError
 from zeit.connector.interfaces import INTERNAL_PROPERTY
-from zeit.connector.postgresql import Lock, _unlock_overdue_locks
+from zeit.connector.models import Content, Lock
+from zeit.connector.postgresql import _unlock_overdue_locks
 from zeit.connector.resource import Resource, WriteableCachedResource
 from zeit.connector.search import SearchVar
 import zeit.connector.testing
@@ -297,3 +298,32 @@ class ContractChecksum(zeit.connector.testing.SQLTest):
         self.connector.add(res)
         res = self.connector['http://xml.zeit.de/testing/foo']
         self.assertEqual(None, res.properties[self.CHECK_PROPERTY])
+
+
+class PropertiesColumnTest(zeit.connector.testing.SQLTest):
+    def tearDown(self):
+        zeit.cms.config.set('zeit.connector', 'read_metadata_columns', 'False')
+        zeit.cms.config.set('zeit.connector', 'write_metadata_columns', 'False')
+        super().tearDown()
+
+    def test_properties_can_be_stored_in_separate_columns(self):
+        zeit.cms.config.set('zeit.connector', 'write_metadata_columns', 'True')
+        zeit.cms.config.set('zeit.connector', 'read_metadata_columns', 'True')
+        res = self.add_resource('foo', properties={('access', Content.NS + 'document'): 'foo'})
+        self.assertEqual('foo', res.properties[('access', Content.NS + 'document')])
+        content = self.connector._get_content(res.id)
+        self.assertEqual('foo', content.access)
+
+    def test_search_looks_in_columns_or_unsorted_depending_on_toggle(self):
+        zeit.cms.config.set('zeit.connector', 'write_metadata_columns', 'True')
+
+        res = self.add_resource('foo', properties={('access', Content.NS + 'document'): 'foo'})
+        access = SearchVar('access', 'http://namespaces.zeit.de/CMS/document')
+        for toggle in [False, True]:  # XXX parametrize would be nice
+            zeit.cms.config.set('zeit.connector', 'read_metadata_columns', str(toggle))
+            if toggle:
+                self.connector._get_content(res.id).unsorted = {}
+                transaction.commit()
+            result = self.connector.search([access], access == 'foo')
+            unique_id, uuid = next(result)
+            self.assertEqual(res.id, unique_id)
