@@ -1,5 +1,6 @@
 import logging
 
+from opentelemetry.trace import SpanKind
 import pendulum
 import requests
 import zope.component
@@ -54,7 +55,7 @@ class Simplecast:
         url = f'{self.api_url}{path}'
 
         tracer = zope.component.getUtility(zeit.cms.interfaces.ITracer)
-        with tracer.start_as_current_span('simplecast') as span:
+        with tracer.start_as_current_span('simplecast', kind=SpanKind.CLIENT) as span:
             span.set_attributes({'http.url': url, 'http.method': verb})
             status_code = None
             try:

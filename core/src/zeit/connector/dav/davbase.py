@@ -9,6 +9,7 @@ import sys
 import urllib.parse
 
 from opentelemetry.instrumentation.utils import http_status_to_status_code
+from opentelemetry.trace import SpanKind
 from opentelemetry.trace.status import Status
 import lxml.etree
 import zope.component
@@ -303,7 +304,9 @@ class DAVBase:
         logger.debug('%s %s', method, url)
         tracer = zope.component.getUtility(zeit.cms.interfaces.ITracer)
         with tracer.start_as_current_span(
-            'DAV %s' % method, attributes={'http.url': url, 'http.method': method}
+            'DAV %s' % method,
+            attributes={'http.url': url, 'http.method': method},
+            kind=SpanKind.CLIENT,
         ) as span:
             self.request(method, url, body, extra_hdrs)
             try:
