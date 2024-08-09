@@ -9,6 +9,7 @@ import time
 import urllib.parse
 import uuid
 
+from sqlalchemy import Unicode
 import pytz
 import zope.event
 
@@ -22,6 +23,7 @@ from zeit.connector.interfaces import (
     MoveError,
 )
 from zeit.connector.lock import lock_is_foreign
+from zeit.connector.models import Content
 import zeit.cms.config
 import zeit.connector.cache
 import zeit.connector.dav.interfaces
@@ -341,10 +343,12 @@ class Connector(zeit.connector.filesystem.Connector):
                 continue
             if value is zeit.connector.interfaces.DeleteProperty:
                 stored_properties.pop((name, namespace), None)
-            elif not isinstance(value, str):  # XXX mimic DAV behaviour
+                continue
+
+            column = Content.column_by_name(name, namespace)
+            if (column is None or isinstance(column.type, Unicode)) and not isinstance(value, str):
                 raise ValueError('Expected str, got %s: %r' % (type(value), value))
-            else:
-                stored_properties[(name, namespace)] = value
+            stored_properties[(name, namespace)] = value
         self._properties[id] = stored_properties
 
 

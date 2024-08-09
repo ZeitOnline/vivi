@@ -3,6 +3,7 @@
   <!-- webdav Property converters -->
 
   <adapter factory=".dav.UnicodeProperty" />
+  <adapter factory=".dav.IntProperty" />
   <adapter factory=".dav.ChoiceProperty" />
   <adapter factory=".dav.ChoicePropertyWithIterableSource" />
   <adapter factory=".dav.ChoicePropertyWithObjectSource" />

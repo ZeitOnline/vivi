@@ -15,6 +15,7 @@ import zope.schema.interfaces
 import zope.xmlpickle
 
 from zeit.cms.content.interfaces import WRITEABLE_ON_CHECKIN
+from zeit.connector.models import Content as ConnectorModel
 from zeit.connector.resource import PropertyKey
 import zeit.cms.content.caching
 import zeit.cms.content.interfaces
@@ -181,6 +182,28 @@ class UnicodeProperty:
 
 
 @zope.component.adapter(
+    zope.schema.interfaces.Int,  # IFromUnicode is parallel to IInt
+    zeit.connector.interfaces.IWebDAVReadProperties,
+    PropertyKey,
+)
+@zope.interface.implementer(zeit.cms.content.interfaces.IDAVPropertyConverter)
+class IntProperty(UnicodeProperty):
+    def __init__(self, context, properties, propertykey):
+        super().__init__(context, properties, propertykey)
+        self.has_sql_type = ConnectorModel.column_by_name(*propertykey) is not None
+
+    def fromProperty(self, value):
+        if self.has_sql_type:
+            return value
+        return super().fromProperty(value)
+
+    def toProperty(self, value):
+        if self.has_sql_type:
+            return value
+        return super().toProperty(value)
+
+
+@zope.component.adapter(
     zope.schema.interfaces.IChoice, zeit.connector.interfaces.IWebDAVReadProperties, PropertyKey
 )
 @zope.interface.implementer(zeit.cms.content.interfaces.IDAVPropertyConverter)
@@ -303,11 +326,20 @@ class ChoicePropertyWithIterableVocabulary:
 class BoolProperty:
     def __init__(self, context, properties, propertykey):
         self.context = context
+        self.has_sql_type = ConnectorModel.column_by_name(*propertykey) is not None
 
     def fromProperty(self, value):
+        if self.has_sql_type:
+            return value
+        return self._fromProperty(value)
+
+    @staticmethod
+    def _fromProperty(value):
         return value.lower() in ('yes', 'true')
 
     def toProperty(self, value):
+        if self.has_sql_type:
+            return value
         return 'yes' if value else 'no'
 
 
@@ -318,16 +350,25 @@ class BoolProperty:
 class DatetimeProperty:
     def __init__(self, context, properties, propertykey):
         self.context = context
+        self.has_sql_type = ConnectorModel.column_by_name(*propertykey) is not None
 
     def fromProperty(self, value):
         if not value:
             return None
+        if self.has_sql_type:
+            return value
+        return self._fromProperty(value)
+
+    @staticmethod
+    def _fromProperty(value):
         # We have _mostly_ iso8601, but some old content has the format
         # "Thu, 13 Mar 2008 13:48:37 GMT", so we use a lenient parser.
         date = pendulum.parse(value, strict=False)
         return date.in_tz('UTC')
 
     def toProperty(self, value):
+        if self.has_sql_type:
+            return value
         if value is None:
             return ''
         if value.tzinfo is None:

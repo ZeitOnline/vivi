@@ -43,7 +43,7 @@ Try this for some fields. Integer goes first:
 >>> int_field = zope.schema.Int()
 >>> converter = get_converter(int_field)
 >>> converter
-<zeit.cms.content.dav.UnicodeProperty object at 0x...>
+<zeit.cms.content.dav.IntProperty object at 0x...>
 >>> converter.fromProperty('5')
 5
 >>> converter.fromProperty('text')

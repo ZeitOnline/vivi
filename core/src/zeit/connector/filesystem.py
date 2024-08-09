@@ -7,12 +7,15 @@ import os
 import os.path
 
 import gocept.cache.property
+import grokcore.component as grok
 import lxml.etree
+import sqlalchemy
 import zope.app.file.image
 import zope.interface
 
 from zeit.connector.connector import CannonicalId
 from zeit.connector.interfaces import ID_NAMESPACE
+from zeit.connector.models import Content
 import zeit.cms.config
 import zeit.connector.dav.interfaces
 import zeit.connector.interfaces
@@ -277,6 +280,14 @@ class Connector:
             return properties
 
         properties.update(parse_properties(xml))
+        for key, value in properties.items():
+            column = Content.column_by_name(*key)
+            if column is None:
+                continue
+            deserialize = IDeserialize(column.type, None)
+            if deserialize:
+                value = deserialize(value)
+
         self.property_cache[id] = properties
         return properties
 
@@ -312,3 +323,26 @@ def parse_properties(xml):
         value += '</tag:rankedTags>'
         properties[('keywords', 'http://namespaces.zeit.de/CMS/tagging')] = value
     return properties
+
+
+class IDeserialize(zope.interface.Interface):
+    def __call__(value):
+        pass
+
+
+@grok.adapter(sqlalchemy.Boolean)
+@grok.implementer(IDeserialize)
+def deserialize_bool(context):
+    return zeit.cms.content.dav.BoolProperty._fromProperty
+
+
+@grok.adapter(sqlalchemy.Integer)
+@grok.implementer(IDeserialize)
+def deserialize_int(context):
+    return int
+
+
+@grok.adapter(sqlalchemy.TIMESTAMP)
+@grok.implementer(IDeserialize)
+def deserialize_datetime(context):
+    return zeit.cms.content.dav.DatetimeProperty._fromProperty
