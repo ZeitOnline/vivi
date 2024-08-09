@@ -1,9 +1,7 @@
-import datetime
 import functools
 import logging
 import re
 import sys
-import time
 
 import grokcore.component as grok
 import lxml.etree
@@ -334,25 +332,6 @@ class DatetimeProperty:
             return ''
         if value.tzinfo is None:
             raise ValueError('%r has no timezone information' % value)
-        return value.isoformat()
-
-
-@zope.component.adapter(
-    zope.schema.interfaces.IDate, zeit.connector.interfaces.IWebDAVReadProperties, PropertyKey
-)
-@zope.interface.implementer(zeit.cms.content.interfaces.IDAVPropertyConverter)
-class DateProperty:
-    def __init__(self, context, properties, propertykey):
-        self.context = context
-
-    def fromProperty(self, value):
-        if not value:
-            return None
-        return datetime.date(*(time.strptime(value, '%Y-%m-%d')[0:3]))
-
-    def toProperty(self, value):
-        if value is None:
-            return ''
         return value.isoformat()
 
 

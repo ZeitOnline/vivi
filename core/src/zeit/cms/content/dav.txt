@@ -186,7 +186,7 @@ logger:
 
 Create a dav property and set an invalid value:
 
->>> field = zope.schema.Date()
+>>> field = zope.schema.Datetime()
 >>> import zeit.connector.interfaces
 >>> import zeit.cms.testcontenttype.testcontenttype
 >>> dav_prop = zeit.cms.content.dav.DAVProperty(
@@ -202,7 +202,7 @@ When we try to get the data we'll get the default value (None):
 True
 >>> print(log.getvalue())
 Could not parse DAV property value 'f\xfcblas' for ExampleContentType.myname at
-http://xml.zeit.de/foo [ValueError: (...time data ...not match format...)].
+http://xml.zeit.de/foo [ParserError:...Invalid date string...].
 Using default None instead.
 
 
@@ -409,34 +409,6 @@ Setting a datetime without timezone information raises an error:
 Traceback (most recent call last):
   ...
 ValueError: datetime.datetime(2008, 5, 13, 13, 48) has no timezone information
-
-Date
-++++
-
-Dates are also supported:
-
->>> field = zope.schema.Date()
->>> converter = get_converter(field)
->>> converter.fromProperty('2007-05-25')
-datetime.date(2007, 5, 25)
-
-Invalid dates raise a ValueError:
-
->>> converter.fromProperty("1.1.07")
-Traceback (most recent call last):
-    ...
-ValueError: time data...not match format...
-
-
-The date is written in iso format:
-
->>> converter.toProperty(datetime.date(1980, 2, 5))
-'1980-02-05'
-
-None is represented as an empty stirng:
-
->>> converter.toProperty(None)
-''
 
 
 
