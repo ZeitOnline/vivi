@@ -39,8 +39,6 @@ def import_dpa_news_api(args=None):
 
     @gocept.runner.transaction_per_item
     def importer():
-        env = zeit.cms.config.required('zeit.cms', 'environment')
-        env = 'production' if env == 'production' else 'staging'
         getInteraction().participations[0]._zeit_connector_referrer = (
             'http://%s/runner/import_dpa_news' % socket.getfqdn()
         )
@@ -53,16 +51,18 @@ def import_dpa_news_api(args=None):
             process = functools.partial(zeit.newsimport.news.process_task, entry, args.profile)
             yield process
 
-        push_to_gateway(
-            zeit.cms.config.get(
-                'zeit.newsimport',
-                'push_gateway',
-                'http://pushgateway.cluster-infra.svc.cluster.local:9091',
-            ),
-            job='vivi-newsimport',
-            registry=metrics.REGISTRY,
-            grouping_key={'environment_zni': env},
-        )
+        env = zeit.cms.config.required('zeit.cms', 'environment')
+        if env in ['staging', 'production']:
+            push_to_gateway(
+                zeit.cms.config.get(
+                    'zeit.newsimport',
+                    'push_gateway',
+                    'http://pushgateway.cluster-infra.svc.cluster.local:9091',
+                ),
+                job='vivi-newsimport',
+                registry=metrics.REGISTRY,
+                grouping_key={'environment_zni': env},
+            )
 
     run = zeit.cms.cli.runner(ticks=args.interval, principal=args.owner, once=False)(importer)
     return run()
