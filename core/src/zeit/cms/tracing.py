@@ -188,7 +188,7 @@ def apply_samplerate(module, samplerate, context=None):
     if random.random() <= 1 / samplerate:
         return opentelemetry.context.set_value(module, samplerate, context)
     else:
-        return None
+        return context
 
 
 def record_span(span, status_code, body):

@@ -2,6 +2,7 @@ import functools
 import logging
 
 from opentelemetry.instrumentation.instrumentor import BaseInstrumentor
+from opentelemetry.trace import SpanKind
 from perfmetrics.metric import _AbstractMetricImpl as MetricImpl
 from relstorage.zodburi_resolver import RelStorageURIResolver, Resolver
 import opentelemetry.trace
@@ -94,8 +95,7 @@ class RelStorageInstrumentor(BaseInstrumentor):
             if samplerate:
                 operation = self.stat_name or self._compute_stat(args)
                 with tracer.start_as_current_span(
-                    operation,
-                    attributes={'span.kind': 'client', 'SampleRate': samplerate},
+                    operation, attributes={'SampleRate': samplerate}, kind=SpanKind.CLIENT
                 ):
                     return wrapped_call(self, *args, **kw)
             else:
