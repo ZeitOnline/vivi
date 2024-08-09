@@ -27,7 +27,7 @@ def run_migrations_offline(params) -> None:
 
 def run_migrations_online(params) -> None:
     if getattr(context.config.cmd_opts, 'autogenerate', False):
-        from zeit.connector.postgresql import METADATA
+        from zeit.connector.models import METADATA
     else:
         METADATA = None
 

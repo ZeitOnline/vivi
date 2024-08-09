@@ -21,6 +21,7 @@ import zeit.connector.connector
 import zeit.connector.gcsemulator  # activate monkey patches
 import zeit.connector.interfaces
 import zeit.connector.mock
+import zeit.connector.models
 
 
 ROOT = 'http://xml.zeit.de/testing'
@@ -285,8 +286,8 @@ class SQLDatabaseLayer(plone.testing.Layer):
         # Create tables
         c = self['sql_connection']
         t = c.begin()
-        zeit.connector.postgresql.METADATA.drop_all(c)
-        zeit.connector.postgresql.METADATA.create_all(c)
+        zeit.connector.models.METADATA.drop_all(c)
+        zeit.connector.models.METADATA.create_all(c)
         t.commit()
 
     def tearDown(self):
