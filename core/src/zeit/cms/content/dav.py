@@ -307,14 +307,10 @@ class BoolProperty:
         self.context = context
 
     def fromProperty(self, value):
-        if value.lower() in ('yes', 'true'):
-            return True
-        return False
+        return value.lower() in ('yes', 'true')
 
     def toProperty(self, value):
-        if value:
-            return 'yes'
-        return 'no'
+        return 'yes' if value else 'no'
 
 
 @zope.component.adapter(
