@@ -140,8 +140,12 @@ class Publish:
                 (ids, collect_errors_on), queue=self.get_priority(priority), **kw
             )
         else:
-            result = task(ids, collect_errors_on)
-            return celery.result.EagerResult('eager', result, celery.states.SUCCESS)
+            tracer = zope.component.getUtility(zeit.cms.interfaces.ITracer)
+            with tracer.start_as_current_span(
+                f'run_sync/{task.name}', attributes={'celery.args': str((ids, collect_errors_on))}
+            ):
+                result = task(ids, collect_errors_on)
+                return celery.result.EagerResult('eager', result, celery.states.SUCCESS)
 
     def log(self, obj, msg):
         log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
