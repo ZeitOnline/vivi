@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.21.0 (2024-08-12)
+-------------------
+
+- WCM-187: Record spans for cli entrypoints/cronjobs and background=False publish tasks
+
+
 6.20.0 (2024-08-08)
 -------------------
 
