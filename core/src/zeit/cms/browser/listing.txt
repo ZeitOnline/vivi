@@ -82,8 +82,9 @@ When we have local modifications the we get the third indicator. Let's try some
 >>> import zeit.connector.interfaces
 >>> import zope.component
 >>> connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
->>> connector._properties[uid][('date_last_modified', 'http://namespaces.zeit.de/CMS/document')] = (
-...     datetime.datetime(2007, 12, 6, 12, 00, tzinfo=pytz.UTC).isoformat())
+>>> connector.changeProperties(uid, {
+...     ('date_last_modified', 'http://namespaces.zeit.de/CMS/document'):
+...     datetime.datetime(2007, 12, 6, 12, 00, tzinfo=pytz.UTC).isoformat()})
 
 We don't know when the object was published. Assume it's fresh:
 
