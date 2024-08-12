@@ -13,6 +13,7 @@ import time
 from gocept.cache.property import TransactionBoundCache
 from google.cloud import storage
 from google.cloud.storage.retry import DEFAULT_RETRY
+from opentelemetry.trace import SpanKind
 from sqlalchemy import (
     delete,
     insert,
@@ -659,6 +660,7 @@ class EngineTracer(opentelemetry.instrumentation.sqlalchemy.EngineTracer):
         super().__init__(tracer, engine, unused_metrics, **kw)
 
     def start_span(self, *args, **kw):
+        kw.setdefault('kind', SpanKind.CLIENT)
         return zeit.cms.tracing.start_span(__name__ + '.tracing', *args, **kw)
 
     def _write(self, buffer, params):

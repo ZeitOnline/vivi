@@ -7,12 +7,15 @@ import signal
 import sys
 import time
 
+from opentelemetry.trace import SpanKind
+import opentelemetry.context
 import transaction
 import transaction.interfaces
 import zope.component
 import zope.component.hooks
 
 import zeit.cms.logging
+import zeit.cms.tracing
 
 
 log = logging.getLogger(__name__)
@@ -137,10 +140,36 @@ else:
             self._is_running = True
 
             while self._is_running:
+                context = zeit.cms.tracing.apply_samplerate_productconfig(
+                    'zeit.cms.relstorage',
+                    'zeit.cms',
+                    'samplerate-zodb',
+                    opentelemetry.context.get_current(),
+                )
+                context = zeit.cms.tracing.apply_samplerate_productconfig(
+                    'zeit.connector.postgresql.tracing', 'zeit.cms', 'samplerate-sql', context
+                )
+                context = opentelemetry.context.set_value(
+                    # See opentelemetry.instrumentation.sqlcommenter_utils
+                    'SQLCOMMENTER_ORM_TAGS_AND_VALUES',
+                    {
+                        'application': 'vivi',
+                        'controller': 'cli',
+                        'route': self.worker.__name__,
+                        # 'action':
+                    },
+                    context,
+                )
+                context = opentelemetry.context.attach(context)
+
                 ticks = None
                 self.begin()
                 try:
-                    ticks = self.worker()
+                    tracer = zope.component.getUtility(zeit.cms.interfaces.ITracer)
+                    with tracer.start_as_current_span(
+                        'cli %s' % self.worker.__name__, kind=SpanKind.SERVER
+                    ):
+                        ticks = self.worker()
                 except (KeyboardInterrupt, SystemExit):
                     self.abort()
                     break
@@ -160,6 +189,9 @@ else:
                         else:
                             # Ignore silently, the next run will retry.
                             log.warning('Conflict error', exc_info=True)
+                finally:
+                    if context is not None:
+                        opentelemetry.context.detach(context)
 
                 if self.once or ticks is gocept.runner.Exit:
                     self._is_running = False

@@ -193,14 +193,15 @@ else:
     def remove_samplerate(*args, **kw):
         task = otel_celery.retrieve_task(kw)
         token, _ = otel_celery.retrieve_span(task, 'zeit.cms.tracing')
-        if token is not None:
-            opentelemetry.context.detach(token)
+        opentelemetry.context.detach(token)
         otel_celery.detach_span(task, 'zeit.cms.tracing')
 
     CeleryInstrumentor().instrument()
 
     @celery.signals.task_prerun.connect(weak=False)
     def apply_samplerate(*args, **kw):
+        opentelemetry.trace.get_current_span().set_attributes({'celery.args': str(kw.get('args'))})
+
         context = zeit.cms.tracing.apply_samplerate_productconfig(
             'zeit.cms.relstorage',
             'zeit.cms',
@@ -213,9 +214,19 @@ else:
         context = zeit.cms.tracing.apply_samplerate_productconfig(
             'zeit.workflow.publish', 'zeit.cms', 'samplerate-publish', context
         )
-        if context is not None:
-            token = opentelemetry.context.attach(context)
-            task = otel_celery.retrieve_task(kw)
-            # This is a bit of a semantic misuse, but mechanically it's
-            # exactly what we want: store this bit of data on the task object.
-            otel_celery.attach_span(task, 'zeit.cms.tracing', (token, None))
+        task = otel_celery.retrieve_task(kw)
+        context = opentelemetry.context.set_value(
+            # See opentelemetry.instrumentation.sqlcommenter_utils
+            'SQLCOMMENTER_ORM_TAGS_AND_VALUES',
+            {
+                'application': 'vivi',
+                'controller': 'celery',
+                'route': getattr(task, 'name', 'unknown'),
+                # 'action':
+            },
+            context,
+        )
+        token = opentelemetry.context.attach(context)
+        # This is a bit of a semantic misuse, but mechanically it's
+        # exactly what we want: store this bit of data on the task object.
+        otel_celery.attach_span(task, 'zeit.cms.tracing', (token, None))
