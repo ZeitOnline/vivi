@@ -1,10 +1,9 @@
 # coding: utf8
 from urllib.parse import urlparse
-import datetime
 import re
 
+import pendulum
 import pyramid_dogpile_cache2
-import pytz
 import zope.i18nmessageid
 import zope.interface
 import zope.interface.common.sequence
@@ -26,7 +25,7 @@ AUDIO_SCHEMA_NS = 'http://namespaces.zeit.de/CMS/audio'
 
 
 # lovely.remotetask stores times as 32 bit leading to an overflow after 2030.
-MAX_PUBLISH_DATE = datetime.datetime(2030, 1, 1, tzinfo=pytz.UTC)
+MAX_PUBLISH_DATE = pendulum.datetime(2030, 1, 1)
 
 # Backward compatibility imports
 from zeit.connector.interfaces import (  # noqa

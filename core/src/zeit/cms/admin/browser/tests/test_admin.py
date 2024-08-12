@@ -1,6 +1,4 @@
-from datetime import datetime
-
-import pytz
+import pendulum
 import zope.component.hooks
 
 import zeit.cms.testing
@@ -38,11 +36,9 @@ class TestAdminMenu(zeit.cms.testing.ZeitCmsBrowserTestCase):
         content = self.repository['testcontent']
         publish = zeit.cms.workflow.interfaces.IPublishInfo(content)
         self.assertEqual(
-            datetime(2001, 1, 7, 10, 22, 33, tzinfo=pytz.UTC), publish.date_last_published_semantic
+            pendulum.datetime(2001, 1, 7, 10, 22, 33), publish.date_last_published_semantic
         )
-        self.assertEqual(
-            datetime(2001, 1, 8, 10, 22, 33, tzinfo=pytz.UTC), publish.date_first_released
-        )
+        self.assertEqual(pendulum.datetime(2001, 1, 8, 10, 22, 33), publish.date_first_released)
 
     def test_admin_menu_co_has_caching_time_field(self):
         b = self.browser
