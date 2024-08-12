@@ -324,10 +324,8 @@ class Connector(zeit.connector.filesystem.Connector):
 
     def _get_properties(self, id):
         properties = self._properties.get(id)
-        if properties is not None:
-            return properties
-        properties = super()._get_properties(id)
-        self._properties[id] = properties
+        if properties is None:
+            properties = super()._get_properties(id)
         return properties
 
     def _set_properties(self, id, properties):
