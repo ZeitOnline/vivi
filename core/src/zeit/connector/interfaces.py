@@ -1,8 +1,11 @@
+from ast import literal_eval
 from enum import Enum
 
 import zope.interface
 import zope.interface.common.mapping
 import zope.schema
+
+import zeit.cms.config
 
 
 class _DeleteProperty:
@@ -334,3 +337,11 @@ class LockStatus(Enum):
     FOREIGN = 1
     OWN = 2
     TIMED_OUT = 3
+
+
+def feature_toggle(key):
+    """Temp workaround to use feature toggles in connector instead of feature toggles
+    from zeit.cms.content.sources.
+    Using feature toggles from a file which is stored inside the database
+    inside the connector is unfortunately not possible"""
+    return literal_eval(zeit.cms.config.get('zeit.connector', key, 'False'))

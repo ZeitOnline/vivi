@@ -35,8 +35,8 @@ Verify the data:
 >>> properties = zeit.connector.interfaces.IWebDAVProperties(content)
 >>> import pprint
 >>> pprint.pprint(dict(properties))
-{...('comments', 'http://namespaces.zeit.de/CMS/document'): 'yes',
- ('copyrights', 'http://namespaces.zeit.de/CMS/document'): 'ich'...}
+{...PropertyKey(name='comments', namespace='http://namespaces.zeit.de/CMS/document'): 'yes',
+ PropertyKey(name='copyrights', namespace='http://namespaces.zeit.de/CMS/document'): 'ich'...}
 
 Products
 ++++++++

@@ -1,9 +1,7 @@
-import datetime
 import functools
 import logging
 import re
 import sys
-import time
 
 import grokcore.component as grok
 import lxml.etree
@@ -17,6 +15,9 @@ import zope.schema.interfaces
 import zope.xmlpickle
 
 from zeit.cms.content.interfaces import WRITEABLE_ON_CHECKIN
+from zeit.connector.interfaces import feature_toggle as connector_toggle
+from zeit.connector.models import Content as ConnectorModel
+from zeit.connector.resource import PropertyKey
 import zeit.cms.content.caching
 import zeit.cms.content.interfaces
 import zeit.cms.content.liveproperty
@@ -68,9 +69,8 @@ class DAVProperty:
     def __fetch__(self, instance, class_, properties=None):
         if properties is None:
             properties = zeit.cms.interfaces.IWebDAVReadProperties(instance)
-        dav_value = properties.get(
-            (self.name, self.namespace), zeit.connector.interfaces.DeleteProperty
-        )
+        key = PropertyKey(self.name, self.namespace)
+        dav_value = properties.get(key, zeit.connector.interfaces.DeleteProperty)
 
         if zope.proxy.removeAllProxies(dav_value) is zeit.connector.interfaces.DeleteProperty:
             value = self.missing_value
@@ -79,7 +79,8 @@ class DAVProperty:
             __traceback_info__ = (instance, field, field.__name__, dav_value)
             try:
                 converter = zope.component.getMultiAdapter(
-                    (field, properties), zeit.cms.content.interfaces.IDAVPropertyConverter
+                    (field, properties, key),
+                    zeit.cms.content.interfaces.IDAVPropertyConverter,
                 )
                 value = converter.fromProperty(dav_value)
             except (ValueError, zope.schema.ValidationError) as e:
@@ -107,18 +108,20 @@ class DAVProperty:
     def __set__(self, instance, value):
         """Set the value to webdav properties."""
         read_properties = zeit.cms.interfaces.IWebDAVReadProperties(instance)
-        old_value = read_properties.get((self.name, self.namespace))
+        key = PropertyKey(self.name, self.namespace)
+        old_value = read_properties.get(key)
         if value is None:
             dav_value = zeit.connector.interfaces.DeleteProperty
         else:
             field = self.field.bind(instance)
             converter = zope.component.getMultiAdapter(
-                (field, read_properties), zeit.cms.content.interfaces.IDAVPropertyConverter
+                (field, read_properties, key),
+                zeit.cms.content.interfaces.IDAVPropertyConverter,
             )
             dav_value = converter.toProperty(value)
 
         write_properties = zeit.cms.interfaces.IWebDAVWriteProperties(instance)
-        write_properties[(self.name, self.namespace)] = dav_value
+        write_properties[key] = dav_value
 
         zope.event.notify(
             zeit.cms.content.interfaces.DAVPropertyChangedEvent(
@@ -158,11 +161,13 @@ def notify_cms_content_property_change(context, event):
 
 
 @zope.component.adapter(
-    zope.schema.interfaces.IFromUnicode, zeit.connector.interfaces.IWebDAVReadProperties
+    zope.schema.interfaces.IFromUnicode,
+    zeit.connector.interfaces.IWebDAVReadProperties,
+    PropertyKey,
 )
 @zope.interface.implementer(zeit.cms.content.interfaces.IGenericDAVPropertyConverter)
 class UnicodeProperty:
-    def __init__(self, context, content):
+    def __init__(self, context, properties, propertykey):
         self.context = context
 
     def fromProperty(self, value):
@@ -178,12 +183,35 @@ class UnicodeProperty:
 
 
 @zope.component.adapter(
-    zope.schema.interfaces.IChoice, zeit.connector.interfaces.IWebDAVReadProperties
+    zope.schema.interfaces.Int,  # IFromUnicode is parallel to IInt
+    zeit.connector.interfaces.IWebDAVReadProperties,
+    PropertyKey,
 )
 @zope.interface.implementer(zeit.cms.content.interfaces.IDAVPropertyConverter)
-def ChoiceProperty(context, content):
+class IntProperty(UnicodeProperty):
+    def __init__(self, context, properties, propertykey):
+        super().__init__(context, properties, propertykey)
+        self.has_sql_type = ConnectorModel.column_by_name(*propertykey) is not None
+
+    def fromProperty(self, value):
+        if self.has_sql_type and connector_toggle('read_metadata_columns'):
+            return value
+        return super().fromProperty(value)
+
+    def toProperty(self, value):
+        if self.has_sql_type and connector_toggle('write_metadata_columns'):
+            return value
+        return super().toProperty(value)
+
+
+@zope.component.adapter(
+    zope.schema.interfaces.IChoice, zeit.connector.interfaces.IWebDAVReadProperties, PropertyKey
+)
+@zope.interface.implementer(zeit.cms.content.interfaces.IDAVPropertyConverter)
+def ChoiceProperty(context, properties, propertykey):
     return zope.component.getMultiAdapter(
-        (context, context.vocabulary, content), zeit.cms.content.interfaces.IDAVPropertyConverter
+        (context, context.vocabulary, properties, propertykey),
+        zeit.cms.content.interfaces.IDAVPropertyConverter,
     )
 
 
@@ -191,10 +219,11 @@ def ChoiceProperty(context, content):
     zope.schema.interfaces.IChoice,
     zope.schema.interfaces.IIterableSource,
     zeit.connector.interfaces.IWebDAVReadProperties,
+    PropertyKey,
 )
 @zope.interface.implementer(zeit.cms.content.interfaces.IDAVPropertyConverter)
 class ChoicePropertyWithIterableSource:
-    def __init__(self, context, source, content):
+    def __init__(self, context, source, properties, propertykey):
         self.context = context
         self.source = source
 
@@ -214,10 +243,11 @@ class ChoicePropertyWithIterableSource:
     zope.schema.interfaces.IChoice,
     zope.app.security.interfaces.IPrincipalSource,
     zeit.connector.interfaces.IWebDAVReadProperties,
+    PropertyKey,
 )
 @zope.interface.implementer(zeit.cms.content.interfaces.IDAVPropertyConverter)
 class ChoicePropertyWithPrincipalSource:
-    def __init__(self, context, source, content):
+    def __init__(self, context, source, properties, propertykey):
         self.context = context
         self.source = source
 
@@ -237,10 +267,11 @@ DUMMY_REQUEST = zope.publisher.browser.TestRequest()
     zope.schema.interfaces.IChoice,
     zeit.cms.content.sources.IObjectSource,
     zeit.connector.interfaces.IWebDAVReadProperties,
+    PropertyKey,
 )
 @zope.interface.implementer(zeit.cms.content.interfaces.IDAVPropertyConverter)
 class ChoicePropertyWithObjectSource:
-    def __init__(self, context, source, content):
+    def __init__(self, context, source, properties, propertykey):
         self.context = context
         self.source = source
 
@@ -268,10 +299,11 @@ class ChoicePropertyWithObjectSource:
     zope.schema.interfaces.IChoice,
     zope.schema.interfaces.IIterableVocabulary,
     zeit.connector.interfaces.IWebDAVReadProperties,
+    PropertyKey,
 )
 @zope.interface.implementer(zeit.cms.content.interfaces.IDAVPropertyConverter)
 class ChoicePropertyWithIterableVocabulary:
-    def __init__(self, context, vocabulary, content):
+    def __init__(self, context, vocabulary, properties, propertykey):
         self.context = context
         self.vocabulary = vocabulary
 
@@ -288,40 +320,64 @@ class ChoicePropertyWithIterableVocabulary:
         raise ValueError(value)
 
 
-@zope.component.adapter(zope.schema.Bool, zeit.connector.interfaces.IWebDAVReadProperties)
+@zope.component.adapter(
+    zope.schema.Bool, zeit.connector.interfaces.IWebDAVReadProperties, PropertyKey
+)
 @zope.interface.implementer(zeit.cms.content.interfaces.IDAVPropertyConverter)
 class BoolProperty:
-    def __init__(self, context, content):
+    def __init__(self, context, properties, propertykey):
         self.context = context
+        self.has_sql_type = ConnectorModel.column_by_name(*propertykey) is not None
 
     def fromProperty(self, value):
-        if value.lower() in ('yes', 'true'):
-            return True
-        return False
+        if self.has_sql_type and connector_toggle('read_metadata_columns'):
+            return value
+        return self._fromProperty(value)
+
+    @staticmethod
+    def _fromProperty(value):
+        return value.lower() in ('yes', 'true')
 
     def toProperty(self, value):
-        if value:
-            return 'yes'
-        return 'no'
+        if self.has_sql_type and connector_toggle('write_metadata_columns'):
+            return value
+        return self._toProperty(value)
+
+    @staticmethod
+    def _toProperty(value):
+        return 'yes' if value else 'no'
 
 
 @zope.component.adapter(
-    zope.schema.interfaces.IDatetime, zeit.connector.interfaces.IWebDAVReadProperties
+    zope.schema.interfaces.IDatetime, zeit.connector.interfaces.IWebDAVReadProperties, PropertyKey
 )
 @zope.interface.implementer(zeit.cms.content.interfaces.IDAVPropertyConverter)
 class DatetimeProperty:
-    def __init__(self, context, content):
+    def __init__(self, context, properties, propertykey):
         self.context = context
+        self.has_sql_type = ConnectorModel.column_by_name(*propertykey) is not None
 
     def fromProperty(self, value):
         if not value:
             return None
+        if self.has_sql_type and connector_toggle('read_metadata_columns'):
+            return value
+        return self._fromProperty(value)
+
+    @staticmethod
+    def _fromProperty(value):
         # We have _mostly_ iso8601, but some old content has the format
         # "Thu, 13 Mar 2008 13:48:37 GMT", so we use a lenient parser.
         date = pendulum.parse(value, strict=False)
         return date.in_tz('UTC')
 
     def toProperty(self, value):
+        if self.has_sql_type and connector_toggle('write_metadata_columns'):
+            return value
+        return self._toProperty(value)
+
+    @staticmethod
+    def _toProperty(value):
         if value is None:
             return ''
         if value.tzinfo is None:
@@ -329,32 +385,14 @@ class DatetimeProperty:
         return value.isoformat()
 
 
-@zope.component.adapter(
-    zope.schema.interfaces.IDate, zeit.connector.interfaces.IWebDAVReadProperties
-)
-@zope.interface.implementer(zeit.cms.content.interfaces.IDAVPropertyConverter)
-class DateProperty:
-    def __init__(self, context, content):
-        self.context = context
-
-    def fromProperty(self, value):
-        if not value:
-            return None
-        return datetime.date(*(time.strptime(value, '%Y-%m-%d')[0:3]))
-
-    def toProperty(self, value):
-        if value is None:
-            return ''
-        return value.isoformat()
-
-
 @zope.interface.implementer(zeit.cms.content.interfaces.IDAVPropertyConverter)
 @zope.component.adapter(
-    zope.schema.interfaces.ICollection, zeit.connector.interfaces.IWebDAVReadProperties
+    zope.schema.interfaces.ICollection, zeit.connector.interfaces.IWebDAVReadProperties, PropertyKey
 )
-def CollectionProperty(context, content):
+def CollectionProperty(context, properties, propertykey):
     return zope.component.queryMultiAdapter(
-        (context, context.value_type, content), zeit.cms.content.interfaces.IDAVPropertyConverter
+        (context, context.value_type, properties, propertykey),
+        zeit.cms.content.interfaces.IDAVPropertyConverter,
     )
 
 
@@ -362,15 +400,17 @@ def CollectionProperty(context, content):
     zope.schema.interfaces.ICollection,
     zope.schema.interfaces.ITextLine,
     zeit.connector.interfaces.IWebDAVReadProperties,
+    PropertyKey,
 )
 @zope.interface.implementer(zeit.cms.content.interfaces.IDAVPropertyConverter)
 class CollectionTextLineProperty:
     SPLIT_PATTERN = re.compile(r'(?!\\);')
 
-    def __init__(self, context, value_type, content):
+    def __init__(self, context, value_type, properties, propertykey):
         self.context = context
         self.value_type = value_type
-        self.content = content
+        self.properties = properties
+        self.propertykey = propertykey
         self._type = context._type
         if isinstance(self._type, tuple):
             # XXX this is way hacky
@@ -378,7 +418,8 @@ class CollectionTextLineProperty:
 
     def fromProperty(self, value):
         typ = zope.component.getMultiAdapter(
-            (self.value_type, self.content), zeit.cms.content.interfaces.IDAVPropertyConverter
+            (self.value_type, self.properties, self.propertykey),
+            zeit.cms.content.interfaces.IDAVPropertyConverter,
         )
         result = []
         start = 0
@@ -401,7 +442,8 @@ class CollectionTextLineProperty:
 
     def toProperty(self, value):
         typ = zope.component.getMultiAdapter(
-            (self.value_type, self.content), zeit.cms.content.interfaces.IDAVPropertyConverter
+            (self.value_type, self.properties, self.propertykey),
+            zeit.cms.content.interfaces.IDAVPropertyConverter,
         )
         result = []
         for item in value:
@@ -411,7 +453,9 @@ class CollectionTextLineProperty:
 
 
 @zope.component.adapter(
-    zeit.cms.content.interfaces.IChannelField, zeit.connector.interfaces.IWebDAVReadProperties
+    zeit.cms.content.interfaces.IChannelField,
+    zeit.connector.interfaces.IWebDAVReadProperties,
+    PropertyKey,
 )
 class ChannelProperty(UnicodeProperty):
     def fromProperty(self, value):
@@ -430,6 +474,7 @@ class ChannelProperty(UnicodeProperty):
     zope.schema.interfaces.ICollection,
     zeit.cms.content.interfaces.IChannelField,
     zeit.connector.interfaces.IWebDAVReadProperties,
+    PropertyKey,
 )
 @zope.interface.implementer(zeit.cms.content.interfaces.IDAVPropertyConverter)
 class CollectionChannelProperty(CollectionTextLineProperty):
@@ -437,7 +482,7 @@ class CollectionChannelProperty(CollectionTextLineProperty):
 
 
 @zope.component.adapter(
-    zope.schema.interfaces.IField, zeit.connector.interfaces.IWebDAVReadProperties
+    zope.schema.interfaces.IField, zeit.connector.interfaces.IWebDAVReadProperties, PropertyKey
 )
 @zope.interface.implementer(zeit.cms.content.interfaces.IGenericDAVPropertyConverter)
 class GenericProperty:
@@ -447,7 +492,7 @@ class GenericProperty:
 
     """
 
-    def __init__(self, context, content):
+    def __init__(self, context, properties, propertykey):
         self.context = context
 
     def fromProperty(self, value):
@@ -469,6 +514,7 @@ class GenericProperty:
     zope.schema.interfaces.ICollection,
     zope.interface.Interface,
     zeit.connector.interfaces.IWebDAVReadProperties,
+    PropertyKey,
 )
 @zope.interface.implementer_only(zeit.cms.content.interfaces.IDAVPropertyConverter)
 class GenericCollectionProperty(GenericProperty):
@@ -477,7 +523,7 @@ class GenericCollectionProperty(GenericProperty):
     Uses zope.xmlpickle to (de-)serialise the data.
     """
 
-    def __init__(self, context, value_type, content):
+    def __init__(self, context, value_type, properties, propertykey):
         self.context = context
         self.value_type = value_type
         self.content_converter = None

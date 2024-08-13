@@ -7,13 +7,17 @@ import os
 import os.path
 
 import gocept.cache.property
+import grokcore.component as grok
 import lxml.etree
+import sqlalchemy
 import zope.app.file.image
 import zope.interface
 
 from zeit.connector.connector import CannonicalId
-from zeit.connector.interfaces import ID_NAMESPACE
+from zeit.connector.interfaces import ID_NAMESPACE, feature_toggle
+from zeit.connector.models import Content
 import zeit.cms.config
+import zeit.cms.content.dav
 import zeit.connector.dav.interfaces
 import zeit.connector.interfaces
 import zeit.connector.resource
@@ -93,40 +97,14 @@ class Connector:
                 names.remove(x)
         return names
 
-    def getResourceType(self, id):
-        id = self._get_cannonical_id(id)
-        __traceback_info__ = id
-
-        properties = self._get_properties(id)
-        if properties:
-            type = properties.get(zeit.connector.interfaces.RESOURCE_TYPE_PROPERTY)
-            if type:
-                return type
-
-        path = self._path(id)
-        if os.path.isdir(path):
-            return 'collection'
-
-        f = self._get_file(id)
-        data = f.read(200)
-        f.close()
-        content_type, width, height = zope.app.file.image.getImageInfo(data)
-        if content_type:
-            return 'image'
-        return 'unknown'
-
     def __getitem__(self, id):
         id = self._get_cannonical_id(id)
         properties = self._get_properties(id)
-        type = self.getResourceType(id)
-        # XXX kludgy: writing here modifies our cached properties value, so
-        # future accesses get this as well; some tests/fixtures rely on this.
-        properties[zeit.connector.interfaces.RESOURCE_TYPE_PROPERTY] = type
         path = urlparse(id).path.strip('/').split('/')
         return self.resource_class(
             str(id),
             path[-1],
-            type,
+            properties[zeit.connector.interfaces.RESOURCE_TYPE_PROPERTY],
             lambda: self._get_properties(id),
             lambda: self._get_body(id),
             self._is_collection(id),
@@ -268,6 +246,7 @@ class Connector:
             properties[zeit.connector.interfaces.RESOURCE_TYPE_PROPERTY] = 'collection'
             metadata_parse_error = True
         except lxml.etree.LxmlError:
+            properties[zeit.connector.interfaces.RESOURCE_TYPE_PROPERTY] = self._guess_type(id)
             metadata_parse_error = True
         finally:
             if data is not None:
@@ -277,8 +256,36 @@ class Connector:
             return properties
 
         properties.update(parse_properties(xml))
+        self._convert_sql_types(properties)
+
+        if zeit.connector.interfaces.RESOURCE_TYPE_PROPERTY not in properties:
+            properties[zeit.connector.interfaces.RESOURCE_TYPE_PROPERTY] = self._guess_type(id)
+
         self.property_cache[id] = properties
         return properties
+
+    def _convert_sql_types(self, properties):
+        if not feature_toggle('read_metadata_columns'):
+            return
+        for key, value in properties.items():
+            column = Content.column_by_name(*key)
+            if column is None:
+                continue
+            converter = IConverter(column)
+            properties[key] = converter.deserialize(value)
+
+    def _guess_type(self, id):
+        path = self._path(id)
+        if os.path.isdir(path):
+            return 'collection'
+
+        f = self._get_file(id)
+        data = f.read(200)
+        f.close()
+        content_type, width, height = zope.app.file.image.getImageInfo(data)
+        if content_type:
+            return 'image'
+        return 'unknown'
 
     def mtime(self, id, suffix=''):
         filename = self._path(id) + suffix
@@ -312,3 +319,58 @@ def parse_properties(xml):
         value += '</tag:rankedTags>'
         properties[('keywords', 'http://namespaces.zeit.de/CMS/tagging')] = value
     return properties
+
+
+class IConverter(zope.interface.Interface):
+    def serialize(value):
+        pass
+
+    def deserialize(value):
+        pass
+
+
+@grok.implementer(IConverter)
+@grok.adapter(sqlalchemy.Column)
+def converter_from_column_type(column):
+    return IConverter(column.type)
+
+
+@grok.implementer(IConverter)
+class DefaultConverter(grok.Adapter):
+    grok.context(zope.interface.Interface)
+
+    def serialize(self, value):
+        return value
+
+    def deserialize(self, value):
+        return value
+
+
+class BoolConverter(DefaultConverter):
+    grok.context(sqlalchemy.Boolean)
+
+    def serialize(self, value):
+        return zeit.cms.content.dav.BoolProperty._toProperty(value)
+
+    def deserialize(self, value):
+        return zeit.cms.content.dav.BoolProperty._fromProperty(value)
+
+
+class IntConverter(DefaultConverter):
+    grok.context(sqlalchemy.Integer)
+
+    def serialize(self, value):
+        return str(value)
+
+    def deserialize(self, value):
+        return int(value)
+
+
+class DatetimeConverter(DefaultConverter):
+    grok.context(sqlalchemy.TIMESTAMP)
+
+    def serialize(self, value):
+        return zeit.cms.content.dav.DatetimeProperty._toProperty(value)
+
+    def deserialize(self, value):
+        return zeit.cms.content.dav.DatetimeProperty._fromProperty(value)

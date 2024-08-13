@@ -42,6 +42,7 @@ from zeit.connector.interfaces import (
     LockingError,
     LockStatus,
     MoveError,
+    feature_toggle,
 )
 from zeit.connector.models import ID_NAMESPACE, Content, Lock
 import zeit.cms.cli
@@ -585,6 +586,10 @@ class Connector:
             (var, value) = expr.operands
             name = var.name
             namespace = var.namespace.replace(Content.NS, '', 1)
+            if feature_toggle('read_metadata_columns'):
+                column = Content.column_by_name(name, namespace)
+                if column is not None:
+                    return column == value
             value = json.dumps(str(value))  # Apply correct quoting for jsonpath.
             return Content.unsorted.path_match(f'$.{namespace}.{name} == {value}')
         else:

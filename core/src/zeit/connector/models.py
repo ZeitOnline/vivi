@@ -17,7 +17,7 @@ from sqlalchemy.orm import mapped_column, relationship
 import pytz
 import sqlalchemy
 
-from zeit.connector.interfaces import INTERNAL_PROPERTY, DeleteProperty, LockStatus
+from zeit.connector.interfaces import INTERNAL_PROPERTY, DeleteProperty, LockStatus, feature_toggle
 from zeit.connector.lock import lock_is_foreign
 import zeit.connector.interfaces
 
@@ -29,7 +29,24 @@ class Base(sqlalchemy.orm.DeclarativeBase):
     pass
 
 
-class Content(Base):
+class CommonMetadata:
+    access = mapped_column(
+        Unicode,
+        index=True,
+        info={'namespace': 'document', 'name': 'access'},
+        deferred=True,  # We want to bundle several schema migrations
+    )
+
+
+class ZeitWeb:
+    overscrolling_enabled = mapped_column(
+        Boolean,
+        info={'namespace': 'document', 'name': 'overscrolling'},
+        deferred=True,
+    )
+
+
+class Content(Base, CommonMetadata, ZeitWeb):
     __tablename__ = 'properties'
     __table_args__ = (
         Index(
@@ -73,6 +90,17 @@ class Content(Base):
         passive_deletes=True,  # Disable any heuristics, only ever explicitly delete Locks
     )
 
+    @classmethod
+    def column_by_name(cls, name, namespace):
+        namespace = namespace.replace(cls.NS, '', 1)
+        for column in cls._columns_with_name():
+            if namespace == column.info.get('namespace') and name == column.info.get('name'):
+                return column
+
+    @classmethod
+    def _columns_with_name(cls):
+        return [x for x in sqlalchemy.orm.class_mapper(cls).columns if x.info.get('namespace')]
+
     @property
     def binary_body(self):
         binary_types = zeit.cms.config.get(
@@ -104,6 +132,11 @@ class Content(Base):
         props[('is_collection', INTERNAL_PROPERTY)] = self.is_collection
         props[('body_checksum', INTERNAL_PROPERTY)] = self._body_checksum()
 
+        if feature_toggle('read_metadata_columns'):
+            for column in self._columns_with_name():
+                namespace, name = column.info['namespace'], column.info['name']
+                props[(name, self.NS + namespace)] = getattr(self, column.name)
+
         if self.lock:
             props[('lock_principal', INTERNAL_PROPERTY)] = self.lock.principal
             props[('lock_until', INTERNAL_PROPERTY)] = self.lock.until
@@ -124,6 +157,13 @@ class Content(Base):
         type = props.get(('type', self.NS + 'meta'))
         if type:
             self.type = type
+
+        if feature_toggle('write_metadata_columns'):
+            for column in self._columns_with_name():
+                namespace, name = column.info['namespace'], column.info['name']
+                value = props.get((name, self.NS + namespace), self)
+                if value is not self:
+                    setattr(self, column.name, value)
 
         unsorted = collections.defaultdict(dict)
         for (k, ns), v in props.items():

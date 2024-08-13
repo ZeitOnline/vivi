@@ -25,7 +25,9 @@ The content was modified last at the following time:
 >>> import zeit.connector.interfaces
 >>> import zope.component
 >>> connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
->>> connector._properties['http://xml.zeit.de/testcontent'][('date_last_modified', 'http://namespaces.zeit.de/CMS/document')] = pendulum.datetime(2008, 3, 7, 12, 47, 16).isoformat()
+>>> connector.changeProperties('http://xml.zeit.de/testcontent',
+...   {('date_last_modified', 'http://namespaces.zeit.de/CMS/document'):
+...    pendulum.datetime(2008, 3, 7, 12, 47, 16).isoformat()})
 >>> times = zeit.cms.workflow.interfaces.IModified(content)
 >>> times.date_last_modified
 DateTime(2008, 3, 7, 12, 47, 16, tzinfo=Timezone('UTC'))

@@ -3,6 +3,7 @@ import zope.interface
 
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
+import zeit.connector.resource
 
 
 class ICMSContentSource(zope.schema.interfaces.ISource):
@@ -84,9 +85,14 @@ class FolderSource(CMSContentSource):
 folderSource = FolderSource()
 
 
-@zope.component.adapter(zope.schema.interfaces.IChoice, ICMSContentSource, zope.interface.Interface)
+@zope.component.adapter(
+    zope.schema.interfaces.IChoice,
+    ICMSContentSource,
+    zope.interface.Interface,
+    zeit.connector.resource.PropertyKey,
+)
 class ChoicePropertyWithCMSContentSource:
-    def __init__(self, context, source, content):
+    def __init__(self, context, source, properties, propertykey):
         self.context = context
         self.source = source
 

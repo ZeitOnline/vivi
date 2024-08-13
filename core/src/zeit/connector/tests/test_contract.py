@@ -9,6 +9,8 @@ import pytz
 import transaction
 import zope.interface.verify
 
+from zeit.cms.checkout.helper import checked_out
+from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.connector.interfaces import (
     CopyError,
     DeleteProperty,
@@ -917,3 +919,41 @@ class ContractZopeSQL(
     copy_inherited_functions(ContractLock, locals())
     copy_inherited_functions(ContractSearch, locals())
     copy_inherited_functions(ContractCache, locals())
+
+
+class ContractProperties:
+    def setUp(self):
+        super().setUp()
+        zeit.cms.config.set('zeit.connector', 'read_metadata_columns', 'True')
+        zeit.cms.config.set('zeit.connector', 'write_metadata_columns', 'True')
+        self.repository['testcontent'] = ExampleContentType()
+
+    def tearDown(self):
+        zeit.cms.config.set('zeit.connector', 'read_metadata_columns', 'False')
+        zeit.cms.config.set('zeit.connector', 'write_metadata_columns', 'False')
+        super().tearDown()
+
+    def test_converts_scalar_types_on_read(self):
+        self.repository.connector.changeProperties(
+            'http://xml.zeit.de/testcontent',
+            {('overscrolling', 'http://namespaces.zeit.de/CMS/document'): True},
+        )
+        self.assertIs(True, self.repository['testcontent'].overscrolling)
+
+    def test_converts_scalar_types_on_write(self):
+        with checked_out(self.repository['testcontent']) as co:
+            co.overscrolling = True
+        resource = self.repository.connector['http://xml.zeit.de/testcontent']
+        self.assertIs(
+            True, resource.properties[('overscrolling', 'http://namespaces.zeit.de/CMS/document')]
+        )
+
+
+class PropertiesSQL(ContractProperties, zeit.cms.testing.FunctionalTestCase):
+    layer = zeit.connector.testing.SQL_CONTENT_LAYER
+    copy_inherited_functions(ContractProperties, locals())
+
+
+class PropertiesMock(ContractProperties, zeit.cms.testing.FunctionalTestCase):
+    layer = zeit.cms.testing.ZOPE_LAYER
+    copy_inherited_functions(ContractProperties, locals())

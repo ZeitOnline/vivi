@@ -13,13 +13,14 @@ mapping from the internal value to unicode just uses `unicode()`.
 
 A plain text field:
 
+>>> from zeit.connector.resource import PropertyKey
 >>> import zeit.connector.resource
 >>> import zeit.cms.content.interfaces
 >>> import zope.schema
 >>> props = zeit.connector.resource.WebDAVProperties()
 >>> def get_converter(field):
 ...     return zope.component.getMultiAdapter(
-...         (field, props), zeit.cms.content.interfaces.IDAVPropertyConverter)
+...         (field, props, PropertyKey('unused', 'unused')), zeit.cms.content.interfaces.IDAVPropertyConverter)
 
 >>> text_field = zope.schema.Text()
 >>> converter = get_converter(text_field)
@@ -42,7 +43,7 @@ Try this for some fields. Integer goes first:
 >>> int_field = zope.schema.Int()
 >>> converter = get_converter(int_field)
 >>> converter
-<zeit.cms.content.dav.UnicodeProperty object at 0x...>
+<zeit.cms.content.dav.IntProperty object at 0x...>
 >>> converter.fromProperty('5')
 5
 >>> converter.fromProperty('text')
@@ -185,7 +186,7 @@ logger:
 
 Create a dav property and set an invalid value:
 
->>> field = zope.schema.Date()
+>>> field = zope.schema.Datetime()
 >>> import zeit.connector.interfaces
 >>> import zeit.cms.testcontenttype.testcontenttype
 >>> dav_prop = zeit.cms.content.dav.DAVProperty(
@@ -201,7 +202,7 @@ When we try to get the data we'll get the default value (None):
 True
 >>> print(log.getvalue())
 Could not parse DAV property value 'f\xfcblas' for ExampleContentType.myname at
-http://xml.zeit.de/foo [ValueError: (...time data ...not match format...)].
+http://xml.zeit.de/foo [ParserError:...Invalid date string...].
 Using default None instead.
 
 
@@ -408,34 +409,6 @@ Setting a datetime without timezone information raises an error:
 Traceback (most recent call last):
   ...
 ValueError: datetime.datetime(2008, 5, 13, 13, 48) has no timezone information
-
-Date
-++++
-
-Dates are also supported:
-
->>> field = zope.schema.Date()
->>> converter = get_converter(field)
->>> converter.fromProperty('2007-05-25')
-datetime.date(2007, 5, 25)
-
-Invalid dates raise a ValueError:
-
->>> converter.fromProperty("1.1.07")
-Traceback (most recent call last):
-    ...
-ValueError: time data...not match format...
-
-
-The date is written in iso format:
-
->>> converter.toProperty(datetime.date(1980, 2, 5))
-'1980-02-05'
-
-None is represented as an empty stirng:
-
->>> converter.toProperty(None)
-''
 
 
 
@@ -649,7 +622,7 @@ Event: <zeit.cms.content.interfaces.DAVPropertyChangedEvent object at 0x...>
     Name: title
     Field: <zope.schema._bootstrapfields.TextLine object at 0x...>
 >>> dict(content.properties)
-{('title', 'myns'): 'Mary had a little lamb.'}
+{PropertyKey(name='title', namespace='myns'): 'Mary had a little lamb.'}
 
 
 When we set the title to None again, the property will be marked as to be
@@ -663,7 +636,7 @@ Event: <zeit.cms.content.interfaces.DAVPropertyChangedEvent object at 0x...>
     Name: title
     Field: <zope.schema._bootstrapfields.TextLine object at 0x...>
 >>> dict(content.properties)
-{('title', 'myns'): DeleteProperty}
+{PropertyKey(name='title', namespace='myns'): DeleteProperty}
 >>> content.title is None
 True
 

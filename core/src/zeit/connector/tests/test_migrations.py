@@ -94,6 +94,7 @@ class MigrationsTest(DBTestCase):
         c = self.engine.connect()
         zeit.connector.models.Base.metadata.create_all(c)
         scratch = self.dump_schema(c)
+        scratch = self._ignore_deferred_columns(scratch)
         c.close()
         self.dropdb()
 
@@ -109,6 +110,25 @@ class MigrationsTest(DBTestCase):
 
         diff = unified_diff(scratch, migrations, n=5)
         self.assertEqual(scratch, migrations, '\n'.join(diff))
+
+    def _ignore_deferred_columns(self, statements):
+        mapper = sqlalchemy.orm.class_mapper(zeit.connector.models.Content)
+        deferred = []
+        for column in mapper.columns:
+            prop = mapper.get_property_by_column(column)
+            if prop.deferred:
+                deferred.append(column.name)
+
+        result = []
+        for old in statements:
+            new = []
+            for line in old.split('\n'):
+                if any(x in line for x in deferred):
+                    continue
+                new.append(line)
+            if new:
+                result.append('\n'.join(new))
+        return result
 
 
 class MigrationsLint(unittest.TestCase):

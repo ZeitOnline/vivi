@@ -3,6 +3,7 @@
   <!-- webdav Property converters -->
 
   <adapter factory=".dav.UnicodeProperty" />
+  <adapter factory=".dav.IntProperty" />
   <adapter factory=".dav.ChoiceProperty" />
   <adapter factory=".dav.ChoicePropertyWithIterableSource" />
   <adapter factory=".dav.ChoicePropertyWithObjectSource" />
@@ -10,13 +11,13 @@
   <adapter factory=".dav.ChoicePropertyWithIterableVocabulary" />
   <adapter factory=".dav.BoolProperty" />
   <adapter factory=".dav.DatetimeProperty" />
-  <adapter factory=".dav.DateProperty" />
   <adapter factory=".dav.CollectionProperty" />
   <adapter factory=".dav.CollectionTextLineProperty" />
   <adapter factory=".dav.CollectionTextLineProperty"
     for="zope.schema.interfaces.ICollection
     zope.schema.interfaces.IChoice
-    zope.interface.Interface" />
+    zope.interface.Interface
+    zeit.connector.resource.PropertyKey" />
   <adapter factory=".dav.GenericProperty" />
   <adapter factory=".dav.GenericCollectionProperty" />
 
