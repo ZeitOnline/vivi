@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.22.0 (2024-08-13)
+-------------------
+
+- WCM-271: Implement mechanics to move metadata from json into individual columns
+
+
 6.21.0 (2024-08-12)
 -------------------
 
