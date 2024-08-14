@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.23.0 (2024-08-14)
+-------------------
+
+- WCM-271: Use entirely separate model classes for developing columns
+
+
 6.22.0 (2024-08-13)
 -------------------
 
