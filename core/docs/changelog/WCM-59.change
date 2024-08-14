@@ -1,0 +1,1 @@
+WCM-59: Remove delay from inline form save, to avoid overlapping with other actions (that were triggered immediately)
