@@ -4,7 +4,7 @@
 
     // To change at runtime:
     // MochiKit.Logging.logger.listeners["console-listener"][0] = MochiKit.Logging.logLevelAtLeast('DEBUG')
-    zeit.cms.logging.CONSOLE_LEVEL = 'ERROR';
+    zeit.cms.logging.CONSOLE_LEVEL = 'DEBUG';
     zeit.cms.logging.XHR_LEVEL = 'ERROR';
 
     /* Disable default logger */
@@ -31,7 +31,7 @@
 
     var FIREBUG_LOG_LEVELS = {
         'DEBUG': 'debug',
-        'INFO': 'info',
+        'INFO': 'info',  // MochiKit `log()` uses level INFO
         'ERROR': 'error',
         'FATAL': 'error',
         'WARNING': 'warn'};
