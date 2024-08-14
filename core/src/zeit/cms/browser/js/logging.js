@@ -2,6 +2,8 @@
 
     zeit.cms.declare_namespace('zeit.cms.logging');
 
+    // To change at runtime:
+    // MochiKit.Logging.logger.listeners["console-listener"][0] = MochiKit.Logging.logLevelAtLeast('DEBUG')
     zeit.cms.logging.CONSOLE_LEVEL = 'ERROR';
     zeit.cms.logging.XHR_LEVEL = 'ERROR';
 
