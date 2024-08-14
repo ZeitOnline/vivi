@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.24.0 (2024-08-14)
+-------------------
+
+- WCM-59: Remove delay from inline form save, to avoid overlapping with other actions (that were triggered immediately)
+
+
 6.23.0 (2024-08-14)
 -------------------
 
