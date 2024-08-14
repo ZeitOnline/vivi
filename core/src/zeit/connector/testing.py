@@ -244,18 +244,22 @@ class SQLConfigLayer(zeit.cms.testing.ProductConfigLayer):
         GCS_SERVER_LAYER,
     )
 
+    def __init__(self):
+        super().__init__(
+            {
+                'storage-project': 'ignored_by_emulator',
+                'storage-bucket': GCS_SERVER_LAYER.bucket,
+                'sql-locking': 'True',
+            }
+        )
+
     def setUp(self):
-        self.config = {
-            'dsn': self['dsn'],
-            'storage-project': 'ignored_by_emulator',
-            'storage-bucket': GCS_SERVER_LAYER.bucket,
-            'sql-locking': 'True',
-        }
+        self.config['dsn'] = self['dsn']
         os.environ.setdefault('PGDATABASE', 'vivi_test')
         super().setUp()
 
 
-SQL_CONFIG_LAYER = SQLConfigLayer({})
+SQL_CONFIG_LAYER = SQLConfigLayer()
 
 
 class SQLDatabaseLayer(plone.testing.Layer):
@@ -287,8 +291,8 @@ class SQLDatabaseLayer(plone.testing.Layer):
         # Create tables
         c = self['sql_connection']
         t = c.begin()
-        zeit.connector.models.Base.metadata.drop_all(c)
-        zeit.connector.models.Base.metadata.create_all(c)
+        connector.model.metadata.drop_all(c)
+        connector.model.metadata.create_all(c)
         t.commit()
 
     def tearDown(self):
@@ -347,10 +351,18 @@ ZOPE_SQL_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
 ZOPE_SQL_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZOPE_SQL_ZCML_LAYER,))
 ZOPE_SQL_CONNECTOR_LAYER = SQLDatabaseLayer(bases=(ZOPE_SQL_ZOPE_LAYER,))
 
+
+class SQLConfigWithMetadataColumnsLayer(SQLConfigLayer):
+    def __init__(self):
+        super().__init__()
+        self.config['sql-model'] = 'zeit.connector.models:DevelopmentBase'
+
+
+SQL_CONTENT_CONFIG_LAYER = SQLConfigWithMetadataColumnsLayer()
 SQL_CONTENT_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     str((importlib.resources.files('zeit.cms') / 'ftesting.zcml')),
     features=['zeit.connector.sql.zope'],
-    bases=(zeit.cms.testing.CONFIG_LAYER, SQL_CONFIG_LAYER),
+    bases=(zeit.cms.testing.CONFIG_LAYER, SQL_CONTENT_CONFIG_LAYER),
 )
 SQL_CONTENT_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(SQL_CONTENT_ZCML_LAYER,))
 SQL_CONTENT_LAYER = SQLDatabaseLayer(bases=(SQL_CONTENT_ZOPE_LAYER,))

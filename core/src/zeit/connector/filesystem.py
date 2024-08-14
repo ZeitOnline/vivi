@@ -15,7 +15,7 @@ import zope.interface
 
 from zeit.connector.connector import CannonicalId
 from zeit.connector.interfaces import ID_NAMESPACE, feature_toggle
-from zeit.connector.models import Content
+from zeit.connector.models import ContentWithMetadataColumns as Content
 import zeit.cms.config
 import zeit.cms.content.dav
 import zeit.connector.dav.interfaces

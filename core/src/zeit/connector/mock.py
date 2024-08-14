@@ -24,7 +24,7 @@ from zeit.connector.interfaces import (
     feature_toggle,
 )
 from zeit.connector.lock import lock_is_foreign
-from zeit.connector.models import Content
+from zeit.connector.models import ContentWithMetadataColumns as Content
 import zeit.cms.config
 import zeit.connector.cache
 import zeit.connector.dav.interfaces

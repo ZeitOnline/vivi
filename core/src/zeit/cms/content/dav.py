@@ -16,7 +16,7 @@ import zope.xmlpickle
 
 from zeit.cms.content.interfaces import WRITEABLE_ON_CHECKIN
 from zeit.connector.interfaces import feature_toggle as connector_toggle
-from zeit.connector.models import Content as ConnectorModel
+from zeit.connector.models import ContentWithMetadataColumns as ConnectorModel
 from zeit.connector.resource import PropertyKey
 import zeit.cms.content.caching
 import zeit.cms.content.interfaces

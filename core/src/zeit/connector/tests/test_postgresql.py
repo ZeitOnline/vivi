@@ -301,6 +301,8 @@ class ContractChecksum(zeit.connector.testing.SQLTest):
 
 
 class PropertiesColumnTest(zeit.connector.testing.SQLTest):
+    layer = zeit.connector.testing.SQL_CONTENT_LAYER
+
     def tearDown(self):
         zeit.cms.config.set('zeit.connector', 'read_metadata_columns', 'False')
         zeit.cms.config.set('zeit.connector', 'write_metadata_columns', 'False')
