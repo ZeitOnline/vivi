@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.25.0 (2024-08-16)
+-------------------
+
+- WCM-248: vivi feature-toggles are now in github/zeitonline/config.git
+
+
 6.24.0 (2024-08-14)
 -------------------
 
