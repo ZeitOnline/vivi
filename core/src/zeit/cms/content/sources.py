@@ -582,6 +582,7 @@ class Product(AllowedBase):
         autochannel=True,
         relates_to=None,
         is_news=False,
+        counter=False,
     ):
         super().__init__(id, title, None)
         self.vgwortcode = vgwortcode
@@ -597,6 +598,7 @@ class Product(AllowedBase):
         self.relates_to = relates_to
         self.is_news = is_news
         self.dependent_products = []
+        self.counter = counter
 
 
 class ProductSource(ObjectSource, SimpleContextualXMLSource):
@@ -623,6 +625,7 @@ class ProductSource(ObjectSource, SimpleContextualXMLSource):
                 node.get('autochannel', '').lower() != 'false',
                 unicode_or_none(node.get('relates_to')),
                 node.get('is_news', '').lower() == 'true',
+                unicode_or_none(node.get('counter')),
             )
             result[product.id] = product
         self._add_dependent_products(result)

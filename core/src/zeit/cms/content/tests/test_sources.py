@@ -147,6 +147,10 @@ class ProductSourceTest(zeit.cms.testing.ZeitCmsTestCase):
             if value.id == 'ZEI':
                 self.assertEqual('Zeit Magazin', value.dependent_products[0].title)
 
+    def test_zeit_has_print_counter(self):
+        self.assertEqual('ZEI', self.values[0].id)
+        self.assertEqual('print', self.values[0].counter)
+
     def test_source_without_dependencies_has_empty_list_as_dependent_products(self):
         self.assertEqual([], self.values[1].dependent_products)
 

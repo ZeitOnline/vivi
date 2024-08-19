@@ -5,7 +5,8 @@
              volume="True"
              location="http://xml.zeit.de/{year}/{name}/ausgabe"
              centerpage="http://xml.zeit.de/{year}/{name}/index"
-             cp_template="http://xml.zeit.de/ausgabe-cp-template">
+             cp_template="http://xml.zeit.de/ausgabe-cp-template"
+             counter="print">
              Die Zeit</product>
     <product id="ZMLB"
              relates_to="ZEI">
@@ -29,5 +30,5 @@
     <product id="tbd">Zeit Oesterreich</product>
     <product id="Reuters">Reuters</product>
     <product id="KINZ" vgwortcode="1234abc">Kinderzeit Magazin</product>
-    <product id="ZEDE">Zeit Online</product>
+    <product id="ZEDE" counter="online">Zeit Online</product>
 </products>
