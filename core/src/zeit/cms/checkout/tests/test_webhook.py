@@ -11,6 +11,7 @@ from zeit.cms.repository.interfaces import IAutomaticallyRenameable
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import zeit.cms.checkout.webhook
 import zeit.cms.testing
+import zeit.cms.workflow.interfaces
 
 
 HTTP_LAYER = zeit.cms.testing.HTTPLayer(
@@ -139,3 +140,53 @@ class WebhookExcludeTest(zeit.cms.testing.ZeitCmsTestCase):
         hook.add_exclude('path_prefix', '/online')
         self.assertFalse(hook.should_exclude(self.repository['testcontent']))
         self.assertTrue(hook.should_exclude(self.repository['online']['2007']['01']['Somalia']))
+
+
+class WebhookEventTest(FunctionalTestCase):
+    @property
+    def config(self):
+        port = self.layer['http_port']
+        return f"""<webhooks>
+          <webhook id="checkin" url="http://localhost:{port}">
+            <exclude>
+              <product_counter>online</product_counter>
+            </exclude>
+          </webhook>
+          <webhook id="publish" url="http://localhost:{port}">
+            <exclude>
+              <product_counter>print</product_counter>
+            </exclude>
+          </webhook>
+        </webhooks>
+        """
+
+    def test_webhook_is_only_notified_on_checkin(self):
+        with checked_out(self.repository['testcontent']) as co:
+            co.product = Product('ZEI')
+            info = zeit.cms.workflow.interfaces.IPublishInfo(co)
+            info.urgent = True
+        workflow = zeit.cms.workflow.interfaces.IPublish(self.repository['testcontent'])
+        workflow.publish()
+        requests = self.layer['request_handler'].requests
+        self.assertEqual(1, len(requests))
+
+    def test_webhook_is_not_notified_on_checkin(self):
+        with checked_out(self.repository['testcontent']) as co:
+            co.product = Product('ZEDE')
+        requests = self.layer['request_handler'].requests
+        self.assertEqual(0, len(requests))
+
+    def test_webhook_is_only_notified_on_publish(self):
+        with checked_out(self.repository['testcontent']) as co:
+            co.product = Product('ZEDE')
+            info = zeit.cms.workflow.interfaces.IPublishInfo(co)
+            info.urgent = True
+        workflow = zeit.cms.workflow.interfaces.IPublish(self.repository['testcontent'])
+        workflow.publish()
+        requests = self.layer['request_handler'].requests
+        self.assertEqual(1, len(requests))
+        request = requests[0]
+        del request['headers']
+        self.assertEqual(
+            {'body': '["http://xml.zeit.de/testcontent"]', 'path': '/', 'verb': 'POST'}, request
+        )

@@ -12,6 +12,7 @@ from zeit.cms.repository.interfaces import IAutomaticallyRenameable
 import zeit.cms.celery
 import zeit.cms.checkout.interfaces
 import zeit.cms.interfaces
+import zeit.cms.workflow.interfaces
 
 
 log = logging.getLogger(__name__)
@@ -26,6 +27,17 @@ def notify_after_checkin(context, event):
                 'AfterCheckin: Creating async webhook job for %s: publishing: %s',
                 context.uniqueId,
                 event.publishing,
+            )
+            notify_webhook.apply_async((context.uniqueId, hook.id), countdown=5)
+
+
+@grok.subscribe(zeit.cms.interfaces.ICMSContent, zeit.cms.workflow.interfaces.IPublishedEvent)
+def notify_after_publish(context, event):
+    for hook in HOOKS:
+        if hook.id in ['default', 'publish']:
+            log.info(
+                'AfterPublish: Creating webhook notification job for %s',
+                context.uniqueId,
             )
             notify_webhook.apply_async((context.uniqueId, hook.id), countdown=5)
 
