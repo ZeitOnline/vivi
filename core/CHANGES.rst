@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.26.0 (2024-08-19)
+-------------------
+
+- ZO-5819: add export to datascience
+
+
 6.25.0 (2024-08-16)
 -------------------
 
