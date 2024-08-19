@@ -12,7 +12,10 @@ import zeit.cms.config
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.type
+import zeit.content.article.edit.interfaces
 import zeit.content.article.interfaces
+import zeit.content.audio.audio
+import zeit.content.author.interfaces
 import zeit.content.cp.interfaces
 import zeit.content.gallery.interfaces
 import zeit.content.image.interfaces
@@ -114,16 +117,24 @@ class LiveUrlMixin:
         return self.context.uniqueId.replace(zeit.cms.interfaces.ID_NAMESPACE, live_prefix)
 
 
-class BigQueryMixin(LiveUrlMixin):
-    def publish_json(self):
+class PropertiesMixin(LiveUrlMixin):
+    @property
+    def properties(self):
         tms = zeit.retresco.interfaces.ITMSRepresentation(self.context)()
         if tms is None:
             return None
         properties = tms.get('payload', {})
         properties.setdefault('meta', {})['url'] = self.live_url
         properties['tagging'] = {k: v for k, v in tms.items() if k.startswith('rtr_')}
+        return properties
+
+
+class BigQueryMixin(PropertiesMixin):
+    def publish_json(self):
+        if self.properties is None:
+            return None
         return {
-            'properties': properties,
+            'properties': self.properties,
             'body': badgerfish(self.context.xml.find('body'))['body'],
         }
 
@@ -424,3 +435,52 @@ class ArticleIndexNow(grok.Adapter, IndexNowMixin):
 class CenterPageIndexNow(grok.Adapter, IndexNowMixin):
     grok.context(zeit.content.cp.interfaces.ICenterPage)
     grok.name('indexnow')
+
+
+class DataScienceMixin(PropertiesMixin):
+    def publish_json(self):
+        if self.properties is None:
+            return None
+        return {
+            'properties': self.properties,
+            'body': lxml.etree.tostring(self.context.xml, encoding='unicode'),
+        }
+
+    def retract_json(self):
+        return {}
+
+
+@grok.implementer(zeit.workflow.interfaces.IPublisherData)
+class ArticleDataScience(grok.Adapter, DataScienceMixin):
+    grok.context(zeit.content.article.interfaces.IArticle)
+    grok.name('datascience')
+
+
+@grok.implementer(zeit.workflow.interfaces.IPublisherData)
+class AuthorDataScience(grok.Adapter, DataScienceMixin):
+    grok.context(zeit.content.author.interfaces.IAuthor)
+    grok.name('datascience')
+
+
+@grok.implementer(zeit.workflow.interfaces.IPublisherData)
+class GalleryDataScience(grok.Adapter, DataScienceMixin):
+    grok.context(zeit.content.gallery.interfaces.IGallery)
+    grok.name('datascience')
+
+
+@grok.implementer(zeit.workflow.interfaces.IPublisherData)
+class CenterPageDataScience(grok.Adapter, DataScienceMixin):
+    grok.context(zeit.content.cp.interfaces.ICenterPage)
+    grok.name('datascience')
+
+
+@grok.implementer(zeit.workflow.interfaces.IPublisherData)
+class AudioDataScience(grok.Adapter, DataScienceMixin):
+    grok.context(zeit.content.audio.audio.IAudio)
+    grok.name('datascience')
+
+
+@grok.implementer(zeit.workflow.interfaces.IPublisherData)
+class VideoDataScience(grok.Adapter, DataScienceMixin):
+    grok.context(zeit.content.video.interfaces.IVideo)
+    grok.name('datascience')
