@@ -113,6 +113,13 @@ class Hook:
             return False
         return content.product and content.product.id == value
 
+    def _match_product_counter(self, content, value):
+        if not ICommonMetadata.providedBy(content):
+            return False
+        if not content.product:
+            return False
+        return content.product and content.product.counter == value
+
     def _match_path_prefix(self, content, value):
         path = content.uniqueId.replace(zeit.cms.interfaces.ID_NAMESPACE, '/')
         return path.startswith(value)

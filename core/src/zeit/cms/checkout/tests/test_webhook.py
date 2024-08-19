@@ -119,6 +119,14 @@ class WebhookExcludeTest(zeit.cms.testing.ZeitCmsTestCase):
             co.product = Product('ZEI')
         self.assertTrue(hook.should_exclude(self.repository['testcontent']))
 
+    def test_match_product_attribute(self):
+        hook = zeit.cms.checkout.webhook.Hook('checkin', None)
+        hook.add_exclude('product_counter', 'online')
+        self.assertFalse(hook.should_exclude(self.repository['testcontent']))
+        with checked_out(self.repository['testcontent']) as co:
+            co.product = Product('ZEDE')
+        self.assertTrue(hook.should_exclude(self.repository['testcontent']))
+
     def test_skip_auto_renameable(self):
         hook = zeit.cms.checkout.webhook.Hook(None, None)
         self.assertFalse(hook.should_exclude(self.repository['testcontent']))
