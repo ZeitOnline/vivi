@@ -31,7 +31,8 @@ class FunctionalTestCase(zeit.cms.testing.ZeitCmsTestCase):
     def config(self):
         port = self.layer['http_port']
         return f"""<webhooks>
-          <webhook id="default" url="http://localhost:{port}"/>
+          <webhook id="add" url="http://localhost:{port}"/>
+          <webhook id="checkin" url="http://localhost:{port}"/>
         </webhooks>
         """
 
@@ -91,7 +92,7 @@ class WebhookConfigTest(FunctionalTestCase):
     def config(self):
         port = self.layer['http_port']
         return f"""<webhooks>
-          <webhook id="default" url="http://localhost:{port}">
+          <webhook id="checkin" url="http://localhost:{port}">
             <exclude>
               <type>testcontenttype</type>
             </exclude>
@@ -147,6 +148,7 @@ class WebhookEventTest(FunctionalTestCase):
     def config(self):
         port = self.layer['http_port']
         return f"""<webhooks>
+          <webhook id="add" url="http://localhost:{port}"/>
           <webhook id="checkin" url="http://localhost:{port}">
             <exclude>
               <product_counter>online</product_counter>
@@ -190,3 +192,21 @@ class WebhookEventTest(FunctionalTestCase):
         self.assertEqual(
             {'body': '["http://xml.zeit.de/testcontent"]', 'path': '/', 'verb': 'POST'}, request
         )
+
+    def test_webhook_is_notified_on_add_and_checkin_and_not_on_publish(self):
+        self.repository['testcontent2'] = ExampleContentType()
+        with checked_out(self.repository['testcontent2']) as co:
+            co.product = Product('ZEI')
+        requests = self.layer['request_handler'].requests
+        self.assertEqual(2, len(requests))
+
+    def test_webhook_is_notified_on_add_and_publish_and_not_on_checkin(self):
+        self.repository['testcontent2'] = ExampleContentType()
+        with checked_out(self.repository['testcontent2']) as co:
+            co.product = Product('ZEDE')
+            info = zeit.cms.workflow.interfaces.IPublishInfo(co)
+            info.urgent = True
+        workflow = zeit.cms.workflow.interfaces.IPublish(self.repository['testcontent'])
+        workflow.publish()
+        requests = self.layer['request_handler'].requests
+        self.assertEqual(2, len(requests))
