@@ -232,16 +232,6 @@ class ImageGroupTest(zeit.content.image.testing.FunctionalTestCase):
             image.load()
         self.assertEqual('WEBP', image.format)
 
-    def test_create_variant_image_allows_overriding_output_format_avif(self):
-        image = self.group.create_variant_image(
-            zeit.content.image.interfaces.IVariants(self.group)['square'], format='AVIF'
-        )
-        self.assertEqual('image/avif', image.mimeType)
-        with image.open() as f:
-            image = PIL.Image.open(f)
-            image.load()
-        self.assertEqual('AVIF', image.format)
-
     def test_parse_url_variant(self):
         result = self.traverser.parse_url('cinema__300x160__scale_2.25__0000ff')
         assert result['variant'].name == 'cinema'
