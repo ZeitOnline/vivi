@@ -18,17 +18,16 @@ import zeit.cms.workflow.interfaces
 log = logging.getLogger(__name__)
 
 
-def create_webhook_job(id, context, publishing, **kwargs):
+def create_webhook_job(id, context, **kwargs):
     hook = HOOKS.factory.find(id)
     if not hook:
         log.warning('No %s webhook found for %s', id, context.uniqueId)
         return
 
     log.info(
-        'After%s: Creating async webhook job for %s, publishing: %s',
+        'After%s: Creating async webhook job for %s',
         id.capitalize(),
         context.uniqueId,
-        publishing,
     )
     notify_webhook.apply_async((context.uniqueId, hook), **kwargs)
 
@@ -36,12 +35,18 @@ def create_webhook_job(id, context, publishing, **kwargs):
 @grok.subscribe(zeit.cms.interfaces.ICMSContent, zeit.cms.checkout.interfaces.IAfterCheckinEvent)
 def notify_after_checkin(context, event):
     # XXX Work around redis/ZODB race condition, see BUG-796.
-    create_webhook_job('checkin', context, event.publishing, countdown=5)
+    if event.publishing:
+        log.info(
+            'No async webhook job created for %s. This is a publishing event.',
+            context.uniqueId,
+        )
+        return
+    create_webhook_job('checkin', context, countdown=5)
 
 
 @grok.subscribe(zeit.cms.interfaces.ICMSContent, zeit.cms.workflow.interfaces.IPublishedEvent)
 def notify_after_publish(context, event):
-    create_webhook_job('publish', context, True, countdown=5)
+    create_webhook_job('publish', context, countdown=5)
 
 
 @grok.subscribe(zope.lifecycleevent.IObjectAddedEvent)
@@ -53,7 +58,7 @@ def notify_after_add(event):
         return
     if zeit.cms.workingcopy.interfaces.IWorkingcopy.providedBy(event.newParent):
         return
-    create_webhook_job('add', context, False)
+    create_webhook_job('add', context)
 
 
 @zeit.cms.celery.task(bind=True, queue='webhook')
