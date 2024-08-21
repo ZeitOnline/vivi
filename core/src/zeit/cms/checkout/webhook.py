@@ -18,31 +18,30 @@ import zeit.cms.workflow.interfaces
 log = logging.getLogger(__name__)
 
 
-@grok.subscribe(zeit.cms.interfaces.ICMSContent, zeit.cms.checkout.interfaces.IAfterCheckinEvent)
-def notify_after_checkin(context, event):
-    # XXX Work around redis/ZODB race condition, see BUG-796.
-    hook = HOOKS.factory.find('checkin')
+def create_webhook_job(id, context, publishing, **kwargs):
+    hook = HOOKS.factory.find(id)
     if not hook:
-        log.warning('No checkin webhook found for %s', context.uniqueId)
+        log.warning('No %s webhook found for %s', id, context.uniqueId)
         return
 
     log.info(
-        'AfterCheckin: Creating async webhook job for %s: publishing: %s',
+        'After%s: Creating async webhook job for %s, publishing: %s',
+        id.capitalize(),
         context.uniqueId,
-        event.publishing,
+        publishing,
     )
-    notify_webhook.apply_async((context.uniqueId, hook.id), countdown=5)
+    notify_webhook.apply_async((context.uniqueId, hook), **kwargs)
+
+
+@grok.subscribe(zeit.cms.interfaces.ICMSContent, zeit.cms.checkout.interfaces.IAfterCheckinEvent)
+def notify_after_checkin(context, event):
+    # XXX Work around redis/ZODB race condition, see BUG-796.
+    create_webhook_job('checkin', context, event.publishing, countdown=5)
 
 
 @grok.subscribe(zeit.cms.interfaces.ICMSContent, zeit.cms.workflow.interfaces.IPublishedEvent)
 def notify_after_publish(context, event):
-    hook = HOOKS.factory.find('publish')
-    if not hook:
-        log.warning('No publish webhook found for %s', context.uniqueId)
-        return
-
-    log.info('AfterPublish: Creating webhook notification job for %s', context.uniqueId)
-    notify_webhook.apply_async((context.uniqueId, hook.id), countdown=5)
+    create_webhook_job('publish', context, True, countdown=5)
 
 
 @grok.subscribe(zope.lifecycleevent.IObjectAddedEvent)
@@ -54,23 +53,15 @@ def notify_after_add(event):
         return
     if zeit.cms.workingcopy.interfaces.IWorkingcopy.providedBy(event.newParent):
         return
-
-    hook = HOOKS.factory.find('add')
-    if not hook:
-        log.warning('No add webhook found for %s', context.uniqueId)
-        return
-
-    log.info('AfterAdd: Creating async webhook job for %s', context.uniqueId)
-    notify_webhook.delay(context.uniqueId, hook.id)
+    create_webhook_job('add', context, False)
 
 
 @zeit.cms.celery.task(bind=True, queue='webhook')
-def notify_webhook(self, uniqueId, id):
+def notify_webhook(self, uniqueId, hook):
     content = zeit.cms.interfaces.ICMSContent(uniqueId, None)
     if content is None:
         log.warning('Could not resolve %s, ignoring.', uniqueId)
         return
-    hook = HOOKS.factory.find(id)
     if hook is None:
         log.warning('Hook configuration for %s has vanished, ignoring.', hook.id)
         return
