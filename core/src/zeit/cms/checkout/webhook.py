@@ -36,10 +36,6 @@ def create_webhook_job(id, context, **kwargs):
 def notify_after_checkin(context, event):
     # XXX Work around redis/ZODB race condition, see BUG-796.
     if event.publishing:
-        log.info(
-            'No async webhook job created for %s. This is a publishing event.',
-            context.uniqueId,
-        )
         return
     create_webhook_job('checkin', context, countdown=5)
 
