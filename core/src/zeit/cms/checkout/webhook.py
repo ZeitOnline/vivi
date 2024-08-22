@@ -12,21 +12,37 @@ from zeit.cms.repository.interfaces import IAutomaticallyRenameable
 import zeit.cms.celery
 import zeit.cms.checkout.interfaces
 import zeit.cms.interfaces
+import zeit.cms.workflow.interfaces
 
 
 log = logging.getLogger(__name__)
 
 
+def create_webhook_job(id, context, **kwargs):
+    hook = HOOKS.factory.find(id)
+    if not hook:
+        log.warning('No %s webhook found for %s', id, context.uniqueId)
+        return
+
+    log.info(
+        'After%s: Creating async webhook job for %s',
+        id.capitalize(),
+        context.uniqueId,
+    )
+    notify_webhook.apply_async((context.uniqueId, hook), **kwargs)
+
+
 @grok.subscribe(zeit.cms.interfaces.ICMSContent, zeit.cms.checkout.interfaces.IAfterCheckinEvent)
 def notify_after_checkin(context, event):
     # XXX Work around redis/ZODB race condition, see BUG-796.
-    log.info(
-        'AfterCheckin: Creating async index job for %s: publishing: %s',
-        context.uniqueId,
-        event.publishing,
-    )
-    for hook in HOOKS:
-        notify_webhook.apply_async((context.uniqueId, hook.url), countdown=5)
+    if event.publishing:
+        return
+    create_webhook_job('checkin', context, countdown=5)
+
+
+@grok.subscribe(zeit.cms.interfaces.ICMSContent, zeit.cms.workflow.interfaces.IPublishedEvent)
+def notify_after_publish(context, event):
+    create_webhook_job('publish', context, countdown=5)
 
 
 @grok.subscribe(zope.lifecycleevent.IObjectAddedEvent)
@@ -38,19 +54,17 @@ def notify_after_add(event):
         return
     if zeit.cms.workingcopy.interfaces.IWorkingcopy.providedBy(event.newParent):
         return
-    for hook in HOOKS:
-        notify_webhook.delay(context.uniqueId, hook.url)
+    create_webhook_job('add', context)
 
 
 @zeit.cms.celery.task(bind=True, queue='webhook')
-def notify_webhook(self, uniqueId, url):
+def notify_webhook(self, uniqueId, hook):
     content = zeit.cms.interfaces.ICMSContent(uniqueId, None)
     if content is None:
         log.warning('Could not resolve %s, ignoring.', uniqueId)
         return
-    hook = HOOKS.factory.find(url)
     if hook is None:
-        log.warning('Hook configuration for %s has vanished, ignoring.', url)
+        log.warning('Hook configuration for %s has vanished, ignoring.', hook.id)
         return
     try:
         hook(content)
@@ -61,7 +75,8 @@ def notify_webhook(self, uniqueId, url):
 
 
 class Hook:
-    def __init__(self, url):
+    def __init__(self, id, url):
+        self.id = id
         self.url = url
         self.excludes = []
 
@@ -111,6 +126,13 @@ class Hook:
             return False
         return content.product and content.product.id == value
 
+    def _match_product_counter(self, content, value):
+        if not ICommonMetadata.providedBy(content):
+            return False
+        if not content.product:
+            return False
+        return content.product and content.product.counter == value
+
     def _match_path_prefix(self, content, value):
         path = content.uniqueId.replace(zeit.cms.interfaces.ID_NAMESPACE, '/')
         return path.startswith(value)
@@ -125,17 +147,17 @@ class HookSource(zeit.cms.content.sources.SimpleXMLSource):
         result = collections.OrderedDict()
         tree = self._get_tree()
         for node in tree.iterchildren('webhook'):
-            hook = Hook(node.get('url'))
+            hook = Hook(node.get('id'), node.get('url'))
             for exclude in node.xpath('exclude/*'):
                 hook.add_exclude(exclude.tag, exclude.text)
-            result[hook.url] = hook
+            result[hook.id] = hook
         return result
 
     def getValues(self):
         return self._values().values()
 
-    def find(self, url):
-        return self._values().get(url)
+    def find(self, id):
+        return self._values().get(id)
 
 
 HOOKS = HookSource()

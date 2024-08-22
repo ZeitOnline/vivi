@@ -26,6 +26,13 @@ def publish():
         action='store_true',
         help='Notify webhooks after checkin, like contenthub',
     )
+
+    parser.add_argument(
+        '--use-publish-hooks',
+        action='store_true',
+        help='Notify webhooks after publish, like contenthub',
+    )
+
     parser.add_argument(
         '--ignore-services',
         default=IGNORE_SERVICES,
@@ -75,6 +82,10 @@ def publish():
     if not options.use_checkin_hooks:
         log.info('Deactivating checkin hooks')
         assert registry.unregisterHandler(zeit.cms.checkout.webhook.notify_after_checkin)
+
+    if not options.use_publish_hooks:
+        log.info('Deactivating publish hooks')
+        assert registry.unregisterHandler(zeit.cms.checkout.webhook.notify_after_publish)
 
     if not options.wait_tms:
         mock.patch(

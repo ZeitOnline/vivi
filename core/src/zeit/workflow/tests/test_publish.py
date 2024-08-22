@@ -283,7 +283,7 @@ class PublishEndToEndTest(zeit.cms.testing.FunctionalTestCase):
         self.assertEllipsis(
             """\
 ...
-Publishing http://xml.zeit.de/online/2007/01/Somalia
+Publishing http://xml.zeit.de/online/2007/01/Somalia...
 Task zeit.workflow.publish.PUBLISH_TASK...succeeded...""",
             self.log.getvalue(),
         )
@@ -309,10 +309,10 @@ Task zeit.workflow.publish.PUBLISH_TASK...succeeded...""",
             """\
 ...
 Running job...for http://xml.zeit.de/online/2007/01/Flugsicherheit
-Publishing http://xml.zeit.de/online/2007/01/Flugsicherheit
+Publishing http://xml.zeit.de/online/2007/01/Flugsicherheit...
 Task zeit.workflow.publish.PUBLISH_TASK...succeeded...
 Running job...for http://xml.zeit.de/online/2007/01/Saarland
-Publishing http://xml.zeit.de/online/2007/01/Saarland
+Publishing http://xml.zeit.de/online/2007/01/Saarland...
 Task zeit.workflow.publish.PUBLISH_TASK...succeeded...""",
             self.log.getvalue(),
         )

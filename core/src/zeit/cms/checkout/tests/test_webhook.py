@@ -11,6 +11,7 @@ from zeit.cms.repository.interfaces import IAutomaticallyRenameable
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import zeit.cms.checkout.webhook
 import zeit.cms.testing
+import zeit.cms.workflow.interfaces
 
 
 HTTP_LAYER = zeit.cms.testing.HTTPLayer(
@@ -23,14 +24,20 @@ WEBHOOK_LAYER = plone.testing.Layer(
 )
 
 
-class WebhookTest(zeit.cms.testing.ZeitCmsTestCase):
+class FunctionalTestCase(zeit.cms.testing.ZeitCmsTestCase):
     layer = WEBHOOK_LAYER
+
+    @property
+    def config(self):
+        port = self.layer['http_port']
+        return f"""<webhooks>
+          <webhook id="add" url="http://localhost:{port}"/>
+          <webhook id="checkin" url="http://localhost:{port}"/>
+        </webhooks>
+        """
 
     def setUp(self):
         super().setUp()
-        self.config = (
-            '<webhooks><webhook url="http://localhost:%s"/></webhooks>' % self.layer['http_port']
-        )
         self.patch = mock.patch(
             'zeit.cms.checkout.webhook.HookSource._get_tree',
             side_effect=lambda: lxml.etree.fromstring(self.config),
@@ -44,6 +51,8 @@ class WebhookTest(zeit.cms.testing.ZeitCmsTestCase):
         self.patch.stop()
         super().tearDown()
 
+
+class WebhookTest(FunctionalTestCase):
     def test_calls_post_with_uniqueId_for_configured_urls(self):
         with checked_out(self.repository['testcontent']):
             pass
@@ -65,19 +74,6 @@ class WebhookTest(zeit.cms.testing.ZeitCmsTestCase):
             {'body': '["http://xml.zeit.de/testcontent2"]', 'path': '/', 'verb': 'POST'}, request
         )
 
-    def test_does_not_call_hook_when_exclude_matches(self):
-        self.config = """<webhooks>
-          <webhook url="http://localhost:%s">
-            <exclude>
-              <type>testcontenttype</type>
-            </exclude>
-          </webhook>
-        </webhooks>
-        """ % self.layer['http_port']
-        with checked_out(self.repository['testcontent']):
-            pass
-        self.assertEqual([], self.layer['request_handler'].requests)
-
     def test_retry_on_technical_error(self):
         self.layer['request_handler'].response_code = [503, 200]
         with self.assertRaises(celery.exceptions.Retry):
@@ -91,30 +87,126 @@ class WebhookTest(zeit.cms.testing.ZeitCmsTestCase):
                 pass
 
 
+class WebhookConfigTest(FunctionalTestCase):
+    @property
+    def config(self):
+        port = self.layer['http_port']
+        return f"""<webhooks>
+          <webhook id="checkin" url="http://localhost:{port}">
+            <exclude>
+              <type>testcontenttype</type>
+            </exclude>
+          </webhook>
+        </webhooks>
+        """
+
+    def test_does_not_call_hook_when_exclude_matches(self):
+        with checked_out(self.repository['testcontent']):
+            pass
+        self.assertEqual([], self.layer['request_handler'].requests)
+
+
 class WebhookExcludeTest(zeit.cms.testing.ZeitCmsTestCase):
     def test_match_contenttype(self):
-        hook = zeit.cms.checkout.webhook.Hook(None)
+        hook = zeit.cms.checkout.webhook.Hook(None, None)
         hook.add_exclude('type', 'testcontenttype')
         self.assertTrue(hook.should_exclude(self.repository['testcontent']))
         self.assertFalse(hook.should_exclude(self.repository['online']['2007']['01']['Somalia']))
 
     def test_match_product(self):
-        hook = zeit.cms.checkout.webhook.Hook(None)
+        hook = zeit.cms.checkout.webhook.Hook(None, None)
         hook.add_exclude('product', 'ZEI')
         self.assertFalse(hook.should_exclude(self.repository['testcontent']))
         with checked_out(self.repository['testcontent']) as co:
             co.product = Product('ZEI')
         self.assertTrue(hook.should_exclude(self.repository['testcontent']))
 
+    def test_match_product_attribute(self):
+        hook = zeit.cms.checkout.webhook.Hook('checkin', None)
+        hook.add_exclude('product_counter', 'online')
+        self.assertFalse(hook.should_exclude(self.repository['testcontent']))
+        with checked_out(self.repository['testcontent']) as co:
+            co.product = Product('ZEDE')
+        self.assertTrue(hook.should_exclude(self.repository['testcontent']))
+
     def test_skip_auto_renameable(self):
-        hook = zeit.cms.checkout.webhook.Hook(None)
+        hook = zeit.cms.checkout.webhook.Hook(None, None)
         self.assertFalse(hook.should_exclude(self.repository['testcontent']))
         with checked_out(self.repository['testcontent']) as co:
             IAutomaticallyRenameable(co).renameable = True
         self.assertTrue(hook.should_exclude(self.repository['testcontent']))
 
     def test_match_path_prefix(self):
-        hook = zeit.cms.checkout.webhook.Hook(None)
+        hook = zeit.cms.checkout.webhook.Hook(None, None)
         hook.add_exclude('path_prefix', '/online')
         self.assertFalse(hook.should_exclude(self.repository['testcontent']))
         self.assertTrue(hook.should_exclude(self.repository['online']['2007']['01']['Somalia']))
+
+
+class WebhookEventTest(FunctionalTestCase):
+    @property
+    def config(self):
+        port = self.layer['http_port']
+        return f"""<webhooks>
+          <webhook id="add" url="http://localhost:{port}"/>
+          <webhook id="checkin" url="http://localhost:{port}">
+            <exclude>
+              <product_counter>online</product_counter>
+            </exclude>
+          </webhook>
+          <webhook id="publish" url="http://localhost:{port}">
+            <exclude>
+              <product_counter>print</product_counter>
+            </exclude>
+          </webhook>
+        </webhooks>
+        """
+
+    def test_webhook_is_only_notified_on_checkin(self):
+        with checked_out(self.repository['testcontent']) as co:
+            co.product = Product('ZEI')
+            info = zeit.cms.workflow.interfaces.IPublishInfo(co)
+            info.urgent = True
+        workflow = zeit.cms.workflow.interfaces.IPublish(self.repository['testcontent'])
+        workflow.publish()
+        requests = self.layer['request_handler'].requests
+        self.assertEqual(1, len(requests))
+
+    def test_webhook_is_not_notified_on_checkin(self):
+        with checked_out(self.repository['testcontent']) as co:
+            co.product = Product('ZEDE')
+        requests = self.layer['request_handler'].requests
+        self.assertEqual(0, len(requests))
+
+    def test_webhook_is_only_notified_on_publish(self):
+        with checked_out(self.repository['testcontent']) as co:
+            co.product = Product('ZEDE')
+            info = zeit.cms.workflow.interfaces.IPublishInfo(co)
+            info.urgent = True
+        workflow = zeit.cms.workflow.interfaces.IPublish(self.repository['testcontent'])
+        workflow.publish()
+        requests = self.layer['request_handler'].requests
+        self.assertEqual(1, len(requests))
+        request = requests[0]
+        del request['headers']
+        self.assertEqual(
+            {'body': '["http://xml.zeit.de/testcontent"]', 'path': '/', 'verb': 'POST'}, request
+        )
+
+    def test_webhook_is_notified_on_add_and_checkin_and_not_on_publish(self):
+        self.repository['testcontent2'] = ExampleContentType()
+        with checked_out(self.repository['testcontent2']) as co:
+            co.product = Product('ZEI')
+        requests = self.layer['request_handler'].requests
+        self.assertEqual(2, len(requests))
+
+    def test_webhook_is_notified_on_add_and_publish_and_not_on_checkin(self):
+        self.repository['testcontent2'] = ExampleContentType()
+        with checked_out(self.repository['testcontent2']) as co:
+            co.product = Product('ZEDE')
+            info = zeit.cms.workflow.interfaces.IPublishInfo(co)
+            info.urgent = True
+        workflow = zeit.cms.workflow.interfaces.IPublish(self.repository['testcontent'])
+        workflow.publish()
+        requests = self.layer['request_handler'].requests
+        self.assertEqual(2, len(requests))
