@@ -1,7 +1,6 @@
 import PIL.Image
 import PIL.ImageColor
 import PIL.ImageEnhance
-import pillow_avif  # noqa: F401
 import zope.component
 import zope.interface
 import zope.security.proxy
