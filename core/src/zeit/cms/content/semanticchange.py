@@ -57,4 +57,4 @@ def set_semantic_change_on_create(context, event):
     lsc = zope.security.proxy.removeSecurityProxy(
         zeit.cms.content.interfaces.ISemanticChange(context)
     )
-    lsc.last_semantic_change = pendulum.datetime.now(tz='Europe/Berlin')
+    lsc.last_semantic_change = pendulum.now(tz='Europe/Berlin')
