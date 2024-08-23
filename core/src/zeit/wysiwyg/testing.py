@@ -1,6 +1,4 @@
-import datetime
-
-import pytz
+import pendulum
 import zope.component
 import zope.interface
 
@@ -41,10 +39,10 @@ def mock_video_repository(uniqueId):
     result = None
     if uniqueId == VIDEO1:
         result = Dummy()
-        result.expires = datetime.datetime(2010, 1, 1, tzinfo=pytz.UTC)
+        result.expires = pendulum.datetime(2010, 1, 1)
     elif uniqueId == VIDEO2:
         result = Dummy()
-        result.expires = datetime.datetime(2009, 1, 1, tzinfo=pytz.UTC)
+        result.expires = pendulum.datetime(2009, 1, 1)
     elif uniqueId == VIDEO3:
         result = Dummy()
         result.expires = None

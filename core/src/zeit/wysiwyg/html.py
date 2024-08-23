@@ -7,7 +7,6 @@ import lxml.builder
 import lxml.etree
 import lxml.html.soupparser
 import pendulum
-import pytz
 import zope.cachedescriptors.property
 import zope.component
 import zope.interface
@@ -238,12 +237,10 @@ class ConversionStep:
         dt = ''
         if dt_string:
             try:
-                dt = datetime.datetime.strptime(dt_string, '%Y-%m-%d %H:%M')
+                tz = zope.interface.common.idatetime.ITZInfo(self.request)
+                dt = pendulum.from_format(dt_string, 'YYYY-MM-DD HH:mm', tz=tz).isoformat()
             except ValueError:
                 dt = ''
-            else:
-                tz = zope.interface.common.idatetime.ITZInfo(self.request)
-                dt = tz.localize(dt).isoformat()
         return dt
 
 
@@ -612,7 +609,7 @@ class VideoStep(ConversionStep):
         # an expires value might
         # - exist but be None (if a Video doesn't expire)
         all_expires = []
-        maximum = datetime.datetime(datetime.MAXYEAR, 12, 31, tzinfo=pytz.UTC)
+        maximum = pendulum.datetime(datetime.MAXYEAR, 12, 31)
         for id in [video1, video2]:
             video = zeit.cms.interfaces.ICMSContent(id, None)
             expires = getattr(video, 'expires', None)
