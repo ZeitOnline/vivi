@@ -404,10 +404,10 @@ DateTime(2008, 3, 13, 13, 48, 37, tzinfo=Timezone('UTC'))
 
 Setting a datetime without timezone information raises an error:
 
->>> converter.toProperty(datetime.datetime(2008, 5, 13, 13, 48))
+>>> converter.toProperty(pendulum.datetime(2008, 5, 13, 13, 48))
 Traceback (most recent call last):
   ...
-ValueError: datetime.datetime(2008, 5, 13, 13, 48) has no timezone information
+ValueError: pendulum.datetime(2008, 5, 13, 13, 48) has no timezone information
 
 
 
