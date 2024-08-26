@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.27.0 (2024-08-26)
+-------------------
+
+- WCM-268: Notify webhook conditionally
+
+- ZO-883: remove avif format due to incompabilities of greyscale with browsers
+
+
 6.26.0 (2024-08-19)
 -------------------
 
