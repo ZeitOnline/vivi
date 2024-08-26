@@ -29,7 +29,7 @@ def create_webhook_job(id, context, **kwargs):
         id.capitalize(),
         context.uniqueId,
     )
-    notify_webhook.apply_async((context.uniqueId, hook), **kwargs)
+    notify_webhook.apply_async((context.uniqueId, id), **kwargs)
 
 
 @grok.subscribe(zeit.cms.interfaces.ICMSContent, zeit.cms.checkout.interfaces.IAfterCheckinEvent)
@@ -58,11 +58,12 @@ def notify_after_add(event):
 
 
 @zeit.cms.celery.task(bind=True, queue='webhook')
-def notify_webhook(self, uniqueId, hook):
+def notify_webhook(self, uniqueId, id):
     content = zeit.cms.interfaces.ICMSContent(uniqueId, None)
     if content is None:
         log.warning('Could not resolve %s, ignoring.', uniqueId)
         return
+    hook = HOOKS.factory.find(id)
     if hook is None:
         log.warning('Hook configuration for %s has vanished, ignoring.', hook.id)
         return
