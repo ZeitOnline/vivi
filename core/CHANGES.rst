@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.28.0 (2024-08-26)
+-------------------
+
+- WCM-268: Celery must search for the hook object itself
+
+
 6.27.0 (2024-08-26)
 -------------------
 
