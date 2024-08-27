@@ -170,6 +170,8 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
         return list(zip(list(self.keys()), list(self.values())))
 
     def __len__(self):
+        if self._image_folder is None:
+            return 0
         return int(self._entries_container.xpath('count(block)'))
 
     def __setitem__(self, key, value):
