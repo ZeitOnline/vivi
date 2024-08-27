@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.29.0 (2024-08-27)
+-------------------
+
+FIX:
+- Revert Remove delay from inline form save, to avoid overlapping with other actions (that were triggered immediately)
+
+
 6.28.0 (2024-08-26)
 -------------------
 
