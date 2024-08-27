@@ -1,0 +1,1 @@
+Revert Remove delay from inline form save, to avoid overlapping with other actions (that were triggered immediately)
