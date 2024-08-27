@@ -65,7 +65,7 @@ def notify_webhook(self, uniqueId, id):
         return
     hook = HOOKS.factory.find(id)
     if hook is None:
-        log.warning('Hook configuration for %s has vanished, ignoring.', hook.id)
+        log.warning('Hook configuration for %s has vanished, ignoring.', id)
         return
     try:
         hook(content)
