@@ -232,6 +232,7 @@ zeit.cms.SubPageForm = gocept.Class.extend({
 zeit.cms.InlineForm = zeit.cms.SubPageForm.extend({
 
     SUBMIT_DELAY_FOR_FOCUS: 0.01,
+    focus_node: null,
     mouse_down: false,
     delay_submit: false,
 
@@ -252,12 +253,9 @@ zeit.cms.InlineForm = zeit.cms.SubPageForm.extend({
         //   that we need to save on mouse up, when a field lost focus
         //   before.
         self.bind(self.container, 'change', self.mark_dirty);
+        self.bind(self.container, 'focusin', self.store_focus);
         self.bind(self.container, 'focusout', function(event) {
-            // Don't submit if a field of our form has the focus now, we don't
-            // want to interrupt the user by reloading out from under them.
-            if ($(event.relatedTarget).closest('.inline-form')[0] == self.container) {
-                return;
-            }
+            self.release_focus(event);
 
             // Don't submit if the focus is inside a *nested* SubPageForm;
             // the nested form *will* be submitted, which is enough.
@@ -266,7 +264,7 @@ zeit.cms.InlineForm = zeit.cms.SubPageForm.extend({
             }
 
             if (self.is_input(event.target) && !self.mouse_down) {
-                self.submit();
+                self.fire_submit();
             } else {
                 self.delay_submit = true;  // delay until mouse up.
             }
@@ -278,7 +276,7 @@ zeit.cms.InlineForm = zeit.cms.SubPageForm.extend({
             self.mouse_down = false;
             if (!self.is_input(event.target) &&
                 self.delay_submit) {
-                self.submit();
+                self.fire_submit();
             }
         });
     },
@@ -317,6 +315,30 @@ zeit.cms.InlineForm = zeit.cms.SubPageForm.extend({
                 self.submit();
             }
         }
+    },
+
+    store_focus: function(event) {
+        var self = this;
+        if (self.is_input(event.target)) {
+            self.focus_node = event.target;
+        }
+    },
+
+    release_focus: function(event) {
+        var self = this;
+        self.focus_node = null;
+    },
+
+    fire_submit: function() {
+        var self = this;
+        self.delay_submit = false;
+        MochiKit.Async.callLater(self.SUBMIT_DELAY_FOR_FOCUS, function() {
+            // If a field of our form has the focus now, we don't want to
+            // interrupt the user by saving.
+            if (self.focus_node === null) {
+                self.submit();
+            }
+        });
     },
 
     find_form_tag: function() {
