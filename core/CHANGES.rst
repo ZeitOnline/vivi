@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.30.0 (2024-08-27)
+-------------------
+
+FIX:
+- WCM-268: No hook, no hook id obviously
+
+
 6.29.0 (2024-08-27)
 -------------------
 
