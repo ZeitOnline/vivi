@@ -125,7 +125,7 @@ class TMSLink(Content, zeit.content.link.link.Link):
     pass
 
 
-class TMSGallery(Content, zeit.content.gallery.gallery.Gallery):
+class TMSGallery(Content, zeit.cms.content.metadata.CommonMetadata):
     pass
 
 
