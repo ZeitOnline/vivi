@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Tue Aug  6 08:56:17 2024\n"
+"POT-Creation-Date: Thu Aug 29 12:57:04 2024\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -1422,7 +1422,7 @@ msgstr ""
 
 #: zeit/cms/workflow/browser/indicator.py:12
 #: zeit/cms/workflow/interfaces.py:48
-#: zeit/workflow/publish.py:506
+#: zeit/workflow/publish.py:510
 #: zeit/workflow/publishinfo.py:61
 msgid "Published"
 msgstr ""
@@ -1610,7 +1610,7 @@ msgid "View metadata"
 msgstr ""
 
 #: zeit/content/animation/browser/form.py:21
-#: zeit/content/animation/interfaces.py:30
+#: zeit/content/animation/interfaces.py:32
 #: zeit/content/article/article.py:232
 #: zeit/content/article/browser/configure.zcml:74
 #: zeit/content/article/edit/browser/form.py:58
@@ -1629,33 +1629,41 @@ msgid "Add animated teaser"
 msgstr ""
 
 #: zeit/content/animation/interfaces.py:16
-msgid "use images"
+msgid "use images (automatic animation)"
 msgstr ""
 
 #: zeit/content/animation/interfaces.py:17
-msgid "use gallery"
+msgid "use gallery (automatic animation)"
 msgstr ""
 
 #: zeit/content/animation/interfaces.py:18
+msgid "use images (manual navigation)"
+msgstr ""
+
+#: zeit/content/animation/interfaces.py:19
+msgid "use gallery (manual navigation)"
+msgstr ""
+
+#: zeit/content/animation/interfaces.py:20
 msgid "use video"
 msgstr ""
 
-#: zeit/content/animation/interfaces.py:36
+#: zeit/content/animation/interfaces.py:38
 msgid "Display mode"
 msgstr ""
 
-#: zeit/content/animation/interfaces.py:40
+#: zeit/content/animation/interfaces.py:42
 msgid "Video to use for animation"
 msgstr ""
 
-#: zeit/content/animation/interfaces.py:46
+#: zeit/content/animation/interfaces.py:48
 #: zeit/content/gallery/browser/configure.zcml:79
 #: zeit/content/image/browser/configure.zcml:167
 #: zeit/content/image/browser/imagebrowser.py:6
 msgid "Images"
 msgstr ""
 
-#: zeit/content/animation/interfaces.py:54
+#: zeit/content/animation/interfaces.py:56
 msgid "Gallery to use for animation"
 msgstr ""
 
@@ -1734,7 +1742,7 @@ msgid "not published"
 msgstr ""
 
 #: zeit/content/article/edit/browser/edit.py:102
-#: zeit/content/cp/browser/landing.py:51
+#: zeit/content/cp/browser/landing.py:53
 msgid "The object \"${name}\" does not exist."
 msgstr ""
 
@@ -2933,7 +2941,7 @@ msgstr ""
 msgid "View centerpage metadata"
 msgstr ""
 
-#: zeit/content/cp/browser/landing.py:57
+#: zeit/content/cp/browser/landing.py:59
 msgid "Gallery \"${name}\" with type inline is not allowed here."
 msgstr ""
 
@@ -4464,7 +4472,7 @@ msgid "Payload Template"
 msgstr ""
 
 #: zeit/push/message.py:90
-#: zeit/workflow/publish_3rdparty.py:62
+#: zeit/workflow/publish_3rdparty.py:65
 msgid "Push notification for \"${name}\" sent. (Message: \"${message}\", Details: ${details})"
 msgstr ""
 
@@ -4702,15 +4710,15 @@ msgstr ""
 msgid "Collective Retraction of ${count} objects"
 msgstr ""
 
-#: zeit/workflow/publish.py:226
+#: zeit/workflow/publish.py:230
 msgid "Objects with errors: ${objects}"
 msgstr ""
 
-#: zeit/workflow/publish.py:364
+#: zeit/workflow/publish.py:368
 msgid "The object ${name} is locked by ${user}."
 msgstr ""
 
-#: zeit/workflow/publish.py:589
+#: zeit/workflow/publish.py:593
 msgid "Retracted"
 msgstr ""
 
