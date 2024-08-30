@@ -65,6 +65,8 @@ class Connector(zeit.connector.filesystem.Connector):
         connector = super().factory()
         connector.detect_mime_type = config.get('detect-mime-type', True)
         connector.ignore_locking = config.get('ignore-locking', False)
+        if config.get('use-readonly-resource'):
+            connector.resource_class = zeit.connector.resource.CachedResource
 
         return connector
 
