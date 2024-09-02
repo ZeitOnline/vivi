@@ -15,7 +15,7 @@ import zope.schema.interfaces
 import zope.xmlpickle
 
 from zeit.cms.content.interfaces import WRITEABLE_ON_CHECKIN
-from zeit.connector.interfaces import feature_toggle as connector_toggle
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.connector.models import ContentWithMetadataColumns as ConnectorModel
 from zeit.connector.resource import PropertyKey
 import zeit.cms.content.caching
@@ -194,12 +194,12 @@ class IntProperty(UnicodeProperty):
         self.has_sql_type = ConnectorModel.column_by_name(*propertykey) is not None
 
     def fromProperty(self, value):
-        if self.has_sql_type and connector_toggle('read_metadata_columns'):
+        if self.has_sql_type and FEATURE_TOGGLES.find('read_metadata_columns'):
             return value
         return super().fromProperty(value)
 
     def toProperty(self, value):
-        if self.has_sql_type and connector_toggle('write_metadata_columns'):
+        if self.has_sql_type and FEATURE_TOGGLES.find('write_metadata_columns'):
             return value
         return super().toProperty(value)
 
@@ -330,7 +330,7 @@ class BoolProperty:
         self.has_sql_type = ConnectorModel.column_by_name(*propertykey) is not None
 
     def fromProperty(self, value):
-        if self.has_sql_type and connector_toggle('read_metadata_columns'):
+        if self.has_sql_type and FEATURE_TOGGLES.find('read_metadata_columns'):
             return value
         return self._fromProperty(value)
 
@@ -339,7 +339,7 @@ class BoolProperty:
         return value.lower() in ('yes', 'true')
 
     def toProperty(self, value):
-        if self.has_sql_type and connector_toggle('write_metadata_columns'):
+        if self.has_sql_type and FEATURE_TOGGLES.find('write_metadata_columns'):
             return value
         return self._toProperty(value)
 
@@ -360,7 +360,7 @@ class DatetimeProperty:
     def fromProperty(self, value):
         if not value:
             return None
-        if self.has_sql_type and connector_toggle('read_metadata_columns'):
+        if self.has_sql_type and FEATURE_TOGGLES.find('read_metadata_columns'):
             return value
         return self._fromProperty(value)
 
@@ -372,7 +372,7 @@ class DatetimeProperty:
         return date.in_tz('UTC')
 
     def toProperty(self, value):
-        if self.has_sql_type and connector_toggle('write_metadata_columns'):
+        if self.has_sql_type and FEATURE_TOGGLES.find('write_metadata_columns'):
             return value
         return self._toProperty(value)
 

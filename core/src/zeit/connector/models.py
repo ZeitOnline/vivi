@@ -17,7 +17,8 @@ from sqlalchemy.orm import declared_attr, mapped_column, relationship
 import pytz
 import sqlalchemy
 
-from zeit.connector.interfaces import INTERNAL_PROPERTY, DeleteProperty, LockStatus, feature_toggle
+from zeit.cms.content.sources import FEATURE_TOGGLES
+from zeit.connector.interfaces import INTERNAL_PROPERTY, DeleteProperty, LockStatus
 from zeit.connector.lock import lock_is_foreign
 import zeit.connector.interfaces
 
@@ -133,7 +134,7 @@ class ContentBase:
         props[('is_collection', INTERNAL_PROPERTY)] = self.is_collection
         props[('body_checksum', INTERNAL_PROPERTY)] = self._body_checksum()
 
-        if feature_toggle('read_metadata_columns'):
+        if FEATURE_TOGGLES.find('read_metadata_columns'):
             for column in self._columns_with_name():
                 namespace, name = column.info['namespace'], column.info['name']
                 props[(name, self.NS + namespace)] = getattr(self, column.name)
@@ -159,7 +160,7 @@ class ContentBase:
         if type:
             self.type = type
 
-        if feature_toggle('write_metadata_columns'):
+        if FEATURE_TOGGLES.find('write_metadata_columns'):
             for column in self._columns_with_name():
                 namespace, name = column.info['namespace'], column.info['name']
                 value = props.get((name, self.NS + namespace), self)

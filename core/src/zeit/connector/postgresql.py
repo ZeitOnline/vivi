@@ -34,6 +34,7 @@ import zope.component
 import zope.interface
 import zope.sqlalchemy
 
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.interfaces import DOCUMENT_SCHEMA_NS
 from zeit.cms.repository.interfaces import ConflictError
 from zeit.connector.interfaces import (
@@ -43,7 +44,6 @@ from zeit.connector.interfaces import (
     LockingError,
     LockStatus,
     MoveError,
-    feature_toggle,
 )
 from zeit.connector.models import ID_NAMESPACE
 import zeit.cms.cli
@@ -601,7 +601,7 @@ class Connector:
             (var, value) = expr.operands
             name = var.name
             namespace = var.namespace.replace(self.Content.NS, '', 1)
-            if feature_toggle('read_metadata_columns'):
+            if FEATURE_TOGGLES.find('read_metadata_columns'):
                 column = self.Content.column_by_name(name, namespace)
                 if column is not None:
                     return column == value

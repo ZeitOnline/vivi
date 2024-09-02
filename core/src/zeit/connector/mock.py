@@ -12,6 +12,7 @@ import uuid
 import pytz
 import zope.event
 
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.connector.connector import CannonicalId
 from zeit.connector.filesystem import DefaultConverter
 from zeit.connector.interfaces import (
@@ -21,7 +22,6 @@ from zeit.connector.interfaces import (
     LockedByOtherSystemError,
     LockingError,
     MoveError,
-    feature_toggle,
 )
 from zeit.connector.lock import lock_is_foreign
 from zeit.connector.models import ContentWithMetadataColumns as Content
@@ -349,7 +349,7 @@ class Connector(zeit.connector.filesystem.Connector):
                 stored_properties.pop((name, namespace), None)
                 continue
 
-            if feature_toggle('write_metadata_columns'):
+            if FEATURE_TOGGLES.find('write_metadata_columns'):
                 column = Content.column_by_name(name, namespace)
                 converter = zeit.connector.filesystem.IConverter(column)
                 value = converter.serialize(value)
