@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.32.0 (2024-09-02)
+-------------------
+
+- WCM-248: Use feature_toggle.xml source in zeit.conntector
+
+
 6.31.0 (2024-09-02)
 -------------------
 
