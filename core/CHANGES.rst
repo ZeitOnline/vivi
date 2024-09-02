@@ -3,6 +3,16 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.31.0 (2024-09-02)
+-------------------
+
+- ZO-6159: Allow choosing gallery teaser in animation
+
+
+FIX:
+- make resource_class for mock connector configurable
+
+
 6.30.0 (2024-08-27)
 -------------------
 
