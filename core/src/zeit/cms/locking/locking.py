@@ -1,9 +1,8 @@
 import datetime
-import time
 
 import grokcore.component as grok
+import pendulum
 import persistent.mapping
-import pytz
 import zope.app.locking.adapter
 import zope.app.locking.interfaces
 import zope.component
@@ -40,7 +39,7 @@ class LockStorage:
             # Non cms objects cannot have locks.
             raise ValueError('Non CMS objects cannot be locked.')
         if lock.timeout:
-            until = datetime.datetime.fromtimestamp(lock.created + lock.timeout, pytz.UTC)
+            until = pendulum.from_timestamp(lock.created + lock.timeout)
         else:
             until = None
         try:
@@ -70,10 +69,10 @@ class LockInfo(persistent.mapping.PersistentMapping):
         super().__init__()
         self.__parent__ = self.target = target
         self.principal_id = principal_id
-        self.created = time.time()
+        self.created = pendulum.now()
         self.locked_until = locked_until
         if isinstance(locked_until, datetime.datetime):
-            delta = locked_until - datetime.datetime.now(pytz.UTC)
+            delta = locked_until - pendulum.now('Europe/London')
             self.timeout = delta.days * 86400 + delta.seconds + delta.microseconds * 1e-6
 
     def __repr__(self):
