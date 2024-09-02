@@ -13,8 +13,9 @@ import sqlalchemy
 import zope.app.file.image
 import zope.interface
 
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.connector.connector import CannonicalId
-from zeit.connector.interfaces import ID_NAMESPACE, feature_toggle
+from zeit.connector.interfaces import ID_NAMESPACE
 from zeit.connector.models import ContentWithMetadataColumns as Content
 import zeit.cms.config
 import zeit.cms.content.dav
@@ -265,7 +266,7 @@ class Connector:
         return properties
 
     def _convert_sql_types(self, properties):
-        if not feature_toggle('read_metadata_columns'):
+        if not FEATURE_TOGGLES.find('read_metadata_columns'):
             return
         for key, value in properties.items():
             column = Content.column_by_name(*key)

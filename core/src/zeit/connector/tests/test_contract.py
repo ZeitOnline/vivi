@@ -10,6 +10,7 @@ import transaction
 import zope.interface.verify
 
 from zeit.cms.checkout.helper import checked_out
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.connector.interfaces import (
     CopyError,
@@ -922,14 +923,9 @@ class ContractZopeSQL(
 class ContractProperties:
     def setUp(self):
         super().setUp()
-        zeit.cms.config.set('zeit.connector', 'read_metadata_columns', 'True')
-        zeit.cms.config.set('zeit.connector', 'write_metadata_columns', 'True')
+        FEATURE_TOGGLES.set('read_metadata_columns', 'True')
+        FEATURE_TOGGLES.set('write_metadata_columns', 'True')
         self.repository['testcontent'] = ExampleContentType()
-
-    def tearDown(self):
-        zeit.cms.config.set('zeit.connector', 'read_metadata_columns', 'False')
-        zeit.cms.config.set('zeit.connector', 'write_metadata_columns', 'False')
-        super().tearDown()
 
     def test_converts_scalar_types_on_read(self):
         self.repository.connector.changeProperties(
