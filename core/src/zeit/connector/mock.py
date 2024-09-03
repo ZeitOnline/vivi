@@ -13,11 +13,11 @@ import pytz
 import zope.event
 
 from zeit.cms.content.sources import FEATURE_TOGGLES
-from zeit.connector.connector import CannonicalId
 from zeit.connector.filesystem import DefaultConverter
 from zeit.connector.interfaces import (
     ID_NAMESPACE,
     UUID_PROPERTY,
+    CannonicalId,
     CopyError,
     LockedByOtherSystemError,
     LockingError,
@@ -26,8 +26,8 @@ from zeit.connector.interfaces import (
 from zeit.connector.lock import lock_is_foreign
 from zeit.connector.models import ContentWithMetadataColumns as Content
 import zeit.cms.config
+import zeit.cms.repository.interfaces
 import zeit.connector.cache
-import zeit.connector.dav.interfaces
 import zeit.connector.filesystem
 import zeit.connector.interfaces
 
@@ -123,7 +123,7 @@ class Connector(zeit.connector.filesystem.Connector):
         new_etag = resource.properties.get(('getetag', 'DAV:'))
         if new_etag and new_etag != old_etag:
             if id not in self or resource.data.read() != self[id].data.read():
-                raise zeit.connector.dav.interfaces.PreconditionFailedError()
+                raise zeit.cms.repository.interfaces.ConflictError(resource.id)
 
         if id in self._deleted:
             self._deleted.remove(id)
@@ -226,8 +226,26 @@ class Connector(zeit.connector.filesystem.Connector):
             self.move(uid, urllib.parse.urljoin(new_id, name))
         del self[old_id]
 
+    @staticmethod
+    def _is_descendant(id1, id2):
+        """Return if id1 is descandant of id2.
+
+        >>> Connector._is_descendant('http://foo.bar/a/b/c',
+        ...                          'http://foo.bar/a/b/c/d/e')
+        False
+        >>> Connector._is_descendant('http://foo.bar/a/b/c',
+        ...                          'http://foo.bar/a/b')
+        True
+        >>> Connector._is_descendant('http://foo.bar/a/b/c',
+        ...                          'http://foo.bar/a/b/d')
+        False
+        """
+        path1 = urllib.parse.urlsplit(id1)[2].split('/')
+        path2 = urllib.parse.urlsplit(id2)[2].split('/')
+        return len(path2) <= len(path1) and path2 == path1[: len(path2)]
+
     def _prevent_overwrite(self, old_id, new_id, exception):
-        if zeit.connector.connector.Connector._is_descendant(new_id, old_id):
+        if self._is_descendant(new_id, old_id):
             raise exception(old_id, 'Could not copy or move %s to a decendant of itself.' % old_id)
 
         if new_id in self:

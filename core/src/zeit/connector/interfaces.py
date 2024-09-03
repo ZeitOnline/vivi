@@ -237,6 +237,13 @@ class IWebDAVProperties(IWebDAVReadProperties, IWebDAVWriteProperties):
     """Combined read and write interface for webdav properties."""
 
 
+class CannonicalId(str):
+    """A canonical id."""
+
+    def __repr__(self):
+        return '<CannonicalId %s>' % super().__repr__()
+
+
 class IResource(zope.interface.Interface):
     """Represents a resource in the webdav.
 

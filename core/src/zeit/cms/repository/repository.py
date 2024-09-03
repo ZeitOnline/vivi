@@ -14,13 +14,11 @@ import zope.lifecycleevent
 import zope.processlifetime
 import zope.securitypolicy.interfaces
 
-from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.repository.interfaces import IRepositoryContent
 import zeit.cms.config
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.section.interfaces
-import zeit.connector.dav.interfaces
 import zeit.connector.interfaces
 
 
@@ -301,13 +299,7 @@ class Repository(persistent.Persistent, Container):
         resource = zeit.cms.interfaces.IResource(content)
         if resource.id is None:
             raise ValueError('Objects to be added to the repository need a ' 'unique id.')
-        try:
-            self.connector.add(resource, verify_etag=not ignore_conflicts)
-        except zeit.connector.dav.interfaces.PreconditionFailedError:
-            raise zeit.cms.repository.interfaces.ConflictError(
-                content.uniqueId,
-                _('There was a conflict while adding ${name}', mapping={'name': content.uniqueId}),
-            )
+        self.connector.add(resource, verify_etag=not ignore_conflicts)
 
     @property
     def repository(self):

@@ -18,7 +18,6 @@ import zope.component.hooks
 import zope.testing.renormalizing
 
 import zeit.cms.testing
-import zeit.connector.connector
 import zeit.connector.gcsemulator  # activate monkey patches
 import zeit.connector.interfaces
 import zeit.connector.mock
@@ -33,131 +32,12 @@ class DockerSetupError(requests.exceptions.ConnectionError):
     pass
 
 
-class DAVServerLayer(plone.testing.Layer):
-    container_image = (
-        'europe-west3-docker.pkg.dev/zeitonline-engineering/docker-zon/' 'dav-server:1.1.1'
-    )
-
-    def setUp(self):
-        dav = get_random_port()
-        query = get_random_port()
-        self['docker'] = docker.from_env()
-        try:
-            self['dav_container'] = self['docker'].containers.run(
-                self.container_image, detach=True, remove=True, ports={9000: dav, 9999: query}
-            )
-        except requests.exceptions.ConnectionError:
-            raise DockerSetupError("Couldn't start docker container, is docker running?")
-        self['dav_url'] = 'http://localhost:%s/cms/' % dav
-        self['query_url'] = 'http://localhost:%s' % query
-        self.wait_for_http(self['dav_url'])
-        # We can get away without self.wait_for_http(self['query_url'])
-
-    def tearDown(self):
-        self['dav_container'].stop()
-        del self['dav_container']
-        self['docker'].close()
-        del self['docker']
-        del self['dav_url']
-        del self['query_url']
-
-    def wait_for_http(self, url, timeout=10, sleep=0.2):
-        http = requests.Session()
-        slept = 0
-        while slept < timeout:
-            slept += sleep
-            time.sleep(sleep)
-            try:
-                http.get(url, timeout=1)
-            except Exception:
-                pass
-            else:
-                http.close()
-                return
-        http.close()
-        print(self['dav_container'].logs(timestamps=True).decode('utf-8'))
-        raise RuntimeError('%s did not start up' % url)
-
-
-DAV_SERVER_LAYER = DAVServerLayer()
-
-
 # Taken from pytest-nginx
 def get_random_port():
     s = socket.socket()
     with contextlib.closing(s):
         s.bind(('localhost', 0))
         return s.getsockname()[1]
-
-
-class ConfigLayer(zeit.cms.testing.ProductConfigLayer):
-    defaultBases = (DAV_SERVER_LAYER,)
-
-    def setUp(self):
-        self.config = {
-            'document-store': self['dav_url'],
-            'document-store-search': self['query_url'],
-        }
-        super().setUp()
-
-
-DAV_CONFIG_LAYER = ConfigLayer({})
-
-
-class DAVDatabaseLayer(plone.testing.Layer):
-    def __init__(self, name='DAVDatabaseLayer', module=None, bases=()):
-        if module is None:
-            module = inspect.stack()[1][0].f_globals['__name__']
-        super().__init__(name=name, module=module, bases=bases)
-
-    def setUp(self):
-        zope.component.provideUtility(
-            zeit.cms.tracing.default_tracer(), zeit.cms.interfaces.ITracer
-        )
-        TBC = zeit.connector.connector.TransactionBoundCachingConnector
-        self['connector'] = TBC({'default': self['dav_url']})
-
-    def testSetUp(self):
-        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
-        with zeit.cms.testing.site(self['zodbApp']):
-            mkdir(connector, ROOT)
-        transaction.commit()
-
-    def testTearDown(self):
-        transaction.abort()
-        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
-        self.recursive_cleanup(connector, ROOT)
-
-        connector.disconnect()
-
-    def recursive_cleanup(self, connector, uniqueid):
-        connector = self['connector']
-        for _name, uid in connector.listCollection(uniqueid):
-            # unlock every resource, no matter the user
-            davlock = connector._get_dav_lock(uid)
-            if davlock:
-                connector._unlock(uid, davlock.get('locktoken'))
-                connector.invalidate_cache(uid)
-            if connector[uid].type == 'folder':
-                self.recursive_cleanup(connector, uid)
-            del connector[uid]
-
-    def tearDown(self):
-        self['connector'].disconnect()
-        del self['connector']
-
-
-ZOPE_DAV_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    features=['zeit.connector'], bases=(zeit.cms.testing.CONFIG_LAYER, DAV_CONFIG_LAYER)
-)
-ZOPE_DAV_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZOPE_DAV_ZCML_LAYER,))
-ZOPE_DAV_CONNECTOR_LAYER = DAVDatabaseLayer(bases=(ZOPE_DAV_ZOPE_LAYER,))
-
-DAV_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    features=['zeit.connector.nocache'], bases=(zeit.cms.testing.CONFIG_LAYER, DAV_CONFIG_LAYER)
-)
-DAV_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(DAV_ZCML_LAYER,))
-DAV_CONNECTOR_LAYER = DAVDatabaseLayer(bases=(DAV_ZOPE_LAYER,))
 
 
 FILESYSTEM_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
@@ -396,11 +276,6 @@ class TestCase(zeit.cms.testing.FunctionalTestCase):
         if not name.startswith(ROOT):
             name = f'{ROOT}/{name}'
         return mkdir(self.connector, name)
-
-
-class ConnectorTest(TestCase):
-    layer = DAV_CONNECTOR_LAYER
-    level = 2
 
 
 class FilesystemConnectorTest(TestCase):

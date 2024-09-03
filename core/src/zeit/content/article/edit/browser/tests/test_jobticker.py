@@ -1,5 +1,6 @@
 from zeit.content.article.edit.interfaces import JOBTICKER_SOURCE
 import zeit.cms.testing
+import zeit.content.article.edit.browser.testing
 import zeit.content.article.testing
 
 
