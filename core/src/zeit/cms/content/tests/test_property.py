@@ -92,10 +92,10 @@ class TestObjectPathProperty(unittest.TestCase, gocept.testing.assertion.Ellipsi
         from zeit.cms.content.property import ObjectPathProperty
 
         content = ExampleContentType()
-        prop = ObjectPathProperty('.raw_query', zope.schema.Text(missing_value='missing'))
-        prop.__set__(content, 'solr!')
+        prop = ObjectPathProperty('.example', zope.schema.Text(missing_value='missing'))
+        prop.__set__(content, 'foo')
         self.assertEllipsis(
-            '<raw_query...>solr!</raw_query>', lxml.etree.tostring(content.xml.find('raw_query'))
+            '<example...>foo</example>', lxml.etree.tostring(content.xml.find('example'))
         )
         prop.__set__(content, None)
-        self.assertEqual(content.xml.findall('raw_query'), [])
+        self.assertEqual(content.xml.findall('example'), [])
