@@ -132,7 +132,7 @@ class AreaBrowserTest(ElementBrowserTestHelper, zeit.content.cp.testing.BrowserT
         b = self.browser
         b.open(self.get_edit_area_link())
         edit_url = b.url
-        b.getControl(name='form.automatic_type').displayValue = ['automatic-area-type-query']
+        b.getControl(name='form.automatic_type').displayValue = ['automatic-area-type-custom']
         b.getControl('Amount of teasers').value = '1'
         b.getControl('Add Custom Query').click()
         b.getControl('Custom Query Type').displayValue = ['query-type-serie']
@@ -166,7 +166,7 @@ class AreaBrowserTest(ElementBrowserTestHelper, zeit.content.cp.testing.BrowserT
     def test_removes_mismatched_custom_query_value_on_type_change(self):
         b = self.browser
         b.open(self.get_edit_area_link())
-        b.getControl(name='form.automatic_type').displayValue = ['automatic-area-type-query']
+        b.getControl(name='form.automatic_type').displayValue = ['automatic-area-type-custom']
         b.getControl('Amount of teasers').value = '1'
         b.getControl('Add Custom Query').click()
         b.getControl('Channel').displayValue = ['International']

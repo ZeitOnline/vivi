@@ -215,7 +215,6 @@ class AutomaticTypeSource(zeit.cms.content.sources.SimpleDictSource):
             ('custom', _('automatic-area-type-custom')),
             ('topicpage', _('automatic-area-type-topicpage')),
             ('related-topics', _('automatic-area-type-related-topics')),
-            ('query', _('automatic-area-type-query')),
             ('elasticsearch-query', _('automatic-area-type-elasticsearch-query')),
             ('reach', _('automatic-area-type-reach')),
             ('topicpagelist', _('automatic-area-type-topicpagelist')),
@@ -239,9 +238,6 @@ def automatic_area_can_read_teasers_automatically(data):
         return True
 
     if data.automatic_type == 'related-topics' and data.related_topicpage:
-        return True
-
-    if data.automatic_type == 'query' and data.raw_query:
         return True
 
     if data.automatic_type == 'elasticsearch-query' and data.elasticsearch_raw_query:
