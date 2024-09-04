@@ -23,7 +23,14 @@ class DuplicateVolumeWarning(Exception):
 
 class Base:
     form_fields = zope.formlib.form.FormFields(zeit.content.volume.interfaces.IVolume).select(
-        'product', 'year', 'volume', 'date_digital_published', 'teaserText'
+        'product',
+        'year',
+        'volume',
+        'date_digital_published',
+        'teaserText',
+        'title',
+        'teaser',
+        'background_color',
     )
 
     field_groups = (
@@ -31,6 +38,11 @@ class Base:
             _('Volume'),
             ('product', 'year', 'volume', 'date_digital_published', 'teaserText'),
             css_class='column-left',
+        ),
+        gocept.form.grouped.Fields(
+            _('Teaser'),
+            ('title', 'teaser', 'background_color'),
+            css_class='wide-widgets column-left',
         ),
     )
 

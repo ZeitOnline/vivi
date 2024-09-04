@@ -45,7 +45,7 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
     zeit.cms.content.dav.mapProperties(
         zeit.content.volume.interfaces.IVolume,
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
-        ('date_digital_published', 'year', 'volume'),
+        ('date_digital_published', 'year', 'volume', 'title', 'teaser', 'background_color'),
     )
 
     _product_id = zeit.cms.content.dav.DAVProperty(

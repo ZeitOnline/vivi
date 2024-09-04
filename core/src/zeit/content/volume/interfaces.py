@@ -47,6 +47,19 @@ class IVolume(zeit.cms.content.interfaces.IXMLContent):
 
     next = zope.interface.Attribute('The next IVolume object (by date_digital_published) or None')
 
+    title = zope.schema.TextLine(title=_('Title'), required=False)
+
+    teaser = zope.schema.TextLine(title=_('Teaser'), required=False)
+
+    background_color = zope.schema.TextLine(
+        title=_('Area background color (6 characters, no #)'),
+        description=_('Hex value of background color for area'),
+        required=False,
+        min_length=6,
+        max_length=6,
+        constraint=zeit.cms.content.interfaces.hex_literal,
+    )
+
     def fill_template(text):
         """Fill in a string template with the placeholders year=self.year
         and name=self.volume (zero-padded to two digits), e.g.
