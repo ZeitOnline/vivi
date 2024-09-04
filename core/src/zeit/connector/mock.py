@@ -10,6 +10,7 @@ import urllib.parse
 import uuid
 
 import pytz
+import sqlalchemy
 import zope.event
 
 from zeit.cms.content.sources import FEATURE_TOGGLES
@@ -77,6 +78,7 @@ class Connector(zeit.connector.filesystem.Connector):
         self._deleted = set()
         self._properties = {}
         self.search_result = self.search_result_default[:]
+        self.search_args = []
 
     def listCollection(self, id):
         """List the filenames of a collection identified by path."""
@@ -314,6 +316,13 @@ class Connector(zeit.connector.filesystem.Connector):
         metadata = metadata[: len(attributes)]
 
         return ((unique_id,) + metadata for unique_id in unique_ids)
+
+    def search_sql(self, expression):
+        self.search_args.append(expression)
+        return [self[uniqueid] for uniqueid in self.search_result]
+
+    def query(self):
+        return sqlalchemy.select()
 
     # internal helpers
 

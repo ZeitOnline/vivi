@@ -131,9 +131,7 @@ class Connector:
             else:
                 break
 
-    def __getitem__(self, uniqueid):
-        uniqueid = self._normalize(uniqueid)
-        properties = self._get_properties(uniqueid)  # may raise KeyError
+    def resource(self, uniqueid, properties):
         return self.resource_class(
             uniqueid,
             uniqueid.split('/')[-1],
@@ -142,6 +140,11 @@ class Connector:
             partial(self._get_body, uniqueid),
             is_collection=properties[('is_collection', INTERNAL_PROPERTY)],
         )
+
+    def __getitem__(self, uniqueid):
+        uniqueid = self._normalize(uniqueid)
+        properties = self._get_properties(uniqueid)  # may raise KeyError
+        return self.resource(uniqueid, properties)
 
     property_cache = TransactionBoundCache('_v_property_cache', zeit.connector.cache.PropertyCache)
 
@@ -571,7 +574,7 @@ class Connector:
             until=properties.get(('lock_until', INTERNAL_PROPERTY)),
         )
 
-    def search(self, attrlist, expr):
+    def _search_dav(self, attrlist, expr):
         if (
             len(attrlist) == 1
             and attrlist[0].name == 'uuid'
@@ -592,6 +595,29 @@ class Connector:
                 properties = item.to_webdav()
                 data.extend([properties[(a.name, a.namespace)] for a in attrlist])
                 yield tuple(data)
+
+    search = _search_dav  # BBB
+
+    def query(self):
+        return select(self.Content)
+
+    def search_sql(self, query):
+        result = []
+        for content in self.session.execute(query).scalars():
+            uniqueid = content.uniqueid
+            properties = content.to_webdav()
+            resource = self.resource(uniqueid, properties)
+            self.property_cache[uniqueid] = properties
+
+            if content.is_collection or not content.body:
+                body = b''
+            else:
+                body = content.body.encode('utf-8')
+            self.body_cache.update(uniqueid, BytesIO(body))
+
+            result.append(resource)
+
+        return result
 
     def _build_filter(self, expr):
         op = expr.operator
