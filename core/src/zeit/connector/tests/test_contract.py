@@ -793,40 +793,6 @@ class DAVProtocol:
             yield
 
 
-class ContractDAV(
-    DAVProtocol,
-    ContractReadWrite,
-    ContractCopyMove,
-    ContractLock,
-    ContractSearch,
-    # ContractCache,
-    zeit.connector.testing.ConnectorTest,
-):
-    copy_inherited_functions(ContractReadWrite, locals())
-    copy_inherited_functions(ContractCopyMove, locals())
-    copy_inherited_functions(ContractLock, locals())
-    copy_inherited_functions(ContractSearch, locals())
-    # not implemented copy_inherited_functions(ContractCache, locals())
-
-
-class ContractZopeDAV(
-    DAVProtocol,
-    ContractReadWrite,
-    ContractCopyMove,
-    ContractLock,
-    ContractSearch,
-    ContractCache,
-    zeit.connector.testing.ConnectorTest,
-):
-    layer = zeit.connector.testing.ZOPE_DAV_CONNECTOR_LAYER
-
-    copy_inherited_functions(ContractReadWrite, locals())
-    copy_inherited_functions(ContractCopyMove, locals())
-    copy_inherited_functions(ContractLock, locals())
-    copy_inherited_functions(ContractSearch, locals())
-    copy_inherited_functions(ContractCache, locals())
-
-
 class ContractMock(
     DAVProtocol,
     ContractReadWrite,

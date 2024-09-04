@@ -16,7 +16,6 @@ import zeit.cms.browser.view
 import zeit.cms.config
 import zeit.cms.content.sources
 import zeit.cms.interfaces
-import zeit.connector.connector
 
 
 class Toc(zeit.cms.browser.view.Base):

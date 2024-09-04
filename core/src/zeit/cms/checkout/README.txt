@@ -340,7 +340,7 @@ Checking in is not possible just like that:
 >>> ICheckinManager(checked_out).checkin()
 Traceback (most recent call last):
     ...
-ConflictError: There was a conflict while adding ${name}
+ConflictError
 
 Checking in is possible with ignored conflicts:
 
