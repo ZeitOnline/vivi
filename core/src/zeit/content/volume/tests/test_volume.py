@@ -4,6 +4,7 @@ from unittest import mock
 
 import lxml.builder
 import lxml.etree
+import pytest
 import pytz
 import requests_mock
 import zope.component
@@ -311,6 +312,25 @@ class TestVolumeQueries(zeit.content.volume.testing.FunctionalTestCase):
         self.assertEqual([content01], cnt)
         for c in cnt:
             self.assertEqual('free', c.access)
+
+
+@pytest.mark.parametrize(
+    'color, raised_exception',
+    [
+        ('123456', None),  # Valid hex value
+        ('abcdeg', zeit.cms.interfaces.ValidationError),  # Invalid hex (faulty character)
+        ('ff12', zope.schema._bootstrapinterfaces.TooShort),  # Invalid hex value (too short)
+        ('abcdef123456', zope.schema._bootstrapinterfaces.TooLong),  # Invalid hex value (too long)
+        (None, None),  # Absent value raises nothing
+    ],
+)
+def test_background_color_is_hex_validation(color, raised_exception):
+    field = zeit.content.volume.interfaces.IVolume['background_color']
+    if raised_exception:
+        with pytest.raises(raised_exception):
+            field.validate(color)
+    else:
+        field.validate(color)
 
 
 class TestWebtrekkQuery(TestVolumeQueries):

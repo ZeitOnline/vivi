@@ -110,6 +110,22 @@ __return(cp)"""
         self.assertEqual(2010, cp.year)
         self.assertEqual(2, cp.volume)
 
+    def test_teaser_attributes_are_contained_in_volume(self):
+        self.open_add_form()
+        b = self.browser
+        b.getControl('Year').value = '2010'
+        b.getControl(name='form.volume').value = '2'
+        b.getControl('Add').click()
+        b.getControl(name='form.title').value = 'Obamas Return'
+        b.getControl(name='form.teaser').value = 'Obama returns you to tell about his vacation'
+        b.getControl(name='form.background_color').value = 'ff0000'
+        b.getControl('Apply').click()
+        b.getLink('Checkin').click()
+        volume = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2010/02/ausgabe')
+        assert volume.title == 'Obamas Return'
+        assert volume.teaser == 'Obama returns you to tell about his vacation'
+        assert volume.background_color == 'ff0000'
+
 
 class TestVolumeCoverWidget(zeit.content.volume.testing.SeleniumTestCase):
     def setUp(self):
