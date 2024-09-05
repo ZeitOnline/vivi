@@ -10,6 +10,7 @@ import zope.component
 import zope.interface
 
 from zeit.cms.content.cache import content_cache
+from zeit.cms.content.interfaces import IUUID
 from zeit.cms.interfaces import ICMSContent
 from zeit.contentquery.configuration import CustomQueryProperty
 import zeit.cms.config
@@ -63,6 +64,7 @@ class SQLContentQuery(ContentQuery):
         query = self.connector.query()
         query = query.where(sql(self.context.sql_query))
         query = self.add_clauses(query)
+        query = self.hide_dupes_clause(query)
         query = query.order_by(sql(self.context.sql_order))
         return query
 
@@ -70,6 +72,22 @@ class SQLContentQuery(ContentQuery):
         published = sql('unsorted @@ \'$.workflow.published == "yes"\'')
         inline_gallery = sql('unsorted @@ \'$."zeit.content.gallery".type != "inline"\'')
         return query.where(published).where(inline_gallery)
+
+    def hide_dupes_clause(self, query):
+        """Perform de-duplication of results.
+
+        Extend query to exclude teasers that already exist on the CP.
+        """
+        if not self.context.hide_dupes or not self.context.existing_teasers:
+            return query
+
+        ids = filter(
+            None, (getattr(IUUID(x), 'shortened', None) for x in self.context.existing_teasers)
+        )
+
+        if not ids:
+            return query
+        return query.where(self.connector.Content.id.not_in(sorted(ids)))
 
 
 @grok.adapter(zeit.contentquery.interfaces.IContentQuery)

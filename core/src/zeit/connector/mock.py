@@ -9,6 +9,7 @@ import time
 import urllib.parse
 import uuid
 
+from sqlalchemy.dialects import postgresql
 import pytz
 import sqlalchemy
 import zope.event
@@ -47,6 +48,7 @@ class Connector(zeit.connector.filesystem.Connector):
     _ignore_uuid_checks = False
     _set_lastmodified_property = True
     resource_class = zeit.connector.resource.WriteableCachedResource
+    Content = Content  # only for search_sql, only id column is required
 
     property_cache = zeit.connector.cache.AlwaysEmptyDict()
     body_cache = zeit.connector.cache.AlwaysEmptyDict()
@@ -317,12 +319,17 @@ class Connector(zeit.connector.filesystem.Connector):
 
         return ((unique_id,) + metadata for unique_id in unique_ids)
 
+    def _compile_sql(self, stmt):
+        return str(
+            stmt.compile(dialect=postgresql.dialect(), compile_kwargs={'literal_binds': True})
+        )
+
     def search_sql(self, expression):
-        self.search_args.append(expression)
+        self.search_args.append(self._compile_sql(expression))
         return [self[uniqueid] for uniqueid in self.search_result]
 
     def query(self):
-        return sqlalchemy.select()
+        return sqlalchemy.select(self.Content)
 
     # internal helpers
 

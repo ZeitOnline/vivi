@@ -983,6 +983,43 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
         tms_query = zeit.contentquery.query.TMSContentQuery(area)
         self.assertEqual(tms_query.total_hits, 42)
 
+    def test_sql_query_filters_duplicates(self):
+        self.area.automatic_type = 'sql-query'
+        self.area.sql_query = "type='article'"
+
+        lead = self.cp.body['feature']['lead'].create_item('teaser')
+        lead.append(self.repository['t1'])
+        lead.append(self.repository['t2'])
+
+        IRenderedArea(self.area).values()
+
+        id1 = zeit.cms.content.interfaces.IUUID(self.repository['t1']).shortened.replace('-', '')
+        id2 = zeit.cms.content.interfaces.IUUID(self.repository['t2']).shortened.replace('-', '')
+        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+
+        sorted_ids = [id1, id2]
+        sorted_ids.sort()
+
+        self.assertEllipsis(
+            f"...AND (properties.id NOT IN ('{sorted_ids[0]}', '{sorted_ids[1]}'))...",
+            connector.search_args[0],
+        )
+
+    def test_sql_query_preserves_duplicates(self):
+        self.area.automatic_type = 'sql-query'
+        self.area.sql_query = "type='article'"
+        self.area.hide_dupes = False
+        lead = self.cp.body['feature']['lead'].create_item('teaser')
+        lead.append(self.repository['t1'])
+        lead.append(self.repository['t2'])
+
+        IRenderedArea(self.area).values()
+        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+        self.assertNotEllipsis(
+            '...AND (properties.id NOT IN...',
+            connector.search_args[0],
+        )
+
 
 class AutomaticRSSTest(zeit.content.cp.testing.FunctionalTestCase):
     def setUp(self):
