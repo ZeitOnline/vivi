@@ -1145,3 +1145,7 @@ AND unsorted @@ '$."zeit.content.gallery".type != "inline"'...
 ...ORDER BY unsorted->'workflow'->>'date_first_released' desc...
 """
         self.assertEllipsis(query, str(self.connector.search_args[0]))
+
+    def test_limit_query_results(self):
+        IRenderedArea(self.area).values()
+        self.assertEllipsis('...LIMIT 3...', self.connector.search_args[0])

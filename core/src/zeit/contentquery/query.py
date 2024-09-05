@@ -66,6 +66,8 @@ class SQLContentQuery(ContentQuery):
         query = self.add_clauses(query)
         query = self.hide_dupes_clause(query)
         query = query.order_by(sql(self.context.sql_order))
+        query = query.limit(self.rows)
+
         return query
 
     def add_clauses(self, query):
