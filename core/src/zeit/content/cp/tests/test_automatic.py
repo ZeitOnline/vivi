@@ -1149,3 +1149,8 @@ AND unsorted @@ '$."zeit.content.gallery".type != "inline"'...
     def test_limit_query_results(self):
         IRenderedArea(self.area).values()
         self.assertEllipsis('...LIMIT 3...', self.connector.search_args[0])
+
+    def test_offset_query_results_for_pagination(self):
+        self.area.start = 5
+        IRenderedArea(self.area).values()
+        self.assertEllipsis('...OFFSET 5...', self.connector.search_args[0])
