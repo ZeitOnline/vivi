@@ -1088,8 +1088,23 @@ class AutomaticAreaSQLTest(zeit.content.cp.testing.FunctionalTestCase):
         self.connector.search_result = ['http://xml.zeit.de/testcontent']
         IRenderedArea(self.area).values()
         query = """
-type='article'
+...type='article'
 AND unsorted @@ '$.workflow.published == "yes"'
-AND unsorted @@ '$."zeit.content.gallery".type != "inline"'\
-""".replace('\n', ' ')
-        self.assertEndsWith(query, str(self.connector.search_args[0]))
+AND unsorted @@ '$."zeit.content.gallery".type != "inline"'...
+"""
+        self.assertEllipsis(query, str(self.connector.search_args[0]))
+
+    def test_query_order_default(self):
+        IRenderedArea(self.area).values()
+        query = """
+...ORDER BY unsorted->'workflow'->>'date_last_published_semantic' desc...
+"""
+        self.assertEllipsis(query, str(self.connector.search_args[0]))
+
+    def test_set_query_order(self):
+        self.area.sql_order = "unsorted->'workflow'->>'date_first_released' desc"
+        IRenderedArea(self.area).values()
+        query = """
+...ORDER BY unsorted->'workflow'->>'date_first_released' desc...
+"""
+        self.assertEllipsis(query, str(self.connector.search_args[0]))

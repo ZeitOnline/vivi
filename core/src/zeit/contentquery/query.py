@@ -63,6 +63,7 @@ class SQLContentQuery(ContentQuery):
         query = self.connector.query()
         query = query.where(sql(self.context.sql_query))
         query = self.add_clauses(query)
+        query = query.order_by(sql(self.context.sql_order))
         return query
 
     def add_clauses(self, query):

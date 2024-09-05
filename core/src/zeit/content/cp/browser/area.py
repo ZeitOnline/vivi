@@ -196,6 +196,7 @@ class EditAutomatic(zeit.content.cp.browser.view.GroupedSubpageForm):
         'reach_access',
         'reach_age',
         'sql_query',
+        'sql_order',
     )
 
     field_groups = (
@@ -223,7 +224,7 @@ class EditAutomatic(zeit.content.cp.browser.view.GroupedSubpageForm):
         ),
         gocept.form.grouped.Fields(
             _('automatic-area-type-sql-query'),
-            ('sql_query',),
+            ('sql_query', 'sql_order'),
         ),
     )
 

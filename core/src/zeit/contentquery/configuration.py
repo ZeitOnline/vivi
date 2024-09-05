@@ -141,6 +141,7 @@ class Configuration:
         'reach_access': False,
         'reach_age': False,
         'sql_query': False,
+        'sql_order': True,
     }.items():
         locals()[name] = zeit.cms.content.property.ObjectPathProperty(
             '.%s' % name, IConfiguration[name], use_default=default
