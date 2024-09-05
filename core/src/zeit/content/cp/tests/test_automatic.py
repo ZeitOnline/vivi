@@ -1085,7 +1085,7 @@ class AutomaticAreaSQLTest(zeit.content.cp.testing.FunctionalTestCase):
         self.assertEqual(['http://xml.zeit.de/testcontent'], [x.uniqueId for x in content])
 
     def test_clauses_extend_query(self):
-        self.connector.search_result_default = ['http://xml.zeit.de/testcontent']
+        self.connector.search_result = ['http://xml.zeit.de/testcontent']
         IRenderedArea(self.area).values()
         query = """
 type='article'
