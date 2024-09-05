@@ -37,7 +37,7 @@ class IVolume(zeit.cms.content.interfaces.IXMLContent):
 
     volume = zope.schema.Int(title=_('Volume'), min=1, max=54)
 
-    teaserText = zope.schema.Text(title=_('Volume text'), required=False, max_length=170)
+    volume_note = zope.schema.Text(title=_('Volume text'), required=False, max_length=170)
 
     date_digital_published = zope.schema.Datetime(title=_('Date of digital publication'))
 
@@ -116,7 +116,7 @@ class IVolume(zeit.cms.content.interfaces.IXMLContent):
 
 
 class IVolumeReference(zeit.cms.content.interfaces.IReference):
-    teaserText = zope.schema.Text(title=_('Volume text'), required=False, max_length=170)
+    volume_note = zope.schema.Text(title=_('Volume text'), required=False, max_length=170)
 
 
 class ITocConnector(zope.interface.Interface):

@@ -27,7 +27,7 @@ class Base:
         'year',
         'volume',
         'date_digital_published',
-        'teaserText',
+        'volume_note',
         'title',
         'teaser',
         'background_color',
@@ -36,7 +36,7 @@ class Base:
     field_groups = (
         gocept.form.grouped.Fields(
             _('Volume'),
-            ('product', 'year', 'volume', 'date_digital_published', 'teaserText'),
+            ('product', 'year', 'volume', 'date_digital_published', 'volume_note'),
             css_class='column-left',
         ),
         gocept.form.grouped.Fields(

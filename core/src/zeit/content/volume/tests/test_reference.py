@@ -13,7 +13,7 @@ class VolumeReferenceTest(zeit.content.volume.testing.FunctionalTestCase):
 
         super().setUp()
         volume = Volume()
-        volume.teaserText = 'original'
+        volume.volume_note = 'original'
         self.repository['testvolume'] = volume
         self.volume = self.repository['testvolume']
 
@@ -31,7 +31,7 @@ class VolumeReferenceTest(zeit.content.volume.testing.FunctionalTestCase):
         volume = Volume()
         volume.year = 2015
         volume.volume = 1
-        volume.teaserText = 'original'
+        volume.volume_note = 'original'
         volume.product = zeit.cms.content.sources.Product('ZEI')
         self.repository['2015'] = Folder()
         self.repository['2015']['01'] = Folder()
@@ -58,7 +58,7 @@ class VolumeReferenceTest(zeit.content.volume.testing.FunctionalTestCase):
         )
         self.assertEqual(True, IVolumeReference.providedBy(reference))
 
-    def test_teasertext_can_be_overridden(self):
+    def test_volume_note_can_be_overridden(self):
         node = zope.component.getAdapter(
             self.volume, zeit.cms.content.interfaces.IXMLReference, name='related'
         )
@@ -66,8 +66,8 @@ class VolumeReferenceTest(zeit.content.volume.testing.FunctionalTestCase):
         reference = zope.component.getMultiAdapter(
             (source, node), zeit.cms.content.interfaces.IReference, name='related'
         )
-        self.assertEqual('original', reference.teaserText)
-        reference.teaserText = 'local'
-        self.assertEqual('local', reference.teaserText)
-        reference.teaserText = None
-        self.assertEqual('original', reference.teaserText)
+        self.assertEqual('original', reference.volume_note)
+        reference.volume_note = 'local'
+        self.assertEqual('local', reference.volume_note)
+        reference.volume_note = None
+        self.assertEqual('original', reference.volume_note)

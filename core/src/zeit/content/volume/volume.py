@@ -71,22 +71,22 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
             return
         self._product_id = value.id if value is not None else None
 
-    _teaserText = zeit.cms.content.dav.DAVProperty(
-        zeit.content.volume.interfaces.IVolume['teaserText'],
+    _volume_note = zeit.cms.content.dav.DAVProperty(
+        zeit.content.volume.interfaces.IVolume['volume_note'],
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
-        'teaserText',
+        'volume_note',
     )
 
     @property
-    def teaserText(self):
-        text = self._teaserText
+    def volume_note(self):
+        text = self._volume_note
         if text is None:
             text = zeit.cms.config.required('zeit.content.volume', 'default-teaser-text')
         return self.fill_template(text)
 
-    @teaserText.setter
-    def teaserText(self, value):
-        self._teaserText = value
+    @volume_note.setter
+    def volume_note(self, value):
+        self._volume_note = value
 
     @property
     def teaserSupertitle(self):  # For display in CP-editor

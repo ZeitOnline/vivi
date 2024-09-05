@@ -181,9 +181,9 @@ class TestVolume(zeit.content.volume.testing.FunctionalTestCase):
         cp = zeit.content.cp.interfaces.ICenterPage(volume)
         self.assertEqual('http://xml.zeit.de/2015/01/index', cp.uniqueId)
 
-    def test_no_teaserText_present_returns_default_string(self):
+    def test_no_volume_note_present_returns_default_string(self):
         volume = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2015/01/ausgabe')
-        self.assertEqual('Teäser 01/2015', volume.teaserText)
+        self.assertEqual('Teäser 01/2015', volume.volume_note)
 
     def test_covers_are_published_with_the_volume(self):
         volume = self.repository['2015']['01']['ausgabe']
