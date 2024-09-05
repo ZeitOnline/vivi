@@ -215,6 +215,15 @@ class IConnector(zope.interface.Interface):
         returns a list of IResource objects
         """
 
+    def search_sql_count(query):
+        """Count search results for `query`
+
+        query:
+            SQL Select object obtained from IConnector.query()
+
+        returns integer
+        """
+
     def query():
         """Not the most desirable API design, but functional for now
 

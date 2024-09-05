@@ -1154,3 +1154,7 @@ AND unsorted @@ '$."zeit.content.gallery".type != "inline"'...
         self.area.start = 5
         IRenderedArea(self.area).values()
         self.assertEllipsis('...OFFSET 5...', self.connector.search_args[0])
+
+    def test_get_total_hits(self):
+        self.connector.search_result = ['http://xml.zeit.de/testcontent']
+        self.assertEqual(1, IRenderedArea(self.area)._content_query.total_hits)

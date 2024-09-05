@@ -171,6 +171,14 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
         ):
             self.assertEqual(result[0].data.read(), b'mybody')
 
+    def test_search_sql_count_returns_result_count(self):
+        self.add_resource('one', type='article')
+        self.add_resource('two', type='centerpage')
+        self.add_resource('three', type='article')
+        query = self.connector.query()
+        query = query.filter_by(type='article')
+        self.assertEqual(self.connector.search_sql_count(query), 2)
+
     def test_search_returns_uuid(self):
         res = self.get_resource(
             'foo',

@@ -331,6 +331,9 @@ class Connector(zeit.connector.filesystem.Connector):
     def query(self):
         return sqlalchemy.select(self.Content)
 
+    def search_sql_count(self, query):
+        return len(self.search_result)
+
     # internal helpers
 
     def _get_cannonical_id(self, id):

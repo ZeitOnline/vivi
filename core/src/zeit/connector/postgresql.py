@@ -598,9 +598,6 @@ class Connector:
 
     search = _search_dav  # BBB
 
-    def query(self):
-        return select(self.Content)
-
     def search_sql(self, query):
         result = []
         for content in self.session.execute(query).scalars():
@@ -618,6 +615,12 @@ class Connector:
             result.append(resource)
 
         return result
+
+    def search_sql_count(self, query):
+        return self.session.execute(query.with_only_columns(sqlalchemy.func.count())).scalar()
+
+    def query(self):
+        return select(self.Content)
 
     def _build_filter(self, expr):
         op = expr.operator

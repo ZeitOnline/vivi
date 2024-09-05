@@ -56,8 +56,15 @@ class SQLContentQuery(ContentQuery):
     def connector(self):
         return zope.component.getUtility(zeit.connector.interfaces.IConnector)
 
+    @cachedproperty
+    def total_hits(self):
+        return self.connector.search_sql_count(self._build_query())
+
     def __call__(self):
-        result = [ICMSContent(x) for x in self.connector.search_sql(self._build_query())]
+        query = self._build_query()
+        query = query.order_by(sql(self.context.sql_order))
+        query = query.limit(self.rows).offset(self.start)
+        result = [ICMSContent(x) for x in self.connector.search_sql(query)]
         return result
 
     def _build_query(self):
@@ -65,8 +72,6 @@ class SQLContentQuery(ContentQuery):
         query = query.where(sql(self.context.sql_query))
         query = self.add_clauses(query)
         query = self.hide_dupes_clause(query)
-        query = query.order_by(sql(self.context.sql_order))
-        query = query.limit(self.rows).offset(self.start)
 
         return query
 
