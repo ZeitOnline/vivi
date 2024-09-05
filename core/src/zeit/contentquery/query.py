@@ -1,6 +1,7 @@
 import json
 import logging
 
+from sqlalchemy import text as sql
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
 import lxml
@@ -9,6 +10,7 @@ import zope.component
 import zope.interface
 
 from zeit.cms.content.cache import content_cache
+from zeit.cms.interfaces import ICMSContent
 from zeit.contentquery.configuration import CustomQueryProperty
 import zeit.cms.config
 import zeit.cms.content.interfaces
@@ -44,10 +46,35 @@ class ContentQuery(grok.Adapter):
         return self.context.count
 
 
+class SQLContentQuery(ContentQuery):
+    """Search via SQL."""
+
+    grok.name('sql-query')
+
+    @property
+    def connector(self):
+        return zope.component.getUtility(zeit.connector.interfaces.IConnector)
+
+    def __call__(self):
+        result = [ICMSContent(x) for x in self.connector.search_sql(self._build_query())]
+        return result
+
+    def _build_query(self):
+        query = self.connector.query()
+        query = query.where(sql(self.context.sql_query))
+        query = self.add_clauses(query)
+        return query
+
+    def add_clauses(self, query):
+        published = sql('unsorted @@ \'$.workflow.published == "yes"\'')
+        inline_gallery = sql('unsorted @@ \'$."zeit.content.gallery".type != "inline"\'')
+        return query.where(published).where(inline_gallery)
+
+
 @grok.adapter(zeit.contentquery.interfaces.IContentQuery)
-@grok.implementer(zeit.cms.interfaces.ICMSContent)
+@grok.implementer(ICMSContent)
 def query_to_content(context):
-    return zeit.cms.interfaces.ICMSContent(context.context, None)
+    return ICMSContent(context.context, None)
 
 
 class ElasticsearchContentQuery(ContentQuery):
@@ -158,9 +185,7 @@ class ElasticsearchContentQuery(ContentQuery):
     ]
 
     def _resolve(self, doc):
-        return zeit.cms.interfaces.ICMSContent(
-            zeit.cms.interfaces.ID_NAMESPACE[:-1] + doc['url'], None
-        )
+        return ICMSContent(zeit.cms.interfaces.ID_NAMESPACE[:-1] + doc['url'], None)
 
     @cachedproperty
     def hide_dupes_clause(self):
@@ -349,9 +374,7 @@ class TMSContentQuery(ContentQuery):
             return iter(response), response.hits
 
     def _resolve(self, doc):
-        return zeit.cms.interfaces.ICMSContent(
-            zeit.cms.interfaces.ID_NAMESPACE[:-1] + doc['url'], None
-        )
+        return ICMSContent(zeit.cms.interfaces.ID_NAMESPACE[:-1] + doc['url'], None)
 
     @property
     def hide_dupes(self):
@@ -489,7 +512,7 @@ class TMSRelatedApiQuery(TMSContentQuery):
     def _get_documents(self, start, rows):
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
         try:
-            content = zeit.cms.interfaces.ICMSContent(self)
+            content = ICMSContent(self)
             response = tms.get_related_documents(content, filter=self.filter_id, rows=rows)
         except Exception as e:
             if e.status == 404:
@@ -538,7 +561,7 @@ class TMSRelatedTopicsApiQuery(ContentQuery):
         # TMS seems to return non existent/ redirecting topicpages
         for topic in topics:
             try:
-                related_topics.append(zeit.cms.interfaces.ICMSContent(topic))
+                related_topics.append(ICMSContent(topic))
             except TypeError:
                 log.warning('%s: Could not adapt %s to ICMSContent', self.__class__.__name__, topic)
                 continue
@@ -567,7 +590,7 @@ class TopicpageQuery(ContentQuery):
         )
 
     def _resolve(self, doc):
-        return zeit.cms.interfaces.ICMSContent(
+        return ICMSContent(
             '%s%s/%s'
             % (
                 zeit.cms.interfaces.ID_NAMESPACE[:-1],

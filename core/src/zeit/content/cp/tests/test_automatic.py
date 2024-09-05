@@ -1065,3 +1065,31 @@ class AutomaticRSSTest(zeit.content.cp.testing.FunctionalTestCase):
             IRenderedArea(elastic_area).values()
         elastic_query = self.elasticsearch.search.call_args[0][0]
         self.assertNotIn('ids', elastic_query['query']['bool']['must_not'])
+
+
+class AutomaticAreaSQLTest(zeit.content.cp.testing.FunctionalTestCase):
+    def setUp(self):
+        super().setUp()
+        self.cp = zeit.content.cp.centerpage.CenterPage()
+        self.area = self.cp.body['feature'].create_item('area')
+        self.area.count = 3
+        self.area.automatic = True
+        self.area.automatic_type = 'sql-query'
+        self.area.sql_query = "type='article'"
+        self.repository['cp'] = self.cp
+        self.connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+
+    def test_cms_content_iter_returns_filled_in_blocks(self):
+        self.connector.search_result = ['http://xml.zeit.de/testcontent']
+        content = zeit.edit.interfaces.IElementReferences(self.area)
+        self.assertEqual(['http://xml.zeit.de/testcontent'], [x.uniqueId for x in content])
+
+    def test_clauses_extend_query(self):
+        self.connector.search_result_default = ['http://xml.zeit.de/testcontent']
+        IRenderedArea(self.area).values()
+        query = """
+type='article'
+AND unsorted @@ '$.workflow.published == "yes"'
+AND unsorted @@ '$."zeit.content.gallery".type != "inline"'\
+""".replace('\n', ' ')
+        self.assertEndsWith(query, str(self.connector.search_args[0]))

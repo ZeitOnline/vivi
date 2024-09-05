@@ -140,6 +140,7 @@ class Configuration:
         'reach_section': False,
         'reach_access': False,
         'reach_age': False,
+        'sql_query': False,
     }.items():
         locals()[name] = zeit.cms.content.property.ObjectPathProperty(
             '.%s' % name, IConfiguration[name], use_default=default

@@ -325,3 +325,5 @@ class IConfiguration(zope.interface.Interface):
     )
 
     reach_age = zope.schema.Int(title=_('Reach Age (days)'), required=False)
+
+    sql_query = zope.schema.Text(title=_('SQL query'), required=False)
