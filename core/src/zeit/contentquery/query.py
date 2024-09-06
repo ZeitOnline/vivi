@@ -58,21 +58,21 @@ class SQLContentQuery(ContentQuery):
 
     @cachedproperty
     def total_hits(self):
-        return self.connector.search_sql_count(self._build_query())
+        return self.connector.search_sql_count(self._build_query(order=False))
 
     def __call__(self):
         query = self._build_query()
-        query = query.order_by(sql(self.context.sql_order))
-        query = query.limit(self.rows).offset(self.start)
         result = [ICMSContent(x) for x in self.connector.search_sql(query)]
         return result
 
-    def _build_query(self):
+    def _build_query(self, order=True):
         query = self.connector.query()
         query = query.where(sql(self.context.sql_query))
         query = self.add_clauses(query)
         query = self.hide_dupes_clause(query)
-
+        if order:  # not allowed by SQL when using `count()`
+            query = query.order_by(sql(self.context.sql_order))
+            query = query.limit(self.rows).offset(self.start)
         return query
 
     def add_clauses(self, query):
