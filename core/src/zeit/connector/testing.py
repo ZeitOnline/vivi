@@ -253,13 +253,13 @@ class TestCase(zeit.cms.testing.FunctionalTestCase):
     def connector(self):
         return zope.component.getUtility(zeit.connector.interfaces.IConnector)
 
-    def get_resource(self, name, body=b'', properties=None, is_collection=False):
+    def get_resource(self, name, body=b'', properties=None, is_collection=False, type='testing'):
         if not isinstance(body, bytes):
             body = body.encode('utf-8')
         return zeit.connector.resource.Resource(
             f'{ROOT}/{name}',
             name,
-            'testing',
+            type,
             BytesIO(body),
             properties=properties,
             is_collection=is_collection,

@@ -983,6 +983,43 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
         tms_query = zeit.contentquery.query.TMSContentQuery(area)
         self.assertEqual(tms_query.total_hits, 42)
 
+    def test_sql_query_filters_duplicates(self):
+        self.area.automatic_type = 'sql-query'
+        self.area.sql_query = "type='article'"
+
+        lead = self.cp.body['feature']['lead'].create_item('teaser')
+        lead.append(self.repository['t1'])
+        lead.append(self.repository['t2'])
+
+        IRenderedArea(self.area).values()
+
+        id1 = zeit.cms.content.interfaces.IUUID(self.repository['t1']).shortened.replace('-', '')
+        id2 = zeit.cms.content.interfaces.IUUID(self.repository['t2']).shortened.replace('-', '')
+        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+
+        sorted_ids = [id1, id2]
+        sorted_ids.sort()
+
+        self.assertEllipsis(
+            f"...AND (properties.id NOT IN ('{sorted_ids[0]}', '{sorted_ids[1]}'))...",
+            connector.search_args[0],
+        )
+
+    def test_sql_query_preserves_duplicates(self):
+        self.area.automatic_type = 'sql-query'
+        self.area.sql_query = "type='article'"
+        self.area.hide_dupes = False
+        lead = self.cp.body['feature']['lead'].create_item('teaser')
+        lead.append(self.repository['t1'])
+        lead.append(self.repository['t2'])
+
+        IRenderedArea(self.area).values()
+        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+        self.assertNotEllipsis(
+            '...AND (properties.id NOT IN...',
+            connector.search_args[0],
+        )
+
 
 class AutomaticRSSTest(zeit.content.cp.testing.FunctionalTestCase):
     def setUp(self):
@@ -1065,3 +1102,59 @@ class AutomaticRSSTest(zeit.content.cp.testing.FunctionalTestCase):
             IRenderedArea(elastic_area).values()
         elastic_query = self.elasticsearch.search.call_args[0][0]
         self.assertNotIn('ids', elastic_query['query']['bool']['must_not'])
+
+
+class AutomaticAreaSQLTest(zeit.content.cp.testing.FunctionalTestCase):
+    def setUp(self):
+        super().setUp()
+        self.cp = zeit.content.cp.centerpage.CenterPage()
+        self.area = self.cp.body['feature'].create_item('area')
+        self.area.count = 3
+        self.area.automatic = True
+        self.area.automatic_type = 'sql-query'
+        self.area.sql_query = "type='article'"
+        self.repository['cp'] = self.cp
+        self.connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+
+    def test_cms_content_iter_returns_filled_in_blocks(self):
+        self.connector.search_result = ['http://xml.zeit.de/testcontent']
+        content = zeit.edit.interfaces.IElementReferences(self.area)
+        self.assertEqual(['http://xml.zeit.de/testcontent'], [x.uniqueId for x in content])
+
+    def test_clauses_extend_query(self):
+        self.connector.search_result = ['http://xml.zeit.de/testcontent']
+        IRenderedArea(self.area).values()
+        query = """
+...type='article'
+AND unsorted @@ '$.workflow.published == "yes"'
+AND unsorted @@ '$."zeit.content.gallery".type != "inline"'...
+"""
+        self.assertEllipsis(query, str(self.connector.search_args[0]))
+
+    def test_query_order_default(self):
+        IRenderedArea(self.area).values()
+        query = """
+...ORDER BY unsorted->'workflow'->>'date_last_published_semantic' desc...
+"""
+        self.assertEllipsis(query, str(self.connector.search_args[0]))
+
+    def test_set_query_order(self):
+        self.area.sql_order = "unsorted->'workflow'->>'date_first_released' desc"
+        IRenderedArea(self.area).values()
+        query = """
+...ORDER BY unsorted->'workflow'->>'date_first_released' desc...
+"""
+        self.assertEllipsis(query, str(self.connector.search_args[0]))
+
+    def test_limit_query_results(self):
+        IRenderedArea(self.area).values()
+        self.assertEllipsis('...LIMIT 3...', self.connector.search_args[0])
+
+    def test_offset_query_results_for_pagination(self):
+        self.area.start = 5
+        IRenderedArea(self.area).values()
+        self.assertEllipsis('...OFFSET 5...', self.connector.search_args[0])
+
+    def test_get_total_hits(self):
+        self.connector.search_result = ['http://xml.zeit.de/testcontent']
+        self.assertEqual(1, IRenderedArea(self.area)._content_query.total_hits)

@@ -8,7 +8,8 @@ var FIELDS = {
     'reach': 'reach_service',
     'related-topics': 'related_topicpage',
     'topicpagelist': 'topicpagelist_order',
-    'rss-feed': 'rss_feed'
+    'rss-feed': 'rss_feed',
+    'sql-query': 'sql_query'
 };
 
 

@@ -1,6 +1,7 @@
 import json
 import logging
 
+from sqlalchemy import text as sql
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
 import lxml
@@ -9,6 +10,8 @@ import zope.component
 import zope.interface
 
 from zeit.cms.content.cache import content_cache
+from zeit.cms.content.interfaces import IUUID
+from zeit.cms.interfaces import ICMSContent
 from zeit.contentquery.configuration import CustomQueryProperty
 import zeit.cms.config
 import zeit.cms.content.interfaces
@@ -44,10 +47,61 @@ class ContentQuery(grok.Adapter):
         return self.context.count
 
 
+class SQLContentQuery(ContentQuery):
+    """Search via SQL."""
+
+    grok.name('sql-query')
+
+    @property
+    def connector(self):
+        return zope.component.getUtility(zeit.connector.interfaces.IConnector)
+
+    @cachedproperty
+    def total_hits(self):
+        return self.connector.search_sql_count(self._build_query(order=False))
+
+    def __call__(self):
+        query = self._build_query()
+        result = [ICMSContent(x) for x in self.connector.search_sql(query)]
+        return result
+
+    def _build_query(self, order=True):
+        query = self.connector.query()
+        query = query.where(sql(self.context.sql_query))
+        query = self.add_clauses(query)
+        query = self.hide_dupes_clause(query)
+        if order:  # not allowed by SQL when using `count()`
+            query = query.order_by(sql(self.context.sql_order))
+            query = query.limit(self.rows).offset(self.start)
+        return query
+
+    def add_clauses(self, query):
+        extras = zeit.cms.config.get('zeit.content.cp', 'sql-query-add-clauses')
+        if not extras:
+            return query
+        return query.where(sql(extras))
+
+    def hide_dupes_clause(self, query):
+        """Perform de-duplication of results.
+
+        Extend query to exclude teasers that already exist on the CP.
+        """
+        if not self.context.hide_dupes or not self.context.existing_teasers:
+            return query
+
+        ids = filter(
+            None, (getattr(IUUID(x), 'shortened', None) for x in self.context.existing_teasers)
+        )
+
+        if not ids:
+            return query
+        return query.where(self.connector.Content.id.not_in(sorted(ids)))
+
+
 @grok.adapter(zeit.contentquery.interfaces.IContentQuery)
-@grok.implementer(zeit.cms.interfaces.ICMSContent)
+@grok.implementer(ICMSContent)
 def query_to_content(context):
-    return zeit.cms.interfaces.ICMSContent(context.context, None)
+    return ICMSContent(context.context, None)
 
 
 class ElasticsearchContentQuery(ContentQuery):
@@ -158,9 +212,7 @@ class ElasticsearchContentQuery(ContentQuery):
     ]
 
     def _resolve(self, doc):
-        return zeit.cms.interfaces.ICMSContent(
-            zeit.cms.interfaces.ID_NAMESPACE[:-1] + doc['url'], None
-        )
+        return ICMSContent(zeit.cms.interfaces.ID_NAMESPACE[:-1] + doc['url'], None)
 
     @cachedproperty
     def hide_dupes_clause(self):
@@ -349,9 +401,7 @@ class TMSContentQuery(ContentQuery):
             return iter(response), response.hits
 
     def _resolve(self, doc):
-        return zeit.cms.interfaces.ICMSContent(
-            zeit.cms.interfaces.ID_NAMESPACE[:-1] + doc['url'], None
-        )
+        return ICMSContent(zeit.cms.interfaces.ID_NAMESPACE[:-1] + doc['url'], None)
 
     @property
     def hide_dupes(self):
@@ -489,7 +539,7 @@ class TMSRelatedApiQuery(TMSContentQuery):
     def _get_documents(self, start, rows):
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
         try:
-            content = zeit.cms.interfaces.ICMSContent(self)
+            content = ICMSContent(self)
             response = tms.get_related_documents(content, filter=self.filter_id, rows=rows)
         except Exception as e:
             if e.status == 404:
@@ -538,7 +588,7 @@ class TMSRelatedTopicsApiQuery(ContentQuery):
         # TMS seems to return non existent/ redirecting topicpages
         for topic in topics:
             try:
-                related_topics.append(zeit.cms.interfaces.ICMSContent(topic))
+                related_topics.append(ICMSContent(topic))
             except TypeError:
                 log.warning('%s: Could not adapt %s to ICMSContent', self.__class__.__name__, topic)
                 continue
@@ -567,7 +617,7 @@ class TopicpageQuery(ContentQuery):
         )
 
     def _resolve(self, doc):
-        return zeit.cms.interfaces.ICMSContent(
+        return ICMSContent(
             '%s%s/%s'
             % (
                 zeit.cms.interfaces.ID_NAMESPACE[:-1],

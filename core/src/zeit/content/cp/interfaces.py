@@ -220,6 +220,7 @@ class AutomaticTypeSource(zeit.cms.content.sources.SimpleDictSource):
             ('reach', _('automatic-area-type-reach')),
             ('topicpagelist', _('automatic-area-type-topicpagelist')),
             ('rss-feed', _('automatic-area-type-rss-feed')),
+            ('sql-query', _('automatic-area-type-sql-query')),
         ]
     )
 
@@ -254,6 +255,9 @@ def automatic_area_can_read_teasers_automatically(data):
         return True
 
     if data.automatic_type == 'topicpagelist':
+        return True
+
+    if data.automatic_type == 'sql-query' and data.sql_query:
         return True
 
     return False
