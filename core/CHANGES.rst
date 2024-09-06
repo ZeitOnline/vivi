@@ -3,6 +3,16 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.33.0 (2024-09-06)
+-------------------
+
+- MAINT-20240902tb: upgrade script template in vivi-deployment
+
+
+MAINT:
+- MAINT: Remove obsolete dav connector and zope dav connector
+
+
 6.32.0 (2024-09-02)
 -------------------
 
