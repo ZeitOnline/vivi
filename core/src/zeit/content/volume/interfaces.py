@@ -84,6 +84,24 @@ class IVolume(zeit.cms.content.interfaces.IXMLContent):
         Set an image as a cover of product.
         """
 
+    def get_cover_title(product_id):
+        """
+        Get a title of a product.
+        For example volume.get_title('ZEI') returns the title of DIE ZEIT of
+        this specific volume.
+        :param product_id: str product ID set in products.xml
+        :return: str
+        """
+
+    def set_cover_title(product_id, title):
+        """
+        Set cover specific title.
+        For example volume.set_title('ZEI', 'DIE ZEIT') sets the title of DIE
+        ZEIT of this specific volume.
+        :param product_id: str product ID set in products.xml
+        :param title: str - title of the product
+        """
+
     def all_content_via_search(additional_query_contstraints):
         """
         Get all Content for this volume with a Elasticsearch-Lookup.

@@ -38,6 +38,7 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         <volume>
             <head/>
             <body/>
+            <title-overrides/>
             <covers/>
         </volume>
     """
@@ -202,6 +203,24 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
                 id=cover_id, product_id=product_id, href=imagegroup.uniqueId
             )
             self.xml.find('covers').append(node)
+        super().__setattr__('_p_changed', True)
+
+    def get_cover_title(self, product_id):
+        path = f'//volume/title-overrides/title[@product_id="{product_id}"]'
+        node = self.xml.xpath(path)
+        return node[0].text if node else None
+
+    def set_cover_title(self, product_id, title):
+        title_overrides_path = '//volume/title-overrides'
+        if not self.xml.xpath(title_overrides_path):
+            self.xml.append(lxml.builder.E('title-overrides'))
+        path = f'//volume/title-overrides/title[@product_id="{product_id}"]'
+        node = self.xml.xpath(path)
+        if node:
+            self.xml.find('title-overrides').remove(node[0])
+        if title is not None:
+            node = lxml.builder.E.title(title, product_id=product_id)
+            self.xml.find('title-overrides').append(node)
         super().__setattr__('_p_changed', True)
 
     def _is_valid_cover_id_and_product_id(self, cover_id, product_id):

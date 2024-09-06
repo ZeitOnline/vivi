@@ -70,10 +70,16 @@ class Base:
                         required=False,
                         source=zeit.content.image.interfaces.imageGroupSource,
                     )
-                    field.__name__ = 'cover_%s_%s' % (product.id, name)
+                    field.__name__ = f'cover_{product.id}_{name}'
                     field.interface = ICovers
                     self.form_fields += zope.formlib.form.FormFields(field)
                     fieldnames.append(field.__name__)
+                # In addition to covers, we give the possibility to override the title
+                field = zope.schema.TextLine(title=_('Title'), required=False)
+                field.__name__ = f'title_{product.id}'
+                field.interface = ICovers
+                self.form_fields += zope.formlib.form.FormFields(field)
+                fieldnames.append(field.__name__)
                 self.field_groups += (
                     gocept.form.grouped.Fields(product.title, fieldnames, css_class='column-right'),
                 )
@@ -156,17 +162,24 @@ class Covers(grok.Adapter):
     grok.context(zeit.content.volume.interfaces.IVolume)
 
     def __getattr__(self, name):
-        if not name.startswith('cover_'):
-            return super().__getattr__(name)
-        name = name.replace('cover_', '', 1)
-        product, cover = name.split('_')
-        # We dont want the fallback in the UI
-        return self.context.get_cover(cover, product, use_fallback=False)
+        if name.startswith('title_'):
+            product = name.split('_')[1]
+            return self.context.get_cover_title(product)
+        elif name.startswith('cover_'):
+            name = name.replace('cover_', '', 1)
+            product, cover = name.split('_')
+            # We dont want the fallback in the UI
+            return self.context.get_cover(cover, product, use_fallback=False)
+        return super().__getattr__(name)
 
     def __setattr__(self, name, value):
-        if not name.startswith('cover_'):
-            super().__setattr__(name, value)
+        if name.startswith('title_'):
+            product = name.split('_')[1]
+            self.context.set_cover_title(product, value)
             return
-        name = name.replace('cover_', '', 1)
-        product, cover = name.split('_')
-        self.context.set_cover(cover, product, value)
+        elif name.startswith('cover_'):
+            name = name.replace('cover_', '', 1)
+            product, cover = name.split('_')
+            self.context.set_cover(cover, product, value)
+            return
+        super().__setattr__(name, value)
