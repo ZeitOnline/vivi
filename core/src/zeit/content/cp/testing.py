@@ -35,6 +35,8 @@ product_config = """
     cp-automatic-feed-source file://{fixtures}/feeds.xml
     area-color-themes-source file://{fixtures}/area-color-themes.xml
     reach-service-source file://{fixtures}/reach-services.xml
+    sql-query-add-clauses unsorted @@ '$$.workflow.published == "yes"' AND \
+    unsorted @@ '$$."zeit.content.gallery".type != "inline"'
 </product-config>
 """.format(fixtures='%s/tests/fixtures' % importlib.resources.files(__package__))
 

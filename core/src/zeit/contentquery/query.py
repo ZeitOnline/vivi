@@ -76,9 +76,10 @@ class SQLContentQuery(ContentQuery):
         return query
 
     def add_clauses(self, query):
-        published = sql('unsorted @@ \'$.workflow.published == "yes"\'')
-        inline_gallery = sql('unsorted @@ \'$."zeit.content.gallery".type != "inline"\'')
-        return query.where(published).where(inline_gallery)
+        extras = zeit.cms.config.get('zeit.content.cp', 'sql-query-add-clauses')
+        if not extras:
+            return query
+        return query.where(sql(extras))
 
     def hide_dupes_clause(self, query):
         """Perform de-duplication of results.
