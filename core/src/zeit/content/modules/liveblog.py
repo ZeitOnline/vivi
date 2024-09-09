@@ -20,7 +20,3 @@ class TickarooLiveblog(zeit.edit.block.Element):
     status = ObjectPathAttributeProperty('.', 'status', ITickarooLiveblog['status'])
 
     theme = ObjectPathAttributeProperty('.', 'theme', ITickarooLiveblog['theme'])
-
-    intersection_type = ObjectPathAttributeProperty(
-        '.', 'intersection_type', ITickarooLiveblog['intersection_type']
-    )
