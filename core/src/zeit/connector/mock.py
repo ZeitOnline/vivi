@@ -9,7 +9,9 @@ import time
 import urllib.parse
 import uuid
 
+from sqlalchemy.dialects import postgresql
 import pytz
+import sqlalchemy
 import zope.event
 
 from zeit.cms.content.sources import FEATURE_TOGGLES
@@ -46,6 +48,7 @@ class Connector(zeit.connector.filesystem.Connector):
     _ignore_uuid_checks = False
     _set_lastmodified_property = True
     resource_class = zeit.connector.resource.WriteableCachedResource
+    Content = Content  # only for search_sql, only id column is required
 
     property_cache = zeit.connector.cache.AlwaysEmptyDict()
     body_cache = zeit.connector.cache.AlwaysEmptyDict()
@@ -77,6 +80,7 @@ class Connector(zeit.connector.filesystem.Connector):
         self._deleted = set()
         self._properties = {}
         self.search_result = self.search_result_default[:]
+        self.search_args = []
 
     def listCollection(self, id):
         """List the filenames of a collection identified by path."""
@@ -314,6 +318,21 @@ class Connector(zeit.connector.filesystem.Connector):
         metadata = metadata[: len(attributes)]
 
         return ((unique_id,) + metadata for unique_id in unique_ids)
+
+    def _compile_sql(self, stmt):
+        return str(
+            stmt.compile(dialect=postgresql.dialect(), compile_kwargs={'literal_binds': True})
+        )
+
+    def search_sql(self, expression):
+        self.search_args.append(self._compile_sql(expression))
+        return [self[uniqueid] for uniqueid in self.search_result]
+
+    def query(self):
+        return sqlalchemy.select(self.Content)
+
+    def search_sql_count(self, query):
+        return len(self.search_result)
 
     # internal helpers
 

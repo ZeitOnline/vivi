@@ -325,3 +325,11 @@ class IConfiguration(zope.interface.Interface):
     )
 
     reach_age = zope.schema.Int(title=_('Reach Age (days)'), required=False)
+
+    sql_query = zope.schema.Text(title=_('SQL query'), required=False)
+
+    sql_order = zope.schema.TextLine(
+        title=_('Sort order'),
+        default="unsorted->'workflow'->>'date_last_published_semantic' desc",
+        required=False,
+    )

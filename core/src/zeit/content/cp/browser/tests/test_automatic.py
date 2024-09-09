@@ -44,6 +44,23 @@ class AutomaticEditForm(zeit.content.cp.testing.BrowserTestCase):
             zeit.cms.testing.xmltotext(cp.body['lead'].xml),
         )
 
+    def test_stores_sql_query_properties_in_xml(self):
+        b = self.browser
+        self.create_automatic_cp(b)
+        b.getControl('Automatic type', index=0).displayValue = ['sql-query']
+        b.getControl('SQL query').value = "type='article'"
+        b.getControl('Apply').click()
+        self.assertEllipsis('...Updated on...', b.contents)
+
+        wc = zeit.cms.checkout.interfaces.IWorkingcopy(None)
+        cp = list(wc.values())[0]
+        self.assertEllipsis(
+            """\
+<region...count="3" automatic="True" automatic_type="sql-query"...>...
+<sql_query>type='article'</sql_query>...""",
+            zeit.cms.testing.xmltotext(cp.body['lead'].xml),
+        )
+
     def test_stores_centerpage_properties_in_xml(self):
         # Create centerpage to reference later on
         self.repository['cp'] = zeit.content.cp.centerpage.CenterPage()

@@ -197,13 +197,37 @@ class IConnector(zope.interface.Interface):
         returns None, None, None if the resource is not locked or is non-existant
         """
 
-    def search(attributes, search_expression):
-        """Search for `search_expression`
+    def search(attributes, query):
+        """Search for `query`
 
         returns an iterator of tuples containing the unique id and the values
         of the requested `attributes`:
 
             (unique_id, attributes[0], attributes[1], ...)
+        """
+
+    def search_sql(query):
+        """Search for `query`
+
+        query:
+            SQL Select object obtained from IConnector.query()
+
+        returns a list of IResource objects
+        """
+
+    def search_sql_count(query):
+        """Count search results for `query`
+
+        query:
+            SQL Select object obtained from IConnector.query()
+
+        returns integer
+        """
+
+    def query():
+        """Not the most desirable API design, but functional for now
+
+        returns query object for properties table for use with search_sql[_count]
         """
 
 

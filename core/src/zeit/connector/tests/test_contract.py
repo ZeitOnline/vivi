@@ -848,10 +848,10 @@ class SQLProtocol:
 
     @contextmanager
     def disable_storage(self):
-        original = self.connector.session
-        self.connector.session = mock.Mock(side_effect=RuntimeError('disabled'))
-        yield
-        self.connector.session = original
+        with mock.patch.object(
+            self.connector.session, 'execute', side_effect=RuntimeError('disabled')
+        ):
+            yield
 
 
 class ContractSQL(

@@ -152,6 +152,33 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
         self.assertEqual(res.id, unique_id)
         self.assertEqual('{urn:uuid:%s}' % props.id, uuid)
 
+    def test_search_by_sql_applies_query(self):
+        res = self.add_resource('one', type='article')
+        self.add_resource('two', type='centerpage')
+        query = self.connector.query()
+        query = query.filter_by(type='article')
+        result = self.connector.search_sql(query)
+        self.assertEqual(len(result), 1)
+        self.assertEqual(result[0].id, res.id)
+
+    def test_search_by_sql_uses_cache(self):
+        self.add_resource('one', body=b'mybody', type='article')
+        query = self.connector.query()
+        query = query.filter_by(type='article')
+        result = self.connector.search_sql(query)
+        with mock.patch.object(
+            self.connector.session, 'execute', side_effect=RuntimeError('disabled')
+        ):
+            self.assertEqual(result[0].data.read(), b'mybody')
+
+    def test_search_sql_count_returns_result_count(self):
+        self.add_resource('one', type='article')
+        self.add_resource('two', type='centerpage')
+        self.add_resource('three', type='article')
+        query = self.connector.query()
+        query = query.filter_by(type='article')
+        self.assertEqual(self.connector.search_sql_count(query), 2)
+
     def test_search_returns_uuid(self):
         res = self.get_resource(
             'foo',
