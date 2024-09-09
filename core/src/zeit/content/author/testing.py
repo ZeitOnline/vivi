@@ -8,19 +8,17 @@ import zeit.cms.testing
 import zeit.find.testing
 
 
-product_config = """
-<product-config zeit.content.author>
-  author-folder /foo/bar/authors
-  biography-questions file://{here}/tests/biography-questions.xml
-  roles file://{here}/tests/roles.xml
-  sso-api-url http://meine.fake/api/1
-  sso-user vivi@zeit.de
-  sso-password password
-</product-config>
-""".format(here=importlib.resources.files(__package__))
-
+HERE = importlib.resources.files(__package__)
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
-    product_config, bases=(zeit.find.testing.CONFIG_LAYER,)
+    {
+        'author-folder': '/foo/bar/authors',
+        'biography-questions': f'file://{HERE}/tests/biography-questions.xml',
+        'roles': f'file://{HERE}/tests/roles.xml',
+        'sso-api-url': 'http://meine.fake/api/1',
+        'sso-user': 'vivi@zeit.de',
+        'sso-password': 'password',
+    },
+    bases=(zeit.find.testing.CONFIG_LAYER,),
 )
 
 

@@ -11,17 +11,14 @@ import zeit.crop.testing
 import zeit.push.testing
 
 
-product_config = """
-<product-config zeit.content.gallery>
-    scale-source file://{here}/scales.xml
-    ticket-secret All work and no play makes jack a dull boy
-    gallery-types-url file://{here}/gallery-types.xml
-</product-config>
-""".format(here=importlib.resources.files(__package__))
-
-
+HERE = importlib.resources.files(__package__)
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
-    product_config, bases=(zeit.crop.testing.CONFIG_LAYER, zeit.push.testing.CONFIG_LAYER)
+    {
+        'scale-source': f'file://{HERE}/scales.xml',
+        'ticket-secret': 'All work and no play makes jack a dull boy',
+        'gallery-types-url': f'file://{HERE}/gallery-types.xml',
+    },
+    bases=(zeit.crop.testing.CONFIG_LAYER, zeit.push.testing.CONFIG_LAYER),
 )
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER,))
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))

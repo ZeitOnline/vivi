@@ -2,16 +2,6 @@ import zeit.cms.testing
 import zeit.content.audio.testing
 
 
-product_config = """\
-<product-config zeit.simplecast>
-  simplecast-url https://testapi.simplecast.com/
-  simplecast-token TkQvZUd2MHRnR0UybFhsgTfs
-  podcast-folder podcasts
-  principal zope.simplecast
-  retry-delay-seconds 0
-</product-config>
-"""
-
 EPISODE_200 = {
     'created_at': '2023-08-31T13:51:00-01:00',
     'description': 'lorem ipsum',
@@ -50,7 +40,13 @@ EPISODE_200 = {
 }
 
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
-    product_config,
+    {
+        'simplecast-url': 'https://testapi.simplecast.com/',
+        'simplecast-token': 'TkQvZUd2MHRnR0UybFhsgTfs',
+        'podcast-folder': 'podcasts',
+        'principal': 'zope.simplecast',
+        'retry-delay-seconds': '0',
+    },
     bases=(zeit.content.audio.testing.CONFIG_LAYER,),
 )
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer('ftesting.zcml', bases=(CONFIG_LAYER,))

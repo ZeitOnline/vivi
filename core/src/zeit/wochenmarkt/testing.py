@@ -6,15 +6,13 @@ import zeit.wochenmarkt.categories
 import zeit.wochenmarkt.ingredients
 
 
-product_config = """\
-<product-config zeit.wochenmarkt>
-  categories-url file://{here}/tests/fixtures/categories.xml
-  ingredients-url file://{here}/tests/fixtures/ingredients.xml
-</product-config>
-""".format(here=importlib.resources.files(__package__))
-
+HERE = importlib.resources.files(__package__)
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
-    product_config, bases=(zeit.cms.testing.CONFIG_LAYER,)
+    {
+        'categories-url': f'file://{HERE}/tests/fixtures/categories.xml',
+        'ingredients-url': f'file://{HERE}/tests/fixtures/ingredients.xml',
+    },
+    bases=(zeit.cms.testing.CONFIG_LAYER,),
 )
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer('ftesting.zcml', bases=(CONFIG_LAYER,))
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))

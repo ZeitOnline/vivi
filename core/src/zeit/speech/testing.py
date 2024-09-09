@@ -12,16 +12,6 @@ import zeit.content.article.testing
 import zeit.content.audio.testing
 
 
-product_config = """\
-<product-config zeit.speech>
-  principal zope.speech
-  speech-folder tts
-  retry-delay-seconds 0
-  max-retries 1
-</product-config>
-"""
-
-
 TTS_CREATION_STARTED = {
     'event': 'AUDIO_CREATION_STARTED',
     'uuid': 'a89ce2e3-4887-466a-a52e-edc6b9802ef9',
@@ -67,7 +57,12 @@ TTS_DELETED = {
 }
 
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
-    product_config,
+    {
+        'principal': 'zope.speech',
+        'speech-folder': 'tts',
+        'retry-delay-seconds': '0',
+        'max-retries': '1',
+    },
     bases=(zeit.content.article.testing.CONFIG_LAYER,),
 )
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer('ftesting.zcml', bases=(CONFIG_LAYER,))

@@ -20,29 +20,25 @@ import zeit.retresco.interfaces
 import zeit.retresco.testhelper
 
 
-product_config = """
-<product-config zeit.content.cp>
-    block-layout-source file://{fixtures}/layout.xml
-    region-config-source file://{fixtures}/regions.xml
-    area-config-source file://{fixtures}/areas.xml
-    module-config-source file://{fixtures}/blocks.xml
-    cp-extra-url file://{fixtures}/cpextra.xml
-    cp-types-url file://{fixtures}/cp-types.xml
-    topicpage-filter-source file://{fixtures}/filter.json
-    layout-image-path /data/cp-layouts
-    layout-css-path /data/cp-layouts/layouts.css
-    header-image-variant cinema
-    cp-automatic-feed-source file://{fixtures}/feeds.xml
-    area-color-themes-source file://{fixtures}/area-color-themes.xml
-    reach-service-source file://{fixtures}/reach-services.xml
-    sql-query-add-clauses unsorted @@ '$$.workflow.published == "yes"' AND \
-    unsorted @@ '$$."zeit.content.gallery".type != "inline"'
-</product-config>
-""".format(fixtures='%s/tests/fixtures' % importlib.resources.files(__package__))
-
-
+FIXTURES = importlib.resources.files(__package__) / 'tests/fixtures'
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
-    product_config,
+    {
+        'block-layout-source': f'file://{FIXTURES}/layout.xml',
+        'region-config-source': f'file://{FIXTURES}/regions.xml',
+        'area-config-source': f'file://{FIXTURES}/areas.xml',
+        'module-config-source': f'file://{FIXTURES}/blocks.xml',
+        'cp-extra-url': f'file://{FIXTURES}/cpextra.xml',
+        'cp-types-url': f'file://{FIXTURES}/cp-types.xml',
+        'topicpage-filter-source': f'file://{FIXTURES}/filter.json',
+        'layout-image-path': '/data/cp-layouts',
+        'layout-css-path': '/data/cp-layouts/layouts.css',
+        'header-image-variant': 'cinema',
+        'cp-automatic-feed-source': f'file://{FIXTURES}/feeds.xml',
+        'area-color-themes-source': f'file://{FIXTURES}/area-color-themes.xml',
+        'reach-service-source': f'file://{FIXTURES}/reach-services.xml',
+        'sql-query-add-clauses': """unsorted @@ '$.workflow.published == "yes"' \
+AND unsorted @@ '$."zeit.content.gallery".type != "inline"'""",
+    },
     patches={
         'zeit.edit': {
             'rules-url': 'file://%s/tests/fixtures/example_rules.py'

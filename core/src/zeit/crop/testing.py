@@ -7,16 +7,13 @@ import zeit.cms.testing
 import zeit.content.image.testing
 
 
-product_config = """
-<product-config zeit.crop>
-    scale-source file://{here}/scales.xml
-    color-source file://{here}/colors.xml
-</product-config>
-""".format(here=importlib.resources.files(__package__))
-
-
+HERE = importlib.resources.files(__package__)
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
-    product_config, bases=(zeit.content.image.testing.CONFIG_LAYER,)
+    {
+        'scale-source': f'file://{HERE}/scales.xml',
+        'color-source': f'file://{HERE}/colors.xml',
+    },
+    bases=(zeit.content.image.testing.CONFIG_LAYER,),
 )
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER,))
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))

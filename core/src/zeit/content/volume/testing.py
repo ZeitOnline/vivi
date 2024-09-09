@@ -9,21 +9,18 @@ import zeit.content.image.testing
 import zeit.push.testing
 
 
-product_config = """
-<product-config zeit.content.volume>
-    volume-cover-source file://{here}/tests/fixtures/volume-covers.xml
-    default-teaser-text Teäser {{name}}/{{year}}
-    access-control-config file://{here}/tests/fixtures/access-control.xml
-    access-control-webtrekk-url https://webtrekkapi.foo
-    access-control-webtrekk-timeout 10
-    access-control-webtrekk-username foo
-    access-control-webtrekk-password bar
-    access-control-webtrekk-customerId 123
-</product-config>
-""".format(here=importlib.resources.files(__package__))
-
+HERE = importlib.resources.files(__package__)
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
-    product_config,
+    {
+        'volume-cover-source': f'file://{HERE}/tests/fixtures/volume-covers.xml',
+        'default-teaser-text': 'Teäser {name}/{year}',
+        'access-control-config': f'file://{HERE}/tests/fixtures/access-control.xml',
+        'access-control-webtrekk-url': 'https://webtrekkapi.foo',
+        'access-control-webtrekk-timeout': '10',
+        'access-control-webtrekk-username': 'foo',
+        'access-control-webtrekk-password': 'bar',
+        'access-control-webtrekk-customerid': '123',
+    },
     bases=(zeit.content.cp.testing.CONFIG_LAYER, zeit.push.testing.CONFIG_LAYER),
 )
 
@@ -34,8 +31,7 @@ class ArticleConfigLayer(zeit.cms.testing.ProductConfigLayer):
         # Break circular dependency
         import zeit.content.article.testing
 
-        config = zeit.content.article.testing.product_config
-        self.config = self.loadConfiguration(config, self.package)
+        self.config = zeit.content.article.testing.CONFIG_LAYER.config
         super().setUp()
 
 

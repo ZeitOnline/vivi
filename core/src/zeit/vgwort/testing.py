@@ -16,24 +16,17 @@ import zeit.retresco.testing
 import zeit.vgwort.interfaces
 
 
-product_config = """
-<product-config zeit.vgwort>
-    vgwort-url https://tom-test.vgwort.de/
-    username {username}
-    password {password}
-    minimum-token-amount 10
-    order-token-amount 1
-    days-before-report 7
-    claim-token-url http://user:userpw@localhost/
-</product-config>
-""".format(
-    username=os.environ.get('ZEIT_VGWORT_USERNAME'),
-    password=os.environ.get('ZEIT_VGWORT_PASSWORD'),
-)
-
-
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
-    product_config, bases=(zeit.content.author.testing.CONFIG_LAYER,)
+    {
+        'vgwort-url': 'https://tom-test.vgwort.de/',
+        'username': os.environ.get('ZEIT_VGWORT_USERNAME', ''),
+        'password': os.environ.get('ZEIT_VGWORT_PASSWORD', ''),
+        'minimum-token-amount': '10',
+        'order-token-amount': '1',
+        'days-before-report': '7',
+        'claim-token-url': 'http://user:userpw@localhost/',
+    },
+    bases=(zeit.content.author.testing.CONFIG_LAYER,),
 )
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer('ftesting-mock.zcml', bases=(CONFIG_LAYER,))
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER, zeit.retresco.testhelper.TMS_MOCK_LAYER))

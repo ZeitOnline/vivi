@@ -3,11 +3,10 @@ import importlib.resources
 import zeit.cms.testing
 
 
+HERE = importlib.resources.files(__package__)
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
     {
-        'vendors': 'file://{here}/tests/fixtures/vendors.xml'.format(
-            here=importlib.resources.files(__package__)
-        )
+        'vendors': f'file://{HERE}/tests/fixtures/vendors.xml',
     },
     bases=(zeit.cms.testing.CONFIG_LAYER,),
 )

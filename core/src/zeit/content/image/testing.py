@@ -11,21 +11,18 @@ import zeit.content.image.image
 import zeit.content.image.imagegroup
 
 
-product_config = """
-<product-config zeit.content.image>
-    display-type-source file://{here}/tests/fixtures/display-types.xml
-    variant-source file://{here}/tests/fixtures/variants.xml
-    copyright-company-source file://{here}/tests/fixtures/copyright-company.xml
-    encoder-parameters file://{here}/tests/fixtures/encoders.xml
-    mdb-api-url http://example.invalid
-    mdb-api-username mdbuser
-    mdb-api-password mdbpass
-</product-config>
-""".format(here=importlib.resources.files(__package__))
-
-
+HERE = importlib.resources.files(__package__)
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
-    product_config, bases=(zeit.cms.testing.CONFIG_LAYER,)
+    {
+        'display-type-source': f'file://{HERE}/tests/fixtures/display-types.xml',
+        'variant-source': f'file://{HERE}/tests/fixtures/variants.xml',
+        'copyright-company-source': f'file://{HERE}/tests/fixtures/copyright-company.xml',
+        'encoder-parameters': f'file://{HERE}/tests/fixtures/encoders.xml',
+        'mdb-api-url': 'http://example.invalid',
+        'mdb-api-username': 'mdbuser',
+        'mdb-api-password': 'mdbpass',
+    },
+    bases=(zeit.cms.testing.CONFIG_LAYER,),
 )
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER,))
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))

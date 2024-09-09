@@ -10,14 +10,11 @@ import zeit.cms.testing
 
 T = TypeVar('T')  # Can be anything
 
-product_config = """
-<product-config zeit.content.audio>
-   podcast-source file://{here}/tests/fixtures/podcasts.xml
-</product-config>
-""".format(here=importlib.resources.files(__package__))
-
+HERE = importlib.resources.files(__package__)
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
-    product_config,
+    {
+        'podcast-source': f'file://{HERE}/tests/fixtures/podcasts.xml',
+    },
     bases=(zeit.cms.testing.CONFIG_LAYER,),
 )
 

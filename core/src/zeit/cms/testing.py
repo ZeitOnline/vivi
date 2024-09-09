@@ -1,4 +1,3 @@
-from io import StringIO
 from urllib.parse import urljoin
 import base64
 import contextlib
@@ -98,13 +97,8 @@ class ProductConfigLayer(plone.testing.Layer):
         if not package:
             package = '.'.join(module.split('.')[:-1])
         self.package = package
-        if isinstance(config, str):  # BBB
-            config = self.loadConfiguration(config, package)
         self.config = config
         self.patches = patches or {}
-
-    def loadConfiguration(self, text, package):
-        return zope.app.appsetup.product.loadConfiguration(StringIO(text))[package]
 
     def setUp(self):
         self.previous = {}
@@ -541,54 +535,42 @@ class HTTPLayer(gocept.httpserverlayer.custom.Layer):
         self['request_handler'].response_code = 200
 
 
-cms_product_config = """\
-<product-config zeit.cms>
-  environment testing
-
-  source-access file://{here}/content/access.xml
-  source-serie file://{here}/content/serie.xml
-  source-ressorts file://{here}/content/ressorts.xml
-  source-keyword file://{here}/content/zeit-ontologie-prism.xml
-  source-products file://{here}/content/products.xml
-  source-badges file://{here}/asset/badges.xml
-  source-channels file://{here}/content/ressorts.xml
-  source-printressorts file://{here}/content/print-ressorts.xml
-  source-manual file://{here}/content/manual.xml
-
-  config-retractlog file://{here}/retractlog/retractlog.xml
-
-  checkout-lock-timeout 3600
-  checkout-lock-timeout-temporary 30
-
-  preview-prefix http://localhost/preview-prefix/
-  live-prefix http://localhost/live-prefix/
-  image-live-prefix http://localhost/img-live-prefix/
-  friebert-wc-preview-prefix /wcpreview
-
-  breadcrumbs-use-common-metadata true
-
-  cache-regions config, feature, newsimport, dav
-  cache-expiration-config 600
-  cache-expiration-feature 15
-  cache-expiration-newsimport 1
-  cache-expiration-dav 0
-  feature-toggle-source file://{here}/content/feature-toggle.xml
-
-  sso-cookie-name-prefix my_sso_
-  sso-cookie-domain
-  sso-expiration 300
-  sso-algorithm RS256
-  sso-private-key-file {here}/tests/sso-private.pem
-
-  source-api-mapping product=zeit.cms.content.sources.ProductSource
-  # We just need a dummy XML file
-  checkin-webhook-config file://{here}/content/access.xml
-</product-config>
-""".format(here=importlib.resources.files(__package__))
-
-
+HERE = importlib.resources.files(__package__)
 CONFIG_LAYER = ProductConfigLayer(
-    cms_product_config,
+    {
+        'environment': 'testing',
+        'source-access': f'file://{HERE}/content/access.xml',
+        'source-serie': f'file://{HERE}/content/serie.xml',
+        'source-ressorts': f'file://{HERE}/content/ressorts.xml',
+        'source-keyword': f'file://{HERE}/content/zeit-ontologie-prism.xml',
+        'source-products': f'file://{HERE}/content/products.xml',
+        'source-badges': f'file://{HERE}/asset/badges.xml',
+        'source-channels': f'file://{HERE}/content/ressorts.xml',
+        'source-printressorts': f'file://{HERE}/content/print-ressorts.xml',
+        'source-manual': f'file://{HERE}/content/manual.xml',
+        'config-retractlog': f'file://{HERE}/retractlog/retractlog.xml',
+        'checkout-lock-timeout': '3600',
+        'checkout-lock-timeout-temporary': '30',
+        'preview-prefix': 'http://localhost/preview-prefix/',
+        'live-prefix': 'http://localhost/live-prefix/',
+        'image-live-prefix': 'http://localhost/img-live-prefix/',
+        'friebert-wc-preview-prefix': '/wcpreview',
+        'breadcrumbs-use-common-metadata': 'true',
+        'cache-regions': 'config, feature, newsimport, dav',
+        'cache-expiration-config': '600',
+        'cache-expiration-feature': '15',
+        'cache-expiration-newsimport': '1',
+        'cache-expiration-dav': '0',
+        'feature-toggle-source': f'file://{HERE}/content/feature-toggle.xml',
+        'sso-cookie-name-prefix': 'my_sso_',
+        'sso-cookie-domain': '',
+        'sso-expiration': '300',
+        'sso-algorithm': 'RS256',
+        'sso-private-key-file': f'{HERE}/tests/sso-private.pem',
+        'source-api-mapping': 'product=zeit.cms.content.sources.ProductSource',
+        # We just need a dummy XML file
+        'checkin-webhook-config': f'file://{HERE}/content/access.xml',
+    },
     patches={
         'zeit.connector': {
             'repository-path': str((importlib.resources.files('zeit.connector') / 'testcontent'))

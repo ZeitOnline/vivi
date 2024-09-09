@@ -29,23 +29,20 @@ class PushNotifier:
         log.info('PushNotifier.send(%s)', {'text': text, 'link': link, 'kw': kw})
 
 
-product_config = """\
-<product-config zeit.push>
-  facebook-main-account fb-test
-  facebook-breaking-news-expiration 1800
-  push-target-url http://www.zeit.de/
-  mobile-image-url http://img.zeit.de/
-  urbanairship-audience-group subscriptions
-  urbanairship-expire-interval 60
-  mobile-buttons file://{fixtures}/mobile-buttons.xml
-  push-payload-templates http://xml.zeit.de/data/urbanairship-templates/
-  homepage-banner-uniqueid http://xml.zeit.de/banner
-</product-config>
-""".format(fixtures='%s/tests/fixtures' % importlib.resources.files(__package__))
-
-
+HERE = importlib.resources.files(__package__)
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
-    product_config, bases=(zeit.content.image.testing.CONFIG_LAYER,)
+    {
+        'facebook-main-account': 'fb-test',
+        'facebook-breaking-news-expiration': '1800',
+        'push-target-url': 'http://www.zeit.de/',
+        'mobile-image-url': 'http://img.zeit.de/',
+        'urbanairship-audience-group': 'subscriptions',
+        'urbanairship-expire-interval': '60',
+        'mobile-buttons': f'file://{HERE}/tests/fixtures/mobile-buttons.xml',
+        'push-payload-templates': 'http://xml.zeit.de/data/urbanairship-templates/',
+        'homepage-banner-uniqueid': 'http://xml.zeit.de/banner',
+    },
+    bases=(zeit.content.image.testing.CONFIG_LAYER,),
 )
 
 
@@ -54,8 +51,7 @@ class ArticleConfigLayer(zeit.cms.testing.ProductConfigLayer):
         # Break circular dependency
         import zeit.content.article.testing
 
-        config = zeit.content.article.testing.product_config
-        self.config = self.loadConfiguration(config, self.package)
+        self.config = zeit.content.article.testing.CONFIG_LAYER.config
         super().setUp()
 
 

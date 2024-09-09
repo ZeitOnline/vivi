@@ -10,19 +10,16 @@ import zeit.wochenmarkt.ingredients
 import zeit.wochenmarkt.testing
 
 
-product_config = """\
-<product-config zeit.content.modules>
-  jobticker-source file://{here}/tests/fixtures/jobticker.xml
-  subject-source file://{here}/tests/fixtures/mail-subjects.xml
-  embed-provider-source file://{here}/tests/fixtures/embed-providers.xml
-  newsletter-source file://{here}/tests/fixtures/newsletter.xml
-  recipe-metadata-source file://{here}/tests/fixtures/recipe-metadata.xml
-</product-config>
-""".format(here=importlib.resources.files(__package__))
-
-
+HERE = importlib.resources.files(__package__)
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
-    product_config, bases=(zeit.cmp.testing.CONFIG_LAYER, zeit.wochenmarkt.testing.CONFIG_LAYER)
+    {
+        'jobticker-source': f'file://{HERE}/tests/fixtures/jobticker.xml',
+        'subject-source': f'file://{HERE}/tests/fixtures/mail-subjects.xml',
+        'embed-provider-source': f'file://{HERE}/tests/fixtures/embed-providers.xml',
+        'newsletter-source': f'file://{HERE}/tests/fixtures/newsletter.xml',
+        'recipe-metadata-source': f'file://{HERE}/tests/fixtures/recipe-metadata.xml',
+    },
+    bases=(zeit.cmp.testing.CONFIG_LAYER, zeit.wochenmarkt.testing.CONFIG_LAYER),
 )
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER,))
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
