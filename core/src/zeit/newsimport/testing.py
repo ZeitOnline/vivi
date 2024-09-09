@@ -21,21 +21,17 @@ import zeit.workflow.testing
 
 HERE = os.path.dirname(__file__)
 
-product_config = """\
-<product-config zeit.newsimport>
-    weblines-url http://dpa_api_test.com
-    nextline-url http://dpa_api_test.com
-    dpa-rubric-config-source file://{base}/tests/data/products.xml
-</product-config>
-""".format(base=HERE)
-
 
 def asset_path(*parts):
     return os.path.join(HERE, 'tests', 'data', *parts)
 
 
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
-    product_config,
+    {
+        'weblines-url': 'http://dpa_api_test.com',
+        'nextline-url': 'http://dpa_api_test.com',
+        'dpa-rubric-config-source': f'file://{HERE}/tests/data/products.xml',
+    },
     bases=(zeit.retresco.testing.CONFIG_LAYER,),
 )
 # NOTE author config layer is included in article config layer

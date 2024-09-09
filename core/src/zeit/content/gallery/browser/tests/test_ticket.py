@@ -1,42 +1,22 @@
-from io import StringIO
-import unittest
-
-import zope.app.appsetup.product
-
 import zeit.cms.testing
 import zeit.content.gallery.browser.ticket
 import zeit.content.gallery.testing
 
 
-class TestTicketAuthorization(unittest.TestCase):
+class TestTicketAuthorization(zeit.content.gallery.testing.FunctionalTestCase):
     rnd = -2134234234
     hash_ = 28 * b'x'
-    principal = 'prin.cipal'
-
-    def setUp(self):
-        self.config = zope.app.appsetup.product.saveConfiguration()
-        config = zope.app.appsetup.product.loadConfiguration(
-            StringIO(zeit.content.gallery.testing.product_config)
-        )
-        config = [
-            zope.app.appsetup.product.FauxConfiguration(name, values)
-            for name, values in config.items()
-        ]
-        zope.app.appsetup.product.setProductConfigurations(config)
-
-    def tearDown(self):
-        zope.app.appsetup.product.restoreConfiguration(self.config)
 
     def test_pack_unpack(self):
-        packed = zeit.content.gallery.browser.ticket.pack(self.rnd, self.hash_, self.principal)
+        packed = zeit.content.gallery.browser.ticket.pack(self.rnd, self.hash_, self.principal.id)
         unpacked = zeit.content.gallery.browser.ticket.unpack(packed)
         self.assertEqual(unpacked[0], self.rnd)
         self.assertEqual(unpacked[1], self.hash_)
-        self.assertEqual(unpacked[2], self.principal)
+        self.assertEqual(unpacked[2], self.principal.id)
 
     def test_ticket(self):
-        ticket = zeit.content.gallery.browser.ticket.get_hash(self.rnd, self.principal)
+        ticket = zeit.content.gallery.browser.ticket.get_hash(self.rnd, self.principal.id)
         unpacked = zeit.content.gallery.browser.ticket.unpack(ticket)
         self.assertEqual(unpacked[0], self.rnd)
         self.assertNotEqual(unpacked[1], self.hash_)
-        self.assertEqual(unpacked[2], self.principal)
+        self.assertEqual(unpacked[2], self.principal.id)

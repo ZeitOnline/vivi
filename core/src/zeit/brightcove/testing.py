@@ -9,24 +9,6 @@ import zeit.cms.testing
 import zeit.content.video.testing
 
 
-product_config = """\
-<product-config zeit.brightcove>
-    api-url none
-    oauth-url none
-    client-id none
-    client-secret none
-    timeout 300
-
-    playback-url none
-    playback-policy-key none
-    playback-timeout 3
-
-    video-folder video
-    index-principal zope.user
-</product-config>
-"""
-
-
 class MockAPILayer(plone.testing.Layer):
     def setUp(self):
         self.cmsapi_patch = mock.patch('zeit.brightcove.connection.CMSAPI._request')
@@ -41,7 +23,18 @@ class MockAPILayer(plone.testing.Layer):
 
 MOCK_API_LAYER = MockAPILayer()
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
-    product_config,
+    {
+        'api-url': 'none',
+        'oauth-url': 'none',
+        'client-id': 'none',
+        'client-secret': 'none',
+        'timeout': '300',
+        'playback-url': 'none',
+        'playback-policy-key': 'none',
+        'playback-timeout': '3',
+        'video-folder': 'video',
+        'index-principal': 'zope.user',
+    },
     patches={'zeit.cms': {'task-queue-brightcove': 'brightcove'}},
     bases=(zeit.content.video.testing.CONFIG_LAYER,),
 )

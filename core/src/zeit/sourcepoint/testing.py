@@ -5,16 +5,13 @@ import zeit.cms.repository.interfaces
 import zeit.cms.testing
 
 
-product_config = """\
-<product-config zeit.sourcepoint>
-  addefend-url http://example.com
-  addefend-javascript-folder http://xml.zeit.de/addefend/
-  addefend-filename adf
-</product-config>
-"""
-
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
-    product_config, bases=(zeit.cms.testing.CONFIG_LAYER,)
+    {
+        'addefend-url': 'http://example.com',
+        'addefend-javascript-folder': 'http://xml.zeit.de/addefend/',
+        'addefend-filename': 'adf',
+    },
+    bases=(zeit.cms.testing.CONFIG_LAYER,),
 )
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer('testing.zcml', bases=(CONFIG_LAYER,))
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))

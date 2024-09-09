@@ -12,18 +12,15 @@ import zeit.push.testing
 import zeit.workflow.publishinfo
 
 
-product_config = """
-<product-config zeit.workflow>
-    dependency-publish-limit 100
-    blacklist /blacklist
-    publisher-base-url http://localhost:8060/test/
-    speechbert-ignore-genres datenvisualisierung video quiz
-    speechbert-ignore-templates zon-liveblog
-</product-config>
-"""
-
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
-    product_config, bases=(zeit.push.testing.CONFIG_LAYER,)
+    {
+        'dependency-publish-limit': '100',
+        'blacklist': '/blacklist',
+        'publisher-base-url': 'http://localhost:8060/test/',
+        'speechbert-ignore-genres': 'datenvisualisierung video quiz',
+        'speechbert-ignore-templates': 'zon-liveblog',
+    },
+    bases=(zeit.push.testing.CONFIG_LAYER,),
 )
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER,))
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))

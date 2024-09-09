@@ -14,15 +14,11 @@ import zeit.content.link.testing
 import zeit.push.testing
 
 
-product_config = """\
-<product-config zeit.campus>
-  article-stoa-source file://{here}/tests/article-stoa.xml
-</product-config>
-""".format(here=importlib.resources.files(__package__))
-
-
+HERE = importlib.resources.files(__package__)
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
-    product_config,
+    {
+        'article-stoa-source': f'file://{HERE}/tests/article-stoa.xml',
+    },
     bases=(
         zeit.content.article.testing.CONFIG_LAYER,
         zeit.content.link.testing.CONFIG_LAYER,

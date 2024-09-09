@@ -1,5 +1,5 @@
-from io import StringIO
 from unittest import mock
+import copy
 import importlib.resources
 import json
 
@@ -20,35 +20,34 @@ HTTP_LAYER = zeit.cms.testing.HTTPLayer(
 )
 
 
-product_config = """
-<product-config zeit.retresco>
-    primary-base-url http://localhost:{port}
-    secondary-base-url http://localhost:{port}/another-tms
-    elasticsearch-url http://tms-backend.staging.zeit.de:80/elasticsearch
-    elasticsearch-index zeit_pool
-    elasticsearch-connection-class zeit.retresco.search.Connection
-    topic-redirect-prefix http://www.zeit.de
-    index-principal zope.user
-    kpi-fields file://%(here)s/tests/kpi.xml
-    topicpages-source file://%(here)s/tests/topicpages.xml
-    topicpage-prefix /thema
-</product-config>
-""" % {'here': importlib.resources.files(__package__)}
-
-
 class ProductConfigLayer(zeit.cms.testing.ProductConfigLayer):
     def __init__(self, config, **kw):
-        self.raw_config = config
-        super().__init__({}, **kw)
+        # pytest may setUp/tearDown the same layer multiple times, so we have to
+        # perform the `port` replacement each time.
+        self.raw_config = copy.deepcopy(config)
+        super().__init__(config, **kw)
 
     def setUp(self):
-        config = self.raw_config.format(port=self['http_port'])
-        self.config = zope.app.appsetup.product.loadConfiguration(StringIO(config))[self.package]
+        for key, value in self.raw_config.items():
+            if '{port}' in value:
+                self.config[key] = value.format(port=self['http_port'])
         super().setUp()
 
 
+HERE = importlib.resources.files(__package__)
 CONFIG_LAYER = ProductConfigLayer(
-    product_config,
+    {
+        'primary-base-url': 'http://localhost:{port}',
+        'secondary-base-url': 'http://localhost:{port}/another-tms',
+        'elasticsearch-url': 'http://tms-backend.staging.zeit.de:80/elasticsearch',
+        'elasticsearch-index': 'zeit_pool',
+        'elasticsearch-connection-class': 'zeit.retresco.search.Connection',
+        'topic-redirect-prefix': 'http://www.zeit.de',
+        'index-principal': 'zope.user',
+        'kpi-fields': f'file://{HERE}/tests/kpi.xml',
+        'topicpages-source': f'file://{HERE}/tests/topicpages.xml',
+        'topicpage-prefix': '/thema',
+    },
     bases=(
         HTTP_LAYER,
         zeit.content.article.testing.CONFIG_LAYER,

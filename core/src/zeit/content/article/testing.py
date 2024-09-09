@@ -18,43 +18,38 @@ import zeit.retresco.testhelper
 import zeit.wochenmarkt.testing
 
 
-product_config = """
-<product-config zeit.content.article>
-  zeit-comments-api-url https://comments.staging.zeit.de
-  book-recension-categories file://{here}/tests/recension_categories.xml
-  genre-url file://{here}/tests/article-genres.xml
-  image-display-mode-source file://{here}/edit/tests/image-display-modes.xml
-  legacy-display-mode-source file://{here}/edit/tests/legacy-display-modes.xml
-  image-variant-name-source file://{here}/edit/tests/image-variant-names.xml
-  legacy-variant-name-source file://{here}/edit/tests/legacy-variant-names.xml
-  video-layout-source file://{here}/edit/tests/video-layouts.xml
-  infobox-layout-source file://{here}/edit/tests/infobox-layouts.xml
-  template-source file://{here}/edit/tests/templates.xml
-  module-source file://{here}/edit/tests/modules.xml
-  header-module-source file://{here}/edit/tests/header-modules.xml
-  topicbox-teaser-amount 5
-  citation-layout-source file://{here}/edit/tests/citation-layouts.xml
-  box-layout-source file://{here}/edit/tests/box-layouts.xml
-  puzzleforms-source file://{here}/edit/tests/puzzleforms.xml
-  topicpage-filter-source file://{here}/tests/topicpage-esqueries.json
-  config-here-url file://{here}/tests/
-  tagesschau-api-url-post https://ard-tagesschau/post
-  tagesschau-api-url-post-sync https://ard-tagesschau/post/sync
-  tagesschau-api-url-get https://ard-tagesschau/get
-  tagesschau-sig-uri XYZ
-  tagesschau-api-key 1a2b3c4d5e
-</product-config>
-""".format(here=importlib.resources.files(__package__))
-
-
 checker = zope.testing.renormalizing.RENormalizing(
     [(re.compile('[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'), '<GUID>')]
 )
 checker.transformers[0:0] = zeit.cms.testing.checker.transformers
 
 
+HERE = importlib.resources.files(__package__)
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
-    product_config,
+    {
+        'zeit-comments-api-url': 'https://comments.staging.zeit.de',
+        'book-recension-categories': f'file://{HERE}/tests/recension_categories.xml',
+        'genre-url': f'file://{HERE}/tests/article-genres.xml',
+        'image-display-mode-source': f'file://{HERE}/edit/tests/image-display-modes.xml',
+        'legacy-display-mode-source': f'file://{HERE}/edit/tests/legacy-display-modes.xml',
+        'image-variant-name-source': f'file://{HERE}/edit/tests/image-variant-names.xml',
+        'legacy-variant-name-source': f'file://{HERE}/edit/tests/legacy-variant-names.xml',
+        'video-layout-source': f'file://{HERE}/edit/tests/video-layouts.xml',
+        'infobox-layout-source': f'file://{HERE}/edit/tests/infobox-layouts.xml',
+        'template-source': f'file://{HERE}/edit/tests/templates.xml',
+        'module-source': f'file://{HERE}/edit/tests/modules.xml',
+        'header-module-source': f'file://{HERE}/edit/tests/header-modules.xml',
+        'topicbox-teaser-amount': '5',
+        'citation-layout-source': f'file://{HERE}/edit/tests/citation-layouts.xml',
+        'box-layout-source': f'file://{HERE}/edit/tests/box-layouts.xml',
+        'puzzleforms-source': f'file://{HERE}/edit/tests/puzzleforms.xml',
+        'topicpage-filter-source': f'file://{HERE}/tests/topicpage-esqueries.json',
+        'tagesschau-api-url-post': 'https://ard-tagesschau/post',
+        'tagesschau-api-url-post-sync': 'https://ard-tagesschau/post/sync',
+        'tagesschau-api-url-get': 'https://ard-tagesschau/get',
+        'tagesschau-sig-uri': 'XYZ',
+        'tagesschau-api-key': '1a2b3c4d5e',
+    },
     bases=(
         zeit.content.author.testing.CONFIG_LAYER,
         zeit.content.gallery.testing.CONFIG_LAYER,

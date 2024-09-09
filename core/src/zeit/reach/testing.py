@@ -2,18 +2,14 @@ import zeit.cms.testing
 import zeit.retresco.testing
 
 
-product_config = """
-<product-config zeit.reach>
-    url http://localhost:{port}
-    freeze-now
-</product-config>
-"""
-
 HTTP_LAYER = zeit.cms.testing.HTTPLayer(
     zeit.cms.testing.RecordingRequestHandler, name='HTTPLayer', module=__name__
 )
 CONFIG_LAYER = zeit.retresco.testing.ProductConfigLayer(
-    product_config,
+    {
+        'url': 'http://localhost:{port}',
+        'freeze-now': '',
+    },
     package='zeit.reach',
     bases=(
         HTTP_LAYER,
