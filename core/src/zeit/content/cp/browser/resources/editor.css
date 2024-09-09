@@ -514,6 +514,11 @@ buttons, we only can get a different label if we override it here. */
 
 }
 
+.fieldname-elasticsearch_raw_order input,
+.fieldname-sql_order input {
+    width: 100%;
+}
+
 /* specificity wars, yay */
 #cp-content .fieldname-query .widget .object-reference.landing-zone,
 #cp-content .fieldname-referenced_cp .widget .object-reference.landing-zone {
