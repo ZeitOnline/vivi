@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Thu Sep  5 18:02:36 2024\n"
+"POT-Creation-Date: Mon Sep  9 10:27:07 2024\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -3871,10 +3871,6 @@ msgstr "Liveblog-Status"
 #: zeit/content/modules/interfaces.py:278
 msgid "Liveblog theme"
 msgstr "Liveblog-Theme"
-
-#: zeit/content/modules/interfaces.py:285
-msgid "Intersections"
-msgstr "Zwischenüberschriften"
 
 #: zeit/content/portraitbox/browser/form.py:20
 #: zeit/magazin/browser/portraitbox.py:26
