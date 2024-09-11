@@ -3,6 +3,16 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.34.0 (2024-09-11)
+-------------------
+
+- ZO-6198: Remove liveblog config intersection_type
+
+
+MAINT:
+- Update dependencies (Python 3.12.6)
+
+
 6.33.0 (2024-09-06)
 -------------------
 
