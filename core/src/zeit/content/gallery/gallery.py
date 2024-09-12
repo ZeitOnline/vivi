@@ -187,8 +187,8 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
         self._p_changed = True
 
     def updateOrder(self, order):
-        if set(self.keys()) != set(order):
-            raise ValueError('The order argument must contain the same ' 'keys as the container.')
+        if order is None or set(self.keys()) != set(order):
+            raise ValueError('The order argument must contain the same keys as the container.')
         order = [self._get_block_for_key(x) for x in order]
         for node in self._entries_container.iterchildren():
             self._entries_container.remove(node)
