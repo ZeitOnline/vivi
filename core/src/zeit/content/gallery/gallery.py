@@ -170,6 +170,8 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
         return list(zip(list(self.keys()), list(self.values())))
 
     def __len__(self):
+        if self._image_folder is None:
+            return 0
         return int(self._entries_container.xpath('count(block)'))
 
     def __setitem__(self, key, value):
@@ -185,8 +187,8 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
         self._p_changed = True
 
     def updateOrder(self, order):
-        if set(self.keys()) != set(order):
-            raise ValueError('The order argument must contain the same ' 'keys as the container.')
+        if order is None or set(self.keys()) != set(order):
+            raise ValueError('The order argument must contain the same keys as the container.')
         order = [self._get_block_for_key(x) for x in order]
         for node in self._entries_container.iterchildren():
             self._entries_container.remove(node)
