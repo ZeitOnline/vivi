@@ -78,9 +78,15 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         'volume_note',
     )
 
+    _old_volume_note = zeit.cms.content.dav.DAVProperty(
+        zeit.content.volume.interfaces.IVolume['volume_note'],
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
+        'teaserText',
+    )
+
     @property
     def volume_note(self):
-        text = self._volume_note
+        text = self._volume_note or self._old_volume_note
         if text is None:
             text = zeit.cms.config.required('zeit.content.volume', 'default-teaser-text')
         return self.fill_template(text)
