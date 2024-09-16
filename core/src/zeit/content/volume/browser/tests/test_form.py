@@ -147,3 +147,24 @@ class TestVolumeCoverWidget(zeit.content.volume.testing.SeleniumTestCase):
         s.select('id=choose-cover', 'label=Zeit Magazin')
         s.assertVisible('css=.fieldname-cover_ZMLB_portrait')
         s.assertNotVisible('css=.fieldname-cover_ZEI_portrait')
+
+    def test_saves_title_for_each_cover(self):
+        s = self.selenium
+        volume = self.repository['2015']['01']['ausgabe']
+        title_overrides = volume.xml.makeelement('title-overrides')
+        text_zei = volume.xml.makeelement('title', {'product_id': 'ZEI'})
+        text_zei.text = 'Budgies are cool'
+        text_zmlb = volume.xml.makeelement('title', {'product_id': 'ZMLB'})
+        text_zmlb.text = 'Kingfishers are eating fish'
+        title_overrides.append(text_zei)
+        title_overrides.append(text_zmlb)
+        volume.xml.append(title_overrides)
+        self.repository['2015']['01']['ausgabe'] = volume
+        self.open('/repository/2015/01/ausgabe/@@checkout')
+        s.waitForElementPresent('css=#choose-cover')
+        # Set title of Die Zeit
+        s.select('id=choose-cover', 'label=Die Zeit')
+        s.assertValue('id=form.title_ZEI', 'Budgies are cool')
+        # Set title for Zeit Magazin
+        s.select('id=choose-cover', 'label=Zeit Magazin')
+        s.assertValue('id=form.title_ZMLB', 'Kingfishers are eating fish')
