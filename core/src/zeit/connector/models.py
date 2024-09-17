@@ -31,10 +31,16 @@ class Base(sqlalchemy.orm.DeclarativeBase):
 
 
 class CommonMetadata:
+    @staticmethod
+    def table_args(tablename):
+        return (Index(f'ix_{tablename}_channels', 'channels', postgresql_using='gin'),)
+
+
+class DevelopmentCommonMetadata:
     access = mapped_column(Unicode, index=True, info={'namespace': 'document', 'name': 'access'})
 
 
-class ZeitWeb:
+class DevelopmentZeitWeb:
     overscrolling_enabled = mapped_column(
         Boolean, info={'namespace': 'document', 'name': 'overscrolling'}
     )
@@ -218,8 +224,13 @@ class LockBase:
             return LockStatus.FOREIGN
 
 
-class Content(Base, ContentBase):
+class Content(Base, ContentBase, CommonMetadata):
     lock_class = 'Lock'
+
+    @declared_attr.directive
+    def __table_args__(cls):
+        """every new inheritance level needs to re-apply the table_args"""
+        return super().__table_args__ + CommonMetadata.table_args(cls.__tablename__)
 
 
 class Lock(Base, LockBase):
@@ -227,10 +238,12 @@ class Lock(Base, LockBase):
 
 
 class DevelopmentBase(sqlalchemy.orm.DeclarativeBase):
-    pass
+    """Experimental development features, not ready for any deployment or migration!"""
 
 
-class ContentWithMetadataColumns(DevelopmentBase, ContentBase, CommonMetadata, ZeitWeb):
+class ContentWithMetadataColumns(
+    DevelopmentBase, ContentBase, CommonMetadata, DevelopmentCommonMetadata, DevelopmentZeitWeb
+):
     lock_class = 'LockWithMetadataColumns'
 
 
