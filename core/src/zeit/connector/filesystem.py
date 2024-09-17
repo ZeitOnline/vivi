@@ -7,9 +7,7 @@ import os
 import os.path
 
 import gocept.cache.property
-import grokcore.component as grok
 import lxml.etree
-import sqlalchemy
 import zope.app.file.image
 import zope.interface
 
@@ -270,7 +268,7 @@ class Connector:
             column = Content.column_by_name(*key)
             if column is None:
                 continue
-            converter = IConverter(column)
+            converter = zeit.connector.interfaces.IConverter(column)
             properties[key] = converter.deserialize(value)
 
     def _guess_type(self, id):
@@ -318,58 +316,3 @@ def parse_properties(xml):
         value += '</tag:rankedTags>'
         properties[('keywords', 'http://namespaces.zeit.de/CMS/tagging')] = value
     return properties
-
-
-class IConverter(zope.interface.Interface):
-    def serialize(value):
-        pass
-
-    def deserialize(value):
-        pass
-
-
-@grok.implementer(IConverter)
-@grok.adapter(sqlalchemy.Column)
-def converter_from_column_type(column):
-    return IConverter(column.type)
-
-
-@grok.implementer(IConverter)
-class DefaultConverter(grok.Adapter):
-    grok.context(zope.interface.Interface)
-
-    def serialize(self, value):
-        return value
-
-    def deserialize(self, value):
-        return value
-
-
-class BoolConverter(DefaultConverter):
-    grok.context(sqlalchemy.Boolean)
-
-    def serialize(self, value):
-        return zeit.cms.content.dav.BoolProperty._toProperty(value)
-
-    def deserialize(self, value):
-        return zeit.cms.content.dav.BoolProperty._fromProperty(value)
-
-
-class IntConverter(DefaultConverter):
-    grok.context(sqlalchemy.Integer)
-
-    def serialize(self, value):
-        return str(value)
-
-    def deserialize(self, value):
-        return int(value)
-
-
-class DatetimeConverter(DefaultConverter):
-    grok.context(sqlalchemy.TIMESTAMP)
-
-    def serialize(self, value):
-        return zeit.cms.content.dav.DatetimeProperty._toProperty(value)
-
-    def deserialize(self, value):
-        return zeit.cms.content.dav.DatetimeProperty._fromProperty(value)
