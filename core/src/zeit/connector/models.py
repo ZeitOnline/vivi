@@ -44,6 +44,43 @@ class CommonMetadata:
     )
 
 
+class Workflow:
+    date_created = mapped_column(
+        TIMESTAMP(timezone=True),
+        nullable=True,
+        info={'namespace': 'document', 'name': 'date_created'},
+    )
+    date_first_released = mapped_column(
+        TIMESTAMP(timezone=True),
+        nullable=True,
+        info={'namespace': 'document', 'name': 'date_first_released'},
+    )
+    date_last_checkout = mapped_column(
+        TIMESTAMP(timezone=True),
+        nullable=True,
+        info={'namespace': 'document', 'name': 'date_last_checkout'},
+    )
+    date_last_modified_semantic = mapped_column(
+        TIMESTAMP(timezone=True),
+        info={'namespace': 'workflow', 'name': 'last-semantic-change'},
+    )
+    date_last_published = mapped_column(
+        TIMESTAMP(timezone=True),
+        nullable=True,
+        info={'namespace': 'workflow', 'name': 'date_last_published'},
+    )
+    date_last_published_semantic = mapped_column(
+        TIMESTAMP(timezone=True),
+        nullable=True,
+        info={'namespace': 'workflow', 'name': 'date_last_published_semantic'},
+    )
+    date_print_published = mapped_column(
+        TIMESTAMP(timezone=True),
+        nullable=True,
+        info={'namespace': 'document', 'name': 'print-publish'},
+    )
+
+
 class DevelopmentCommonMetadata:
     access = mapped_column(Unicode, index=True, info={'namespace': 'document', 'name': 'access'})
 
@@ -246,7 +283,7 @@ class LockBase:
             return LockStatus.FOREIGN
 
 
-class Content(Base, ContentBase, CommonMetadata):
+class Content(Base, ContentBase, CommonMetadata, Workflow):
     lock_class = 'Lock'
 
     @declared_attr.directive
@@ -264,7 +301,12 @@ class DevelopmentBase(sqlalchemy.orm.DeclarativeBase):
 
 
 class ContentWithMetadataColumns(
-    DevelopmentBase, ContentBase, CommonMetadata, DevelopmentCommonMetadata, DevelopmentZeitWeb
+    DevelopmentBase,
+    ContentBase,
+    CommonMetadata,
+    Workflow,
+    DevelopmentCommonMetadata,
+    DevelopmentZeitWeb,
 ):
     lock_class = 'LockWithMetadataColumns'
 
