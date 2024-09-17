@@ -11,9 +11,7 @@ import lxml.etree
 import zope.app.file.image
 import zope.interface
 
-from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.connector.interfaces import ID_NAMESPACE, CannonicalId
-from zeit.connector.models import ContentWithMetadataColumns as Content
 import zeit.cms.config
 import zeit.cms.content.dav
 import zeit.connector.interfaces
@@ -253,23 +251,12 @@ class Connector:
             return properties
 
         properties.update(parse_properties(xml))
-        self._convert_sql_types(properties)
 
         if zeit.connector.interfaces.RESOURCE_TYPE_PROPERTY not in properties:
             properties[zeit.connector.interfaces.RESOURCE_TYPE_PROPERTY] = self._guess_type(id)
 
         self.property_cache[id] = properties
         return properties
-
-    def _convert_sql_types(self, properties):
-        if not FEATURE_TOGGLES.find('read_metadata_columns'):
-            return
-        for key, value in properties.items():
-            column = Content.column_by_name(*key)
-            if column is None:
-                continue
-            converter = zeit.connector.interfaces.IConverter(column)
-            properties[key] = converter.deserialize(value)
 
     def _guess_type(self, id):
         path = self._path(id)
