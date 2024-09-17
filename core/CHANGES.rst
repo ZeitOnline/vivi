@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.35.0 (2024-09-17)
+-------------------
+
+- WCM-316: add teaser title, teaser text and background color to volume
+
+
 6.34.0 (2024-09-11)
 -------------------
 
