@@ -356,6 +356,7 @@ class IResourceInvalidatedEvent(zope.interface.Interface):
 
 class IConverter(zope.interface.Interface):
     """Converts webdav values to and from the postgresql database."""
+
     def serialize(value):
         pass
 
