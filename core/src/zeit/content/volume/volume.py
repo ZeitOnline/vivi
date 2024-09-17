@@ -38,6 +38,7 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         <volume>
             <head/>
             <body/>
+            <title-overrides/>
             <covers/>
         </volume>
     """
@@ -45,7 +46,7 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
     zeit.cms.content.dav.mapProperties(
         zeit.content.volume.interfaces.IVolume,
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
-        ('date_digital_published', 'year', 'volume'),
+        ('date_digital_published', 'year', 'volume', 'title', 'teaser', 'background_color'),
     )
 
     _product_id = zeit.cms.content.dav.DAVProperty(
@@ -71,22 +72,28 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
             return
         self._product_id = value.id if value is not None else None
 
-    _teaserText = zeit.cms.content.dav.DAVProperty(
-        zeit.content.volume.interfaces.IVolume['teaserText'],
+    _volume_note = zeit.cms.content.dav.DAVProperty(
+        zeit.content.volume.interfaces.IVolume['volume_note'],
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
+        'volume_note',
+    )
+
+    _old_volume_note = zeit.cms.content.dav.DAVProperty(
+        zeit.content.volume.interfaces.IVolume['volume_note'],
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
         'teaserText',
     )
 
     @property
-    def teaserText(self):
-        text = self._teaserText
+    def volume_note(self):
+        text = self._volume_note or self._old_volume_note
         if text is None:
             text = zeit.cms.config.required('zeit.content.volume', 'default-teaser-text')
         return self.fill_template(text)
 
-    @teaserText.setter
-    def teaserText(self, value):
-        self._teaserText = value
+    @volume_note.setter
+    def volume_note(self, value):
+        self._volume_note = value
 
     @property
     def teaserSupertitle(self):  # For display in CP-editor
@@ -202,6 +209,24 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
                 id=cover_id, product_id=product_id, href=imagegroup.uniqueId
             )
             self.xml.find('covers').append(node)
+        super().__setattr__('_p_changed', True)
+
+    def get_cover_title(self, product_id):
+        path = f'//volume/title-overrides/title[@product_id="{product_id}"]'
+        node = self.xml.xpath(path)
+        return node[0].text if node else None
+
+    def set_cover_title(self, product_id, title):
+        title_overrides_path = '//volume/title-overrides'
+        if not self.xml.xpath(title_overrides_path):
+            self.xml.append(lxml.builder.E('title-overrides'))
+        path = f'//volume/title-overrides/title[@product_id="{product_id}"]'
+        node = self.xml.xpath(path)
+        if node:
+            self.xml.find('title-overrides').remove(node[0])
+        if title is not None:
+            node = lxml.builder.E.title(title, product_id=product_id)
+            self.xml.find('title-overrides').append(node)
         super().__setattr__('_p_changed', True)
 
     def _is_valid_cover_id_and_product_id(self, cover_id, product_id):

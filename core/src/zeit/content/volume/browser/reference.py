@@ -10,7 +10,7 @@ import zeit.edit.browser.form
 
 
 class EditReference(zeit.edit.browser.form.InlineForm):
-    """Display the additional field `teaserText` for references."""
+    """Display the additional field `volume_note` for references."""
 
     legend = ''
 
@@ -19,7 +19,7 @@ class EditReference(zeit.edit.browser.form.InlineForm):
         # support read-only mode, see
         # zeit.content.article.edit.browser.form.FormFields
         render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE,
-    ).select('teaserText')
+    ).select('volume_note')
 
     @property
     def prefix(self):

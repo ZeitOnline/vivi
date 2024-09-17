@@ -110,6 +110,22 @@ __return(cp)"""
         self.assertEqual(2010, cp.year)
         self.assertEqual(2, cp.volume)
 
+    def test_teaser_attributes_are_contained_in_volume(self):
+        self.open_add_form()
+        b = self.browser
+        b.getControl('Year').value = '2010'
+        b.getControl(name='form.volume').value = '2'
+        b.getControl('Add').click()
+        b.getControl(name='form.title').value = 'Obamas Return'
+        b.getControl(name='form.teaser').value = 'Obama returns you to tell about his vacation'
+        b.getControl(name='form.background_color').value = 'ff0000'
+        b.getControl('Apply').click()
+        b.getLink('Checkin').click()
+        volume = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2010/02/ausgabe')
+        assert volume.title == 'Obamas Return'
+        assert volume.teaser == 'Obama returns you to tell about his vacation'
+        assert volume.background_color == 'ff0000'
+
 
 class TestVolumeCoverWidget(zeit.content.volume.testing.SeleniumTestCase):
     def setUp(self):
@@ -131,3 +147,24 @@ class TestVolumeCoverWidget(zeit.content.volume.testing.SeleniumTestCase):
         s.select('id=choose-cover', 'label=Zeit Magazin')
         s.assertVisible('css=.fieldname-cover_ZMLB_portrait')
         s.assertNotVisible('css=.fieldname-cover_ZEI_portrait')
+
+    def test_saves_title_for_each_cover(self):
+        s = self.selenium
+        volume = self.repository['2015']['01']['ausgabe']
+        title_overrides = volume.xml.makeelement('title-overrides')
+        text_zei = volume.xml.makeelement('title', {'product_id': 'ZEI'})
+        text_zei.text = 'Budgies are cool'
+        text_zmlb = volume.xml.makeelement('title', {'product_id': 'ZMLB'})
+        text_zmlb.text = 'Kingfishers are eating fish'
+        title_overrides.append(text_zei)
+        title_overrides.append(text_zmlb)
+        volume.xml.append(title_overrides)
+        self.repository['2015']['01']['ausgabe'] = volume
+        self.open('/repository/2015/01/ausgabe/@@checkout')
+        s.waitForElementPresent('css=#choose-cover')
+        # Set title of Die Zeit
+        s.select('id=choose-cover', 'label=Die Zeit')
+        s.assertValue('id=form.title_ZEI', 'Budgies are cool')
+        # Set title for Zeit Magazin
+        s.select('id=choose-cover', 'label=Zeit Magazin')
+        s.assertValue('id=form.title_ZMLB', 'Kingfishers are eating fish')

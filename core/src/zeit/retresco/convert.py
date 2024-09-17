@@ -617,8 +617,8 @@ class Volume(Converter):
 
     def __call__(self):
         result = {
-            'title': self.context.teaserText or 'Ausgabe',
-            'teaser': self.context.teaserText or 'Ausgabe',
+            'title': self.context.volume_note or 'Ausgabe',
+            'teaser': self.context.volume_note or 'Ausgabe',
         }
         covers = [
             {'id': x.get('id'), 'product_id': x.get('product_id'), 'href': x.get('href')}

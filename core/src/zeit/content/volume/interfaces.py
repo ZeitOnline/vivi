@@ -37,7 +37,7 @@ class IVolume(zeit.cms.content.interfaces.IXMLContent):
 
     volume = zope.schema.Int(title=_('Volume'), min=1, max=54)
 
-    teaserText = zope.schema.Text(title=_('Volume text'), required=False, max_length=170)
+    volume_note = zope.schema.Text(title=_('Volume text'), required=False, max_length=170)
 
     date_digital_published = zope.schema.Datetime(title=_('Date of digital publication'))
 
@@ -46,6 +46,19 @@ class IVolume(zeit.cms.content.interfaces.IXMLContent):
     )
 
     next = zope.interface.Attribute('The next IVolume object (by date_digital_published) or None')
+
+    title = zope.schema.TextLine(title=_('Title'), required=False)
+
+    teaser = zope.schema.TextLine(title=_('Teaser'), required=False)
+
+    background_color = zope.schema.TextLine(
+        title=_('Area background color (6 characters, no #)'),
+        description=_('Hex value of background color for area'),
+        required=False,
+        min_length=6,
+        max_length=6,
+        constraint=zeit.cms.content.interfaces.hex_literal,
+    )
 
     def fill_template(text):
         """Fill in a string template with the placeholders year=self.year
@@ -69,6 +82,24 @@ class IVolume(zeit.cms.content.interfaces.IXMLContent):
     def set_cover(cover_id, product_id, image):
         """
         Set an image as a cover of product.
+        """
+
+    def get_cover_title(product_id):
+        """
+        Get a title of a product.
+        For example volume.get_title('ZEI') returns the title of DIE ZEIT of
+        this specific volume.
+        :param product_id: str product ID set in products.xml
+        :return: str
+        """
+
+    def set_cover_title(product_id, title):
+        """
+        Set cover specific title.
+        For example volume.set_title('ZEI', 'DIE ZEIT') sets the title of DIE
+        ZEIT of this specific volume.
+        :param product_id: str product ID set in products.xml
+        :param title: str - title of the product
         """
 
     def all_content_via_search(additional_query_contstraints):
@@ -103,7 +134,7 @@ class IVolume(zeit.cms.content.interfaces.IXMLContent):
 
 
 class IVolumeReference(zeit.cms.content.interfaces.IReference):
-    teaserText = zope.schema.Text(title=_('Volume text'), required=False, max_length=170)
+    volume_note = zope.schema.Text(title=_('Volume text'), required=False, max_length=170)
 
 
 class ITocConnector(zope.interface.Interface):
