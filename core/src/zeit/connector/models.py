@@ -16,6 +16,7 @@ from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import declared_attr, mapped_column, relationship
 import pytz
 import sqlalchemy
+import zope.component
 
 from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.connector.interfaces import INTERNAL_PROPERTY, DeleteProperty, LockStatus
@@ -31,10 +32,23 @@ class Base(sqlalchemy.orm.DeclarativeBase):
 
 
 class CommonMetadata:
+    @staticmethod
+    def table_args(tablename):
+        return (Index(f'ix_{tablename}_channels', 'channels', postgresql_using='gin'),)
+
+    # converter, use name to lookup IConverter instead of type
+    channels = mapped_column(
+        JSONB,
+        nullable=True,
+        info={'namespace': 'document', 'name': 'channels', 'converter': 'channels'},
+    )
+
+
+class DevelopmentCommonMetadata:
     access = mapped_column(Unicode, index=True, info={'namespace': 'document', 'name': 'access'})
 
 
-class ZeitWeb:
+class DevelopmentZeitWeb:
     overscrolling_enabled = mapped_column(
         Boolean, info={'namespace': 'document', 'name': 'overscrolling'}
     )
@@ -120,6 +134,17 @@ class ContentBase:
 
     NS = 'http://namespaces.zeit.de/CMS/'
 
+    @staticmethod
+    def converter(column):
+        if 'converter' in column.info:
+            return zope.component.queryAdapter(
+                column.type,
+                zeit.connector.interfaces.IConverter,
+                column.info['converter'],
+            )
+        else:
+            return zeit.connector.interfaces.IConverter(column)
+
     def to_webdav(self):
         if self.unsorted is None:
             return {}
@@ -137,7 +162,9 @@ class ContentBase:
         if FEATURE_TOGGLES.find('read_metadata_columns'):
             for column in self._columns_with_name():
                 namespace, name = column.info['namespace'], column.info['name']
-                props[(name, self.NS + namespace)] = getattr(self, column.name)
+                value = getattr(self, column.name)
+                converter = self.converter(column)
+                props[(name, self.NS + namespace)] = converter.serialize(value)
 
         if self.lock:
             props[('lock_principal', INTERNAL_PROPERTY)] = self.lock.principal
@@ -165,7 +192,8 @@ class ContentBase:
                 namespace, name = column.info['namespace'], column.info['name']
                 value = props.get((name, self.NS + namespace), self)
                 if value is not self:
-                    setattr(self, column.name, value)
+                    converter = self.converter(column)
+                    setattr(self, column.name, converter.deserialize(value))
 
         unsorted = collections.defaultdict(dict)
         for (k, ns), v in props.items():
@@ -218,8 +246,13 @@ class LockBase:
             return LockStatus.FOREIGN
 
 
-class Content(Base, ContentBase):
+class Content(Base, ContentBase, CommonMetadata):
     lock_class = 'Lock'
+
+    @declared_attr.directive
+    def __table_args__(cls):
+        """every new inheritance level needs to re-apply the table_args"""
+        return super().__table_args__ + CommonMetadata.table_args(cls.__tablename__)
 
 
 class Lock(Base, LockBase):
@@ -227,10 +260,12 @@ class Lock(Base, LockBase):
 
 
 class DevelopmentBase(sqlalchemy.orm.DeclarativeBase):
-    pass
+    """Experimental development features, not ready for any deployment or migration!"""
 
 
-class ContentWithMetadataColumns(DevelopmentBase, ContentBase, CommonMetadata, ZeitWeb):
+class ContentWithMetadataColumns(
+    DevelopmentBase, ContentBase, CommonMetadata, DevelopmentCommonMetadata, DevelopmentZeitWeb
+):
     lock_class = 'LockWithMetadataColumns'
 
 

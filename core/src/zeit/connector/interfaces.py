@@ -354,6 +354,16 @@ class IResourceInvalidatedEvent(zope.interface.Interface):
     id = zope.interface.Attribute('Unique id of resource')
 
 
+class IConverter(zope.interface.Interface):
+    """Converts webdav values to and from the postgresql database."""
+
+    def serialize(value):
+        pass
+
+    def deserialize(value):
+        pass
+
+
 @zope.interface.implementer(IResourceInvalidatedEvent)
 class ResourceInvalidatedEvent:
     def __init__(self, id):

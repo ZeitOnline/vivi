@@ -896,16 +896,16 @@ class ContractProperties:
     def test_converts_scalar_types_on_read(self):
         self.repository.connector.changeProperties(
             'http://xml.zeit.de/testcontent',
-            {('overscrolling', 'http://namespaces.zeit.de/CMS/document'): True},
+            {('overscrolling', 'http://namespaces.zeit.de/CMS/document'): 'yes'},
         )
-        self.assertIs(True, self.repository['testcontent'].overscrolling)
+        self.assertIs('yes', self.repository['testcontent'].overscrolling)
 
     def test_converts_scalar_types_on_write(self):
         with checked_out(self.repository['testcontent']) as co:
-            co.overscrolling = True
+            co.overscrolling = 'yes'
         resource = self.repository.connector['http://xml.zeit.de/testcontent']
         self.assertIs(
-            True, resource.properties[('overscrolling', 'http://namespaces.zeit.de/CMS/document')]
+            'yes', resource.properties[('overscrolling', 'http://namespaces.zeit.de/CMS/document')]
         )
 
 

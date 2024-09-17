@@ -10,9 +10,10 @@ import pytz
 import transaction
 
 from zeit.cms.content.sources import FEATURE_TOGGLES
+from zeit.cms.interfaces import DOCUMENT_SCHEMA_NS
 from zeit.cms.repository.interfaces import ConflictError
 from zeit.connector.interfaces import INTERNAL_PROPERTY
-from zeit.connector.models import Content, Lock
+from zeit.connector.models import Lock
 from zeit.connector.postgresql import _unlock_overdue_locks
 from zeit.connector.resource import Resource, WriteableCachedResource
 from zeit.connector.search import SearchVar
@@ -334,15 +335,15 @@ class PropertiesColumnTest(zeit.connector.testing.SQLTest):
     def test_properties_can_be_stored_in_separate_columns(self):
         FEATURE_TOGGLES.set('write_metadata_columns', True)
         FEATURE_TOGGLES.set('read_metadata_columns', True)
-        res = self.add_resource('foo', properties={('access', Content.NS + 'document'): 'foo'})
-        self.assertEqual('foo', res.properties[('access', Content.NS + 'document')])
+        res = self.add_resource('foo', properties={('access', DOCUMENT_SCHEMA_NS): 'foo'})
+        self.assertEqual('foo', res.properties[('access', DOCUMENT_SCHEMA_NS)])
         content = self.connector._get_content(res.id)
         self.assertEqual('foo', content.access)
 
     def test_search_looks_in_columns_or_unsorted_depending_on_toggle(self):
         FEATURE_TOGGLES.set('write_metadata_columns', True)
 
-        res = self.add_resource('foo', properties={('access', Content.NS + 'document'): 'foo'})
+        res = self.add_resource('foo', properties={('access', DOCUMENT_SCHEMA_NS): 'foo'})
         access = SearchVar('access', 'http://namespaces.zeit.de/CMS/document')
         for toggle in [False, True]:  # XXX parametrize would be nice
             FEATURE_TOGGLES.set('read_metadata_columns', toggle)
@@ -352,3 +353,97 @@ class PropertiesColumnTest(zeit.connector.testing.SQLTest):
             result = self.connector.search([access], access == 'foo')
             unique_id, uuid = next(result)
             self.assertEqual(res.id, unique_id)
+
+
+class ChannelsColumnTest(zeit.connector.testing.SQLTest):
+    layer = zeit.connector.testing.SQL_CONTENT_LAYER
+
+    def setUp(self):
+        super().setUp()
+        FEATURE_TOGGLES.set('read_metadata_columns', True)
+        FEATURE_TOGGLES.set('write_metadata_columns', True)
+
+    def _make_resource(self, channels):
+        res = self.add_resource('foo', properties={('channels', DOCUMENT_SCHEMA_NS): channels})
+        return self.connector._get_content(res.id)
+
+    def assert_channels(self, channels, expected_channels, expected_dav_channels):
+        self.assertEqual(channels, expected_channels)
+        res = self.connector['http://xml.zeit.de/testing/foo']
+        self.assertEqual(expected_dav_channels, res.properties[('channels', DOCUMENT_SCHEMA_NS)])
+
+    def test_modify_channels(self):
+        content = self._make_resource('channel1;channel2 sub1 sub2')
+        self.assertEqual(content.channels, {'channel1': [], 'channel2': ['sub1', 'sub2']})
+        self.connector.changeProperties(
+            content.uniqueid, {('channels', DOCUMENT_SCHEMA_NS): 'channel2'}
+        )
+        content = self.connector._get_content(content.uniqueid)
+        self.assertEqual(content.channels, {'channel2': []})
+
+    def test_empty_input(self):
+        channels = ''
+        content = self._make_resource(channels)
+        self.assert_channels(content.channels, {}, channels)
+
+    def test_single_channel(self):
+        channels = 'channel1'
+        content = self._make_resource(channels)
+        self.assert_channels(content.channels, {'channel1': []}, channels)
+
+    def test_multiple_channels(self):
+        channels = 'channel1;channel2;channel3'
+        content = self._make_resource(channels)
+        self.assert_channels(
+            content.channels, {'channel1': [], 'channel2': [], 'channel3': []}, channels
+        )
+
+    def test_single_channel_with_subchannels(self):
+        channels = 'channel1 sub1 sub2'
+        content = self._make_resource(channels)
+        self.assert_channels(content.channels, {'channel1': ['sub1', 'sub2']}, channels)
+
+    def test_same_channel_with_subchannels(self):
+        channels = 'channel1 sub1;channel1 sub2 sub3;channel1 sub4'
+        content = self._make_resource(channels)
+        self.assert_channels(
+            content.channels,
+            {'channel1': ['sub1', 'sub2', 'sub3', 'sub4']},
+            'channel1 sub1 sub2 sub3 sub4',
+        )
+
+    def test_multiple_channels_with_subchannels(self):
+        channels = 'channel1 sub1;channel2 sub2 sub3;channel3 sub4'
+        content = self._make_resource(channels)
+        self.assert_channels(
+            content.channels,
+            {'channel1': ['sub1'], 'channel2': ['sub2', 'sub3'], 'channel3': ['sub4']},
+            channels,
+        )
+
+    def test_whitespace_handling(self):
+        channels = '  channel1  sub1  ;  channel2  sub2  sub3  ;  channel3  sub4  '
+        content = self._make_resource(channels)
+        self.assert_channels(
+            content.channels,
+            {'channel1': ['sub1'], 'channel2': ['sub2', 'sub3'], 'channel3': ['sub4']},
+            'channel1 sub1;channel2 sub2 sub3;channel3 sub4',
+        )
+
+    def test_trailing_semicolon(self):
+        channels = 'channel1;channel2;'
+        content = self._make_resource(channels)
+        self.assert_channels(content.channels, {'channel1': [], 'channel2': []}, channels[:-1])
+
+    def test_leading_semicolon(self):
+        channels = ';channel1;channel2'
+        content = self._make_resource(channels)
+        self.assert_channels(content.channels, {'channel1': [], 'channel2': []}, channels[1:])
+
+    def test_multiple_semicolons(self):
+        content = self._make_resource('channel1;;channel2;;;channel3')
+        self.assert_channels(
+            content.channels,
+            {'channel1': [], 'channel2': [], 'channel3': []},
+            'channel1;channel2;channel3',
+        )

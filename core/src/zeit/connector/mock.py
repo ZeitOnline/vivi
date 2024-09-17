@@ -14,8 +14,6 @@ import pytz
 import sqlalchemy
 import zope.event
 
-from zeit.cms.content.sources import FEATURE_TOGGLES
-from zeit.connector.filesystem import DefaultConverter
 from zeit.connector.interfaces import (
     ID_NAMESPACE,
     UUID_PROPERTY,
@@ -370,7 +368,6 @@ class Connector(zeit.connector.filesystem.Connector):
             properties = super()._get_properties(id)
         else:
             properties = properties.copy()
-            self._convert_sql_types(properties)
         return properties
 
     def _set_properties(self, id, properties):
@@ -386,14 +383,6 @@ class Connector(zeit.connector.filesystem.Connector):
                 stored_properties.pop((name, namespace), None)
                 continue
 
-            if FEATURE_TOGGLES.find('write_metadata_columns'):
-                column = Content.column_by_name(name, namespace)
-                converter = zeit.connector.filesystem.IConverter(column)
-                value = converter.serialize(value)
-            else:
-                converter = DefaultConverter(None)
-            if isinstance(converter, DefaultConverter) and not isinstance(value, str):
-                raise ValueError('Expected str, got %s: %r' % (type(value), value))
             stored_properties[(name, namespace)] = value
         self._properties[id] = stored_properties
 
