@@ -49,7 +49,7 @@ class IVolume(zeit.cms.content.interfaces.IXMLContent):
 
     title = zope.schema.TextLine(title=_('Title'), required=False)
 
-    teaser = zope.schema.TextLine(title=_('Teaser'), required=False)
+    teaser = zope.schema.Text(title=_('Teaser'), required=False)
 
     background_color = zope.schema.TextLine(
         title=_('Area background color (6 characters, no #)'),
