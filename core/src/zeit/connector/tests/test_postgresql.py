@@ -481,7 +481,7 @@ class WorkflowColumnsTest(zeit.connector.testing.SQLTest):
         self.assertEqual(content.date_last_checkout, self.EXPECTED_DATETIME)
 
     def test_date_last_modified_semantic(self):
-        properties = {('last-semantic-change', WORKFLOW_NS): self.TIMESTAMP}
+        properties = {('last-semantic-change', DOCUMENT_SCHEMA_NS): self.TIMESTAMP}
         content = self._make_resource(properties)
         self.assertEqual(content.date_last_modified_semantic, self.EXPECTED_DATETIME)
 

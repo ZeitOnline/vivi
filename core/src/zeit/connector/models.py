@@ -47,7 +47,7 @@ class CommonMetadata:
 class SemanticChange:
     date_last_modified_semantic = mapped_column(
         TIMESTAMP(timezone=True),
-        info={'namespace': 'workflow', 'name': 'last-semantic-change'},
+        info={'namespace': 'document', 'name': 'last-semantic-change'},
     )
 
 
