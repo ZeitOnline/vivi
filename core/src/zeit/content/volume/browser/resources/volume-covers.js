@@ -15,10 +15,12 @@ $(document).bind('fragment-ready', function(event) {
     // substring match on "fieldname-cover*", so it might be complicated).
     $('fieldset.column-right').first().before(
         '<fieldset class="column-right choose">' +
-        '<b>COVERS:</b> <select id="choose-cover">' +
+        '<legend>COVERS</legend> <select id="choose-cover">' +
         '</select></fieldset>');
 
-    $('fieldset.column-right legend').each(function(i, element) {
+    // Iterate through all legends and add them to the select
+    // ignoring the first legend, because it is the legend for the selection
+    $('fieldset.column-right legend:not(:first)').each(function(i, element) {
         $('#choose-cover').append(
             '<option>' + $(element).text() + '</option>');
     });
