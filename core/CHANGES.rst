@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.37.0 (2024-09-18)
+-------------------
+
+- WCM-285: remove the development columns from the standard dav converter
+
+
 6.36.0 (2024-09-18)
 -------------------
 
