@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.36.0 (2024-09-18)
+-------------------
+
+- WCM-285: add new columns channel and subchannels
+
+- WCM-291: move timestamps into columns
+
+
 6.35.0 (2024-09-17)
 -------------------
 
