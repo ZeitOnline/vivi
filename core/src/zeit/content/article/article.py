@@ -55,14 +55,6 @@ ARTICLE_TEMPLATE = """\
 </article>"""
 
 
-class ToggleableAccess(zeit.cms.content.dav.DAVProperty):
-    def __get__(self, instance, class_, properties=None):
-        value = super().__get__(instance, class_, properties)
-        if FEATURE_TOGGLES.find('access_treat_free_as_dynamic') and value == 'free':
-            return 'dynamic'
-        return value
-
-
 @zope.interface.implementer(
     zeit.content.article.interfaces.IArticle, zeit.cms.interfaces.IEditorialContent
 )
@@ -97,7 +89,7 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
         ),
     )
 
-    access = ToggleableAccess(
+    access = zeit.cms.content.dav.DAVProperty(
         ICommonMetadata['access'],
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
         'access',
