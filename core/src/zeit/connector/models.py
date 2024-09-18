@@ -306,7 +306,7 @@ class DevelopmentBase(sqlalchemy.orm.DeclarativeBase):
     """Experimental development features, not ready for any deployment or migration!"""
 
 
-class ContentWithMetadataColumns(
+class DevelopmentContent(
     DevelopmentBase,
     ContentBase,
     CommonMetadata,
@@ -322,4 +322,4 @@ class ContentWithMetadataColumns(
 # Having to duplicate all classes (and add indirections to their `relationship()`s)
 # is annoying, but there's no obvious way around it.
 class LockWithMetadataColumns(DevelopmentBase, LockBase):
-    content_class = 'ContentWithMetadataColumns'
+    content_class = 'DevelopmentContent'

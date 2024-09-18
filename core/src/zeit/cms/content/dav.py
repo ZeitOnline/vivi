@@ -16,7 +16,7 @@ import zope.xmlpickle
 
 from zeit.cms.content.interfaces import WRITEABLE_ON_CHECKIN
 from zeit.cms.content.sources import FEATURE_TOGGLES
-from zeit.connector.models import ContentWithMetadataColumns as ConnectorModel
+from zeit.connector.models import Content as ConnectorModel
 from zeit.connector.resource import PropertyKey
 import zeit.cms.content.caching
 import zeit.cms.content.interfaces
@@ -327,11 +327,8 @@ class ChoicePropertyWithIterableVocabulary:
 class BoolProperty:
     def __init__(self, context, properties, propertykey):
         self.context = context
-        self.has_sql_type = ConnectorModel.column_by_name(*propertykey) is not None
 
     def fromProperty(self, value):
-        if self.has_sql_type and FEATURE_TOGGLES.find('read_metadata_columns'):
-            return value
         return self._fromProperty(value)
 
     @staticmethod
@@ -339,8 +336,6 @@ class BoolProperty:
         return value.lower() in ('yes', 'true')
 
     def toProperty(self, value):
-        if self.has_sql_type and FEATURE_TOGGLES.find('write_metadata_columns'):
-            return value
         return self._toProperty(value)
 
     @staticmethod
