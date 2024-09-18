@@ -44,25 +44,31 @@ class CommonMetadata:
     )
 
 
-class Workflow:
+class SemanticChange:
+    date_last_modified_semantic = mapped_column(
+        TIMESTAMP(timezone=True),
+        info={'namespace': 'workflow', 'name': 'last-semantic-change'},
+    )
+
+
+class Modified:
     date_created = mapped_column(
         TIMESTAMP(timezone=True),
         nullable=True,
         info={'namespace': 'document', 'name': 'date_created'},
-    )
-    date_first_released = mapped_column(
-        TIMESTAMP(timezone=True),
-        nullable=True,
-        info={'namespace': 'document', 'name': 'date_first_released'},
     )
     date_last_checkout = mapped_column(
         TIMESTAMP(timezone=True),
         nullable=True,
         info={'namespace': 'document', 'name': 'date_last_checkout'},
     )
-    date_last_modified_semantic = mapped_column(
+
+
+class PublishInfo:
+    date_first_released = mapped_column(
         TIMESTAMP(timezone=True),
-        info={'namespace': 'workflow', 'name': 'last-semantic-change'},
+        nullable=True,
+        info={'namespace': 'document', 'name': 'date_first_released'},
     )
     date_last_published = mapped_column(
         TIMESTAMP(timezone=True),
@@ -283,7 +289,7 @@ class LockBase:
             return LockStatus.FOREIGN
 
 
-class Content(Base, ContentBase, CommonMetadata, Workflow):
+class Content(Base, ContentBase, CommonMetadata, Modified, PublishInfo, SemanticChange):
     lock_class = 'Lock'
 
     @declared_attr.directive
@@ -304,7 +310,9 @@ class ContentWithMetadataColumns(
     DevelopmentBase,
     ContentBase,
     CommonMetadata,
-    Workflow,
+    Modified,
+    PublishInfo,
+    SemanticChange,
     DevelopmentCommonMetadata,
     DevelopmentZeitWeb,
 ):
