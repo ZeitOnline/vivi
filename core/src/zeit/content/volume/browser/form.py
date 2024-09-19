@@ -39,11 +39,6 @@ class Base:
             ('product', 'year', 'volume', 'date_digital_published', 'volume_note'),
             css_class='column-left',
         ),
-        gocept.form.grouped.Fields(
-            _('Teaser'),
-            ('title', 'teaser', 'background_color'),
-            css_class='wide-widgets column-left',
-        ),
     )
 
     def __init__(self, context, request):
@@ -83,6 +78,15 @@ class Base:
                 self.field_groups += (
                     gocept.form.grouped.Fields(product.title, fieldnames, css_class='column-right'),
                 )
+        # Append the teaser field to the teaser group at the end of the dom
+        # so it is aligned properly
+        self.field_groups += (
+            gocept.form.grouped.Fields(
+                _('Teaser'),
+                ('title', 'teaser', 'background_color'),
+                css_class='wide-widgets column-left',
+            ),
+        )
 
 
 class Add(Base, zeit.cms.browser.form.AddForm):
