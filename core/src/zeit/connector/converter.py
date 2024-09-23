@@ -1,5 +1,3 @@
-import datetime
-
 from sqlalchemy.dialects.postgresql import JSONB
 import grokcore.component as grok
 import sqlalchemy
@@ -28,30 +26,30 @@ class DefaultConverter(grok.Adapter):
 class BoolConverter(DefaultConverter):
     grok.context(sqlalchemy.Boolean)
 
-    def serialize(self, value: bool) -> str:
+    def serialize(self, value):
         return zeit.cms.content.dav.BoolProperty._toProperty(value)
 
-    def deserialize(self, value: str) -> bool:
+    def deserialize(self, value):
         return zeit.cms.content.dav.BoolProperty._fromProperty(value)
 
 
 class IntConverter(DefaultConverter):
     grok.context(sqlalchemy.Integer)
 
-    def serialize(self, value: int) -> str:
+    def serialize(self, value):
         return str(value)
 
-    def deserialize(self, value: str) -> int:
+    def deserialize(self, value):
         return int(value)
 
 
 class DatetimeConverter(DefaultConverter):
     grok.context(sqlalchemy.TIMESTAMP)
 
-    def serialize(self, value: datetime.datetime) -> str:
+    def serialize(self, value):
         return zeit.cms.content.dav.DatetimeProperty._toProperty(value)
 
-    def deserialize(self, value: str) -> datetime.datetime:
+    def deserialize(self, value):
         return zeit.cms.content.dav.DatetimeProperty._fromProperty(value)
 
 

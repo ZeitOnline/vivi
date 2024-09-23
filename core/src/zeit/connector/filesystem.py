@@ -13,7 +13,7 @@ import zope.interface
 
 from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.connector.interfaces import ID_NAMESPACE, CannonicalId
-from zeit.connector.models import ContentWithMetadataColumns as Content
+from zeit.connector.models import Content
 import zeit.cms.config
 import zeit.cms.content.dav
 import zeit.connector.interfaces

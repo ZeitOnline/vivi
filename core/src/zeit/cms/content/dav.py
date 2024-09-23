@@ -327,8 +327,11 @@ class ChoicePropertyWithIterableVocabulary:
 class BoolProperty:
     def __init__(self, context, properties, propertykey):
         self.context = context
+        self.has_sql_type = ConnectorModel.column_by_name(*propertykey) is not None
 
     def fromProperty(self, value):
+        if self.has_sql_type and FEATURE_TOGGLES.find('read_metadata_columns'):
+            return value
         return self._fromProperty(value)
 
     @staticmethod
@@ -336,6 +339,8 @@ class BoolProperty:
         return value.lower() in ('yes', 'true')
 
     def toProperty(self, value):
+        if self.has_sql_type and FEATURE_TOGGLES.find('write_metadata_columns'):
+            return value
         return self._toProperty(value)
 
     @staticmethod
