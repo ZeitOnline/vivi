@@ -355,18 +355,20 @@ class DatetimeProperty:
     def fromProperty(self, value):
         if not value:
             return None
+        if self.has_sql_type and FEATURE_TOGGLES.find('read_metadata_columns'):
+            return value
         return self._fromProperty(value)
 
     @staticmethod
     def _fromProperty(value):
         # We have _mostly_ iso8601, but some old content has the format
         # "Thu, 13 Mar 2008 13:48:37 GMT", so we use a lenient parser.
-        if not value:
-            return None
         date = pendulum.parse(value, strict=False)
         return date.in_tz('UTC')
 
     def toProperty(self, value):
+        if self.has_sql_type and FEATURE_TOGGLES.find('write_metadata_columns'):
+            return value
         return self._toProperty(value)
 
     @staticmethod
