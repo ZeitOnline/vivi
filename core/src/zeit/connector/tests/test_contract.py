@@ -896,7 +896,7 @@ class ContractProperties:
     def test_converts_scalar_types_on_read(self):
         self.repository.connector.changeProperties(
             'http://xml.zeit.de/testcontent',
-            {('overscrolling', 'http://namespaces.zeit.de/CMS/document'): 'yes'},
+            {('overscrolling', 'http://namespaces.zeit.de/CMS/document'): True},
         )
         self.assertIs(True, self.repository['testcontent'].overscrolling)
 
@@ -905,7 +905,7 @@ class ContractProperties:
             co.overscrolling = True
         resource = self.repository.connector['http://xml.zeit.de/testcontent']
         self.assertIs(
-            'yes', resource.properties[('overscrolling', 'http://namespaces.zeit.de/CMS/document')]
+            True, resource.properties[('overscrolling', 'http://namespaces.zeit.de/CMS/document')]
         )
 
 
