@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.38.0 (2024-09-23)
+-------------------
+
+- WCM-115: More visible sidebar toggler
+
+- WCM-22: Implement automatic content query with raw SQL query
+
+
 6.37.0 (2024-09-18)
 -------------------
 
