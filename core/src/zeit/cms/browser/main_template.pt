@@ -101,6 +101,9 @@
         </div>
         <div id="sidebar-dragger"
           tal:attributes="class sidebar_css">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10 1L4 7L10 13" stroke-width="1.5"/>
+            </svg>
         </div>
 
         <script type="text/javascript" tal:content="string:

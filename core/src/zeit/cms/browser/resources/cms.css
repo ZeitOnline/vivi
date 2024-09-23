@@ -3,6 +3,10 @@
  * normal HTML element CSS defs
  *
  * */
+:root {
+  --sidebar-folded-width: 1em;
+}
+
 body {
   position: absolute;
   top: 0;
@@ -156,7 +160,7 @@ pre {
 
 .sidebar-folded #breadcrumbs,
 #visualContentSeparator.sidebar-folded {
-   left: 1em;
+   left: calc(var(--sidebar-folded-width) + 0.66em);
 }
 
 #header.sidebar-folded > #main-navigation {
@@ -209,9 +213,15 @@ pre {
   top: 0em;
   bottom: 0;
   cursor: pointer;
-  background: transparent url("layout/sidebardragger.png") no-repeat center;
   border-right: 1px solid #e4e4e4;
   border-left: 1px solid #e4e4e4;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  stroke: #999999;
+}
+#sidebar-dragger:hover {
+  background: #f7f7f7;
 }
 
 #sidebar.sidebar-folded {
@@ -220,10 +230,10 @@ pre {
 
 #sidebar-dragger.sidebar-folded {
   left: 0;
-  width: 0.34em;
+  width: var(--sidebar-folded-width);
   cursor: pointer;
-  background: transparent url("layout/sidebardragger-open.png") no-repeat center;
   border-right: 1px solid #e4e4e4;
+  transform: rotate(180deg);
 }
 
 #sidebar .required {
@@ -231,7 +241,7 @@ pre {
 }
 
 #visualContentWrapper.sidebar-folded {
-  left: 0.5em;
+  left: calc(var(--sidebar-folded-width) + 0.1em);
 }
 
 #content {
