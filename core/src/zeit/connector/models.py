@@ -90,12 +90,6 @@ class DevelopmentCommonMetadata:
     access = mapped_column(Unicode, index=True, info={'namespace': 'document', 'name': 'access'})
 
 
-class DevelopmentZeitWeb:
-    overscrolling_enabled = mapped_column(
-        Boolean, info={'namespace': 'document', 'name': 'overscrolling'}
-    )
-
-
 class ContentBase:
     __abstract__ = True
     __tablename__ = 'properties'
@@ -229,6 +223,8 @@ class ContentBase:
                 continue
             if ns == INTERNAL_PROPERTY:
                 continue
+            if isinstance(v, datetime):
+                continue
             unsorted[ns.replace(self.NS, '', 1)][k] = v
         self.unsorted = unsorted
 
@@ -299,7 +295,6 @@ class DevelopmentContent(
     PublishInfo,
     SemanticChange,
     DevelopmentCommonMetadata,
-    DevelopmentZeitWeb,
 ):
     lock_class = 'LockWithMetadataColumns'
 

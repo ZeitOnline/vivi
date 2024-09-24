@@ -889,23 +889,29 @@ class ContractZopeSQL(
 class ContractProperties:
     def setUp(self):
         super().setUp()
-        FEATURE_TOGGLES.set('read_metadata_columns', 'True')
-        FEATURE_TOGGLES.set('write_metadata_columns', 'True')
+        FEATURE_TOGGLES.set('read_metadata_columns', True)
+        FEATURE_TOGGLES.set('write_metadata_columns', True)
         self.repository['testcontent'] = ExampleContentType()
 
     def test_converts_scalar_types_on_read(self):
+        example_date = datetime(2010, 1, 1, 0, 0, tzinfo=pytz.UTC)
         self.repository.connector.changeProperties(
             'http://xml.zeit.de/testcontent',
-            {('overscrolling', 'http://namespaces.zeit.de/CMS/document'): True},
+            {('date_created', 'http://namespaces.zeit.de/CMS/document'): example_date},
         )
-        self.assertIs(True, self.repository['testcontent'].overscrolling)
+        self.assertEqual(
+            example_date,
+            zeit.cms.workflow.interfaces.IModified(self.repository['testcontent']).date_created,
+        )
 
     def test_converts_scalar_types_on_write(self):
+        example_date = datetime(2010, 1, 1, 0, 0, tzinfo=pytz.UTC)
         with checked_out(self.repository['testcontent']) as co:
-            co.overscrolling = True
+            zeit.cms.workflow.interfaces.IModified(co).date_created = example_date
         resource = self.repository.connector['http://xml.zeit.de/testcontent']
-        self.assertIs(
-            True, resource.properties[('overscrolling', 'http://namespaces.zeit.de/CMS/document')]
+        self.assertEqual(
+            example_date,
+            resource.properties[('date_created', 'http://namespaces.zeit.de/CMS/document')],
         )
 
 
