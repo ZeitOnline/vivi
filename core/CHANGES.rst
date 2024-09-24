@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.39.0 (2024-09-24)
+-------------------
+
+- WCM-414: Escape json field names in generic search function
+
+
 6.38.0 (2024-09-23)
 -------------------
 
