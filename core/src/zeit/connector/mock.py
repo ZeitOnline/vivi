@@ -26,7 +26,7 @@ from zeit.connector.interfaces import (
     MoveError,
 )
 from zeit.connector.lock import lock_is_foreign
-from zeit.connector.models import DevelopmentContent as Content
+from zeit.connector.models import Content
 import zeit.cms.config
 import zeit.cms.repository.interfaces
 import zeit.connector.cache

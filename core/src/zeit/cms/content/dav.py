@@ -407,6 +407,7 @@ class CollectionTextLineProperty:
     SPLIT_PATTERN = re.compile(r'(?!\\);')
 
     def __init__(self, context, value_type, properties, propertykey):
+        self.has_sql_type = ConnectorModel.column_by_name(*propertykey) is not None
         self.context = context
         self.value_type = value_type
         self.properties = properties
@@ -417,6 +418,8 @@ class CollectionTextLineProperty:
             self._type = self._type[0]
 
     def fromProperty(self, value):
+        if self.has_sql_type and FEATURE_TOGGLES.find('read_metadata_columns'):
+            return value
         typ = zope.component.getMultiAdapter(
             (self.value_type, self.properties, self.propertykey),
             zeit.cms.content.interfaces.IDAVPropertyConverter,
@@ -441,6 +444,8 @@ class CollectionTextLineProperty:
         return self._type(result)
 
     def toProperty(self, value):
+        if self.has_sql_type and FEATURE_TOGGLES.find('write_metadata_columns'):
+            return value
         typ = zope.component.getMultiAdapter(
             (self.value_type, self.properties, self.propertykey),
             zeit.cms.content.interfaces.IDAVPropertyConverter,

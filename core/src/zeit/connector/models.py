@@ -39,7 +39,7 @@ class CommonMetadata:
     channels = mapped_column(
         JSONB,
         nullable=True,
-        info={'namespace': 'document', 'name': 'channels', 'converter': 'channels'},
+        info={'namespace': 'document', 'name': 'channels'},
     )
 
 
