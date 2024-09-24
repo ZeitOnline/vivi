@@ -635,7 +635,7 @@ class Connector:
                 if column is not None:
                     return column == value
             value = json.dumps(str(value))  # Apply correct quoting for jsonpath.
-            return self.Content.unsorted.path_match(f'$.{namespace}.{name} == {value}')
+            return self.Content.unsorted.path_match(f'$."{namespace}"."{name}" == {value}')
         else:
             raise RuntimeError(f'Unknown operand {op!r} while building search query')
 

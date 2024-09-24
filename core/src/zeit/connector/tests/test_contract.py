@@ -480,9 +480,9 @@ class ContractSearch:
     def test_search_known_metadata(self):
         from zeit.connector.search import SearchVar
 
-        self.add_resource('foo', body='mybody', properties={('foo', self.NS): 'foo'})
-        self.add_resource('bar', body='mybody', properties={('foo', self.NS): 'bar'})
-        var = SearchVar('foo', self.NS)
+        self.add_resource('foo', body='mybody', properties={('foo-bar', self.NS): 'foo'})
+        self.add_resource('bar', body='mybody', properties={('foo-bar', self.NS): 'bar'})
+        var = SearchVar('foo-bar', self.NS)
         result = list(self.connector.search([var], var == 'foo'))
         assert result == [('http://xml.zeit.de/testing/foo', 'foo')]
         result = list(self.connector.search([var], var == 'bar'))
