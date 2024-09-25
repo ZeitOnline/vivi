@@ -600,7 +600,14 @@ class Connector:
 
     def search_sql(self, query):
         result = []
-        for content in self.session.execute(query).scalars():
+        try:
+            rows = self.session.execute(query).scalars()
+        except Exception:
+            log.warning('Error during search_sql, suppressed', exc_info=True)
+            self.session.rollback()
+            return result
+
+        for content in rows:
             uniqueid = content.uniqueid
             properties = content.to_webdav()
             resource = self.resource(uniqueid, properties)
@@ -617,7 +624,12 @@ class Connector:
         return result
 
     def search_sql_count(self, query):
-        return self.session.execute(query.with_only_columns(sqlalchemy.func.count())).scalar()
+        try:
+            return self.session.execute(query.with_only_columns(sqlalchemy.func.count())).scalar()
+        except Exception:
+            log.warning('Error during search_sql_count, suppressed', exc_info=True)
+            self.session.rollback()
+            return 0
 
     def query(self):
         return select(self.Content)

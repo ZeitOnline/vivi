@@ -181,6 +181,24 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
         query = query.filter_by(type='article')
         self.assertEqual(self.connector.search_sql_count(query), 2)
 
+    def test_search_sql_suppresses_errors(self):
+        self.connector.session.execute(sql('set statement_timeout=1'))
+        query = self.connector.query().add_columns(sql('pg_sleep(1)'))
+        result = self.connector.search_sql(query)
+        self.assertEqual(len(result), 0)
+        # Ensure no InFailedSqlTransaction exception happens on subsequent calls
+        result = self.connector.search_sql(self.connector.query())
+        self.assertEqual(len(result), 1)
+
+    def test_search_sql_count_suppresses_errors(self):
+        self.connector.session.execute(sql('set statement_timeout=1'))
+        query = self.connector.query()
+        with mock.patch('sqlalchemy.func.count') as count:
+            count.return_value = sql('count(*), pg_sleep(1)')
+            self.assertEqual(0, self.connector.search_sql_count(query))
+        # Ensure no InFailedSqlTransaction exception happens on subsequent calls
+        self.assertEqual(1, self.connector.search_sql_count(query))
+
     def test_search_returns_uuid(self):
         res = self.get_resource(
             'foo',
