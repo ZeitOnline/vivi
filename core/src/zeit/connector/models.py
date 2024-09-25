@@ -31,7 +31,11 @@ class TIMESTAMP(sqlalchemy.TIMESTAMP):
 
 
 class Base(sqlalchemy.orm.DeclarativeBase):
-    pass
+    @classmethod
+    def Index(cls, *args, name=None, **kw):
+        if name is not None:
+            name = f'ix_{cls.__tablename__}_{name}'
+        return Index(name, *args, **kw)
 
 
 class CommonMetadata:
@@ -84,27 +88,25 @@ class Content(Base, CommonMetadata, Modified, PublishInfo, SemanticChange):
     @declared_attr
     def __table_args__(cls):
         return (
-            Index(None, 'type'),
-            Index(None, 'last_updated'),
-            Index(
-                f'ix_{cls.__tablename__}_parent_path_pattern',
+            cls.Index('type'),
+            cls.Index('last_updated'),
+            cls.Index(
                 'parent_path',
                 postgresql_ops={'parent_path': 'varchar_pattern_ops'},
+                name='parent_path_pattern',
             ),
-            Index(
-                f'ix_{cls.__tablename__}_parent_path_name',
+            cls.Index(
                 'parent_path',
                 'name',
                 unique=True,
+                name='parent_path_name',
             ),
-            Index(
-                None,
+            cls.Index(
                 'unsorted',
                 postgresql_using='gin',
                 postgresql_ops={'unsorted': 'jsonb_path_ops'},
             ),
-            Index(
-                None,
+            cls.Index(
                 'channels',
                 postgresql_using='gin',
                 postgresql_ops={'channels': 'jsonb_path_ops'},
