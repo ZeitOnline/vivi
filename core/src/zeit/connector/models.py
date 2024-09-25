@@ -35,7 +35,6 @@ class CommonMetadata:
     def table_args(tablename):
         return (Index(f'ix_{tablename}_channels', 'channels', postgresql_using='gin'),)
 
-    # converter, use name to lookup IConverter instead of type
     channels = mapped_column(
         JSONB,
         nullable=True,
