@@ -41,7 +41,6 @@ class CommonMetadata:
 
     channels = mapped_column(
         JSONB,
-        nullable=True,
         info={'namespace': 'document', 'name': 'channels'},
     )
 
@@ -56,12 +55,10 @@ class SemanticChange:
 class Modified:
     date_created = mapped_column(
         TIMESTAMP,
-        nullable=True,
         info={'namespace': 'document', 'name': 'date_created'},
     )
     date_last_checkout = mapped_column(
         TIMESTAMP,
-        nullable=True,
         info={'namespace': 'document', 'name': 'date_last_checkout'},
     )
 
@@ -69,22 +66,18 @@ class Modified:
 class PublishInfo:
     date_first_released = mapped_column(
         TIMESTAMP,
-        nullable=True,
         info={'namespace': 'document', 'name': 'date_first_released'},
     )
     date_last_published = mapped_column(
         TIMESTAMP,
-        nullable=True,
         info={'namespace': 'workflow', 'name': 'date_last_published'},
     )
     date_last_published_semantic = mapped_column(
         TIMESTAMP,
-        nullable=True,
         info={'namespace': 'workflow', 'name': 'date_last_published_semantic'},
     )
     date_print_published = mapped_column(
         TIMESTAMP,
-        nullable=True,
         info={'namespace': 'document', 'name': 'print-publish'},
     )
 
