@@ -90,7 +90,8 @@ class SQLContentQuery(ContentQuery):
             return query
 
         ids = filter(
-            None, (getattr(IUUID(x), 'shortened', None) for x in self.context.existing_teasers)
+            None,
+            (getattr(IUUID(x, None), 'shortened', None) for x in self.context.existing_teasers),
         )
 
         if not ids:
