@@ -4,7 +4,6 @@ import collections
 import hashlib
 
 from sqlalchemy import (
-    TIMESTAMP,
     Boolean,
     ForeignKey,
     Index,
@@ -26,6 +25,11 @@ import zeit.connector.interfaces
 ID_NAMESPACE = zeit.connector.interfaces.ID_NAMESPACE[:-1]
 
 
+class TIMESTAMP(sqlalchemy.TIMESTAMP):
+    def __init__(self):
+        super().__init__(timezone=True)
+
+
 class Base(sqlalchemy.orm.DeclarativeBase):
     pass
 
@@ -44,19 +48,19 @@ class CommonMetadata:
 
 class SemanticChange:
     date_last_modified_semantic = mapped_column(
-        TIMESTAMP(timezone=True),
+        TIMESTAMP,
         info={'namespace': 'document', 'name': 'last-semantic-change'},
     )
 
 
 class Modified:
     date_created = mapped_column(
-        TIMESTAMP(timezone=True),
+        TIMESTAMP,
         nullable=True,
         info={'namespace': 'document', 'name': 'date_created'},
     )
     date_last_checkout = mapped_column(
-        TIMESTAMP(timezone=True),
+        TIMESTAMP,
         nullable=True,
         info={'namespace': 'document', 'name': 'date_last_checkout'},
     )
@@ -64,22 +68,22 @@ class Modified:
 
 class PublishInfo:
     date_first_released = mapped_column(
-        TIMESTAMP(timezone=True),
+        TIMESTAMP,
         nullable=True,
         info={'namespace': 'document', 'name': 'date_first_released'},
     )
     date_last_published = mapped_column(
-        TIMESTAMP(timezone=True),
+        TIMESTAMP,
         nullable=True,
         info={'namespace': 'workflow', 'name': 'date_last_published'},
     )
     date_last_published_semantic = mapped_column(
-        TIMESTAMP(timezone=True),
+        TIMESTAMP,
         nullable=True,
         info={'namespace': 'workflow', 'name': 'date_last_published_semantic'},
     )
     date_print_published = mapped_column(
-        TIMESTAMP(timezone=True),
+        TIMESTAMP,
         nullable=True,
         info={'namespace': 'document', 'name': 'print-publish'},
     )
@@ -119,7 +123,7 @@ class ContentBase:
     unsorted = mapped_column(JSONB)
 
     last_updated = mapped_column(
-        TIMESTAMP(timezone=True),
+        TIMESTAMP,
         server_default=sqlalchemy.func.now(),
         onupdate=sqlalchemy.func.now(),
         index=True,
@@ -243,7 +247,7 @@ class LockBase:
 
     id = mapped_column(Uuid(as_uuid=False), ForeignKey('properties.id'), primary_key=True)
     principal = mapped_column(Unicode, nullable=False)
-    until = mapped_column(TIMESTAMP(timezone=True), nullable=False)
+    until = mapped_column(TIMESTAMP, nullable=False)
 
     content_class = NotImplemented
 
