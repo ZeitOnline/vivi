@@ -108,6 +108,14 @@ class Content(Base, CommonMetadata, Modified, PublishInfo, SemanticChange):
             ),
             cls.Index('unsorted', ops='jsonb_path_ops'),
             cls.Index('channels', ops='jsonb_path_ops'),
+        ) + tuple(
+            cls.Index(getattr(cls, column).desc().nulls_last())
+            for column in [
+                'date_last_modified_semantic',
+                'date_last_published',
+                'date_last_published_semantic',
+                'date_first_released',
+            ]
         )
 
     id = mapped_column(Uuid(as_uuid=False), primary_key=True)
