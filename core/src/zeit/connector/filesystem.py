@@ -6,7 +6,6 @@ import logging
 import os
 import os.path
 
-from sqlalchemy.dialects.postgresql import JSONB
 import gocept.cache.property
 import grokcore.component as grok
 import lxml.etree
@@ -376,18 +375,3 @@ class DatetimeConverter(DefaultConverter):
 
     def deserialize(self, value):
         return zeit.cms.content.dav.DatetimeProperty._fromProperty(value)
-
-
-@grok.implementer(IConverter)
-class DictConverter(grok.Adapter):
-    grok.context(JSONB)
-
-    def serialize(self, value):
-        if not value:
-            return {}
-        return value
-
-    def deserialize(self, value):
-        if not value:
-            return {}
-        return value

@@ -914,27 +914,6 @@ class ContractProperties:
             resource.properties[('date_created', 'http://namespaces.zeit.de/CMS/document')],
         )
 
-    def test_converts_aggregate_types_on_read(self):
-        example_channels = {'channel1': [], 'channel2': ['sub1', 'sub2']}
-        self.repository.connector.changeProperties(
-            'http://xml.zeit.de/testcontent',
-            {('channels', 'http://namespaces.zeit.de/CMS/document'): example_channels},
-        )
-        self.assertEqual(
-            example_channels,
-            self.repository['testcontent'].channels,
-        )
-
-    def test_converts_aggregate_types_on_write(self):
-        example_channels = {'channel1': [], 'channel2': ['sub1', 'sub2']}
-        with checked_out(self.repository['testcontent']) as co:
-            co.channels = example_channels
-        resource = self.repository.connector['http://xml.zeit.de/testcontent']
-        self.assertEqual(
-            example_channels,
-            resource.properties[('channels', 'http://namespaces.zeit.de/CMS/document')],
-        )
-
 
 class PropertiesSQL(ContractProperties, zeit.cms.testing.FunctionalTestCase):
     layer = zeit.connector.testing.SQL_CONTENT_LAYER
