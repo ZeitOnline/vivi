@@ -82,10 +82,6 @@ class Application:
                 ('dbfanstatic', 'call:zeit.cms.application:clear_fanstatic'),
                 ('debugger', 'call:zeit.cms.application:werkzeug_debugger'),
             ] + pipeline
-        if settings.get('use_linesman'):
-            pipeline = [
-                ('linesman', 'call:linesman.middleware:profiler_filter_app_factory'),
-            ] + pipeline
         app = zeit.cms.wsgi.wsgi_pipeline(app, pipeline, settings)
         app = OpenTelemetryMiddleware(
             app,

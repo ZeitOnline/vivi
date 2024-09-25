@@ -161,7 +161,6 @@ test = [
     "opentelemetry-sdk",
     "packaging",
     "plone.testing[zca,zodb]",
-    "pygraphviz",  # to render linesman results
     "pytest",
     "pytest-cov",
     "pytest-remove-stale-bytecode",
@@ -191,7 +190,6 @@ deploy = [
     "gunicorn",
     "gunicorn_environmentconfig",
     "gunicorn_worker_healthcheck",
-    "linesman",
     "opentelemetry-exporter-otlp",
     "opentelemetry-sdk",
     "opentelemetry-sdk-extension-prometheus-multiprocess",
@@ -208,9 +206,6 @@ zon = [
     "gocept.form==0.8.0+py3",
     "zope.app.locking==3.5.0+py3.1",
     "zope.xmlpickle==4.0.0+py3k1",  # https://github.com/ZeitOnline/zope.xmlpickle/tree/py3
-]
-deploy-zon = [
-    "linesman==0.3.2+py3.4",
 ]
 test-zon = [
     "gocept.jasmine==0.7+py3.2",
