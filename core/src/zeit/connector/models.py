@@ -35,10 +35,6 @@ class Base(sqlalchemy.orm.DeclarativeBase):
 
 
 class CommonMetadata:
-    @staticmethod
-    def table_args(tablename):
-        return (Index(f'ix_{tablename}_channels', 'channels', postgresql_using='gin'),)
-
     channels = mapped_column(
         JSONB,
         info={'namespace': 'document', 'name': 'channels'},
@@ -102,7 +98,12 @@ class Content(Base, CommonMetadata, Modified, PublishInfo, SemanticChange):
             postgresql_using='gin',
             postgresql_ops={'unsorted': 'jsonb_path_ops'},
         ),
-    ) + CommonMetadata.table_args(__tablename__)
+        Index(
+            f'ix_{__tablename__}_channels',
+            'channels',
+            postgresql_using='gin',
+        ),
+    )
 
     id = mapped_column(Uuid(as_uuid=False), primary_key=True)
     type = mapped_column(Unicode, nullable=False, server_default='unknown', index=True)
