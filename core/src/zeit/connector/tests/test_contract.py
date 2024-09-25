@@ -835,8 +835,10 @@ class SQLProtocol:
         self.connector.session.delete(content)
 
     def add_in_storage(self, name):
+        from zeit.connector.postgresql import Content
+
         resource = self.get_resource(name)
-        content = self.connector.Content()
+        content = Content()
         content.from_webdav(resource.properties)
         content.type = resource.type
         content.is_collection = resource.is_collection

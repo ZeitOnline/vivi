@@ -171,8 +171,8 @@ class SQLDatabaseLayer(plone.testing.Layer):
         # Create tables
         c = self['sql_connection']
         t = c.begin()
-        connector.model.metadata.drop_all(c)
-        connector.model.metadata.create_all(c)
+        zeit.connector.models.Base.metadata.drop_all(c)
+        zeit.connector.models.Base.metadata.create_all(c)
         t.commit()
 
     def tearDown(self):
@@ -232,17 +232,10 @@ ZOPE_SQL_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZOPE_SQL_ZCML_LAYER,))
 ZOPE_SQL_CONNECTOR_LAYER = SQLDatabaseLayer(bases=(ZOPE_SQL_ZOPE_LAYER,))
 
 
-class SQLConfigWithMetadataColumnsLayer(SQLConfigLayer):
-    def __init__(self):
-        super().__init__()
-        self.config['sql-model'] = 'zeit.connector.models:DevelopmentBase'
-
-
-SQL_CONTENT_CONFIG_LAYER = SQLConfigWithMetadataColumnsLayer()
 SQL_CONTENT_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     str((importlib.resources.files('zeit.cms') / 'ftesting.zcml')),
     features=['zeit.connector.sql.zope'],
-    bases=(zeit.cms.testing.CONFIG_LAYER, SQL_CONTENT_CONFIG_LAYER),
+    bases=(zeit.cms.testing.CONFIG_LAYER, SQL_CONFIG_LAYER),
 )
 SQL_CONTENT_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(SQL_CONTENT_ZCML_LAYER,))
 SQL_CONTENT_LAYER = SQLDatabaseLayer(bases=(SQL_CONTENT_ZOPE_LAYER,))

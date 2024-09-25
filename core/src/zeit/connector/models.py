@@ -12,7 +12,7 @@ from sqlalchemy import (
     Uuid,
 )
 from sqlalchemy.dialects.postgresql import JSONB
-from sqlalchemy.orm import declared_attr, mapped_column, relationship
+from sqlalchemy.orm import mapped_column, relationship
 import pytz
 import sqlalchemy
 
@@ -82,30 +82,27 @@ class PublishInfo:
     )
 
 
-class DevelopmentCommonMetadata:
-    access = mapped_column(Unicode, index=True, info={'namespace': 'document', 'name': 'access'})
-
-
-class ContentBase:
-    __abstract__ = True
+class Content(Base, CommonMetadata, Modified, PublishInfo, SemanticChange):
     __tablename__ = 'properties'
-
-    @declared_attr.directive
-    def __table_args__(cls):
-        return (
-            Index(
-                f'ix_{cls.__tablename__}_parent_path_pattern',
-                'parent_path',
-                postgresql_ops={'parent_path': 'varchar_pattern_ops'},
-            ),
-            Index(f'ix_{cls.__tablename__}_parent_path_name', 'parent_path', 'name', unique=True),
-            Index(
-                f'ix_{cls.__tablename__}_unsorted',
-                'unsorted',
-                postgresql_using='gin',
-                postgresql_ops={'unsorted': 'jsonb_path_ops'},
-            ),
-        )
+    __table_args__ = (
+        Index(
+            f'ix_{__tablename__}_parent_path_pattern',
+            'parent_path',
+            postgresql_ops={'parent_path': 'varchar_pattern_ops'},
+        ),
+        Index(
+            f'ix_{__tablename__}_parent_path_name',
+            'parent_path',
+            'name',
+            unique=True,
+        ),
+        Index(
+            f'ix_{__tablename__}_unsorted',
+            'unsorted',
+            postgresql_using='gin',
+            postgresql_ops={'unsorted': 'jsonb_path_ops'},
+        ),
+    ) + CommonMetadata.table_args(__tablename__)
 
     id = mapped_column(Uuid(as_uuid=False), primary_key=True)
     type = mapped_column(Unicode, nullable=False, server_default='unknown', index=True)
@@ -125,18 +122,14 @@ class ContentBase:
     parent_path = mapped_column(Unicode)
     name = mapped_column(Unicode)
 
-    lock_class = NotImplemented
-
-    @declared_attr
-    def lock(cls):
-        return relationship(
-            cls.lock_class,
-            uselist=False,
-            lazy='noload',
-            back_populates='content',
-            cascade='delete, delete-orphan',  # Propagate `del content.lock` to DB
-            passive_deletes=True,  # Disable any heuristics, only ever explicitly delete Locks
-        )
+    lock = relationship(
+        'Lock',
+        uselist=False,
+        lazy='noload',
+        back_populates='content',
+        cascade='delete, delete-orphan',  # Propagate `del content.lock` to DB
+        passive_deletes=True,  # Disable any heuristics, only ever explicitly delete Locks
+    )
 
     @classmethod
     def column_by_name(cls, name, namespace):
@@ -234,19 +227,14 @@ class ContentBase:
         return alg.hexdigest()
 
 
-class LockBase:
-    __abstract__ = True
+class Lock(Base):
     __tablename__ = 'locks'
 
     id = mapped_column(Uuid(as_uuid=False), ForeignKey('properties.id'), primary_key=True)
     principal = mapped_column(Unicode, nullable=False)
     until = mapped_column(TIMESTAMP, nullable=False)
 
-    content_class = NotImplemented
-
-    @declared_attr
-    def content(cls):
-        return relationship(cls.content_class, uselist=False, lazy='noload', back_populates='lock')
+    content = relationship('Content', uselist=False, lazy='noload', back_populates='lock')
 
     @property
     def token(self):
@@ -263,38 +251,3 @@ class LockBase:
             return LockStatus.OWN
         else:
             return LockStatus.FOREIGN
-
-
-class Content(Base, ContentBase, CommonMetadata, Modified, PublishInfo, SemanticChange):
-    lock_class = 'Lock'
-
-    @declared_attr.directive
-    def __table_args__(cls):
-        """every new inheritance level needs to re-apply the table_args"""
-        return super().__table_args__ + CommonMetadata.table_args(cls.__tablename__)
-
-
-class Lock(Base, LockBase):
-    content_class = 'Content'
-
-
-class DevelopmentBase(sqlalchemy.orm.DeclarativeBase):
-    """Experimental development features, not ready for any deployment or migration!"""
-
-
-class DevelopmentContent(
-    DevelopmentBase,
-    ContentBase,
-    CommonMetadata,
-    Modified,
-    PublishInfo,
-    SemanticChange,
-    DevelopmentCommonMetadata,
-):
-    lock_class = 'LockWithMetadataColumns'
-
-
-# Having to duplicate all classes (and add indirections to their `relationship()`s)
-# is annoying, but there's no obvious way around it.
-class LockWithMetadataColumns(DevelopmentBase, LockBase):
-    content_class = 'DevelopmentContent'

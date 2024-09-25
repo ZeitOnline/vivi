@@ -6,6 +6,7 @@ from sqlalchemy import func, select
 from sqlalchemy import text as sql
 from sqlalchemy.exc import IntegrityError
 import google.api_core.exceptions
+import pendulum
 import pytz
 import transaction
 
@@ -354,22 +355,25 @@ class PropertiesColumnTest(zeit.connector.testing.SQLTest):
     def test_properties_can_be_stored_in_separate_columns(self):
         FEATURE_TOGGLES.set('write_metadata_columns', True)
         FEATURE_TOGGLES.set('read_metadata_columns', True)
-        res = self.add_resource('foo', properties={('access', DOCUMENT_SCHEMA_NS): 'foo'})
-        self.assertEqual('foo', res.properties[('access', DOCUMENT_SCHEMA_NS)])
+        timestamp = pendulum.datetime(1980, 1, 1)
+        res = self.add_resource('foo', properties={('date_created', DOCUMENT_SCHEMA_NS): timestamp})
+        self.assertEqual(timestamp, res.properties[('date_created', DOCUMENT_SCHEMA_NS)])
         content = self.connector._get_content(res.id)
-        self.assertEqual('foo', content.access)
+        self.assertEqual(timestamp, content.date_created)
 
     def test_search_looks_in_columns_or_unsorted_depending_on_toggle(self):
         FEATURE_TOGGLES.set('write_metadata_columns', True)
 
-        res = self.add_resource('foo', properties={('access', DOCUMENT_SCHEMA_NS): 'foo'})
-        access = SearchVar('access', 'http://namespaces.zeit.de/CMS/document')
+        res = self.add_resource(
+            'foo', properties={('date_created', DOCUMENT_SCHEMA_NS): '1980-01-01'}
+        )
+        var = SearchVar('date_created', 'http://namespaces.zeit.de/CMS/document')
         for toggle in [False, True]:  # XXX parametrize would be nice
             FEATURE_TOGGLES.set('read_metadata_columns', toggle)
             if toggle:
                 self.connector._get_content(res.id).unsorted = {}
                 transaction.commit()
-            result = self.connector.search([access], access == 'foo')
+            result = self.connector.search([var], var == '1980-01-01')
             unique_id, uuid = next(result)
             self.assertEqual(res.id, unique_id)
 
