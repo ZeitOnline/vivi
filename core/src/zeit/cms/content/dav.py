@@ -327,8 +327,11 @@ class ChoicePropertyWithIterableVocabulary:
 class BoolProperty:
     def __init__(self, context, properties, propertykey):
         self.context = context
+        self.has_sql_type = ConnectorModel.column_by_name(*propertykey) is not None
 
     def fromProperty(self, value):
+        if self.has_sql_type and FEATURE_TOGGLES.find('read_metadata_columns'):
+            return value
         return self._fromProperty(value)
 
     @staticmethod
@@ -336,6 +339,8 @@ class BoolProperty:
         return value.lower() in ('yes', 'true')
 
     def toProperty(self, value):
+        if self.has_sql_type and FEATURE_TOGGLES.find('write_metadata_columns'):
+            return value
         return self._toProperty(value)
 
     @staticmethod
@@ -355,18 +360,20 @@ class DatetimeProperty:
     def fromProperty(self, value):
         if not value:
             return None
+        if self.has_sql_type and FEATURE_TOGGLES.find('read_metadata_columns'):
+            return value
         return self._fromProperty(value)
 
     @staticmethod
     def _fromProperty(value):
         # We have _mostly_ iso8601, but some old content has the format
         # "Thu, 13 Mar 2008 13:48:37 GMT", so we use a lenient parser.
-        if not value:
-            return None
         date = pendulum.parse(value, strict=False)
         return date.in_tz('UTC')
 
     def toProperty(self, value):
+        if self.has_sql_type and FEATURE_TOGGLES.find('write_metadata_columns'):
+            return value
         return self._toProperty(value)
 
     @staticmethod
@@ -400,6 +407,7 @@ class CollectionTextLineProperty:
     SPLIT_PATTERN = re.compile(r'(?!\\);')
 
     def __init__(self, context, value_type, properties, propertykey):
+        self.has_sql_type = ConnectorModel.column_by_name(*propertykey) is not None
         self.context = context
         self.value_type = value_type
         self.properties = properties
@@ -410,6 +418,8 @@ class CollectionTextLineProperty:
             self._type = self._type[0]
 
     def fromProperty(self, value):
+        if self.has_sql_type and FEATURE_TOGGLES.find('read_metadata_columns'):
+            return value
         typ = zope.component.getMultiAdapter(
             (self.value_type, self.properties, self.propertykey),
             zeit.cms.content.interfaces.IDAVPropertyConverter,
@@ -434,6 +444,8 @@ class CollectionTextLineProperty:
         return self._type(result)
 
     def toProperty(self, value):
+        if self.has_sql_type and FEATURE_TOGGLES.find('write_metadata_columns'):
+            return value
         typ = zope.component.getMultiAdapter(
             (self.value_type, self.properties, self.propertykey),
             zeit.cms.content.interfaces.IDAVPropertyConverter,
