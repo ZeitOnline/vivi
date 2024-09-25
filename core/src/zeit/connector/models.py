@@ -223,8 +223,6 @@ class ContentBase:
                 continue
             if ns == INTERNAL_PROPERTY:
                 continue
-            if isinstance(v, datetime):
-                continue
             unsorted[ns.replace(self.NS, '', 1)][k] = v
         self.unsorted = unsorted
 
