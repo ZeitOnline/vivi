@@ -102,6 +102,7 @@ class Content(Base, CommonMetadata, Modified, PublishInfo, SemanticChange):
             f'ix_{__tablename__}_channels',
             'channels',
             postgresql_using='gin',
+            postgresql_ops={'channels': 'jsonb_path_ops'},
         ),
     )
 

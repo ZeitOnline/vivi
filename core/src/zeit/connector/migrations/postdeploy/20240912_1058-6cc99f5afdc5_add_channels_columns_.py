@@ -5,6 +5,7 @@ Revises: cf24009572b7
 Create Date: 2024-09-12 10:58:00.181930
 
 """
+
 from typing import Sequence, Union
 
 from alembic import op
@@ -25,6 +26,7 @@ def upgrade() -> None:
             ['channels'],
             unique=False,
             postgresql_using='gin',
+            postgresql_ops={'channels': 'jsonb_path_ops'},
             postgresql_concurrently=True,
             if_not_exists=True,
         )

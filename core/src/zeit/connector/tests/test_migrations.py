@@ -52,6 +52,8 @@ class DBTestCase(unittest.TestCase):
             result.append(text)
 
         metadata = sqlalchemy.MetaData()
+        # XXX This does not retrieve index operator classes, see sqlalchemy#8664
+        # for example `USING gin (mycolumn jsonb_path_ops)`
         metadata.reflect(connection)
 
         result = []
