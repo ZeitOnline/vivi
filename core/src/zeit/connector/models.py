@@ -216,6 +216,7 @@ class ContentBase:
                 value = props.get((name, self.NS + namespace), self)
                 if value is not self:
                     setattr(self, column.name, value)
+                    props.pop((name, self.NS + namespace), None)
 
         unsorted = collections.defaultdict(dict)
         for (k, ns), v in props.items():
