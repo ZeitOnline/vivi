@@ -12,7 +12,7 @@ from sqlalchemy import (
     Uuid,
 )
 from sqlalchemy.dialects.postgresql import JSONB
-from sqlalchemy.orm import mapped_column, relationship
+from sqlalchemy.orm import declared_attr, mapped_column, relationship
 import pytz
 import sqlalchemy
 
@@ -80,39 +80,42 @@ class PublishInfo:
 
 class Content(Base, CommonMetadata, Modified, PublishInfo, SemanticChange):
     __tablename__ = 'properties'
-    __table_args__ = (
-        Index(
-            f'ix_{__tablename__}_type',
-            'type',
-        ),
-        Index(
-            f'ix_{__tablename__}_last_updated',
-            'last_updated',
-        ),
-        Index(
-            f'ix_{__tablename__}_parent_path_pattern',
-            'parent_path',
-            postgresql_ops={'parent_path': 'varchar_pattern_ops'},
-        ),
-        Index(
-            f'ix_{__tablename__}_parent_path_name',
-            'parent_path',
-            'name',
-            unique=True,
-        ),
-        Index(
-            f'ix_{__tablename__}_unsorted',
-            'unsorted',
-            postgresql_using='gin',
-            postgresql_ops={'unsorted': 'jsonb_path_ops'},
-        ),
-        Index(
-            f'ix_{__tablename__}_channels',
-            'channels',
-            postgresql_using='gin',
-            postgresql_ops={'channels': 'jsonb_path_ops'},
-        ),
-    )
+
+    @declared_attr
+    def __table_args__(cls):
+        return (
+            Index(
+                f'ix_{cls.__tablename__}_type',
+                'type',
+            ),
+            Index(
+                f'ix_{cls.__tablename__}_last_updated',
+                'last_updated',
+            ),
+            Index(
+                f'ix_{cls.__tablename__}_parent_path_pattern',
+                'parent_path',
+                postgresql_ops={'parent_path': 'varchar_pattern_ops'},
+            ),
+            Index(
+                f'ix_{cls.__tablename__}_parent_path_name',
+                'parent_path',
+                'name',
+                unique=True,
+            ),
+            Index(
+                f'ix_{cls.__tablename__}_unsorted',
+                'unsorted',
+                postgresql_using='gin',
+                postgresql_ops={'unsorted': 'jsonb_path_ops'},
+            ),
+            Index(
+                f'ix_{cls.__tablename__}_channels',
+                'channels',
+                postgresql_using='gin',
+                postgresql_ops={'channels': 'jsonb_path_ops'},
+            ),
+        )
 
     id = mapped_column(Uuid(as_uuid=False), primary_key=True)
     type = mapped_column(Unicode, nullable=False, server_default='unknown')
