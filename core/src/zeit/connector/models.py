@@ -82,6 +82,14 @@ class Content(Base, CommonMetadata, Modified, PublishInfo, SemanticChange):
     __tablename__ = 'properties'
     __table_args__ = (
         Index(
+            f'ix_{__tablename__}_type',
+            'type',
+        ),
+        Index(
+            f'ix_{__tablename__}_last_updated',
+            'last_updated',
+        ),
+        Index(
             f'ix_{__tablename__}_parent_path_pattern',
             'parent_path',
             postgresql_ops={'parent_path': 'varchar_pattern_ops'},
@@ -107,7 +115,7 @@ class Content(Base, CommonMetadata, Modified, PublishInfo, SemanticChange):
     )
 
     id = mapped_column(Uuid(as_uuid=False), primary_key=True)
-    type = mapped_column(Unicode, nullable=False, server_default='unknown', index=True)
+    type = mapped_column(Unicode, nullable=False, server_default='unknown')
     is_collection = mapped_column(Boolean, nullable=False, server_default='false')
 
     body = mapped_column(UnicodeText)
@@ -115,10 +123,7 @@ class Content(Base, CommonMetadata, Modified, PublishInfo, SemanticChange):
     unsorted = mapped_column(JSONB)
 
     last_updated = mapped_column(
-        TIMESTAMP,
-        server_default=sqlalchemy.func.now(),
-        onupdate=sqlalchemy.func.now(),
-        index=True,
+        TIMESTAMP, server_default=sqlalchemy.func.now(), onupdate=sqlalchemy.func.now()
     )
 
     parent_path = mapped_column(Unicode)
