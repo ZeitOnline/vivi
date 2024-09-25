@@ -84,14 +84,8 @@ class Content(Base, CommonMetadata, Modified, PublishInfo, SemanticChange):
     @declared_attr
     def __table_args__(cls):
         return (
-            Index(
-                f'ix_{cls.__tablename__}_type',
-                'type',
-            ),
-            Index(
-                f'ix_{cls.__tablename__}_last_updated',
-                'last_updated',
-            ),
+            Index(None, 'type'),
+            Index(None, 'last_updated'),
             Index(
                 f'ix_{cls.__tablename__}_parent_path_pattern',
                 'parent_path',
@@ -104,13 +98,13 @@ class Content(Base, CommonMetadata, Modified, PublishInfo, SemanticChange):
                 unique=True,
             ),
             Index(
-                f'ix_{cls.__tablename__}_unsorted',
+                None,
                 'unsorted',
                 postgresql_using='gin',
                 postgresql_ops={'unsorted': 'jsonb_path_ops'},
             ),
             Index(
-                f'ix_{cls.__tablename__}_channels',
+                None,
                 'channels',
                 postgresql_using='gin',
                 postgresql_ops={'channels': 'jsonb_path_ops'},
