@@ -78,10 +78,6 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
         '.teaser.supertitle', ICommonMetadata['teaserSupertitle']
     )
 
-    authors = zeit.cms.content.dav.DAVProperty(
-        ICommonMetadata['authors'], DOCUMENT_SCHEMA_NS, 'author', use_default=True
-    )
-
     printRessort = zeit.cms.content.dav.DAVProperty(
         ICommonMetadata['printRessort'], zeit.cms.interfaces.PRINT_NAMESPACE, 'ressort'
     )
