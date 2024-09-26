@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
 <head>
   <attribute ns="http://namespaces.zeit.de/CMS/meta" name="type">testcontenttype</attribute>
-  <attribute ns="http://namespaces.zeit.de/CMS/document" name="author"></attribute>
+  <attribute ns="http://namespaces.zeit.de/CMS/document" name="year">1979</attribute>
 </head>
