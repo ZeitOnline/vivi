@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.40.0 (2024-09-26)
+-------------------
+
+- WCM-22: Suppress errors during automatic area sql queries
+
+- WCM-285: bring back the old behavior for the connector and write data as read if enabled
+
+
 6.39.0 (2024-09-24)
 -------------------
 
