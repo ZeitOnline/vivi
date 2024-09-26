@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.41.0 (2024-09-26)
+-------------------
+
+- WCM-291: Add indexes so we can sort by timestamp columns
+
+
 6.40.0 (2024-09-26)
 -------------------
 
