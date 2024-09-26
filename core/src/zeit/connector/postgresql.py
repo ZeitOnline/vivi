@@ -45,7 +45,7 @@ from zeit.connector.interfaces import (
     LockStatus,
     MoveError,
 )
-from zeit.connector.models import ID_NAMESPACE
+from zeit.connector.models import ID_NAMESPACE, Content, Lock
 import zeit.cms.cli
 import zeit.cms.config
 import zeit.cms.interfaces
@@ -70,7 +70,6 @@ class Connector:
         reconnect_tries=3,
         reconnect_wait=0.1,
         support_locking=False,
-        model=zeit.connector.models.Base,
     ):
         self.dsn = dsn
         self.reconnect_tries = reconnect_tries
@@ -85,12 +84,6 @@ class Connector:
         self.gcs_client = storage.Client(project=storage_project)
         self.bucket = self.gcs_client.bucket(storage_bucket)
         self.support_locking = support_locking
-
-        self.model = model
-        classes = {'properties': 'Content', 'locks': 'Lock'}
-        for mapper in model.registry.mappers:
-            cls = mapper.class_
-            setattr(self, classes[cls.__tablename__], cls)
 
     @classmethod
     @zope.interface.implementer(zeit.connector.interfaces.IConnector)
@@ -135,7 +128,7 @@ class Connector:
         return self.resource_class(
             uniqueid,
             uniqueid.split('/')[-1],
-            properties.get(('type', self.Content.NS + 'meta'), 'unknown'),
+            properties.get(('type', Content.NS + 'meta'), 'unknown'),
             lambda: properties,
             partial(self._get_body, uniqueid),
             is_collection=properties[('is_collection', INTERNAL_PROPERTY)],
@@ -150,7 +143,7 @@ class Connector:
 
     def _get_properties(self, uniqueid):
         if uniqueid == ID_NAMESPACE:
-            content = self.Content(id='root', type='folder', is_collection=True, unsorted={})
+            content = Content(id='root', type='folder', is_collection=True, unsorted={})
             return content.to_webdav()
 
         if uniqueid in self.property_cache:
@@ -222,7 +215,7 @@ class Connector:
                 self.child_name_cache.pop(uniqueid, None)
                 return
             parent = '/'.join(self._pathkey(uniqueid))
-        result = self.session.execute(select(self.Content).filter_by(parent_path=parent))
+        result = self.session.execute(select(Content).filter_by(parent_path=parent))
         self.child_name_cache[uniqueid] = set(x.uniqueid for x in result.scalars())
 
     def _update_parent_child_name_cache(self, uniqueid, operation):
@@ -243,7 +236,7 @@ class Connector:
         content = self._get_content(uniqueid)
         exists = content is not None
         if not exists:
-            content = self.Content()
+            content = Content()
             self.session.add(content)
         else:
             if content.lock_status == LockStatus.FOREIGN:
@@ -340,17 +333,15 @@ class Connector:
                 continue
             raise google.cloud.exceptions.from_http_response(response)
 
-        self.session.execute(
-            delete(self.Content).where(self.Content.id.in_([x.id for x in to_delete]))
-        )
+        self.session.execute(delete(Content).where(Content.id.in_([x.id for x in to_delete])))
 
     def _get_all_children(self, uniqueid):
         parent = uniqueid.replace(ID_NAMESPACE, '', 1)
         query = (
-            select(self.Content)
-            .where(self.Content.parent_path.startswith(parent))
-            .order_by(self.Content.parent_path)
-            .options(joinedload(self.Content.lock))
+            select(Content)
+            .where(Content.parent_path.startswith(parent))
+            .order_by(Content.parent_path)
+            .options(joinedload(Content.lock))
         )
         return self.session.execute(query).scalars()
 
@@ -376,9 +367,9 @@ class Connector:
 
     def _get_content(self, uniqueid, getlock=True):
         parent, name = self._pathkey(uniqueid)
-        query = select(self.Content).filter_by(parent_path=parent, name=name)
+        query = select(Content).filter_by(parent_path=parent, name=name)
         if getlock and self.support_locking:
-            query = query.options(joinedload(self.Content.lock))
+            query = query.options(joinedload(Content.lock))
         return self.session.execute(query).scalars().one_or_none()
 
     @staticmethod
@@ -435,7 +426,7 @@ class Connector:
                 continue
             raise google.cloud.exceptions.from_http_response(response)
 
-        self._bulk_insert(self.Content, targets)
+        self._bulk_insert(Content, targets)
 
         for content in targets:
             self.property_cache[content.uniqueid] = content.to_webdav()
@@ -502,7 +493,7 @@ class Connector:
                 self.child_name_cache[target_uniqueid] = set()
             self._update_parent_child_name_cache(source_uniqueid, 'remove')
             self._update_parent_child_name_cache(target_uniqueid, 'add')
-        self.session.execute(update(self.Content), updates)
+        self.session.execute(update(Content), updates)
 
     def lock(self, uniqueid, principal, until):
         uniqueid = self._normalize(uniqueid)
@@ -513,7 +504,7 @@ class Connector:
             case LockStatus.NONE | LockStatus.TIMED_OUT:
                 lock = content.lock
                 if not lock:
-                    lock = self.Lock(id=content.id)
+                    lock = Lock(id=content.id)
                     self.session.add(lock)
                 lock.principal = principal
                 if until is None:
@@ -569,7 +560,7 @@ class Connector:
 
     def _get_cached_lock(self, uniqueid):
         properties = self._get_properties(uniqueid)
-        return self.Lock(
+        return Lock(
             principal=properties.get(('lock_principal', INTERNAL_PROPERTY)),
             until=properties.get(('lock_until', INTERNAL_PROPERTY)),
         )
@@ -582,13 +573,11 @@ class Connector:
         ):
             # Sorely needed performance optimization.
             uuid = expr.operands[-1].replace('urn:uuid:', '')
-            content = self.session.execute(
-                select(self.Content).where(self.Content.id == uuid)
-            ).scalar()
+            content = self.session.execute(select(Content).where(Content.id == uuid)).scalar()
             if content is not None:
                 yield (content.uniqueid, '{urn:uuid:%s}' % content.id)
         else:
-            query = select(self.Content).where(self._build_filter(expr))
+            query = select(Content).where(self._build_filter(expr))
             result = self.session.execute(query)
             for item in result.scalars():
                 data = [item.uniqueid]
@@ -632,7 +621,7 @@ class Connector:
             return 0
 
     def query(self):
-        return select(self.Content)
+        return select(Content)
 
     def _build_filter(self, expr):
         op = expr.operator
@@ -641,13 +630,13 @@ class Connector:
         elif op == 'eq':
             (var, value) = expr.operands
             name = var.name
-            namespace = var.namespace.replace(self.Content.NS, '', 1)
+            namespace = var.namespace.replace(Content.NS, '', 1)
             if FEATURE_TOGGLES.find('read_metadata_columns'):
-                column = self.Content.column_by_name(name, namespace)
+                column = Content.column_by_name(name, namespace)
                 if column is not None:
                     return column == value
             value = json.dumps(str(value))  # Apply correct quoting for jsonpath.
-            return self.Content.unsorted.path_match(f'$."{namespace}"."{name}" == {value}')
+            return Content.unsorted.path_match(f'$."{namespace}"."{name}" == {value}')
         else:
             raise RuntimeError(f'Unknown operand {op!r} while building search query')
 
@@ -748,7 +737,7 @@ def _unlock_overdue_locks():
         log.debug('Not SQL connector, skipping lock cleanup')
         return
     log.info('Unlock overdue locks...')
-    stmt = delete(connector.Lock).where(connector.Lock.until < datetime.now(pytz.UTC))
+    stmt = delete(Lock).where(Lock.until < datetime.now(pytz.UTC))
     connector.session.execute(stmt)
     transaction.commit()
 
