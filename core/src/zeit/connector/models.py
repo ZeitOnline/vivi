@@ -66,6 +66,10 @@ class Modified:
         TIMESTAMP,
         info={'namespace': 'document', 'name': 'date_last_checkout'},
     )
+    date_last_modified = mapped_column(
+        TIMESTAMP,
+        info={'namespace': 'document', 'name': 'date_last_modified'},
+    )
 
 
 class PublishInfo:
