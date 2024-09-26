@@ -56,6 +56,12 @@ class DBTestCase(unittest.TestCase):
         # for example `USING gin (mycolumn jsonb_path_ops)`
         metadata.reflect(connection)
 
+        # We don't care about column order here. (sqlalchemy sorts them in
+        # python source declaration order, but migrations sort them in
+        # chronological add order, since postgres can only append columns).
+        for table in metadata.tables.values():
+            table.columns._collection.sort()  # XXX internal API, might break.
+
         result = []
         engine = sqlalchemy.create_mock_engine(
             'postgresql://',
