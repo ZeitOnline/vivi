@@ -589,11 +589,8 @@ class Connector:
 
     def search_sql(self, query):
         result = []
-        try:
-            rows = self.session.execute(query).scalars()
-        except Exception:
-            log.warning('Error during search_sql, suppressed', exc_info=True)
-            self.session.rollback()
+        rows = self._execute_suppress_errors(query)
+        if rows is None:
             return result
 
         for content in rows:
@@ -613,12 +610,18 @@ class Connector:
         return result
 
     def search_sql_count(self, query):
-        try:
-            return self.session.execute(query.with_only_columns(sqlalchemy.func.count())).scalar()
-        except Exception:
-            log.warning('Error during search_sql_count, suppressed', exc_info=True)
-            self.session.rollback()
+        rows = self._execute_suppress_errors(query.with_only_columns(sqlalchemy.func.count()))
+        if rows is None:
             return 0
+        return rows.one()
+
+    def _execute_suppress_errors(self, query):
+        try:
+            return self.session.execute(query).scalars()
+        except Exception:
+            log.warning('Error during search_sql, suppressed', exc_info=True)
+            self.session.rollback()
+            return None
 
     def query(self):
         return select(Content)
