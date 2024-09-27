@@ -80,9 +80,10 @@ class Hook:
         self.id = id
         self.url = url
         self.excludes = []
+        self.includes = []
 
     def __call__(self, content):
-        if self.should_exclude(content):
+        if not self.matches_criteria(content):
             return
         log.info('Notifying %s about %s', self.url, content)
         try:
@@ -102,6 +103,20 @@ class Hook:
 
     def add_exclude(self, key, value):
         self.excludes.append((key, value))
+
+    def add_include(self, key, value):
+        self.includes.append((key, value))
+
+    def matches_criteria(self, content):
+        return self.should_include(content) and not self.should_exclude(content)
+
+    def should_include(self, content):
+        if not self.includes:
+            return True
+        for include in self.includes:
+            if self._matches(include, content):
+                return True
+        return False
 
     def should_exclude(self, content):
         renameable = getattr(IAutomaticallyRenameable(content, None), 'renameable', False)
@@ -149,6 +164,8 @@ class HookSource(zeit.cms.content.sources.SimpleXMLSource):
         tree = self._get_tree()
         for node in tree.iterchildren('webhook'):
             hook = Hook(node.get('id'), node.get('url'))
+            for include in node.xpath('include/*'):
+                hook.add_include(include.tag, include.text)
             for exclude in node.xpath('exclude/*'):
                 hook.add_exclude(exclude.tag, exclude.text)
             result[hook.id] = hook
