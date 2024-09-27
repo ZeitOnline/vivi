@@ -159,6 +159,14 @@ class WebhookEventTest(FunctionalTestCase):
               <product_counter>print</product_counter>
             </exclude>
           </webhook>
+          <webhook id="publish" url="http://localhost:{port}">
+            <include>
+              <product_counter>print</product_counter>
+            </include>
+            <exclude>
+              <type>testcontenttype</type>
+            </exclude>
+          </webhook>
         </webhooks>
         """
 
