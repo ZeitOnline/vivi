@@ -1,10 +1,11 @@
-"""add modified publish info datetime columns
+"""add timestamp columns
 
 Revision ID: b7304b8f2b06
 Revises: 9aba9394d011
 Create Date: 2024-09-18 08:29:25.572847
 
 """
+
 from typing import Sequence, Union
 
 from alembic import op
