@@ -77,7 +77,9 @@ def publish():
 
     if options.skip_deps:
         log.info('Deactivating publish dependencies')
-        mock.patch('zeit.workflow.dependency.Dependencies._find_adapters', return_value=()).start()
+        mock.patch(
+            'zeit.cms.workflow.dependency.Dependencies._find_adapters', return_value=()
+        ).start()
 
     if not options.use_checkin_hooks:
         log.info('Deactivating checkin hooks')
