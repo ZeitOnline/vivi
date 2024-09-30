@@ -75,7 +75,6 @@ class QueryTypeSource(zeit.cms.content.sources.SimpleDictSource):
             ('product', _('query-type-product')),
             ('ressort', _('query-type-ressort')),
             ('genre', _('query-type-genre')),
-            ('authorships', _('query-type-authorships')),
             ('access', _('query-type-access')),
             ('content_type', _('query-type-content-type')),
         ]
@@ -184,11 +183,6 @@ class QuerySubRessortSource(zeit.cms.content.sources.SubRessortSource):
 
 
 class IQueryConditions(zeit.content.article.interfaces.IArticle):
-    # ICommonMetadata uses a ReferenceField, which makes no sense for `query`.
-    authorships = zope.schema.Choice(
-        title=_('Authors'), source=zeit.cms.content.interfaces.authorSource, required=False
-    )
-
     # ICommonMetadata has ressort and sub_ressort in separate fields, but we
     # need them combined. And so that whitespace-separated serializing works,
     # we wrap it in a tuple to reuse the DAVPropertyConverter for `channels`.

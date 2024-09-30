@@ -170,9 +170,9 @@ class AreaBrowserTest(ElementBrowserTestHelper, zeit.content.cp.testing.BrowserT
         b.getControl('Amount of teasers').value = '1'
         b.getControl('Add Custom Query').click()
         b.getControl('Channel').displayValue = ['International']
-        b.getControl('Custom Query Type').displayValue = ['query-type-authorships']
+        b.getControl('Custom Query Type').displayValue = ['query-type-content-type']
         b.getControl('Add Custom Query').click()  # Force a submit
-        self.assertEqual('', b.getControl(name='form.query.0..combination_02').value)
+        self.assertEqual([''], b.getControl(name='form.query.0..combination_02').value)
 
     def test_area_bg_color_is_set(self):
         browser = self.browser

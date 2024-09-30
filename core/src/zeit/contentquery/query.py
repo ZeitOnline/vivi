@@ -237,7 +237,6 @@ class CustomContentQuery(ElasticsearchContentQuery):
     grok.name('custom')
 
     ES_FIELD_NAMES = {
-        'authorships': 'payload.head.authors',
         'channels': 'payload.document.channels.hierarchy',
         'content_type': 'doc_type',
     }
