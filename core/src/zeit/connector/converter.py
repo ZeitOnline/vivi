@@ -9,6 +9,7 @@ import grokcore.component as grok
 import sqlalchemy
 import zope.interface
 
+from zeit.connector.types import JSONBWithTupleSupport
 import zeit.cms.content.dav
 
 
@@ -67,3 +68,28 @@ class DatetimeConverter(DefaultConverter):
 
     def deserialize(self, value):
         return zeit.cms.content.dav.DatetimeProperty._fromProperty(value)
+
+
+class ChannelsConverter(DefaultConverter):
+    """Converts list of channels seperated by semicolon and subchannels by space."""
+
+    grok.context(JSONBWithTupleSupport)
+
+    def serialize(self, value: list) -> str:
+        if value is None:
+            return None
+        return ';'.join(
+            ' '.join(subchannel for subchannel in channel if subchannel) for channel in value
+        )
+
+    def deserialize(self, value: str) -> list:
+        result = []
+        for channel in value.split(';'):
+            subchannels = channel.split()
+            channels = [subchannels[0]]
+            if len(subchannels) > 1:
+                channels.extend(subchannels[1:])
+            else:
+                channels.append(None)
+            result.append(channels)
+        return result

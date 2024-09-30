@@ -19,16 +19,12 @@ import sqlalchemy
 from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.connector.interfaces import INTERNAL_PROPERTY, DeleteProperty, LockStatus
 from zeit.connector.lock import lock_is_foreign
+from zeit.connector.types import TIMESTAMP, JSONBWithTupleSupport
 import zeit.connector.converter
 import zeit.connector.interfaces
 
 
 ID_NAMESPACE = zeit.connector.interfaces.ID_NAMESPACE[:-1]
-
-
-class TIMESTAMP(sqlalchemy.TIMESTAMP):
-    def __init__(self):
-        super().__init__(timezone=True)
 
 
 class Base(sqlalchemy.orm.DeclarativeBase):
@@ -46,7 +42,7 @@ class Base(sqlalchemy.orm.DeclarativeBase):
 
 class CommonMetadata:
     channels = mapped_column(
-        JSONB,
+        JSONBWithTupleSupport,
         info={'namespace': 'document', 'name': 'channels'},
     )
 
