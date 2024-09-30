@@ -1,6 +1,8 @@
 import json
 import logging
 
+from sqlalchemy import and_ as sql_and
+from sqlalchemy import not_ as sql_not
 from sqlalchemy import text as sql
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
@@ -143,7 +145,13 @@ class SQLCustomContentQuery(SQLContentQuery):
     serialize = CustomQueryProperty()._serialize_query_item
 
     def _make_clause(self, typ, item):
-        typ, operator, value = self.serialize(self.context, item)
+        try:
+            func = getattr(self, '_make_{}_condition'.format(typ))
+            return func(item)
+        except AttributeError:
+            return self._make_condition(*self.serialize(self.context, item))
+
+    def _make_condition(self, typ, operator, value):
         condition = getattr(self._column(typ), self.OPERATORS[operator])
         return condition(value)
 
@@ -158,6 +166,27 @@ class SQLCustomContentQuery(SQLContentQuery):
         if not isinstance(prop, zeit.cms.content.dav.DAVProperty):
             raise ValueError('Cannot determine field name for %s', typ)
         return ConnectorModel.column_by_name(prop.name, prop.namespace)
+
+    def _make_channels_condition(self, item):
+        typ = item[0]
+        operator = item[1]
+        value = item[2:]
+        if not value[1]:
+            value = [[value[0]]]
+        else:
+            value = [value]
+        condition = self._column(typ).contains(json.dumps(value))
+        if operator == 'neq':
+            condition = sql_not(condition)
+        return condition
+
+    def _make_ressort_condition(self, item):
+        operator = item[1]
+        value = item[2:]
+        condition = self._make_condition('ressort', operator, value[0])
+        if value[1]:
+            condition = sql_and(condition, self._make_condition('sub_ressort', operator, value[1]))
+        return condition
 
 
 @grok.adapter(zeit.contentquery.interfaces.IConfiguration, name='custom')

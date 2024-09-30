@@ -1175,3 +1175,30 @@ AND unsorted @@ '$."zeit.content.gallery".type != "inline"'...
         self.area.query = (('content_type', 'neq', zeit.content.article.interfaces.IArticle),)
         IRenderedArea(self.area).values()
         self.assertEllipsis("...type != 'article'...", self.connector.search_args[0])
+
+    def test_creates_appropriate_condition_for_channels(self):
+        self.area.query = (
+            ('channels', 'eq', 'International', 'Nahost'),
+            ('channels', 'eq', 'Wissen', None),
+        )
+        IRenderedArea(self.area).values()
+        query = """
+...properties.channels @> '[["International", "Nahost"]]'
+AND properties.channels @> '[["Wissen"]]'
+AND unsorted...
+"""
+        self.assertEllipsis(query, self.connector.search_args[0])
+
+    def test_creates_appropriate_condition_for_ressort(self):
+        self.area.query = (
+            ('ressort', 'eq', 'International', 'Nahost'),
+            ('ressort', 'eq', 'Wissen', None),
+        )
+        IRenderedArea(self.area).values()
+        query = """
+...properties.ressort = 'International'
+AND properties.sub_ressort = 'Nahost'
+AND properties.ressort = 'Wissen'
+AND unsorted...
+"""
+        self.assertEllipsis(query, self.connector.search_args[0])
