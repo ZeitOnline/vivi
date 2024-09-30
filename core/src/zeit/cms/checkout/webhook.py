@@ -18,18 +18,17 @@ import zeit.cms.workflow.interfaces
 log = logging.getLogger(__name__)
 
 
-def create_webhook_job(id, context, **kwargs):
-    hook = HOOKS.factory.find(id)
-    if not hook:
-        log.warning('No %s webhook found for %s', id, context.uniqueId)
+def create_webhook_jobs(id, context, **kwargs):
+    hooks = HOOKS.factory.find(id)
+    if not hooks:
+        log.warning('No %s webhooks found for %s', id, context.uniqueId)
         return
-
-    log.info(
-        'After%s: Creating async webhook job for %s',
-        id.capitalize(),
-        context.uniqueId,
-    )
-    notify_webhook.apply_async((context.uniqueId, id), **kwargs)
+    for index, hook in enumerate(hooks):
+        log.info(
+            f'After{id.capitalize()}: Creating async webhook jobs with'
+            f' index {index} for {context.uniqueId}',
+        )
+        notify_webhook.apply_async((context.uniqueId, id, index), **kwargs)
 
 
 @grok.subscribe(zeit.cms.interfaces.ICMSContent, zeit.cms.checkout.interfaces.IAfterCheckinEvent)
@@ -37,12 +36,12 @@ def notify_after_checkin(context, event):
     # XXX Work around redis/ZODB race condition, see BUG-796.
     if event.publishing:
         return
-    create_webhook_job('checkin', context, countdown=5)
+    create_webhook_jobs('checkin', context, countdown=5)
 
 
 @grok.subscribe(zeit.cms.interfaces.ICMSContent, zeit.cms.workflow.interfaces.IPublishedEvent)
 def notify_after_publish(context, event):
-    create_webhook_job('publish', context, countdown=5)
+    create_webhook_jobs('publish', context, countdown=5)
 
 
 @grok.subscribe(zope.lifecycleevent.IObjectAddedEvent)
@@ -54,21 +53,21 @@ def notify_after_add(event):
         return
     if zeit.cms.workingcopy.interfaces.IWorkingcopy.providedBy(event.newParent):
         return
-    create_webhook_job('add', context)
+    create_webhook_jobs('add', context)
 
 
 @zeit.cms.celery.task(bind=True, queue='webhook')
-def notify_webhook(self, uniqueId, id):
+def notify_webhook(self, uniqueId, id, index=0):
     content = zeit.cms.interfaces.ICMSContent(uniqueId, None)
     if content is None:
         log.warning('Could not resolve %s, ignoring.', uniqueId)
         return
-    hook = HOOKS.factory.find(id)
-    if hook is None:
+    hooks = HOOKS.factory.find(id)
+    if hooks is None:
         log.warning('Hook configuration for %s has vanished, ignoring.', id)
         return
     try:
-        hook(content)
+        hooks[index](content)
     except TechnicalError as e:
         raise self.retry(countdown=e.countdown)
     # Don't even think about trying to write to DAV cache, to avoid conflicts.
@@ -168,7 +167,9 @@ class HookSource(zeit.cms.content.sources.SimpleXMLSource):
                 hook.add_include(include.tag, include.text)
             for exclude in node.xpath('exclude/*'):
                 hook.add_exclude(exclude.tag, exclude.text)
-            result[hook.id] = hook
+            if not result.get(hook.id):
+                result[hook.id] = []
+            result[hook.id].append(hook)
         return result
 
     def getValues(self):
