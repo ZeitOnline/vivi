@@ -1113,18 +1113,18 @@ class AutomaticAreaSQLTest(zeit.content.cp.testing.FunctionalTestCase):
 AND unsorted @@ '$.workflow.published == "yes"'
 AND unsorted @@ '$."zeit.content.gallery".type != "inline"'...
 """
-        self.assertEllipsis(query, str(self.connector.search_args[0]))
+        self.assertEllipsis(query, self.connector.search_args[0])
 
     def test_query_order_default(self):
         IRenderedArea(self.area).values()
         query = '...ORDER BY date_last_published_semantic desc nulls last...'
-        self.assertEllipsis(query, str(self.connector.search_args[0]))
+        self.assertEllipsis(query, self.connector.search_args[0])
 
     def test_set_query_order(self):
         self.area.sql_order = 'date_first_released desc'
         IRenderedArea(self.area).values()
         query = '...ORDER BY date_first_released desc...'
-        self.assertEllipsis(query, str(self.connector.search_args[0]))
+        self.assertEllipsis(query, self.connector.search_args[0])
 
     def test_limit_query_results(self):
         IRenderedArea(self.area).values()
