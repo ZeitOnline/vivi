@@ -330,6 +330,6 @@ class IConfiguration(zope.interface.Interface):
 
     sql_order = zope.schema.TextLine(
         title=_('Sort order'),
-        default="unsorted->'workflow'->>'date_last_published_semantic' desc",
+        default='date_last_published_semantic desc nulls last',
         required=False,
     )
