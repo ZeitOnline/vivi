@@ -32,9 +32,22 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
     maxDiff = None
 
     def test_smoke_converts_lots_of_fields(self):
+        author = zeit.content.author.author.Author()
+        author.firstname = 'Hans'
+        author.lastname = 'Meiser'
+        self.repository['meiser'] = author
+        author = zeit.content.author.author.Author()
+        author.firstname = 'Jochen Stahnke'
+        author.lastname = 'Stahnke'
+        self.repository['stahnke'] = author
+
         article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         with checked_out(article) as co:
             co.breaking_news = True
+            co.authorships = [
+                co.authorships.create(self.repository['meiser']),
+                co.authorships.create(self.repository['stahnke']),
+            ]
             co.product = zeit.cms.content.sources.Product('KINZ')
             co.keywords = (
                 zeit.cms.tagging.tag.Tag('Code1', 'keyword'),
@@ -108,7 +121,7 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
                         'year': 2007,
                     },
                     'head': {
-                        'authors': [],
+                        'authors': ['http://xml.zeit.de/meiser'],
                         'audio_references': [],
                         'agencies': [],
                         'teaser_image': 'http://xml.zeit.de/2006/DSC00109_2.JPG',

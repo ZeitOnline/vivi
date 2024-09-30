@@ -164,6 +164,8 @@ class CMSContent(Converter):
 
             field = None
             key = PropertyKey(name, ns)
+            if name == 'author':
+                pass
             prop = zeit.cms.content.dav.PROPERTY_REGISTRY.get(key)
             if prop is not None:
                 field = prop.field
@@ -232,10 +234,7 @@ class CommonMetadata(Converter):
             # but are used by TMS UI (for display and filtering).
             'supertitle': self.context.supertitle,
             'section': section,
-            'author': ', '.join(
-                [x.target.display_name for x in self.context.authorships]
-                or [x for x in self.context.authors if x]
-            ),
+            'author': ', '.join([x.target.display_name for x in self.context.authorships]),
         }
         for typ in zeit.retresco.interfaces.ENTITY_TYPES:
             result['rtr_{}s'.format(typ)] = []
