@@ -1133,17 +1133,13 @@ AND unsorted @@ '$."zeit.content.gallery".type != "inline"'...
 
     def test_query_order_default(self):
         IRenderedArea(self.area).values()
-        query = """
-...ORDER BY unsorted->'workflow'->>'date_last_published_semantic' desc...
-"""
+        query = '...ORDER BY date_last_published_semantic desc nulls last...'
         self.assertEllipsis(query, str(self.connector.search_args[0]))
 
     def test_set_query_order(self):
-        self.area.sql_order = "unsorted->'workflow'->>'date_first_released' desc"
+        self.area.sql_order = 'date_first_released desc'
         IRenderedArea(self.area).values()
-        query = """
-...ORDER BY unsorted->'workflow'->>'date_first_released' desc...
-"""
+        query = '...ORDER BY date_first_released desc...'
         self.assertEllipsis(query, str(self.connector.search_args[0]))
 
     def test_limit_query_results(self):
