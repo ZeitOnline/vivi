@@ -45,3 +45,7 @@ zope.security.checker.BasicTypes[type(mydict.items())] = zope.security.checker.N
 # Treat pendulum like datetime.datetime.
 for cls in ['DateTime', 'Date', 'Time']:
     zope.security.checker.BasicTypes[getattr(pendulum, cls)] = zope.security.checker.NoProxy
+
+
+# tuple is immutable, unclear why zope.security does not treat it as such.
+zope.security.checker.BasicTypes[tuple] = zope.security.checker.NoProxy
