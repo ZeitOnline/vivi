@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.42.0 (2024-09-30)
+-------------------
+
+- WCM-291: Add forgotten date_last_modified column
+
+- WCM-408: remove fallback logic of teaserText
+
+
 6.41.0 (2024-09-26)
 -------------------
 
