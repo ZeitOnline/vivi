@@ -278,10 +278,9 @@ class CustomContentQuery(ElasticsearchContentQuery):
     @classmethod
     def _fieldname(cls, typ):
         fieldname = cls.ES_FIELD_NAMES.get(typ)
-        return fieldname if fieldname else cls._fieldname_from_property(typ)
+        if fieldname:
+            return fieldname
 
-    @classmethod
-    def _fieldname_from_property(cls, typ):
         # XXX Generalize the class?
         prop = getattr(zeit.content.article.article.Article, typ)
         if not isinstance(prop, zeit.cms.content.dav.DAVProperty):
@@ -295,13 +294,13 @@ class CustomContentQuery(ElasticsearchContentQuery):
             return {
                 'bool': {
                     'must': [
-                        {'term': {self._fieldname_from_property('ressort'): item[2]}},
-                        {'term': {self._fieldname_from_property('sub_ressort'): item[3]}},
+                        {'term': {self._fieldname('ressort'): item[2]}},
+                        {'term': {self._fieldname('sub_ressort'): item[3]}},
                     ]
                 }
             }
         else:
-            return {'term': {self._fieldname_from_property('ressort'): item[2]}}
+            return {'term': {self._fieldname('ressort'): item[2]}}
 
 
 class TMSContentQuery(ContentQuery):
