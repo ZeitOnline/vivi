@@ -11,7 +11,9 @@ import zope.interface
 
 from zeit.cms.content.cache import content_cache
 from zeit.cms.content.interfaces import IUUID
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.interfaces import ICMSContent
+from zeit.connector.models import Content as ConnectorModel
 from zeit.contentquery.configuration import CustomQueryProperty
 import zeit.cms.config
 import zeit.cms.content.interfaces
@@ -65,13 +67,22 @@ class SQLContentQuery(ContentQuery):
         result = [ICMSContent(x) for x in self.connector.search_sql(query)]
         return result
 
-    def _build_query(self, order=True):
+    @property
+    def conditions(self):
         query = self.connector.query()
         query = query.where(sql(self.context.sql_query))
+        return query
+
+    @property
+    def order(self):
+        return self.context.sql_order
+
+    def _build_query(self, order=True):
+        query = self.conditions
         query = self.add_clauses(query)
         query = self.hide_dupes_clause(query)
         if order:  # not allowed by SQL when using `count()`
-            query = query.order_by(sql(self.context.sql_order))
+            query = query.order_by(sql(self.order))
             query = query.limit(self.rows).offset(self.start)
         return query
 
@@ -97,6 +108,68 @@ class SQLContentQuery(ContentQuery):
         if not ids:
             return query
         return query.where(self.connector.Content.id.not_in(sorted(ids)))
+
+
+class SQLCustomContentQuery(SQLContentQuery):
+    grok.baseclass()  # See dispatch_custom_query
+
+    @property
+    def order(self):
+        return 'date_last_published_semantic desc nulls last'  # XXX
+
+    @property
+    def conditions(self):
+        fields = {}
+        for item in self.context.query:
+            typ = item[0]
+            fields.setdefault(typ, []).append(item)
+
+        query = self.connector.query()
+        for typ in fields:
+            for item in fields[typ]:
+                query = query.where(self._make_clause(typ, item))
+
+        return query
+
+    COLUMNS = {
+        'content_type': 'type',
+    }
+
+    OPERATORS = {
+        'eq': '__eq__',
+        'neq': '__ne__',
+    }
+
+    serialize = CustomQueryProperty()._serialize_query_item
+
+    def _make_clause(self, typ, item):
+        typ, operator, value = self.serialize(self.context, item)
+        condition = getattr(self._column(typ), self.OPERATORS[operator])
+        return condition(value)
+
+    @classmethod
+    def _column(cls, typ):
+        name = cls.COLUMNS.get(typ)
+        if name:
+            return getattr(ConnectorModel, name)
+
+        # XXX Generalize the class?
+        prop = getattr(zeit.content.article.article.Article, typ)
+        if not isinstance(prop, zeit.cms.content.dav.DAVProperty):
+            raise ValueError('Cannot determine field name for %s', typ)
+        return ConnectorModel.column_by_name(prop.name, prop.namespace)
+
+
+@grok.adapter(zeit.contentquery.interfaces.IConfiguration, name='custom')
+@grok.implementer(zeit.contentquery.interfaces.IContentQuery)
+def dispatch_custom_query(context):
+    """Helper for switching during transition phase"""
+    query = context.xml.find('query')
+    if FEATURE_TOGGLES.find('contentquery_custom_as_sql'):
+        return SQLCustomContentQuery(context)
+    if query is not None and query.get('type') == 'sql':
+        return SQLCustomContentQuery(context)
+    return CustomContentQuery(context)
 
 
 @grok.adapter(zeit.contentquery.interfaces.IContentQuery)
@@ -222,7 +295,7 @@ class ElasticsearchContentQuery(ContentQuery):
 
 
 class CustomContentQuery(ElasticsearchContentQuery):
-    grok.name('custom')
+    grok.baseclass()  # See dispatch_custom_query
 
     ES_FIELD_NAMES = {
         'channels': 'payload.document.channels.hierarchy',

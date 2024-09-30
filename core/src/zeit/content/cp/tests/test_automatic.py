@@ -9,6 +9,7 @@ import requests_mock
 import transaction
 import zope.component
 
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.content.cp.interfaces import IRenderedArea
 import zeit.cms.content.interfaces
@@ -1138,3 +1139,39 @@ AND unsorted @@ '$."zeit.content.gallery".type != "inline"'...
     def test_get_total_hits(self):
         self.connector.search_result = ['http://xml.zeit.de/testcontent']
         self.assertEqual(1, IRenderedArea(self.area)._content_query.total_hits)
+
+
+class AutomaticAreaSQLCustomTest(zeit.content.cp.testing.FunctionalTestCase):
+    def setUp(self):
+        super().setUp()
+        self.cp = zeit.content.cp.centerpage.CenterPage()
+        self.area = self.cp.body['feature'].create_item('area')
+        self.area.count = 3
+        self.area.automatic = True
+        self.area.automatic_type = 'custom'
+        self.repository['cp'] = self.cp
+        self.connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+        FEATURE_TOGGLES.set('contentquery_custom_as_sql')
+        FEATURE_TOGGLES.set('read_metadata_columns')
+        FEATURE_TOGGLES.set('write_metadata_columns')
+
+    def test_builds_query_from_conditions(self):
+        source = zeit.cms.content.interfaces.ICommonMetadata['serie'].source(None)
+        self.area.query = (('serie', 'eq', source.find('Autotest')),)
+        IRenderedArea(self.area).values()
+        query = """
+...series = 'Autotest'
+AND unsorted @@ '$.workflow.published == "yes"'
+AND unsorted @@ '$."zeit.content.gallery".type != "inline"'...
+"""
+        self.assertEllipsis(query, self.connector.search_args[0])
+
+    def test_respects_column_name_exceptions(self):
+        self.area.query = (('content_type', 'eq', zeit.content.article.interfaces.IArticle),)
+        IRenderedArea(self.area).values()
+        self.assertEllipsis("...type = 'article'...", self.connector.search_args[0])
+
+    def test_applies_configured_operator(self):
+        self.area.query = (('content_type', 'neq', zeit.content.article.interfaces.IArticle),)
+        IRenderedArea(self.area).values()
+        self.assertEllipsis("...type != 'article'...", self.connector.search_args[0])
