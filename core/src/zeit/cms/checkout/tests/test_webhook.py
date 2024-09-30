@@ -218,3 +218,61 @@ class WebhookEventTest(FunctionalTestCase):
         workflow.publish()
         requests = self.layer['request_handler'].requests
         self.assertEqual(2, len(requests))
+
+
+class TestMultipleWebhooksWithSameId(FunctionalTestCase):
+    @property
+    def config(self):
+        port = self.layer['http_port']
+        return f"""<webhooks>
+              <webhook id="publish" url="http://localhost/one:{port}">
+                <include>
+                  <product_counter>print</product_counter>
+                </include>
+              </webhook>
+              <webhook id="publish" url="http://localhost/two:{port}">
+                <include>
+                  <product_counter>print</product_counter>
+                </include>
+              </webhook>
+              <webhook id="publish" url="http://localhost/three:{port}">
+                <include>
+                  <product_counter>print</product_counter>
+                </include>
+              </webhook>
+              <!-- this test should be excluded, see exclude -->
+              <webhook id="publish" url="http://localhost/four:{port}">
+                <include>
+                  <product_counter>print</product_counter>
+                </include>
+                <exclude>
+                  <type>testcontenttype</type>
+                </exclude>
+              </webhook>
+            </webhooks>
+            """
+
+    def test_multiple_webhooks_with_same_id(self):
+        requests_post_mock = mock.patch('requests.post').start()
+
+        with checked_out(self.repository['testcontent']) as co:
+            co.product = Product('ZEI')
+            info = zeit.cms.workflow.interfaces.IPublishInfo(co)
+            info.urgent = True
+        workflow = zeit.cms.workflow.interfaces.IPublish(self.repository['testcontent'])
+        workflow.publish()
+
+        # Only 3 requests should match, the last one is excluded.
+        self.assertEqual(3, requests_post_mock.call_count)
+
+        # check if all url's match
+        expected_urls = [
+            f'http://localhost/one:{self.layer["http_port"]}',
+            f'http://localhost/two:{self.layer["http_port"]}',
+            f'http://localhost/three:{self.layer["http_port"]}',
+        ]
+        actual_urls = [call.args[0] for call in requests_post_mock.call_args_list]
+        for url in expected_urls:
+            self.assertIn(url, actual_urls)
+
+        mock.patch.stopall()
