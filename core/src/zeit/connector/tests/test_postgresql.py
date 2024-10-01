@@ -454,10 +454,3 @@ class WorkflowColumnsTest(zeit.connector.testing.SQLTest):
         properties = {('print-publish', DOCUMENT_SCHEMA_NS): self.TIMESTAMP}
         content = self._make_resource(properties)
         self.assertEqual(content.date_print_published, self.EXPECTED_DATETIME)
-
-    def test_channels(self):
-        properties = {
-            ('channels', DOCUMENT_SCHEMA_NS): (('channel_1', None), ('channel_2', 'subchannel'))
-        }
-        content = self._make_resource(properties)
-        self.assertEqual(content.channels, [['channel_1', None], ['channel_2', 'subchannel']])

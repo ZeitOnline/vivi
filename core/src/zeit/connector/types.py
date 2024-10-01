@@ -8,22 +8,23 @@ from sqlalchemy.dialects.postgresql import JSONB
 import sqlalchemy.types as types
 
 
-class JSONBWithTupleSupport(types.TypeDecorator):
+class JSONBTuple(types.TypeDecorator):
     """Support JSONB for types that use zope.schema.Tuple
     by converting them into lists"""
 
     impl = JSONB
 
     def process_bind_param(self, value, dialect):
-        if isinstance(value, tuple):
-            value = list(value)
-            for i, item in enumerate(value):
-                if isinstance(item, tuple):
-                    value[i] = list(item)
-        return value
+        return self._convert_sequence(value, tuple, list)
 
     def process_result_value(self, value, dialect):
-        return value
+        return self._convert_sequence(value, list, tuple)
+
+    @staticmethod
+    def _convert_sequence(value, source, target):
+        if not isinstance(value, source):
+            return value  # or raise?
+        return target(target(x) if isinstance(x, source) else x for x in value)
 
 
 class TIMESTAMP(TIMESTAMP):

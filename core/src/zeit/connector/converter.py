@@ -5,11 +5,13 @@ exist.
 
 See ADR 009
 """
+from collections.abc import Iterable
+
 import grokcore.component as grok
 import sqlalchemy
 import zope.interface
 
-from zeit.connector.types import JSONBWithTupleSupport
+from zeit.connector.types import JSONBTuple
 import zeit.cms.content.dav
 
 
@@ -73,23 +75,19 @@ class DatetimeConverter(DefaultConverter):
 class ChannelsConverter(DefaultConverter):
     """Converts list of channels seperated by semicolon and subchannels by space."""
 
-    grok.context(JSONBWithTupleSupport)
+    grok.context(JSONBTuple)
 
-    def serialize(self, value: list) -> str:
+    def serialize(self, value: Iterable) -> str:
         if value is None:
             return None
-        return ';'.join(
-            ' '.join(subchannel for subchannel in channel if subchannel) for channel in value
-        )
+        return ';'.join(' '.join(x for x in item if x) for item in value)
 
-    def deserialize(self, value: str) -> list:
+    def deserialize(self, value: str) -> tuple:
         result = []
         for channel in value.split(';'):
             subchannels = channel.split()
-            channels = [subchannels[0]]
             if len(subchannels) > 1:
-                channels.extend(subchannels[1:])
+                result.append(tuple(subchannels))
             else:
-                channels.append(None)
-            result.append(channels)
-        return result
+                result.append((subchannels[0], None))
+        return tuple(result)

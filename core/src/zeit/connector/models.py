@@ -19,7 +19,7 @@ import sqlalchemy
 from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.connector.interfaces import INTERNAL_PROPERTY, DeleteProperty, LockStatus
 from zeit.connector.lock import lock_is_foreign
-from zeit.connector.types import TIMESTAMP, JSONBWithTupleSupport
+from zeit.connector.types import TIMESTAMP, JSONBTuple
 import zeit.connector.converter
 import zeit.connector.interfaces
 
@@ -42,7 +42,7 @@ class Base(sqlalchemy.orm.DeclarativeBase):
 
 class CommonMetadata:
     channels = mapped_column(
-        JSONBWithTupleSupport,
+        JSONBTuple,
         info={'namespace': 'document', 'name': 'channels'},
     )
 
