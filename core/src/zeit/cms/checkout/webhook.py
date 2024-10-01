@@ -1,4 +1,3 @@
-import collections
 import logging
 
 import grokcore.component as grok
@@ -23,12 +22,12 @@ def create_webhook_jobs(id, context, **kwargs):
     if not hooks:
         log.warning('No %s webhooks found for %s', id, context.uniqueId)
         return
-    for index, hook in enumerate(hooks):
+    for url in hooks:
         log.info(
             f'After{id.capitalize()}: Creating async webhook jobs with'
-            f' index {index} for {context.uniqueId}',
+            f' url {url} for {context.uniqueId}',
         )
-        notify_webhook.apply_async((context.uniqueId, id, index), **kwargs)
+        notify_webhook.apply_async((context.uniqueId, id, url), **kwargs)
 
 
 @grok.subscribe(zeit.cms.interfaces.ICMSContent, zeit.cms.checkout.interfaces.IAfterCheckinEvent)
@@ -57,7 +56,7 @@ def notify_after_add(event):
 
 
 @zeit.cms.celery.task(bind=True, queue='webhook')
-def notify_webhook(self, uniqueId, id, index=0):
+def notify_webhook(self, uniqueId, id, url):
     content = zeit.cms.interfaces.ICMSContent(uniqueId, None)
     if content is None:
         log.warning('Could not resolve %s, ignoring.', uniqueId)
@@ -67,7 +66,7 @@ def notify_webhook(self, uniqueId, id, index=0):
         log.warning('Hook configuration for %s has vanished, ignoring.', id)
         return
     try:
-        hooks[index](content)
+        hooks[url](content)
     except TechnicalError as e:
         raise self.retry(countdown=e.countdown)
     # Don't even think about trying to write to DAV cache, to avoid conflicts.
@@ -159,7 +158,7 @@ class HookSource(zeit.cms.content.sources.SimpleXMLSource):
 
     @CONFIG_CACHE.cache_on_arguments()
     def _values(self):
-        result = collections.OrderedDict()
+        result = {}
         tree = self._get_tree()
         for node in tree.iterchildren('webhook'):
             hook = Hook(node.get('id'), node.get('url'))
@@ -168,8 +167,8 @@ class HookSource(zeit.cms.content.sources.SimpleXMLSource):
             for exclude in node.xpath('exclude/*'):
                 hook.add_exclude(exclude.tag, exclude.text)
             if not result.get(hook.id):
-                result[hook.id] = []
-            result[hook.id].append(hook)
+                result[hook.id] = {}
+            result[hook.id][hook.url] = hook
         return result
 
     def getValues(self):

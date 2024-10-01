@@ -159,7 +159,8 @@ class WebhookEventTest(FunctionalTestCase):
               <product_counter>print</product_counter>
             </exclude>
           </webhook>
-          <webhook id="publish" url="http://localhost:{port}">
+          <!-- this webhook will be excluded, see exclude type = testconttype -->
+          <webhook id="publish" url="http://localhost/two:{port}">
             <include>
               <product_counter>print</product_counter>
             </include>
