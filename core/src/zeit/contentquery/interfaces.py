@@ -56,7 +56,6 @@ class QuerySortOrderSource(zeit.cms.content.sources.SimpleDictSource):
         'payload.document.last-semantic-change:desc': _('query-sort-order-last-semantic-change'),
         'payload.document.date_first_released:desc': _('query-sort-order-first-released'),
         'payload.workflow.date_last_published:desc': _('query-sort-order-last-published'),
-        'random:desc': _('query-sort-order-random'),
     }
 
 
