@@ -1183,8 +1183,8 @@ AND unsorted @@ '$."zeit.content.gallery".type != "inline"'...
         )
         IRenderedArea(self.area).values()
         query = """
-...properties.channels @> '[["International", "Nahost"]]'
-AND properties.channels @> '[["Wissen"]]'
+...((properties.channels @> '[["International", "Nahost"]]')
+OR (properties.channels @> '[["Wissen"]]'))
 AND unsorted...
 """
         self.assertEllipsis(query, self.connector.search_args[0])
@@ -1196,9 +1196,24 @@ AND unsorted...
         )
         IRenderedArea(self.area).values()
         query = """
-...properties.ressort = 'International'
+...(properties.ressort = 'International'
 AND properties.sub_ressort = 'Nahost'
-AND properties.ressort = 'Wissen'
+OR properties.ressort = 'Wissen')
+AND unsorted...
+"""
+        self.assertEllipsis(query, self.connector.search_args[0])
+
+    def test_joins_different_fields_with_AND_but_same_fields_with_OR(self):
+        self.area.query = (
+            ('content_type', 'eq', zeit.content.article.interfaces.IArticle),
+            ('ressort', 'eq', 'International', None),
+            ('ressort', 'eq', 'Wissen', None),
+        )
+        IRenderedArea(self.area).values()
+        query = """
+... properties.type = 'article'
+AND (properties.ressort = 'International'
+OR properties.ressort = 'Wissen')
 AND unsorted...
 """
         self.assertEllipsis(query, self.connector.search_args[0])

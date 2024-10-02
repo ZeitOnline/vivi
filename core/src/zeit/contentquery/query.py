@@ -3,6 +3,7 @@ import logging
 
 from sqlalchemy import and_ as sql_and
 from sqlalchemy import not_ as sql_not
+from sqlalchemy import or_ as sql_or
 from sqlalchemy import text as sql
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
@@ -128,8 +129,10 @@ class SQLCustomContentQuery(SQLContentQuery):
 
         query = self.connector.query()
         for typ in fields:
+            conditions = []
             for item in fields[typ]:
-                query = query.where(self._make_clause(typ, item))
+                conditions.append(self._make_clause(typ, item))
+            query = query.where(sql_or(*conditions))
 
         return query
 
