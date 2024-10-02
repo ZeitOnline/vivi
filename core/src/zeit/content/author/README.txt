@@ -73,15 +73,13 @@ Using authors
 =============
 
 The field authorships on ICommonMetadata is used to store authors.
-It takes precedence over the freetext authors:
 
 >>> import zope.lifecycleevent
 >>> from zeit.cms.content.interfaces import ICommonMetadata
 >>> with zeit.cms.checkout.helper.checked_out(repository['testcontent']) as co:
 ...     co.authorships = [co.authorships.create(shakespeare)]
-...     co.authors = ['Charles Dickens']
 ...     zope.lifecycleevent.modified(co, zope.lifecycleevent.Attributes(
-...         ICommonMetadata, 'authorships', 'authors'))
+...         ICommonMetadata, 'authorships'))
 >>> print(zeit.cms.testing.xmltotext(repository['testcontent'].xml))
 <testtype>
   <head>
@@ -89,13 +87,6 @@ It takes precedence over the freetext authors:
   </head>
   <body/>
 </testtype>
-
->>> with zeit.cms.checkout.helper.checked_out(repository['testcontent']) as co:
-...     co.authorships = []
-...     co.authors = ['Charles Dickens']
->>> content = repository['testcontent']
->>> print(content.authors)
-('Charles Dickens',)
 
 Changes to author objects are propagated to content on checkin:
 
