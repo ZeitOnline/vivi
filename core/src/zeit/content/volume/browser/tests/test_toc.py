@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 # ruff: noqa: E501
-from collections import OrderedDict
 from io import StringIO
 from unittest import mock
 import sys
@@ -20,52 +19,48 @@ import zeit.content.volume.testing
 class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
     def setUp(self):
         super().setUp()
-        self.toc_data = OrderedDict()
-        self.toc_data['Die Zeit'] = OrderedDict(
-            {
-                'Politik': [
-                    {
-                        'page': '1',
-                        'title': 'title',
-                        'teaser': 'tease',
-                        'access': 'frei verfügbar',
-                        'authors': 'Helmut Schmidt',
-                        'volume': '1',
-                        'year': '2015',
-                        'supertitle': 'Super',
-                        'article_id': '1234567',
-                    }
-                ]
-            }
-        )
-        self.toc_data['Anderer'] = OrderedDict(
-            {
-                'Dossier': [
-                    {
-                        'page': '1',
-                        'access': 'frei verfügbar',
-                        'authors': 'Helmut Kohl',
-                        'title': 'title',
-                        'teaser': 'tease',
-                        'supertitle': 'Super',
-                        'volume': '1',
-                        'year': '2015',
-                        'article_id': '0123456',
-                    },
-                    {
-                        'page': '3',
-                        'access': 'frei verfügbar',
-                        'authors': 'Helmut Schmidt, Helmut Kohl',
-                        'title': 'title2',
-                        'teaser': 'tease',
-                        'volume': '1',
-                        'year': '2015',
-                        'supertitle': 'Super',
-                        'article_id': '0123456',
-                    },
-                ]
-            }
-        )
+        self.toc_data = {}
+        self.toc_data['Die Zeit'] = {
+            'Politik': [
+                {
+                    'page': '1',
+                    'title': 'title',
+                    'teaser': 'tease',
+                    'access': 'frei verfügbar',
+                    'authors': 'Helmut Schmidt',
+                    'volume': '1',
+                    'year': '2015',
+                    'supertitle': 'Super',
+                    'article_id': '1234567',
+                }
+            ]
+        }
+        self.toc_data['Anderer'] = {
+            'Dossier': [
+                {
+                    'page': '1',
+                    'access': 'frei verfügbar',
+                    'authors': 'Helmut Kohl',
+                    'title': 'title',
+                    'teaser': 'tease',
+                    'supertitle': 'Super',
+                    'volume': '1',
+                    'year': '2015',
+                    'article_id': '0123456',
+                },
+                {
+                    'page': '3',
+                    'access': 'frei verfügbar',
+                    'authors': 'Helmut Schmidt, Helmut Kohl',
+                    'title': 'title2',
+                    'teaser': 'tease',
+                    'volume': '1',
+                    'year': '2015',
+                    'supertitle': 'Super',
+                    'article_id': '0123456',
+                },
+            ]
+        }
         author = Author()
         author.firstname = 'Helmut'
         author.lastname = 'Schmidt'
@@ -134,7 +129,6 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
                 ]
             }
         }
-        toc_data = OrderedDict(toc_data)
         t = Toc(mock.Mock(), mock.Mock())
         result = t._sort_toc_data(toc_data)
         assert sys.maxsize == result.get('Die Zeit').get('Politik')[-1].get('page')

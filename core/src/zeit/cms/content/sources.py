@@ -1,5 +1,5 @@
+from collections import defaultdict
 from functools import reduce
-import collections
 import logging
 import operator
 import os
@@ -174,7 +174,7 @@ class SimpleFixedValueSource(zc.sourcefactory.basic.BasicSourceFactory):
         if values is not None:
             self.values = values
         if not hasattr(self.values, 'keys'):
-            self.values = collections.OrderedDict([(x, _(x)) for x in self.values])
+            self.values = {x: _(x) for x in self.values}
 
     def getValues(self):
         return self.values.keys()
@@ -279,7 +279,7 @@ class FolderItemSource(zc.sourcefactory.basic.BasicSourceFactory):
 
 
 class SimpleDictSource(zc.sourcefactory.basic.BasicSourceFactory):
-    values = collections.OrderedDict()
+    values = {}
 
     def getValues(self):
         return self.values.keys()
@@ -537,7 +537,7 @@ class SerieSource(ObjectSource, SimpleContextualXMLSource):
 
     @CONFIG_CACHE.cache_on_arguments()
     def _values(self):
-        result = collections.OrderedDict()
+        result = {}
         for node in self._get_tree().iterchildren('*'):
             # XXX: For compat reasons we need a fallback `serienname`.
             name = node.get('serienname') or node.text
@@ -608,7 +608,7 @@ class ProductSource(ObjectSource, SimpleContextualXMLSource):
     @CONFIG_CACHE.cache_on_arguments()
     def _values(self):
         tree = self._get_tree()
-        result = collections.OrderedDict()
+        result = {}
         for node in tree.iterchildren('*'):
             product = Product(
                 str(node.get('id')),
@@ -637,7 +637,7 @@ class ProductSource(ObjectSource, SimpleContextualXMLSource):
         Dependent products are defined in the product.xml via the "relates_to"
         attribute.
         """
-        dependent_products = collections.defaultdict(list)
+        dependent_products = defaultdict(list)
         main_products = []
         for value in products.values():
             if value.volume:

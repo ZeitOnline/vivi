@@ -1,4 +1,3 @@
-import collections
 import datetime
 import logging
 
@@ -192,11 +191,7 @@ class IReference(IBlock):
 
 
 class AnimationSource(zeit.cms.content.sources.SimpleFixedValueSource):
-    values = collections.OrderedDict(
-        [
-            ('fade-in', _('Fade in')),
-        ]
-    )
+    values = {'fade-in': _('Fade in')}
 
 
 class IImage(IReference):
@@ -262,12 +257,10 @@ class IInfobox(IReference, ILayoutable):
 
 
 class PortraitboxLayoutSource(zeit.cms.content.sources.SimpleFixedValueSource):
-    values = collections.OrderedDict(
-        [
-            ('short', _('short')),
-            ('wide', _('wide')),
-        ]
-    )
+    values = {
+        'short': _('short'),
+        'wide': _('wide'),
+    }
 
 
 class IPortraitbox(IReference, ILayoutable):
@@ -407,11 +400,7 @@ class ICitationComment(IBlock):
 
 
 class LiveblogVersions(zeit.cms.content.sources.SimpleFixedValueSource):
-    values = collections.OrderedDict(
-        [
-            ('3', '3'),
-        ]
-    )
+    values = {'3': '3'}
 
 
 class ILiveblog(IBlock):
@@ -484,25 +473,23 @@ class IBreakingNewsBody(zope.interface.Interface):
 
 
 class AdplaceTileSource(zeit.cms.content.sources.SimpleFixedValueSource):
-    values = collections.OrderedDict(
-        [
-            ('desktop_3', 'Desktop: 3'),
-            ('desktop_4', 'Desktop: 4'),
-            ('desktop_5', 'Desktop: 5'),
-            ('desktop_8', 'Desktop: 8'),
-            ('desktop_41', 'Desktop: 41'),
-            ('desktop_42', 'Desktop: 42'),
-            ('desktop_43', 'Desktop: 43'),
-            ('mobile_1', 'Mobile: 1'),
-            ('mobile_3', 'Mobile: 3'),
-            ('mobile_4', 'Mobile: 4'),
-            ('mobile_41', 'Mobile: 41'),
-            ('mobile_42', 'Mobile: 42'),
-            ('mobile_43', 'Mobile: 43'),
-            ('ctm', 'Content Marketing Teaser Mobil / Desktop'),
-            ('special', 'Desktop: 3 und Mobil: 1'),
-        ]
-    )
+    values = {
+        'desktop_3': 'Desktop: 3',
+        'desktop_4': 'Desktop: 4',
+        'desktop_5': 'Desktop: 5',
+        'desktop_8': 'Desktop: 8',
+        'desktop_41': 'Desktop: 41',
+        'desktop_42': 'Desktop: 42',
+        'desktop_43': 'Desktop: 43',
+        'mobile_1': 'Mobile: 1',
+        'mobile_3': 'Mobile: 3',
+        'mobile_4': 'Mobile: 4',
+        'mobile_41': 'Mobile: 41',
+        'mobile_42': 'Mobile: 42',
+        'mobile_43': 'Mobile: 43',
+        'ctm': 'Content Marketing Teaser Mobil / Desktop',
+        'special': 'Desktop: 3 und Mobil: 1',
+    }
 
 
 class IAdplace(IBlock):
@@ -532,7 +519,7 @@ class PuzzleSource(
 
     @CONFIG_CACHE.cache_on_arguments()
     def _values(self):
-        result = collections.OrderedDict()
+        result = {}
         for node in self._get_tree().iterchildren('*'):
             puzzle = Puzzle(node.get('id'), node.text.strip(), node.get('multiple') == 'true')
             result[puzzle.id] = puzzle
@@ -567,16 +554,14 @@ class PreconfiguredQuerySource(zeit.contentquery.interfaces.TopicpageFilterSourc
 
 
 class TopicboxTypeSource(zeit.cms.content.sources.SimpleDictSource):
-    values = collections.OrderedDict(
-        [
-            ('manual', _('manual')),
-            ('centerpage', _('centerpage')),
-            ('topicpage', _('topicpage')),
-            ('elasticsearch-query', _('elasticsearch-query')),
-            ('related-api', _('related-api')),
-            ('preconfigured-query', _('preconfigured-query')),
-        ]
-    )
+    values = {
+        'manual': _('manual'),
+        'centerpage': _('centerpage'),
+        'topicpage': _('topicpage'),
+        'elasticsearch-query': _('elasticsearch-query'),
+        'related-api': _('related-api'),
+        'preconfigured-query': _('preconfigured-query'),
+    }
 
     def getToken(self, value):
         # JS needs to use these values, don't MD5 them.

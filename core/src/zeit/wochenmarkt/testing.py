@@ -1,4 +1,3 @@
-import collections
 import importlib.resources
 
 import zeit.cms.testing
@@ -30,7 +29,7 @@ class RecipeCategoriesHelper:
         return category
 
     def setup_categories(self, *codes):
-        categories = collections.OrderedDict()
+        categories = {}
         for code in codes:
             categories[code] = self.get_category(code)
         return categories

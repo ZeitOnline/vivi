@@ -1,5 +1,3 @@
-import collections
-
 import zc.sourcefactory.basic
 import zope.interface
 import zope.schema
@@ -9,14 +7,12 @@ from zeit.cms.i18n import MessageFactory as _
 
 class EntityTypeSource(zc.sourcefactory.basic.BasicSourceFactory):
     # XXX Keep in sync with tagger-generated whitelist.xml
-    values = collections.OrderedDict(
-        [
-            ('free', _('entity-type-free')),
-            ('Organization', _('entity-type-organization')),
-            ('Location', _('entity-type-location')),
-            ('Person', _('entity-type-person')),
-        ]
-    )
+    values = {
+        'free': _('entity-type-free'),
+        'Organization': _('entity-type-organization'),
+        'Location': _('entity-type-location'),
+        'Person': _('entity-type-person'),
+    }
 
     def getValues(self):
         return self.values.keys()

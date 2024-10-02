@@ -1,4 +1,3 @@
-import collections
 import logging
 
 from lxml.builder import E
@@ -68,7 +67,7 @@ class RecipeCategories:
             instance.xml.find('head').append(el)
 
     def _remove_duplicates(self, categories):
-        result = collections.OrderedDict()
+        result = {}
         for category in categories:
             if category.code not in result:
                 result[category.code] = category
@@ -102,7 +101,7 @@ class RecipeCategoriesWhitelist(grok.GlobalUtility, zeit.cms.content.sources.Cac
     @CONFIG_CACHE.cache_on_arguments()
     def _load(self):
         xml = self._get_tree()
-        categories = collections.OrderedDict()
+        categories = {}
         for category_node in xml.xpath('//category'):
             category = RecipeCategory(category_node.get('id'), category_node.get('name'))
             categories[category_node.get('id')] = category

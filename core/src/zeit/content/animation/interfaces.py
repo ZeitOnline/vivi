@@ -1,5 +1,3 @@
-import collections
-
 import zope.schema
 
 from zeit.cms.i18n import MessageFactory as _
@@ -11,15 +9,13 @@ import zeit.content.video.interfaces
 
 
 class DisplayModeSource(zeit.cms.content.sources.SimpleFixedValueSource):
-    values = collections.OrderedDict(
-        [
-            ('images', _('use images (automatic animation)')),
-            ('gallery', _('use gallery (automatic animation)')),
-            ('images-manual', _('use images (manual navigation)')),
-            ('gallery-manual', _('use gallery (manual navigation)')),
-            ('video', _('use video')),
-        ]
-    )
+    values = {
+        'images': _('use images (automatic animation)'),
+        'gallery': _('use gallery (automatic animation)'),
+        'images-manual': _('use images (manual navigation)'),
+        'gallery-manual': _('use gallery (manual navigation)'),
+        'video': _('use video'),
+    }
 
 
 class IAnimation(

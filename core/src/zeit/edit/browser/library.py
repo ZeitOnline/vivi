@@ -1,4 +1,3 @@
-import collections
 import json
 import os.path
 
@@ -21,7 +20,7 @@ class BlockFactories(zeit.cms.browser.view.JSON):
         return {'factories': self.list_block_types()}
 
     def list_block_types(self):
-        types = collections.OrderedDict()
+        types = {}
         for item in self.get_adapters():
             if item['name'] not in types:
                 image = 'module-%s.png' % item['name']

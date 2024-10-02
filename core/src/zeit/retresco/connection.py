@@ -1,5 +1,4 @@
 from io import StringIO
-import collections
 import logging
 
 import lxml.builder
@@ -205,7 +204,7 @@ class TMS:
             else:
                 response = self._get_intextlink_data_preview(content, timeout)
             data = response.get('entity_links', ())
-            entity_links = collections.OrderedDict()
+            entity_links = {}
             for item in data:
                 if not item['link']:
                     continue

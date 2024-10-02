@@ -1,5 +1,3 @@
-import collections
-
 import zope.interface
 
 from zeit.cms.interfaces import CONFIG_CACHE
@@ -121,7 +119,7 @@ class TeaserBlockLayoutSource(ObjectSource, zeit.cms.content.sources.XMLSource):
     @CONFIG_CACHE.cache_on_arguments()
     def _values(self):
         tree = self._get_tree()
-        result = collections.OrderedDict()
+        result = {}
         for node in tree.iterchildren('*'):
             g = node.get
             areas = g('areas')
@@ -160,7 +158,7 @@ class RegionConfigSource(ObjectSource, zeit.cms.content.sources.XMLSource):
     @CONFIG_CACHE.cache_on_arguments()
     def _values(self):
         tree = self._get_tree()
-        result = collections.OrderedDict()
+        result = {}
         for i, node in enumerate(tree.iterchildren('*')):
             # Using kind as ID is not unique, since regions of the same kind
             # can contain different areas and might have different titles.
@@ -188,7 +186,7 @@ class AreaConfigSource(ObjectSource, zeit.cms.content.sources.XMLSource):
     @CONFIG_CACHE.cache_on_arguments()
     def _values(self):
         tree = self._get_tree()
-        result = collections.OrderedDict()
+        result = {}
         for node in tree.iterchildren('*'):
             id = node.get('kind')
             result[id] = AreaConfig(
@@ -212,7 +210,7 @@ class ModuleConfigSource(ObjectSource, zeit.cms.content.sources.XMLSource):
     @CONFIG_CACHE.cache_on_arguments()
     def _values(self):
         tree = self._get_tree()
-        result = collections.OrderedDict()
+        result = {}
         for node in tree.iterchildren('*'):
             id = node.get('id')
             result[id] = ModuleConfig(

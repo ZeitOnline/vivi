@@ -1,4 +1,3 @@
-import collections
 import re
 
 import grokcore.component as grok
@@ -105,7 +104,7 @@ class NewsletterSource(zeit.cms.content.sources.ObjectSource, zeit.cms.content.s
 
     @CONFIG_CACHE.cache_on_arguments()
     def _values(self):
-        result = collections.OrderedDict()
+        result = {}
         tree = self._get_tree()
         for node in tree.iterchildren('*'):
             newsletter = Newsletter(

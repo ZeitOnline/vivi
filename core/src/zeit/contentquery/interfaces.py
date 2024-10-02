@@ -1,4 +1,3 @@
-import collections
 import json
 import logging
 import re
@@ -34,7 +33,7 @@ class AutomaticFeedSource(
 
     @CONFIG_CACHE.cache_on_arguments()
     def _values(self):
-        result = collections.OrderedDict()
+        result = {}
         for node in self._get_tree().iterchildren('*'):
             feed = AutomaticFeed(
                 str(node.get('id')),
@@ -50,44 +49,34 @@ AUTOMATIC_FEED_SOURCE = AutomaticFeedSource()
 
 
 class QuerySortOrderSource(zeit.cms.content.sources.SimpleDictSource):
-    values = collections.OrderedDict(
-        (
-            (
-                'payload.workflow.date_last_published_semantic:desc',
-                _('query-sort-order-last-published-semantic'),
-            ),
-            (
-                'payload.document.last-semantic-change:desc',
-                _('query-sort-order-last-semantic-change'),
-            ),
-            ('payload.document.date_first_released:desc', _('query-sort-order-first-released')),
-            ('payload.workflow.date_last_published:desc', _('query-sort-order-last-published')),
-            ('random:desc', _('query-sort-order-random')),
-        )
-    )
+    values = {
+        'payload.workflow.date_last_published_semantic:desc': _(
+            'query-sort-order-last-published-semantic'
+        ),
+        'payload.document.last-semantic-change:desc': _('query-sort-order-last-semantic-change'),
+        'payload.document.date_first_released:desc': _('query-sort-order-first-released'),
+        'payload.workflow.date_last_published:desc': _('query-sort-order-last-published'),
+        'random:desc': _('query-sort-order-random'),
+    }
 
 
 class QueryTypeSource(zeit.cms.content.sources.SimpleDictSource):
-    values = collections.OrderedDict(
-        [
-            ('channels', _('query-type-channels')),
-            ('serie', _('query-type-serie')),
-            ('product', _('query-type-product')),
-            ('ressort', _('query-type-ressort')),
-            ('genre', _('query-type-genre')),
-            ('access', _('query-type-access')),
-            ('content_type', _('query-type-content-type')),
-        ]
-    )
+    values = {
+        'channels': _('query-type-channels'),
+        'serie': _('query-type-serie'),
+        'product': _('query-type-product'),
+        'ressort': _('query-type-ressort'),
+        'genre': _('query-type-genre'),
+        'access': _('query-type-access'),
+        'content_type': _('query-type-content-type'),
+    }
 
 
 class QueryOperatorSource(zeit.cms.content.sources.SimpleDictSource):
-    values = collections.OrderedDict(
-        [
-            ('eq', _('query-operator-equal')),
-            ('neq', _('query-operator-notequal')),
-        ]
-    )
+    values = {
+        'eq': _('query-operator-equal'),
+        'neq': _('query-operator-notequal'),
+    }
 
 
 class TopicpageFilterSource(
@@ -100,7 +89,7 @@ class TopicpageFilterSource(
     default_filename = 'topicpage-filters-config-upload.json'
 
     def json_data(self):
-        result = collections.OrderedDict()
+        result = {}
         for row in self._get_tree():
             if len(row) != 1:
                 continue
@@ -134,26 +123,22 @@ class TopicpageFilterSource(
 
 
 class TopicpageOrderSource(zeit.cms.content.sources.SimpleDictSource):
-    values = collections.OrderedDict(
-        [
-            ('date', _('tms-order-date')),
-            ('relevance', _('tms-order-relevance')),
-            ('visits', _('tms-order-kpi_visits')),
-            ('comments', _('tms-order-kpi_comments')),
-            ('subscriptions', _('tms-order-kpi_subscriptions')),
-        ]
-    )
+    values = {
+        'date': _('tms-order-date'),
+        'relevance': _('tms-order-relevance'),
+        'visits': _('tms-order-kpi_visits'),
+        'comments': _('tms-order-kpi_comments'),
+        'subscriptions': _('tms-order-kpi_subscriptions'),
+    }
 
 
 class TopicpageListOrderSource(zeit.cms.content.sources.SimpleDictSource):
-    values = collections.OrderedDict(
-        [
-            ('title', _('tms-order-title')),
-            ('visits', _('tms-order-kpi_visits')),
-            ('comments', _('tms-order-kpi_comments')),
-            ('subscriptions', _('tms-order-kpi_subscriptions')),
-        ]
-    )
+    values = {
+        'title': _('tms-order-title'),
+        'visits': _('tms-order-kpi_visits'),
+        'comments': _('tms-order-kpi_comments'),
+        'subscriptions': _('tms-order-kpi_subscriptions'),
+    }
 
 
 class ReachServiceSource(zeit.cms.content.sources.XMLSource):
@@ -169,7 +154,7 @@ class ReachAccessSource(zeit.cms.content.sources.SimpleDictSource):
     reach is not totally reliable (BUG-1152), so we restrict the values here.
     """
 
-    values = collections.OrderedDict([('abo', _('reach-access-abo'))])
+    values = {'abo': _('reach-access-abo')}
 
 
 class QuerySubRessortSource(zeit.cms.content.sources.SubRessortSource):

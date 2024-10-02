@@ -1,4 +1,3 @@
-import collections
 import importlib.resources
 
 import zeit.cmp.testing
@@ -47,7 +46,7 @@ class IngredientsHelper:
         return ingredient
 
     def setup_ingredients(self, *codes):
-        ingredients = collections.OrderedDict()
+        ingredients = {}
         for code in codes:
             ingredients[code] = self.get_ingredient(code)
         return ingredients

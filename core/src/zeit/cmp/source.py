@@ -1,5 +1,3 @@
-import collections
-
 import grokcore.component as grok
 import zc.sourcefactory.basic
 import zc.sourcefactory.interfaces
@@ -47,7 +45,7 @@ def source_token(value):
 
 
 class TriState(zc.sourcefactory.basic.BasicSourceFactory):
-    _values = collections.OrderedDict(((True, _('yes')), (False, _('no')), (Unknown, _('unknown'))))
+    _values = {True: _('yes'), False: _('no'), Unknown: _('unknown')}
 
     def getTitle(self, value):
         return self._values.get(value, value)

@@ -1,5 +1,3 @@
-import collections
-
 import zope.interface
 
 from zeit.cms.interfaces import CONFIG_CACHE
@@ -47,7 +45,7 @@ class FeedSource(zeit.cms.content.sources.ObjectSource, zeit.cms.content.sources
 
     @CONFIG_CACHE.cache_on_arguments()
     def _values(self):
-        result = collections.OrderedDict()
+        result = {}
         tree = self._get_tree()
         for node in tree.iterchildren('*'):
             feed = Feed(
