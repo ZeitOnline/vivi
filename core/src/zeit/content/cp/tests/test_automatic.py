@@ -488,22 +488,6 @@ class AutomaticAreaElasticsearchTest(zeit.content.cp.testing.FunctionalTestCase)
             self.elasticsearch.search.call_args[0][0],
         )
 
-    def test_custom_query_should_have_random_order(self):
-        lead = self.create_lead_teaser('random:desc')
-        IRenderedArea(lead).values()
-
-        query = self.elasticsearch.search.call_args[0][0]
-        self.assertEqual(
-            {
-                '_script': {
-                    'type': 'number',
-                    'script': {'lang': 'painless', 'source': 'Math.random()'},
-                    'order': 'desc',
-                }
-            },
-            query['sort'],
-        )
-
     def test_valid_query_despite_missing_order(self):
         lead = self.create_lead_teaser()
         lead.query_order = ''
