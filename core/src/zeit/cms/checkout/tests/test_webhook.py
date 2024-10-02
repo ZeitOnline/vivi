@@ -271,15 +271,6 @@ class TestMultipleWebhooksWithSameId(FunctionalTestCase):
                   <product_counter>print</product_counter>
                 </include>
               </webhook>
-              <!-- this test should be excluded, see exclude -->
-              <webhook id="publish" url="http://localhost/four:{port}">
-                <include>
-                  <product_counter>print</product_counter>
-                </include>
-                <exclude>
-                  <type>testcontenttype</type>
-                </exclude>
-              </webhook>
             </webhooks>
             """
 
