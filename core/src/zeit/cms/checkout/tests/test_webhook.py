@@ -143,6 +143,36 @@ class WebhookExcludeTest(zeit.cms.testing.ZeitCmsTestCase):
         self.assertTrue(hook.should_exclude(self.repository['online']['2007']['01']['Somalia']))
 
 
+class WebhookIncludeTest(zeit.cms.testing.ZeitCmsTestCase):
+    def test_matches_criteria_is_false_when_include_does_not_match_contenttype(self):
+        hook = zeit.cms.checkout.webhook.Hook(None, None)
+        hook.add_include('type', 'testcontenttype')
+        self.assertTrue(hook.should_include(self.repository['testcontent']))
+        self.assertFalse(hook.should_include(self.repository['online']['2007']['01']['Somalia']))
+
+    def test_matches_criteria_is_false_when_include_does_not_match(self):
+        hook = zeit.cms.checkout.webhook.Hook(None, None)
+        hook.add_include('type', 'wrong-content-type')
+        self.assertFalse(hook.matches_criteria(self.repository['testcontent']))
+
+
+class WebhookExcludeStrongerThanIncludeTest(zeit.cms.testing.ZeitCmsTestCase):
+    def test_exclude_weighs_more_than_include_on_same_attribute(self):
+        hook = zeit.cms.checkout.webhook.Hook(None, None)
+        hook.add_include('type', 'testcontenttype')
+        hook.add_exclude('type', 'testcontenttype')
+        self.assertFalse(hook.matches_criteria(self.repository['testcontent']))
+
+    def test_exclude_weighs_more_than_include_on_different_attribute(self):
+        hook = zeit.cms.checkout.webhook.Hook('checkin', None)
+        hook.add_include('type', 'testcontenttype')
+        hook.add_exclude('product_counter', 'online')
+        self.assertTrue(hook.matches_criteria(self.repository['testcontent']))
+        with checked_out(self.repository['testcontent']) as co:
+            co.product = Product('ZEDE')
+        self.assertFalse(hook.matches_criteria(self.repository['testcontent']))
+
+
 class WebhookEventTest(FunctionalTestCase):
     @property
     def config(self):
@@ -157,6 +187,15 @@ class WebhookEventTest(FunctionalTestCase):
           <webhook id="publish" url="http://localhost:{port}">
             <exclude>
               <product_counter>print</product_counter>
+            </exclude>
+          </webhook>
+          <!-- this webhook will be excluded, see exclude type = testconttype -->
+          <webhook id="publish" url="http://localhost/two:{port}">
+            <include>
+              <product_counter>print</product_counter>
+            </include>
+            <exclude>
+              <type>testcontenttype</type>
             </exclude>
           </webhook>
         </webhooks>
@@ -210,3 +249,52 @@ class WebhookEventTest(FunctionalTestCase):
         workflow.publish()
         requests = self.layer['request_handler'].requests
         self.assertEqual(2, len(requests))
+
+
+class TestMultipleWebhooksWithSameId(FunctionalTestCase):
+    @property
+    def config(self):
+        port = self.layer['http_port']
+        return f"""<webhooks>
+              <webhook id="publish" url="http://localhost/one:{port}">
+                <include>
+                  <product_counter>print</product_counter>
+                </include>
+              </webhook>
+              <webhook id="publish" url="http://localhost/two:{port}">
+                <include>
+                  <product_counter>print</product_counter>
+                </include>
+              </webhook>
+              <webhook id="publish" url="http://localhost/three:{port}">
+                <include>
+                  <product_counter>print</product_counter>
+                </include>
+              </webhook>
+            </webhooks>
+            """
+
+    def test_multiple_webhooks_with_same_id(self):
+        requests_post_mock = mock.patch('requests.post').start()
+
+        with checked_out(self.repository['testcontent']) as co:
+            co.product = Product('ZEI')
+            info = zeit.cms.workflow.interfaces.IPublishInfo(co)
+            info.urgent = True
+        workflow = zeit.cms.workflow.interfaces.IPublish(self.repository['testcontent'])
+        workflow.publish()
+
+        # Only 3 requests should match, the last one is excluded.
+        self.assertEqual(3, requests_post_mock.call_count)
+
+        # check if all url's match
+        expected_urls = [
+            f'http://localhost/one:{self.layer["http_port"]}',
+            f'http://localhost/two:{self.layer["http_port"]}',
+            f'http://localhost/three:{self.layer["http_port"]}',
+        ]
+        actual_urls = [call.args[0] for call in requests_post_mock.call_args_list]
+        for url in expected_urls:
+            self.assertIn(url, actual_urls)
+
+        mock.patch.stopall()
