@@ -3,6 +3,7 @@ import zope.formlib
 
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.browser.form
+import zeit.cms.content.interfaces
 import zeit.content.audio.audio
 import zeit.content.audio.interfaces
 import zeit.workflow.browser.form
@@ -49,6 +50,9 @@ class Form:
         + zope.formlib.form.FormFields(zeit.content.audio.interfaces.ISpeechInfo).select(
             'article_uuid', 'preview_url', 'checksum'
         )
+        + zope.formlib.form.FormFields(zeit.cms.content.interfaces.ICommonMetadata).select(
+            'teaserTitle', 'teaserSupertitle', 'teaserText'
+        )
     )
 
     podcast_fields = gocept.form.grouped.Fields(
@@ -81,6 +85,12 @@ class Form:
         css_class='wide-widgets column-left',
     )
 
+    teaser_fields = gocept.form.grouped.Fields(
+        _('Teaser'),
+        ('teaserTitle', 'teaserSupertitle', 'teaserText'),
+        css_class='wide-widgets column-left',
+    )
+
     field_groups = (
         gocept.form.grouped.Fields(
             _('Navigation'), ('__name__',), css_class='wide-widgets column-right'
@@ -91,6 +101,7 @@ class Form:
         podcast_host_fields,
         tts_fields,
         tts_file_fields,
+        teaser_fields,
     )
 
 
