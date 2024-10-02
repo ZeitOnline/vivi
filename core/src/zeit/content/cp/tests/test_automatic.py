@@ -328,8 +328,8 @@ class AutomaticAreaElasticsearchTest(zeit.content.cp.testing.FunctionalTestCase)
                                                 ]
                                             }
                                         },
-                                        {'term': {'payload.document.ressort': 'Wissen'}},
                                         {'term': {'payload.document.serie': 'Autotest'}},
+                                        {'term': {'payload.document.ressort': 'Wissen'}},
                                     ]
                                 }
                             },

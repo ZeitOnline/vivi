@@ -245,7 +245,7 @@ class CustomContentQuery(ElasticsearchContentQuery):
 
         must = []
         must_not = []
-        for typ in sorted(fields):  # Provide stable sorting for tests
+        for typ in fields:
             positive = []
             for item in fields[typ]:
                 if item[1] == 'neq':
