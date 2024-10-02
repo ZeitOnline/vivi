@@ -118,7 +118,7 @@ class SQLCustomContentQuery(SQLContentQuery):
 
     @property
     def order(self):
-        return 'date_last_published_semantic desc nulls last'  # XXX
+        return f'{self.context.query_order} desc nulls last'
 
     @property
     def conditions(self):
@@ -334,13 +334,22 @@ class CustomContentQuery(ElasticsearchContentQuery):
         'content_type': 'doc_type',
     }
 
+    ES_ORDER = {
+        'date_last_published_semantic': 'payload.workflow.date_last_published_semantic:desc',
+        'date_last_modified_semantic': 'payload.document.last-semantic-change:desc',
+        'date_first_released': 'payload.document.date_first_released:desc',
+        'date_last_published': 'payload.workflow.date_last_published:desc',
+        'random': 'random:desc',
+    }
+    ES_ORDER_BWCOMPAT = {v: k for k, v in ES_ORDER.items()}
+
     serialize = CustomQueryProperty()._serialize_query_item
 
     def __init__(self, context):
         # Skip direct superclass, as we set `query` and `order` differently.
         super(ElasticsearchContentQuery, self).__init__(context)
         self.query = self._make_custom_query()
-        self.order_default = self.context.query_order
+        self.order_default = self.ES_ORDER[self.context.query_order]
 
     def _make_custom_query(self):
         fields = {}
