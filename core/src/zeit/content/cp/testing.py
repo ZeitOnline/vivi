@@ -142,7 +142,6 @@ class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
         lead.query = (('channels', 'eq', 'International', 'Nahost'),)
         if order:
             lead.query_order = order
-        self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
         return lead
 
 

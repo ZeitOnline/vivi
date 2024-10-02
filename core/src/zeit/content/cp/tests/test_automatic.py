@@ -34,9 +34,9 @@ class AutomaticAreaElasticsearchTest(zeit.content.cp.testing.FunctionalTestCase)
         self.area.automatic_type = 'elasticsearch-query'
         self.repository['cp'] = self.cp
         self.elasticsearch = zope.component.getUtility(zeit.retresco.interfaces.IElasticsearch)
+        self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
 
     def tests_values_contain_only_blocks_with_content(self):
-        self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
         self.assertEqual(0, len(IRenderedArea(self.area).values()))
 
     def tests_ignores_items_with_errors(self):
@@ -88,7 +88,6 @@ class AutomaticAreaElasticsearchTest(zeit.content.cp.testing.FunctionalTestCase)
         self.assertEqual('http://xml.zeit.de/leader', list(result[1])[0].uniqueId)
 
     def test_checkin_smoke_test(self):
-        self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
         with zeit.cms.checkout.helper.checked_out(self.repository['cp']) as cp:
             lead = cp.body['lead']
             lead.count = 1
@@ -153,7 +152,6 @@ class AutomaticAreaElasticsearchTest(zeit.content.cp.testing.FunctionalTestCase)
         lead.query = (('serie', 'eq', autotest),)
         lead.automatic = True
         lead.automatic_type = 'custom'
-        self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
         IRenderedArea(lead).values()
         self.assertEqual(
             {
@@ -188,7 +186,6 @@ class AutomaticAreaElasticsearchTest(zeit.content.cp.testing.FunctionalTestCase)
         )
         lead.automatic = True
         lead.automatic_type = 'custom'
-        self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
         IRenderedArea(lead).values()
         self.assertEqual(
             {
@@ -238,7 +235,6 @@ class AutomaticAreaElasticsearchTest(zeit.content.cp.testing.FunctionalTestCase)
         )
         lead.automatic = True
         lead.automatic_type = 'custom'
-        self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
         IRenderedArea(lead).values()
         self.assertEqual(
             {
@@ -303,7 +299,6 @@ class AutomaticAreaElasticsearchTest(zeit.content.cp.testing.FunctionalTestCase)
         )
         lead.automatic = True
         lead.automatic_type = 'custom'
-        self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
         IRenderedArea(lead).values()
         self.assertEqual(
             {
@@ -359,7 +354,6 @@ class AutomaticAreaElasticsearchTest(zeit.content.cp.testing.FunctionalTestCase)
         )
         lead.automatic = True
         lead.automatic_type = 'custom'
-        self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
         IRenderedArea(lead).values()
         self.assertEqual(
             {
@@ -414,7 +408,6 @@ class AutomaticAreaElasticsearchTest(zeit.content.cp.testing.FunctionalTestCase)
         )
         lead.is_complete_query = True
         lead.automatic_type = 'elasticsearch-query'
-        self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
         IRenderedArea(lead).values()
         self.assertEqual(
             json.loads(lead.elasticsearch_raw_query), self.elasticsearch.search.call_args[0][0]
@@ -427,7 +420,6 @@ class AutomaticAreaElasticsearchTest(zeit.content.cp.testing.FunctionalTestCase)
         lead.elasticsearch_raw_query = '{"query": {"match": {"title": "foo"}}}'
         lead.is_complete_query = True
         lead.automatic_type = 'elasticsearch-query'
-        self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
         auto = IRenderedArea(lead)
         auto._content_query.hide_dupes_clause = {'ids': {'values': ['id1']}}
         auto.values()
@@ -463,7 +455,6 @@ class AutomaticAreaElasticsearchTest(zeit.content.cp.testing.FunctionalTestCase)
         lead.query = (('serie', 'eq', autotest),)
         lead.automatic = True
         lead.xml.set('automatic_type', 'channel')
-        self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
         IRenderedArea(lead).values()
         self.assertEqual(
             {
@@ -539,6 +530,7 @@ class AutomaticAreaTopicpageTest(zeit.content.cp.testing.FunctionalTestCase):
         zope.component.getGlobalSiteManager().registerUtility(
             self.tms, zeit.retresco.interfaces.ITMS
         )
+        self.tms.get_topicpage_documents.return_value = zeit.cms.interfaces.Result()
 
     def test_passes_id_to_tms(self):
         lead = self.repository['cp'].body['lead']
@@ -546,7 +538,6 @@ class AutomaticAreaTopicpageTest(zeit.content.cp.testing.FunctionalTestCase):
         lead.automatic = True
         lead.referenced_topicpage = 'tms-id'
         lead.automatic_type = 'topicpage'
-        self.tms.get_topicpage_documents.return_value = zeit.cms.interfaces.Result()
         IRenderedArea(lead).values()
         args, kw = self.tms.get_topicpage_documents.call_args
         self.assertEqual('tms-id', kw['id'])
@@ -569,7 +560,6 @@ class AutomaticAreaTopicpageTest(zeit.content.cp.testing.FunctionalTestCase):
         lead.referenced_topicpage = 'tms-id'
         lead.automatic_type = 'topicpage'
         lead.topicpage_filter = 'has_image'
-        self.tms.get_topicpage_documents.return_value = zeit.cms.interfaces.Result()
         IRenderedArea(lead).values()
         self.assertEqual('has_image', self.tms.get_topicpage_documents.call_args[1]['filter'])
 
