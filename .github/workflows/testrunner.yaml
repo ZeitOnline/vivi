@@ -54,6 +54,7 @@ jobs:
           project_name: ${{env.project}}
           environment: staging
           gar_docker_auth: true  # for docker pull dav-server
+          google_auth: true  # for pypi-zon download
           vault_export_token: true
 
       - name: checkout vivi
