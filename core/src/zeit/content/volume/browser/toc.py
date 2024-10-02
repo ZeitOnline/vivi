@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from collections import OrderedDict, defaultdict
+from collections import defaultdict
 from io import StringIO
 import csv
 import os.path
@@ -213,7 +213,7 @@ class Toc(zeit.cms.browser.view.Base):
         """
         Sort the toc data dict.
         :param toc_data: Table of content data as dict.
-        :return: OrderedDict
+        :return: dict
         """
         for product_name, ressort_dict in toc_data.items():
             for ressort_name, articles in ressort_dict.items():
@@ -229,7 +229,7 @@ class Toc(zeit.cms.browser.view.Base):
         Ressort dicts will be sorted by min page of its articles.
         Expects articles in ressorts dict to be sorted by page.
         :param ressorts: {RESSORTNAME: [ARTICLES AS DICT]}
-        :return: OrderedDict
+        :return: dict
         """
         ressort_min_page_number_tuples = []
         for resort_name, articles in ressorts.items():
@@ -238,7 +238,7 @@ class Toc(zeit.cms.browser.view.Base):
             if articles:
                 min_page = articles[0].get('page', sys.maxsize)
             ressort_min_page_number_tuples.append((resort_name, min_page))
-        d = OrderedDict()
+        d = {}
         for ressort_page_tuple in sorted(
             ressort_min_page_number_tuples, key=lambda resort_page_tup: resort_page_tup[1]
         ):

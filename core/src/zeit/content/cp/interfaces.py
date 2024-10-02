@@ -1,4 +1,3 @@
-import collections
 import fractions
 import json
 import logging
@@ -209,19 +208,17 @@ class IRegion(IReadRegion, IWriteRegion, zeit.edit.interfaces.IContainer, IEleme
 
 
 class AutomaticTypeSource(zeit.cms.content.sources.SimpleDictSource):
-    values = collections.OrderedDict(
-        [
-            ('centerpage', _('automatic-area-type-centerpage')),
-            ('custom', _('automatic-area-type-custom')),
-            ('topicpage', _('automatic-area-type-topicpage')),
-            ('related-topics', _('automatic-area-type-related-topics')),
-            ('elasticsearch-query', _('automatic-area-type-elasticsearch-query')),
-            ('reach', _('automatic-area-type-reach')),
-            ('topicpagelist', _('automatic-area-type-topicpagelist')),
-            ('rss-feed', _('automatic-area-type-rss-feed')),
-            ('sql-query', _('automatic-area-type-sql-query')),
-        ]
-    )
+    values = {
+        'centerpage': _('automatic-area-type-centerpage'),
+        'custom': _('automatic-area-type-custom'),
+        'topicpage': _('automatic-area-type-topicpage'),
+        'related-topics': _('automatic-area-type-related-topics'),
+        'elasticsearch-query': _('automatic-area-type-elasticsearch-query'),
+        'reach': _('automatic-area-type-reach'),
+        'topicpagelist': _('automatic-area-type-topicpagelist'),
+        'rss-feed': _('automatic-area-type-rss-feed'),
+        'sql-query': _('automatic-area-type-sql-query'),
+    }
 
     def getToken(self, value):
         # JS needs to use these values, don't MD5 them.
@@ -643,13 +640,11 @@ class IHeaderImageBlock(IBlock):
 
 
 class AlignmentSource(zeit.cms.content.sources.SimpleDictSource):
-    values = collections.OrderedDict(
-        (
-            ('left', _('left')),
-            ('center', _('center')),
-            ('right', _('right')),
-        )
-    )
+    values = {
+        'left': _('left'),
+        'center': _('center'),
+        'right': _('right'),
+    }
 
 
 class IMarkupBlock(IBlock):
@@ -664,23 +659,21 @@ class IMarkupBlock(IBlock):
 
 
 class CardstackColorSource(zeit.cms.content.sources.SimpleDictSource):
-    values = collections.OrderedDict(
-        (
-            (color, color)
-            for color in [
-                '#D8D8D8',
-                '#5E534F',
-                '#E4DED8',
-                '#69696C',
-                '#FF7783',
-                '#7C0E14',
-                '#6FA6B9',
-                '#085064',
-                '#57C494',
-                '#1E6847',
-            ]
-        )
-    )
+    values = {
+        color: color
+        for color in [
+            '#D8D8D8',
+            '#5E534F',
+            '#E4DED8',
+            '#69696C',
+            '#FF7783',
+            '#7C0E14',
+            '#6FA6B9',
+            '#085064',
+            '#57C494',
+            '#1E6847',
+        ]
+    }
 
 
 class ICardstackBlock(IBlock):

@@ -1,5 +1,3 @@
-import collections
-
 import zope.interface
 
 from zeit.cms.i18n import MessageFactory as _
@@ -85,7 +83,7 @@ class StudyCourseSource(zeit.cms.content.sources.ObjectSource, zeit.cms.content.
     @CONFIG_CACHE.cache_on_arguments()
     def _values(self):
         tree = self._get_tree()
-        result = collections.OrderedDict()
+        result = {}
         for node in tree.iterchildren('*'):
             g = node.get
             id = node.get(self.attribute)

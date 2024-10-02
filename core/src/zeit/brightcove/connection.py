@@ -1,4 +1,3 @@
-import collections
 import logging
 
 import requests
@@ -48,7 +47,7 @@ class CMSAPI:
 
     def find_videos(self, query, sort='created_at'):
         offset = 0
-        retrieved = collections.OrderedDict()
+        retrieved = {}
         while True:
             batch = self._request(
                 'GET /videos',

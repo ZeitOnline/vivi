@@ -1,4 +1,3 @@
-import collections
 import copy
 
 import grokcore.component as grok
@@ -41,7 +40,7 @@ class Tags:
         tagger.set_pinned([x.code for x in value if x.pinned])
 
     def _remove_duplicates(self, tags):
-        result = collections.OrderedDict()
+        result = {}
         for tag in tags:
             if tag.code not in result:
                 result[tag.code] = tag

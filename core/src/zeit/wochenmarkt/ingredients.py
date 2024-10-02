@@ -1,4 +1,3 @@
-import collections
 import logging
 
 import grokcore.component as grok
@@ -92,7 +91,7 @@ class IngredientsWhitelist(grok.GlobalUtility, zeit.cms.content.sources.CachedXM
     @CONFIG_CACHE.cache_on_arguments()
     def _load(self):
         xml = self._get_tree()
-        ingredients = collections.OrderedDict()
+        ingredients = {}
         for ingredient_node in xml.xpath('//ingredient'):
             try:
                 ingredient = Ingredient(

@@ -187,7 +187,7 @@ class VariantSource(
     @CONFIG_CACHE.cache_on_arguments()
     def _values(self):
         tree = self._get_tree()
-        result = collections.OrderedDict()
+        result = {}
         for node in tree.iterchildren('*'):
             sizes = list(node.iterchildren('size'))
             if not sizes:

@@ -1,4 +1,3 @@
-import collections
 import logging
 
 import grokcore.component as grok
@@ -145,7 +144,7 @@ class HookSource(zeit.cms.content.sources.SimpleXMLSource):
 
     @CONFIG_CACHE.cache_on_arguments()
     def _values(self):
-        result = collections.OrderedDict()
+        result = {}
         tree = self._get_tree()
         for node in tree.iterchildren('webhook'):
             hook = Hook(node.get('id'), node.get('url'))
