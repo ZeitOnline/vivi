@@ -1,8 +1,9 @@
 import zeit.content.audio.testing
+import zeit.content.image.testing
 
 
 class TestAudioForm(zeit.content.audio.testing.BrowserTestCase):
-    def add_audio(self):
+    def add_podcast_audio(self):
         self.browser.open('/repository/online/2007/01')
         menu = self.browser.getControl(name='add_menu')
         menu.displayValue = ['Audio']
@@ -22,8 +23,8 @@ class TestAudioForm(zeit.content.audio.testing.BrowserTestCase):
         self.browser.getControl('Add').click()
         assert 'There were errors' not in self.browser.contents
 
-    def test_add_form(self):
-        self.add_audio()
+    def test_add_podcast_form(self):
+        self.add_podcast_audio()
         self.browser.getLink('Checkin').click()
         self.assertEllipsis(
             """...
@@ -69,3 +70,37 @@ class TestAudioForm(zeit.content.audio.testing.BrowserTestCase):
         self.browser.getControl('Checksum').value = '123foo'
         self.browser.getControl('Add').click()
         assert 'There were errors' not in self.browser.contents
+
+    def test_add_custom_audio(self):
+        self.browser.open('/repository/online/2007/01')
+        menu = self.browser.getControl(name='add_menu')
+        menu.displayValue = ['Audio']
+        self.browser.open(menu.value[0])
+        self.browser.getControl('File name').value = 'count-olaf-audio'
+        self.browser.getControl('Type').displayValue = 'Custom Audio'
+        group = zeit.content.image.testing.create_image_group()
+        self.browser.getControl('Image').value = group.uniqueId
+        self.browser.getControl('Title').value = 'Count Olaf takes the Baudelaire children'
+        self.browser.getControl(
+            'Teaser kicker'
+        ).value = 'Count Olaf is back to steal the Pugs fortune'
+        self.browser.getControl(
+            'Teaser text'
+        ).value = 'The Baudelaire orphans are in for a surprise'
+        self.browser.getControl('Add').click()
+        assert 'There were errors' not in self.browser.contents
+        self.browser.getLink('Checkin').click()
+        self.assertEllipsis(
+            """...
+            <label for="form.teaserTitle">...
+            <div class="widget">Count Olaf takes the Baudelaire children</div>...
+            <label for="form.teaserSupertitle">...
+            <div class="widget">Count Olaf is back to steal the Pugs fortune</div>...
+            <label for="form.teaserText">...
+            <div class="widget">The Baudelaire orphans are in for a surprise</div>...
+            <label for="form.image">...
+            <div class="widget">...
+            <span class="uniqueId">http://xml.zeit.de/image-group/</span>...
+            """,
+            self.browser.contents,
+        )

@@ -3,6 +3,7 @@ import zope.formlib
 
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.browser.form
+import zeit.cms.content.interfaces
 import zeit.content.audio.audio
 import zeit.content.audio.interfaces
 import zeit.workflow.browser.form
@@ -30,7 +31,6 @@ class Form:
         'summary',
         'notes',
         'dashboard_link',
-        'image',
         'url_ad_free',
     )
 
@@ -49,11 +49,15 @@ class Form:
         + zope.formlib.form.FormFields(zeit.content.audio.interfaces.ISpeechInfo).select(
             'article_uuid', 'preview_url', 'checksum'
         )
+        + zope.formlib.form.FormFields(zeit.cms.content.interfaces.ICommonMetadata).select(
+            'teaserTitle', 'teaserSupertitle', 'teaserText'
+        )
+        + zope.formlib.form.FormFields(zeit.content.image.interfaces.IImages).select('image')
     )
 
     podcast_fields = gocept.form.grouped.Fields(
         _('Podcast Episode Info'),
-        ('podcast', 'image', 'episode_nr', 'summary', 'notes'),
+        ('podcast', 'episode_nr', 'summary', 'notes'),
         'wide-widgets column-left',
     )
 
@@ -81,6 +85,12 @@ class Form:
         css_class='wide-widgets column-left',
     )
 
+    teaser_fields = gocept.form.grouped.Fields(
+        _('Teaser'),
+        ('teaserTitle', 'teaserSupertitle', 'teaserText', 'image'),
+        css_class='wide-widgets column-left',
+    )
+
     field_groups = (
         gocept.form.grouped.Fields(
             _('Navigation'), ('__name__',), css_class='wide-widgets column-right'
@@ -91,6 +101,7 @@ class Form:
         podcast_host_fields,
         tts_fields,
         tts_file_fields,
+        teaser_fields,
     )
 
 
@@ -101,6 +112,10 @@ class Mixin(Form):
             self.form_fields = self.form_fields.omit(*self._omit_podcast_fields)
         elif context.audio_type == 'podcast':
             self.form_fields = self.form_fields.omit(*self._omit_tts_fields)
+        elif context.audio_type == 'custom':
+            self.form_fields = self.form_fields.omit(
+                *self._omit_podcast_fields, *self._omit_tts_fields
+            )
 
 
 class Add(Form, zeit.cms.browser.form.AddForm):
