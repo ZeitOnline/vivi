@@ -17,6 +17,7 @@ import zeit.cms.repository.interfaces
 import zeit.cms.type
 import zeit.content.article.interfaces
 import zeit.content.audio.interfaces
+import zeit.content.image.imagereference
 import zeit.content.image.interfaces
 
 
@@ -72,9 +73,18 @@ class AudioType(zeit.cms.type.XMLContentTypeDeclaration):
     type = 'audio'  # Wert für {http://namespaces.zeit.de/CMS/meta}type
 
 
+@grok.adapter(IAudio)
 @grok.implementer(zeit.content.image.interfaces.IImages)
-class PodcastImage(grok.Adapter):
-    grok.context(IAudio)
+def audio_image(context):
+    if context.audio_type == 'podcast':
+        return PodcastImage(context)
+    return zeit.content.image.imagereference.ImagesAdapter(context)
+
+
+@zope.interface.implementer(zeit.content.image.interfaces.IImages)
+class PodcastImage:
+    def __init__(self, context):
+        self.context = context
 
     def _get_podcast(self):
         if self.context.audio_type == 'podcast':
