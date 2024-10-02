@@ -24,7 +24,6 @@ Create the gallery:
 >>> browser.getControl('Ressort', index=0).displayValue = ['Reisen']
 >>> browser.getControl(name="form.image_folder").value = (
 ...     'http://xml.zeit.de/image-folder')
->>> browser.getControl(name='form.authors.0.').value = 'Hans Sachs'
 >>> browser.getControl(name='form.keywords').value = (
 ...     '[{"code": "tag://test\\\\u2603Testtag", "pinned": false}]')
 >>> browser.getControl(name="form.actions.add").click()
