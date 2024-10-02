@@ -433,17 +433,17 @@ class AutomaticAreaElasticsearchTest(zeit.content.cp.testing.FunctionalTestCase)
             self.elasticsearch.search.call_args[0][0]['query'],
         )
 
-    def test_query_order_defaults_to_semantic_publish(self):
-        lead = self.create_lead_teaser()
-        IRenderedArea(lead).values()
+    def test_custom_query_order_defaults_to_semantic_publish(self):
+        self.area.automatic_type = 'custom'
+        IRenderedArea(self.area).values()
         self.assertEqual(
             [{'payload.workflow.date_last_published_semantic': 'desc'}],
             self.elasticsearch.search.call_args[0][0]['sort'],
         )
 
     def test_query_order_can_be_set(self):
-        lead = self.create_lead_teaser('order:desc')
-        IRenderedArea(lead).values()
+        self.area.elasticsearch_raw_order = 'order:desc'
+        IRenderedArea(self.area).values()
         query = self.elasticsearch.search.call_args[0][0]
         self.assertEqual([{'order': 'desc'}], query['sort'])
 
@@ -481,26 +481,16 @@ class AutomaticAreaElasticsearchTest(zeit.content.cp.testing.FunctionalTestCase)
         )
 
     def test_valid_query_despite_missing_order(self):
-        lead = self.create_lead_teaser()
-        lead.query_order = ''
-        IRenderedArea(lead).values()
+        self.area.elasticsearch_raw_query = '{"query": {}}'
+        self.area.elasticsearch_raw_order = ''
+        IRenderedArea(self.area).values()
 
         self.assertEqual(
             {
                 'query': {
                     'bool': {
                         'filter': [
-                            {
-                                'bool': {
-                                    'filter': [
-                                        {
-                                            'term': {
-                                                'payload.document.channels.hierarchy': 'International Nahost'
-                                            }
-                                        }
-                                    ]
-                                }
-                            },
+                            {},
                             {'term': {'payload.workflow.published': True}},
                         ],
                         'must_not': [
@@ -512,10 +502,9 @@ class AutomaticAreaElasticsearchTest(zeit.content.cp.testing.FunctionalTestCase)
             self.elasticsearch.search.call_args[0][0],
         )
 
-    def test_should_accept_multiple_orders(self):
-        lead = self.create_lead_teaser('payload.xml.lastname:asc,payload.xml.firstname:asc')
-        IRenderedArea(lead).values()
-
+    def test_raw_query_should_accept_multiple_orders(self):
+        self.area.elasticsearch_raw_order = 'payload.xml.lastname:asc,payload.xml.firstname:asc'
+        IRenderedArea(self.area).values()
         query = self.elasticsearch.search.call_args[0][0]
         self.assertEqual(
             [{'payload.xml.lastname': 'asc'}, {'payload.xml.firstname': 'asc'}], query['sort']

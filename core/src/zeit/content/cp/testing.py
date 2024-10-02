@@ -134,16 +134,6 @@ class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
         transaction.commit()
         return cp
 
-    def create_lead_teaser(self, order=None):
-        lead = self.repository['cp'].body['lead']
-        lead.automatic = True
-        lead.automatic_type = 'custom'
-        lead.count = 1
-        lead.query = (('channels', 'eq', 'International', 'Nahost'),)
-        if order:
-            lead.query_order = order
-        return lead
-
 
 WSGI_LAYER = zeit.cms.testing.WSGILayer(name='WSGILayer', bases=(LAYER,))
 HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(name='HTTPLayer', bases=(WSGI_LAYER,))
