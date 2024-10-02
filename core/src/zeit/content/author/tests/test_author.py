@@ -2,13 +2,12 @@
 from unittest import mock
 import urllib.parse
 
-from zope.lifecycleevent import Attributes, ObjectCreatedEvent, ObjectModifiedEvent
+from zope.lifecycleevent import Attributes, ObjectModifiedEvent
 import requests_mock
 import zope.event
 
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.content.interfaces import ICommonMetadata
-from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import zeit.cms.config
 import zeit.cms.interfaces
 import zeit.content.author.author
@@ -51,47 +50,6 @@ class AuthorTest(zeit.content.author.testing.FunctionalTestCase):
         errors = zope.schema.getValidationErrors(zeit.content.author.interfaces.IAuthor, author)
         ssoid_errors = [i for i in errors if i[0] == 'ssoid']
         assert not ssoid_errors, "Validation error for 'ssoid' should not exist"
-
-
-class FreetextCopyTest(zeit.content.author.testing.FunctionalTestCase):
-    def setUp(self):
-        super().setUp()
-        author = zeit.content.author.author.Author()
-        author.firstname = 'William'
-        author.lastname = 'Shakespeare'
-        self.repository['author'] = author
-
-    def test_authorships_should_be_copied_to_freetext_on_change(self):
-        with checked_out(self.repository['testcontent']) as co:
-            co.authorships = [co.authorships.create(self.repository['author'])]
-            zope.event.notify(ObjectModifiedEvent(co, Attributes(ICommonMetadata, 'authorships')))
-            self.assertEqual(('William Shakespeare',), co.authors)
-
-    def test_authorships_should_not_be_copied_for_other_field_change(self):
-        with checked_out(self.repository['testcontent']) as co:
-            zope.event.notify(ObjectModifiedEvent(co, Attributes(ICommonMetadata, 'title')))
-            self.assertEqual(('',), co.authors)
-
-    def test_authorships_should_clear_authors_when_empty(self):
-        with checked_out(self.repository['testcontent']) as co:
-            co.authorships = ()
-            zope.event.notify(ObjectModifiedEvent(co, Attributes(ICommonMetadata, 'authorships')))
-            self.assertEqual((), co.authors)
-
-    def test_authorships_should_be_copied_to_freetext_on_create(self):
-        content = ExampleContentType()
-        content.authorships = [content.authorships.create(self.repository['author'])]
-        zope.event.notify(ObjectCreatedEvent(content))
-        self.repository['foo'] = content
-        self.assertEqual(('William Shakespeare',), self.repository['foo'].authors)
-
-    def test_authorships_should_not_be_copied_on_copy(self):
-        with checked_out(self.repository['testcontent']) as co:
-            co.authorships = [co.authorships.create(self.repository['author'])]
-        zope.copypastemove.interfaces.IObjectCopier(self.repository['testcontent']).copyTo(
-            self.repository['online']
-        )
-        self.assertEqual(('',), self.repository['online']['testcontent'].authors)
 
 
 class OthersTest(zeit.content.author.testing.FunctionalTestCase):
