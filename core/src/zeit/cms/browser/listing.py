@@ -65,7 +65,7 @@ class CommonListRepresentation(BaseListRepresentation):
 
     @zope.cachedescriptors.property.Lazy
     def author(self):
-        return ', '.join(self.context.authors)
+        return ', '.join(ref.target.display_name for ref in self.context.authorships)
 
     @zope.cachedescriptors.property.Lazy
     def title(self):
