@@ -6,10 +6,10 @@ import zeit.cms.testing
 class ListingTest(zeit.cms.testing.ZeitCmsBrowserTestCase):
     def test_columns_ignore_exceptions(self):
         with mock.patch(
-            'zeit.cms.testcontenttype.testcontenttype.' 'ExampleContentType.authors',
+            'zeit.cms.testcontenttype.testcontenttype.' 'ExampleContentType.copyrights',
             new=mock.PropertyMock,
-        ) as author:
-            author.side_effect = RuntimeError('provoked')
+        ) as copyright:
+            copyright.side_effect = RuntimeError('provoked')
             b = self.browser
             b.handleErrors = False
             with self.assertNothingRaised():
