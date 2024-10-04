@@ -352,21 +352,42 @@ class ContractChecksum(zeit.connector.testing.SQLTest):
 class PropertiesColumnTest(zeit.connector.testing.SQLTest):
     layer = zeit.connector.testing.SQL_CONTENT_LAYER
 
-    def test_properties_can_be_stored_in_separate_columns(self):
+    def test_properties_are_written_simultaneously_to_separate_column_and_unsorted(self):
         FEATURE_TOGGLES.set('write_metadata_columns', True)
         FEATURE_TOGGLES.set('read_metadata_columns', True)
         timestamp = pendulum.datetime(1980, 1, 1)
         res = self.add_resource('foo', properties={('date_created', DOCUMENT_SCHEMA_NS): timestamp})
         self.assertEqual(timestamp, res.properties[('date_created', DOCUMENT_SCHEMA_NS)])
         content = self.connector._get_content(res.id)
+        self.assertEqual({'document': {'date_created': timestamp.isoformat()}}, content.unsorted)
+        self.assertEqual(timestamp, content.date_created)
+
+    def test_properties_can_be_stored_in_separate_columns_and_still_read_as_dav(self):
+        FEATURE_TOGGLES.set('write_metadata_columns', True)
+        timestamp = pendulum.datetime(1980, 1, 1)
+        res = self.add_resource('foo', properties={('date_created', DOCUMENT_SCHEMA_NS): timestamp})
+        self.assertEqual(
+            timestamp.isoformat(), res.properties[('date_created', DOCUMENT_SCHEMA_NS)]
+        )
+        content = self.connector._get_content(res.id)
+        self.assertEqual({'document': {'date_created': timestamp.isoformat()}}, content.unsorted)
+        self.assertEqual(timestamp, content.date_created)
+
+    def test_properties_can_be_stored_in_separate_columns(self):
+        FEATURE_TOGGLES.set('write_metadata_columns_strict', True)
+        FEATURE_TOGGLES.set('read_metadata_columns', True)
+        timestamp = pendulum.datetime(1980, 1, 1)
+        res = self.add_resource('foo', properties={('date_created', DOCUMENT_SCHEMA_NS): timestamp})
+        self.assertEqual(timestamp, res.properties[('date_created', DOCUMENT_SCHEMA_NS)])
+        content = self.connector._get_content(res.id)
+        self.assertEqual({}, content.unsorted)
         self.assertEqual(timestamp, content.date_created)
 
     def test_search_looks_in_columns_or_unsorted_depending_on_toggle(self):
         FEATURE_TOGGLES.set('write_metadata_columns', True)
 
-        res = self.add_resource(
-            'foo', properties={('date_created', DOCUMENT_SCHEMA_NS): '1980-01-01'}
-        )
+        timestamp = pendulum.datetime(1980, 1, 1)
+        res = self.add_resource('foo', properties={('date_created', DOCUMENT_SCHEMA_NS): timestamp})
         var = SearchVar('date_created', 'http://namespaces.zeit.de/CMS/document')
         for toggle in [False, True]:  # XXX parametrize would be nice
             FEATURE_TOGGLES.set('read_metadata_columns', toggle)
@@ -388,6 +409,7 @@ class WorkflowColumnsTest(zeit.connector.testing.SQLTest):
         super().setUp()
         FEATURE_TOGGLES.set('read_metadata_columns', True)
         FEATURE_TOGGLES.set('write_metadata_columns', True)
+        FEATURE_TOGGLES.set('write_metadata_columns_strict', True)
 
     def _make_resource(self, properties):
         res = self.add_resource('foo', properties=properties)
