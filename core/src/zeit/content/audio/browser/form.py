@@ -37,6 +37,8 @@ class Form:
 
     _omit_tts_fields = ('article_uuid', 'preview_url', 'checksum')
 
+    _omit_teaser_fields = ('teaserTitle', 'teaserSupertitle', 'teaserText')
+
     form_fields = (
         Base.form_fields
         + zope.formlib.form.FormFields(zeit.content.audio.interfaces.IPodcastEpisodeInfo).select(
@@ -110,7 +112,12 @@ class Mixin(Form):
         super().__init__(context, request)
         if context.audio_type == 'tts':
             self.form_fields = self.form_fields.omit(*self._omit_podcast_fields)
+            self.form_fields = self.form_fields.omit(*self._omit_teaser_fields)
         elif context.audio_type == 'podcast':
+            self.form_fields = self.form_fields.omit(*self._omit_tts_fields)
+            self.form_fields = self.form_fields.omit(*self._omit_teaser_fields)
+        elif context.audio_type == 'manual':
+            self.form_fields = self.form_fields.omit(*self._omit_podcast_fields)
             self.form_fields = self.form_fields.omit(*self._omit_tts_fields)
 
 
