@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.44.0 (2024-10-04)
+-------------------
+
+- FIX: replace deprecated attach_span with attach_context
+
+
 6.43.0 (2024-10-04)
 -------------------
 
