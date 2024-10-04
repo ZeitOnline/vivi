@@ -3,6 +3,20 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.43.0 (2024-10-04)
+-------------------
+
+- WCM-3: add e-paper publish webhook
+
+- WCM-285: Disable zope.security proxy for tuples, they are immutable anyway
+
+- WCM-292: Remove custom query order random, it was basically never used
+
+
+MAINT:
+- Python 3.12.6 -> 3.12.7
+
+
 6.42.0 (2024-09-30)
 -------------------
 
