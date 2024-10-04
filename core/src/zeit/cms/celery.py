@@ -192,15 +192,16 @@ else:
     @celery.signals.task_postrun.connect(weak=False)
     def remove_samplerate(*args, **kw):
         task = otel_celery.retrieve_task(kw)
-        token, _ = otel_celery.retrieve_span(task, 'zeit.cms.tracing')
+        _, _, token = otel_celery.retrieve_context(task, 'zeit.cms.tracing')
         opentelemetry.context.detach(token)
-        otel_celery.detach_span(task, 'zeit.cms.tracing')
+        otel_celery.detach_context(task, 'zeit.cms.tracing')
 
     CeleryInstrumentor().instrument()
 
     @celery.signals.task_prerun.connect(weak=False)
     def apply_samplerate(*args, **kw):
-        opentelemetry.trace.get_current_span().set_attributes({'celery.args': str(kw.get('args'))})
+        span = opentelemetry.trace.get_current_span()
+        span.set_attributes({'celery.args': str(kw.get('args'))})
 
         context = zeit.cms.tracing.apply_samplerate_productconfig(
             'zeit.cms.relstorage',
@@ -229,4 +230,4 @@ else:
         token = opentelemetry.context.attach(context)
         # This is a bit of a semantic misuse, but mechanically it's
         # exactly what we want: store this bit of data on the task object.
-        otel_celery.attach_span(task, 'zeit.cms.tracing', (token, None))
+        otel_celery.attach_context(task, 'zeit.cms.tracing', span, None, token)
