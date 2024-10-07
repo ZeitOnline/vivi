@@ -1,3 +1,4 @@
 .vscode/
 # Ignore intelliJ configuration files
 .idea/
+*.pyc

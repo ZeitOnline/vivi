@@ -18,7 +18,6 @@ from zeit.connector.models import Lock
 from zeit.connector.postgresql import _unlock_overdue_locks
 from zeit.connector.resource import Resource, WriteableCachedResource
 from zeit.connector.search import SearchVar
-from zeit.workflow.interfaces import WORKFLOW_NS
 import zeit.connector.testing
 
 
@@ -397,60 +396,3 @@ class PropertiesColumnTest(zeit.connector.testing.SQLTest):
             result = self.connector.search([var], var == '1980-01-01')
             unique_id, uuid = next(result)
             self.assertEqual(res.id, unique_id)
-
-
-class WorkflowColumnsTest(zeit.connector.testing.SQLTest):
-    layer = zeit.connector.testing.SQL_CONTENT_LAYER
-
-    TIMESTAMP = '2024-05-21T12:53:20.880753+00:00'
-    EXPECTED_DATETIME = datetime(2024, 5, 21, 12, 53, 20, 880753, pytz.UTC)
-
-    def setUp(self):
-        super().setUp()
-        FEATURE_TOGGLES.set('read_metadata_columns', True)
-        FEATURE_TOGGLES.set('write_metadata_columns', True)
-        FEATURE_TOGGLES.set('write_metadata_columns_strict', True)
-
-    def _make_resource(self, properties):
-        res = self.add_resource('foo', properties=properties)
-        return self.connector._get_content(res.id)
-
-    def test_date_created(self):
-        properties = {('date_created', DOCUMENT_SCHEMA_NS): self.TIMESTAMP}
-        content = self._make_resource(properties)
-        self.assertEqual(content.date_created, self.EXPECTED_DATETIME)
-
-    def test_date_first_released(self):
-        properties = {('date_first_released', DOCUMENT_SCHEMA_NS): self.TIMESTAMP}
-        content = self._make_resource(properties)
-        self.assertEqual(content.date_first_released, self.EXPECTED_DATETIME)
-
-    def test_date_last_checkout(self):
-        properties = {('date_last_checkout', DOCUMENT_SCHEMA_NS): self.TIMESTAMP}
-        content = self._make_resource(properties)
-        self.assertEqual(content.date_last_checkout, self.EXPECTED_DATETIME)
-
-    def test_date_last_modified_semantic(self):
-        properties = {('last-semantic-change', DOCUMENT_SCHEMA_NS): self.TIMESTAMP}
-        content = self._make_resource(properties)
-        self.assertEqual(content.date_last_modified_semantic, self.EXPECTED_DATETIME)
-
-    def test_date_last_published(self):
-        properties = {('date_last_published', WORKFLOW_NS): self.TIMESTAMP}
-        content = self._make_resource(properties)
-        self.assertEqual(content.date_last_published, self.EXPECTED_DATETIME)
-
-    def test_date_last_published_semantic(self):
-        properties = {
-            (
-                'date_last_published_semantic',
-                WORKFLOW_NS,
-            ): self.TIMESTAMP
-        }
-        content = self._make_resource(properties)
-        self.assertEqual(content.date_last_published_semantic, self.EXPECTED_DATETIME)
-
-    def test_date_print_published(self):
-        properties = {('print-publish', DOCUMENT_SCHEMA_NS): self.TIMESTAMP}
-        content = self._make_resource(properties)
-        self.assertEqual(content.date_print_published, self.EXPECTED_DATETIME)

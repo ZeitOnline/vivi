@@ -6,6 +6,7 @@ import logging
 from pytz import UTC
 import transaction
 
+from zeit.cms.interfaces import DOCUMENT_SCHEMA_NS
 from zeit.connector.search import SearchVar as SV
 import zeit.connector.testing
 
@@ -66,3 +67,19 @@ Searching: (:and
         transaction.commit()
         res = self.get_resource('foo')
         self.connector['http://xml.zeit.de/testing/foo'] = res
+
+
+class CollectionPropertyTest(zeit.connector.testing.MockTest):
+    def test_channels(self):
+        from zeit.cms.content.sources import FEATURE_TOGGLES
+
+        dav_format = 'channel1;channel2 sub1'
+        regular_format = (('channel1', None), ('channel2', 'sub1'))
+        FEATURE_TOGGLES.set('write_metadata_columns', True)
+        res = self.add_resource(
+            'foo', properties={('channels', DOCUMENT_SCHEMA_NS): regular_format}
+        )
+        self.assertEqual(res.properties[('channels', DOCUMENT_SCHEMA_NS)], dav_format)
+        FEATURE_TOGGLES.set('read_metadata_columns', True)
+        res = self.connector[res.id]
+        self.assertEqual(res.properties[('channels', DOCUMENT_SCHEMA_NS)], regular_format)

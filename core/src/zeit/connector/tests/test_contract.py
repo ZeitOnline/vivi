@@ -916,6 +916,20 @@ class ContractProperties:
             resource.properties[('date_created', 'http://namespaces.zeit.de/CMS/document')],
         )
 
+    def test_converts_channels_on_read(self):
+        value = (('International', 'Nahost'), ('Wissen', None))
+        self.repository.connector.changeProperties(
+            'http://xml.zeit.de/testcontent',
+            {('channels', 'http://namespaces.zeit.de/CMS/document'): value},
+        )
+        self.assertEqual(value, self.repository['testcontent'].channels)
+
+    def test_converts_channels_on_write(self):
+        value = (('International', 'Nahost'), ('Wissen', None))
+        with checked_out(self.repository['testcontent']) as co:
+            co.channels = value
+        self.assertEqual(value, self.repository['testcontent'].channels)
+
 
 class PropertiesSQL(ContractProperties, zeit.cms.testing.FunctionalTestCase):
     layer = zeit.connector.testing.SQL_CONTENT_LAYER
