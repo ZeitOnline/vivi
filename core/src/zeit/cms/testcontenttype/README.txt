@@ -118,7 +118,6 @@ which is invalid though:
 >>> browser.getControl('Volume').value = '21'
 >>> browser.getControl('Ressort').displayValue = ['International']
 >>> browser.getControl('Title').value = 'Testing'
->>> browser.getControl(name='form.authors.0.').value = 'ich'
 >>> browser.getControl('Copyright').value = 'ich'
 >>> browser.getControl('Apply').click()
 >>> print(browser.contents)

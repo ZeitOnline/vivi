@@ -100,7 +100,6 @@ Then we need to create a test 'article' to be included in this CenterPage:
 >>> browser.getControl('Year').value = '2007'
 >>> browser.getControl('Copyright (c)').value = 'ZEIT ONLINE'
 >>> browser.getControl('Ressort').displayValue = ['Reisen']
->>> browser.getControl(name='form.authors.0.').value = 'Hans Sachs'
 >>> browser.getControl('Apply').click()
 >>> browser.getLink('Checkin').click()
 >>> 'Foreign teaser' in browser.contents
