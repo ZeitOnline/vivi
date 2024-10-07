@@ -7,6 +7,7 @@ from sqlalchemy import (
     Boolean,
     ForeignKey,
     Index,
+    Integer,
     Unicode,
     UnicodeText,
     Uuid,
@@ -45,6 +46,19 @@ class CommonMetadata:
         JSONBTuple,
         info={'namespace': 'document', 'name': 'channels'},
     )
+    access = mapped_column(Unicode, info={'namespace': 'document', 'name': 'access'})
+    product = mapped_column(Unicode, info={'namespace': 'workflow', 'name': 'product-id'})
+    ressort = mapped_column(Unicode, info={'namespace': 'document', 'name': 'ressort'})
+    sub_ressort = mapped_column(Unicode, info={'namespace': 'document', 'name': 'sub_ressort'})
+    series = mapped_column(Unicode, info={'namespace': 'document', 'name': 'serie'})
+
+    print_ressort = mapped_column(Unicode, info={'namespace': 'print', 'name': 'ressort'})
+    volume_year = mapped_column(Integer, info={'namespace': 'document', 'name': 'year'})
+    volume_number = mapped_column(Integer, info={'namespace': 'document', 'name': 'number'})
+
+
+class Article:
+    article_genre = mapped_column(Unicode, info={'namespace': 'document', 'name': 'genre'})
 
 
 class SemanticChange:
@@ -86,9 +100,14 @@ class PublishInfo:
         TIMESTAMP,
         info={'namespace': 'document', 'name': 'print-publish'},
     )
+    published = mapped_column(
+        Boolean,
+        server_default='false',
+        info={'namespace': 'workflow', 'name': 'published'},
+    )
 
 
-class Content(Base, CommonMetadata, Modified, PublishInfo, SemanticChange):
+class Content(Base, CommonMetadata, Modified, PublishInfo, SemanticChange, Article):
     __tablename__ = 'properties'
 
     @declared_attr
