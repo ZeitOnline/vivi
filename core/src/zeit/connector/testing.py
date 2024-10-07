@@ -15,7 +15,6 @@ import requests
 import sqlalchemy
 import transaction
 import zope.component.hooks
-import zope.testing.renormalizing
 
 import zeit.cms.testing
 import zeit.connector.gcsemulator  # activate monkey patches
