@@ -19,6 +19,7 @@ import sqlalchemy
 from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.connector.interfaces import INTERNAL_PROPERTY, DeleteProperty, LockStatus
 from zeit.connector.lock import lock_is_foreign
+import zeit.connector.converter
 import zeit.connector.interfaces
 
 
@@ -214,13 +215,19 @@ class Content(Base, CommonMetadata, Modified, PublishInfo, SemanticChange):
         if type:
             self.type = type
 
-        if FEATURE_TOGGLES.find('write_metadata_columns'):
+        if FEATURE_TOGGLES.find('write_metadata_columns') or FEATURE_TOGGLES.find(
+            'write_metadata_columns_strict'
+        ):
             for column in self._columns_with_name():
                 namespace, name = column.info['namespace'], column.info['name']
                 value = props.get((name, self.NS + namespace), self)
                 if value is not self:
                     setattr(self, column.name, value)
-                    props.pop((name, self.NS + namespace), None)
+                    if FEATURE_TOGGLES.find('write_metadata_columns_strict'):
+                        props.pop((name, self.NS + namespace), None)
+                    else:
+                        converter = zeit.connector.converter.IConverter(column)
+                        props[name, self.NS + namespace] = converter.serialize(value)
 
         unsorted = collections.defaultdict(dict)
         for (k, ns), v in props.items():

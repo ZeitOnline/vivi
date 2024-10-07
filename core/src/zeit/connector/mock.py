@@ -15,7 +15,7 @@ import sqlalchemy
 import zope.event
 
 from zeit.cms.content.sources import FEATURE_TOGGLES
-from zeit.connector.filesystem import DefaultConverter
+from zeit.connector.converter import DefaultConverter
 from zeit.connector.interfaces import (
     ID_NAMESPACE,
     UUID_PROPERTY,
@@ -30,6 +30,7 @@ from zeit.connector.models import Content
 import zeit.cms.config
 import zeit.cms.repository.interfaces
 import zeit.connector.cache
+import zeit.connector.converter
 import zeit.connector.filesystem
 import zeit.connector.interfaces
 
@@ -388,7 +389,7 @@ class Connector(zeit.connector.filesystem.Connector):
 
             if FEATURE_TOGGLES.find('write_metadata_columns'):
                 column = Content.column_by_name(name, namespace)
-                converter = zeit.connector.filesystem.IConverter(column)
+                converter = zeit.connector.converter.IConverter(column)
                 value = converter.serialize(value)
             else:
                 converter = DefaultConverter(None)
