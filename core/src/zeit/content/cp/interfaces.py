@@ -609,14 +609,6 @@ class ICPExtraBlock(IBlock):
     )
 
 
-class ITeaser(zeit.cms.content.interfaces.ICommonMetadata, zeit.cms.content.interfaces.IXMLContent):
-    """A standalone teaser object which references the article."""
-
-    original_content = zope.schema.Choice(
-        title='The referenced article.', source=zeit.cms.content.contentsource.cmsContentSource
-    )
-
-
 class IQuizBlock(zeit.content.modules.interfaces.IQuiz, IBlock):
     pass
 

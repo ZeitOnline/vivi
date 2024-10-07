@@ -246,15 +246,6 @@
     file="resources/vivi/centerpage.png"
     />
 
-  <browser:icon
-    for="zeit.content.cp.interfaces.ITeaser"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="zmi_icon"
-    width="16"
-    height="16"
-    file="resources/teaser-icon.png"
-    />
-
   <browser:page
     name="raw.css"
     for="zeit.cms.interfaces.ICMSContent"
