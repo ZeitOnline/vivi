@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.45.0 (2024-10-07)
+-------------------
+
+- WCM-285: Custom type for sql/jsonb to work with channels tuple type
+
+- WCM-435: simultaneous write into dedicated columns and unsorted
+
+
 6.44.0 (2024-10-04)
 -------------------
 
