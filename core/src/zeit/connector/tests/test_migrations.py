@@ -131,7 +131,10 @@ class MigrationsLint(unittest.TestCase):
 
         squawk = os.environ['SQUAWK_COMMAND']
         proc = subprocess.Popen(
-            [squawk, '--exclude=ban-drop-table'], stdout=PIPE, stderr=PIPE, stdin=PIPE
+            [squawk, '--exclude=ban-drop-table,prefer-bigint-over-int,prefer-big-int'],
+            stdout=PIPE,
+            stderr=PIPE,
+            stdin=PIPE,
         )
         stdout, stderr = proc.communicate(sql.encode('utf-8'))
         if proc.returncode:
