@@ -1,2 +1,1 @@
-WCM-285: - Disable zope.security proxy for tuples, they are immutable anyway
-         - custom typ for jsonb to work with channels tuple type
+WCM-285: Custom type for sql/jsonb to work with channels tuple type
