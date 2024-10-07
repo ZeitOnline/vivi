@@ -142,10 +142,11 @@ SQL_CONFIG_LAYER = SQLConfigLayer()
 
 
 class SQLDatabaseLayer(plone.testing.Layer):
-    def __init__(self, name='SQLDatabaseLayer', module=None, bases=()):
+    def __init__(self, zodb=False, name='SQLDatabaseLayer', module=None, bases=()):
         if module is None:
             module = inspect.stack()[1][0].f_globals['__name__']
         super().__init__(name=name, module=module, bases=bases)
+        self.zodb = zodb
 
     def setUp(self):
         connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
@@ -196,7 +197,10 @@ class SQLDatabaseLayer(plone.testing.Layer):
         self['sql_session'] = connector.session()
         sqlalchemy.event.listen(self['sql_session'], 'after_transaction_end', self.end_savepoint)
 
-        with zeit.cms.testing.site(self['zodbApp']):
+        if self.zodb:
+            with zeit.cms.testing.site(self['zodbApp']):
+                mkdir(connector, ROOT)
+        else:
             mkdir(connector, ROOT)
         transaction.commit()
 
@@ -228,7 +232,7 @@ ZOPE_SQL_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     features=['zeit.connector.sql.zope'], bases=(zeit.cms.testing.CONFIG_LAYER, SQL_CONFIG_LAYER)
 )
 ZOPE_SQL_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZOPE_SQL_ZCML_LAYER,))
-ZOPE_SQL_CONNECTOR_LAYER = SQLDatabaseLayer(bases=(ZOPE_SQL_ZOPE_LAYER,))
+ZOPE_SQL_CONNECTOR_LAYER = SQLDatabaseLayer(bases=(ZOPE_SQL_ZOPE_LAYER,), zodb=True)
 
 
 SQL_CONTENT_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
@@ -237,7 +241,7 @@ SQL_CONTENT_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     bases=(zeit.cms.testing.CONFIG_LAYER, SQL_CONFIG_LAYER),
 )
 SQL_CONTENT_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(SQL_CONTENT_ZCML_LAYER,))
-SQL_CONTENT_LAYER = SQLDatabaseLayer(bases=(SQL_CONTENT_ZOPE_LAYER,))
+SQL_CONTENT_LAYER = SQLDatabaseLayer(bases=(SQL_CONTENT_ZOPE_LAYER,), zodb=True)
 
 
 class TestCase(zeit.cms.testing.FunctionalTestCase):
