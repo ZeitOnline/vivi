@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.46.0 (2024-10-07)
+-------------------
+
+- WCM-433: Make zodb support (for connector caches) optional in SQL db testlayer
+
+
 6.45.0 (2024-10-07)
 -------------------
 
