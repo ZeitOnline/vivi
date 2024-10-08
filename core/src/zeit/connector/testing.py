@@ -142,15 +142,21 @@ SQL_CONFIG_LAYER = SQLConfigLayer()
 
 
 class SQLDatabaseLayer(plone.testing.Layer):
-    def __init__(self, zodb=False, name='SQLDatabaseLayer', module=None, bases=()):
+    def __init__(self, zodb=False, connector=None, name='SQLDatabaseLayer', module=None, bases=()):
         if module is None:
             module = inspect.stack()[1][0].f_globals['__name__']
         super().__init__(name=name, module=module, bases=bases)
         self.zodb = zodb
+        self._connector = connector
+
+    @property
+    def connector(self):
+        if self._connector is None:
+            self._connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+        return self._connector
 
     def setUp(self):
-        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
-        engine = connector.engine
+        engine = self.connector.engine
         try:
             self['sql_connection'] = engine.connect()
         except OperationalError:  # Create database
@@ -166,7 +172,7 @@ class SQLDatabaseLayer(plone.testing.Layer):
 
         # Make sqlalchemy use only this specific connection, so we can apply a
         # nested transaction in testSetUp()
-        connector.session.configure(bind=self['sql_connection'])
+        self.connector.session.configure(bind=self['sql_connection'])
 
         # Create tables
         c = self['sql_connection']
@@ -191,17 +197,16 @@ class SQLDatabaseLayer(plone.testing.Layer):
         # Begin a non-orm transaction which we roll back in testTearDown().
         self['sql_transaction'] = connection.begin()
 
-        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
         # Begin savepoint, so we can use transaction.abort() during tests.
         self['sql_nested'] = connection.begin_nested()
-        self['sql_session'] = connector.session()
+        self['sql_session'] = self.connector.session()
         sqlalchemy.event.listen(self['sql_session'], 'after_transaction_end', self.end_savepoint)
 
         if self.zodb:
             with zeit.cms.testing.site(self['zodbApp']):
-                mkdir(connector, ROOT)
+                mkdir(self.connector, ROOT)
         else:
-            mkdir(connector, ROOT)
+            mkdir(self.connector, ROOT)
         transaction.commit()
 
     def end_savepoint(self, session, transaction):
@@ -212,8 +217,7 @@ class SQLDatabaseLayer(plone.testing.Layer):
         transaction.abort()
 
         sqlalchemy.event.remove(self['sql_session'], 'after_transaction_end', self.end_savepoint)
-        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
-        connector.session.remove()
+        self.connector.session.remove()
         del self['sql_session']
 
         self['sql_transaction'].rollback()
