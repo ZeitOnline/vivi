@@ -1,6 +1,9 @@
 import json
 import logging
 
+from sqlalchemy import and_ as sql_and
+from sqlalchemy import not_ as sql_not
+from sqlalchemy import or_ as sql_or
 from sqlalchemy import text as sql
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
@@ -11,7 +14,9 @@ import zope.interface
 
 from zeit.cms.content.cache import content_cache
 from zeit.cms.content.interfaces import IUUID
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.interfaces import ICMSContent
+from zeit.connector.models import Content as ConnectorModel
 from zeit.contentquery.configuration import CustomQueryProperty
 import zeit.cms.config
 import zeit.cms.content.interfaces
@@ -65,13 +70,22 @@ class SQLContentQuery(ContentQuery):
         result = [ICMSContent(x) for x in self.connector.search_sql(query)]
         return result
 
-    def _build_query(self, order=True):
+    @property
+    def conditions(self):
         query = self.connector.query()
         query = query.where(sql(self.context.sql_query))
+        return query
+
+    @property
+    def order(self):
+        return self.context.sql_order
+
+    def _build_query(self, order=True):
+        query = self.conditions
         query = self.add_clauses(query)
         query = self.hide_dupes_clause(query)
         if order:  # not allowed by SQL when using `count()`
-            query = query.order_by(sql(self.context.sql_order))
+            query = query.order_by(sql(self.order))
             query = query.limit(self.rows).offset(self.start)
         return query
 
@@ -97,6 +111,97 @@ class SQLContentQuery(ContentQuery):
         if not ids:
             return query
         return query.where(self.connector.Content.id.not_in(sorted(ids)))
+
+
+class SQLCustomContentQuery(SQLContentQuery):
+    grok.baseclass()  # See dispatch_custom_query
+
+    @property
+    def order(self):
+        return f'{self.context.query_order} desc nulls last'
+
+    @property
+    def conditions(self):
+        fields = {}
+        for item in self.context.query:
+            typ = item[0]
+            fields.setdefault(typ, []).append(item)
+
+        query = self.connector.query()
+        for typ in fields:
+            conditions = []
+            for item in fields[typ]:
+                conditions.append(self._make_clause(typ, item))
+            query = query.where(sql_or(*conditions))
+
+        return query
+
+    COLUMNS = {
+        'content_type': 'type',
+    }
+
+    OPERATORS = {
+        'eq': '__eq__',
+        'neq': '__ne__',
+    }
+
+    serialize = CustomQueryProperty()._serialize_query_item
+
+    def _make_clause(self, typ, item):
+        try:
+            func = getattr(self, '_make_{}_condition'.format(typ))
+            return func(item)
+        except AttributeError:
+            return self._make_condition(*self.serialize(self.context, item))
+
+    def _make_condition(self, typ, operator, value):
+        condition = getattr(self._column(typ), self.OPERATORS[operator])
+        return condition(value)
+
+    @classmethod
+    def _column(cls, typ):
+        name = cls.COLUMNS.get(typ)
+        if name:
+            return getattr(ConnectorModel, name)
+
+        # XXX Generalize the class?
+        prop = getattr(zeit.content.article.article.Article, typ)
+        if not isinstance(prop, zeit.cms.content.dav.DAVProperty):
+            raise ValueError('Cannot determine field name for %s', typ)
+        return ConnectorModel.column_by_name(prop.name, prop.namespace)
+
+    def _make_channels_condition(self, item):
+        typ = item[0]
+        operator = item[1]
+        value = item[2:]
+        if not value[1]:
+            value = [[value[0]]]
+        else:
+            value = [value]
+        condition = self._column(typ).contains(json.dumps(value))
+        if operator == 'neq':
+            condition = sql_not(condition)
+        return condition
+
+    def _make_ressort_condition(self, item):
+        operator = item[1]
+        value = item[2:]
+        condition = self._make_condition('ressort', operator, value[0])
+        if value[1]:
+            condition = sql_and(condition, self._make_condition('sub_ressort', operator, value[1]))
+        return condition
+
+
+@grok.adapter(zeit.contentquery.interfaces.IConfiguration, name='custom')
+@grok.implementer(zeit.contentquery.interfaces.IContentQuery)
+def dispatch_custom_query(context):
+    """Helper for switching during transition phase"""
+    query = context.xml.find('query')
+    if FEATURE_TOGGLES.find('contentquery_custom_as_sql'):
+        return SQLCustomContentQuery(context)
+    if query is not None and query.get('type') == 'sql':
+        return SQLCustomContentQuery(context)
+    return CustomContentQuery(context)
 
 
 @grok.adapter(zeit.contentquery.interfaces.IContentQuery)
@@ -222,12 +327,21 @@ class ElasticsearchContentQuery(ContentQuery):
 
 
 class CustomContentQuery(ElasticsearchContentQuery):
-    grok.name('custom')
+    grok.baseclass()  # See dispatch_custom_query
 
     ES_FIELD_NAMES = {
         'channels': 'payload.document.channels.hierarchy',
         'content_type': 'doc_type',
     }
+
+    ES_ORDER = {
+        'date_last_published_semantic': 'payload.workflow.date_last_published_semantic:desc',
+        'date_last_modified_semantic': 'payload.document.last-semantic-change:desc',
+        'date_first_released': 'payload.document.date_first_released:desc',
+        'date_last_published': 'payload.workflow.date_last_published:desc',
+        'random': 'random:desc',
+    }
+    ES_ORDER_BWCOMPAT = {v: k for k, v in ES_ORDER.items()}
 
     serialize = CustomQueryProperty()._serialize_query_item
 
@@ -235,7 +349,7 @@ class CustomContentQuery(ElasticsearchContentQuery):
         # Skip direct superclass, as we set `query` and `order` differently.
         super(ElasticsearchContentQuery, self).__init__(context)
         self.query = self._make_custom_query()
-        self.order_default = self.context.query_order
+        self.order_default = self.ES_ORDER[self.context.query_order]
 
     def _make_custom_query(self):
         fields = {}
@@ -245,7 +359,7 @@ class CustomContentQuery(ElasticsearchContentQuery):
 
         must = []
         must_not = []
-        for typ in sorted(fields):  # Provide stable sorting for tests
+        for typ in fields:
             positive = []
             for item in fields[typ]:
                 if item[1] == 'neq':
@@ -278,10 +392,9 @@ class CustomContentQuery(ElasticsearchContentQuery):
     @classmethod
     def _fieldname(cls, typ):
         fieldname = cls.ES_FIELD_NAMES.get(typ)
-        return fieldname if fieldname else cls._fieldname_from_property(typ)
+        if fieldname:
+            return fieldname
 
-    @classmethod
-    def _fieldname_from_property(cls, typ):
         # XXX Generalize the class?
         prop = getattr(zeit.content.article.article.Article, typ)
         if not isinstance(prop, zeit.cms.content.dav.DAVProperty):
@@ -295,13 +408,13 @@ class CustomContentQuery(ElasticsearchContentQuery):
             return {
                 'bool': {
                     'must': [
-                        {'term': {self._fieldname_from_property('ressort'): item[2]}},
-                        {'term': {self._fieldname_from_property('sub_ressort'): item[3]}},
+                        {'term': {self._fieldname('ressort'): item[2]}},
+                        {'term': {self._fieldname('sub_ressort'): item[3]}},
                     ]
                 }
             }
         else:
-            return {'term': {self._fieldname_from_property('ressort'): item[2]}}
+            return {'term': {self._fieldname('ressort'): item[2]}}
 
 
 class TMSContentQuery(ContentQuery):

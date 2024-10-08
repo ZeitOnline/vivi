@@ -9,6 +9,7 @@ import requests_mock
 import transaction
 import zope.component
 
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.content.cp.interfaces import IRenderedArea
 import zeit.cms.content.interfaces
@@ -33,9 +34,9 @@ class AutomaticAreaElasticsearchTest(zeit.content.cp.testing.FunctionalTestCase)
         self.area.automatic_type = 'elasticsearch-query'
         self.repository['cp'] = self.cp
         self.elasticsearch = zope.component.getUtility(zeit.retresco.interfaces.IElasticsearch)
+        self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
 
     def tests_values_contain_only_blocks_with_content(self):
-        self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
         self.assertEqual(0, len(IRenderedArea(self.area).values()))
 
     def tests_ignores_items_with_errors(self):
@@ -87,7 +88,6 @@ class AutomaticAreaElasticsearchTest(zeit.content.cp.testing.FunctionalTestCase)
         self.assertEqual('http://xml.zeit.de/leader', list(result[1])[0].uniqueId)
 
     def test_checkin_smoke_test(self):
-        self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
         with zeit.cms.checkout.helper.checked_out(self.repository['cp']) as cp:
             lead = cp.body['lead']
             lead.count = 1
@@ -152,7 +152,6 @@ class AutomaticAreaElasticsearchTest(zeit.content.cp.testing.FunctionalTestCase)
         lead.query = (('serie', 'eq', autotest),)
         lead.automatic = True
         lead.automatic_type = 'custom'
-        self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
         IRenderedArea(lead).values()
         self.assertEqual(
             {
@@ -187,7 +186,6 @@ class AutomaticAreaElasticsearchTest(zeit.content.cp.testing.FunctionalTestCase)
         )
         lead.automatic = True
         lead.automatic_type = 'custom'
-        self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
         IRenderedArea(lead).values()
         self.assertEqual(
             {
@@ -237,7 +235,6 @@ class AutomaticAreaElasticsearchTest(zeit.content.cp.testing.FunctionalTestCase)
         )
         lead.automatic = True
         lead.automatic_type = 'custom'
-        self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
         IRenderedArea(lead).values()
         self.assertEqual(
             {
@@ -302,7 +299,6 @@ class AutomaticAreaElasticsearchTest(zeit.content.cp.testing.FunctionalTestCase)
         )
         lead.automatic = True
         lead.automatic_type = 'custom'
-        self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
         IRenderedArea(lead).values()
         self.assertEqual(
             {
@@ -328,8 +324,8 @@ class AutomaticAreaElasticsearchTest(zeit.content.cp.testing.FunctionalTestCase)
                                                 ]
                                             }
                                         },
-                                        {'term': {'payload.document.ressort': 'Wissen'}},
                                         {'term': {'payload.document.serie': 'Autotest'}},
+                                        {'term': {'payload.document.ressort': 'Wissen'}},
                                     ]
                                 }
                             },
@@ -358,7 +354,6 @@ class AutomaticAreaElasticsearchTest(zeit.content.cp.testing.FunctionalTestCase)
         )
         lead.automatic = True
         lead.automatic_type = 'custom'
-        self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
         IRenderedArea(lead).values()
         self.assertEqual(
             {
@@ -413,7 +408,6 @@ class AutomaticAreaElasticsearchTest(zeit.content.cp.testing.FunctionalTestCase)
         )
         lead.is_complete_query = True
         lead.automatic_type = 'elasticsearch-query'
-        self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
         IRenderedArea(lead).values()
         self.assertEqual(
             json.loads(lead.elasticsearch_raw_query), self.elasticsearch.search.call_args[0][0]
@@ -426,7 +420,6 @@ class AutomaticAreaElasticsearchTest(zeit.content.cp.testing.FunctionalTestCase)
         lead.elasticsearch_raw_query = '{"query": {"match": {"title": "foo"}}}'
         lead.is_complete_query = True
         lead.automatic_type = 'elasticsearch-query'
-        self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
         auto = IRenderedArea(lead)
         auto._content_query.hide_dupes_clause = {'ids': {'values': ['id1']}}
         auto.values()
@@ -440,17 +433,17 @@ class AutomaticAreaElasticsearchTest(zeit.content.cp.testing.FunctionalTestCase)
             self.elasticsearch.search.call_args[0][0]['query'],
         )
 
-    def test_query_order_defaults_to_semantic_publish(self):
-        lead = self.create_lead_teaser()
-        IRenderedArea(lead).values()
+    def test_custom_query_order_defaults_to_semantic_publish(self):
+        self.area.automatic_type = 'custom'
+        IRenderedArea(self.area).values()
         self.assertEqual(
             [{'payload.workflow.date_last_published_semantic': 'desc'}],
             self.elasticsearch.search.call_args[0][0]['sort'],
         )
 
     def test_query_order_can_be_set(self):
-        lead = self.create_lead_teaser('order:desc')
-        IRenderedArea(lead).values()
+        self.area.elasticsearch_raw_order = 'order:desc'
+        IRenderedArea(self.area).values()
         query = self.elasticsearch.search.call_args[0][0]
         self.assertEqual([{'order': 'desc'}], query['sort'])
 
@@ -462,7 +455,6 @@ class AutomaticAreaElasticsearchTest(zeit.content.cp.testing.FunctionalTestCase)
         lead.query = (('serie', 'eq', autotest),)
         lead.automatic = True
         lead.xml.set('automatic_type', 'channel')
-        self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
         IRenderedArea(lead).values()
         self.assertEqual(
             {
@@ -489,26 +481,16 @@ class AutomaticAreaElasticsearchTest(zeit.content.cp.testing.FunctionalTestCase)
         )
 
     def test_valid_query_despite_missing_order(self):
-        lead = self.create_lead_teaser()
-        lead.query_order = ''
-        IRenderedArea(lead).values()
+        self.area.elasticsearch_raw_query = '{"query": {}}'
+        self.area.elasticsearch_raw_order = ''
+        IRenderedArea(self.area).values()
 
         self.assertEqual(
             {
                 'query': {
                     'bool': {
                         'filter': [
-                            {
-                                'bool': {
-                                    'filter': [
-                                        {
-                                            'term': {
-                                                'payload.document.channels.hierarchy': 'International Nahost'
-                                            }
-                                        }
-                                    ]
-                                }
-                            },
+                            {},
                             {'term': {'payload.workflow.published': True}},
                         ],
                         'must_not': [
@@ -520,10 +502,9 @@ class AutomaticAreaElasticsearchTest(zeit.content.cp.testing.FunctionalTestCase)
             self.elasticsearch.search.call_args[0][0],
         )
 
-    def test_should_accept_multiple_orders(self):
-        lead = self.create_lead_teaser('payload.xml.lastname:asc,payload.xml.firstname:asc')
-        IRenderedArea(lead).values()
-
+    def test_raw_query_should_accept_multiple_orders(self):
+        self.area.elasticsearch_raw_order = 'payload.xml.lastname:asc,payload.xml.firstname:asc'
+        IRenderedArea(self.area).values()
         query = self.elasticsearch.search.call_args[0][0]
         self.assertEqual(
             [{'payload.xml.lastname': 'asc'}, {'payload.xml.firstname': 'asc'}], query['sort']
@@ -538,6 +519,7 @@ class AutomaticAreaTopicpageTest(zeit.content.cp.testing.FunctionalTestCase):
         zope.component.getGlobalSiteManager().registerUtility(
             self.tms, zeit.retresco.interfaces.ITMS
         )
+        self.tms.get_topicpage_documents.return_value = zeit.cms.interfaces.Result()
 
     def test_passes_id_to_tms(self):
         lead = self.repository['cp'].body['lead']
@@ -545,7 +527,6 @@ class AutomaticAreaTopicpageTest(zeit.content.cp.testing.FunctionalTestCase):
         lead.automatic = True
         lead.referenced_topicpage = 'tms-id'
         lead.automatic_type = 'topicpage'
-        self.tms.get_topicpage_documents.return_value = zeit.cms.interfaces.Result()
         IRenderedArea(lead).values()
         args, kw = self.tms.get_topicpage_documents.call_args
         self.assertEqual('tms-id', kw['id'])
@@ -568,7 +549,6 @@ class AutomaticAreaTopicpageTest(zeit.content.cp.testing.FunctionalTestCase):
         lead.referenced_topicpage = 'tms-id'
         lead.automatic_type = 'topicpage'
         lead.topicpage_filter = 'has_image'
-        self.tms.get_topicpage_documents.return_value = zeit.cms.interfaces.Result()
         IRenderedArea(lead).values()
         self.assertEqual('has_image', self.tms.get_topicpage_documents.call_args[1]['filter'])
 
@@ -1113,18 +1093,18 @@ class AutomaticAreaSQLTest(zeit.content.cp.testing.FunctionalTestCase):
 AND unsorted @@ '$.workflow.published == "yes"'
 AND unsorted @@ '$."zeit.content.gallery".type != "inline"'...
 """
-        self.assertEllipsis(query, str(self.connector.search_args[0]))
+        self.assertEllipsis(query, self.connector.search_args[0])
 
     def test_query_order_default(self):
         IRenderedArea(self.area).values()
         query = '...ORDER BY date_last_published_semantic desc nulls last...'
-        self.assertEllipsis(query, str(self.connector.search_args[0]))
+        self.assertEllipsis(query, self.connector.search_args[0])
 
     def test_set_query_order(self):
         self.area.sql_order = 'date_first_released desc'
         IRenderedArea(self.area).values()
         query = '...ORDER BY date_first_released desc...'
-        self.assertEllipsis(query, str(self.connector.search_args[0]))
+        self.assertEllipsis(query, self.connector.search_args[0])
 
     def test_limit_query_results(self):
         IRenderedArea(self.area).values()
@@ -1138,3 +1118,81 @@ AND unsorted @@ '$."zeit.content.gallery".type != "inline"'...
     def test_get_total_hits(self):
         self.connector.search_result = ['http://xml.zeit.de/testcontent']
         self.assertEqual(1, IRenderedArea(self.area)._content_query.total_hits)
+
+
+class AutomaticAreaSQLCustomTest(zeit.content.cp.testing.FunctionalTestCase):
+    def setUp(self):
+        super().setUp()
+        self.cp = zeit.content.cp.centerpage.CenterPage()
+        self.area = self.cp.body['feature'].create_item('area')
+        self.area.count = 3
+        self.area.automatic = True
+        self.area.automatic_type = 'custom'
+        self.repository['cp'] = self.cp
+        self.connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+        FEATURE_TOGGLES.set('contentquery_custom_as_sql')
+        FEATURE_TOGGLES.set('read_metadata_columns')
+        FEATURE_TOGGLES.set('write_metadata_columns')
+
+    def test_builds_query_from_conditions(self):
+        source = zeit.cms.content.interfaces.ICommonMetadata['serie'].source(None)
+        self.area.query = (('serie', 'eq', source.find('Autotest')),)
+        IRenderedArea(self.area).values()
+        query = """
+...series = 'Autotest'
+AND unsorted @@ '$.workflow.published == "yes"'
+AND unsorted @@ '$."zeit.content.gallery".type != "inline"'...
+"""
+        self.assertEllipsis(query, self.connector.search_args[0])
+
+    def test_respects_column_name_exceptions(self):
+        self.area.query = (('content_type', 'eq', zeit.content.article.interfaces.IArticle),)
+        IRenderedArea(self.area).values()
+        self.assertEllipsis("...type = 'article'...", self.connector.search_args[0])
+
+    def test_applies_configured_operator(self):
+        self.area.query = (('content_type', 'neq', zeit.content.article.interfaces.IArticle),)
+        IRenderedArea(self.area).values()
+        self.assertEllipsis("...type != 'article'...", self.connector.search_args[0])
+
+    def test_creates_appropriate_condition_for_channels(self):
+        self.area.query = (
+            ('channels', 'eq', 'International', 'Nahost'),
+            ('channels', 'eq', 'Wissen', None),
+        )
+        IRenderedArea(self.area).values()
+        query = """
+...((properties.channels @> '[["International", "Nahost"]]')
+OR (properties.channels @> '[["Wissen"]]'))
+AND unsorted...
+"""
+        self.assertEllipsis(query, self.connector.search_args[0])
+
+    def test_creates_appropriate_condition_for_ressort(self):
+        self.area.query = (
+            ('ressort', 'eq', 'International', 'Nahost'),
+            ('ressort', 'eq', 'Wissen', None),
+        )
+        IRenderedArea(self.area).values()
+        query = """
+...(properties.ressort = 'International'
+AND properties.sub_ressort = 'Nahost'
+OR properties.ressort = 'Wissen')
+AND unsorted...
+"""
+        self.assertEllipsis(query, self.connector.search_args[0])
+
+    def test_joins_different_fields_with_AND_but_same_fields_with_OR(self):
+        self.area.query = (
+            ('content_type', 'eq', zeit.content.article.interfaces.IArticle),
+            ('ressort', 'eq', 'International', None),
+            ('ressort', 'eq', 'Wissen', None),
+        )
+        IRenderedArea(self.area).values()
+        query = """
+... properties.type = 'article'
+AND (properties.ressort = 'International'
+OR properties.ressort = 'Wissen')
+AND unsorted...
+"""
+        self.assertEllipsis(query, self.connector.search_args[0])

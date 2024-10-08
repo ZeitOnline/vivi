@@ -50,12 +50,10 @@ AUTOMATIC_FEED_SOURCE = AutomaticFeedSource()
 
 class QuerySortOrderSource(zeit.cms.content.sources.SimpleDictSource):
     values = {
-        'payload.workflow.date_last_published_semantic:desc': _(
-            'query-sort-order-last-published-semantic'
-        ),
-        'payload.document.last-semantic-change:desc': _('query-sort-order-last-semantic-change'),
-        'payload.document.date_first_released:desc': _('query-sort-order-first-released'),
-        'payload.workflow.date_last_published:desc': _('query-sort-order-last-published'),
+        'date_last_published_semantic': _('query-sort-order-last-published-semantic'),
+        'date_last_modified_semantic': _('query-sort-order-last-semantic-change'),
+        'date_first_released': _('query-sort-order-first-released'),
+        'date_last_published': _('query-sort-order-last-published'),
     }
 
 
@@ -246,7 +244,7 @@ class IConfiguration(zope.interface.Interface):
     query_order = zope.schema.Choice(
         title=_('Sort order'),
         source=QuerySortOrderSource(),
-        default='payload.workflow.date_last_published_semantic:desc',
+        default='date_last_published_semantic',
         required=True,
     )
 
