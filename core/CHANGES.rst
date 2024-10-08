@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.47.0 (2024-10-08)
+-------------------
+
+- WCM-433: Support multiple databases in sql testlayer
+
+
 6.46.0 (2024-10-07)
 -------------------
 
