@@ -129,6 +129,7 @@ class SQLConfigLayer(zeit.cms.testing.ProductConfigLayer):
                 'storage-project': 'ignored_by_emulator',
                 'storage-bucket': GCS_SERVER_LAYER.bucket,
                 'sql-locking': 'True',
+                'sql-pool-class': 'sqlalchemy.pool.NullPool',
             }
         )
 

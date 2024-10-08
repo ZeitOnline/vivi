@@ -8,6 +8,7 @@ import itertools
 import json
 import os
 import os.path
+import pkgutil
 import time
 
 from gocept.cache.property import TransactionBoundCache
@@ -69,11 +70,12 @@ class Connector:
         reconnect_tries=3,
         reconnect_wait=0.1,
         support_locking=False,
+        pool_class=None,
     ):
         self.dsn = dsn
         self.reconnect_tries = reconnect_tries
         self.reconnect_wait = reconnect_wait
-        self.engine = sqlalchemy.create_engine(dsn)
+        self.engine = sqlalchemy.create_engine(dsn, poolclass=pool_class)
         sqlalchemy.event.listen(self.engine, 'engine_connect', self._reconnect)
         self.session = sqlalchemy.orm.scoped_session(sqlalchemy.orm.sessionmaker(bind=self.engine))
         zope.sqlalchemy.register(self.session)
@@ -94,6 +96,9 @@ class Connector:
         if reconnect_wait is not None:
             params['reconnect_wait'] = float(reconnect_wait)
         params['support_locking'] = literal_eval(config.get('sql-locking', 'False'))
+        pool = config.get('sql-pool-class')
+        if pool:
+            params['pool_class'] = pkgutil.resolve_name(pool)
         return cls(config['dsn'], config['storage-project'], config['storage-bucket'], **params)
 
     # Inspired by <https://docs.sqlalchemy.org/en/20/core/pooling.html
