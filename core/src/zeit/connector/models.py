@@ -21,7 +21,6 @@ from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.connector.interfaces import INTERNAL_PROPERTY, DeleteProperty, LockStatus
 from zeit.connector.lock import lock_is_foreign
 from zeit.connector.types import TIMESTAMP, JSONBTuple
-import zeit.connector.converter
 import zeit.connector.interfaces
 
 
@@ -259,7 +258,7 @@ class Content(Base, CommonMetadata, Modified, PublishInfo, SemanticChange, Artic
                     if FEATURE_TOGGLES.find('write_metadata_columns_strict'):
                         props.pop((name, self.NS + namespace), None)
                     else:
-                        converter = zeit.connector.converter.IConverter(column)
+                        converter = zeit.connector.interfaces.IConverter(column)
                         props[name, self.NS + namespace] = converter.serialize(value)
 
         unsorted = collections.defaultdict(dict)

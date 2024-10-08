@@ -11,18 +11,9 @@ import grokcore.component as grok
 import sqlalchemy
 import zope.interface
 
+from zeit.connector.interfaces import IConverter
 from zeit.connector.types import JSONBTuple
 import zeit.cms.content.dav
-
-
-class IConverter(zope.interface.Interface):
-    """Converts webdav values to and from the postgresql database."""
-
-    def serialize(value):
-        pass
-
-    def deserialize(value):
-        pass
 
 
 @grok.implementer(IConverter)
