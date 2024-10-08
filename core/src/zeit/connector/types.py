@@ -3,6 +3,7 @@
 Prevents circular import because converter requires these types and the models too
 which also require the converter
 """
+
 from sqlalchemy import TIMESTAMP
 from sqlalchemy.dialects.postgresql import JSONB
 import sqlalchemy.types as types
@@ -25,6 +26,9 @@ class JSONBTuple(types.TypeDecorator):
         if not isinstance(value, source):
             return value  # or raise?
         return target(target(x) if isinstance(x, source) else x for x in value)
+
+    def coerce_compared_value(self, op, value):
+        return self.impl.coerce_compared_value(op, value)
 
 
 class TIMESTAMP(TIMESTAMP):
