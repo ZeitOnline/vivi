@@ -129,12 +129,13 @@ class SQLConfigLayer(zeit.cms.testing.ProductConfigLayer):
                 'storage-project': 'ignored_by_emulator',
                 'storage-bucket': GCS_SERVER_LAYER.bucket,
                 'sql-locking': 'True',
+                'sql-pool-class': 'sqlalchemy.pool.NullPool',
             }
         )
 
     def setUp(self):
+        # DB name is set by SQLDatabaseLayer
         self.config['dsn'] = self['dsn']
-        os.environ.setdefault('PGDATABASE', 'vivi_test')
         super().setUp()
 
 
@@ -142,31 +143,47 @@ SQL_CONFIG_LAYER = SQLConfigLayer()
 
 
 class SQLDatabaseLayer(plone.testing.Layer):
-    def __init__(self, zodb=False, name='SQLDatabaseLayer', module=None, bases=()):
+    def __init__(
+        self,
+        zodb=False,
+        connector=None,
+        dbname='vivi_test',
+        name='SQLDatabaseLayer',
+        module=None,
+        bases=(),
+    ):
         if module is None:
             module = inspect.stack()[1][0].f_globals['__name__']
         super().__init__(name=name, module=module, bases=bases)
         self.zodb = zodb
+        self._connector = connector
+        self.dbname = dbname
+
+    @property
+    def connector(self):
+        if self._connector is None:
+            self._connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+        return self._connector
 
     def setUp(self):
-        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
-        engine = connector.engine
+        # SQLConfigLayer sets up dsn without db name.
+        os.environ['PGDATABASE'] = self.dbname
+        engine = self.connector.engine
         try:
             self['sql_connection'] = engine.connect()
         except OperationalError:  # Create database
-            db = os.environ['PGDATABASE']
             os.environ['PGDATABASE'] = 'template1'
             c = engine.connect()
             c.connection.driver_connection.set_isolation_level(0)
-            c.execute(sql('CREATE DATABASE %s' % db))
+            c.execute(sql('CREATE DATABASE %s' % self.dbname))
             c.connection.driver_connection.set_isolation_level(1)
             c.close()
-            os.environ['PGDATABASE'] = db
+            os.environ['PGDATABASE'] = self.dbname
             self['sql_connection'] = engine.connect()
 
         # Make sqlalchemy use only this specific connection, so we can apply a
         # nested transaction in testSetUp()
-        connector.session.configure(bind=self['sql_connection'])
+        self.connector.session.configure(bind=self['sql_connection'])
 
         # Create tables
         c = self['sql_connection']
@@ -191,17 +208,16 @@ class SQLDatabaseLayer(plone.testing.Layer):
         # Begin a non-orm transaction which we roll back in testTearDown().
         self['sql_transaction'] = connection.begin()
 
-        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
         # Begin savepoint, so we can use transaction.abort() during tests.
         self['sql_nested'] = connection.begin_nested()
-        self['sql_session'] = connector.session()
+        self['sql_session'] = self.connector.session()
         sqlalchemy.event.listen(self['sql_session'], 'after_transaction_end', self.end_savepoint)
 
         if self.zodb:
             with zeit.cms.testing.site(self['zodbApp']):
-                mkdir(connector, ROOT)
+                mkdir(self.connector, ROOT)
         else:
-            mkdir(connector, ROOT)
+            mkdir(self.connector, ROOT)
         transaction.commit()
 
     def end_savepoint(self, session, transaction):
@@ -212,8 +228,7 @@ class SQLDatabaseLayer(plone.testing.Layer):
         transaction.abort()
 
         sqlalchemy.event.remove(self['sql_session'], 'after_transaction_end', self.end_savepoint)
-        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
-        connector.session.remove()
+        self.connector.session.remove()
         del self['sql_session']
 
         self['sql_transaction'].rollback()
