@@ -8,7 +8,6 @@ import itertools
 import json
 import os
 import os.path
-import pkgutil
 import time
 
 from gocept.cache.property import TransactionBoundCache
@@ -95,9 +94,6 @@ class Connector:
         if reconnect_wait is not None:
             params['reconnect_wait'] = float(reconnect_wait)
         params['support_locking'] = literal_eval(config.get('sql-locking', 'False'))
-        model = config.get('sql-model')
-        if model:
-            params['model'] = pkgutil.resolve_name(model)
         return cls(config['dsn'], config['storage-project'], config['storage-bucket'], **params)
 
     # Inspired by <https://docs.sqlalchemy.org/en/20/core/pooling.html
