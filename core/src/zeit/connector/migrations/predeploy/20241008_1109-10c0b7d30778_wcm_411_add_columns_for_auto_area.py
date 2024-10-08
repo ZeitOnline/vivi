@@ -5,6 +5,7 @@ Revises: 28355ecfa735
 Create Date: 2024-10-08 11:09:56.473460
 
 """
+
 from typing import Sequence, Union
 
 from alembic import op
@@ -27,9 +28,8 @@ def upgrade() -> None:
     op.add_column('properties', sa.Column('print_ressort', sa.Unicode(), nullable=True))
     op.add_column('properties', sa.Column('volume_year', sa.Integer(), nullable=True))
     op.add_column('properties', sa.Column('volume_number', sa.Integer(), nullable=True))
-    op.add_column(
-        'properties', sa.Column('published', sa.Boolean(), server_default='false', nullable=True)
-    )
+    op.add_column('properties', sa.Column('published', sa.Boolean(), nullable=True))
+    op.execute(sa.text('ALTER TABLE properties ALTER COLUMN published set default false'))
     op.add_column('properties', sa.Column('article_genre', sa.Unicode(), nullable=True))
 
 
