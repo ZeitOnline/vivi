@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.48.0 (2024-10-08)
+-------------------
+
+- WCM-20: Implement evaluating custom query with SQL
+
+- WCM-411: Move important search fields to columns for custom query
+
+
 6.47.0 (2024-10-08)
 -------------------
 
