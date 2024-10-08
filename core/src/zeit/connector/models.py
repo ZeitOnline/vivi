@@ -113,29 +113,47 @@ class Content(Base, CommonMetadata, Modified, PublishInfo, SemanticChange, Artic
     @declared_attr
     def __table_args__(cls):
         return (
-            cls.Index('type'),
-            cls.Index('last_updated'),
-            cls.Index(
-                'parent_path',
-                ops='varchar_pattern_ops',
-                name='parent_path_pattern',
-            ),
-            cls.Index(
-                'parent_path',
-                'name',
-                unique=True,
-                name='parent_path_name',
-            ),
-            cls.Index('unsorted', ops='jsonb_path_ops'),
-            cls.Index('channels', ops='jsonb_path_ops'),
-        ) + tuple(
-            cls.Index(getattr(cls, column).desc().nulls_last())
-            for column in [
-                'date_last_modified_semantic',
-                'date_last_published',
-                'date_last_published_semantic',
-                'date_first_released',
-            ]
+            (
+                cls.Index('type'),
+                cls.Index('last_updated'),
+                cls.Index(
+                    'parent_path',
+                    ops='varchar_pattern_ops',
+                    name='parent_path_pattern',
+                ),
+                cls.Index(
+                    'parent_path',
+                    'name',
+                    unique=True,
+                    name='parent_path_name',
+                ),
+                cls.Index('unsorted', ops='jsonb_path_ops'),
+                cls.Index('channels', ops='jsonb_path_ops'),
+            )
+            + tuple(
+                cls.Index(getattr(cls, column).desc().nulls_last())
+                for column in [
+                    'date_last_modified_semantic',
+                    'date_last_published',
+                    'date_last_published_semantic',
+                    'date_first_released',
+                ]
+            )
+            + tuple(
+                cls.Index(getattr(cls, column))
+                for column in [
+                    'access',
+                    'article_genre',
+                    'print_ressort',
+                    'product',
+                    'published',
+                    'ressort',
+                    'series',
+                    'sub_ressort',
+                    'volume_number',
+                    'volume_year',
+                ]
+            )
         )
 
     id = mapped_column(Uuid(as_uuid=False), primary_key=True)
