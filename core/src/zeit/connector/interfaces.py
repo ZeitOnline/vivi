@@ -365,3 +365,13 @@ class LockStatus(Enum):
     FOREIGN = 1
     OWN = 2
     TIMED_OUT = 3
+
+
+class IConverter(zope.interface.Interface):
+    """Converts webdav values to and from the postgresql database."""
+
+    def serialize(value):
+        pass
+
+    def deserialize(value):
+        pass

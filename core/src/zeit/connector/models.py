@@ -7,6 +7,7 @@ from sqlalchemy import (
     Boolean,
     ForeignKey,
     Index,
+    Integer,
     Unicode,
     UnicodeText,
     Uuid,
@@ -20,7 +21,6 @@ from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.connector.interfaces import INTERNAL_PROPERTY, DeleteProperty, LockStatus
 from zeit.connector.lock import lock_is_foreign
 from zeit.connector.types import TIMESTAMP, JSONBTuple
-import zeit.connector.converter
 import zeit.connector.interfaces
 
 
@@ -45,6 +45,19 @@ class CommonMetadata:
         JSONBTuple,
         info={'namespace': 'document', 'name': 'channels'},
     )
+    access = mapped_column(Unicode, info={'namespace': 'document', 'name': 'access'})
+    product = mapped_column(Unicode, info={'namespace': 'workflow', 'name': 'product-id'})
+    ressort = mapped_column(Unicode, info={'namespace': 'document', 'name': 'ressort'})
+    sub_ressort = mapped_column(Unicode, info={'namespace': 'document', 'name': 'sub_ressort'})
+    series = mapped_column(Unicode, info={'namespace': 'document', 'name': 'serie'})
+
+    print_ressort = mapped_column(Unicode, info={'namespace': 'print', 'name': 'ressort'})
+    volume_year = mapped_column(Integer, info={'namespace': 'document', 'name': 'year'})
+    volume_number = mapped_column(Integer, info={'namespace': 'document', 'name': 'number'})
+
+
+class Article:
+    article_genre = mapped_column(Unicode, info={'namespace': 'document', 'name': 'genre'})
 
 
 class SemanticChange:
@@ -86,37 +99,60 @@ class PublishInfo:
         TIMESTAMP,
         info={'namespace': 'document', 'name': 'print-publish'},
     )
+    published = mapped_column(
+        Boolean,
+        server_default='false',
+        info={'namespace': 'workflow', 'name': 'published'},
+    )
 
 
-class Content(Base, CommonMetadata, Modified, PublishInfo, SemanticChange):
+class Content(Base, CommonMetadata, Modified, PublishInfo, SemanticChange, Article):
     __tablename__ = 'properties'
 
     @declared_attr
     def __table_args__(cls):
         return (
-            cls.Index('type'),
-            cls.Index('last_updated'),
-            cls.Index(
-                'parent_path',
-                ops='varchar_pattern_ops',
-                name='parent_path_pattern',
-            ),
-            cls.Index(
-                'parent_path',
-                'name',
-                unique=True,
-                name='parent_path_name',
-            ),
-            cls.Index('unsorted', ops='jsonb_path_ops'),
-            cls.Index('channels', ops='jsonb_path_ops'),
-        ) + tuple(
-            cls.Index(getattr(cls, column).desc().nulls_last())
-            for column in [
-                'date_last_modified_semantic',
-                'date_last_published',
-                'date_last_published_semantic',
-                'date_first_released',
-            ]
+            (
+                cls.Index('type'),
+                cls.Index('last_updated'),
+                cls.Index(
+                    'parent_path',
+                    ops='varchar_pattern_ops',
+                    name='parent_path_pattern',
+                ),
+                cls.Index(
+                    'parent_path',
+                    'name',
+                    unique=True,
+                    name='parent_path_name',
+                ),
+                cls.Index('unsorted', ops='jsonb_path_ops'),
+                cls.Index('channels', ops='jsonb_path_ops'),
+            )
+            + tuple(
+                cls.Index(getattr(cls, column).desc().nulls_last())
+                for column in [
+                    'date_last_modified_semantic',
+                    'date_last_published',
+                    'date_last_published_semantic',
+                    'date_first_released',
+                ]
+            )
+            + tuple(
+                cls.Index(getattr(cls, column))
+                for column in [
+                    'access',
+                    'article_genre',
+                    'print_ressort',
+                    'product',
+                    'published',
+                    'ressort',
+                    'series',
+                    'sub_ressort',
+                    'volume_number',
+                    'volume_year',
+                ]
+            )
         )
 
     id = mapped_column(Uuid(as_uuid=False), primary_key=True)
@@ -222,7 +258,7 @@ class Content(Base, CommonMetadata, Modified, PublishInfo, SemanticChange):
                     if FEATURE_TOGGLES.find('write_metadata_columns_strict'):
                         props.pop((name, self.NS + namespace), None)
                     else:
-                        converter = zeit.connector.converter.IConverter(column)
+                        converter = zeit.connector.interfaces.IConverter(column)
                         props[name, self.NS + namespace] = converter.serialize(value)
 
         unsorted = collections.defaultdict(dict)

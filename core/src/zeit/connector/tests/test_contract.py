@@ -897,13 +897,27 @@ class ContractProperties:
 
     def test_converts_scalar_types_on_read(self):
         example_date = datetime(2010, 1, 1, 0, 0, tzinfo=pytz.UTC)
+        ressort = 'Wirtschaft'
+        volume_year = 2024
+        published = False
         self.repository.connector.changeProperties(
             'http://xml.zeit.de/testcontent',
-            {('date_created', 'http://namespaces.zeit.de/CMS/document'): example_date},
+            {
+                ('date_created', 'http://namespaces.zeit.de/CMS/document'): example_date,
+                ('ressort', 'http://namespaces.zeit.de/CMS/print'): ressort,
+                ('year', 'http://namespaces.zeit.de/CMS/document'): volume_year,
+                ('published', 'http.namespaces.zeit.de/CMS/workflow'): 'False',
+            },
         )
         self.assertEqual(
             example_date,
             zeit.cms.workflow.interfaces.IModified(self.repository['testcontent']).date_created,
+        )
+        self.assertEqual(ressort, self.repository['testcontent'].printRessort)
+        self.assertEqual(volume_year, self.repository['testcontent'].year)
+        self.assertEqual(
+            published,
+            zeit.cms.workflow.interfaces.IPublishInfo(self.repository['testcontent']).published,
         )
 
     def test_converts_scalar_types_on_write(self):

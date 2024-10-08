@@ -269,7 +269,7 @@ class Connector:
             column = Content.column_by_name(*key)
             if column is None:
                 continue
-            converter = zeit.connector.converter.IConverter(column)
+            converter = zeit.connector.interfaces.IConverter(column)
             properties[key] = converter.deserialize(value)
 
     def _guess_type(self, id):
