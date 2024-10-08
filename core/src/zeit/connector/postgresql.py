@@ -74,11 +74,9 @@ class Connector:
         self.dsn = dsn
         self.reconnect_tries = reconnect_tries
         self.reconnect_wait = reconnect_wait
-        self.engine = sqlalchemy.create_engine(dsn, future=True)
+        self.engine = sqlalchemy.create_engine(dsn)
         sqlalchemy.event.listen(self.engine, 'engine_connect', self._reconnect)
-        self.session = sqlalchemy.orm.scoped_session(
-            sqlalchemy.orm.sessionmaker(bind=self.engine, future=True)
-        )
+        self.session = sqlalchemy.orm.scoped_session(sqlalchemy.orm.sessionmaker(bind=self.engine))
         zope.sqlalchemy.register(self.session)
         EngineTracer(self.engine, enable_commenter=True)
         self.gcs_client = storage.Client(project=storage_project)
