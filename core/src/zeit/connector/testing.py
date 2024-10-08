@@ -133,8 +133,8 @@ class SQLConfigLayer(zeit.cms.testing.ProductConfigLayer):
         )
 
     def setUp(self):
+        # DB name is set by SQLDatabaseLayer
         self.config['dsn'] = self['dsn']
-        os.environ.setdefault('PGDATABASE', 'vivi_test')
         super().setUp()
 
 
@@ -142,12 +142,21 @@ SQL_CONFIG_LAYER = SQLConfigLayer()
 
 
 class SQLDatabaseLayer(plone.testing.Layer):
-    def __init__(self, zodb=False, connector=None, name='SQLDatabaseLayer', module=None, bases=()):
+    def __init__(
+        self,
+        zodb=False,
+        connector=None,
+        dbname='vivi_test',
+        name='SQLDatabaseLayer',
+        module=None,
+        bases=(),
+    ):
         if module is None:
             module = inspect.stack()[1][0].f_globals['__name__']
         super().__init__(name=name, module=module, bases=bases)
         self.zodb = zodb
         self._connector = connector
+        self.dbname = dbname
 
     @property
     def connector(self):
@@ -156,18 +165,19 @@ class SQLDatabaseLayer(plone.testing.Layer):
         return self._connector
 
     def setUp(self):
+        # SQLConfigLayer sets up dsn without db name.
+        os.environ['PGDATABASE'] = self.dbname
         engine = self.connector.engine
         try:
             self['sql_connection'] = engine.connect()
         except OperationalError:  # Create database
-            db = os.environ['PGDATABASE']
             os.environ['PGDATABASE'] = 'template1'
             c = engine.connect()
             c.connection.driver_connection.set_isolation_level(0)
-            c.execute(sql('CREATE DATABASE %s' % db))
+            c.execute(sql('CREATE DATABASE %s' % self.dbname))
             c.connection.driver_connection.set_isolation_level(1)
             c.close()
-            os.environ['PGDATABASE'] = db
+            os.environ['PGDATABASE'] = self.dbname
             self['sql_connection'] = engine.connect()
 
         # Make sqlalchemy use only this specific connection, so we can apply a
