@@ -906,7 +906,7 @@ class ContractProperties:
                 ('date_created', 'http://namespaces.zeit.de/CMS/document'): example_date,
                 ('ressort', 'http://namespaces.zeit.de/CMS/print'): ressort,
                 ('year', 'http://namespaces.zeit.de/CMS/document'): volume_year,
-                ('published', 'http.namespaces.zeit.de/CMS/workflow'): 'False',
+                ('published', 'http://namespaces.zeit.de/CMS/workflow'): published,
             },
         )
         self.assertEqual(
