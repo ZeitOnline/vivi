@@ -224,7 +224,9 @@ class Content(Base, CommonMetadata, Modified, PublishInfo, SemanticChange, Artic
         if FEATURE_TOGGLES.find('read_metadata_columns'):
             for column in self._columns_with_name():
                 namespace, name = column.info['namespace'], column.info['name']
-                props[(name, self.NS + namespace)] = getattr(self, column.name)
+                value = getattr(self, column.name)
+                if value is not None:
+                    props[(name, self.NS + namespace)] = value
 
         if self.lock:
             props[('lock_principal', INTERNAL_PROPERTY)] = self.lock.principal
@@ -253,13 +255,19 @@ class Content(Base, CommonMetadata, Modified, PublishInfo, SemanticChange, Artic
             for column in self._columns_with_name():
                 namespace, name = column.info['namespace'], column.info['name']
                 value = props.get((name, self.NS + namespace), self)
-                if value is not self:
-                    setattr(self, column.name, value)
-                    if FEATURE_TOGGLES.find('write_metadata_columns_strict'):
-                        props.pop((name, self.NS + namespace), None)
-                    else:
-                        converter = zeit.connector.interfaces.IConverter(column)
-                        props[name, self.NS + namespace] = converter.serialize(value)
+
+                if value is self:
+                    continue
+                if value is DeleteProperty:
+                    setattr(self, column.name, None)
+                    continue
+
+                setattr(self, column.name, value)
+                if FEATURE_TOGGLES.find('write_metadata_columns_strict'):
+                    props.pop((name, self.NS + namespace), None)
+                else:
+                    converter = zeit.connector.interfaces.IConverter(column)
+                    props[name, self.NS + namespace] = converter.serialize(value)
 
         unsorted = collections.defaultdict(dict)
         for (k, ns), v in props.items():

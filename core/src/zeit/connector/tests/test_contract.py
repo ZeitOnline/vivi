@@ -920,6 +920,18 @@ class ContractProperties:
             zeit.cms.workflow.interfaces.IPublishInfo(self.repository['testcontent']).published,
         )
 
+    def test_delete_property_from_column(self):
+        id = 'http://xml.zeit.de/testcontent'
+        example_date = datetime(2010, 1, 1, 0, 0, tzinfo=pytz.UTC)
+        prop = ('date_created', 'http://namespaces.zeit.de/CMS/document')
+        connector = self.repository.connector
+        connector.changeProperties(id, {prop: example_date})
+        transaction.commit()
+        connector.changeProperties(id, {prop: DeleteProperty})
+        transaction.commit()
+        res = connector[id]
+        self.assertNotIn(prop, res.properties)
+
     def test_converts_scalar_types_on_write(self):
         example_date = datetime(2010, 1, 1, 0, 0, tzinfo=pytz.UTC)
         with checked_out(self.repository['testcontent']) as co:
