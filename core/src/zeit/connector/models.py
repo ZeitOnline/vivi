@@ -253,13 +253,14 @@ class Content(Base, CommonMetadata, Modified, PublishInfo, SemanticChange, Artic
             for column in self._columns_with_name():
                 namespace, name = column.info['namespace'], column.info['name']
                 value = props.get((name, self.NS + namespace), self)
-                if value is not self:
-                    setattr(self, column.name, value)
-                    if FEATURE_TOGGLES.find('write_metadata_columns_strict'):
-                        props.pop((name, self.NS + namespace), None)
-                    else:
-                        converter = zeit.connector.interfaces.IConverter(column)
-                        props[name, self.NS + namespace] = converter.serialize(value)
+                if value is self:
+                    continue
+                setattr(self, column.name, value)
+                if FEATURE_TOGGLES.find('write_metadata_columns_strict'):
+                    props.pop((name, self.NS + namespace), None)
+                else:
+                    converter = zeit.connector.interfaces.IConverter(column)
+                    props[name, self.NS + namespace] = converter.serialize(value)
 
         unsorted = collections.defaultdict(dict)
         for (k, ns), v in props.items():
