@@ -352,8 +352,8 @@ class PropertiesColumnTest(zeit.connector.testing.SQLTest):
     layer = zeit.connector.testing.SQL_CONTENT_LAYER
 
     def test_properties_are_written_simultaneously_to_separate_column_and_unsorted(self):
-        FEATURE_TOGGLES.set('write_metadata_columns', True)
-        FEATURE_TOGGLES.set('read_metadata_columns', True)
+        FEATURE_TOGGLES.set('write_metadata_columns')
+        FEATURE_TOGGLES.set('read_metadata_columns')
         timestamp = pendulum.datetime(1980, 1, 1)
         res = self.add_resource('foo', properties={('date_created', DOCUMENT_SCHEMA_NS): timestamp})
         self.assertEqual(timestamp, res.properties[('date_created', DOCUMENT_SCHEMA_NS)])
@@ -362,7 +362,7 @@ class PropertiesColumnTest(zeit.connector.testing.SQLTest):
         self.assertEqual(timestamp, content.date_created)
 
     def test_properties_can_be_stored_in_separate_columns_and_still_read_as_dav(self):
-        FEATURE_TOGGLES.set('write_metadata_columns', True)
+        FEATURE_TOGGLES.set('write_metadata_columns')
         timestamp = pendulum.datetime(1980, 1, 1)
         res = self.add_resource('foo', properties={('date_created', DOCUMENT_SCHEMA_NS): timestamp})
         self.assertEqual(
@@ -373,8 +373,8 @@ class PropertiesColumnTest(zeit.connector.testing.SQLTest):
         self.assertEqual(timestamp, content.date_created)
 
     def test_properties_can_be_stored_in_separate_columns(self):
-        FEATURE_TOGGLES.set('write_metadata_columns_strict', True)
-        FEATURE_TOGGLES.set('read_metadata_columns', True)
+        FEATURE_TOGGLES.set('write_metadata_columns_strict')
+        FEATURE_TOGGLES.set('read_metadata_columns')
         timestamp = pendulum.datetime(1980, 1, 1)
         res = self.add_resource('foo', properties={('date_created', DOCUMENT_SCHEMA_NS): timestamp})
         self.assertEqual(timestamp, res.properties[('date_created', DOCUMENT_SCHEMA_NS)])
@@ -383,7 +383,7 @@ class PropertiesColumnTest(zeit.connector.testing.SQLTest):
         self.assertEqual(timestamp, content.date_created)
 
     def test_search_looks_in_columns_or_unsorted_depending_on_toggle(self):
-        FEATURE_TOGGLES.set('write_metadata_columns', True)
+        FEATURE_TOGGLES.set('write_metadata_columns')
 
         timestamp = pendulum.datetime(1980, 1, 1)
         res = self.add_resource('foo', properties={('date_created', DOCUMENT_SCHEMA_NS): timestamp})

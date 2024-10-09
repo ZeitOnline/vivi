@@ -9,6 +9,7 @@ import zope.schema.interfaces
 
 from zeit.cms.repository.interfaces import AfterObjectConstructedEvent
 from zeit.connector.resource import PropertyKey
+import zeit.cms.content.dav
 import zeit.cms.interfaces
 import zeit.connector.interfaces
 import zeit.content.author.author
@@ -269,6 +270,17 @@ class Int(JSONType):
         zeit.retresco.interfaces.IElasticDAVProperties,
         PropertyKey,
     )
+
+
+class DateTime(JSONType):
+    grok.adapts(
+        zope.schema.Datetime,
+        zeit.retresco.interfaces.IElasticDAVProperties,
+        PropertyKey,
+    )
+
+    def toProperty(self, value):
+        return zeit.cms.content.dav.DatetimeProperty._toProperty(value)
 
 
 @grok.implementer(zeit.cms.content.interfaces.IDAVPropertyConverter)
