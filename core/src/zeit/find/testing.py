@@ -17,7 +17,7 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
         'elasticsearch-url': 'http://tms-backend.staging.zeit.de:80/elasticsearch',
         'elasticsearch-index': 'foo_pool',
     },
-    bases=(zeit.content.image.testing.CONFIG_LAYER, zeit.content.audio.testing.CONFIG_LAYER),
+    bases=(zeit.content.audio.testing.CONFIG_LAYER,),
 )
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER,))
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))

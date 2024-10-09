@@ -1,6 +1,8 @@
 <configure
    xmlns="http://namespaces.zope.org/zope"
-   i18n_domain="zope">
+   xmlns:meta="http://namespaces.zope.org/meta"
+   i18n_domain="zope"
+   >
 
   <include package="zeit.cms" file="ftesting.zcml" />
 
@@ -8,5 +10,5 @@
   <include package="zeit.content.audio.browser" />
 
   <include package="zeit.simplecast" />
-
+  <include package="zeit.content.image" />
 </configure>

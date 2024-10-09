@@ -19,6 +19,7 @@ class AudioTypeSource(zeit.cms.content.sources.SimpleFixedValueSource):
         'podcast': _('Podcast'),
         'tts': _('Text to Speech'),
         'premium': _('Premium Audio'),
+        'custom': _('Custom Audio'),
     }
 
 
