@@ -891,8 +891,8 @@ class ContractZopeSQL(
 class ContractProperties:
     def setUp(self):
         super().setUp()
-        FEATURE_TOGGLES.set('read_metadata_columns', True)
-        FEATURE_TOGGLES.set('write_metadata_columns', True)
+        FEATURE_TOGGLES.set('read_metadata_columns')
+        FEATURE_TOGGLES.set('write_metadata_columns')
         self.repository['testcontent'] = ExampleContentType()
 
     def test_converts_scalar_types_on_read(self):

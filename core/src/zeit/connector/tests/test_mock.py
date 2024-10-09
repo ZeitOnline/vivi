@@ -75,11 +75,11 @@ class CollectionPropertyTest(zeit.connector.testing.MockTest):
 
         dav_format = 'channel1;channel2 sub1'
         regular_format = (('channel1', None), ('channel2', 'sub1'))
-        FEATURE_TOGGLES.set('write_metadata_columns', True)
+        FEATURE_TOGGLES.set('write_metadata_columns')
         res = self.add_resource(
             'foo', properties={('channels', DOCUMENT_SCHEMA_NS): regular_format}
         )
         self.assertEqual(res.properties[('channels', DOCUMENT_SCHEMA_NS)], dav_format)
-        FEATURE_TOGGLES.set('read_metadata_columns', True)
+        FEATURE_TOGGLES.set('read_metadata_columns')
         res = self.connector[res.id]
         self.assertEqual(res.properties[('channels', DOCUMENT_SCHEMA_NS)], regular_format)
