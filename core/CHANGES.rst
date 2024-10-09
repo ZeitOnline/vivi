@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.49.0 (2024-10-09)
+-------------------
+
+- WCM-433: Set column to None for DeleteProperty
+
+
 6.48.0 (2024-10-08)
 -------------------
 
