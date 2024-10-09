@@ -387,7 +387,9 @@ class Connector(zeit.connector.filesystem.Connector):
                 stored_properties.pop((name, namespace), None)
                 continue
 
-            if FEATURE_TOGGLES.find('write_metadata_columns'):
+            if FEATURE_TOGGLES.find('write_metadata_columns') or FEATURE_TOGGLES.find(
+                'write_metadata_columns_strict'
+            ):
                 column = Content.column_by_name(name, namespace)
                 converter = zeit.connector.interfaces.IConverter(column)
                 value = converter.serialize(value)
