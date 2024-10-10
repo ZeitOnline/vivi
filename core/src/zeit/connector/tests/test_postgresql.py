@@ -375,7 +375,7 @@ class PropertiesColumnTest(zeit.connector.testing.SQLTest):
         res = self.add_resource('foo', properties={('date_created', f'{NS}document'): timestamp})
         var = SearchVar('date_created', f'{NS}document')
         for toggle in [False, True]:  # XXX parametrize would be nice
-            FEATURE_TOGGLES.set('read_metadata_columns', toggle)
+            FEATURE_TOGGLES.factory.override(toggle, 'read_metadata_columns')
             if toggle:
                 self.connector._get_content(res.id).unsorted = {}
                 transaction.commit()
