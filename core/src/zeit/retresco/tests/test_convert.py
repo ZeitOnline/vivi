@@ -3,6 +3,7 @@ from unittest import mock
 import datetime
 
 import pytz
+import zope.component
 
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.content.sources import FEATURE_TOGGLES
@@ -518,8 +519,6 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
 
 class ConvertWithScalarTypesTest(zeit.retresco.testing.FunctionalTestCase):
     def test_smoke_converts_lots_of_fields(self):
-        import zope.component
-
         FEATURE_TOGGLES.set('write_metadata_columns')
         FEATURE_TOGGLES.set('read_metadata_columns')
         article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
