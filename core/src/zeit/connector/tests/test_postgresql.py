@@ -371,14 +371,13 @@ class PropertiesColumnTest(zeit.connector.testing.SQLTest):
     def test_search_looks_in_columns_or_unsorted_depending_on_toggle(self):
         FEATURE_TOGGLES.set('write_metadata_columns')
 
-        timestamp = pendulum.datetime(1980, 1, 1)
-        res = self.add_resource('foo', properties={('date_created', f'{NS}document'): timestamp})
-        var = SearchVar('date_created', f'{NS}document')
+        res = self.add_resource('foo', properties={('ressort', f'{NS}document'): 'Wissen'})
+        var = SearchVar('ressort', f'{NS}document')
         for toggle in [False, True]:  # XXX parametrize would be nice
             FEATURE_TOGGLES.factory.override(toggle, 'read_metadata_columns')
             if toggle:
                 self.connector._get_content(res.id).unsorted = {}
                 transaction.commit()
-            result = self.connector.search([var], var == '1980-01-01')
+            result = self.connector.search([var], var == 'Wissen')
             unique_id, uuid = next(result)
             self.assertEqual(res.id, unique_id)
