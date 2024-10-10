@@ -4,9 +4,10 @@ import io
 import logging
 
 from pytz import UTC
+import pendulum
 import transaction
 
-from zeit.cms.interfaces import DOCUMENT_SCHEMA_NS
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.connector.search import SearchVar as SV
 import zeit.connector.testing
 
@@ -69,17 +70,33 @@ Searching: (:and
         self.connector['http://xml.zeit.de/testing/foo'] = res
 
 
-class CollectionPropertyTest(zeit.connector.testing.MockTest):
-    def test_channels(self):
-        from zeit.cms.content.sources import FEATURE_TOGGLES
-
-        dav_format = 'channel1;channel2 sub1'
-        regular_format = (('channel1', None), ('channel2', 'sub1'))
-        FEATURE_TOGGLES.set('write_metadata_columns')
-        res = self.add_resource(
-            'foo', properties={('channels', DOCUMENT_SCHEMA_NS): regular_format}
-        )
-        self.assertEqual(res.properties[('channels', DOCUMENT_SCHEMA_NS)], dav_format)
-        FEATURE_TOGGLES.set('read_metadata_columns')
-        res = self.connector[res.id]
-        self.assertEqual(res.properties[('channels', DOCUMENT_SCHEMA_NS)], regular_format)
+class MockTypeConversionTest(zeit.connector.testing.MockTest):
+    def test_converts_sql_properties_on_read(self):
+        params = [
+            [
+                ('workflow', 'published'),
+                True,
+                'yes',
+            ],
+            [
+                ('document', 'date_created'),
+                pendulum.datetime(1970, 1, 1),
+                '1970-01-01T00:00:00+00:00',
+            ],
+            [
+                ('document', 'channels'),
+                (
+                    ('International', 'Nahost'),
+                    ('Wissen', None),
+                ),
+                'International Nahost;Wissen',
+            ],
+        ]
+        for prop, val_py, val_str in params:
+            prop = (prop[1], f'http://namespaces.zeit.de/CMS/{prop[0]}')
+            FEATURE_TOGGLES.unset('read_metadata_columns')
+            res = self.add_resource('foo', properties={prop: val_str})
+            self.assertEqual(res.properties[prop], val_str)
+            FEATURE_TOGGLES.set('read_metadata_columns')
+            res = self.connector[res.id]
+            self.assertEqual(res.properties[prop], val_py)
