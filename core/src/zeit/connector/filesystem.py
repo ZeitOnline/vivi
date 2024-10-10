@@ -266,11 +266,14 @@ class Connector:
         if not FEATURE_TOGGLES.find('read_metadata_columns'):
             return
         for key, value in properties.items():
-            column = Content.column_by_name(*key)
-            if column is None:
-                continue
-            converter = zeit.connector.interfaces.IConverter(column)
-            properties[key] = converter.deserialize(value)
+            properties[key] = self._convert_sql(key, value)
+
+    def _convert_sql(self, key, value):
+        column = Content.column_by_name(*key)
+        if column is None:
+            return value
+        converter = zeit.connector.interfaces.IConverter(column)
+        return converter.deserialize(value)
 
     def _guess_type(self, id):
         path = self._path(id)
