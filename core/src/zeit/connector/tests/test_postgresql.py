@@ -11,7 +11,6 @@ import pytz
 import transaction
 
 from zeit.cms.content.sources import FEATURE_TOGGLES
-from zeit.cms.interfaces import DOCUMENT_SCHEMA_NS
 from zeit.cms.repository.interfaces import ConflictError
 from zeit.connector.interfaces import INTERNAL_PROPERTY
 from zeit.connector.models import Lock
@@ -21,18 +20,18 @@ from zeit.connector.search import SearchVar
 import zeit.connector.testing
 
 
+NS = 'http://namespaces.zeit.de/CMS/'
+
+
 class SQLConnectorTest(zeit.connector.testing.SQLTest):
     def test_serializes_properties_as_json(self):
         res = self.get_resource(
             'foo',
             b'mybody',
             {
-                (
-                    'uuid',
-                    'http://namespaces.zeit.de/CMS/document',
-                ): '{urn:uuid:deadbeaf-c5aa-4232-837a-ae6701270436}',
-                ('foo', 'http://namespaces.zeit.de/CMS/one'): 'foo',
-                ('bar', 'http://namespaces.zeit.de/CMS/two'): 'bar',
+                ('uuid', f'{NS}document'): '{urn:uuid:deadbeaf-c5aa-4232-837a-ae6701270436}',
+                ('foo', f'{NS}one'): 'foo',
+                ('bar', f'{NS}two'): 'bar',
             },
         )
         self.connector.add(res)
@@ -69,27 +68,17 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
         self.assertEqual(b'', res.data.read())
 
     def test_injects_uuid_and_type_into_dav_properties(self):
-        res = self.get_resource(
-            'foo',
-            b'mybody',
-            {
-                ('foo', 'http://namespaces.zeit.de/CMS/testing'): 'foo',
-            },
-        )
+        res = self.get_resource('foo', b'mybody', {('foo', f'{NS}testing'): 'foo'})
         self.connector.add(res)
         props = self.connector._get_content(res.id)
         davprops = props.to_webdav()
-        self.assertEqual(
-            '{urn:uuid:%s}' % props.id, davprops[('uuid', 'http://namespaces.zeit.de/CMS/document')]
-        )
-        self.assertEqual('testing', davprops[('type', 'http://namespaces.zeit.de/CMS/meta')])
+        self.assertEqual('{urn:uuid:%s}' % props.id, davprops[('uuid', f'{NS}document')])
+        self.assertEqual('testing', davprops[('type', f'{NS}meta')])
 
     def test_updates_type_from_dav_property(self):
         res = self.get_resource('foo')
         self.connector.add(res)
-        self.connector.changeProperties(
-            res.id, {('type', 'http://namespaces.zeit.de/CMS/meta'): 'changed'}
-        )
+        self.connector.changeProperties(res.id, {('type', f'{NS}meta'): 'changed'})
         res = self.connector[res.id]
         self.assertEqual('changed', res.type)
 
@@ -148,7 +137,7 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
         res = self.get_resource('foo', b'mybody')
         self.connector.add(res)
         props = self.connector._get_content(res.id)
-        UUID = SearchVar('uuid', 'http://namespaces.zeit.de/CMS/document')
+        UUID = SearchVar('uuid', f'{NS}document')
         result = self.connector.search([UUID], UUID == props.id)
         unique_id, uuid = next(result)
         self.assertEqual(res.id, unique_id)
@@ -204,13 +193,13 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
             'foo',
             b'mybody',
             {
-                ('foo', 'http://namespaces.zeit.de/CMS/testing'): 'foo',
+                ('foo', f'{NS}testing'): 'foo',
             },
         )
         self.connector.add(res)
         props = self.connector._get_content(res.id)
-        UUID = SearchVar('uuid', 'http://namespaces.zeit.de/CMS/document')
-        FOO = SearchVar('foo', 'http://namespaces.zeit.de/CMS/testing')
+        UUID = SearchVar('uuid', f'{NS}document')
+        FOO = SearchVar('foo', f'{NS}testing')
         result = self.connector.search([UUID, FOO], FOO == 'foo')
         unique_id, uuid, foo = next(result)
         self.assertEqual(res.id, unique_id)
@@ -315,7 +304,6 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
 
 
 class ContractChecksum(zeit.connector.testing.SQLTest):
-    NS = 'http://namespaces.zeit.de/CMS/testing'
     CHECK_PROPERTY = ('body_checksum', INTERNAL_PROPERTY)
 
     def test_setitem_generates_checksum(self):
@@ -355,8 +343,8 @@ class PropertiesColumnTest(zeit.connector.testing.SQLTest):
         FEATURE_TOGGLES.set('write_metadata_columns')
         FEATURE_TOGGLES.set('read_metadata_columns')
         timestamp = pendulum.datetime(1980, 1, 1)
-        res = self.add_resource('foo', properties={('date_created', DOCUMENT_SCHEMA_NS): timestamp})
-        self.assertEqual(timestamp, res.properties[('date_created', DOCUMENT_SCHEMA_NS)])
+        res = self.add_resource('foo', properties={('date_created', f'{NS}document'): timestamp})
+        self.assertEqual(timestamp, res.properties[('date_created', f'{NS}document')])
         content = self.connector._get_content(res.id)
         self.assertEqual({'document': {'date_created': timestamp.isoformat()}}, content.unsorted)
         self.assertEqual(timestamp, content.date_created)
@@ -364,20 +352,30 @@ class PropertiesColumnTest(zeit.connector.testing.SQLTest):
     def test_properties_can_be_stored_in_separate_columns_and_still_read_as_dav(self):
         FEATURE_TOGGLES.set('write_metadata_columns')
         timestamp = pendulum.datetime(1980, 1, 1)
-        res = self.add_resource('foo', properties={('date_created', DOCUMENT_SCHEMA_NS): timestamp})
-        self.assertEqual(
-            timestamp.isoformat(), res.properties[('date_created', DOCUMENT_SCHEMA_NS)]
+        isoformat = timestamp.isoformat()
+        res = self.add_resource(
+            'foo',
+            properties={
+                ('date_created', f'{NS}document'): isoformat,
+                ('date_last_checkout', f'{NS}document'): timestamp,
+            },
         )
+        self.assertEqual(isoformat, res.properties[('date_created', f'{NS}document')])
+        self.assertEqual(isoformat, res.properties[('date_last_checkout', f'{NS}document')])
         content = self.connector._get_content(res.id)
-        self.assertEqual({'document': {'date_created': timestamp.isoformat()}}, content.unsorted)
+        self.assertEqual(
+            {'document': {'date_created': isoformat, 'date_last_checkout': isoformat}},
+            content.unsorted,
+        )
         self.assertEqual(timestamp, content.date_created)
+        self.assertEqual(timestamp, content.date_last_checkout)
 
     def test_properties_can_be_stored_in_separate_columns(self):
         FEATURE_TOGGLES.set('write_metadata_columns_strict')
         FEATURE_TOGGLES.set('read_metadata_columns')
         timestamp = pendulum.datetime(1980, 1, 1)
-        res = self.add_resource('foo', properties={('date_created', DOCUMENT_SCHEMA_NS): timestamp})
-        self.assertEqual(timestamp, res.properties[('date_created', DOCUMENT_SCHEMA_NS)])
+        res = self.add_resource('foo', properties={('date_created', f'{NS}document'): timestamp})
+        self.assertEqual(timestamp, res.properties[('date_created', f'{NS}document')])
         content = self.connector._get_content(res.id)
         self.assertEqual({}, content.unsorted)
         self.assertEqual(timestamp, content.date_created)
@@ -385,14 +383,13 @@ class PropertiesColumnTest(zeit.connector.testing.SQLTest):
     def test_search_looks_in_columns_or_unsorted_depending_on_toggle(self):
         FEATURE_TOGGLES.set('write_metadata_columns')
 
-        timestamp = pendulum.datetime(1980, 1, 1)
-        res = self.add_resource('foo', properties={('date_created', DOCUMENT_SCHEMA_NS): timestamp})
-        var = SearchVar('date_created', 'http://namespaces.zeit.de/CMS/document')
+        res = self.add_resource('foo', properties={('ressort', f'{NS}document'): 'Wissen'})
+        var = SearchVar('ressort', f'{NS}document')
         for toggle in [False, True]:  # XXX parametrize would be nice
-            FEATURE_TOGGLES.set('read_metadata_columns', toggle)
+            FEATURE_TOGGLES.factory.override(toggle, 'read_metadata_columns')
             if toggle:
                 self.connector._get_content(res.id).unsorted = {}
                 transaction.commit()
-            result = self.connector.search([var], var == '1980-01-01')
+            result = self.connector.search([var], var == 'Wissen')
             unique_id, uuid = next(result)
             self.assertEqual(res.id, unique_id)

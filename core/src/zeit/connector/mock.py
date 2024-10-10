@@ -374,6 +374,14 @@ class Connector(zeit.connector.filesystem.Connector):
             self._convert_sql_types(properties)
         return properties
 
+    def _convert_sql(self, key, value):
+        if (
+            FEATURE_TOGGLES.find('write_metadata_columns')
+            or FEATURE_TOGGLES.find('write_metadata_columns_strict')
+        ) and not isinstance(value, str):
+            return value
+        return super()._convert_sql(key, value)
+
     def _set_properties(self, id, properties):
         stored_properties = self._get_properties(id)
         for (name, namespace), value in properties.items():

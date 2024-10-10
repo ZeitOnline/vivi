@@ -6,7 +6,6 @@ exist.
 See ADR 009
 """
 from collections.abc import Iterable
-from datetime import datetime
 
 import grokcore.component as grok
 import sqlalchemy
@@ -40,9 +39,7 @@ class BoolConverter(DefaultConverter):
     def serialize(self, value):
         return zeit.cms.content.dav.BoolProperty._toProperty(value)
 
-    def deserialize(self, value: str | bool) -> bool:
-        if isinstance(value, bool):
-            return value
+    def deserialize(self, value):
         return zeit.cms.content.dav.BoolProperty._fromProperty(value)
 
 
@@ -52,7 +49,7 @@ class IntConverter(DefaultConverter):
     def serialize(self, value):
         return str(value)
 
-    def deserialize(self, value: str | int) -> int:
+    def deserialize(self, value):
         return int(value)
 
 
@@ -62,9 +59,7 @@ class DatetimeConverter(DefaultConverter):
     def serialize(self, value):
         return zeit.cms.content.dav.DatetimeProperty._toProperty(value)
 
-    def deserialize(self, value: str | datetime) -> datetime:
-        if isinstance(value, datetime):
-            return value
+    def deserialize(self, value):
         return zeit.cms.content.dav.DatetimeProperty._fromProperty(value)
 
 
@@ -78,9 +73,7 @@ class ChannelsConverter(DefaultConverter):
             return None
         return ';'.join(' '.join(x for x in item if x) for item in value)
 
-    def deserialize(self, value: str | tuple) -> tuple:
-        if isinstance(value, tuple):
-            return value
+    def deserialize(self, value: str) -> tuple:
         result = []
         for channel in value.split(';'):
             subchannels = channel.split()
