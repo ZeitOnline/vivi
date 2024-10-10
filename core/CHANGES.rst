@@ -3,6 +3,16 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.50.0 (2024-10-10)
+-------------------
+
+- WCM-401: add new audio object type 'custom'
+
+- WCM-434: convert native types in retresco
+
+- WCM-448: Make type conversion work when only write toggle is active, but not read
+
+
 6.49.0 (2024-10-09)
 -------------------
 
