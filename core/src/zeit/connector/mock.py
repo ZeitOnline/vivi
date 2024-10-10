@@ -15,7 +15,6 @@ import sqlalchemy
 import zope.event
 
 from zeit.cms.content.sources import FEATURE_TOGGLES
-from zeit.connector.converter import DefaultConverter
 from zeit.connector.interfaces import (
     ID_NAMESPACE,
     UUID_PROPERTY,
@@ -30,7 +29,6 @@ from zeit.connector.models import Content
 import zeit.cms.config
 import zeit.cms.repository.interfaces
 import zeit.connector.cache
-import zeit.connector.converter
 import zeit.connector.filesystem
 import zeit.connector.interfaces
 
@@ -395,15 +393,10 @@ class Connector(zeit.connector.filesystem.Connector):
                 stored_properties.pop((name, namespace), None)
                 continue
 
-            if FEATURE_TOGGLES.find('write_metadata_columns') or FEATURE_TOGGLES.find(
-                'write_metadata_columns_strict'
-            ):
-                column = Content.column_by_name(name, namespace)
-                converter = zeit.connector.interfaces.IConverter(column)
-                value = converter.serialize(value)
-            else:
-                converter = DefaultConverter(None)
-            if isinstance(converter, DefaultConverter) and not isinstance(value, str):
+            if not (
+                FEATURE_TOGGLES.find('write_metadata_columns')
+                or FEATURE_TOGGLES.find('write_metadata_columns_strict')
+            ) and not isinstance(value, str):
                 raise ValueError('Expected str, got %s: %r' % (type(value), value))
             stored_properties[(name, namespace)] = value
         self._properties[id] = stored_properties
