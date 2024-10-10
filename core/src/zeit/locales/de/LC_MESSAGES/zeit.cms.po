@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Wed Oct  2 14:31:05 2024\n"
+"POT-Creation-Date: Thu Oct 10 10:32:40 2024\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -239,7 +239,7 @@ msgstr "Autor"
 #: zeit/content/article/edit/interfaces.py:449
 #: zeit/content/article/edit/interfaces.py:597
 #: zeit/content/article/interfaces.py:191
-#: zeit/content/article/interfaces.py:231 zeit/content/audio/interfaces.py:35
+#: zeit/content/article/interfaces.py:231 zeit/content/audio/interfaces.py:36
 #: zeit/content/author/interfaces.py:36 zeit/content/cp/interfaces.py:188
 #: zeit/content/cp/interfaces.py:275 zeit/content/cp/interfaces.py:401
 #: zeit/content/cp/interfaces.py:450 zeit/content/gallery/interfaces.py:91
@@ -530,7 +530,7 @@ msgstr ""
 #: zeit/cms/content/browser/form.py:13
 #: zeit/content/advertisement/browser/form.py:26
 #: zeit/content/animation/browser/form.py:34
-#: zeit/content/audio/browser/form.py:86 zeit/content/cp/browser/form.py:76
+#: zeit/content/audio/browser/form.py:96 zeit/content/cp/browser/form.py:76
 #: zeit/content/markup/browser/form.py:29
 #: zeit/content/video/browser/video.py:57
 msgid "Navigation"
@@ -861,7 +861,7 @@ msgstr "Memo"
 
 #: zeit/cms/content/interfaces.py:504
 #: zeit/content/audio/browser/object-details-body.pt:10
-#: zeit/content/audio/interfaces.py:39
+#: zeit/content/audio/interfaces.py:40
 #: zeit/content/image/browser/image_view.pt:6
 #: zeit/content/volume/browser/toc_listing.py:61
 msgid "Type"
@@ -1513,7 +1513,7 @@ msgstr "Farbe Button"
 #: zeit/content/article/edit/image.py:85
 #: zeit/content/article/edit/interfaces.py:199
 #: zeit/content/article/interfaces.py:68 zeit/content/cp/interfaces.py:126
-#: zeit/content/cp/interfaces.py:284 zeit/content/cp/interfaces.py:634
+#: zeit/content/cp/interfaces.py:284 zeit/content/cp/interfaces.py:626
 #: zeit/content/image/browser/configure.zcml:262
 #: zeit/content/image/browser/imagegroup.py:222 zeit/content/image/image.py:126
 #: zeit/content/portraitbox/interfaces.py:16
@@ -1524,7 +1524,7 @@ msgstr "Bild"
 #: zeit/content/advertisement/interfaces.py:34
 #: zeit/content/article/edit/interfaces.py:200
 #: zeit/content/article/interfaces.py:69 zeit/content/cp/interfaces.py:285
-#: zeit/content/cp/interfaces.py:635 zeit/content/image/interfaces.py:386
+#: zeit/content/cp/interfaces.py:627 zeit/content/image/interfaces.py:386
 #: zeit/push/interfaces.py:222
 msgid "Drag an image group here"
 msgstr "Ziehen Sie Bilder hierher, um sie zu verknüpfen"
@@ -1576,8 +1576,8 @@ msgstr "Artikel"
 
 #: zeit/content/animation/browser/form.py:22
 #: zeit/content/article/edit/browser/form.py:306
-#: zeit/content/link/browser/form.py:33 zeit/content/volume/browser/form.py:85
-#: zeit/content/volume/interfaces.py:52
+#: zeit/content/audio/browser/form.py:89 zeit/content/link/browser/form.py:33
+#: zeit/content/volume/browser/form.py:85 zeit/content/volume/interfaces.py:52
 #: zeit/wysiwyg/browser/resources/pagebreak/dialog.pt:14
 msgid "Teaser"
 msgstr "Teaser"
@@ -1667,9 +1667,9 @@ msgid "Adplace block"
 msgstr "Ad-Place"
 
 #: zeit/content/article/edit/audio.py:22
-#: zeit/content/article/edit/browser/form.py:472 zeit/content/audio/audio.py:71
+#: zeit/content/article/edit/browser/form.py:472 zeit/content/audio/audio.py:72
 #: zeit/content/audio/browser/configure.zcml:6
-#: zeit/content/audio/browser/form.py:17
+#: zeit/content/audio/browser/form.py:18
 msgid "Audio"
 msgstr "Audio"
 
@@ -2080,7 +2080,7 @@ msgstr "Zitatgeber"
 
 #: zeit/content/article/edit/interfaces.py:385
 #: zeit/content/article/edit/interfaces.py:395
-#: zeit/content/audio/interfaces.py:37 zeit/content/video/interfaces.py:64
+#: zeit/content/audio/interfaces.py:38 zeit/content/video/interfaces.py:64
 #: zeit/wysiwyg/browser/resources/citation/dialog.pt:23
 #: zeit/wysiwyg/browser/resources/reference/gallery.pt:17
 #: zeit/wysiwyg/browser/resources/reference/infobox.pt:17
@@ -2109,12 +2109,12 @@ msgid "Show liveblog in teaser"
 msgstr "Timeline am Teaser anzeigen"
 
 #: zeit/content/article/edit/interfaces.py:427
-#: zeit/content/cp/interfaces.py:680
+#: zeit/content/cp/interfaces.py:672
 msgid "Cardstack id"
 msgstr "ID"
 
 #: zeit/content/article/edit/interfaces.py:428
-#: zeit/content/cp/interfaces.py:682
+#: zeit/content/cp/interfaces.py:674
 msgid "Advertorial?"
 msgstr "Advertorial?"
 
@@ -2355,7 +2355,7 @@ msgstr "Preis in €"
 msgid "Breaking news article"
 msgstr "Eilmeldungsartikel"
 
-#: zeit/content/article/interfaces.py:259 zeit/content/audio/interfaces.py:161
+#: zeit/content/article/interfaces.py:259 zeit/content/audio/interfaces.py:162
 msgid "Speechbert Checksum"
 msgstr "TTS Checksumme"
 
@@ -2391,40 +2391,40 @@ msgstr "Es konnte keine zugehörige Podcastfolge gefunden werden."
 msgid "Update audio from simplecast"
 msgstr "Audio von Simplecast aktualisieren"
 
-#: zeit/content/audio/browser/form.py:55
+#: zeit/content/audio/browser/form.py:59
 msgid "Podcast Episode Info"
 msgstr "Podcastfolge"
 
-#: zeit/content/audio/browser/form.py:61
+#: zeit/content/audio/browser/form.py:65
 msgid "Podcast Host"
 msgstr "Podcast Host"
 
-#: zeit/content/audio/browser/form.py:67
+#: zeit/content/audio/browser/form.py:71
 msgid "Podcast audio file"
 msgstr "Podcast Audiodatei"
 
-#: zeit/content/audio/browser/form.py:73
+#: zeit/content/audio/browser/form.py:77
 msgid "TTS Info"
 msgstr "Text to Speech Info"
 
-#: zeit/content/audio/browser/form.py:79
+#: zeit/content/audio/browser/form.py:83
 msgid "TTS audio file"
 msgstr "Text to Speech Audiodatei"
 
-#: zeit/content/audio/browser/form.py:107
+#: zeit/content/audio/browser/form.py:122
 msgid "Add audio"
 msgstr "Audio hinzufügen"
 
-#: zeit/content/audio/browser/form.py:112
+#: zeit/content/audio/browser/form.py:127
 msgid "Edit audio"
 msgstr "Audio bearbeiten"
 
-#: zeit/content/audio/browser/form.py:117
+#: zeit/content/audio/browser/form.py:132
 msgid "View audio"
 msgstr "Audio anzeigen"
 
 #: zeit/content/audio/browser/object-details-body.pt:6
-#: zeit/content/audio/interfaces.py:38
+#: zeit/content/audio/interfaces.py:39
 msgid "Duration"
 msgstr "Laufzeit"
 
@@ -2448,55 +2448,59 @@ msgstr "Text to Speech"
 msgid "Premium Audio"
 msgstr "Premium Audio"
 
-#: zeit/content/audio/interfaces.py:36
+#: zeit/content/audio/interfaces.py:22
+msgid "Custom Audio"
+msgstr "Benutzerdefiniertes Audio"
+
+#: zeit/content/audio/interfaces.py:37
 msgid "External Id"
 msgstr "Externe ID"
 
-#: zeit/content/audio/interfaces.py:48
+#: zeit/content/audio/interfaces.py:49
 msgid "show art"
 msgstr "Show art"
 
-#: zeit/content/audio/interfaces.py:50
+#: zeit/content/audio/interfaces.py:51
 msgid "feed"
 msgstr "RSS (Web-Feed)"
 
-#: zeit/content/audio/interfaces.py:124
+#: zeit/content/audio/interfaces.py:125
 msgid "Podcast Serie"
 msgstr "Podcast"
 
-#: zeit/content/audio/interfaces.py:126
+#: zeit/content/audio/interfaces.py:127
 msgid "External Podcast Id"
 msgstr "Externe Podcast ID"
 
-#: zeit/content/audio/interfaces.py:127
+#: zeit/content/audio/interfaces.py:128
 msgid "Episode No"
 msgstr "Nummer der Folge"
 
-#: zeit/content/audio/interfaces.py:128
+#: zeit/content/audio/interfaces.py:129
 msgid "URL ad-free"
 msgstr "Ad-free URL"
 
-#: zeit/content/audio/interfaces.py:129
+#: zeit/content/audio/interfaces.py:130
 msgid "Episode Summary"
 msgstr "Zusammenfassung der Folge"
 
-#: zeit/content/audio/interfaces.py:130
+#: zeit/content/audio/interfaces.py:131
 msgid "Episode Notes"
 msgstr "Beschreibung der Folge"
 
-#: zeit/content/audio/interfaces.py:131
+#: zeit/content/audio/interfaces.py:132
 msgid "Is Published"
 msgstr "Veröffentlicht"
 
-#: zeit/content/audio/interfaces.py:132
+#: zeit/content/audio/interfaces.py:133
 msgid "Dashboard Link"
 msgstr "Dashboard Link"
 
-#: zeit/content/audio/interfaces.py:142
+#: zeit/content/audio/interfaces.py:143
 msgid "AudioReferences"
 msgstr "Audioreferenzen"
 
-#: zeit/content/audio/interfaces.py:159
+#: zeit/content/audio/interfaces.py:160
 msgid "Preview URL"
 msgstr "Vorschau URL"
 
@@ -3184,51 +3188,51 @@ msgstr "Kein oder leers Attribut »cp:__name__«."
 msgid "CP Extra Id"
 msgstr "CPExtra"
 
-#: zeit/content/cp/interfaces.py:639
+#: zeit/content/cp/interfaces.py:631
 msgid "Animate"
 msgstr "Animieren"
 
-#: zeit/content/cp/interfaces.py:644
+#: zeit/content/cp/interfaces.py:636
 msgid "left"
 msgstr "links"
 
-#: zeit/content/cp/interfaces.py:645
+#: zeit/content/cp/interfaces.py:637
 msgid "center"
 msgstr "mittig"
 
-#: zeit/content/cp/interfaces.py:646
+#: zeit/content/cp/interfaces.py:638
 msgid "right"
 msgstr "rechts"
 
-#: zeit/content/cp/interfaces.py:651 zeit/content/infobox/interfaces.py:19
+#: zeit/content/cp/interfaces.py:643 zeit/content/infobox/interfaces.py:19
 msgid "Contents"
 msgstr "Inhalt"
 
-#: zeit/content/cp/interfaces.py:651 zeit/content/modules/interfaces.py:136
+#: zeit/content/cp/interfaces.py:643 zeit/content/modules/interfaces.py:136
 msgid "Use Markdown"
 msgstr "verwendet Markdown"
 
-#: zeit/content/cp/interfaces.py:654
+#: zeit/content/cp/interfaces.py:646
 msgid "Alignment"
 msgstr "Ausrichtung"
 
-#: zeit/content/cp/interfaces.py:655
+#: zeit/content/cp/interfaces.py:647
 msgid "Choose alignment"
 msgstr "Ausrichtung wählen"
 
-#: zeit/content/cp/interfaces.py:685
+#: zeit/content/cp/interfaces.py:677
 msgid "Background color"
 msgstr "Hintergrundfarbe"
 
-#: zeit/content/cp/interfaces.py:686
+#: zeit/content/cp/interfaces.py:678
 msgid "Choose a background color"
 msgstr "Hintergrundfarbe auswählen"
 
-#: zeit/content/cp/interfaces.py:697 zeit/content/modules/interfaces.py:72
+#: zeit/content/cp/interfaces.py:689 zeit/content/modules/interfaces.py:72
 msgid "Jobbox Ticker"
 msgstr "Jobbox Ticker"
 
-#: zeit/content/cp/interfaces.py:715
+#: zeit/content/cp/interfaces.py:707
 msgid "Enable RSS Tracking-Parameter"
 msgstr "RSS Tracking-Parameter aktivieren"
 
@@ -4309,7 +4313,7 @@ msgstr "Alter (in Tagen)"
 
 #: zeit/contentquery/interfaces.py:305
 msgid "SQL query"
-msgstr ""
+msgstr "SQL-Abfrage"
 
 #: zeit/edit/browser/block.py:66
 msgid "Unknown block"
