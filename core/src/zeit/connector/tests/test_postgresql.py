@@ -352,11 +352,23 @@ class PropertiesColumnTest(zeit.connector.testing.SQLTest):
     def test_properties_can_be_stored_in_separate_columns_and_still_read_as_dav(self):
         FEATURE_TOGGLES.set('write_metadata_columns')
         timestamp = pendulum.datetime(1980, 1, 1)
-        res = self.add_resource('foo', properties={('date_created', f'{NS}document'): timestamp})
-        self.assertEqual(timestamp.isoformat(), res.properties[('date_created', f'{NS}document')])
+        isoformat = timestamp.isoformat()
+        res = self.add_resource(
+            'foo',
+            properties={
+                ('date_created', f'{NS}document'): isoformat,
+                ('date_last_checkout', f'{NS}document'): timestamp,
+            },
+        )
+        self.assertEqual(isoformat, res.properties[('date_created', f'{NS}document')])
+        self.assertEqual(isoformat, res.properties[('date_last_checkout', f'{NS}document')])
         content = self.connector._get_content(res.id)
-        self.assertEqual({'document': {'date_created': timestamp.isoformat()}}, content.unsorted)
+        self.assertEqual(
+            {'document': {'date_created': isoformat, 'date_last_checkout': isoformat}},
+            content.unsorted,
+        )
         self.assertEqual(timestamp, content.date_created)
+        self.assertEqual(timestamp, content.date_last_checkout)
 
     def test_properties_can_be_stored_in_separate_columns(self):
         FEATURE_TOGGLES.set('write_metadata_columns_strict')

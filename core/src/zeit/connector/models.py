@@ -262,11 +262,22 @@ class Content(Base, CommonMetadata, Modified, PublishInfo, SemanticChange, Artic
                     setattr(self, column.name, None)
                     continue
 
+                converter = zeit.connector.interfaces.IConverter(column)
+                # Need to support mixed properties (str/typed) for these cases:
+                # - toggle write, but no toggle read: properties read from
+                #   connector are still str, properties written by content layer
+                #   are already typed
+                # - existing workingcopies may still have str properties
+                # - existing cache entries may still have str properties
+                # Thus, we also need to keep a sufficient grace period after
+                # toggle read is enabled before removing the toggles from the code.
+                if isinstance(value, str):
+                    value = converter.deserialize(value)
+
                 setattr(self, column.name, value)
                 if FEATURE_TOGGLES.find('write_metadata_columns_strict'):
                     props.pop((name, self.NS + namespace), None)
                 else:
-                    converter = zeit.connector.interfaces.IConverter(column)
                     props[name, self.NS + namespace] = converter.serialize(value)
 
         unsorted = collections.defaultdict(dict)
