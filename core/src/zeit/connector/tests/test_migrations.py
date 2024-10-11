@@ -131,7 +131,11 @@ class MigrationsLint(unittest.TestCase):
 
         squawk = os.environ['SQUAWK_COMMAND']
         proc = subprocess.Popen(
-            [squawk, '--exclude=ban-drop-table,prefer-bigint-over-int,prefer-big-int'],
+            [
+                squawk,
+                '--pg-version=14',
+                '--exclude=ban-drop-table,prefer-bigint-over-int,prefer-big-int',
+            ],
             stdout=PIPE,
             stderr=PIPE,
             stdin=PIPE,
