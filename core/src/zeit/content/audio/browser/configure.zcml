@@ -96,6 +96,7 @@
     for="zeit.content.audio.interfaces.IAudio"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="publish.html"
+    class="zeit.workflow.browser.publish.Publish"
     template="publish.pt"
     permission="zeit.content.audio.Publish"
     />
