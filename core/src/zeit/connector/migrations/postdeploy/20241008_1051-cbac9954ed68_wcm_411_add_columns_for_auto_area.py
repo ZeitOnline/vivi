@@ -5,6 +5,7 @@ Revises: a4c1b7f678d9
 Create Date: 2024-10-08 10:51:56.065240
 
 """
+
 from typing import Sequence, Union
 
 from alembic import op
@@ -33,6 +34,8 @@ COLUMNS = [
 
 
 def upgrade() -> None:
+    op.alter_column('properties', 'published', nullable=False)
+
     with op.get_context().autocommit_block():
         for column in COLUMNS:
             op.create_index(

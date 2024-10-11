@@ -102,6 +102,7 @@ class PublishInfo:
     published = mapped_column(
         Boolean,
         server_default='false',
+        nullable=False,
         info={'namespace': 'workflow', 'name': 'published'},
     )
 
