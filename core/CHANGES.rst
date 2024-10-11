@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.51.0 (2024-10-11)
+-------------------
+
+- FIX: manual audio publish was not working
+
+- WCM-411: Set published column not nullable
+
+
 6.50.0 (2024-10-10)
 -------------------
 
