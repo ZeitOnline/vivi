@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.52.0 (2024-10-11)
+-------------------
+
+- WCM-452: Handle empty channels in type conversion
+
+
 6.51.0 (2024-10-11)
 -------------------
 
