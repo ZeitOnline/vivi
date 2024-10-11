@@ -5,6 +5,7 @@ exist.
 
 See ADR 009
 """
+
 from collections.abc import Iterable
 
 import grokcore.component as grok
@@ -74,6 +75,8 @@ class ChannelsConverter(DefaultConverter):
         return ';'.join(' '.join(x for x in item if x) for item in value)
 
     def deserialize(self, value: str) -> tuple:
+        if not value:
+            return ()
         result = []
         for channel in value.split(';'):
             subchannels = channel.split()

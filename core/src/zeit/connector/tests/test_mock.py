@@ -91,6 +91,11 @@ class MockTypeConversionTest(zeit.connector.testing.MockTest):
                 ),
                 'International Nahost;Wissen',
             ],
+            [
+                ('document', 'channels'),
+                (),
+                '',
+            ],
         ]
         for prop, val_py, val_str in params:
             prop = (prop[1], f'http://namespaces.zeit.de/CMS/{prop[0]}')
