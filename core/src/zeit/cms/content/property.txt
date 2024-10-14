@@ -309,27 +309,27 @@ The `SimpleMultiProperty` is used for lists of simple values.
 
 
 >>> class Content:
-...     authors = zeit.cms.content.property.SimpleMultiProperty(
-...         '.authors.author')
+...     simpleproperty = zeit.cms.content.property.SimpleMultiProperty(
+...         '.simpleproperty.node')
 ...     def __init__(self):
 ...         self.xml = lxml.etree.fromstring('<foo><head/></foo>')
 >>> content = Content()
 
-Set authors:
+Set simpleproperty:
 
->>> content.authors = ('Hans', 'Klaus', 'Siegfried')
+>>> content.simpleproperty = ('Hans', 'Klaus', 'Siegfried')
 >>> print(zeit.cms.testing.xmltotext(content.xml))
 <foo>
   <head/>
-  <authors>
-    <author>Hans</author>
-    <author>Klaus</author>
-    <author>Siegfried</author>
-  </authors>
+  <simpleproperty>
+    <node>Hans</node>
+    <node>Klaus</node>
+    <node>Siegfried</node>
+  </simpleproperty>
 </foo>
 
 
->>> content.authors
+>>> content.simpleproperty
 ('Hans', 'Klaus', 'Siegfried')
 
 
