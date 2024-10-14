@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Thu Oct 10 10:32:40 2024\n"
+"POT-Creation-Date: Mon Oct 14 15:12:00 2024\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -232,7 +232,7 @@ msgid "Author"
 msgstr "Autor"
 
 #: zeit/cms/browser/listing.py:262 zeit/cms/content/browser/template.py:39
-#: zeit/cms/content/interfaces.py:163 zeit/cms/content/interfaces.py:445
+#: zeit/cms/content/interfaces.py:153 zeit/cms/content/interfaces.py:435
 #: zeit/cms/retractlog/browser/retractlog.py:23
 #: zeit/cms/retractlog/interfaces.py:25
 #: zeit/content/advertisement/interfaces.py:24
@@ -264,7 +264,7 @@ msgid "Modified"
 msgstr "Verändert"
 
 #: zeit/cms/browser/listing.py:265 zeit/cms/content/interfaces.py:78
-#: zeit/cms/content/interfaces.py:508
+#: zeit/cms/content/interfaces.py:498
 #: zeit/content/volume/browser/toc-listing.pt:25
 #: zeit/content/volume/browser/toc_listing.py:39
 #: zeit/contentquery/interfaces.py:175
@@ -670,7 +670,7 @@ msgstr "light"
 msgid "color scheme dark"
 msgstr "dark"
 
-#: zeit/cms/content/interfaces.py:71 zeit/cms/content/interfaces.py:515
+#: zeit/cms/content/interfaces.py:71 zeit/cms/content/interfaces.py:505
 #: zeit/content/article/edit/interfaces.py:539
 #: zeit/content/article/interfaces.py:211 zeit/content/volume/interfaces.py:36
 msgid "Year"
@@ -683,7 +683,7 @@ msgstr "Jahr"
 msgid "Volume"
 msgstr "Ausgabe"
 
-#: zeit/cms/content/interfaces.py:82 zeit/cms/content/interfaces.py:512
+#: zeit/cms/content/interfaces.py:82 zeit/cms/content/interfaces.py:502
 #: zeit/contentquery/interfaces.py:178
 msgid "Sub ressort"
 msgstr "Unterressort"
@@ -704,162 +704,154 @@ msgstr "Subchannel"
 msgid "Print ressort"
 msgstr "Print-Ressort"
 
-#: zeit/cms/content/interfaces.py:121
-msgid "Authors (freetext)"
-msgstr "Autoren (freie Texteingabe)"
-
-#: zeit/cms/content/interfaces.py:125
-msgid "overwritten if any non-freetext authors are set"
-msgstr "Wird überschrieben, wenn ein Autoren-Objekt gewählt wurde."
-
-#: zeit/cms/content/interfaces.py:129
+#: zeit/cms/content/interfaces.py:119
 msgid "Agencies"
 msgstr "Agenturen"
 
-#: zeit/cms/content/interfaces.py:136
+#: zeit/cms/content/interfaces.py:126
 #: zeit/content/volume/browser/toc-listing.pt:10
 #: zeit/content/volume/browser/toc_listing.py:58
 msgid "Access"
 msgstr "Verfügbarkeit"
 
-#: zeit/cms/content/interfaces.py:142
+#: zeit/cms/content/interfaces.py:132
 msgid "Recipe Categories"
 msgstr "Rezeptkategorien"
 
-#: zeit/cms/content/interfaces.py:149
+#: zeit/cms/content/interfaces.py:139
 msgid "Serie"
 msgstr "Serie"
 
-#: zeit/cms/content/interfaces.py:153
+#: zeit/cms/content/interfaces.py:143
 msgid "Copyright (c)"
 msgstr "Quelle"
 
-#: zeit/cms/content/interfaces.py:153
+#: zeit/cms/content/interfaces.py:143
 msgid "Do not enter (c)."
 msgstr "© nicht eingeben."
 
-#: zeit/cms/content/interfaces.py:157
+#: zeit/cms/content/interfaces.py:147
 msgid "Kicker"
 msgstr "Spitzmarke"
 
-#: zeit/cms/content/interfaces.py:158 zeit/cms/content/interfaces.py:177
+#: zeit/cms/content/interfaces.py:148 zeit/cms/content/interfaces.py:167
 #: zeit/content/article/edit/interfaces.py:444
 #: zeit/content/article/edit/interfaces.py:594
 msgid "Please take care of capitalisation."
 msgstr "Bitte auf Groß- und Kleinschreibung achten."
 
-#: zeit/cms/content/interfaces.py:167
+#: zeit/cms/content/interfaces.py:157
 #: zeit/content/article/edit/interfaces.py:451
 #: zeit/content/modules/interfaces.py:166
 msgid "Subtitle"
 msgstr "Teaser/Vorspann (Unterzeile)"
 
-#: zeit/cms/content/interfaces.py:171 zeit/content/cp/interfaces.py:550
+#: zeit/cms/content/interfaces.py:161 zeit/content/cp/interfaces.py:550
 msgid "Teaser title"
 msgstr "Überschrift (Centerpage)"
 
-#: zeit/cms/content/interfaces.py:173 zeit/content/cp/interfaces.py:552
+#: zeit/cms/content/interfaces.py:163 zeit/content/cp/interfaces.py:552
 #: zeit/content/video/browser/object-details-body.pt:28
 msgid "Teaser text"
 msgstr "Teaser (Centerpage)"
 
-#: zeit/cms/content/interfaces.py:176 zeit/content/cp/interfaces.py:548
+#: zeit/cms/content/interfaces.py:166 zeit/content/cp/interfaces.py:548
 msgid "Teaser kicker"
 msgstr "Teaser-Spitzmarke"
 
-#: zeit/cms/content/interfaces.py:182
+#: zeit/cms/content/interfaces.py:172
 msgid "VG Wort Id"
 msgstr "VG Wort Id"
 
-#: zeit/cms/content/interfaces.py:185
+#: zeit/cms/content/interfaces.py:175
 msgid "Comments premoderate"
 msgstr "Kommentare prämoderieren"
 
-#: zeit/cms/content/interfaces.py:188
+#: zeit/cms/content/interfaces.py:178
 msgid "Comments allowed"
 msgstr "Kommentieren erlaubt"
 
-#: zeit/cms/content/interfaces.py:191
+#: zeit/cms/content/interfaces.py:181
 msgid "Show commentthread"
 msgstr "Kommentare anzeigen"
 
-#: zeit/cms/content/interfaces.py:194
+#: zeit/cms/content/interfaces.py:184
 msgid "Banner"
 msgstr "Alle Werbung anzeigen"
 
-#: zeit/cms/content/interfaces.py:196
+#: zeit/cms/content/interfaces.py:186
 msgid "Banner in Content"
 msgstr "Werbung im Artikeltext anzeigen"
 
-#: zeit/cms/content/interfaces.py:198
+#: zeit/cms/content/interfaces.py:188
 msgid "Banner Mainad"
 msgstr "Außenwerbung anzeigen"
 
-#: zeit/cms/content/interfaces.py:200
+#: zeit/cms/content/interfaces.py:190
 msgid "Banner id"
 msgstr "Banner-Id"
 
-#: zeit/cms/content/interfaces.py:203
+#: zeit/cms/content/interfaces.py:193
 msgid "Hide AdBlocker notification"
 msgstr "AdBlocker-Hinweis ausblenden"
 
-#: zeit/cms/content/interfaces.py:207 zeit/content/volume/interfaces.py:28
+#: zeit/cms/content/interfaces.py:197 zeit/content/volume/interfaces.py:28
 msgid "Product id"
 msgstr "Standard-Quelle"
 
-#: zeit/cms/content/interfaces.py:215
+#: zeit/cms/content/interfaces.py:205
 msgid "Overscrolling"
 msgstr "Overscrolling"
 
-#: zeit/cms/content/interfaces.py:217
+#: zeit/cms/content/interfaces.py:207
 msgid "CAP title"
 msgstr "CAP-Titel"
 
-#: zeit/cms/content/interfaces.py:219
+#: zeit/cms/content/interfaces.py:209
 msgid "Deeplink URL"
 msgstr "Deep-Link-URL"
 
-#: zeit/cms/content/interfaces.py:222
+#: zeit/cms/content/interfaces.py:212
 msgid "Color scheme"
 msgstr "Farbschema/Darkmode"
 
-#: zeit/cms/content/interfaces.py:225
+#: zeit/cms/content/interfaces.py:215
 msgid "Advertisement title"
 msgstr "Auszeichnungs-Titel"
 
-#: zeit/cms/content/interfaces.py:227
+#: zeit/cms/content/interfaces.py:217
 msgid "Advertisement text"
 msgstr "Auszeichnungs-Text"
 
-#: zeit/cms/content/interfaces.py:230
+#: zeit/cms/content/interfaces.py:220
 msgid "InterRed MediaSync ID"
 msgstr "MediaSync ID"
 
-#: zeit/cms/content/interfaces.py:234
+#: zeit/cms/content/interfaces.py:224
 msgid "InterRed Article ID"
 msgstr "InterRed Beitrags-ID"
 
-#: zeit/cms/content/interfaces.py:282
+#: zeit/cms/content/interfaces.py:272
 msgid "Invalid hex literal"
 msgstr "Kein gültiger Farbwert"
 
-#: zeit/cms/content/interfaces.py:358 zeit/content/cp/interfaces.py:600
+#: zeit/cms/content/interfaces.py:348 zeit/content/cp/interfaces.py:600
 msgid "XML Source"
 msgstr "XML-Quelltext"
 
-#: zeit/cms/content/interfaces.py:476
+#: zeit/cms/content/interfaces.py:466
 msgid "Last semantic change"
 msgstr "Letzte inhaltliche Änderung"
 
-#: zeit/cms/content/interfaces.py:480
+#: zeit/cms/content/interfaces.py:470
 msgid "Update last semantic change"
 msgstr "Datum / Uhrzeit aktualisieren"
 
-#: zeit/cms/content/interfaces.py:499
+#: zeit/cms/content/interfaces.py:489
 msgid "Memo"
 msgstr "Memo"
 
-#: zeit/cms/content/interfaces.py:504
+#: zeit/cms/content/interfaces.py:494
 #: zeit/content/audio/browser/object-details-body.pt:10
 #: zeit/content/audio/interfaces.py:40
 #: zeit/content/image/browser/image_view.pt:6
@@ -867,27 +859,27 @@ msgstr "Memo"
 msgid "Type"
 msgstr "Typ"
 
-#: zeit/cms/content/interfaces.py:517
+#: zeit/cms/content/interfaces.py:507
 msgid "Month"
 msgstr "Monat"
 
-#: zeit/cms/content/interfaces.py:546
+#: zeit/cms/content/interfaces.py:536
 msgid "Caching time browser"
 msgstr "Cachezeit Browser"
 
-#: zeit/cms/content/interfaces.py:548
+#: zeit/cms/content/interfaces.py:538
 msgid "Caching time server"
 msgstr "Cachezeit Fastly"
 
-#: zeit/cms/content/interfaces.py:570
+#: zeit/cms/content/interfaces.py:560
 msgid "Remote image URL"
 msgstr "Remote Bild URL"
 
-#: zeit/cms/content/interfaces.py:572
+#: zeit/cms/content/interfaces.py:562
 msgid "Remote timestamp URL"
 msgstr "Remote Zeitstempel URL"
 
-#: zeit/cms/content/metadata.py:169
+#: zeit/cms/content/metadata.py:165
 msgid "Access changed from \"${old}\" to \"${new}\""
 msgstr "Verfügbarkeit geändert von \"${old}\" nach \"${new}\""
 
@@ -4781,6 +4773,12 @@ msgstr "Format"
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:53
 msgid "with info"
 msgstr "mit Info"
+
+#~ msgid "Authors (freetext)"
+#~ msgstr "Autoren (freie Texteingabe)"
+
+#~ msgid "overwritten if any non-freetext authors are set"
+#~ msgstr "Wird überschrieben, wenn ein Autoren-Objekt gewählt wurde."
 
 #~ msgid "query-sort-order-random"
 #~ msgstr "zufällig"
