@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.54.0 (2024-10-14)
+-------------------
+
+FIX:
+- Apply TMS type conversion for datetime in both directions
+
+
 6.53.0 (2024-10-14)
 -------------------
 
