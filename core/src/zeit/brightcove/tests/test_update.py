@@ -206,7 +206,7 @@ class ImportVideoTest(zeit.brightcove.testing.FunctionalTestCase):
         with self.assertNothingRaised():
             import_video(deleted)
 
-    def test_new_video_should_bbb_copy_authors(self):
+    def test_new_video_should_have_authorship(self):
         author = zeit.content.author.author.Author()
         author.firstname = 'William'
         author.lastname = 'Shakespeare'
@@ -215,19 +215,7 @@ class ImportVideoTest(zeit.brightcove.testing.FunctionalTestCase):
         bc.data['custom_fields']['authors'] = 'http://xml.zeit.de/author'
         import_video(bc)
         video = ICMSContent('http://xml.zeit.de/video/2017-05/myvid')
-        self.assertEqual(('William Shakespeare',), video.authors)
-
-    def test_changed_video_should_bbb_copy_authors(self):
-        author = zeit.content.author.author.Author()
-        author.firstname = 'William'
-        author.lastname = 'Shakespeare'
-        self.repository['author'] = author
-        bc = create_video()
-        import_video(bc)
-        bc.data['custom_fields']['authors'] = 'http://xml.zeit.de/author'
-        import_video(bc)
-        video = ICMSContent('http://xml.zeit.de/video/2017-05/myvid')
-        self.assertEqual(('William Shakespeare',), video.authors)
+        self.assertEqual(self.repository['author'], video.authorships[0].target)
 
 
 class TestDownloadTeasers(zeit.brightcove.testing.StaticBrowserTestCase):
