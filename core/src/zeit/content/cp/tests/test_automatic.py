@@ -1088,11 +1088,7 @@ class AutomaticAreaSQLTest(zeit.content.cp.testing.FunctionalTestCase):
     def test_clauses_extend_query(self):
         self.connector.search_result = ['http://xml.zeit.de/testcontent']
         IRenderedArea(self.area).values()
-        query = """
-...type='article'
-AND unsorted @@ '$.workflow.published == "yes"'
-AND unsorted @@ '$."zeit.content.gallery".type != "inline"'...
-"""
+        query = "...type='article' AND published=true..."
         self.assertEllipsis(query, self.connector.search_args[0])
 
     def test_query_order_default(self):
