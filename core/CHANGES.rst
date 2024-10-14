@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.53.0 (2024-10-14)
+-------------------
+
+FIX:
+- Remove development model class remnants
+
+
 6.52.0 (2024-10-11)
 -------------------
 
