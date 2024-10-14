@@ -279,6 +279,9 @@ class DateTime(JSONType):
         PropertyKey,
     )
 
+    def fromProperty(self, value):
+        return zeit.cms.content.dav.DatetimeProperty._fromProperty(value)
+
     def toProperty(self, value):
         return zeit.cms.content.dav.DatetimeProperty._toProperty(value)
 
