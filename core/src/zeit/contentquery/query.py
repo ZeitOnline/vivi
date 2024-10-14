@@ -67,7 +67,8 @@ class SQLContentQuery(ContentQuery):
 
     def __call__(self):
         query = self._build_query()
-        result = [ICMSContent(x) for x in self.connector.search_sql(query)]
+        result = self.connector.search_sql(query)
+        result = [ICMSContent(x) for x in result[: self.rows]]
         return result
 
     @property
@@ -86,8 +87,16 @@ class SQLContentQuery(ContentQuery):
         query = self.hide_dupes_clause(query)
         if order:  # not allowed by SQL when using `count()`
             query = query.order_by(sql(self.order))
-            query = query.limit(self.rows).offset(self.start)
+            query = query.limit(max(self.rows, self.minimum_limit)).offset(self.start)
         return query
+
+    @property
+    def minimum_limit(self):
+        """For limit smaller than about 10, the psql query planner decides to
+        only ever sort and then filter via heap scan -- instead of using an
+        index, which is often 10x faster, even when retrieving a few more
+        (unnecessary) rows."""
+        return int(zeit.cms.config.get('zeit.content.cp', 'sql-query-minimum-limit', 0))
 
     def add_clauses(self, query):
         extras = zeit.cms.config.get('zeit.content.cp', 'sql-query-add-clauses')
