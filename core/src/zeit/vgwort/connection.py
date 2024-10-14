@@ -143,18 +143,6 @@ class MessageService(VGWortWebService):
                         authors.append(self.create('Involved', **params))
                 except AttributeError:
                     log.error('Could not report %s', content, exc_info=True)
-        else:
-            # Report the freetext authors if no structured authors are
-            # available. VGWort will do some matching then.
-            for author in content.authors:
-                author = author.strip().split()
-                if len(author) < 2:
-                    # Need at least one space to split firstname and lastname
-                    continue
-                involved = self.create(
-                    'Involved', firstName=' '.join(author[:-1]), surName=author[-1]
-                )
-                authors.append(involved)
 
         for author in content.agencies:
             try:
