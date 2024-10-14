@@ -1086,7 +1086,6 @@ class AutomaticAreaSQLTest(zeit.content.cp.testing.FunctionalTestCase):
         self.assertEqual(['http://xml.zeit.de/testcontent'], [x.uniqueId for x in content])
 
     def test_clauses_extend_query(self):
-        self.connector.search_result = ['http://xml.zeit.de/testcontent']
         IRenderedArea(self.area).values()
         query = "...type='article' AND published=true..."
         self.assertEllipsis(query, self.connector.search_args[0])
