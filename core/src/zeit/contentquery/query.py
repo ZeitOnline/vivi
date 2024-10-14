@@ -110,7 +110,7 @@ class SQLContentQuery(ContentQuery):
 
         if not ids:
             return query
-        return query.where(self.connector.Content.id.not_in(sorted(ids)))
+        return query.where(ConnectorModel.id.not_in(sorted(ids)))
 
 
 class SQLCustomContentQuery(SQLContentQuery):
