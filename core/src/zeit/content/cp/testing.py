@@ -36,8 +36,7 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
         'cp-automatic-feed-source': f'file://{FIXTURES}/feeds.xml',
         'area-color-themes-source': f'file://{FIXTURES}/area-color-themes.xml',
         'reach-service-source': f'file://{FIXTURES}/reach-services.xml',
-        'sql-query-add-clauses': """unsorted @@ '$.workflow.published == "yes"' \
-AND unsorted @@ '$."zeit.content.gallery".type != "inline"'""",
+        'sql-query-add-clauses': 'published=true',
     },
     patches={
         'zeit.edit': {

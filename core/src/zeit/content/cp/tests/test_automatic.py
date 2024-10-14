@@ -1138,11 +1138,7 @@ class AutomaticAreaSQLCustomTest(zeit.content.cp.testing.FunctionalTestCase):
         source = zeit.cms.content.interfaces.ICommonMetadata['serie'].source(None)
         self.area.query = (('serie', 'eq', source.find('Autotest')),)
         IRenderedArea(self.area).values()
-        query = """
-...series = 'Autotest'
-AND unsorted @@ '$.workflow.published == "yes"'
-AND unsorted @@ '$."zeit.content.gallery".type != "inline"'...
-"""
+        query = "...series = 'Autotest' AND published=true..."
         self.assertEllipsis(query, self.connector.search_args[0])
 
     def test_respects_column_name_exceptions(self):
@@ -1164,7 +1160,7 @@ AND unsorted @@ '$."zeit.content.gallery".type != "inline"'...
         query = """
 ...((properties.channels @> '[["International", "Nahost"]]')
 OR (properties.channels @> '[["Wissen"]]'))
-AND unsorted...
+AND published=true...
 """
         self.assertEllipsis(query, self.connector.search_args[0])
 
@@ -1178,7 +1174,7 @@ AND unsorted...
 ...(properties.ressort = 'International'
 AND properties.sub_ressort = 'Nahost'
 OR properties.ressort = 'Wissen')
-AND unsorted...
+AND published=true...
 """
         self.assertEllipsis(query, self.connector.search_args[0])
 
@@ -1193,6 +1189,6 @@ AND unsorted...
 ... properties.type = 'article'
 AND (properties.ressort = 'International'
 OR properties.ressort = 'Wissen')
-AND unsorted...
+AND published=true...
 """
         self.assertEllipsis(query, self.connector.search_args[0])
