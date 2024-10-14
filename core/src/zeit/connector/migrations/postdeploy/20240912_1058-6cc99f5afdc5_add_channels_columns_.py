@@ -1,4 +1,4 @@
-"""add channels columns index
+"""create index for channels
 
 Revision ID: 6cc99f5afdc5
 Revises: cf24009572b7

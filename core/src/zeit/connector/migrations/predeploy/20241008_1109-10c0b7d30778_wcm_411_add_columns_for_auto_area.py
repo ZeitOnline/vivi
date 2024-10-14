@@ -1,4 +1,4 @@
-"""wcm_411_add_columns_for_auto_area
+"""add common metadata columns
 
 Revision ID: 10c0b7d30778
 Revises: 28355ecfa735

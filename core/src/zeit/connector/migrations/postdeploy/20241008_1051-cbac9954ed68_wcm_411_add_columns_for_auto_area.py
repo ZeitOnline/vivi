@@ -1,4 +1,4 @@
-"""wcm_411_add_columns_for_auto_area
+"""create index for common metadata
 
 Revision ID: cbac9954ed68
 Revises: a4c1b7f678d9

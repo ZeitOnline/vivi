@@ -1,4 +1,4 @@
-"""add index parent_path pattern
+"""create index parent_path pattern
 
 Revision ID: 6a09ae3f8778
 Revises: a23f8cf445b2

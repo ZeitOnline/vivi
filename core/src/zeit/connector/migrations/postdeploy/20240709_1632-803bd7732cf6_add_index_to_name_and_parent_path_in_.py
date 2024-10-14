@@ -1,4 +1,4 @@
-"""add index to name and parent_path in content table
+"""create index for name and parent_path
 
 Revision ID: 803bd7732cf6
 Revises:
