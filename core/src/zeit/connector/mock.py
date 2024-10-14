@@ -47,7 +47,6 @@ class Connector(zeit.connector.filesystem.Connector):
     _ignore_uuid_checks = False
     _set_lastmodified_property = True
     resource_class = zeit.connector.resource.WriteableCachedResource
-    Content = Content  # only for search_sql, only id column is required
 
     property_cache = zeit.connector.cache.AlwaysEmptyDict()
     body_cache = zeit.connector.cache.AlwaysEmptyDict()
@@ -328,7 +327,7 @@ class Connector(zeit.connector.filesystem.Connector):
         return [self[uniqueid] for uniqueid in self.search_result]
 
     def query(self):
-        return sqlalchemy.select(self.Content)
+        return sqlalchemy.select(Content)
 
     def search_sql_count(self, query):
         return len(self.search_result)
