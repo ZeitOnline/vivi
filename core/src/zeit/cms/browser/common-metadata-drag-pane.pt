@@ -1,8 +1,8 @@
 <tal:block>
   <div class="Text">
     <span
-      tal:condition="python: context.authors"
-      tal:replace="python: ', '.join(context.authors) + ':'">
+      tal:condition="python: context.authorships"
+      tal:replace="python: ', '.join(ref.target.display_name for ref in context.authorships) + ':'">
       John Doe:
     </span>
     <span tal:replace="context/title">
