@@ -87,7 +87,6 @@ class InputWidgetUI(zeit.cms.testing.SeleniumTestCase, zeit.cms.tagging.testing.
         s.type('name=form.year', '2011')
         s.select('name=form.ressort', 'label=Deutschland')
         s.type('name=form.title', 'Test')
-        s.type('name=form.authors.0.', 'Hans Wurst')
 
     @unittest.skip("Selenium doesn't do d'n'd on jqueryui sortable.")
     def test_tags_should_be_sortable(self):

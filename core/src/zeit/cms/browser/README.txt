@@ -186,6 +186,5 @@ There is a view which dispatches to the actual drag pane:
 ...     'uniqueId=http://xml.zeit.de/testcontent')
 >>> print(browser.contents)
   <div class="Text">
-    :
   </div>
   <div class="UniqueId">http://xml.zeit.de/testcontent</div>

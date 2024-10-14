@@ -115,16 +115,6 @@ class ICommonMetadata(zope.interface.Interface):
         'zeit.cms.addform.contextfree', 'zeit.content.author.add_contextfree'
     )
 
-    # DEPRECATED, use authorships instead
-    # (still used by publisher `speechbert.xslt`)
-    authors = zope.schema.Tuple(
-        title=_('Authors (freetext)'),
-        value_type=zope.schema.TextLine(),
-        required=False,
-        default=('',),
-        description=_('overwritten if any non-freetext authors are set'),
-    )
-
     agencies = zope.schema.Tuple(
         title=_('Agencies'),
         value_type=zope.schema.Choice(source=agencySource),

@@ -61,7 +61,6 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
         )
         self.assertEqual(
             {
-                'author': 'Hans Meiser',
                 'date': '1970-01-01T00:00:00Z',
                 'doc_type': 'article',
                 'payload': {
@@ -73,7 +72,7 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
                     'document': {
                         'artbox_thema': False,
                         'audio_speechbert': True,
-                        'author': ['Hans Meiser'],
+                        'author': 'Hans Meiser',
                         'banner': True,
                         'banner_content': True,
                         'color_scheme': 'Redaktion',
@@ -267,7 +266,7 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
                 'doc_type': 'image',
                 'payload': {
                     'document': {
-                        'author': ['Jochen Stahnke'],
+                        'author': 'Jochen Stahnke',
                         'banner': True,
                         'last_modified_by': 'zope.user',
                     },

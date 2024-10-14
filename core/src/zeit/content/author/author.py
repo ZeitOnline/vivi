@@ -190,34 +190,6 @@ def request_acs(email):
         return None
 
 
-# Note: This is used by the publisher to send to speech.zeit.de and api-solr.
-def update_author_freetext(content):
-    content.authors = [x.target.display_name for x in content.authorships]
-
-
-@grok.subscribe(
-    zeit.cms.content.interfaces.ICommonMetadata, zope.lifecycleevent.IObjectModifiedEvent
-)
-def update_freetext_on_change(context, event):
-    if event.descriptions:
-        for description in event.descriptions:
-            if (
-                issubclass(description.interface, zeit.cms.content.interfaces.ICommonMetadata)
-                and 'authorships' in description.attributes
-            ):
-                update_author_freetext(context)
-
-
-@grok.subscribe(
-    zeit.cms.content.interfaces.ICommonMetadata, zope.lifecycleevent.IObjectCreatedEvent
-)
-def update_freetext_on_add(context, event):
-    # ObjectCopied inherits from ObjectCreated
-    if zeit.cms.repository.interfaces.IRepositoryContent.providedBy(context):
-        return
-    update_author_freetext(context)
-
-
 @grok.subscribe(
     zeit.content.author.interfaces.IAuthor, zeit.cms.checkout.interfaces.IBeforeCheckinEvent
 )

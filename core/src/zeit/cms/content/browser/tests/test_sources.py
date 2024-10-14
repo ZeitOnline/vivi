@@ -12,7 +12,6 @@ class SourceSecurityTest(zeit.cms.testing.ZeitCmsBrowserTestCase):
         b.getControl('Year').value = '2008'
         b.getControl('Ressort').displayValue = ['International']
         b.getControl('Title').value = 'foo'
-        b.getControl(name='form.authors.0.').value = 'asdf'
 
     def test_product_works_with_security(self):
         b = self.browser

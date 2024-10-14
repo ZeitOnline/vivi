@@ -37,7 +37,7 @@ class CommonMetadataFormBase(zeit.cms.browser.form.CharlimitMixin):
         css_class='column-right checkboxes',
     )
     author_fields = gocept.form.grouped.Fields(
-        _('Authors'), ('authorships', 'authors'), css_class='wide-widgets column-left'
+        _('Authors'), ('authorships',), css_class='wide-widgets column-left'
     )
     auto_cp_fields = gocept.form.grouped.Fields(
         _('Run in channel'), ('channels',), css_class='column-right'

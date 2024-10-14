@@ -96,7 +96,7 @@ class MobileBase(Base):
 class SocialAddForm(SocialBase, MobileBase, zeit.cms.content.browser.form.CommonMetadataAddForm):
     form_fields = zope.formlib.form.FormFields(
         zeit.cms.testcontenttype.interfaces.IExampleContentType
-    ).omit('authors', 'xml')
+    ).omit('xml')
     factory = zeit.cms.testcontenttype.testcontenttype.ExampleContentType
 
     field_groups = zeit.cms.content.browser.form.CommonMetadataAddForm.field_groups + (
