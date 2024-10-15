@@ -1086,7 +1086,6 @@ class AutomaticAreaSQLTest(zeit.content.cp.testing.FunctionalTestCase):
         self.assertEqual(['http://xml.zeit.de/testcontent'], [x.uniqueId for x in content])
 
     def test_clauses_extend_query(self):
-        self.connector.search_result = ['http://xml.zeit.de/testcontent']
         IRenderedArea(self.area).values()
         query = "...type='article' AND published=true..."
         self.assertEllipsis(query, self.connector.search_args[0])
@@ -1105,6 +1104,17 @@ class AutomaticAreaSQLTest(zeit.content.cp.testing.FunctionalTestCase):
     def test_limit_query_results(self):
         IRenderedArea(self.area).values()
         self.assertEllipsis('...LIMIT 3...', self.connector.search_args[0])
+
+    def test_minimum_limit_can_be_configured(self):
+        zeit.cms.config.set('zeit.content.cp', 'sql-query-minimum-limit', '10')
+        IRenderedArea(self.area).values()
+        self.assertEllipsis('...LIMIT 10...', self.connector.search_args[0])
+
+    def test_resolves_only_configured_count_if_minimum_limit_is_larger(self):
+        zeit.cms.config.set('zeit.content.cp', 'sql-query-minimum-limit', '10')
+        self.connector.search_result = ['http://xml.zeit.de/testcontent'] * 10
+        values = IRenderedArea(self.area)._content_query()
+        self.assertEqual(3, len(values))
 
     def test_offset_query_results_for_pagination(self):
         self.area.start = 5
