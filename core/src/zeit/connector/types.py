@@ -14,6 +14,7 @@ class JSONBTuple(types.TypeDecorator):
     by converting them into lists"""
 
     impl = JSONB
+    cache_ok = True
 
     def process_bind_param(self, value, dialect):
         return self._convert_sequence(value, tuple, list)
