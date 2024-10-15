@@ -60,6 +60,12 @@ class Article:
     article_genre = mapped_column(Unicode, info={'namespace': 'document', 'name': 'genre'})
 
 
+class Gallery:
+    gallery_type = mapped_column(
+        Unicode, info={'namespace': 'zeit.content.gallery', 'name': 'type'}
+    )
+
+
 class SemanticChange:
     date_last_modified_semantic = mapped_column(
         TIMESTAMP,
@@ -107,7 +113,7 @@ class PublishInfo:
     )
 
 
-class Content(Base, CommonMetadata, Modified, PublishInfo, SemanticChange, Article):
+class Content(Base, CommonMetadata, Modified, PublishInfo, SemanticChange, Article, Gallery):
     __tablename__ = 'properties'
 
     @declared_attr
@@ -143,7 +149,6 @@ class Content(Base, CommonMetadata, Modified, PublishInfo, SemanticChange, Artic
                 cls.Index(getattr(cls, column))
                 for column in [
                     'access',
-                    'article_genre',
                     'print_ressort',
                     'product',
                     'published',
@@ -154,6 +159,8 @@ class Content(Base, CommonMetadata, Modified, PublishInfo, SemanticChange, Artic
                     'volume_year',
                 ]
             )
+            + (cls.Index('article_genre'),)
+            + (cls.Index('gallery_type'),)
         )
 
     id = mapped_column(Uuid(as_uuid=False), primary_key=True)
