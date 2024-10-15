@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.55.0 (2024-10-15)
+-------------------
+
+- WCM-20: Retrieve a configurable minimum of rows, to force sql query planner to use indexes
+
+- WCM-295: Remove deprecated authors freetext property
+
+
 6.54.0 (2024-10-14)
 -------------------
 

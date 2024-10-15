@@ -1,1 +1,0 @@
-WCM-20: Retrieve a configurable minimum of rows, to force sql query planner to use indexes
