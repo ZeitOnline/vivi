@@ -11,7 +11,6 @@ import uuid
 
 from sqlalchemy.dialects import postgresql
 import pytz
-import sqlalchemy
 import zope.event
 
 from zeit.cms.content.sources import FEATURE_TOGGLES
@@ -25,7 +24,6 @@ from zeit.connector.interfaces import (
     MoveError,
 )
 from zeit.connector.lock import lock_is_foreign
-from zeit.connector.models import Content
 import zeit.cms.config
 import zeit.cms.repository.interfaces
 import zeit.connector.cache
@@ -325,9 +323,6 @@ class Connector(zeit.connector.filesystem.Connector):
     def search_sql(self, expression):
         self.search_args.append(self._compile_sql(expression))
         return [self[uniqueid] for uniqueid in self.search_result]
-
-    def query(self):
-        return sqlalchemy.select(Content)
 
     def search_sql_count(self, query):
         return len(self.search_result)

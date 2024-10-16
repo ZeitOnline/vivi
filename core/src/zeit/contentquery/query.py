@@ -74,9 +74,7 @@ class SQLContentQuery(ContentQuery):
 
     @property
     def conditions(self):
-        query = self.connector.query()
-        query = query.where(sql(self.context.sql_query))
-        return query
+        return select(ConnectorModel).where(sql(self.context.sql_query))
 
     @property
     def order(self):
@@ -138,7 +136,7 @@ class SQLCustomContentQuery(SQLContentQuery):
             typ = item[0]
             fields.setdefault(typ, []).append(item)
 
-        query = self.connector.query()
+        query = select(ConnectorModel)
         for typ in fields:
             conditions = []
             for item in fields[typ]:
