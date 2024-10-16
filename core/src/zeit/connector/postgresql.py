@@ -622,9 +622,6 @@ class Connector:
             self.session.rollback()
             return None
 
-    def query(self):
-        return select(Content)
-
     def _build_filter(self, expr):
         op = expr.operator
         if op == 'and':

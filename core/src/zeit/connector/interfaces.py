@@ -210,7 +210,7 @@ class IConnector(zope.interface.Interface):
         """Search for `query`
 
         query:
-            SQL Select object obtained from IConnector.query()
+            `sqlalchemy.select(Content)` object
 
         returns a list of IResource objects
         """
@@ -219,15 +219,9 @@ class IConnector(zope.interface.Interface):
         """Count search results for `query`
 
         query:
-            SQL Select object obtained from IConnector.query()
+            `sqlalchemy.select(Content)` object
 
         returns integer
-        """
-
-    def query():
-        """Not the most desirable API design, but functional for now
-
-        returns query object for properties table for use with search_sql[_count]
         """
 
 

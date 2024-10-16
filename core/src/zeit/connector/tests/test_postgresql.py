@@ -13,7 +13,7 @@ import transaction
 from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.repository.interfaces import ConflictError
 from zeit.connector.interfaces import INTERNAL_PROPERTY
-from zeit.connector.models import Lock
+from zeit.connector.models import Content, Lock
 from zeit.connector.postgresql import _unlock_overdue_locks
 from zeit.connector.resource import Resource, WriteableCachedResource
 from zeit.connector.search import SearchVar
@@ -146,16 +146,14 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
     def test_search_by_sql_applies_query(self):
         res = self.add_resource('one', type='article')
         self.add_resource('two', type='centerpage')
-        query = self.connector.query()
-        query = query.filter_by(type='article')
+        query = select(Content).filter_by(type='article')
         result = self.connector.search_sql(query)
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0].id, res.id)
 
     def test_search_by_sql_uses_cache(self):
         self.add_resource('one', body=b'mybody', type='article')
-        query = self.connector.query()
-        query = query.filter_by(type='article')
+        query = select(Content).filter_by(type='article')
         result = self.connector.search_sql(query)
         with mock.patch.object(
             self.connector.session, 'execute', side_effect=RuntimeError('disabled')
@@ -166,22 +164,21 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
         self.add_resource('one', type='article')
         self.add_resource('two', type='centerpage')
         self.add_resource('three', type='article')
-        query = self.connector.query()
-        query = query.filter_by(type='article')
+        query = select(Content).filter_by(type='article')
         self.assertEqual(self.connector.search_sql_count(query), 2)
 
     def test_search_sql_suppresses_errors(self):
         self.connector.session.execute(sql('set statement_timeout=1'))
-        query = self.connector.query().add_columns(sql('pg_sleep(1)'))
+        query = select(Content).add_columns(sql('pg_sleep(1)'))
         result = self.connector.search_sql(query)
         self.assertEqual(len(result), 0)
         # Ensure no InFailedSqlTransaction exception happens on subsequent calls
-        result = self.connector.search_sql(self.connector.query())
+        result = self.connector.search_sql(select(Content))
         self.assertEqual(len(result), 1)
 
     def test_search_sql_count_suppresses_errors(self):
         self.connector.session.execute(sql('set statement_timeout=1'))
-        query = self.connector.query()
+        query = select(Content)
         with mock.patch('sqlalchemy.func.count') as count:
             count.return_value = sql('count(*), pg_sleep(1)')
             self.assertEqual(0, self.connector.search_sql_count(query))
