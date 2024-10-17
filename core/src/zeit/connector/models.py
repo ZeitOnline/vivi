@@ -103,7 +103,7 @@ class PublishInfo:
         Boolean,
         server_default='false',
         nullable=False,
-        info={'namespace': 'workflow', 'name': 'published'},
+        info={'namespace': 'workflow', 'name': 'published', 'toggled': True},
     )
 
 
@@ -188,8 +188,20 @@ class Content(Base, CommonMetadata, Modified, PublishInfo, SemanticChange, Artic
                 return column
 
     @classmethod
-    def _columns_with_name(cls):
-        return [x for x in sqlalchemy.orm.class_mapper(cls).columns if x.info.get('namespace')]
+    def is_column_enabled(cls, column, mode):
+        namespace = column.info.get('namespace')
+        name = column.info.get('name')
+        if column.info.get('toggled'):
+            return FEATURE_TOGGLES.find(f'{namespace}_{name}_{mode}')
+        return True
+
+    @classmethod
+    def _columns_with_name(cls, mode='read'):
+        return [
+            c
+            for c in sqlalchemy.orm.class_mapper(cls).columns
+            if c.info.get('namespace') and cls.is_column_enabled(c, mode)
+        ]
 
     @property
     def binary_body(self):
@@ -253,7 +265,7 @@ class Content(Base, CommonMetadata, Modified, PublishInfo, SemanticChange, Artic
         if FEATURE_TOGGLES.find('write_metadata_columns') or FEATURE_TOGGLES.find(
             'write_metadata_columns_strict'
         ):
-            for column in self._columns_with_name():
+            for column in self._columns_with_name(mode='write'):
                 namespace, name = column.info['namespace'], column.info['name']
                 value = props.get((name, self.NS + namespace), self)
 
