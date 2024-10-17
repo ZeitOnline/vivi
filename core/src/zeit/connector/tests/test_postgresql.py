@@ -390,3 +390,26 @@ class PropertiesColumnTest(zeit.connector.testing.SQLTest):
             result = self.connector.search([var], var == 'Wissen')
             unique_id, uuid = next(result)
             self.assertEqual(res.id, unique_id)
+
+    def test_single_properties_can_be_toggled(self):
+        FEATURE_TOGGLES.set('write_metadata_columns')
+        FEATURE_TOGGLES.set('read_metadata_columns')
+        res = self.add_resource('foo', properties={('published', f'{NS}workflow'): 'yes'})
+        content = self.connector._get_content(res.id)
+        self.assertEqual({'workflow': {'published': 'yes'}}, content.unsorted)
+        # we have not written into the column yet
+        self.assertFalse(content.published)
+        # now you are allowed to write
+        FEATURE_TOGGLES.set('workflow_published_write')
+        content = self.connector._get_content(res.id)
+        self.connector[res.id] = res
+        self.assertTrue(content.published)
+        # check if we can read our value back
+        content.published = False
+        props = content.to_webdav()
+        # now still read from unsorted
+        self.assertEqual(props[('published', f'{NS}workflow')], 'yes')
+        # and now read from column
+        FEATURE_TOGGLES.set('workflow_published_read')
+        props = content.to_webdav()
+        self.assertEqual(props[('published', f'{NS}workflow')], False)

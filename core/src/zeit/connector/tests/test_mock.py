@@ -74,9 +74,9 @@ class MockTypeConversionTest(zeit.connector.testing.MockTest):
     def test_converts_sql_properties_on_read(self):
         params = [
             [
-                ('workflow', 'published'),
-                True,
-                'yes',
+                ('document', 'year'),
+                2024,
+                '2024',
             ],
             [
                 ('document', 'date_created'),
