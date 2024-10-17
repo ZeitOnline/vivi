@@ -1114,13 +1114,6 @@ class AutomaticAreaSQLTest(zeit.content.cp.testing.FunctionalTestCase):
         self.connector.search_result = ['http://xml.zeit.de/testcontent']
         self.assertEqual(1, IRenderedArea(self.area)._content_query.total_hits)
 
-    def test_compiles_to_cte_with_offset_to_force_filter_before_sort(self):
-        IRenderedArea(self.area).values()
-        self.assertEllipsis(
-            "WITH...WHERE type='article'...OFFSET 0)...ORDER BY...LIMIT 3 OFFSET 0...",
-            self.connector.search_args[0],
-        )
-
 
 class AutomaticAreaSQLCustomTest(zeit.content.cp.testing.FunctionalTestCase):
     def setUp(self):

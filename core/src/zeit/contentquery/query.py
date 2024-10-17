@@ -6,7 +6,6 @@ from sqlalchemy import not_ as sql_not
 from sqlalchemy import or_ as sql_or
 from sqlalchemy import select
 from sqlalchemy import text as sql
-from sqlalchemy.orm import aliased
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
 import lxml
@@ -81,21 +80,12 @@ class SQLContentQuery(ContentQuery):
         return self.context.sql_order
 
     def _build_query(self, order=True):
-        conditions = self.conditions
-        conditions = self.add_clauses(conditions)
-        conditions = self.hide_dupes_clause(conditions)
-        if not order:  # `order by` is not allowed by SQL when using `count()`
-            return conditions
-
-        # Use CTE to enforce evaluation of `where` before `order by`, so indexes
-        # are used, which results in much better performance than the psql
-        # default strategy of "sort first, then filter via table/heap scan".
-        # Specifying `offset` forces the actually separate evaluation of the CTE,
-        # see <https://www.endpointdev.com/blog/2009/04/offset-0-ftw/>.
-        conditions = conditions.offset(0)
-        query = select(aliased(ConnectorModel, conditions.cte()))
-        query = query.order_by(sql(self.order))
-        query = query.limit(self.rows).offset(self.start)
+        query = self.conditions
+        query = self.add_clauses(query)
+        query = self.hide_dupes_clause(query)
+        if order:  # not allowed by SQL when using `count()`
+            query = query.order_by(sql(self.order))
+            query = query.limit(self.rows).offset(self.start)
         return query
 
     def add_clauses(self, query):
