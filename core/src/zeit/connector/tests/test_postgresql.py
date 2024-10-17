@@ -10,8 +10,11 @@ import pendulum
 import pytz
 import transaction
 
+from zeit.cms.checkout.helper import checked_out
 from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.repository.interfaces import ConflictError
+from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
+from zeit.cms.workflow.interfaces import IModified
 from zeit.connector.interfaces import INTERNAL_PROPERTY
 from zeit.connector.models import Content, Lock
 from zeit.connector.postgresql import _unlock_overdue_locks
@@ -390,3 +393,11 @@ class PropertiesColumnTest(zeit.connector.testing.SQLTest):
             result = self.connector.search([var], var == 'Wissen')
             unique_id, uuid = next(result)
             self.assertEqual(res.id, unique_id)
+
+    def test_revoke_write_toggle_must_not_break_checkin(self):
+        FEATURE_TOGGLES.set('write_metadata_columns')
+        self.repository['testcontent'] = ExampleContentType()
+        example_date = pendulum.datetime(2024, 10, 1)
+        with checked_out(self.repository['testcontent']) as co:
+            IModified(co).date_created = example_date
+            FEATURE_TOGGLES.unset('write_metadata_columns')

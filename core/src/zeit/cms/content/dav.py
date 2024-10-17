@@ -199,7 +199,7 @@ class IntProperty(UnicodeProperty):
         return super().fromProperty(value)
 
     def toProperty(self, value):
-        if self.has_sql_type and FEATURE_TOGGLES.find('write_metadata_columns'):
+        if self.has_sql_type and FEATURE_TOGGLES.find('read_metadata_columns'):
             return value
         return super().toProperty(value)
 
@@ -339,7 +339,7 @@ class BoolProperty:
         return value.lower() in ('yes', 'true')
 
     def toProperty(self, value):
-        if self.has_sql_type and FEATURE_TOGGLES.find('write_metadata_columns'):
+        if self.has_sql_type and FEATURE_TOGGLES.find('read_metadata_columns'):
             return value
         return self._toProperty(value)
 
@@ -372,7 +372,7 @@ class DatetimeProperty:
         return date.in_tz('UTC')
 
     def toProperty(self, value):
-        if self.has_sql_type and FEATURE_TOGGLES.find('write_metadata_columns'):
+        if self.has_sql_type and FEATURE_TOGGLES.find('read_metadata_columns'):
             return value
         return self._toProperty(value)
 
@@ -444,7 +444,7 @@ class CollectionTextLineProperty:
         return self._type(result)
 
     def toProperty(self, value):
-        if self.has_sql_type and FEATURE_TOGGLES.find('write_metadata_columns'):
+        if self.has_sql_type and FEATURE_TOGGLES.find('read_metadata_columns'):
             return value
         typ = zope.component.getMultiAdapter(
             (self.value_type, self.properties, self.propertykey),
