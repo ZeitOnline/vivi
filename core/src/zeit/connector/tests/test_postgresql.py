@@ -168,7 +168,7 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
         self.assertEqual(self.connector.search_sql_count(query), 2)
 
     def test_search_sql_suppresses_errors(self):
-        self.connector.session.execute(sql('set statement_timeout=1'))
+        self.connector.session.execute(sql('set local statement_timeout=1'))
         query = select(Content).add_columns(sql('pg_sleep(1)'))
         result = self.connector.search_sql(query)
         self.assertEqual(len(result), 0)
@@ -177,13 +177,18 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
         self.assertEqual(len(result), 1)
 
     def test_search_sql_count_suppresses_errors(self):
-        self.connector.session.execute(sql('set statement_timeout=1'))
+        self.connector.session.execute(sql('set local statement_timeout=1'))
         query = select(Content)
         with mock.patch('sqlalchemy.func.count') as count:
             count.return_value = sql('count(*), pg_sleep(1)')
             self.assertEqual(0, self.connector.search_sql_count(query))
         # Ensure no InFailedSqlTransaction exception happens on subsequent calls
         self.assertEqual(1, self.connector.search_sql_count(query))
+
+    def test_search_sql_supports_separate_timeout(self):
+        query = select(Content).add_columns(sql('pg_sleep(1)'))
+        result = self.connector._execute_suppress_errors(query, timeout=1)
+        self.assertEqual(None, result)
 
     def test_search_returns_uuid(self):
         res = self.get_resource(
