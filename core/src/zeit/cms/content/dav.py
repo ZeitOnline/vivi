@@ -15,7 +15,6 @@ import zope.schema.interfaces
 import zope.xmlpickle
 
 from zeit.cms.content.interfaces import WRITEABLE_ON_CHECKIN
-from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.connector.models import Content as ConnectorModel
 from zeit.connector.resource import PropertyKey
 import zeit.cms.content.caching
@@ -194,13 +193,9 @@ class IntProperty(UnicodeProperty):
         self.has_sql_type = ConnectorModel.column_by_name(*propertykey) is not None
 
     def fromProperty(self, value):
-        if self.has_sql_type and FEATURE_TOGGLES.find('read_metadata_columns'):
-            return value
         return super().fromProperty(value)
 
     def toProperty(self, value):
-        if self.has_sql_type and FEATURE_TOGGLES.find('write_metadata_columns'):
-            return value
         return super().toProperty(value)
 
 
@@ -330,8 +325,6 @@ class BoolProperty:
         self.has_sql_type = ConnectorModel.column_by_name(*propertykey) is not None
 
     def fromProperty(self, value):
-        if self.has_sql_type and FEATURE_TOGGLES.find('read_metadata_columns'):
-            return value
         return self._fromProperty(value)
 
     @staticmethod
@@ -339,8 +332,6 @@ class BoolProperty:
         return value.lower() in ('yes', 'true')
 
     def toProperty(self, value):
-        if self.has_sql_type and FEATURE_TOGGLES.find('write_metadata_columns'):
-            return value
         return self._toProperty(value)
 
     @staticmethod
@@ -360,8 +351,6 @@ class DatetimeProperty:
     def fromProperty(self, value):
         if not value:
             return None
-        if self.has_sql_type and FEATURE_TOGGLES.find('read_metadata_columns'):
-            return value
         return self._fromProperty(value)
 
     @staticmethod
@@ -372,8 +361,6 @@ class DatetimeProperty:
         return date.in_tz('UTC')
 
     def toProperty(self, value):
-        if self.has_sql_type and FEATURE_TOGGLES.find('write_metadata_columns'):
-            return value
         return self._toProperty(value)
 
     @staticmethod
@@ -418,8 +405,6 @@ class CollectionTextLineProperty:
             self._type = self._type[0]
 
     def fromProperty(self, value):
-        if self.has_sql_type and FEATURE_TOGGLES.find('read_metadata_columns'):
-            return value
         typ = zope.component.getMultiAdapter(
             (self.value_type, self.properties, self.propertykey),
             zeit.cms.content.interfaces.IDAVPropertyConverter,
@@ -444,8 +429,6 @@ class CollectionTextLineProperty:
         return self._type(result)
 
     def toProperty(self, value):
-        if self.has_sql_type and FEATURE_TOGGLES.find('write_metadata_columns'):
-            return value
         typ = zope.component.getMultiAdapter(
             (self.value_type, self.properties, self.propertykey),
             zeit.cms.content.interfaces.IDAVPropertyConverter,
