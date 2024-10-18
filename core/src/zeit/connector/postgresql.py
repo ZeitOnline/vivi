@@ -130,7 +130,7 @@ class Connector:
     @staticmethod
     def _set_statement_timeout(conn, cursor, statement, parameters, context, executemany):
         timeout = context.execution_options.get('statement_timeout')
-        if timeout:
+        if timeout is not None:
             cursor.execute('SET LOCAL statement_timeout=%s', (timeout,))
         return (statement, parameters)
 
