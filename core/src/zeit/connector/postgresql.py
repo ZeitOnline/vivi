@@ -77,6 +77,9 @@ class Connector:
         self.reconnect_wait = reconnect_wait
         self.engine = sqlalchemy.create_engine(dsn, poolclass=pool_class)
         sqlalchemy.event.listen(self.engine, 'engine_connect', self._reconnect)
+        sqlalchemy.event.listen(
+            self.engine, 'before_cursor_execute', self._set_statement_timeout, retval=True
+        )
         self.session = sqlalchemy.orm.scoped_session(sqlalchemy.orm.sessionmaker(bind=self.engine))
         zope.sqlalchemy.register(self.session)
         EngineTracer(self.engine, enable_commenter=True)
@@ -122,6 +125,14 @@ class Connector:
                 time.sleep(wait)
             else:
                 break
+
+    # Adapted from https://github.com/sqlalchemy/sqlalchemy/discussions/8193
+    @staticmethod
+    def _set_statement_timeout(conn, cursor, statement, parameters, context, executemany):
+        timeout = context.execution_options.get('statement_timeout')
+        if timeout:
+            cursor.execute('SET LOCAL statement_timeout=%s', (timeout,))
+        return (statement, parameters)
 
     def resource(self, uniqueid, properties):
         return self.resource_class(
@@ -614,9 +625,11 @@ class Connector:
             return 0
         return rows.one()
 
-    def _execute_suppress_errors(self, query):
+    def _execute_suppress_errors(self, query, timeout=None):
         try:
-            return self.session.execute(query).scalars()
+            return self.session.execute(
+                query, execution_options={'statement_timeout': timeout}
+            ).scalars()
         except Exception:
             log.warning('Error during search_sql, suppressed', exc_info=True)
             self.session.rollback()

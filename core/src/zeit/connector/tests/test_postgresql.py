@@ -185,6 +185,11 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
         # Ensure no InFailedSqlTransaction exception happens on subsequent calls
         self.assertEqual(1, self.connector.search_sql_count(query))
 
+    def test_search_sql_supports_separate_timeout(self):
+        query = select(Content).add_columns(sql('pg_sleep(1)'))
+        result = self.connector._execute_suppress_errors(query, timeout=1)
+        self.assertEqual(None, result)
+
     def test_search_returns_uuid(self):
         res = self.get_resource(
             'foo',
