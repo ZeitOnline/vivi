@@ -66,7 +66,9 @@ class MockDict(collections.defaultdict):
 
 
 def json_escape(value):
-    if isinstance(value, str):
+    # type Markup inherits from str
+    # but Markup.replace escapes the replacement arguments!
+    if type(value) is str:  # noqa: E721
         return value.replace('"', r'\"')
     elif isinstance(value, Undefined):
         return ''
