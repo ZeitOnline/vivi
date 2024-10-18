@@ -193,14 +193,12 @@ class Content(Base, CommonMetadata, Modified, PublishInfo, SemanticChange, Artic
         name = column.info.get('name')
         if column.info.get('toggled'):
             return FEATURE_TOGGLES.find(f'{namespace}_{name}_{mode}')
-        return True
+        return namespace is not None
 
     @classmethod
     def _columns_with_name(cls, mode='read'):
         return [
-            c
-            for c in sqlalchemy.orm.class_mapper(cls).columns
-            if c.info.get('namespace') and cls.is_column_enabled(c, mode)
+            c for c in sqlalchemy.orm.class_mapper(cls).columns if cls.is_column_enabled(c, mode)
         ]
 
     @property
