@@ -227,7 +227,8 @@ class Content(Base, CommonMetadata, Modified, PublishInfo, SemanticChange, Artic
                 namespace, name = column.info['namespace'], column.info['name']
                 value = getattr(self, column.name)
                 if value is not None:
-                    props[(name, self.NS + namespace)] = value
+                    converter = zeit.connector.interfaces.IConverter(column)
+                    props[(name, self.NS + namespace)] = converter.serialize(value)
 
         if self.lock:
             props[('lock_principal', INTERNAL_PROPERTY)] = self.lock.principal
