@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.56.0 (2024-10-18)
+-------------------
+
+- WCM-464: Support separate timeout for search_sql
+
+
 6.55.0 (2024-10-15)
 -------------------
 
