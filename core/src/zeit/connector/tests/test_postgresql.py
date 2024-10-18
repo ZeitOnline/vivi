@@ -168,7 +168,7 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
         self.assertEqual(self.connector.search_sql_count(query), 2)
 
     def test_search_sql_suppresses_errors(self):
-        self.connector.session.execute(sql('set statement_timeout=1'))
+        self.connector.session.execute(sql('set local statement_timeout=1'))
         query = select(Content).add_columns(sql('pg_sleep(1)'))
         result = self.connector.search_sql(query)
         self.assertEqual(len(result), 0)
@@ -177,7 +177,7 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
         self.assertEqual(len(result), 1)
 
     def test_search_sql_count_suppresses_errors(self):
-        self.connector.session.execute(sql('set statement_timeout=1'))
+        self.connector.session.execute(sql('set local statement_timeout=1'))
         query = select(Content)
         with mock.patch('sqlalchemy.func.count') as count:
             count.return_value = sql('count(*), pg_sleep(1)')
