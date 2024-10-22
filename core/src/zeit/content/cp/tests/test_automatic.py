@@ -1216,3 +1216,15 @@ OR properties.ressort = 'Wissen')
 AND published=true...
 """
         self.assertEllipsis(query, self.connector.search_args[0])
+
+    def test_restrict_time_adds_clause(self):
+        IRenderedArea(self.area).values()
+        self.assertEllipsis(
+            '...AND properties.date_last_published_semantic >= CURRENT_DATE - make_interval(0, 0, 0, 7)...',
+            self.connector.search_args[0],
+        )
+
+    def test_restrict_time_can_be_disabled(self):
+        self.area.query_restrict_time = False
+        IRenderedArea(self.area).values()
+        self.assertNotIn('CURRENT_DATE', self.connector.search_args[0])

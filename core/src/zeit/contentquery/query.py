@@ -121,7 +121,7 @@ class SQLContentQuery(ContentQuery):
         return query.where(ConnectorModel.id.not_in(sorted(ids)))
 
     def restrict_time(self, query):
-        if not self.context.sql_restrict_time:
+        if not self._restrict_time_enabled:
             return query
         days = int(zeit.cms.config.get('zeit.content.cp', 'sql-query-restrict-days', 7))
         column = getattr(
@@ -132,6 +132,10 @@ class SQLContentQuery(ContentQuery):
         return query.where(
             column >= sql_func.current_date() - sql_func.make_interval(0, 0, 0, days)
         )
+
+    @property
+    def _restrict_time_enabled(self):
+        return self.context.sql_restrict_time
 
 
 class SQLCustomContentQuery(SQLContentQuery):
@@ -144,6 +148,10 @@ class SQLCustomContentQuery(SQLContentQuery):
     @property
     def order_column(self):
         return self.context.query_order
+
+    @property
+    def _restrict_time_enabled(self):
+        return self.context.query_restrict_time
 
     @property
     def conditions(self):

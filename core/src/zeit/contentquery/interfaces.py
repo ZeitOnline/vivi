@@ -310,3 +310,4 @@ class IConfiguration(zope.interface.Interface):
     )
 
     sql_restrict_time = zope.schema.Bool(title=_('Restrict time interval'), default=True)
+    query_restrict_time = sql_restrict_time.bind(object())

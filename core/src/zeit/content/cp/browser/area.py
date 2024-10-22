@@ -177,6 +177,7 @@ class EditAutomatic(zeit.content.cp.browser.view.GroupedSubpageForm):
         'count',
         'query',
         'query_order',
+        'query_restrict_time',
         'elasticsearch_raw_query',
         'elasticsearch_raw_order',
         'is_complete_query',
@@ -197,6 +198,7 @@ class EditAutomatic(zeit.content.cp.browser.view.GroupedSubpageForm):
         'reach_age',
         'sql_query',
         'sql_order',
+        'sql_restrict_time',
     )
 
     field_groups = (
@@ -208,7 +210,9 @@ class EditAutomatic(zeit.content.cp.browser.view.GroupedSubpageForm):
         ),
         gocept.form.grouped.Fields(_('automatic-area-type-centerpage'), ('referenced_cp',)),
         gocept.form.grouped.Fields(_('automatic-area-type-rss-feed'), ('rss_feed',)),
-        gocept.form.grouped.Fields(_('automatic-area-type-custom'), ('query', 'query_order')),
+        gocept.form.grouped.Fields(
+            _('automatic-area-type-custom'), ('query', 'query_order', 'query_restrict_time')
+        ),
         gocept.form.grouped.Fields(
             _('automatic-area-type-topicpage'),
             ('referenced_topicpage', 'topicpage_filter', 'topicpage_order'),
@@ -224,7 +228,7 @@ class EditAutomatic(zeit.content.cp.browser.view.GroupedSubpageForm):
         ),
         gocept.form.grouped.Fields(
             _('automatic-area-type-sql-query'),
-            ('sql_query', 'sql_order'),
+            ('sql_query', 'sql_order', 'sql_restrict_time'),
         ),
     )
 
