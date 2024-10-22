@@ -51,7 +51,6 @@ AUTOMATIC_FEED_SOURCE = AutomaticFeedSource()
 class QuerySortOrderSource(zeit.cms.content.sources.SimpleDictSource):
     values = {
         'date_last_published_semantic': _('query-sort-order-last-published-semantic'),
-        'date_last_modified_semantic': _('query-sort-order-last-semantic-change'),
         'date_first_released': _('query-sort-order-first-released'),
         'date_last_published': _('query-sort-order-last-published'),
     }
