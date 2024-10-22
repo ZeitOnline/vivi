@@ -308,3 +308,5 @@ class IConfiguration(zope.interface.Interface):
         default='date_last_published_semantic desc nulls last',
         required=False,
     )
+
+    sql_restrict_time = zope.schema.Bool(title=_('Restrict time interval'), default=True)
