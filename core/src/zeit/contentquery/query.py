@@ -337,7 +337,6 @@ class CustomContentQuery(ElasticsearchContentQuery):
         'date_last_published_semantic': 'payload.workflow.date_last_published_semantic:desc',
         'date_first_released': 'payload.document.date_first_released:desc',
         'date_last_published': 'payload.workflow.date_last_published:desc',
-        'random': 'random:desc',
     }
     ES_ORDER_BWCOMPAT = {v: k for k, v in ES_ORDER.items()}
 
