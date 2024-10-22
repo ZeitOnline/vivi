@@ -195,6 +195,7 @@ class SQLDatabaseLayer(plone.testing.Layer):
     def tearDown(self):
         self['sql_connection'].close()
         del self['sql_connection']
+        del os.environ['PGDATABASE']
 
     def testSetUp(self):
         """Sets up a transaction savepoint, which will be rolled back

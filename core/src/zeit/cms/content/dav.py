@@ -15,8 +15,6 @@ import zope.schema.interfaces
 import zope.xmlpickle
 
 from zeit.cms.content.interfaces import WRITEABLE_ON_CHECKIN
-from zeit.cms.content.sources import FEATURE_TOGGLES
-from zeit.connector.models import Content as ConnectorModel
 from zeit.connector.resource import PropertyKey
 import zeit.cms.content.caching
 import zeit.cms.content.interfaces
@@ -189,19 +187,7 @@ class UnicodeProperty:
 )
 @zope.interface.implementer(zeit.cms.content.interfaces.IDAVPropertyConverter)
 class IntProperty(UnicodeProperty):
-    def __init__(self, context, properties, propertykey):
-        super().__init__(context, properties, propertykey)
-        self.has_sql_type = ConnectorModel.column_by_name(*propertykey) is not None
-
-    def fromProperty(self, value):
-        if self.has_sql_type and FEATURE_TOGGLES.find('read_metadata_columns'):
-            return value
-        return super().fromProperty(value)
-
-    def toProperty(self, value):
-        if self.has_sql_type and FEATURE_TOGGLES.find('write_metadata_columns'):
-            return value
-        return super().toProperty(value)
+    pass
 
 
 @zope.component.adapter(
@@ -327,11 +313,8 @@ class ChoicePropertyWithIterableVocabulary:
 class BoolProperty:
     def __init__(self, context, properties, propertykey):
         self.context = context
-        self.has_sql_type = ConnectorModel.column_by_name(*propertykey) is not None
 
     def fromProperty(self, value):
-        if self.has_sql_type and FEATURE_TOGGLES.find('read_metadata_columns'):
-            return value
         return self._fromProperty(value)
 
     @staticmethod
@@ -339,8 +322,6 @@ class BoolProperty:
         return value.lower() in ('yes', 'true')
 
     def toProperty(self, value):
-        if self.has_sql_type and FEATURE_TOGGLES.find('write_metadata_columns'):
-            return value
         return self._toProperty(value)
 
     @staticmethod
@@ -355,13 +336,10 @@ class BoolProperty:
 class DatetimeProperty:
     def __init__(self, context, properties, propertykey):
         self.context = context
-        self.has_sql_type = ConnectorModel.column_by_name(*propertykey) is not None
 
     def fromProperty(self, value):
         if not value:
             return None
-        if self.has_sql_type and FEATURE_TOGGLES.find('read_metadata_columns'):
-            return value
         return self._fromProperty(value)
 
     @staticmethod
@@ -372,8 +350,6 @@ class DatetimeProperty:
         return date.in_tz('UTC')
 
     def toProperty(self, value):
-        if self.has_sql_type and FEATURE_TOGGLES.find('write_metadata_columns'):
-            return value
         return self._toProperty(value)
 
     @staticmethod
@@ -407,7 +383,6 @@ class CollectionTextLineProperty:
     SPLIT_PATTERN = re.compile(r'(?!\\);')
 
     def __init__(self, context, value_type, properties, propertykey):
-        self.has_sql_type = ConnectorModel.column_by_name(*propertykey) is not None
         self.context = context
         self.value_type = value_type
         self.properties = properties
@@ -418,8 +393,6 @@ class CollectionTextLineProperty:
             self._type = self._type[0]
 
     def fromProperty(self, value):
-        if self.has_sql_type and FEATURE_TOGGLES.find('read_metadata_columns'):
-            return value
         typ = zope.component.getMultiAdapter(
             (self.value_type, self.properties, self.propertykey),
             zeit.cms.content.interfaces.IDAVPropertyConverter,
@@ -444,8 +417,6 @@ class CollectionTextLineProperty:
         return self._type(result)
 
     def toProperty(self, value):
-        if self.has_sql_type and FEATURE_TOGGLES.find('write_metadata_columns'):
-            return value
         typ = zope.component.getMultiAdapter(
             (self.value_type, self.properties, self.propertykey),
             zeit.cms.content.interfaces.IDAVPropertyConverter,

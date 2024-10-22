@@ -9,9 +9,6 @@ import pendulum
 import transaction
 import zope.interface.verify
 
-from zeit.cms.checkout.helper import checked_out
-from zeit.cms.content.sources import FEATURE_TOGGLES
-from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.connector.interfaces import (
     CopyError,
     DeleteProperty,
@@ -882,82 +879,3 @@ class ContractZopeSQL(
     copy_inherited_functions(ContractLock, locals())
     copy_inherited_functions(ContractSearch, locals())
     copy_inherited_functions(ContractCache, locals())
-
-
-class ContractProperties:
-    def setUp(self):
-        super().setUp()
-        FEATURE_TOGGLES.set('read_metadata_columns')
-        FEATURE_TOGGLES.set('write_metadata_columns')
-        self.repository['testcontent'] = ExampleContentType()
-
-    def test_converts_scalar_types_on_read(self):
-        example_date = pendulum.datetime(2010, 1, 1, 0, 0)
-        ressort = 'Wirtschaft'
-        volume_year = 2024
-        published = False
-        self.repository.connector.changeProperties(
-            'http://xml.zeit.de/testcontent',
-            {
-                ('date_created', 'http://namespaces.zeit.de/CMS/document'): example_date,
-                ('ressort', 'http://namespaces.zeit.de/CMS/print'): ressort,
-                ('year', 'http://namespaces.zeit.de/CMS/document'): volume_year,
-                ('published', 'http://namespaces.zeit.de/CMS/workflow'): published,
-            },
-        )
-        self.assertEqual(
-            example_date,
-            zeit.cms.workflow.interfaces.IModified(self.repository['testcontent']).date_created,
-        )
-        self.assertEqual(ressort, self.repository['testcontent'].printRessort)
-        self.assertEqual(volume_year, self.repository['testcontent'].year)
-        self.assertEqual(
-            published,
-            zeit.cms.workflow.interfaces.IPublishInfo(self.repository['testcontent']).published,
-        )
-
-    def test_delete_property_from_column(self):
-        id = 'http://xml.zeit.de/testcontent'
-        example_date = pendulum.datetime(2010, 1, 1, 0, 0)
-        prop = ('date_created', 'http://namespaces.zeit.de/CMS/document')
-        connector = self.repository.connector
-        connector.changeProperties(id, {prop: example_date})
-        transaction.commit()
-        connector.changeProperties(id, {prop: DeleteProperty})
-        transaction.commit()
-        res = connector[id]
-        self.assertNotIn(prop, res.properties)
-
-    def test_converts_scalar_types_on_write(self):
-        example_date = pendulum.datetime(2010, 1, 1, 0, 0)
-        with checked_out(self.repository['testcontent']) as co:
-            zeit.cms.workflow.interfaces.IModified(co).date_created = example_date
-        resource = self.repository.connector['http://xml.zeit.de/testcontent']
-        self.assertEqual(
-            example_date,
-            resource.properties[('date_created', 'http://namespaces.zeit.de/CMS/document')],
-        )
-
-    def test_converts_channels_on_read(self):
-        value = (('International', 'Nahost'), ('Wissen', None))
-        self.repository.connector.changeProperties(
-            'http://xml.zeit.de/testcontent',
-            {('channels', 'http://namespaces.zeit.de/CMS/document'): value},
-        )
-        self.assertEqual(value, self.repository['testcontent'].channels)
-
-    def test_converts_channels_on_write(self):
-        value = (('International', 'Nahost'), ('Wissen', None))
-        with checked_out(self.repository['testcontent']) as co:
-            co.channels = value
-        self.assertEqual(value, self.repository['testcontent'].channels)
-
-
-class PropertiesSQL(ContractProperties, zeit.cms.testing.FunctionalTestCase):
-    layer = zeit.connector.testing.SQL_CONTENT_LAYER
-    copy_inherited_functions(ContractProperties, locals())
-
-
-class PropertiesMock(ContractProperties, zeit.cms.testing.FunctionalTestCase):
-    layer = zeit.cms.testing.ZOPE_LAYER
-    copy_inherited_functions(ContractProperties, locals())
