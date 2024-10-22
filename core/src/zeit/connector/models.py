@@ -53,7 +53,7 @@ class CommonMetadata:
 
     print_ressort = mapped_column(Unicode, info={'namespace': 'print', 'name': 'ressort'})
     volume_year = mapped_column(Integer, info={'namespace': 'document', 'name': 'year'})
-    volume_number = mapped_column(Integer, info={'namespace': 'document', 'name': 'number'})
+    volume_number = mapped_column(Integer, info={'namespace': 'document', 'name': 'volume'})
 
 
 class Article:
