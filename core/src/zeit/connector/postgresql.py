@@ -517,7 +517,7 @@ class Connector:
                     self.session.add(lock)
                 lock.principal = principal
                 if until is None:
-                    until = pendulum.now().add(hours=1)
+                    until = pendulum.now('UTC').add(hours=1)
                 lock.until = until
                 content.lock = lock
                 self._update_lock_cache(content.uniqueid, principal, until)
@@ -748,7 +748,7 @@ def _unlock_overdue_locks():
         log.debug('Not SQL connector, skipping lock cleanup')
         return
     log.info('Unlock overdue locks...')
-    stmt = delete(Lock).where(Lock.until < pendulum.now())
+    stmt = delete(Lock).where(Lock.until < pendulum.now('UTC'))
     connector.session.execute(stmt)
     transaction.commit()
 

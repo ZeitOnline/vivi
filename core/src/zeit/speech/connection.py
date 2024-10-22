@@ -73,7 +73,7 @@ class Speech:
                     ISpeechInfo(co).checksum = audio.get('checksum')
                 elif audio['type'] == 'PREVIEW_TTS':
                     ISpeechInfo(co).preview_url = audio_entry['url']
-            ISemanticChange(co).last_semantic_change = pendulum.now()
+            ISemanticChange(co).last_semantic_change = pendulum.now('UTC')
         log.info('Updated %s for article uuid %s', speech, data['uuid'])
 
     def _find(self, article_uuid: str) -> Optional[IAudio]:

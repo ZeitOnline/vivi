@@ -42,7 +42,7 @@ class Connection:
         message = kw['message']
         pushes = message.render()
 
-        now = pendulum.now()
+        now = pendulum.now('UTC')
         # See https://docs.urbanairship.com/api/ua/#schemas-pushobject
         for push in pushes:
             expiry = push.setdefault('options', {}).setdefault('expiry', self.expire_interval)

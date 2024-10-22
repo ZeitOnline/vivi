@@ -84,7 +84,7 @@ Set until:
 
 >>> import pendulum
 >>> connector.who = None
->>> connector.until = pendulum.now().add(days=1)
+>>> connector.until = pendulum.now('UTC').add(days=1)
 >>> connector.mylock = True
 >>> info = lock_storage.getLock(content)
 >>> info.principal_id

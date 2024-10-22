@@ -36,9 +36,9 @@ class MockPublish:
             raise zeit.cms.workflow.interfaces.PublishingError('Cannot publish.')
         info = zeit.cms.workflow.interfaces.IPublishInfo(self.context)
         if not info.published:
-            info.date_first_released = pendulum.now()
+            info.date_first_released = pendulum.now('UTC')
         info.published = True
-        info.date_last_published = pendulum.now()
+        info.date_last_published = pendulum.now('UTC')
         _publish_count[self.context.uniqueId] += 1
         zope.event.notify(
             zeit.cms.workflow.interfaces.BeforePublishEvent(self.context, self.context)

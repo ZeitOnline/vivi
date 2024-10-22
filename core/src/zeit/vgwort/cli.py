@@ -21,7 +21,7 @@ log = logging.getLogger(__name__)
 
 
 def in_maintenance_hours():
-    now = pendulum.now()
+    now = pendulum.now('UTC')
     today = pendulum.datetime(now.year, now.month, now.day)
     four = today.replace(hour=3, minute=50)
     six = today.replace(hour=6, minute=10)

@@ -493,7 +493,7 @@ class PublishTask(PublishRetractTask):
         """Do everything necessary before the actual publish."""
         info = zeit.cms.workflow.interfaces.IPublishInfo(obj)
         info.published = True
-        info.date_last_published = pendulum.now()
+        info.date_last_published = pendulum.now('UTC')
         if not info.date_first_released:
             info.date_first_released = info.date_last_published
 

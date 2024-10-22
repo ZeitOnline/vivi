@@ -285,17 +285,17 @@ class ContractCopyMove:
 class ContractLock:
     def lock_resource(self, name, user, **kw):
         res = self.add_resource(name, **kw)
-        self.connector.lock(res.id, user, pendulum.now().add(hours=2))
+        self.connector.lock(res.id, user, pendulum.now('UTC').add(hours=2))
         transaction.commit()
 
     def test_lock_nonexistent_resource_raises(self):
         with self.assertRaises(KeyError):
-            self.connector.lock('http://xml.zeit.de/testing/foo', '', pendulum.now())
+            self.connector.lock('http://xml.zeit.de/testing/foo', '', pendulum.now('UTC'))
 
     def test_locked_shows_lock_status(self):
         id = self.add_resource('foo').id
         self.assertEqual((None, None, False), self.connector.locked(id))
-        self.connector.lock(id, 'zope.user', pendulum.now().add(hours=2))
+        self.connector.lock(id, 'zope.user', pendulum.now('UTC').add(hours=2))
         transaction.commit()
         user, until, mine = self.connector.locked(id)
         self.assertTrue(mine)
@@ -304,35 +304,35 @@ class ContractLock:
 
     def test_unlock_removes_lock(self):
         id = self.add_resource('foo').id
-        self.connector.lock(id, 'zope.user', pendulum.now().add(hours=2))
+        self.connector.lock(id, 'zope.user', pendulum.now('UTC').add(hours=2))
         transaction.commit()
         self.connector.unlock(id)
         self.assertEqual((None, None, False), self.connector.locked(id))
 
     def test_unlock_for_unknown_user_raises(self):
         id = self.add_resource('foo').id
-        self.connector.lock(id, 'external', pendulum.now().add(hours=2))
+        self.connector.lock(id, 'external', pendulum.now('UTC').add(hours=2))
         transaction.commit()
         with self.assertRaises(LockedByOtherSystemError):
             self.connector.unlock(id)
 
     def test_locking_already_locked_resource_by_same_user_raises(self):
         id = self.add_resource('foo').id
-        self.connector.lock(id, 'zope.user', pendulum.now().add(hours=2))
+        self.connector.lock(id, 'zope.user', pendulum.now('UTC').add(hours=2))
         transaction.commit()
         with self.assertRaises(LockingError):
-            self.connector.lock(id, 'zope.user', pendulum.now().add(hours=2))
+            self.connector.lock(id, 'zope.user', pendulum.now('UTC').add(hours=2))
 
     def test_locking_already_locked_resource_raises(self):
         id = self.add_resource('foo').id
-        self.connector.lock(id, 'zope.user', pendulum.now().add(hours=2))
+        self.connector.lock(id, 'zope.user', pendulum.now('UTC').add(hours=2))
         transaction.commit()
         with self.assertRaises(LockingError):
-            self.connector.lock(id, 'zope.another_user', pendulum.now().add(hours=2))
+            self.connector.lock(id, 'zope.another_user', pendulum.now('UTC').add(hours=2))
 
     def test_move_operation_removes_lock(self):
         id = self.add_resource('foo').id
-        self.connector.lock(id, 'zope.user', pendulum.now().add(hours=2))
+        self.connector.lock(id, 'zope.user', pendulum.now('UTC').add(hours=2))
         transaction.commit()
         self.connector.move(id, 'http://xml.zeit.de/testing/bar')
         transaction.commit()
@@ -346,7 +346,7 @@ class ContractLock:
         self.mkdir(collection_id)
         self.connector[f'{collection_id}/foo'] = Resource(None, None, 'text', BytesIO(b''))
         transaction.commit()
-        token = self.connector.lock(file_id, 'external', pendulum.now().add(hours=2))
+        token = self.connector.lock(file_id, 'external', pendulum.now('UTC').add(hours=2))
         transaction.commit()
         with self.assertRaises(LockedByOtherSystemError):
             self.connector.move(collection_id, 'http://xml.zeit.de/testing/target')
@@ -362,12 +362,12 @@ class ContractLock:
         token_1 = self.connector.lock(
             'http://xml.zeit.de/testing/folder/one',
             'external',
-            pendulum.now().add(hours=2),
+            pendulum.now('UTC').add(hours=2),
         )
         self.connector.lock(
             'http://xml.zeit.de/testing/two',
             'zope.user',
-            pendulum.now().add(hours=2),
+            pendulum.now('UTC').add(hours=2),
         )
         transaction.commit()
         with self.assertRaises(LockedByOtherSystemError):
@@ -456,7 +456,7 @@ class ContractLock:
     def test_lock_timeout(self):
         id = self.add_resource('foo').id
         self.assertEqual((None, None, False), self.connector.locked(id))
-        self.connector.lock(id, 'zope.user', pendulum.now())
+        self.connector.lock(id, 'zope.user', pendulum.now('UTC'))
         transaction.commit()
         if 'DAV' in self.__class__.__name__:
             # dav needs some more time to unlock
@@ -739,7 +739,7 @@ class ContractCache:
         self.connector.lock(
             res.id,
             'zope.user',
-            pendulum.now().add(hours=2),
+            pendulum.now('UTC').add(hours=2),
         )
         transaction.commit()
         with self.disable_storage():

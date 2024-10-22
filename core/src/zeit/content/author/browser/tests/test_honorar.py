@@ -142,7 +142,7 @@ class ReportInvalidGCIDs(zeit.content.author.testing.BrowserTestCase):
             create_content.return_value = 'some csv'
             b.open('http://localhost/++skin++vivi/HonorarReports')  # noqa
             self.assertIn(b.headers['content-type'], ('text/csv', 'text/csv;charset=utf-8'))
-            now = pendulum.now().year
+            now = pendulum.now('UTC').year
             self.assertStartsWith(
                 f'attachment; filename="Hdok-geloeschteGCIDs_{now}',
                 b.headers['content-disposition'],

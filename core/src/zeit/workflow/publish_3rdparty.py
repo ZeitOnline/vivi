@@ -81,7 +81,7 @@ class Airship(grok.Adapter):
     def _absolute_expiry(self, pushes):
         expire_interval = int(zeit.cms.config.required('zeit.push', 'urbanairship-expire-interval'))
 
-        now = pendulum.now()
+        now = pendulum.now('UTC')
         # See https://docs.urbanairship.com/api/ua/#schemas-pushobject
         for push in pushes:
             expiry = push.setdefault('options', {}).setdefault('expiry', expire_interval)

@@ -241,7 +241,7 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
     def test_regression_delitem_only_checks_locked_children_not_siblings(self):
         self.mkdir('folder')
         res = self.add_resource('foo')
-        self.connector.lock(res.id, 'external', pendulum.now().add(hours=2))
+        self.connector.lock(res.id, 'external', pendulum.now('UTC').add(hours=2))
         transaction.commit()
         with self.assertNothingRaised():
             del self.connector['http://xml.zeit.de/testing/folder']
@@ -249,7 +249,7 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
     def _create_lock(self, minutes):
         res = self.get_resource(f'foo-{minutes}', b'mybody')
         self.connector.add(res)
-        until = pendulum.now().add(minutes=minutes)
+        until = pendulum.now('UTC').add(minutes=minutes)
         self.connector.lock(res.id, 'someone', until)
 
     def test_unlock_overdue_locks(self):
@@ -290,7 +290,7 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
         self.connector.lock(res.id, 'someone', None)
         transaction.commit()
         lock_status = self.connector.locked(res.id)
-        now = pendulum.now()
+        now = pendulum.now('UTC')
         self.assertGreaterEqual(lock_status[1], now)
 
     def test_lock_update_relationship(self):

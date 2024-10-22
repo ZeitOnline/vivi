@@ -49,7 +49,7 @@ def set_date_on_create(context, event):
     modified = zeit.cms.workflow.interfaces.IModified(context, None)
     if modified is None:
         return
-    zope.security.proxy.removeSecurityProxy(modified).date_created = pendulum.now()
+    zope.security.proxy.removeSecurityProxy(modified).date_created = pendulum.now('UTC')
 
 
 @grok.subscribe(zope.interface.Interface, zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
@@ -65,7 +65,7 @@ def update_date_last_checkout(context, event):
     modified = zeit.cms.workflow.interfaces.IModified(context, None)
     if modified is None:
         return
-    zope.security.proxy.removeSecurityProxy(modified).date_last_checkout = pendulum.now()
+    zope.security.proxy.removeSecurityProxy(modified).date_last_checkout = pendulum.now('UTC')
 
 
 @grok.subscribe(zope.interface.Interface, zeit.cms.workflow.interfaces.IBeforePublishEvent)

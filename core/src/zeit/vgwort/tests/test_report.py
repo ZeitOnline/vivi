@@ -34,7 +34,7 @@ class ReportTest(zeit.vgwort.testing.TestCase):
         self.assertEqual([self.repository['testcontent']], result)
 
     def test_successful_report_should_mark_content(self):
-        now = pendulum.now()
+        now = pendulum.now('UTC')
         time.sleep(0.25)
         content = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/testcontent')
         zeit.vgwort.report.report(content)

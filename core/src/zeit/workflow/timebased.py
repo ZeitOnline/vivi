@@ -103,7 +103,7 @@ class TimeBasedWorkflow(zeit.workflow.publishinfo.PublishInfo):
         else:
             uniqueId = self.context.uniqueId
 
-        if when > pendulum.now():
+        if when > pendulum.now('UTC'):
             job_id = task.apply_async(([uniqueId],), eta=when, queue=PRIORITY_TIMEBASED).id
         else:
             job_id = task.delay([uniqueId]).id
@@ -150,7 +150,7 @@ def schedule_imported_retract_jobs(context, event):
         workflow is None
         or workflow.retract_job_id
         or not workflow.released_to
-        or workflow.released_to < pendulum.now()
+        or workflow.released_to < pendulum.now('UTC')
     ):
         return
     workflow.setup_job('retract', workflow.released_to)

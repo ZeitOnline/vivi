@@ -62,7 +62,7 @@ Searching: (:and
         """
         self.connector.ignore_locking = True
         res = self.add_resource('foo')
-        self.connector.lock(res.id, 'external', pendulum.now().add(hours=2))
+        self.connector.lock(res.id, 'external', pendulum.now('UTC').add(hours=2))
         transaction.commit()
         res = self.get_resource('foo')
         self.connector['http://xml.zeit.de/testing/foo'] = res

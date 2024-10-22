@@ -82,7 +82,7 @@ class ObjectLog(persistent.Persistent):
 @zope.interface.implementer(zeit.objectlog.interfaces.ILogEntry)
 class LogEntry(persistent.Persistent):
     def __init__(self, object, message, mapping, timestamp):
-        self.time = timestamp or pendulum.now()
+        self.time = timestamp or pendulum.now('UTC')
         self.object_reference = zope.app.keyreference.interfaces.IKeyReference(object)
         self.message = message
         self.mapping = mapping

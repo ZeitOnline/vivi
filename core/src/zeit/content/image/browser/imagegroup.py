@@ -313,7 +313,7 @@ class CopyrightCompanyPurchaseReport(zeit.cms.browser.view.Base):
         self.request = request
 
     def __call__(self):
-        filedate = pendulum.now().strftime('%Y-%m-%d-%H-%M-%S')
+        filedate = pendulum.now('UTC').strftime('%Y-%m-%d-%H-%M-%S')
         filename = f'copyright-payment-report_{filedate}.csv'
         self.request.response.setHeader('Content-Type', 'text/csv')
         self.request.response.setHeader('location', 'https://www.zeit.de')

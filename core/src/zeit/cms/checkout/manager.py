@@ -157,7 +157,7 @@ class CheckoutManager:
 
         modified = zeit.cms.workflow.interfaces.IModified(self.context, None)
         if not publishing and modified is not None:
-            zope.security.proxy.getObject(modified).date_last_modified = pendulum.now()
+            zope.security.proxy.getObject(modified).date_last_modified = pendulum.now('UTC')
 
         sc = zeit.cms.content.interfaces.ISemanticChange(self.context)
         if semantic_change is None:

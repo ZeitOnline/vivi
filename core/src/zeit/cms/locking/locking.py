@@ -73,7 +73,7 @@ class LockInfo(persistent.mapping.PersistentMapping):
         self.created = time.time()
         self.locked_until = locked_until
         if isinstance(locked_until, datetime):
-            delta = locked_until - pendulum.now()
+            delta = locked_until - pendulum.now('UTC')
             self.timeout = delta.days * 86400 + delta.seconds + delta.microseconds * 1e-6
 
     def __repr__(self):

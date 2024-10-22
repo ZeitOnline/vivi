@@ -318,7 +318,7 @@ class Lock(Base):
     def status(self):
         if self.principal is None and self.until is None:
             return LockStatus.NONE
-        elif self.until < pendulum.now():
+        elif self.until < pendulum.now('UTC'):
             return LockStatus.TIMED_OUT
         elif not lock_is_foreign(self.principal):
             return LockStatus.OWN

@@ -77,7 +77,7 @@ False
 
 >>> import pendulum
 >>> _ = zeit.cms.testing.create_interaction()
->>> workflow.release_period = (None, pendulum.now().add(days=1))
+>>> workflow.release_period = (None, pendulum.now('UTC').add(days=1))
 >>> zope.security.management.endInteraction()
 
 >>> server.setup_timebased_jobs('http://xml.zeit.de/online/2007/01/Somalia')

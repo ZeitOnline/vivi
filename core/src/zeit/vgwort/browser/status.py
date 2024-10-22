@@ -37,7 +37,7 @@ class Status:
         dfr = self.date_first_released
         later = pendulum.datetime(dfr.year, dfr.month, dfr.day)
         result = later.add(days=8)
-        now = pendulum.now()
+        now = pendulum.now('UTC')
         if result < now:
             result = pendulum.datetime(now.year, now.month, now.day)
         return result.strftime('%d.%m.%Y')

@@ -159,7 +159,7 @@ class Connector(zeit.connector.filesystem.Connector):
         if resource.is_collection:
             properties[('getcontenttype', 'DAV:')] = 'httpd/unix-directory'
         properties[('getlastmodified', 'DAV:')] = str(
-            pendulum.now().strftime('%a, %d %b %Y %H:%M:%S GMT')
+            pendulum.now('UTC').strftime('%a, %d %b %Y %H:%M:%S GMT')
         )
         properties[('getetag', 'DAV:')] = repr(time.time()) + repr(random.random())
 
@@ -291,7 +291,7 @@ class Connector(zeit.connector.filesystem.Connector):
             return (None, None, False)
         id = self._get_cannonical_id(id)
         (lock_principal, until, my_lock) = self._locked.get(id, (None, None, False))
-        if until and until < pendulum.now():
+        if until and until < pendulum.now('UTC'):
             del self._locked[id]
             return (None, None, False)
         if lock_principal:

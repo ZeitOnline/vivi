@@ -187,7 +187,7 @@ error_unless(scheduled_for_publishing(context))
         s = self.apply(r, tc)
         self.assertEqual(zeit.edit.rule.ERROR, s.status)
 
-        now = pendulum.now()
+        now = pendulum.now('UTC')
         pi = zeit.cms.workflow.interfaces.IPublishInfo(tc)
         pi.release_period = (now, None)
         r.status = None

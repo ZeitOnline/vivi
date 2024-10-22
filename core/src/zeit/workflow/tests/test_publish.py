@@ -163,7 +163,7 @@ class PublicationDependencies(zeit.workflow.testing.FunctionalTestCase):
             info = IPublishInfo(item)
             info.urgent = True
 
-        BEFORE_PUBLISH = pendulum.now()
+        BEFORE_PUBLISH = pendulum.now('UTC')
         self.publish(content)
 
         self.assertEqual(
@@ -179,7 +179,7 @@ class PublicationDependencies(zeit.workflow.testing.FunctionalTestCase):
         for item in self.related:
             info = IPublishInfo(item)
             info.urgent = True
-        BEFORE_PUBLISH = pendulum.now()
+        BEFORE_PUBLISH = pendulum.now('UTC')
         self.publish(content[0])
 
         self.assertEqual(

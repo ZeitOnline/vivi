@@ -63,7 +63,7 @@ class ReportableContentSource(grok.GlobalUtility):
 
     def mark_done(self, content):
         info = zeit.vgwort.interfaces.IReportInfo(content)
-        info.reported_on = pendulum.now()
+        info.reported_on = pendulum.now('UTC')
         self._update_tms(content)
 
     def mark_error(self, content, message):

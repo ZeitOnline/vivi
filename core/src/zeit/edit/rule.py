@@ -305,7 +305,7 @@ def scheduled_for_publishing(context):
         if not pi.release_period[0]:
             return False
         if pi.release_period[1]:
-            now = pendulum.now()
+            now = pendulum.now('UTC')
             return now <= pi.release_period[1]
         return True
 
