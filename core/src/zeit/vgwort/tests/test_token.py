@@ -1,9 +1,11 @@
 import unittest
 
+import pendulum
 import transaction
 import zope.component
 
 from zeit.vgwort.token import _order_tokens
+import zeit.cms.interfaces
 import zeit.vgwort.interfaces
 import zeit.vgwort.testing
 
@@ -62,19 +64,12 @@ class TokenTransactionTest(zeit.vgwort.testing.TestCase):
 
 class ObjectCopyTest(zeit.vgwort.testing.TestCase):
     def test_copying_should_removes_vgwort_properties_from_copy(self):
-        import datetime
-
-        import pytz
-
-        import zeit.cms.interfaces
-        import zeit.vgwort.interfaces
-
         content = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/testcontent')
         token = zeit.vgwort.interfaces.IToken(content)
         token.public_token = 'public'
         token.private_token = 'private'
         info = zeit.vgwort.interfaces.IReportInfo(content)
-        info.reported_on = datetime.datetime.now(pytz.UTC)
+        info.reported_on = pendulum.now()
         info.reported_error = 'error'
         online = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/')
         zope.copypastemove.interfaces.IObjectCopier(content).copyTo(online, 'foo')

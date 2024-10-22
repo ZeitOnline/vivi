@@ -1,11 +1,10 @@
 # coding: utf-8
-from datetime import datetime
 from unittest import mock
 
+from pendulum import datetime
 import lxml.builder
 import lxml.etree
 import pytest
-import pytz
 import requests_mock
 import zope.component
 
@@ -214,7 +213,7 @@ class TestVolumeQueries(zeit.content.volume.testing.FunctionalTestCase):
         volume.year = year
         volume.volume = name
         volume.product = zeit.cms.content.sources.Product('ZEI')
-        volume.date_digital_published = datetime(year, name, 1, tzinfo=pytz.UTC)
+        volume.date_digital_published = datetime(year, name, 1)
         year = str(year)
         name = '%02d' % name
         self.repository[year] = Folder()
@@ -340,7 +339,7 @@ class TestWebtrekkQuery(TestVolumeQueries):
         volume.year = 2019
         volume.volume = 1
         info = zeit.cms.workflow.interfaces.IPublishInfo(volume)
-        info.date_first_released = datetime(2019, 1, 1, tzinfo=pytz.UTC)
+        info.date_first_released = datetime(2019, 1, 1)
         self.volume = volume
 
     def webtrekk(self, resp):

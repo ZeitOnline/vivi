@@ -1,9 +1,8 @@
 from collections import Counter
-from datetime import datetime
 
 import celery.result
 import celery.states
-import pytz
+import pendulum
 import zope.component
 import zope.interface
 
@@ -37,9 +36,9 @@ class MockPublish:
             raise zeit.cms.workflow.interfaces.PublishingError('Cannot publish.')
         info = zeit.cms.workflow.interfaces.IPublishInfo(self.context)
         if not info.published:
-            info.date_first_released = datetime.now(pytz.UTC)
+            info.date_first_released = pendulum.now()
         info.published = True
-        info.date_last_published = datetime.now(pytz.UTC)
+        info.date_last_published = pendulum.now()
         _publish_count[self.context.uniqueId] += 1
         zope.event.notify(
             zeit.cms.workflow.interfaces.BeforePublishEvent(self.context, self.context)

@@ -531,13 +531,10 @@ determining if two property sets are equal. This is fairly save because:
 
 Note that the cached time of the transaction wins which is commited last:
 
->>> import datetime
->>> import pytz
+>>> from pendulum import datetime
 >>> from zeit.connector.interfaces import CACHED_TIME_PROPERTY
->>> c_1['id'][CACHED_TIME_PROPERTY] = datetime.datetime(
-...     2008, 1, 1, tzinfo=pytz.UTC).isoformat()
->>> c_2['id'][CACHED_TIME_PROPERTY] = datetime.datetime(
-...     2009, 4, 7, tzinfo=pytz.UTC).isoformat()
+>>> c_1['id'][CACHED_TIME_PROPERTY] = datetime(2008, 1, 1).isoformat()
+>>> c_2['id'][CACHED_TIME_PROPERTY] = datetime(2009, 4, 7).isoformat()
 >>> transactionmanager_2.commit()
 >>> transactionmanager_1.commit()
 >>> connection_1.sync()

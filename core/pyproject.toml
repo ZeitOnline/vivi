@@ -32,7 +32,6 @@ dependencies = [
     "pyjwt>=2.0.0",
     "pyramid_dogpile_cache2",
     "python-rapidjson",
-    "pytz",
     "pyyaml",
     "requests",
     "requests_file",

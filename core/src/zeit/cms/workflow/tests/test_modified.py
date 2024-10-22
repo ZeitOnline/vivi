@@ -1,6 +1,4 @@
-from datetime import datetime
-
-import pytz
+from pendulum import datetime
 import transaction
 import zope.event
 
@@ -13,13 +11,13 @@ class LastSemanticPublish(zeit.cms.testing.ZeitCmsTestCase):
     def setUp(self):
         super().setUp()
         zeit.cms.workflow.mock._publish_times['http://xml.zeit.de/testcontent'] = datetime(
-            2015, 5, 17, tzinfo=pytz.UTC
+            2015, 5, 17
         )
 
     def test_lsp_is_updated_when_lsc_is_newer(self):
         content = self.repository['testcontent']
         published = zeit.cms.workflow.interfaces.IPublishInfo(content)
-        OLD_TIMESTAMP = datetime(2010, 1, 1, tzinfo=pytz.UTC)
+        OLD_TIMESTAMP = datetime(2010, 1, 1)
         zeit.cms.workflow.mock._publish_times_semantic[content.uniqueId] = OLD_TIMESTAMP
 
         with checked_out(content, semantic_change=True, temporary=False):

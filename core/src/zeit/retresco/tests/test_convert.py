@@ -1,8 +1,8 @@
 # coding: utf-8
 from unittest import mock
-import datetime
 
-import pytz
+from pendulum import datetime
+import pendulum
 import zope.component
 
 from zeit.cms.checkout.helper import checked_out
@@ -45,7 +45,7 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
         images = zeit.content.image.interfaces.IImages(article)
         image = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')
         with checked_out(image) as co:
-            zeit.content.image.interfaces.IImageMetadata(co).expires = datetime.datetime(2007, 4, 1)
+            zeit.content.image.interfaces.IImageMetadata(co).expires = datetime(2007, 4, 1)
         images.image = zeit.cms.interfaces.ICMSContent(image.uniqueId)
 
         data = zeit.retresco.interfaces.ITMSRepresentation(article)()
@@ -147,17 +147,14 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
         self.assertStartsWith('{urn:uuid:', data.pop('doc_id'))
         self.assertStartsWith('{urn:uuid:', data['payload']['document'].pop('uuid'))
         self.assertStartsWith(
-            str(datetime.date.today().year), data['payload']['document'].pop('date_last_checkout')
+            str(pendulum.today().year), data['payload']['document'].pop('date_last_checkout')
         )
         self.assertStartsWith(
-            str(datetime.date.today().year), data['payload']['meta'].pop('tms_last_indexed')
+            str(pendulum.today().year), data['payload']['meta'].pop('tms_last_indexed')
         )
         self.assertStartsWith(
-            str(datetime.date.today().year),
-            data['payload']['document'].pop(
-                'date_last_modified',
-                str(datetime.date.today().year),
-            ),
+            str(pendulum.today().year),
+            data['payload']['document'].pop('date_last_modified', str(pendulum.today().year)),
         )
         self.assertStartsWith('<pickle', data['payload']['meta'].pop('provides'))
         self.assertStartsWith(
@@ -204,7 +201,7 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
         volume.volume = 1
         volume.product = zeit.cms.content.sources.Product('ZEI')
         volume.set_cover('ipad', 'ZEI', self.repository['testcontent'])
-        published = datetime.datetime(2015, 1, 1, 0, 0, tzinfo=pytz.UTC)
+        published = datetime(2015, 1, 1, 0, 0)
         volume.date_digital_published = published
         data = zeit.retresco.interfaces.ITMSRepresentation(volume)()
         self.assertEqual('Teäser 01/2015', data['title'])

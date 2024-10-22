@@ -4,8 +4,8 @@ import logging
 import time
 
 import BTrees
+import pendulum
 import persistent
-import pytz
 import transaction
 import zope.app.keyreference.interfaces
 import zope.component
@@ -82,7 +82,7 @@ class ObjectLog(persistent.Persistent):
 @zope.interface.implementer(zeit.objectlog.interfaces.ILogEntry)
 class LogEntry(persistent.Persistent):
     def __init__(self, object, message, mapping, timestamp):
-        self.time = timestamp or datetime.datetime.now(pytz.UTC)
+        self.time = timestamp or pendulum.now()
         self.object_reference = zope.app.keyreference.interfaces.IKeyReference(object)
         self.message = message
         self.mapping = mapping

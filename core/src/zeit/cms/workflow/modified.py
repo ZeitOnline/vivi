@@ -2,7 +2,6 @@ from datetime import datetime
 
 import grokcore.component as grok
 import pendulum
-import pytz
 import zope.interface
 
 import zeit.cms.content.dav
@@ -11,7 +10,7 @@ import zeit.cms.workflow.interfaces
 import zeit.cms.workingcopy.interfaces
 
 
-MIN_DATE = datetime.min.replace(tzinfo=pytz.UTC)
+MIN_DATE = pendulum.instance(datetime.min)
 
 
 @grok.implementer(zeit.cms.workflow.interfaces.IModified)
@@ -66,7 +65,7 @@ def update_date_last_checkout(context, event):
     modified = zeit.cms.workflow.interfaces.IModified(context, None)
     if modified is None:
         return
-    zope.security.proxy.removeSecurityProxy(modified).date_last_checkout = datetime.now(pytz.UTC)
+    zope.security.proxy.removeSecurityProxy(modified).date_last_checkout = pendulum.now()
 
 
 @grok.subscribe(zope.interface.Interface, zeit.cms.workflow.interfaces.IBeforePublishEvent)

@@ -1,8 +1,7 @@
-import datetime
 import unittest
 
+from pendulum import datetime
 from selenium.webdriver.common.keys import Keys
-import pytz
 
 from zeit.cms.repository.interfaces import IAutomaticallyRenameable
 from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
@@ -60,9 +59,7 @@ class WorkflowStatusDisplayTest(zeit.content.article.testing.BrowserTestCase):
         article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         IContentWorkflow(article).urgent = True
         IPublish(article).publish()
-        IPublishInfo(article).date_last_published = datetime.datetime(
-            2013, 7, 2, 9, 31, 24, tzinfo=pytz.utc
-        )
+        IPublishInfo(article).date_last_published = datetime(2013, 7, 2, 9, 31, 24)
         b = self.browser
         b.open('http://localhost/++skin++vivi/repository' '/online/2007/01/Somalia/@@checkout')
         b.open('@@contents')

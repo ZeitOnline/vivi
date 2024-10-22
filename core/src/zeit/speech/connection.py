@@ -1,8 +1,7 @@
-from datetime import datetime
 from typing import Optional
 import logging
 
-import pytz
+import pendulum
 import zope.component
 import zope.event
 import zope.interface
@@ -74,7 +73,7 @@ class Speech:
                     ISpeechInfo(co).checksum = audio.get('checksum')
                 elif audio['type'] == 'PREVIEW_TTS':
                     ISpeechInfo(co).preview_url = audio_entry['url']
-            ISemanticChange(co).last_semantic_change = datetime.now(pytz.UTC)
+            ISemanticChange(co).last_semantic_change = pendulum.now()
         log.info('Updated %s for article uuid %s', speech, data['uuid'])
 
     def _find(self, article_uuid: str) -> Optional[IAudio]:

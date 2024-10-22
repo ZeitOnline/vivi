@@ -1,10 +1,9 @@
-from datetime import datetime, timedelta
 from io import StringIO
 from unittest import mock
 import unittest
 
 import lxml.etree
-import pytz
+import pendulum
 import zope.component
 import zope.interface
 
@@ -188,14 +187,14 @@ error_unless(scheduled_for_publishing(context))
         s = self.apply(r, tc)
         self.assertEqual(zeit.edit.rule.ERROR, s.status)
 
-        now = datetime.now(pytz.UTC)
+        now = pendulum.now()
         pi = zeit.cms.workflow.interfaces.IPublishInfo(tc)
         pi.release_period = (now, None)
         r.status = None
         s = self.apply(r, tc)
         self.assertNotEqual(zeit.edit.rule.ERROR, s.status)
 
-        pi.release_period = (now, now + timedelta(days=1))
+        pi.release_period = (now, now.add(days=1))
         r.status = None
         s = self.apply(r, tc)
         self.assertNotEqual(zeit.edit.rule.ERROR, s.status)

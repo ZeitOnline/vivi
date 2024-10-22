@@ -1,10 +1,9 @@
-from datetime import datetime
 from os import path
 from unittest import mock
 import importlib.resources
 import shutil
 
-import pytz
+from pendulum import datetime
 import transaction
 import zope.security.management
 
@@ -62,9 +61,7 @@ class ImportVideoTest(zeit.brightcove.testing.FunctionalTestCase):
         video = ICMSContent('http://xml.zeit.de/video/2017-05/myvid')
         self.assertEqual('changed', video.title)
         lsc = zeit.cms.content.interfaces.ISemanticChange(video)
-        self.assertEqual(
-            datetime(2017, 5, 16, 8, 24, 55, 916000, tzinfo=pytz.UTC), lsc.last_semantic_change
-        )
+        self.assertEqual(datetime(2017, 5, 16, 8, 24, 55, 916000), lsc.last_semantic_change)
 
     def test_should_publish_after_update(self):
         bc = create_video()

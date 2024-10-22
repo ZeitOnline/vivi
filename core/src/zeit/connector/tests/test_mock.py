@@ -1,9 +1,7 @@
-from datetime import datetime, timedelta
 from unittest import mock
 import io
 import logging
 
-from pytz import UTC
 import pendulum
 import transaction
 
@@ -64,7 +62,7 @@ Searching: (:and
         """
         self.connector.ignore_locking = True
         res = self.add_resource('foo')
-        self.connector.lock(res.id, 'external', datetime.now(UTC) + timedelta(hours=2))
+        self.connector.lock(res.id, 'external', pendulum.now().add(hours=2))
         transaction.commit()
         res = self.get_resource('foo')
         self.connector['http://xml.zeit.de/testing/foo'] = res

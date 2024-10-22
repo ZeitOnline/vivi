@@ -1,5 +1,4 @@
 from ast import literal_eval
-from datetime import datetime, timedelta
 from functools import partial
 from io import BytesIO, StringIO
 from logging import getLogger
@@ -25,7 +24,7 @@ from sqlalchemy.orm import joinedload
 import google.api_core.exceptions
 import opentelemetry.instrumentation.sqlalchemy
 import opentelemetry.metrics
-import pytz
+import pendulum
 import sqlalchemy
 import sqlalchemy.event
 import sqlalchemy.orm
@@ -518,7 +517,7 @@ class Connector:
                     self.session.add(lock)
                 lock.principal = principal
                 if until is None:
-                    until = datetime.now(pytz.UTC) + timedelta(hours=1)
+                    until = pendulum.now().add(hours=1)
                 lock.until = until
                 content.lock = lock
                 self._update_lock_cache(content.uniqueid, principal, until)
@@ -749,7 +748,7 @@ def _unlock_overdue_locks():
         log.debug('Not SQL connector, skipping lock cleanup')
         return
     log.info('Unlock overdue locks...')
-    stmt = delete(Lock).where(Lock.until < datetime.now(pytz.UTC))
+    stmt = delete(Lock).where(Lock.until < pendulum.now())
     connector.session.execute(stmt)
     transaction.commit()
 

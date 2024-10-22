@@ -1,7 +1,5 @@
-from datetime import datetime
-
 import grokcore.component as grok
-import pytz
+import pendulum
 import zope.component
 
 from zeit.cms.i18n import MessageFactory as _
@@ -35,7 +33,7 @@ class Liveblog(zeit.content.article.edit.block.Block):
         use_default=True,
     )
 
-    LIVEBLOG_VERSION_UPDATE = datetime(2018, 8, 6, tzinfo=pytz.UTC)
+    LIVEBLOG_VERSION_UPDATE = pendulum.datetime(2018, 8, 6)
 
     @property
     def version(self):

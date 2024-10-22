@@ -82,11 +82,9 @@ the lock owner will be prefixed by "othersystem.":
 
 Set until:
 
->>> import datetime
->>> import pytz
+>>> import pendulum
 >>> connector.who = None
->>> connector.until = datetime.datetime.now(pytz.UTC) + datetime.timedelta(
-...     days=1)
+>>> connector.until = pendulum.now().add(days=1)
 >>> connector.mylock = True
 >>> info = lock_storage.getLock(content)
 >>> info.principal_id

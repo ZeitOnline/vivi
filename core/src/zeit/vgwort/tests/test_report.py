@@ -1,8 +1,7 @@
 from unittest import mock
-import datetime
 import time
 
-import pytz
+import pendulum
 import zope.component
 import zope.interface
 
@@ -35,7 +34,7 @@ class ReportTest(zeit.vgwort.testing.TestCase):
         self.assertEqual([self.repository['testcontent']], result)
 
     def test_successful_report_should_mark_content(self):
-        now = datetime.datetime.now(pytz.UTC)
+        now = pendulum.now()
         time.sleep(0.25)
         content = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/testcontent')
         zeit.vgwort.report.report(content)

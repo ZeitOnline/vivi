@@ -1,7 +1,6 @@
-from datetime import datetime
 import re
 
-import pytz
+import pendulum
 import zc.table
 import zope.formlib.form
 import zope.interface
@@ -49,7 +48,7 @@ class Add(zeit.cms.browser.form.AddForm):
     )
 
     def suggestName(self, job):
-        job.title = datetime.now(pytz.timezone('Europe/Berlin')).strftime('%Y-%m-%dT%H:%M:%S')
+        job.title = pendulum.now(tz='Europe/Berlin').strftime('%Y-%m-%dT%H:%M:%S')
         return job.title
 
     def applyChanges(self, job, data):

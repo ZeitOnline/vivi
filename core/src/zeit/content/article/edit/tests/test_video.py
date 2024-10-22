@@ -1,10 +1,9 @@
-from datetime import datetime
 from unittest import mock
 import contextlib
 import unittest
 
+from pendulum import datetime
 import lxml.builder
-import pytz
 
 from zeit.content.article.edit.video import Video
 import zeit.content.article.edit.tests.test_reference
@@ -60,7 +59,7 @@ class VideoTest(unittest.TestCase):
         icc = mock.Mock(side_effect=cmscontent)
         video = self.get_video()
         with mock.patch('zeit.cms.interfaces.ICMSContent', new=icc):
-            video_obj.expires = datetime(2001, 4, 1, 3, 6, tzinfo=pytz.UTC)
+            video_obj.expires = datetime(2001, 4, 1, 3, 6)
             video.video = video_obj
             self.assertEqual('2001-04-01T03:06:00+00:00', video.xml.get('expires'))
 
@@ -114,7 +113,7 @@ class VideoUpdateTest(zeit.content.article.testing.FunctionalTestCase):
 
         self.repository['video'] = Video()
         with zeit.cms.checkout.helper.checked_out(self.repository['video']) as co:
-            co.expires = datetime(2012, 1, 1, tzinfo=pytz.UTC)
+            co.expires = datetime(2012, 1, 1)
 
         with self.video_block() as block:
             block.video = self.repository['video']

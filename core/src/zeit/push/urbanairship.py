@@ -1,5 +1,4 @@
 # coding: utf-8
-from datetime import datetime, timedelta
 from unittest import mock
 import importlib.resources
 import json
@@ -10,7 +9,7 @@ import urllib.parse
 
 import bugsnag
 import grokcore.component as grok
-import pytz
+import pendulum
 import requests
 import zope.interface
 import zope.lifecycleevent
@@ -43,14 +42,14 @@ class Connection:
         message = kw['message']
         pushes = message.render()
 
-        now = datetime.now(pytz.UTC)
+        now = pendulum.now()
         # See https://docs.urbanairship.com/api/ua/#schemas-pushobject
         for push in pushes:
             expiry = push.setdefault('options', {}).setdefault('expiry', self.expire_interval)
             # We transmit an absolute timestamp, not relative seconds, as a
             # safetybelt against (very) delayed pushes. The format must not
             # contain microseconds, so no `isoformat`.
-            expiry = now + timedelta(seconds=expiry)
+            expiry = now.add(seconds=expiry)
             push['options']['expiry'] = expiry.strftime('%Y-%m-%dT%H:%M:%S')
 
         try:
