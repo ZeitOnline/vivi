@@ -5,7 +5,6 @@ import logging
 import pendulum
 import transaction
 
-from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.connector.search import SearchVar as SV
 import zeit.connector.testing
 
@@ -66,40 +65,3 @@ Searching: (:and
         transaction.commit()
         res = self.get_resource('foo')
         self.connector['http://xml.zeit.de/testing/foo'] = res
-
-
-class MockTypeConversionTest(zeit.connector.testing.MockTest):
-    def test_converts_sql_properties_on_read(self):
-        params = [
-            [
-                ('workflow', 'published'),
-                True,
-                'yes',
-            ],
-            [
-                ('document', 'date_created'),
-                pendulum.datetime(1970, 1, 1),
-                '1970-01-01T00:00:00+00:00',
-            ],
-            [
-                ('document', 'channels'),
-                (
-                    ('International', 'Nahost'),
-                    ('Wissen', None),
-                ),
-                'International Nahost;Wissen',
-            ],
-            [
-                ('document', 'channels'),
-                (),
-                '',
-            ],
-        ]
-        for prop, val_py, val_str in params:
-            prop = (prop[1], f'http://namespaces.zeit.de/CMS/{prop[0]}')
-            FEATURE_TOGGLES.unset('read_metadata_columns')
-            res = self.add_resource('foo', properties={prop: val_str})
-            self.assertEqual(res.properties[prop], val_str)
-            FEATURE_TOGGLES.set('read_metadata_columns')
-            res = self.connector[res.id]
-            self.assertEqual(res.properties[prop], val_py)

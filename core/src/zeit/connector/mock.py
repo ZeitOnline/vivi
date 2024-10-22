@@ -12,7 +12,6 @@ from sqlalchemy.dialects import postgresql
 import pendulum
 import zope.event
 
-from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.connector.interfaces import (
     ID_NAMESPACE,
     UUID_PROPERTY,
@@ -362,16 +361,7 @@ class Connector(zeit.connector.filesystem.Connector):
             properties = super()._get_properties(id)
         else:
             properties = properties.copy()
-            self._convert_sql_types(properties)
         return properties
-
-    def _convert_sql(self, key, value):
-        if (
-            FEATURE_TOGGLES.find('write_metadata_columns')
-            or FEATURE_TOGGLES.find('write_metadata_columns_strict')
-        ) and not isinstance(value, str):
-            return value
-        return super()._convert_sql(key, value)
 
     def _set_properties(self, id, properties):
         stored_properties = self._get_properties(id)
@@ -386,10 +376,7 @@ class Connector(zeit.connector.filesystem.Connector):
                 stored_properties.pop((name, namespace), None)
                 continue
 
-            if not (
-                FEATURE_TOGGLES.find('write_metadata_columns')
-                or FEATURE_TOGGLES.find('write_metadata_columns_strict')
-            ) and not isinstance(value, str):
+            if not isinstance(value, str):
                 raise ValueError('Expected str, got %s: %r' % (type(value), value))
             stored_properties[(name, namespace)] = value
         self._properties[id] = stored_properties
