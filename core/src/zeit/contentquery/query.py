@@ -2,6 +2,7 @@ import json
 import logging
 
 from sqlalchemy import and_ as sql_and
+from sqlalchemy import cast as sql_cast
 from sqlalchemy import func as sql_func
 from sqlalchemy import not_ as sql_not
 from sqlalchemy import or_ as sql_or
@@ -10,6 +11,7 @@ from sqlalchemy import text as sql
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
 import lxml
+import pendulum
 import requests
 import zope.component
 import zope.interface
@@ -129,9 +131,9 @@ class SQLContentQuery(ContentQuery):
         )
         if not isinstance(column.type, TIMESTAMP):
             column = ConnectorModel.date_last_published_semantic
-        return query.where(
-            column >= sql_func.current_date() - sql_func.make_interval(0, 0, 0, days)
-        )
+        now = zeit.cms.config.get('zeit.reach', 'freeze-now')
+        now = sql_cast(pendulum.parse(now), TIMESTAMP) if now else sql_func.current_date()
+        return query.where(column >= now - sql_func.make_interval(0, 0, 0, days))
 
     @property
     def _restrict_time_enabled(self):
