@@ -3,6 +3,18 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.57.0 (2024-10-22)
+-------------------
+
+- WCM-411: Fix property name for 'volume_number'
+
+- WCM-456: Keep WebDAVProperties API consistent, operate with string values independent of connector toggles. Instead convert property values only, when metadata columns are origin or source.
+
+
+MAINT:
+- Use pendulum datetime library everywhere
+
+
 6.56.0 (2024-10-18)
 -------------------
 

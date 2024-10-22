@@ -1,1 +1,0 @@
-WCM-456: Keep WebDAVProperties API consistent, operate with string values independent of connector toggles. Instead convert property values only, when metadata columns are origin or source.
