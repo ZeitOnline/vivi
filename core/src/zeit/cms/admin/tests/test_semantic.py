@@ -1,6 +1,4 @@
-import datetime
-
-import pytz
+from pendulum import datetime
 
 from zeit.cms.admin.interfaces import IAdjustSemanticPublish
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
@@ -15,12 +13,12 @@ class TestSemantic(zeit.cms.testing.ZeitCmsTestCase):
         self.content = ExampleContentType()
 
     def test_adjust_semantic_publish_displays_date_last_published_semantic(self):
-        lsc = datetime.datetime(2013, 10, 30, tzinfo=pytz.UTC)
+        lsc = datetime(2013, 10, 30)
         zeit.cms.workflow.interfaces.IPublishInfo(self.content).date_last_published_semantic = lsc
         self.assertEqual(lsc, IAdjustSemanticPublish(self.content).adjust_semantic_publish)
 
     def test_setting_adjust_semantic_publish_overwrites_lsc_and_dlps(self):
-        lsc = datetime.datetime(2013, 10, 30, tzinfo=pytz.UTC)
+        lsc = datetime(2013, 10, 30)
         semantic = IAdjustSemanticPublish(self.content)
         semantic.adjust_semantic_publish = lsc
 
@@ -36,14 +34,14 @@ class TestSemantic(zeit.cms.testing.ZeitCmsTestCase):
         zeit.cms.content.interfaces.ISemanticChange(self.content).has_semantic_change = True
 
         semantic = IAdjustSemanticPublish(self.content)
-        semantic.adjust_semantic_publish = datetime.datetime(2013, 10, 30, tzinfo=pytz.UTC)
+        semantic.adjust_semantic_publish = datetime(2013, 10, 30)
 
         self.assertEqual(
             False, zeit.cms.content.interfaces.ISemanticChange(self.content).has_semantic_change
         )
 
     def test_setting_adjust_first_released_overwrites_dfr(self):
-        lsc = datetime.datetime(2013, 10, 30, tzinfo=pytz.UTC)
+        lsc = datetime(2013, 10, 30)
         semantic = IAdjustSemanticPublish(self.content)
         semantic.adjust_first_released = lsc
 

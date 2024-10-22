@@ -1,4 +1,3 @@
-from datetime import datetime
 from uuid import uuid4
 import collections
 import hashlib
@@ -14,7 +13,7 @@ from sqlalchemy import (
 )
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import declared_attr, mapped_column, relationship
-import pytz
+import pendulum
 import sqlalchemy
 
 from zeit.cms.content.sources import FEATURE_TOGGLES
@@ -319,7 +318,7 @@ class Lock(Base):
     def status(self):
         if self.principal is None and self.until is None:
             return LockStatus.NONE
-        elif self.until < datetime.now(pytz.UTC):
+        elif self.until < pendulum.now('UTC'):
             return LockStatus.TIMED_OUT
         elif not lock_is_foreign(self.principal):
             return LockStatus.OWN

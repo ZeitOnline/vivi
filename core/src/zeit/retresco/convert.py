@@ -1,13 +1,12 @@
-from datetime import datetime
 import logging
 import os.path
 import re
 
+from pendulum import datetime
 import grokcore.component as grok
 import lxml.builder
 import lxml.etree
 import pendulum
-import pytz
 import zope.component
 import zope.interface
 import zope.publisher.browser
@@ -44,7 +43,7 @@ import zeit.seo.interfaces
 
 
 log = logging.getLogger(__name__)
-MIN_DATE = datetime(1970, 1, 1, tzinfo=pytz.UTC)
+MIN_DATE = datetime(1970, 1, 1)
 
 
 @grok.implementer(zeit.retresco.interfaces.ITMSRepresentation)
@@ -274,7 +273,7 @@ class PublishInfo(Converter):
         return {
             # TMS insists on this precise date format, instead of supporting
             # general ISO8601, sigh.
-            'date': tms_date.astimezone(pytz.UTC).strftime('%Y-%m-%dT%H:%M:%SZ'),
+            'date': tms_date.strftime('%Y-%m-%dT%H:%M:%SZ'),
         }
 
 

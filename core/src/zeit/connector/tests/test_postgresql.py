@@ -1,13 +1,12 @@
-from datetime import datetime, timedelta
 from io import BytesIO
 from unittest import mock
+import datetime
 
 from sqlalchemy import func, select
 from sqlalchemy import text as sql
 from sqlalchemy.exc import IntegrityError
 import google.api_core.exceptions
 import pendulum
-import pytz
 import transaction
 
 from zeit.cms.content.sources import FEATURE_TOGGLES
@@ -91,7 +90,7 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
         self.connector.add(res)
         transaction.commit()
         props = self.connector._get_content(res.id)
-        self.assertIsInstance(props.last_updated, datetime)
+        self.assertIsInstance(props.last_updated, datetime.datetime)
 
     def test_determines_size_for_gcs_upload(self):
         body = b'mybody'
@@ -242,7 +241,7 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
     def test_regression_delitem_only_checks_locked_children_not_siblings(self):
         self.mkdir('folder')
         res = self.add_resource('foo')
-        self.connector.lock(res.id, 'external', datetime.now(pytz.UTC) + timedelta(hours=2))
+        self.connector.lock(res.id, 'external', pendulum.now('UTC').add(hours=2))
         transaction.commit()
         with self.assertNothingRaised():
             del self.connector['http://xml.zeit.de/testing/folder']
@@ -250,7 +249,7 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
     def _create_lock(self, minutes):
         res = self.get_resource(f'foo-{minutes}', b'mybody')
         self.connector.add(res)
-        until = datetime.now(pytz.UTC) + timedelta(minutes=minutes)
+        until = pendulum.now('UTC').add(minutes=minutes)
         self.connector.lock(res.id, 'someone', until)
 
     def test_unlock_overdue_locks(self):
@@ -291,7 +290,7 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
         self.connector.lock(res.id, 'someone', None)
         transaction.commit()
         lock_status = self.connector.locked(res.id)
-        now = datetime.now(pytz.UTC)
+        now = pendulum.now('UTC')
         self.assertGreaterEqual(lock_status[1], now)
 
     def test_lock_update_relationship(self):

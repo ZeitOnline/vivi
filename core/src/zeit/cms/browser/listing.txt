@@ -77,14 +77,13 @@ Let's indicate a published object:
 When we have local modifications the we get the third indicator. Let's try some
 "None"-cases before:
 
->>> import datetime
->>> import pytz
+>>> from pendulum import datetime
 >>> import zeit.connector.interfaces
 >>> import zope.component
 >>> connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
 >>> connector.changeProperties(uid, {
 ...     ('date_last_modified', 'http://namespaces.zeit.de/CMS/document'):
-...     datetime.datetime(2007, 12, 6, 12, 00, tzinfo=pytz.UTC).isoformat()})
+...     datetime(2007, 12, 6, 12, 00).isoformat()})
 
 We don't know when the object was published. Assume it's fresh:
 
@@ -113,8 +112,7 @@ True
 
 With a publication date *after* the modifcation date it is also fresh:
 
->>> zeit.cms.workflow.mock._publish_times[uid] = datetime.datetime(
-...     2007, 12, 6, 13, 00, tzinfo=pytz.UTC)
+>>> zeit.cms.workflow.mock._publish_times[uid] = datetime(2007, 12, 6, 13, 0)
 >>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
 >>> print(browser.contents)
 <?xml ...
@@ -134,8 +132,7 @@ With a publication date *after* the modifcation date it is also fresh:
 
 With a publication time *before* the modifaction time it is not fresh:
 
->>> zeit.cms.workflow.mock._publish_times[uid] = datetime.datetime(
-...     2007, 12, 6, 11, 00, tzinfo=pytz.UTC)
+>>> zeit.cms.workflow.mock._publish_times[uid] = datetime(2007, 12, 6, 11, 0)
 >>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
 >>> print(browser.contents)
 <?xml ...

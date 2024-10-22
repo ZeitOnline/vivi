@@ -1,6 +1,4 @@
-from datetime import datetime
-
-import pytz
+from pendulum import datetime
 
 import zeit.cms.workflow.interfaces
 import zeit.vgwort.interfaces
@@ -14,7 +12,7 @@ class RetryReport(zeit.vgwort.testing.BrowserTestCase):
     def test_resets_report_properties(self):
         content = self.repository['testcontent']
         info = zeit.vgwort.interfaces.IReportInfo(content)
-        info.reported_on = datetime(2017, 5, 22, tzinfo=pytz.UTC)
+        info.reported_on = datetime(2017, 5, 22)
         zeit.cms.workflow.interfaces.IPublishInfo(content).date_first_released = info.reported_on
 
         b = self.browser

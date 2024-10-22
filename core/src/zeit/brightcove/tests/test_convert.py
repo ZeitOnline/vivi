@@ -130,7 +130,7 @@ class VideoTest(zeit.brightcove.testing.FunctionalTestCase, zeit.cms.tagging.tes
         self.repository['a1'] = Author()
         cms = CMSVideo()
         bc = BCVideo()
-        next_year = pendulum.now().year + 1
+        next_year = pendulum.now('UTC').year + 1
         bc.data = {
             'id': 'myvid',
             'name': 'title',

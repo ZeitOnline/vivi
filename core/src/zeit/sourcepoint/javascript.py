@@ -67,7 +67,7 @@ class JavaScript:
     def _store(self, content):
         obj = zeit.content.text.text.Text()
         filename = self.FILENAME.format(
-            prefix=self.prefix, now=pendulum.now().strftime('%Y%m%d%H%M')
+            prefix=self.prefix, now=pendulum.now('UTC').strftime('%Y%m%d%H%M')
         )
         log.info('Storing new contents as %s/%s', self.folder_id, filename)
         obj.text = content

@@ -1,8 +1,7 @@
-import datetime
 import logging
 
 import grokcore.component as grok
-import pytz
+import pendulum
 import z3c.celery.celery
 import zope.component
 import zope.interface
@@ -104,7 +103,7 @@ class TimeBasedWorkflow(zeit.workflow.publishinfo.PublishInfo):
         else:
             uniqueId = self.context.uniqueId
 
-        if when > datetime.datetime.now(pytz.UTC):
+        if when > pendulum.now('UTC'):
             job_id = task.apply_async(([uniqueId],), eta=when, queue=PRIORITY_TIMEBASED).id
         else:
             job_id = task.delay([uniqueId]).id
@@ -151,7 +150,7 @@ def schedule_imported_retract_jobs(context, event):
         workflow is None
         or workflow.retract_job_id
         or not workflow.released_to
-        or workflow.released_to < datetime.datetime.now(pytz.UTC)
+        or workflow.released_to < pendulum.now('UTC')
     ):
         return
     workflow.setup_job('retract', workflow.released_to)

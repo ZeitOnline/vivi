@@ -58,7 +58,7 @@ def delete_content_from_tms_indexes():
                 continue
 
     if errors:
-        current_time = pendulum.now().strftime('%Y%m%d%H%M%S')
+        current_time = pendulum.now('UTC').strftime('%Y%m%d%H%M%S')
         filename = os.path.expanduser(f'~/errors_{current_time}.txt')
         log.info(f'\n🚨 {len(set(errors))}. Writing {filename} ...')
         with open(filename, 'w') as f:

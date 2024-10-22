@@ -1,11 +1,10 @@
-from datetime import datetime, timedelta
 from io import StringIO
 from unittest import mock
 import logging
 
 import celery.result
 import celery_longterm_scheduler
-import pytz
+import pendulum
 import transaction
 import zope.component
 import zope.i18n
@@ -29,9 +28,7 @@ class TimeBasedWorkflowTest(zeit.workflow.testing.FunctionalTestCase):
             mock.patch('celery_longterm_scheduler.Task.apply_async') as apply_async,
             mock.patch(asynch, new=True),
         ):
-            workflow.add_job(
-                zeit.workflow.publish.PUBLISH_TASK, datetime.now(pytz.UTC) + timedelta(1)
-            )
+            workflow.add_job(zeit.workflow.publish.PUBLISH_TASK, pendulum.now('UTC').add(days=1))
             self.assertEqual(False, apply_async.called)
             transaction.commit()
 
@@ -48,7 +45,7 @@ class TimeBasedWorkflowTest(zeit.workflow.testing.FunctionalTestCase):
             rn.renameable = True
             rn.rename_to = 'changed'
             workflow = zeit.cms.workflow.interfaces.IPublishInfo(co)
-            workflow.release_period = (datetime.now(pytz.UTC) + timedelta(days=1), None)
+            workflow.release_period = (pendulum.now('UTC').add(days=1), None)
             transaction.commit()
             self.assertEqual('http://xml.zeit.de/changed', apply_async.call_args[0][0][0][0])
 
@@ -57,7 +54,7 @@ class PrintImportSchedulingTest(zeit.workflow.testing.FunctionalTestCase):
     def test_should_schedule_job_when_no_jobid_present(self):
         content = self.repository['testcontent']
         workflow = zeit.cms.workflow.interfaces.IPublishInfo(content)
-        workflow.released_to = datetime.now(pytz.UTC) + timedelta(days=1)
+        workflow.released_to = pendulum.now('UTC').add(days=1)
         self.assertEqual(None, workflow.retract_job_id)
         zope.event.notify(zeit.cms.workflow.interfaces.PublishedEvent(content, content))
         self.assertNotEqual(None, workflow.retract_job_id)
@@ -65,7 +62,7 @@ class PrintImportSchedulingTest(zeit.workflow.testing.FunctionalTestCase):
     def test_jobid_present_should_do_nothing(self):
         content = self.repository['testcontent']
         workflow = zeit.cms.workflow.interfaces.IPublishInfo(content)
-        workflow.release_period = (None, datetime.now(pytz.UTC) + timedelta(days=1))
+        workflow.release_period = (None, pendulum.now('UTC').add(days=1))
         self.assertNotEqual(None, workflow.retract_job_id)
         with mock.patch('zeit.workflow.timebased.' 'TimeBasedWorkflow.setup_job') as setup_job:
             zope.event.notify(zeit.cms.workflow.interfaces.PublishedEvent(content, content))
@@ -80,7 +77,7 @@ class PrintImportSchedulingTest(zeit.workflow.testing.FunctionalTestCase):
     def test_retract_time_in_the_past_should_not_schedule_again(self):
         content = self.repository['testcontent']
         workflow = zeit.cms.workflow.interfaces.IPublishInfo(content)
-        workflow.release_period = (None, datetime.now(pytz.UTC) + timedelta(days=-1))
+        workflow.release_period = (None, pendulum.now('UTC').add(days=1))
         with mock.patch('zeit.workflow.timebased.' 'TimeBasedWorkflow.setup_job') as setup_job:
             zope.event.notify(zeit.cms.workflow.interfaces.PublishedEvent(content, content))
             self.assertFalse(setup_job.called)
@@ -117,7 +114,7 @@ class TimeBasedCeleryEndToEndTest(zeit.cms.testing.FunctionalTestCase):
         assert 'can-publish-success' == self.workflow.can_publish()
 
     def test_released_from__in_past_is_published_instantly(self):
-        publish_on = datetime.now(pytz.UTC) + timedelta(seconds=-1)
+        publish_on = pendulum.now('UTC').add(seconds=-1)
 
         self.workflow.release_period = (publish_on, None)
         transaction.commit()
@@ -134,7 +131,7 @@ Publishing http://xml.zeit.de/online/2007/01/Somalia...""".format(self),  # noqa
         )
 
     def test_released_from__in_future_is_published_later(self):
-        publish_on = datetime.now(pytz.UTC) + timedelta(seconds=1.2)
+        publish_on = pendulum.now('UTC').add(seconds=1.2)
 
         self.workflow.release_period = (publish_on, None)
         transaction.commit()
@@ -157,7 +154,7 @@ Publishing http://xml.zeit.de/online/2007/01/Somalia...""".format(self),  # noqa
         )
 
     def test_released_from__revokes_job_on_change(self):
-        publish_on = datetime.now(pytz.UTC) + timedelta(days=1)
+        publish_on = pendulum.now('UTC').add(days=1)
 
         self.workflow.release_period = (publish_on, None)
         transaction.commit()
@@ -166,7 +163,7 @@ Publishing http://xml.zeit.de/online/2007/01/Somalia...""".format(self),  # noqa
         assert scheduler.backend.get(job_id)
 
         # The current job gets revoked on change of released_from:
-        publish_on += timedelta(seconds=1)
+        publish_on = publish_on.add(seconds=1)
         self.workflow.release_period = (publish_on, None)
         transaction.commit()
         with self.assertRaises(KeyError):
@@ -177,7 +174,7 @@ Publishing http://xml.zeit.de/online/2007/01/Somalia...""".format(self),  # noqa
         assert scheduler.backend.get(new_job)
 
     def test_released_from__revokes_job_on_change_while_checked_out(self):
-        publish_on = datetime.now(pytz.UTC) + timedelta(days=1)
+        publish_on = pendulum.now('UTC').add(days=1)
 
         with checked_out(self.content) as co:
             workflow = zeit.cms.workflow.interfaces.IPublishInfo(co)
@@ -188,7 +185,7 @@ Publishing http://xml.zeit.de/online/2007/01/Somalia...""".format(self),  # noqa
         assert scheduler.backend.get(job_id)
 
         # The current job gets revoked on change of released_from:
-        publish_on += timedelta(seconds=1)
+        publish_on = publish_on.add(seconds=1)
         with checked_out(self.content) as co:
             workflow = zeit.cms.workflow.interfaces.IPublishInfo(co)
             workflow.release_period = (publish_on, None)
@@ -204,7 +201,7 @@ Publishing http://xml.zeit.de/online/2007/01/Somalia...""".format(self),  # noqa
         zeit.cms.workflow.interfaces.IPublish(self.content).publish(background=False)
         transaction.commit()
 
-        retract_on = datetime.now(pytz.UTC) + timedelta(seconds=-1)
+        retract_on = pendulum.now('UTC').add(seconds=-1)
         self.workflow.release_period = (None, retract_on)
         transaction.commit()
 
@@ -223,7 +220,7 @@ Retracting http://xml.zeit.de/online/2007/01/Somalia...""".format(self),  # noqa
         zeit.cms.workflow.interfaces.IPublish(self.content).publish(background=False)
         transaction.commit()
 
-        retract_on = datetime.now(pytz.UTC) + timedelta(seconds=1.5)
+        retract_on = pendulum.now('UTC').add(seconds=1.5)
         self.workflow.release_period = (None, retract_on)
         transaction.commit()
         cancel_retract_job_id = self.workflow.retract_job_id
@@ -231,7 +228,7 @@ Retracting http://xml.zeit.de/online/2007/01/Somalia...""".format(self),  # noqa
         assert scheduler.backend.get(cancel_retract_job_id)
 
         # The current job gets revoked on change of released_to:
-        new_retract_on = retract_on + timedelta(seconds=1)
+        new_retract_on = retract_on.add(seconds=1)
         self.workflow.release_period = (None, new_retract_on)
         transaction.commit()
         with self.assertRaises(KeyError):
@@ -262,7 +259,7 @@ Retracting http://xml.zeit.de/online/2007/01/Somalia...""".format(self),  # noqa
         )
 
     def test_removing_release_period_should_remove_jobid(self):
-        self.workflow.release_period = (datetime.now(pytz.UTC) + timedelta(days=1), None)
+        self.workflow.release_period = (pendulum.now('UTC').add(days=1), None)
         transaction.commit()
         self.assertNotEqual(None, self.workflow.publish_job_id)
         self.workflow.release_period = (None, None)

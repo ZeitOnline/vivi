@@ -390,10 +390,8 @@ ParserError: Invalid date string: asdf
 
 Converting datetimes takes timezone info into account:
 
->>> import datetime
->>> import pytz
->>> converter.toProperty(pytz.timezone('Europe/Berlin').localize(
-...     datetime.datetime(2004, 1, 4, 10, 32)))
+>>> import pendulum
+>>> converter.toProperty(pendulum.datetime(2004, 1, 4, 10, 32, tz='Europe/Berlin'))
 '2004-01-04T10:32:00+01:00'
 
 
@@ -405,6 +403,7 @@ DateTime(2008, 3, 13, 13, 48, 37, tzinfo=Timezone('UTC'))
 
 Setting a datetime without timezone information raises an error:
 
+>>> import datetime
 >>> converter.toProperty(datetime.datetime(2008, 5, 13, 13, 48))
 Traceback (most recent call last):
   ...

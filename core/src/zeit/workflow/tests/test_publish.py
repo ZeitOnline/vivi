@@ -1,12 +1,12 @@
-from datetime import datetime
 from io import StringIO
 from unittest import mock
 import json
 import logging
 
+from pendulum import datetime
 from ZODB.POSException import ConflictError
 import gocept.testing.mock
-import pytz
+import pendulum
 import requests_mock
 import transaction
 import z3c.celery.celery
@@ -135,9 +135,9 @@ class PublicationDependencies(zeit.workflow.testing.FunctionalTestCase):
             self.related.append(self.repository['t%s' % i])
 
     def setup_dates_so_content_is_publishable(self):
-        DAY1 = datetime(2010, 1, 1, tzinfo=pytz.UTC)
-        DAY2 = datetime(2010, 2, 1, tzinfo=pytz.UTC)
-        DAY3 = datetime(2010, 3, 1, tzinfo=pytz.UTC)
+        DAY1 = datetime(2010, 1, 1)
+        DAY2 = datetime(2010, 2, 1)
+        DAY3 = datetime(2010, 3, 1)
 
         # XXX it would be nicer to patch this just for the items in question,
         # but we lack the mechanics to easily substitute adapter instances
@@ -163,7 +163,7 @@ class PublicationDependencies(zeit.workflow.testing.FunctionalTestCase):
             info = IPublishInfo(item)
             info.urgent = True
 
-        BEFORE_PUBLISH = datetime.now(pytz.UTC)
+        BEFORE_PUBLISH = pendulum.now('UTC')
         self.publish(content)
 
         self.assertEqual(
@@ -179,7 +179,7 @@ class PublicationDependencies(zeit.workflow.testing.FunctionalTestCase):
         for item in self.related:
             info = IPublishInfo(item)
             info.urgent = True
-        BEFORE_PUBLISH = datetime.now(pytz.UTC)
+        BEFORE_PUBLISH = pendulum.now('UTC')
         self.publish(content[0])
 
         self.assertEqual(

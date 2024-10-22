@@ -75,7 +75,7 @@ class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
 
     def setUp(self):
         super().setUp()
-        current_date = pendulum.now()
+        current_date = pendulum.now('UTC')
         self.unique_id = (
             f'http://xml.zeit.de/tts/{current_date.strftime("%Y-%m")}/{TTS_CREATED["uuid"]}'
         )

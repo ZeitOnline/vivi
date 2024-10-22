@@ -216,7 +216,7 @@ class Video(Converter):
         publish = zeit.cms.workflow.interfaces.IPublishInfo(cmsobj)
         publish.date_first_released = self.cms_date(data.get('published_at'))
 
-        if cmsobj.expires and cmsobj.expires > pendulum.now():
+        if cmsobj.expires and cmsobj.expires > pendulum.now('UTC'):
             fake_id = cmsobj.uniqueId is None
             if fake_id:
                 # Pacify IObjectLog, which is triggered by ITimeBasedPublishing

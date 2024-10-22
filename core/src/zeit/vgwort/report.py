@@ -1,8 +1,7 @@
-import datetime
 import logging
 
 import grokcore.component as grok
-import pytz
+import pendulum
 import ZODB.POSException
 import zope.interface
 
@@ -24,7 +23,7 @@ log = logging.getLogger(__name__)
 class ReportableContentSource(grok.GlobalUtility):
     def __iter__(self):
         age = zeit.cms.config.required('zeit.vgwort', 'days-before-report')
-        age = datetime.date.today() - datetime.timedelta(days=int(age))
+        age = pendulum.today().subtract(days=int(age))
         age = age.isoformat()
 
         i = 0
@@ -64,7 +63,7 @@ class ReportableContentSource(grok.GlobalUtility):
 
     def mark_done(self, content):
         info = zeit.vgwort.interfaces.IReportInfo(content)
-        info.reported_on = datetime.datetime.now(pytz.UTC)
+        info.reported_on = pendulum.now('UTC')
         self._update_tms(content)
 
     def mark_error(self, content, message):

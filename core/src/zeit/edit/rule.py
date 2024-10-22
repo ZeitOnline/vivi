@@ -1,10 +1,9 @@
-from datetime import datetime
 import logging
 import sys
 
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
-import pytz
+import pendulum
 import ZODB.POSException
 import zope.app.appsetup.product
 import zope.component
@@ -306,7 +305,7 @@ def scheduled_for_publishing(context):
         if not pi.release_period[0]:
             return False
         if pi.release_period[1]:
-            now = datetime.now(pytz.UTC)
+            now = pendulum.now('UTC')
             return now <= pi.release_period[1]
         return True
 

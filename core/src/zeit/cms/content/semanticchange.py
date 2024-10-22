@@ -1,7 +1,5 @@
-import datetime
-
 import grokcore.component as grok
-import pytz
+import pendulum
 import zope.interface
 import zope.lifecycleevent
 import zope.security.proxy
@@ -30,7 +28,7 @@ class SemanticChange(zeit.cms.content.dav.DAVPropertiesAdapter):
     @has_semantic_change.setter
     def has_semantic_change(self, value):
         if value:
-            self.last_semantic_change = datetime.datetime.now(pytz.UTC)
+            self.last_semantic_change = pendulum.now('UTC')
 
 
 hsc_field = zeit.cms.content.interfaces.ISemanticChange['has_semantic_change']
@@ -59,4 +57,4 @@ def set_semantic_change_on_create(context, event):
     lsc = zope.security.proxy.removeSecurityProxy(
         zeit.cms.content.interfaces.ISemanticChange(context)
     )
-    lsc.last_semantic_change = datetime.datetime.now(pytz.UTC)
+    lsc.last_semantic_change = pendulum.now('UTC')

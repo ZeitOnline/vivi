@@ -51,7 +51,7 @@ class PurchaseToCSVDocument(zeit.content.image.testing.BrowserTestCase):
             create_content.return_value = 'some csv'
             b.open('http://localhost/++skin++vivi/CopyrightCompanyPurchaseReport')  # noqa
             self.assertIn(b.headers['content-type'], ('text/csv', 'text/csv;charset=utf-8'))
-            now = pendulum.now().year
+            now = pendulum.now('UTC').year
             self.assertStartsWith(
                 f'attachment; filename="copyright-payment-report_{now}',
                 b.headers['content-disposition'],

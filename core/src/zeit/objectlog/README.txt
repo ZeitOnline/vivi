@@ -66,7 +66,7 @@ True
 >>> log_entry.principal is None
 True
 >>> log_entry.time
-datetime.datetime(..., tzinfo=<UTC>)
+Date...UTC...
 >>> log_entry.message
 'Foo'
 >>> log_entry.mapping is None
@@ -197,23 +197,19 @@ Make sure the log-terms do not break when the principal is deleted:
 Let's make sure the log time is localized to the user's preferred time zone.
 Explicitly set a known time:
 
->>> import pytz
->>> import datetime
+>>> import pendulum
 >>> entry = list(source)[0]
->>> entry.time = datetime.datetime(2008, 6, 21, 12, 0, tzinfo=pytz.UTC)
+>>> entry.time = pendulum.datetime(2008, 6, 21, 12, 0)
 
 What is the peferred time zone? Register an adapter from request to ITZInfo:
 
 >>> import zope.interface.common.idatetime
 >>> def tzinfo(request):
-...     return pytz.timezone('Europe/Berlin')
+...     return pendulum.timezone('Europe/Berlin')
 >>> sm = zope.component.getSiteManager()
 >>> sm.registerAdapter(
 ...     tzinfo, (zope.interface.Interface,),
 ...     zope.interface.common.idatetime.ITZInfo)
-
->>> zope.interface.common.idatetime.ITZInfo(request)
-<DstTzInfo 'Europe/Berlin'...>
 
 When we get the title'well have the "corrected" date:
 
@@ -263,6 +259,7 @@ The objectlog can be cleaned of old logs.
 
 Cleaning everything that is older than 30 days changes nogthing here:
 
+>>> import datetime
 >>> len(log._object_log)
 2
 >>> log.clean(datetime.timedelta(days=30))

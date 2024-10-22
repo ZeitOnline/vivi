@@ -1,8 +1,7 @@
 When referencing an image out of an image group, the group's expired attribute
 appears on the image as well:
 
->>> import datetime
->>> import pytz
+>>> import pendulum
 >>> import zeit.cms.repository.interfaces
 >>> import zeit.cms.testing
 >>> import zeit.content.image.testing
@@ -24,8 +23,8 @@ appears on the image as well:
 >>> group = zeit.content.image.testing.create_image_group()
 
 >>> workflow = zeit.workflow.interfaces.ITimeBasedPublishing(group)
->>> workflow.release_period = (datetime.datetime(2008, 1, 6, tzinfo=pytz.UTC),
-...                            datetime.datetime(2008, 1, 6, tzinfo=pytz.UTC))
+>>> workflow.release_period = (pendulum.datetime(2008, 1, 6),
+...                            pendulum.datetime(2008, 1, 6))
 >>> checked_out = zeit.cms.checkout.interfaces.ICheckoutManager(
 ...     content).checkout()
 >>> images = zeit.content.image.interfaces.IImages(checked_out)

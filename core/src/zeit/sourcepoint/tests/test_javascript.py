@@ -1,6 +1,6 @@
-from datetime import datetime
 from unittest import mock
 
+from pendulum import datetime
 import time_machine
 import transaction
 import zope.component
@@ -54,7 +54,7 @@ class JavascriptDownload(zeit.cms.testing.FunctionalTestCase):
         transaction.commit()
         self.assertEqual(1, len(folder))
 
-    @time_machine.travel(datetime(2019, 3, 17, 8, 33))
+    @time_machine.travel(datetime(2019, 3, 17, 9, 33))
     def test_download_changed_from_latest_version_stores_new_entry(self):
         folder = self.repository['addefend']
         current = Text('current')
