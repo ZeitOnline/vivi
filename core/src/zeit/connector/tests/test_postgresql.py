@@ -2,6 +2,7 @@ from io import BytesIO
 from unittest import mock
 import datetime
 
+from pytest import raises
 from sqlalchemy import func, select
 from sqlalchemy import text as sql
 from sqlalchemy.exc import IntegrityError
@@ -9,9 +10,12 @@ import google.api_core.exceptions
 import pendulum
 import transaction
 
+from zeit.cms.checkout.helper import checked_out
 from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.repository.interfaces import ConflictError
-from zeit.connector.interfaces import INTERNAL_PROPERTY
+from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
+from zeit.cms.workflow.interfaces import IModified
+from zeit.connector.interfaces import INTERNAL_PROPERTY, DeleteProperty
 from zeit.connector.models import Content, Lock
 from zeit.connector.postgresql import _unlock_overdue_locks
 from zeit.connector.resource import Resource, WriteableCachedResource
@@ -344,39 +348,20 @@ class PropertiesColumnTest(zeit.connector.testing.SQLTest):
         FEATURE_TOGGLES.set('write_metadata_columns')
         FEATURE_TOGGLES.set('read_metadata_columns')
         timestamp = pendulum.datetime(1980, 1, 1)
-        res = self.add_resource('foo', properties={('date_created', f'{NS}document'): timestamp})
-        self.assertEqual(timestamp, res.properties[('date_created', f'{NS}document')])
-        content = self.connector._get_content(res.id)
-        self.assertEqual({'document': {'date_created': timestamp.isoformat()}}, content.unsorted)
-        self.assertEqual(timestamp, content.date_created)
-
-    def test_properties_can_be_stored_in_separate_columns_and_still_read_as_dav(self):
-        FEATURE_TOGGLES.set('write_metadata_columns')
-        timestamp = pendulum.datetime(1980, 1, 1)
         isoformat = timestamp.isoformat()
-        res = self.add_resource(
-            'foo',
-            properties={
-                ('date_created', f'{NS}document'): isoformat,
-                ('date_last_checkout', f'{NS}document'): timestamp,
-            },
-        )
+        res = self.add_resource('foo', properties={('date_created', f'{NS}document'): isoformat})
         self.assertEqual(isoformat, res.properties[('date_created', f'{NS}document')])
-        self.assertEqual(isoformat, res.properties[('date_last_checkout', f'{NS}document')])
         content = self.connector._get_content(res.id)
-        self.assertEqual(
-            {'document': {'date_created': isoformat, 'date_last_checkout': isoformat}},
-            content.unsorted,
-        )
+        self.assertEqual({'document': {'date_created': isoformat}}, content.unsorted)
         self.assertEqual(timestamp, content.date_created)
-        self.assertEqual(timestamp, content.date_last_checkout)
 
     def test_properties_can_be_stored_in_separate_columns(self):
         FEATURE_TOGGLES.set('write_metadata_columns_strict')
         FEATURE_TOGGLES.set('read_metadata_columns')
         timestamp = pendulum.datetime(1980, 1, 1)
-        res = self.add_resource('foo', properties={('date_created', f'{NS}document'): timestamp})
-        self.assertEqual(timestamp, res.properties[('date_created', f'{NS}document')])
+        isoformat = timestamp.isoformat()
+        res = self.add_resource('foo', properties={('date_created', f'{NS}document'): isoformat})
+        self.assertEqual(isoformat, res.properties[('date_created', f'{NS}document')])
         content = self.connector._get_content(res.id)
         self.assertEqual({}, content.unsorted)
         self.assertEqual(timestamp, content.date_created)
@@ -394,3 +379,33 @@ class PropertiesColumnTest(zeit.connector.testing.SQLTest):
             result = self.connector.search([var], var == 'Wissen')
             unique_id, uuid = next(result)
             self.assertEqual(res.id, unique_id)
+
+    def test_revoke_write_toggle_must_not_break_checkin(self):
+        FEATURE_TOGGLES.set('write_metadata_columns')
+        self.repository['testcontent'] = ExampleContentType()
+        example_date = pendulum.datetime(2024, 10, 1)
+        with checked_out(self.repository['testcontent']) as co:
+            IModified(co).date_created = example_date
+            FEATURE_TOGGLES.unset('write_metadata_columns')
+
+    def test_delete_property_from_column(self):
+        FEATURE_TOGGLES.set('read_metadata_columns')
+        FEATURE_TOGGLES.set('write_metadata_columns')
+        id = 'http://xml.zeit.de/testcontent'
+        self.repository['testcontent'] = ExampleContentType()
+        example_date = pendulum.datetime(2024, 1, 1).isoformat()
+        prop = ('date_created', 'http://namespaces.zeit.de/CMS/document')
+        self.connector.changeProperties(id, {prop: example_date})
+        transaction.commit()
+        self.connector.changeProperties(id, {prop: DeleteProperty})
+        transaction.commit()
+        res = self.connector[id]
+        self.assertNotIn(prop, res.properties)
+
+    def test_unsorted_properties_must_be_strings(self):
+        date = pendulum.datetime(2024, 1, 1)
+        with raises(ValueError):
+            self.add_resource('foo', properties={('date_created', f'{NS}document'): date})
+        FEATURE_TOGGLES.set('write_metadata_columns')
+        with raises(ValueError):
+            self.add_resource('bar', properties={('date_created', f'{NS}document'): date})

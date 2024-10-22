@@ -226,7 +226,8 @@ class Content(Base, CommonMetadata, Modified, PublishInfo, SemanticChange, Artic
                 namespace, name = column.info['namespace'], column.info['name']
                 value = getattr(self, column.name)
                 if value is not None:
-                    props[(name, self.NS + namespace)] = value
+                    converter = zeit.connector.interfaces.IConverter(column)
+                    props[(name, self.NS + namespace)] = converter.serialize(value)
 
         if self.lock:
             props[('lock_principal', INTERNAL_PROPERTY)] = self.lock.principal
@@ -261,24 +262,14 @@ class Content(Base, CommonMetadata, Modified, PublishInfo, SemanticChange, Artic
                 if value is DeleteProperty:
                     setattr(self, column.name, None)
                     continue
+                if not isinstance(value, str):
+                    raise ValueError('Expected str, got %r' % value)
 
                 converter = zeit.connector.interfaces.IConverter(column)
-                # Need to support mixed properties (str/typed) for these cases:
-                # - toggle write, but no toggle read: properties read from
-                #   connector are still str, properties written by content layer
-                #   are already typed
-                # - existing workingcopies may still have str properties
-                # - existing cache entries may still have str properties
-                # Thus, we also need to keep a sufficient grace period after
-                # toggle read is enabled before removing the toggles from the code.
-                if isinstance(value, str):
-                    value = converter.deserialize(value)
+                setattr(self, column.name, converter.deserialize(value))
 
-                setattr(self, column.name, value)
                 if FEATURE_TOGGLES.find('write_metadata_columns_strict'):
                     props.pop((name, self.NS + namespace), None)
-                else:
-                    props[name, self.NS + namespace] = converter.serialize(value)
 
         unsorted = collections.defaultdict(dict)
         for (k, ns), v in props.items():
@@ -286,6 +277,9 @@ class Content(Base, CommonMetadata, Modified, PublishInfo, SemanticChange, Artic
                 continue
             if ns == INTERNAL_PROPERTY:
                 continue
+            if not isinstance(v, str):
+                raise ValueError('Expected str, got %r' % v)
+
             unsorted[ns.replace(self.NS, '', 1)][k] = v
         self.unsorted = unsorted
 
