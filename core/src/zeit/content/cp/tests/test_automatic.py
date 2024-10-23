@@ -1113,6 +1113,45 @@ class AutomaticAreaSQLTest(zeit.content.cp.testing.FunctionalTestCase):
     def test_get_total_hits(self):
         self.connector.search_result = ['http://xml.zeit.de/testcontent']
         self.assertEqual(1, IRenderedArea(self.area)._content_query.total_hits)
+        self.assertNotIn('CURRENT_DATE', self.connector.search_args[0])
+
+    def test_restrict_time_adds_clause(self):
+        IRenderedArea(self.area).values()
+        self.assertEllipsis(
+            '...AND properties.date_last_published_semantic >= CURRENT_DATE - make_interval(0, 0, 0, 7)...',
+            self.connector.search_args[0],
+        )
+
+    def test_restrict_time_can_be_disabled(self):
+        self.area.sql_restrict_time = False
+        IRenderedArea(self.area).values()
+        self.assertNotIn('CURRENT_DATE', self.connector.search_args[0])
+
+    def test_restrict_time_applies_to_order_column(self):
+        self.area.sql_order = 'date_first_released desc nulls last'
+        IRenderedArea(self.area).values()
+        self.assertEllipsis(
+            '...AND properties.date_first_released >= CURRENT_DATE...',
+            self.connector.search_args[0],
+        )
+
+    def test_restrict_time_falls_back_to_dlps(self):
+        self.area.sql_order = 'access'
+        IRenderedArea(self.area).values()
+        self.assertEllipsis(
+            '...AND properties.date_last_published_semantic >= CURRENT_DATE...',
+            self.connector.search_args[0],
+        )
+
+    def test_restrict_time_respects_freeze_now(self):
+        zeit.cms.config.set('zeit.reach', 'freeze-now', '2024-01-01T01:01Z')
+        IRenderedArea(self.area).values()
+        self.assertEllipsis(
+            "...>= CAST('2024-01-01 01:01:00+00:00' AS TIMESTAMP WITH TIME ZONE) - make_interval(0, 0, 0, 7)...",
+            self.connector.search_args[0],
+        )
+        # ProductConfigLayer does not foreign packages. Maybe it should?
+        zeit.cms.config.set('zeit.reach', 'freeze-now', None)
 
 
 class AutomaticAreaSQLCustomTest(zeit.content.cp.testing.FunctionalTestCase):
@@ -1187,3 +1226,15 @@ OR properties.ressort = 'Wissen')
 AND published=true...
 """
         self.assertEllipsis(query, self.connector.search_args[0])
+
+    def test_restrict_time_adds_clause(self):
+        IRenderedArea(self.area).values()
+        self.assertEllipsis(
+            '...AND properties.date_last_published_semantic >= CURRENT_DATE - make_interval(0, 0, 0, 7)...',
+            self.connector.search_args[0],
+        )
+
+    def test_restrict_time_can_be_disabled(self):
+        self.area.query_restrict_time = False
+        IRenderedArea(self.area).values()
+        self.assertNotIn('CURRENT_DATE', self.connector.search_args[0])

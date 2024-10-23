@@ -2,6 +2,8 @@ import json
 import logging
 
 from sqlalchemy import and_ as sql_and
+from sqlalchemy import cast as sql_cast
+from sqlalchemy import func as sql_func
 from sqlalchemy import not_ as sql_not
 from sqlalchemy import or_ as sql_or
 from sqlalchemy import select
@@ -9,6 +11,7 @@ from sqlalchemy import text as sql
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
 import lxml
+import pendulum
 import requests
 import zope.component
 import zope.interface
@@ -17,6 +20,7 @@ from zeit.cms.content.cache import content_cache
 from zeit.cms.content.interfaces import IUUID
 from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.interfaces import ICMSContent
+from zeit.connector.models import TIMESTAMP
 from zeit.connector.models import Content as ConnectorModel
 from zeit.contentquery.configuration import CustomQueryProperty
 import zeit.cms.config
@@ -79,11 +83,18 @@ class SQLContentQuery(ContentQuery):
     def order(self):
         return self.context.sql_order
 
+    @property
+    def order_column(self):
+        if ' ' not in self.context.sql_order:
+            return self.context.sql_order
+        return self.context.sql_order.split(' ')[0]
+
     def _build_query(self, order=True):
         query = self.conditions
         query = self.add_clauses(query)
         query = self.hide_dupes_clause(query)
-        if order:  # not allowed by SQL when using `count()`
+        if order:  # `order by` is not allowed by SQL when using `count()`
+            query = self.restrict_time(query)
             query = query.order_by(sql(self.order))
             query = query.limit(self.rows).offset(self.start)
         return query
@@ -111,13 +122,38 @@ class SQLContentQuery(ContentQuery):
             return query
         return query.where(ConnectorModel.id.not_in(sorted(ids)))
 
+    def restrict_time(self, query):
+        if not self._restrict_time_enabled:
+            return query
+        days = int(zeit.cms.config.get('zeit.content.cp', 'sql-query-restrict-days', 7))
+        column = getattr(
+            ConnectorModel, self.order_column, ConnectorModel.date_last_published_semantic
+        )
+        if not isinstance(column.type, TIMESTAMP):
+            column = ConnectorModel.date_last_published_semantic
+        now = zeit.cms.config.get('zeit.reach', 'freeze-now')
+        now = sql_cast(pendulum.parse(now), TIMESTAMP) if now else sql_func.current_date()
+        return query.where(column >= now - sql_func.make_interval(0, 0, 0, days))
+
+    @property
+    def _restrict_time_enabled(self):
+        return self.context.sql_restrict_time
+
 
 class SQLCustomContentQuery(SQLContentQuery):
     grok.baseclass()  # See dispatch_custom_query
 
     @property
     def order(self):
-        return f'{self.context.query_order} desc nulls last'
+        return f'{self.order_column} desc nulls last'
+
+    @property
+    def order_column(self):
+        return self.context.query_order
+
+    @property
+    def _restrict_time_enabled(self):
+        return self.context.query_restrict_time
 
     @property
     def conditions(self):
@@ -335,10 +371,8 @@ class CustomContentQuery(ElasticsearchContentQuery):
 
     ES_ORDER = {
         'date_last_published_semantic': 'payload.workflow.date_last_published_semantic:desc',
-        'date_last_modified_semantic': 'payload.document.last-semantic-change:desc',
         'date_first_released': 'payload.document.date_first_released:desc',
         'date_last_published': 'payload.workflow.date_last_published:desc',
-        'random': 'random:desc',
     }
     ES_ORDER_BWCOMPAT = {v: k for k, v in ES_ORDER.items()}
 
