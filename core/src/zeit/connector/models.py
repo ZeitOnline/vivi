@@ -42,67 +42,89 @@ class Base(sqlalchemy.orm.DeclarativeBase):
 class CommonMetadata:
     channels = mapped_column(
         JSONBTuple,
-        info={'namespace': 'document', 'name': 'channels'},
+        info={'namespace': 'document', 'name': 'channels', 'migration': 'wcm_430'},
     )
-    access = mapped_column(Unicode, info={'namespace': 'document', 'name': 'access'})
-    product = mapped_column(Unicode, info={'namespace': 'workflow', 'name': 'product-id'})
-    ressort = mapped_column(Unicode, info={'namespace': 'document', 'name': 'ressort'})
-    sub_ressort = mapped_column(Unicode, info={'namespace': 'document', 'name': 'sub_ressort'})
-    series = mapped_column(Unicode, info={'namespace': 'document', 'name': 'serie'})
+    access = mapped_column(
+        Unicode, info={'namespace': 'document', 'name': 'access', 'migration': 'wcm_430'}
+    )
+    product = mapped_column(
+        Unicode, info={'namespace': 'workflow', 'name': 'product-id', 'migration': 'wcm_430'}
+    )
+    ressort = mapped_column(
+        Unicode, info={'namespace': 'document', 'name': 'ressort', 'migration': 'wcm_430'}
+    )
+    sub_ressort = mapped_column(
+        Unicode, info={'namespace': 'document', 'name': 'sub_ressort', 'migration': 'wcm_430'}
+    )
+    series = mapped_column(
+        Unicode, info={'namespace': 'document', 'name': 'serie', 'migration': 'wcm_430'}
+    )
 
-    print_ressort = mapped_column(Unicode, info={'namespace': 'print', 'name': 'ressort'})
-    volume_year = mapped_column(Integer, info={'namespace': 'document', 'name': 'year'})
-    volume_number = mapped_column(Integer, info={'namespace': 'document', 'name': 'volume'})
+    print_ressort = mapped_column(
+        Unicode, info={'namespace': 'print', 'name': 'ressort', 'migration': 'wcm_430'}
+    )
+    volume_year = mapped_column(
+        Integer, info={'namespace': 'document', 'name': 'year', 'migration': 'wcm_430'}
+    )
+    volume_number = mapped_column(
+        Integer, info={'namespace': 'document', 'name': 'volume', 'migration': 'wcm_430'}
+    )
 
 
 class Article:
-    article_genre = mapped_column(Unicode, info={'namespace': 'document', 'name': 'genre'})
+    article_genre = mapped_column(
+        Unicode, info={'namespace': 'document', 'name': 'genre', 'migration': 'wcm_430'}
+    )
 
 
 class SemanticChange:
     date_last_modified_semantic = mapped_column(
         TIMESTAMP,
-        info={'namespace': 'document', 'name': 'last-semantic-change'},
+        info={'namespace': 'document', 'name': 'last-semantic-change', 'migration': 'wcm_430'},
     )
 
 
 class Modified:
     date_created = mapped_column(
         TIMESTAMP,
-        info={'namespace': 'document', 'name': 'date_created'},
+        info={'namespace': 'document', 'name': 'date_created', 'migration': 'wcm_430'},
     )
     date_last_checkout = mapped_column(
         TIMESTAMP,
-        info={'namespace': 'document', 'name': 'date_last_checkout'},
+        info={'namespace': 'document', 'name': 'date_last_checkout', 'migration': 'wcm_430'},
     )
     date_last_modified = mapped_column(
         TIMESTAMP,
-        info={'namespace': 'document', 'name': 'date_last_modified'},
+        info={'namespace': 'document', 'name': 'date_last_modified', 'migration': 'wcm_430'},
     )
 
 
 class PublishInfo:
     date_first_released = mapped_column(
         TIMESTAMP,
-        info={'namespace': 'document', 'name': 'date_first_released'},
+        info={'namespace': 'document', 'name': 'date_first_released', 'migration': 'wcm_430'},
     )
     date_last_published = mapped_column(
         TIMESTAMP,
-        info={'namespace': 'workflow', 'name': 'date_last_published'},
+        info={'namespace': 'workflow', 'name': 'date_last_published', 'migration': 'wcm_430'},
     )
     date_last_published_semantic = mapped_column(
         TIMESTAMP,
-        info={'namespace': 'workflow', 'name': 'date_last_published_semantic'},
+        info={
+            'namespace': 'workflow',
+            'name': 'date_last_published_semantic',
+            'migration': 'wcm_430',
+        },
     )
     date_print_published = mapped_column(
         TIMESTAMP,
-        info={'namespace': 'document', 'name': 'print-publish'},
+        info={'namespace': 'document', 'name': 'print-publish', 'migration': 'wcm_430'},
     )
     published = mapped_column(
         Boolean,
         server_default='false',
         nullable=False,
-        info={'namespace': 'workflow', 'name': 'published'},
+        info={'namespace': 'workflow', 'name': 'published', 'migration': 'wcm_430'},
     )
 
 
@@ -180,15 +202,26 @@ class Content(Base, CommonMetadata, Modified, PublishInfo, SemanticChange, Artic
     )
 
     @classmethod
-    def column_by_name(cls, name, namespace):
+    def column_by_name(cls, name, namespace, mode='always'):
         namespace = namespace.replace(cls.NS, '', 1)
-        for column in cls._columns_with_name():
+        for column in cls._columns_with_name(mode):
             if namespace == column.info.get('namespace') and name == column.info.get('name'):
                 return column
 
+    _COLUMN_MODES = ('always', 'read', 'write', 'strict')
+
     @classmethod
-    def _columns_with_name(cls):
-        return [x for x in sqlalchemy.orm.class_mapper(cls).columns if x.info.get('namespace')]
+    def _columns_with_name(cls, mode):
+        assert mode in cls._COLUMN_MODES
+        result = []
+        for column in sqlalchemy.orm.class_mapper(cls).columns:
+            if not column.info.get('namespace'):
+                continue
+            migration = column.info['migration']
+            if mode == 'always' or FEATURE_TOGGLES.find(f'column_{mode}_{migration}'):
+                result.append(column)
+
+        return result
 
     @property
     def binary_body(self):
@@ -221,13 +254,12 @@ class Content(Base, CommonMetadata, Modified, PublishInfo, SemanticChange, Artic
         props[('is_collection', INTERNAL_PROPERTY)] = self.is_collection
         props[('body_checksum', INTERNAL_PROPERTY)] = self._body_checksum()
 
-        if FEATURE_TOGGLES.find('read_metadata_columns'):
-            for column in self._columns_with_name():
-                namespace, name = column.info['namespace'], column.info['name']
-                value = getattr(self, column.name)
-                if value is not None:
-                    converter = zeit.connector.interfaces.IConverter(column)
-                    props[(name, self.NS + namespace)] = converter.serialize(value)
+        for column in self._columns_with_name('read'):
+            namespace, name = column.info['namespace'], column.info['name']
+            value = getattr(self, column.name)
+            if value is not None:
+                converter = zeit.connector.interfaces.IConverter(column)
+                props[(name, self.NS + namespace)] = converter.serialize(value)
 
         if self.lock:
             props[('lock_principal', INTERNAL_PROPERTY)] = self.lock.principal
@@ -250,26 +282,24 @@ class Content(Base, CommonMetadata, Modified, PublishInfo, SemanticChange, Artic
         if type:
             self.type = type
 
-        if FEATURE_TOGGLES.find('write_metadata_columns') or FEATURE_TOGGLES.find(
-            'write_metadata_columns_strict'
-        ):
-            for column in self._columns_with_name():
-                namespace, name = column.info['namespace'], column.info['name']
-                value = props.get((name, self.NS + namespace), self)
+        for column in self._columns_with_name('write'):
+            namespace, name = column.info['namespace'], column.info['name']
+            value = props.get((name, self.NS + namespace), self)
 
-                if value is self:
-                    continue
-                if value is DeleteProperty:
-                    setattr(self, column.name, None)
-                    continue
-                if not isinstance(value, str):
-                    raise ValueError('Expected str, got %r' % value)
+            if value is self:
+                continue
+            if value is DeleteProperty:
+                setattr(self, column.name, None)
+                continue
+            if not isinstance(value, str):
+                raise ValueError('Expected str, got %r' % value)
 
-                converter = zeit.connector.interfaces.IConverter(column)
-                setattr(self, column.name, converter.deserialize(value))
+            converter = zeit.connector.interfaces.IConverter(column)
+            setattr(self, column.name, converter.deserialize(value))
 
-                if FEATURE_TOGGLES.find('write_metadata_columns_strict'):
-                    props.pop((name, self.NS + namespace), None)
+            migration = column.info['migration']
+            if FEATURE_TOGGLES.find(f'column_strict_{migration}'):
+                props.pop((name, self.NS + namespace), None)
 
         unsorted = collections.defaultdict(dict)
         for (k, ns), v in props.items():

@@ -33,7 +33,6 @@ import zope.component
 import zope.interface
 import zope.sqlalchemy
 
-from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.interfaces import DOCUMENT_SCHEMA_NS
 from zeit.cms.repository.interfaces import ConflictError
 from zeit.connector.interfaces import (
@@ -642,10 +641,9 @@ class Connector:
             (var, value) = expr.operands
             name = var.name
             namespace = var.namespace.replace(Content.NS, '', 1)
-            if FEATURE_TOGGLES.find('read_metadata_columns'):
-                column = Content.column_by_name(name, namespace)
-                if column is not None:
-                    return column == value
+            column = Content.column_by_name(name, namespace, 'read')
+            if column is not None:
+                return column == value
             value = json.dumps(str(value))  # Apply correct quoting for jsonpath.
             return Content.unsorted.path_match(f'$."{namespace}"."{name}" == {value}')
         else:
