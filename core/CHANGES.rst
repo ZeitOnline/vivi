@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.58.0 (2024-10-23)
+-------------------
+
+- WCM-468: Restrict time interval for SQL queries
+
+- WCM-468: Remove unused custom query order "last semantic change"
+
+
 6.57.0 (2024-10-22)
 -------------------
 
