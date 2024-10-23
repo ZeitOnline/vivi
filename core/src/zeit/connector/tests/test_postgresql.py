@@ -345,8 +345,8 @@ class PropertiesColumnTest(zeit.connector.testing.SQLTest):
     layer = zeit.connector.testing.SQL_CONTENT_LAYER
 
     def test_properties_are_written_simultaneously_to_separate_column_and_unsorted(self):
-        FEATURE_TOGGLES.set('write_metadata_columns')
-        FEATURE_TOGGLES.set('read_metadata_columns')
+        FEATURE_TOGGLES.set('column_write_wcm_430')
+        FEATURE_TOGGLES.set('column_read_wcm_430')
         timestamp = pendulum.datetime(1980, 1, 1)
         isoformat = timestamp.isoformat()
         res = self.add_resource('foo', properties={('date_created', f'{NS}document'): isoformat})
@@ -356,8 +356,9 @@ class PropertiesColumnTest(zeit.connector.testing.SQLTest):
         self.assertEqual(timestamp, content.date_created)
 
     def test_properties_can_be_stored_in_separate_columns(self):
-        FEATURE_TOGGLES.set('write_metadata_columns_strict')
-        FEATURE_TOGGLES.set('read_metadata_columns')
+        FEATURE_TOGGLES.set('column_write_wcm_430')
+        FEATURE_TOGGLES.set('column_read_wcm_430')
+        FEATURE_TOGGLES.set('column_strict_wcm_430')
         timestamp = pendulum.datetime(1980, 1, 1)
         isoformat = timestamp.isoformat()
         res = self.add_resource('foo', properties={('date_created', f'{NS}document'): isoformat})
@@ -367,12 +368,12 @@ class PropertiesColumnTest(zeit.connector.testing.SQLTest):
         self.assertEqual(timestamp, content.date_created)
 
     def test_search_looks_in_columns_or_unsorted_depending_on_toggle(self):
-        FEATURE_TOGGLES.set('write_metadata_columns')
+        FEATURE_TOGGLES.set('column_write_wcm_430')
 
         res = self.add_resource('foo', properties={('ressort', f'{NS}document'): 'Wissen'})
         var = SearchVar('ressort', f'{NS}document')
         for toggle in [False, True]:  # XXX parametrize would be nice
-            FEATURE_TOGGLES.factory.override(toggle, 'read_metadata_columns')
+            FEATURE_TOGGLES.factory.override(toggle, 'column_read_wcm_430')
             if toggle:
                 self.connector._get_content(res.id).unsorted = {}
                 transaction.commit()
@@ -381,16 +382,16 @@ class PropertiesColumnTest(zeit.connector.testing.SQLTest):
             self.assertEqual(res.id, unique_id)
 
     def test_revoke_write_toggle_must_not_break_checkin(self):
-        FEATURE_TOGGLES.set('write_metadata_columns')
+        FEATURE_TOGGLES.set('column_write_wcm_430')
         self.repository['testcontent'] = ExampleContentType()
         example_date = pendulum.datetime(2024, 10, 1)
         with checked_out(self.repository['testcontent']) as co:
             IModified(co).date_created = example_date
-            FEATURE_TOGGLES.unset('write_metadata_columns')
+            FEATURE_TOGGLES.unset('column_write_wcm_430')
 
     def test_delete_property_from_column(self):
-        FEATURE_TOGGLES.set('read_metadata_columns')
-        FEATURE_TOGGLES.set('write_metadata_columns')
+        FEATURE_TOGGLES.set('column_write_wcm_430')
+        FEATURE_TOGGLES.set('column_read_wcm_430')
         id = 'http://xml.zeit.de/testcontent'
         self.repository['testcontent'] = ExampleContentType()
         example_date = pendulum.datetime(2024, 1, 1).isoformat()
@@ -406,6 +407,6 @@ class PropertiesColumnTest(zeit.connector.testing.SQLTest):
         date = pendulum.datetime(2024, 1, 1)
         with raises(ValueError):
             self.add_resource('foo', properties={('date_created', f'{NS}document'): date})
-        FEATURE_TOGGLES.set('write_metadata_columns')
+        FEATURE_TOGGLES.set('column_write_document_date_created')
         with raises(ValueError):
             self.add_resource('bar', properties={('date_created', f'{NS}document'): date})
