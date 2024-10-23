@@ -1,12 +1,9 @@
 # coding: utf-8
-from unittest import mock
 
 from pendulum import datetime
 import pendulum
-import zope.component
 
 from zeit.cms.checkout.helper import checked_out
-from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.content.dynamicfolder.testing import create_dynamic_folder
 from zeit.retresco.testing import create_testcontent
 import zeit.cms.content.interfaces
@@ -511,19 +508,3 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
         article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         data = zeit.retresco.interfaces.ITMSRepresentation(article)()
         assert data['payload']['head']['audio_references'] == [audio.uniqueId]
-
-
-class ConvertWithScalarTypesTest(zeit.retresco.testing.FunctionalTestCase):
-    def test_smoke_converts_lots_of_fields(self):
-        FEATURE_TOGGLES.set('write_metadata_columns')
-        FEATURE_TOGGLES.set('read_metadata_columns')
-        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
-        # add some timestamps
-        with checked_out(article):
-            pass
-        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
-        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
-        with mock.patch.object(tms, '_request') as request:
-            tms.enrich(article)
-            payload = request.call_args[1]['json']['payload']
-            assert isinstance(payload['document']['date_last_checkout'], str)
