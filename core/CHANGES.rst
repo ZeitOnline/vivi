@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.59.0 (2024-10-23)
+-------------------
+
+- WCM-462: Toggle column access in batches, to support future migrations
+
+
 6.58.0 (2024-10-23)
 -------------------
 
