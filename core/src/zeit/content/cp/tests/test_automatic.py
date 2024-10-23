@@ -1165,8 +1165,6 @@ class AutomaticAreaSQLCustomTest(zeit.content.cp.testing.FunctionalTestCase):
         self.repository['cp'] = self.cp
         self.connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
         FEATURE_TOGGLES.set('contentquery_custom_as_sql')
-        FEATURE_TOGGLES.set('read_metadata_columns')
-        FEATURE_TOGGLES.set('write_metadata_columns')
 
     def test_builds_query_from_conditions(self):
         source = zeit.cms.content.interfaces.ICommonMetadata['serie'].source(None)
