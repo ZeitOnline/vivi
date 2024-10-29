@@ -21,11 +21,11 @@ log = logging.getLogger(__name__)
 
 
 def in_maintenance_hours():
-    now = pendulum.now('UTC')
+    now = pendulum.now('Europe/Berlin')
     today = pendulum.datetime(now.year, now.month, now.day)
-    four = today.replace(hour=3, minute=50)
+    three = today.replace(hour=2, minute=50)
     six = today.replace(hour=6, minute=10)
-    return four <= now <= six
+    return three <= now <= six
 
 
 # No transaction commit, as we don't care about the cache.
