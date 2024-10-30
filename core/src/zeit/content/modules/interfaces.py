@@ -258,6 +258,14 @@ class LiveblogSource(zeit.cms.content.sources.SearchableXMLSource):
     product_configuration = 'zeit.content.modules'
 
 
+class TimelineTemplateSource(zeit.cms.content.sources.SimpleDictSource):
+    values = {
+        'highlighted': _('Highlighted events'),
+        'recent': _('Recent events'),
+        'disabled': _('No timeline in teaser'),
+    }
+
+
 class ITickarooLiveblog(zeit.edit.interfaces.IBlock):
     liveblog_id = zope.schema.TextLine(title=_('Liveblog id'))
 
@@ -265,8 +273,11 @@ class ITickarooLiveblog(zeit.edit.interfaces.IBlock):
         title=_('Collapse preceding content'), default=True, required=False
     )
 
-    show_timeline_in_teaser = zope.schema.Bool(
-        title=_('Show liveblog in teaser'), default=True, required=False
+    timeline_template = zope.schema.Choice(
+        title=_('Timeline Content'),
+        default='disabled',
+        required=True,
+        source=TimelineTemplateSource(),
     )
 
     status = zope.schema.Choice(
