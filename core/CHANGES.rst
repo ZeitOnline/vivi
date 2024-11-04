@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.60.0 (2024-11-04)
+-------------------
+
+- WCM-445: Add galery_type column
+
+- WCM-506: Load teaser images lazy in CP editor
+
+
 6.59.0 (2024-10-23)
 -------------------
 
