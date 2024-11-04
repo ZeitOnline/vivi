@@ -153,7 +153,7 @@ The 450x200 image is used now:
 >>> browser.open(contents_url)
 >>> print(browser.contents)
 <div ... class="teaser-contents action-content-droppable leader"...>
-  <img src="http://localhost/++skin++cms/repository/image-group/thumbnails/450x200/@@raw" />
+  <img...src="http://localhost/++skin++cms/repository/image-group/thumbnails/450x200/@@raw"...
   <div class="teaser-list">
     <div class="teaser">
       <div class="supertitle"></div>
@@ -171,7 +171,7 @@ When the image is not an image group, it will be just used:
 >>> browser.open(contents_url)
 >>> print(browser.contents)
 <div ... class="teaser-contents action-content-droppable leader"...>
-  <img src="http://localhost/++skin++cms/repository/image-group/obama-clinton-120x120.jpg/@@raw" />
+  <img...src="http://localhost/++skin++cms/repository/image-group/obama-clinton-120x120.jpg/@@raw"...
   <div class="teaser-list">
     <div class="teaser">
       <div class="supertitle"></div>

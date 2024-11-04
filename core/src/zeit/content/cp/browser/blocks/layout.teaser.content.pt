@@ -4,6 +4,7 @@
   class view/css_class">
 
   <img tal:condition="view/header_image"
+       loading="lazy"
        tal:attributes="src view/header_image" />
 
   <div class="teaser-list">
