@@ -308,6 +308,59 @@
     permission="zope.View"
     />
 
+  <!-- print -->
+
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zeit.edit.browser.form.Forms"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="print"
+    class=".form.PrintFormGroup"
+    permission="zope.View"
+    weight="15"
+  />
+
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".form.PrintFormGroup"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.form.print-metadata"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="20"
+  />
+
+  <browser:page
+      for="zeit.content.article.interfaces.IArticle"
+      layer="zeit.cms.browser.interfaces.ICMSLayer"
+      name="edit.form.print-metadata"
+      class=".form.PrintMetadata"
+      permission="zope.View"
+  />
+
+    <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".form.PrintFormGroup"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.form.print-interred"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="20"
+  />
+
+    <browser:page
+      for="zeit.content.article.interfaces.IArticle"
+      layer="zeit.cms.browser.interfaces.ICMSLayer"
+      name="edit.form.print-interred"
+      class=".form.PrintInterred"
+      permission="zope.View"
+  />
+
+  <!-- comments -->
+
   <browser:viewlet
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
@@ -634,26 +687,6 @@
     class=".form.OptionsA"
     permission="zope.View"
     />
-
-  <browser:viewlet
-    for="zeit.content.article.interfaces.IArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view=".form.OptionFormGroup"
-    manager="zeit.edit.interfaces.IContentViewletManager"
-    name="edit.form.options-b"
-    class="zeit.edit.browser.form.FormLoader"
-    permission="zope.View"
-    weight="20"
-    />
-
-  <browser:page
-    for="zeit.content.article.interfaces.IArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="edit.form.options-b"
-    class=".form.OptionsB"
-    permission="zope.View"
-    />
-
 
   <browser:viewlet
     for="zeit.content.article.interfaces.IArticle"
