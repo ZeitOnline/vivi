@@ -72,7 +72,7 @@ class ICommonMetadata(zope.interface.Interface):
 
     volume = zope.schema.Int(title=_('Volume'), min=1, max=54, required=False)
 
-    page = zope.schema.Int(title=_('Page'), readonly=True, required=False)
+    page = zope.schema.Int(title=_('Page'), required=False)
 
     ressort = zope.schema.Choice(
         title=_('Ressort'), source=zeit.cms.content.sources.RessortSource()
@@ -216,12 +216,14 @@ class ICommonMetadata(zope.interface.Interface):
 
     advertisement_text = zope.schema.Text(title=_('Advertisement text'), required=False)
 
-    ir_mediasync_id = zope.schema.TextLine(
-        title=_('InterRed MediaSync ID'), required=False, readonly=True
+    ir_mediasync_id = zope.schema.Int(
+        title=_('InterRed MediaSync ID'),
+        required=False,
     )
 
-    ir_article_id = zope.schema.TextLine(
-        title=_('InterRed Article ID'), required=False, readonly=True
+    ir_article_id = zope.schema.Int(
+        title=_('InterRed Article ID'),
+        required=False,
     )
 
 
