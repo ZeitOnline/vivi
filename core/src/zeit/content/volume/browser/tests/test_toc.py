@@ -94,7 +94,7 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
             'supertitle': '',
             'access': 'frei verfügbar',
             'authors': 'Helmut Schmidt',
-            'article_id': '0123456',
+            'article_id': '123456',
         }
         toc = Toc(mock.Mock(), mock.Mock())
         result = toc._create_toc_element(article)
