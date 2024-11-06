@@ -293,6 +293,7 @@
 .type-article #edit-form-metadata > .block-inner,
 .type-article #edit-form-misc > .block-inner,
 .type-article #edit-form-article-content > .block-inner,
+.type-article #edit-form-print > .block-inner,
 .type-article #edit-form-recensions > .block-inner,
 .type-article #edit-form-keywords-new > .block-inner,
 .type-article #edit-form-workflow > .block-inner {
@@ -1288,23 +1289,24 @@
   padding-top: 15px;
 }
 
-.type-article #edit-form-misc .fieldname-volume .display,
-.type-article #edit-form-misc .fieldname-year .display {
-  width: 85px;
+.type-article #edit-form-print #form-print-metadata {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 
-.type-article #edit-form-misc .fieldname-page .display {
-  width: 30px;
+.type-article #edit-form-print #form-print-metadata .fieldname-year input {
+  width: 40px;
 }
 
-.type-article #edit-form-misc .fieldname-printRessort .display {
-  width: 134px;
+.type-article #edit-form-print #form-print-metadata .fieldname-volume input {
+  width: 40px;
 }
 
-.type-article #options-b\.year,
-.type-article #options-b\.volume {
-  width: 85px;
+.type-article #edit-form-print #form-print-metadata .fieldname-page input {
+  width: 40px;
 }
+
 
 .type-article #article-content-main-image\.main_image .object-details{
   margin-bottom:10px;
@@ -1630,6 +1632,7 @@
 
 .type-article #edit-form-filename .inline-form .fieldtype-text,
 .type-article #edit-form-misc .inline-form .fieldtype-text,
+.type-article #edit-form-print .inline-form .fieldtype-text,
 .type-article #edit-form-metadata .inline-form .fieldtype-text {
   float: left;
 }
@@ -1646,6 +1649,7 @@
 
 .type-article #edit-form-filename .inline-form .fieldtype-checkbox .widget,
 .type-article #edit-form-misc .inline-form .fieldtype-checkbox .widget,
+.type-article #edit-form-print .inline-form .fieldtype-checkbox .widget,
 .type-article #edit-form-metadata .inline-form .fieldtype-checkbox .widget,
 .type-article #edit-form-workflow .inline-form .fieldtype-checkbox .widget {
   margin-left: 0.2em;
@@ -1663,12 +1667,14 @@
 
 .type-article #edit-form-filename .inline-form .fieldtype-label,
 .type-article #edit-form-misc .inline-form .fieldtype-label,
+.type-article #edit-form-print .inline-form .fieldtype-label,
 .type-article #edit-form-metadata .inline-form .fieldtype-label {
   float: left;
 }
 
 .type-article #edit-form-filename .inline-form .fieldtype-label .widget,
 .type-article #edit-form-misc .inline-form .fieldtype-label .widget,
+.type-article #edit-form-print .inline-form .fieldtype-label .widget,
 .type-article #edit-form-metadata .inline-form .fieldtype-label .widget {
   margin-left: 0.2em;
   margin-top: 0.2em;

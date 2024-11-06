@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Tue Oct 22 11:40:07 2024\n"
+"POT-Creation-Date: Tue Nov  5 08:53:41 2024\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -191,7 +191,7 @@ msgstr "Bearbeiten"
 
 #: zeit/cms/browser/form.py:293 zeit/cms/repository/browser/file.py:89
 #: zeit/content/article/edit/browser/edit.py:299
-#: zeit/content/article/edit/browser/form.py:465
+#: zeit/content/article/edit/browser/form.py:471
 #: zeit/content/article/edit/browser/push.py:52
 #: zeit/content/article/edit/browser/reference.py:54
 #: zeit/content/cp/browser/view.py:11 zeit/content/image/browser/form.py:98
@@ -233,7 +233,7 @@ msgstr "Autor"
 
 #: zeit/cms/browser/listing.py:262 zeit/cms/content/browser/template.py:39
 #: zeit/cms/content/interfaces.py:153 zeit/cms/content/interfaces.py:435
-#: zeit/cms/retractlog/browser/retractlog.py:23
+#: zeit/cms/retractlog/browser/retractlog.py:22
 #: zeit/cms/retractlog/interfaces.py:25
 #: zeit/content/advertisement/interfaces.py:24
 #: zeit/content/article/edit/interfaces.py:449
@@ -250,7 +250,7 @@ msgstr "Autor"
 msgid "Title"
 msgstr "Titel"
 
-#: zeit/cms/browser/listing.py:263 zeit/cms/interfaces.py:91
+#: zeit/cms/browser/listing.py:263 zeit/cms/interfaces.py:90
 #: zeit/cms/repository/browser/file.py:30
 #: zeit/cms/repository/browser/file_details.pt:2
 #: zeit/content/dynamicfolder/browser/folder.py:25
@@ -554,7 +554,7 @@ msgid "Texts"
 msgstr "Texte"
 
 #: zeit/cms/content/browser/form.py:35 zeit/content/article/browser/form.py:34
-#: zeit/content/article/edit/browser/form.py:375
+#: zeit/content/article/edit/browser/form.py:396
 #: zeit/content/cp/browser/form.py:59 zeit/content/link/browser/form.py:39
 #: zeit/content/video/browser/video.py:60
 msgid "Options"
@@ -566,7 +566,7 @@ msgid "Authors"
 msgstr "Autoren"
 
 #: zeit/cms/content/browser/form.py:43
-#: zeit/content/article/edit/browser/form.py:441
+#: zeit/content/article/edit/browser/form.py:447
 #: zeit/content/cp/browser/form.py:72
 msgid "Run in channel"
 msgstr "Automatisch platzieren"
@@ -883,11 +883,11 @@ msgstr "Remote Zeitstempel URL"
 msgid "Access changed from \"${old}\" to \"${new}\""
 msgstr "Verfügbarkeit geändert von \"${old}\" nach \"${new}\""
 
-#: zeit/cms/interfaces.py:52
+#: zeit/cms/interfaces.py:51
 msgid "Name contains invalid characters"
 msgstr "Dateiname enthält ungültige Zeichen"
 
-#: zeit/cms/interfaces.py:70
+#: zeit/cms/interfaces.py:69
 msgid "Invalid link target"
 msgstr ""
 "Kein gültiges Linkziel. ZEIT Inhalte müssen nach www.zeit.de verlinken."
@@ -1314,21 +1314,21 @@ msgstr "Unbekannte Ressource"
 msgid "Job"
 msgstr "Depublizierungsjob"
 
-#: zeit/cms/retractlog/browser/retractlog.py:16
-#: zeit/cms/retractlog/browser/retractlog.py:87
+#: zeit/cms/retractlog/browser/retractlog.py:15
+#: zeit/cms/retractlog/browser/retractlog.py:86
 msgid "Retract log"
 msgstr "Depublizierungsjobs"
 
-#: zeit/cms/retractlog/browser/retractlog.py:44
+#: zeit/cms/retractlog/browser/retractlog.py:43
 msgid "Add retract job"
 msgstr "Depublizierungsjob hinzufügen"
 
-#: zeit/cms/retractlog/browser/retractlog.py:72
+#: zeit/cms/retractlog/browser/retractlog.py:71
 msgid "Job created but invalid urls where found"
 msgstr ""
 "Depublizierungsjob erzeugt, aber es wurden ungültige urls identifiziert"
 
-#: zeit/cms/retractlog/browser/retractlog.py:74
+#: zeit/cms/retractlog/browser/retractlog.py:73
 msgid "Retract job created."
 msgstr "Depublizierungsjob erzeugt"
 
@@ -1378,7 +1378,7 @@ msgid "Keywords"
 msgstr "Schlagworte"
 
 #: zeit/cms/workflow/browser/indicator.py:12 zeit/cms/workflow/interfaces.py:48
-#: zeit/workflow/publish.py:510 zeit/workflow/publishinfo.py:61
+#: zeit/workflow/publish.py:509 zeit/workflow/publishinfo.py:61
 msgid "Published"
 msgstr "Veröffentlicht"
 
@@ -1567,7 +1567,7 @@ msgid "Article"
 msgstr "Artikel"
 
 #: zeit/content/animation/browser/form.py:22
-#: zeit/content/article/edit/browser/form.py:306
+#: zeit/content/article/edit/browser/form.py:327
 #: zeit/content/audio/browser/form.py:89 zeit/content/link/browser/form.py:33
 #: zeit/content/volume/browser/form.py:85 zeit/content/volume/interfaces.py:52
 #: zeit/wysiwyg/browser/resources/pagebreak/dialog.pt:14
@@ -1659,7 +1659,7 @@ msgid "Adplace block"
 msgstr "Ad-Place"
 
 #: zeit/content/article/edit/audio.py:22
-#: zeit/content/article/edit/browser/form.py:472 zeit/content/audio/audio.py:72
+#: zeit/content/article/edit/browser/form.py:478 zeit/content/audio/audio.py:72
 #: zeit/content/audio/browser/configure.zcml:6
 #: zeit/content/audio/browser/form.py:18
 msgid "Audio"
@@ -1743,11 +1743,15 @@ msgstr "Metadaten"
 msgid "Comments"
 msgstr "Kommentare"
 
-#: zeit/content/article/edit/browser/form.py:406
-msgid "Product management"
-msgstr "Produktmangement"
+#: zeit/content/article/edit/browser/form.py:278
+msgid "Print"
+msgstr "Print"
 
-#: zeit/content/article/edit/browser/form.py:414
+#: zeit/content/article/edit/browser/form.py:412
+msgid "Product management"
+msgstr "Produktmanagement"
+
+#: zeit/content/article/edit/browser/form.py:420
 msgid "Interactive"
 msgstr "Interaktiv"
 
@@ -2202,11 +2206,11 @@ msgstr "Filter"
 msgid "Jobbox ticker block"
 msgstr "Jobticker Modul"
 
-#: zeit/content/article/edit/liveblog.py:65
+#: zeit/content/article/edit/liveblog.py:63
 msgid "Liveblog"
 msgstr "Liveblog"
 
-#: zeit/content/article/edit/liveblog.py:90
+#: zeit/content/article/edit/liveblog.py:88
 msgid "Tickaroo liveblog block"
 msgstr "Tickaroo-Liveblog"
 
@@ -2790,35 +2794,35 @@ msgstr "Kein Default-Layout für diese Fläche vorhanden"
 msgid "List of teasers"
 msgstr "Teaser"
 
-#: zeit/content/cp/browser/area.py:210 zeit/content/cp/interfaces.py:212
+#: zeit/content/cp/browser/area.py:211 zeit/content/cp/interfaces.py:212
 msgid "automatic-area-type-centerpage"
 msgstr "Centerpage"
 
-#: zeit/content/cp/browser/area.py:211 zeit/content/cp/interfaces.py:219
+#: zeit/content/cp/browser/area.py:212 zeit/content/cp/interfaces.py:219
 msgid "automatic-area-type-rss-feed"
 msgstr "RSS-Feed"
 
-#: zeit/content/cp/browser/area.py:213 zeit/content/cp/interfaces.py:213
+#: zeit/content/cp/browser/area.py:214 zeit/content/cp/interfaces.py:213
 msgid "automatic-area-type-custom"
 msgstr "Individuelle Abfrage"
 
-#: zeit/content/cp/browser/area.py:216 zeit/content/cp/interfaces.py:214
+#: zeit/content/cp/browser/area.py:217 zeit/content/cp/interfaces.py:214
 msgid "automatic-area-type-topicpage"
 msgstr "TMS-Themenseite"
 
-#: zeit/content/cp/browser/area.py:220 zeit/content/cp/interfaces.py:216
+#: zeit/content/cp/browser/area.py:221 zeit/content/cp/interfaces.py:216
 msgid "automatic-area-type-elasticsearch-query"
 msgstr "ES-Query"
 
-#: zeit/content/cp/browser/area.py:223 zeit/content/cp/interfaces.py:215
+#: zeit/content/cp/browser/area.py:224 zeit/content/cp/interfaces.py:215
 msgid "automatic-area-type-related-topics"
 msgstr "Verwandte TMS-Themenseiten"
 
-#: zeit/content/cp/browser/area.py:225 zeit/content/cp/interfaces.py:217
+#: zeit/content/cp/browser/area.py:226 zeit/content/cp/interfaces.py:217
 msgid "automatic-area-type-reach"
 msgstr "Reach"
 
-#: zeit/content/cp/browser/area.py:229 zeit/content/cp/interfaces.py:220
+#: zeit/content/cp/browser/area.py:230 zeit/content/cp/interfaces.py:220
 msgid "automatic-area-type-sql-query"
 msgstr "SQL-Query"
 
@@ -2945,7 +2949,7 @@ msgstr ""
 "Wirklich zurückziehen? Dies wird das Objekt aus allen Channeln entfernen "
 "sowie der Öffentlichkeit unzugänglich machen."
 
-#: zeit/content/cp/browser/workflow.py:69 zeit/edit/rule.py:233
+#: zeit/content/cp/browser/workflow.py:69 zeit/edit/rule.py:232
 msgid "Could not publish ${id} since it has validation errors."
 msgstr ""
 "${id} hat Validierungsfehler und  kann daher nicht veröffentlicht werden."
@@ -4635,31 +4639,31 @@ msgstr ""
 "Bei Eilmeldungen oder am Wochenende auswählen um veröffentlichen zu können "
 "ohne die anderen Status setzen zu müssen."
 
-#: zeit/workflow/publish.py:54
+#: zeit/workflow/publish.py:53
 msgid "Publication scheduled"
 msgstr "wird veröffentlicht"
 
-#: zeit/workflow/publish.py:74
+#: zeit/workflow/publish.py:73
 msgid "Retracting scheduled"
 msgstr "Wird zurückgezogen"
 
-#: zeit/workflow/publish.py:90
+#: zeit/workflow/publish.py:89
 msgid "Collective Publication of ${count} objects"
 msgstr "Sammelveröffentlichung (${count} Objekte)"
 
-#: zeit/workflow/publish.py:120
+#: zeit/workflow/publish.py:119
 msgid "Collective Retraction of ${count} objects"
 msgstr "Sammeldepublizierung (${count} Objekte)"
 
-#: zeit/workflow/publish.py:230
+#: zeit/workflow/publish.py:229
 msgid "Objects with errors: ${objects}"
 msgstr "Inhalte mit Fehlern: ${objects}"
 
-#: zeit/workflow/publish.py:368
+#: zeit/workflow/publish.py:367
 msgid "The object ${name} is locked by ${user}."
 msgstr "Das Objekt »${name}« ist bereits von »${user}« gesperrt."
 
-#: zeit/workflow/publish.py:593
+#: zeit/workflow/publish.py:592
 msgid "Retracted"
 msgstr "Zurückgezogen"
 
@@ -4683,19 +4687,19 @@ msgstr "${name}: ${new_value}"
 msgid "not necessary"
 msgstr "nicht nötig"
 
-#: zeit/workflow/timebased.py:137
+#: zeit/workflow/timebased.py:136
 msgid "timebased-publish-add"
 msgstr "Automatisch veröffentlichen am ${date} (job #${job})"
 
-#: zeit/workflow/timebased.py:138
+#: zeit/workflow/timebased.py:137
 msgid "timebased-publish-cancel"
 msgstr "Abgebrochen: automatisches Veröffentlichen (job #${job})"
 
-#: zeit/workflow/timebased.py:139
+#: zeit/workflow/timebased.py:138
 msgid "timebased-retract-add"
 msgstr "Automatisch zurückziehen am ${date} (job #${job})"
 
-#: zeit/workflow/timebased.py:140
+#: zeit/workflow/timebased.py:139
 msgid "timebased-retract-cancel"
 msgstr "Abgebrochen: automatisches Zurückziehen (job #${job})"
 
@@ -4835,9 +4839,6 @@ msgstr "mit Info"
 
 #~ msgid "Additional Twitter"
 #~ msgstr "zusätzlicher Ressortaccount:"
-
-#~ msgid "Print Tweet"
-#~ msgstr "DieZeit Tweet"
 
 #~ msgid "Video Bar"
 #~ msgstr "Video-Riegel"

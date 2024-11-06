@@ -274,6 +274,25 @@ class CommentsFormGroup(zeit.edit.browser.form.FoldableFormGroup):
     title = _('Comments')
 
 
+class PrintFormGroup(zeit.edit.browser.form.FoldableFormGroup):
+    title = _('Print')
+
+
+class PrintMetadata(zeit.edit.browser.form.InlineForm):
+    legend = _('')
+    prefix = 'print-metadata'
+    form_fields = FormFields(ICommonMetadata).select('year', 'volume', 'page', 'printRessort')
+
+    def _success_handler(self):
+        self.signal('reload-inline-view', 'edit.heading')
+
+
+class PrintInterred(zeit.edit.browser.form.InlineForm):
+    legend = _('Interred')
+    prefix = 'print-interred'
+    form_fields = FormFields(ICommonMetadata).select('ir_article_id', 'ir_mediasync_id')
+
+
 class Comments(zeit.edit.browser.form.InlineForm):
     legend = _('')
     prefix = 'metadata-comments'
@@ -379,21 +398,6 @@ class OptionsA(zeit.edit.browser.form.InlineForm):
     legend = ''
     prefix = 'options-a'
     form_fields = FormFields(IArticle).select('serie')
-
-
-class OptionsB(zeit.edit.browser.form.InlineForm):
-    legend = ''
-    prefix = 'options-b'
-    form_fields = FormFields(ICommonMetadata).select('year', 'volume', 'page', 'printRessort')
-
-    def setUpWidgets(self, *args, **kw):
-        super().setUpWidgets(*args, **kw)
-        # the 'page' field is an Int, so we can't use default='n/a'
-        if not self.context.page:
-            self.widgets['page'].setRenderedValue('n/a')
-
-    def _success_handler(self):
-        self.signal('reload-inline-view', 'edit.heading')
 
 
 class OptionsC(zeit.edit.browser.form.InlineForm):

@@ -111,7 +111,7 @@ class Toc(zeit.cms.browser.view.Base):
             'supertitle': article.supertitle,
             'access': article.access,
             'authors': ', '.join([x.target.display_name for x in article.authorships]),
-            'article_id': article.ir_article_id,
+            'article_id': str(article.ir_article_id),
         }
         return self._normalize_toc_element(result)
 

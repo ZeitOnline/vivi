@@ -842,6 +842,7 @@ class DirtySaveVersusPersistTests(zeit.content.article.edit.browser.testing.Edit
     def test_toolbar_actions_mark_editor_as_dirty(self):
         self.create('<p>foo</p><p>bar</p>')
         self.mark_dirty(status=False)
+        self.execute("document.getElementById('edit-form-article-content').scrollIntoView();")
         click(self.selenium, 'link=H3')
         self.assertEqual(True, self.eval(self.get_js_editable() + '.dirty'))
 
