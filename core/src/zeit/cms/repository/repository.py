@@ -312,6 +312,18 @@ class Repository(persistent.Persistent, Container):
         content.__name__ = resource.__name__
         return content
 
+    def makeContent(self, resource):
+        """Currently supports exactly the zeit.contentquery SQLContentQuery
+        usecase, by cobbling together the relevant parts of _getContent() and
+        getCopyOf(). Unclear if this points to a design flaw, and if so, what
+        a cleaner API would look like.
+        """
+        content = zeit.cms.interfaces.ICMSContent(resource)
+        content.__name__ = resource.__name__
+        self._add_marker_interfaces(content)
+        self._content[content.uniqueId] = content
+        return content
+
     def _get_normalized_unique_id(self, unique_id):
         if unique_id.startswith('/cms/work/'):
             return unique_id.replace('/cms/work/', zeit.cms.interfaces.ID_NAMESPACE)

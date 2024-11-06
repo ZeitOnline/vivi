@@ -72,7 +72,8 @@ class SQLContentQuery(ContentQuery):
 
     def __call__(self):
         query = self._build_query()
-        result = [ICMSContent(x) for x in self.connector.search_sql(query)]
+        repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
+        result = [repository.makeContent(x) for x in self.connector.search_sql(query)]
         return result
 
     @property

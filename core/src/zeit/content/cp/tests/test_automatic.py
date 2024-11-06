@@ -1081,9 +1081,13 @@ class AutomaticAreaSQLTest(zeit.content.cp.testing.FunctionalTestCase):
         self.connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
 
     def test_cms_content_iter_returns_filled_in_blocks(self):
-        self.connector.search_result = ['http://xml.zeit.de/testcontent']
-        content = zeit.edit.interfaces.IElementReferences(self.area)
-        self.assertEqual(['http://xml.zeit.de/testcontent'], [x.uniqueId for x in content])
+        self.connector.search_result = ['http://xml.zeit.de/online/2007/01/Somalia']
+        content = list(zeit.edit.interfaces.IElementReferences(self.area))
+        self.assertEqual(
+            ['http://xml.zeit.de/online/2007/01/Somalia'],
+            [x.uniqueId for x in content],
+        )
+        self.assertEqual('International', content[0].ressort)
 
     def test_clauses_extend_query(self):
         IRenderedArea(self.area).values()
