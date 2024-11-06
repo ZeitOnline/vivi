@@ -61,7 +61,7 @@ class CheckoutManager:
             ):
                 raise zeit.cms.checkout.interfaces.CheckinCheckoutError(
                     self.context.uniqueId,
-                    _('The content you tried to check out is already in your ' 'working copy.'),
+                    _('The content you tried to check out is already in your working copy.'),
                 )
         return True
 
