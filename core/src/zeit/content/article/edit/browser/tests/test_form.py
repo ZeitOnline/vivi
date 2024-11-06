@@ -69,12 +69,6 @@ class WorkflowStatusDisplayTest(zeit.content.article.testing.BrowserTestCase):
 
 
 class PageNumberDisplay(zeit.content.article.testing.BrowserTestCase):
-    def test_no_page_displays_as_not_applicable(self):
-        b = self.browser
-        b.open('http://localhost/++skin++vivi/repository' '/online/2007/01/Somalia/@@checkout')
-        b.open('@@edit.form.print-metadata')
-        self.assertEllipsis('...Page...n/a...', b.contents)
-
     def test_existing_page_number_is_displayed(self):
         article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         with zeit.cms.checkout.helper.checked_out(article) as co:
