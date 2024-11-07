@@ -624,14 +624,17 @@ class Connector:
         return rows.one()
 
     def _execute_suppress_errors(self, query, timeout=None):
-        try:
-            return self.session.execute(
-                query, execution_options={'statement_timeout': timeout}
-            ).scalars()
-        except Exception:
-            log.warning('Error during search_sql, suppressed', exc_info=True)
-            self.session.rollback()
-            return None
+        tracer = zope.component.getUtility(zeit.cms.interfaces.ITracer)
+        with tracer.start_as_current_span('sql_contentquery', kind=SpanKind.CLIENT) as span:
+            span.set_attributes({'db.statement': str(query)})
+            try:
+                return self.session.execute(
+                    query, execution_options={'statement_timeout': timeout}
+                ).scalars()
+            except Exception:
+                log.warning('Error during search_sql, suppressed', exc_info=True)
+                self.session.rollback()
+                return None
 
     def _build_filter(self, expr):
         op = expr.operator
