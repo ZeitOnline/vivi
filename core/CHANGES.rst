@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.62.0 (2024-11-07)
+-------------------
+
+- WCM-490: Record explicit span for sql contentquery
+
+
 6.61.0 (2024-11-07)
 -------------------
 
