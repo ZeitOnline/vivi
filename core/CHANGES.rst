@@ -3,6 +3,18 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.61.0 (2024-11-07)
+-------------------
+
+- WCM-153: make page writeable and add interred fields
+
+- WCM-511: Return actually complete content objects from SQL areas
+
+
+FIX:
+- Bring back variable resolution for error messages in log
+
+
 6.60.0 (2024-11-04)
 -------------------
 
