@@ -62,18 +62,17 @@ class SQLContentQuery(ContentQuery):
 
     grok.name('sql-query')
 
-    @property
-    def connector(self):
-        return zope.component.getUtility(zeit.connector.interfaces.IConnector)
+    def __call__(self):
+        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+        repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
+        query = self._build_query()
+        result = [repository.makeContent(x) for x in connector.search_sql(query)]
+        return result
 
     @cachedproperty
     def total_hits(self):
-        return self.connector.search_sql_count(self._build_query(order=False))
-
-    def __call__(self):
-        query = self._build_query()
-        result = [ICMSContent(x) for x in self.connector.search_sql(query)]
-        return result
+        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+        return connector.search_sql_count(self._build_query(order=False))
 
     @property
     def conditions(self):
