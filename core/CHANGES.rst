@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.64.0 (2024-11-08)
+-------------------
+
+- WCM-507: elastic search returns authors field
+
+
 6.63.0 (2024-11-08)
 -------------------
 
