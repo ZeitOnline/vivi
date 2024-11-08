@@ -12,6 +12,7 @@ DEFAULT_FIELDS = (
     'payload',
     'title',
     'teaser',
+    'author',
 )
 
 
