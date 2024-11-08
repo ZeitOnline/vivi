@@ -25,6 +25,15 @@ class TestSearch(zeit.cms.testing.SeleniumTestCase):
         self.types_patch.stop()
         super().tearDown()
 
+    def test_authors_displayed_in_search_result(self):
+        s = self.selenium
+        s.click('id=type_search_button')
+        s.waitForElementPresent('css=#type_search_button.unfolded')
+        s.pause(500)
+        self.open('/find')
+        s.waitForElementPresent('css=#type_search_button.unfolded')
+        s.verifyText('css=.metadata span:nth-of-type(4)', 'William Shakespeare')
+
     def test_extended_search_display(self):
         s = self.selenium
         s.verifyNotVisible('id=extended_search')

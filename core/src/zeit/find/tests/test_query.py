@@ -19,7 +19,7 @@ def test_simple_queries():
     assert query('Bar') == {
         'query': {'query_string': {'query': 'Bar', 'fields': [], 'default_operator': 'AND'}}
     }
-    assert query(authors='Foo Bar') == {'query': {'match': {'payload.document.author': 'Foo Bar'}}}
+    assert query(authors='Foo Bar') == {'query': {'match': {'author': 'Foo Bar'}}}
     assert query(from_=datetime(2009, 12, 19, 19, 9)) == {
         'query': {
             'range': {'payload.document.last-semantic-change': {'gte': '2009-12-19T19:09:00'}}
@@ -78,7 +78,7 @@ def test_combined_queries():
                 'must': [
                     {'query_string': {'query': 'Foo', 'fields': [], 'default_operator': 'AND'}}
                 ],
-                'filter': [{'match': {'payload.document.author': 'Bar'}}],
+                'filter': [{'match': {'author': 'Bar'}}],
             }
         }
     }
