@@ -261,7 +261,7 @@ class SearchResult(JSONView):
         return result.get('doc_type', '')
 
     def get_authors(self, result):
-        return result.get('payload.document.author', [])
+        return result.get('author', '').split(',')
 
     def _get_unformatted_date(self, result):
         last_semantic_change = result.get('payload.document.last-semantic-change')
