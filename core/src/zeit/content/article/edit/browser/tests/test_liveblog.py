@@ -12,6 +12,7 @@ class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
         self.assertEqual('bloggy', b.getControl('Liveblog id').value)
         self.assertEqual(['3'], b.getControl('Liveblog version').displayValue)
         self.assertTrue(b.getControl('Collapse preceding content').selected)
+        self.assertEqual(['No timeline in teaser'], b.getControl(('Timeline Content')).displayValue)
 
     def test_inline_form_saves_values_including_version(self):
         self.get_article(with_block='liveblog')
@@ -19,12 +20,14 @@ class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
         b.open('editable-body/blockname/@@edit-liveblog?show_form=1')
         b.getControl('Liveblog id').value = 'bloggy'
         b.getControl('Liveblog version').displayValue = ['3']
+        b.getControl(('Timeline Content')).displayValue = ['Highlighted events']
         b.getControl('Collapse preceding content').selected = False
         b.getControl('Apply').click()
         b.reload()
         self.assertEqual('bloggy', b.getControl('Liveblog id').value)
         self.assertEqual(['3'], b.getControl('Liveblog version').displayValue)
         self.assertFalse(b.getControl('Collapse preceding content').selected)
+        self.assertEqual(['Highlighted events'], b.getControl(('Timeline Content')).displayValue)
 
 
 class FormLoader(zeit.content.article.edit.browser.testing.EditorTestCase):
