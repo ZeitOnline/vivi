@@ -827,4 +827,25 @@
     permission="zope.View"
     />
 
+  <!-- ImageRow -->
+
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IImageRow"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit-image-row"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IImageRow"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-image-row"
+    class=".edit.EditImageRow"
+    permission="zope.View"
+    />
+
 </configure>

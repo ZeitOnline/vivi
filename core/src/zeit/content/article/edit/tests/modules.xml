@@ -29,4 +29,5 @@
   <module id="video">Video</module>
   <module id="volume">Ausgabe</module>
   <module id="videotagesschau">ARD Video</module>
+  <module id="image_row">Bilderreihe</module>
 </modules>

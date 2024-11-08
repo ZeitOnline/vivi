@@ -658,3 +658,28 @@ class IIngredientDice(IBlock):
     """
 
     pass
+
+
+class IImageRow(IBlock):
+    show_caption = zope.schema.Bool(title=_('Show caption'), required=False, default=True)
+    show_source = zope.schema.Bool(title=_('Show source'), required=False, default=True)
+    images = zope.schema.Tuple(
+        title=_('Images'),
+        default=(),
+        max_length=3,
+        required=False,
+        value_type=zope.schema.Choice(source=zeit.content.image.interfaces.ImageGroupSource()),
+    )
+    display_mode = zope.schema.Choice(
+        title=_('Display Mode'),
+        source=zeit.content.article.source.IMAGE_DISPLAY_MODE_SOURCE,
+        default='column-width',
+        required=False,
+    )
+    # Currently need default for bw compat.
+    variant_name = zope.schema.Choice(
+        title=_('Variant Name'),
+        source=zeit.content.article.source.IMAGE_VARIANT_NAME_SOURCE,
+        default='wide',
+        required=False,
+    )

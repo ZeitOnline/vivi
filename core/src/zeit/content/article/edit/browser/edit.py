@@ -575,3 +575,14 @@ class EditAnimation(zeit.cms.browser.manual.FormMixin, zeit.edit.browser.form.In
     @property
     def prefix(self):
         return 'animation.{0}'.format(self.context.__name__)
+
+
+class EditImageRow(zeit.edit.browser.form.InlineForm):
+    legend = ''
+    form_fields = zope.formlib.form.FormFields(zeit.content.article.edit.interfaces.IImageRow).omit(
+        *list(zeit.edit.interfaces.IBlock)
+    )
+
+    @property
+    def prefix(self):
+        return 'image_row.{0}'.format(self.context.__name__)
