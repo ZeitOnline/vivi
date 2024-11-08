@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.63.0 (2024-11-08)
+-------------------
+
+- WCM-507: show author infos in search results
+
+
 6.62.0 (2024-11-07)
 -------------------
 
