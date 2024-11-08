@@ -12,6 +12,7 @@
           "url": "/online/2007/01/Somalia",
           "teaser": "US-Umweltbeh\u00f6rdenchef Pruitt geht nach Serie von Skandalen",
           "doc_id": "{urn:uuid:74252e2a-08e9-4f24-908d-20acea747eb4}",
+          "author": "William Shakespeare",
           "payload": {
             "body": {
               "supertitle": "Wegen Korruptionsvorw\u00fcrfen",
@@ -210,6 +211,7 @@
           "url": "/gesellschaft/2018-07/zett-diese-3-fragen-solltest-du-dir-laut-barack-obama-stellen-wenn-es-um-die-grosse-liebe-geht-bild-2",
           "teaser": "https://ze.tt/diese-3-fragen-solltest-du-dir-laut-barack-obama-stellen-wenn-es-um-die-grosse-liebe-geht/",
           "doc_id": "{urn:uuid:f5c681a8-6d2a-473b-9aa4-f4d6b0c84e10}",
+          "author": "Anton Eickel",
           "payload": {
             "body": {
               "subtitle": "Ein Ex-Mitarbeiter von Barack Obama gibt in seinem neuen Buch die Liebesratschl\u00e4ge des ehemaligen US-Pr\u00e4sidenten preis.",
@@ -338,6 +340,7 @@
           "url": "/2018/28/einkommen-soziale-mobilitaet-verteilung-gerechtigkeit",
           "teaser": "Wenn die Einkommen in Deutschland immer ungleicher verteilt sind, verschlechtern sich die Chancen f\u00fcr Kinder aus armen Familien weiter. Davor warnt die Gatsby-Kurve.",
           "doc_id": "{urn:uuid:a71e46f9-6fe1-49fb-8164-c23a56551863}",
+          "author": "Friedemann Bieber",
           "payload": {
             "body": {
               "supertitle": "Einkommen",
@@ -461,6 +464,7 @@
           "url": "/2018/28/al-gore-umwelt-klima-technologie",
           "teaser": "Wir sind beim Klimaschutz an einem Wendepunkt, glaubt der US-Politiker und Umweltaktivist Al Gore. Er setzt auf neue Technologie und aufgeschlossene B\u00fcrger.",
           "doc_id": "{urn:uuid:27a7fad0-8276-4a63-8e1c-03741e2d7eec}",
+          "author": "Uwe Jean Heuser",
           "payload": {
             "body": {
               "supertitle": "Al Gore",
@@ -583,6 +587,7 @@
           "url": "/2018/28/usa-einwanderungspolitik-profiteure-gefaengnis-hilfsorganisation-familientrennung",
           "teaser": "Mit der Inhaftierung von Migranten werden in den USA Milliarden Dollar umgesetzt. Und es k\u00f6nnten noch weit mehr werden, die Aktienkurse der Anbieter steigen. ",
           "doc_id": "{urn:uuid:efe10969-b471-4f53-8c3c-1976df899701}",
+          "author": "Heike Buchter",
           "payload": {
             "body": {
               "supertitle": "US-Einwanderungspolitik",
@@ -703,6 +708,7 @@
           "url": "/2018/28/usa-donald-trump-republikaner-supreme-court",
           "teaser": "In den USA bekommen die Republikaner den Supreme Court unter ihre Kontrolle. Sie k\u00f6nnten das Land ver\u00e4ndern und das Recht auf Abtreibung und die Ehe f\u00fcr alle kippen.",
           "doc_id": "{urn:uuid:ad2dfc75-87a6-4bd1-ac06-f9e2f6a774fd}",
+          "author": "Martin Klingst",
           "payload": {
             "body": {
               "supertitle": "USA",
@@ -824,6 +830,7 @@
           "url": "/2018/28/nato-donald-trump-verteidigungspolitik",
           "teaser": "Die Nato ist weltweit ohne ebenb\u00fcrtigen Gegner. Auf Angriffe aus dem Wei\u00dfen Haus ist sie nicht vorbereitet. F\u00fcr Deutschland bedeutet das, Geld in die R\u00fcstung zu stecken.",
           "doc_id": "{urn:uuid:c50ff800-83eb-44bb-a233-7259c77fc65a}",
+          "author": "Joerg Lau",
           "payload": {
             "body": {
               "supertitle": "Nato",
@@ -1046,6 +1053,7 @@
           "url": "/politik/ausland/2018-07/us-grenzpolitik-famlilienzusammenfuehrung-einwanderung-faq",
           "teaser": "FAQ",
           "doc_id": "{urn:uuid:d3ceb9b2-4f63-45bc-a07a-c2c4f2fc6c31}",
+          "author": "Thorsten Schroeder",
           "payload": {
             "body": {
               "supertitle": "US-Grenzpolitik",
@@ -1329,6 +1337,7 @@
           "url": "/2018/27/el-paso-familientrennung-usa-einwanderung-donald-trump",
           "teaser": "Donald Trumps Einwanderungspolitik zerriss Familien. Dann gab der US-Pr\u00e4sident nach. Ein Erfolg, schien es. Doch in Texas geraten Kinder immer noch zwischen alle Fronten.",
           "doc_id": "{urn:uuid:f9fb58cb-c7f1-4edb-aadf-fab6b3b49101}",
+          "author": "Kerstin Kohlenberg",
           "payload": {
             "body": {
               "supertitle": "Familientrennung",
@@ -1641,6 +1650,7 @@
           "url": "/2018/27/angela-merkel-kanzleramt-regierungskrise-folgen",
           "teaser": "Ist es f\u00fcr Angela Merkel Zeit zu gehen? Selbstverst\u00e4ndlich. Aber doch nicht so. Die Deutschen sind auf eine Nach-Merkel-Republik nicht vorbereitet.",
           "doc_id": "{urn:uuid:7957892f-9780-4f96-bff7-87869632f892}",
+          "author": "Bernd Ulrich",
           "payload": {
             "body": {
               "supertitle": "Angela Merkel",
@@ -1966,6 +1976,7 @@
           "url": "/2018/27/margot-kaessmann-ruhestand-vorbild-evangelische-kirche",
           "teaser": "Margot K\u00e4\u00dfmann verabschiedet sich in den Ruhestand. Unsere Autorin wird sie vermissen. Ein offener Brief an das Idol ihrer Jugend",
           "doc_id": "{urn:uuid:afd55672-bc0b-4999-aca2-da4424310043}",
+          "author": "Hanna Jacobs",
           "payload": {
             "body": {
               "supertitle": "Margot K\u00e4\u00dfmann",
@@ -2089,6 +2100,7 @@
           "url": "/kultur/2018-06/donald-trump-usa-barack-obama-deutschland-ronja-von-roenne",
           "teaser": "Was willst Du denn jetzt in den USA? Seit Trump das Land regiert, h\u00f6rt man diese Frage oft, wenn man dort hinf\u00e4hrt. Aber das alte Amerika ist gar nicht untergegangen.",
           "doc_id": "{urn:uuid:66f5a64b-3092-4104-93f7-86713e58c019}",
+          "author": "Ronja von Roenne",
           "payload": {
             "body": {
               "supertitle": "USA",
@@ -2191,6 +2203,7 @@
           "url": "/2018/27/restaurant-portonovo-jubilaeum-hamburg",
           "teaser": "Das Restaurant Portonovo feiert zehnj\u00e4hriges Jubil\u00e4um. Anmerkungen zum Hamburger Stil",
           "doc_id": "{urn:uuid:82448e76-54bf-4f31-94aa-505622809eca}",
+          "author": "Daniel Haas",
           "payload": {
             "body": {
               "supertitle": "Restaurant Portonovo",
@@ -2312,6 +2325,7 @@
           "url": "/wirtschaft/2018-06/usa-china-handelsstreit-strafzoelle-donald-trump",
           "teaser": "Landwirte und Autofirmen f\u00fcrchten sich vor den Folgen des bizarren Handelsstreits, den US-Pr\u00e4sident Donald Trump mit China f\u00fchrt. Doch sogar Demokraten unterst\u00fctzen ihn.",
           "doc_id": "{urn:uuid:f4d6f292-9936-4a1a-aa62-29fc27b778fc}",
+          "author": "Thorsten Schroeder",
           "payload": {
             "body": {
               "supertitle": "USA und China",
@@ -2416,6 +2430,7 @@
           "url": "/2018/26/datenschutz-whistleblower-stiftung-the-signals-missbrauch-facebook-google",
           "teaser": "Facebook, Google und andere Konzerne sind zu m\u00e4chtig geworden. Was in ihrem Inneren geschieht, was mit unser aller Daten passiert \u2013 das wei\u00df kaum jemand.",
           "doc_id": "{urn:uuid:1dc37dff-2c3e-4d3f-bdb2-84a7c412d65b}",
+          "author": "Holger Stark",
           "payload": {
             "body": {
               "supertitle": "Datenschutz",
@@ -2742,6 +2757,7 @@
           "url": "/wirtschaft/2018-06/usa",
           "teaser": "Der Handelsstreit zwischen den USA und China beschleunigt sich. Unternehmer f\u00fcrchten sich vor den Folgen. Aber selbst einige Demokraten stehen hinter Donald Trump.",
           "doc_id": "{urn:uuid:639b6de8-bdea-4c86-8c13-26077494eaec}",
+          "author": "Thorsten Schroeder",
           "payload": {
             "body": {
               "supertitle": "Z\u00f6lle",
@@ -2934,6 +2950,7 @@
           "url": "/politik/ausland/2018-06/menschenrechtsrat-un-austritt-usa-folgen-gemeinschaft",
           "teaser": "Der UN-Menschenrechtsrat wird ohne die USA diplomatische Kraft verlieren. Doch Amerika hat dort auch eigene Interessen verfolgt, erkl\u00e4rt der Aktivist Florian Irminger.",
           "doc_id": "{urn:uuid:393c9faf-f952-487a-9f04-39adb785ac0f}",
+          "author": "Steffen Richter",
           "payload": {
             "body": {
               "supertitle": "UN-Menschenrechtsrat",
@@ -3340,6 +3357,7 @@
           "url": "/zeit-wissen/2018/04/ausstrahlung-charisma-schoenheit-aussehen",
           "teaser": "Inszenierung ist alles. Kleidung, K\u00f6rpersprache und Aussehen beeinflussen, wie wir auf andere wirken \u2013 und entscheiden dar\u00fcber, wie wir uns selbst f\u00fchlen.",
           "doc_id": "{urn:uuid:8a01db63-b0bc-4b20-80a3-bc4c12497efe}",
+          "author": "Silke_Weber",
           "payload": {
             "body": {
               "supertitle": "Ausstrahlung",
@@ -3517,6 +3535,7 @@
           "url": "/politik/deutschland/2018-06/unionsstreit-cdu-csu-angela-merkel-horst-seehofer-5vor8",
           "teaser": "Die Konservativen in der Union k\u00fcndigen Angela Merkel die Gefolgschaft auf \u2013 mit dramatischen Folgen f\u00fcr das Parteiensystem, die Regierungsmehrheit und f\u00fcr Europa.",
           "doc_id": "{urn:uuid:479ddff9-3e6f-4d7b-9cf9-a8307f862342}",
+          "author": "Matthias Nass",
           "payload": {
             "body": {
               "supertitle": "Unionsstreit",
@@ -3722,6 +3741,7 @@
           "url": "/politik/ausland/2018-06/usa-donald-trump-einwanderung-familien-kinder",
           "teaser": "Bilder weinender Kinder, die von den Eltern getrennt wurden, ver\u00e4ndern in den USA die Einwanderungsdebatte. Selbst Republikaner fordern Donald Trump zu einer Umkehr auf.",
           "doc_id": "{urn:uuid:26fb7d7f-09e1-4269-a659-8159d26dc930}",
+          "author": "Thorsten Schroeder",
           "payload": {
             "body": {
               "supertitle": "USA",
@@ -3921,6 +3941,7 @@
           "url": "/politik/ausland/2018-06/weltpolitik-usa-china-europa-weltordnung-umbruch-5vor8",
           "teaser": "Auf die USA ist kein Verlass mehr, die UN sind einflusslos wie nie. Europa muss seine Beziehungen zu den USA, aber gerade auch zu Russland und China neu definieren.",
           "doc_id": "{urn:uuid:e79a9f73-d594-4c53-9a05-a1e9ca11e2c9}",
+          "author": "Theo Sommer",
           "payload": {
             "body": {
               "supertitle": "Weltpolitik",
@@ -4017,6 +4038,7 @@
           "url": "/politik/deutschland/2018-06/cdu-csu-soeder-seehofer-nationalismus-5vor8",
           "teaser": "Der Streit um die Asylpolitik kann \u00fcber Merkel, aber auch die Zukunft des Landes entscheiden. Wird das v\u00f6lkische Denken der AfD weiter in b\u00fcrgerliche Kreise einsickern?",
           "doc_id": "{urn:uuid:6c8307da-0f2b-4806-8efc-f7cf38a7b6a7}",
+          "author": "Peter Dausend",
           "payload": {
             "body": {
               "supertitle": "Union",
@@ -4122,6 +4144,7 @@
           "url": "/kultur/literatur/2018-06/die-muetter-brit-bennett-roman",
           "teaser": "In den USA wurde Brit Bennett f\u00fcr \"Die M\u00fctter\" gefeiert. Zu Recht. Der Deb\u00fctroman erz\u00e4hlt mitrei\u00dfend, wie man lebenslang an seiner Erzeugerin leiden kann. ",
           "doc_id": "{urn:uuid:39c72935-e17f-499d-b4b0-121f65d83710}",
+          "author": "Carola Ebeling",
           "payload": {
             "body": {
               "supertitle": "\"Die M\u00fctter\"",
@@ -4430,6 +4453,7 @@
           "url": "/sport/2018-06/fussball-wm-2026-usa-kanada-mexiko-fifa",
           "teaser": "Der Gewinner hei\u00dft Donald Trump: 2026 wird in den USA, Mexiko und Kanada gespielt. Dabei hat sich Amerika nicht an die Regeln gehalten, der Fifa-Chef \u00fcbrigens auch nicht.",
           "doc_id": "{urn:uuid:601e0968-a962-49f2-9c43-623398018e2a}",
+          "author": "Oliver Fritsch",
           "payload": {
             "body": {
               "supertitle": "Fu\u00dfball-WM 2026",
@@ -4538,6 +4562,7 @@
           "url": "/kultur/2018-06/donald-trump-kim-jong-un-video-mythos",
           "teaser": "In seinem offiziellen Trailer zum Treffen mit Kim Jong Un beschw\u00f6rt Donald Trump die R\u00fcckkehr des Mythos in die Politik. Das ist nicht nur zum Lachen.",
           "doc_id": "{urn:uuid:8c5b6661-70bb-45aa-b6c9-55c989642dce}",
+          "author": "David Hugendick",
           "payload": {
             "body": {
               "supertitle": "Donald Trump",
@@ -4843,6 +4868,7 @@
           "url": "/2018/25/usa-europa-einfluss-imperium",
           "teaser": "Das Imperium zerf\u00e4llt, weil es seine R\u00e4nder nicht achtet. Jetzt geht es in der Welt nur noch um Einflusszonen.",
           "doc_id": "{urn:uuid:76113a02-d92a-4403-9bbd-e89e9ed34bb5}",
+          "author": "Herfried Muenkler",
           "payload": {
             "body": {
               "supertitle": "USA",
@@ -4964,6 +4990,7 @@
           "url": "/2018/25/donald-trump-golf-schummeln-golfplatz-weltpolitik",
           "teaser": "Mit Donald Trump ist der beste Golfer aller Zeiten ins Wei\u00dfe Haus eingezogen. Wenn er als Spieler schummelt, dann ehrlich, auf der Grundlage hei\u00df geliebter Regeln.",
           "doc_id": "{urn:uuid:11ac1d0c-9410-4684-9581-c3d1e6af9fdc}",
+          "author": "Thomas Assheuer",
           "payload": {
             "body": {
               "supertitle": "Donald Trump",

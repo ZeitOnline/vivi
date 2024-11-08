@@ -30,7 +30,7 @@ def from_product_config():
 
 
 field_map = {
-    'authors': 'payload.document.author',
+    'authors': 'author',
     'author_type': 'payload.xml.status',
     'access': 'payload.document.access',
     'product_id': 'payload.workflow.product-id',
