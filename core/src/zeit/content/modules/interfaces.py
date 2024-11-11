@@ -262,7 +262,6 @@ class TimelineTemplateSource(zeit.cms.content.sources.SimpleDictSource):
     values = {
         'highlighted': _('Highlighted events'),
         'recent': _('Recent events'),
-        'disabled': _('No timeline in teaser'),
     }
 
 
@@ -275,8 +274,7 @@ class ITickarooLiveblog(zeit.edit.interfaces.IBlock):
 
     timeline_template = zope.schema.Choice(
         title=_('Timeline Content'),
-        default='disabled',
-        required=True,
+        required=False,
         source=TimelineTemplateSource(),
     )
 

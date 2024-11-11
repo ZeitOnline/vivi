@@ -416,8 +416,7 @@ class ILiveblog(IBlock):
 
     timeline_template = zope.schema.Choice(
         title=_('Timeline Content'),
-        default='disabled',
-        required=True,
+        required=False,
         source=zeit.content.modules.interfaces.TimelineTemplateSource(),
     )
 
