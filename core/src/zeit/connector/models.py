@@ -74,13 +74,14 @@ class CommonMetadata:
     )
 
 
-class Article:
+class ContentTypes:
     article_audio_premium_enabled = mapped_column(
         Boolean, info={'namespace': 'print', 'name': 'has_audio', 'migration': 'wcm_471'}
     )
     article_audio_speech_enabled = mapped_column(
         Boolean, info={'namespace': 'document', 'name': 'audio_speechbert', 'migration': 'wcm_471'}
     )
+
     article_genre = mapped_column(
         Unicode, info={'namespace': 'document', 'name': 'genre', 'migration': 'wcm_430'}
     )
@@ -88,27 +89,21 @@ class Article:
         Unicode, info={'namespace': 'document', 'name': 'header_layout', 'migration': 'wcm_471'}
     )
 
-
-class Centerpage:
     centerpage_type = mapped_column(
         Unicode, info={'namespace': 'zeit.content.cp', 'name': 'type', 'migration': 'wcm_471'}
     )
 
-
-class Gallery:
     gallery_type = mapped_column(
         Unicode, info={'namespace': 'zeit.content.gallery', 'name': 'type', 'migration': 'wcm_471'}
     )
 
 
-class SemanticChange:
+class Timestamps:
     date_last_modified_semantic = mapped_column(
         TIMESTAMP,
         info={'namespace': 'document', 'name': 'last-semantic-change', 'migration': 'wcm_430'},
     )
 
-
-class Modified:
     date_created = mapped_column(
         TIMESTAMP,
         info={'namespace': 'document', 'name': 'date_created', 'migration': 'wcm_430'},
@@ -122,8 +117,6 @@ class Modified:
         info={'namespace': 'document', 'name': 'date_last_modified', 'migration': 'wcm_430'},
     )
 
-
-class PublishInfo:
     date_first_released = mapped_column(
         TIMESTAMP,
         info={'namespace': 'document', 'name': 'date_first_released', 'migration': 'wcm_430'},
@@ -144,24 +137,16 @@ class PublishInfo:
         TIMESTAMP,
         info={'namespace': 'document', 'name': 'print-publish', 'migration': 'wcm_430'},
     )
-    published = mapped_column(
-        Boolean,
-        server_default='false',
-        nullable=False,
-        info={'namespace': 'workflow', 'name': 'published', 'migration': 'wcm_430'},
-    )
 
 
-class SEO:
+class Miscellaneous:
     seo_meta_robots = mapped_column(
         Unicode,
         info={'namespace': 'document', 'name': 'html-meta-robots', 'migration': 'wcm_471'},
     )
 
 
-class Content(
-    Base, CommonMetadata, Modified, PublishInfo, SemanticChange, Article, Gallery, Centerpage, SEO
-):
+class Content(Base, CommonMetadata, ContentTypes, Timestamps, Miscellaneous):
     __tablename__ = 'properties'
 
     @declared_attr
@@ -225,6 +210,13 @@ class Content(
 
     parent_path = mapped_column(Unicode)
     name = mapped_column(Unicode)
+
+    published = mapped_column(
+        Boolean,
+        server_default='false',
+        nullable=False,
+        info={'namespace': 'workflow', 'name': 'published', 'migration': 'wcm_430'},
+    )
 
     lock = relationship(
         'Lock',
