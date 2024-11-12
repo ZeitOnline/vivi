@@ -69,11 +69,29 @@ class CommonMetadata:
     volume_number = mapped_column(
         Integer, info={'namespace': 'document', 'name': 'volume', 'migration': 'wcm_430'}
     )
+    print_page = mapped_column(
+        Integer, info={'namespace': 'document', 'name': 'page', 'migration': 'wcm_471'}
+    )
 
 
 class Article:
+    article_audio_premium_enabled = mapped_column(
+        Boolean, info={'namespace': 'print', 'name': 'has_audio', 'migration': 'wcm_471'}
+    )
+    article_audio_speech_enabled = mapped_column(
+        Boolean, info={'namespace': 'document', 'name': 'audio_speechbert', 'migration': 'wcm_471'}
+    )
     article_genre = mapped_column(
         Unicode, info={'namespace': 'document', 'name': 'genre', 'migration': 'wcm_430'}
+    )
+    article_header = mapped_column(
+        Unicode, info={'namespace': 'document', 'name': 'header_layout', 'migration': 'wcm_471'}
+    )
+
+
+class Centerpage:
+    centerpage_type = mapped_column(
+        Unicode, info={'namespace': 'zeit.content.cp', 'name': 'type', 'migration': 'wcm_471'}
     )
 
 
@@ -134,7 +152,16 @@ class PublishInfo:
     )
 
 
-class Content(Base, CommonMetadata, Modified, PublishInfo, SemanticChange, Article, Gallery):
+class SEO:
+    seo_meta_robots = mapped_column(
+        Unicode,
+        info={'namespace': 'document', 'name': 'html-meta-robots', 'migration': 'wcm_471'},
+    )
+
+
+class Content(
+    Base, CommonMetadata, Modified, PublishInfo, SemanticChange, Article, Gallery, Centerpage, SEO
+):
     __tablename__ = 'properties'
 
     @declared_attr
@@ -170,6 +197,7 @@ class Content(Base, CommonMetadata, Modified, PublishInfo, SemanticChange, Artic
                 cls.Index(getattr(cls, column))
                 for column in [
                     'access',
+                    'article_audio_premium_enabled',
                     'article_genre',
                     'print_ressort',
                     'product',

@@ -1,4 +1,4 @@
-"""WCM-445_gallery_type_column
+"""WCM-445_gallery_type_column_WCM-471_raw_query_columns
 
 Revision ID: b03c427b88de
 Revises: 10c0b7d30778
