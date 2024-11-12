@@ -6,7 +6,9 @@ vivi.core changes
 6.65.0 (2024-11-12)
 -------------------
 
-- ZO-471: Add columns required for raw queries
+- WCM-471: Add columns required for raw queries
+
+- WCM-523: Allow excluding custom query from being switched to sql via toggle
 
 - ZO-6156: Add liveblog teaser setting for timeline
 
