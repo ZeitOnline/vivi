@@ -233,6 +233,8 @@ class SQLCustomContentQuery(SQLContentQuery):
 def dispatch_custom_query(context):
     """Helper for switching during transition phase"""
     query = context.xml.find('query')
+    if query is not None and query.get('type') != 'sql':
+        return CustomContentQuery(context)
     if FEATURE_TOGGLES.find('contentquery_custom_as_sql'):
         return SQLCustomContentQuery(context)
     if query is not None and query.get('type') == 'sql':

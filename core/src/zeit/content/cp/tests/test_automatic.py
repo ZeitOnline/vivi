@@ -441,6 +441,14 @@ class AutomaticAreaElasticsearchTest(zeit.content.cp.testing.FunctionalTestCase)
             self.elasticsearch.search.call_args[0][0]['sort'],
         )
 
+    def test_custom_query_can_be_forced_to_elastic(self):
+        FEATURE_TOGGLES.set('contentquery_custom_as_sql')
+        self.area.automatic_type = 'custom'
+        self.area.query = (('ressort', 'eq', 'International', 'Nahost'),)
+        self.area.xml.find('query').set('type', 'elastic')
+        IRenderedArea(self.area).values()
+        self.assertTrue(self.elasticsearch.search.called)
+
     def test_query_order_can_be_set(self):
         self.area.elasticsearch_raw_order = 'order:desc'
         IRenderedArea(self.area).values()
