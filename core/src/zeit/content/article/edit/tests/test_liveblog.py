@@ -36,7 +36,9 @@ class LiveblogTest(zeit.content.article.testing.FunctionalTestCase):
         liveblog = self.get_liveblog()
         liveblog.blog_id = '290'
         liveblog.invalid_attribute = 'this should not be set'
+        liveblog.timeline_template = 'highlighted'
         self.assertEqual('290', liveblog.xml.xpath('.')[0].get('blogID'))
+        self.assertEqual('highlighted', liveblog.xml.xpath('.')[0].get('timeline_template'))
         self.assertIsNone(liveblog.xml.xpath('.')[0].get('invalid_attribute'))
 
     def test_liveblog_version_should_be_set(self):

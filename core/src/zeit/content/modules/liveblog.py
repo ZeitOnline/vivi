@@ -13,8 +13,8 @@ class TickarooLiveblog(zeit.edit.block.Element):
         '.', 'collapse_preceding_content', ITickarooLiveblog['collapse_preceding_content']
     )
 
-    show_timeline_in_teaser = ObjectPathAttributeProperty(
-        '.', 'show_timeline_in_teaser', ITickarooLiveblog['show_timeline_in_teaser']
+    timeline_template = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'timeline_template', ITickarooLiveblog['timeline_template']
     )
 
     status = ObjectPathAttributeProperty('.', 'status', ITickarooLiveblog['status'])
