@@ -1154,6 +1154,10 @@ class AutomaticAreaSQLTest(zeit.content.cp.testing.FunctionalTestCase):
             "...>= CAST('2024-01-01 01:01:00+00:00' AS TIMESTAMP WITH TIME ZONE) - make_interval(0, 0, 0, 7)...",
             self.connector.search_args[0],
         )
+        self.assertEllipsis(
+            "...< CAST('2024-01-01 01:01:00+00:00' AS TIMESTAMP WITH TIME ZONE)...",
+            self.connector.search_args[0],
+        )
         # ProductConfigLayer does not foreign packages. Maybe it should?
         zeit.cms.config.set('zeit.reach', 'freeze-now', None)
 

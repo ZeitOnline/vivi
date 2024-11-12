@@ -130,8 +130,10 @@ class SQLContentQuery(ContentQuery):
         )
         if not isinstance(column.type, TIMESTAMP):
             column = ConnectorModel.date_last_published_semantic
-        now = zeit.cms.config.get('zeit.reach', 'freeze-now')
-        now = sql_cast(pendulum.parse(now), TIMESTAMP) if now else sql_func.current_date()
+        freeze = zeit.cms.config.get('zeit.reach', 'freeze-now')
+        now = sql_cast(pendulum.parse(freeze), TIMESTAMP) if freeze else sql_func.current_date()
+        if freeze:
+            query = query.where(column < now)
         return query.where(column >= now - sql_func.make_interval(0, 0, 0, days))
 
     @property
