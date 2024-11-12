@@ -183,7 +183,9 @@ class Content(Base, CommonMetadata, ContentTypes, Timestamps, Miscellaneous):
                 for column in [
                     'access',
                     'article_genre',
+                    'article_header',
                     'audio_premium_enabled',
+                    'centerpage_type',
                     'print_ressort',
                     'product',
                     'published',

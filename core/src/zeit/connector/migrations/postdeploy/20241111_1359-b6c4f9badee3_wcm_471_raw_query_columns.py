@@ -19,22 +19,31 @@ branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
 
+COLUMNS = [
+    'article_header',
+    'audio_premium_enabled',
+    'centerpage_type',
+]
+
+
 def upgrade() -> None:
     with op.get_context().autocommit_block():
-        op.create_index(
-            'ix_properties_audio_premium_enabled',
-            'properties',
-            [sql('audio_premium_enabled')],
-            postgresql_concurrently=True,
-            if_not_exists=True,
-        )
+        for column in COLUMNS:
+            op.create_index(
+                f'ix_properties_{column}',
+                'properties',
+                [sql(column)],
+                postgresql_concurrently=True,
+                if_not_exists=True,
+            )
 
 
 def downgrade() -> None:
     with op.get_context().autocommit_block():
-        op.drop_index(
-            'ix_properties_audio_premium_enabled',
-            table_name='properties',
-            postgresql_concurrently=True,
-            if_exists=True,
-        )
+        for column in COLUMNS:
+            op.drop_index(
+                f'ix_properties_{column}',
+                table_name='properties',
+                postgresql_concurrently=True,
+                if_exists=True,
+            )
