@@ -75,10 +75,10 @@ class CommonMetadata:
 
 
 class ContentTypes:
-    article_audio_premium_enabled = mapped_column(
+    audio_premium_enabled = mapped_column(
         Boolean, info={'namespace': 'print', 'name': 'has_audio', 'migration': 'wcm_471'}
     )
-    article_audio_speech_enabled = mapped_column(
+    audio_speech_enabled = mapped_column(
         Boolean, info={'namespace': 'document', 'name': 'audio_speechbert', 'migration': 'wcm_471'}
     )
 
@@ -182,8 +182,8 @@ class Content(Base, CommonMetadata, ContentTypes, Timestamps, Miscellaneous):
                 cls.Index(getattr(cls, column))
                 for column in [
                     'access',
-                    'article_audio_premium_enabled',
                     'article_genre',
+                    'audio_premium_enabled',
                     'print_ressort',
                     'product',
                     'published',

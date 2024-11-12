@@ -5,6 +5,7 @@ Revises: cbac9954ed68
 Create Date: 2024-11-11 13:59:09.102738
 
 """
+
 from typing import Sequence, Union
 
 from alembic import op
@@ -21,9 +22,9 @@ depends_on: Union[str, Sequence[str], None] = None
 def upgrade() -> None:
     with op.get_context().autocommit_block():
         op.create_index(
-            'ix_properties_article_audio_premium_enabled',
+            'ix_properties_audio_premium_enabled',
             'properties',
-            [sql('article_audio_premium_enabled')],
+            [sql('audio_premium_enabled')],
             postgresql_concurrently=True,
             if_not_exists=True,
         )
@@ -32,7 +33,7 @@ def upgrade() -> None:
 def downgrade() -> None:
     with op.get_context().autocommit_block():
         op.drop_index(
-            'ix_properties_article_audio_premium_enabled',
+            'ix_properties_audio_premium_enabled',
             table_name='properties',
             postgresql_concurrently=True,
             if_exists=True,
