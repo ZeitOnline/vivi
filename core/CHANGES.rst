@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.65.0 (2024-11-12)
+-------------------
+
+- ZO-471: Add columns required for raw queries
+
+- ZO-6156: Add liveblog teaser setting for timeline
+
+
 6.64.0 (2024-11-08)
 -------------------
 
