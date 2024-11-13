@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.66.0 (2024-11-13)
+-------------------
+
+MAINT:
+- Consistency: sort elastic raw queries by dlps like eveything else, not dfr
+
+
 6.65.0 (2024-11-12)
 -------------------
 
