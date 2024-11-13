@@ -136,7 +136,7 @@ class AutomaticAreaElasticsearchTest(zeit.content.cp.testing.FunctionalTestCase)
                                 ],
                             }
                         },
-                        'sort': [{'payload.document.date_first_released': 'desc'}],
+                        'sort': [{'payload.document.date_last_published_semantic': 'desc'}],
                     },
                 ),
                 {'start': 0, 'rows': 1, 'include_payload': False},
@@ -404,7 +404,7 @@ class AutomaticAreaElasticsearchTest(zeit.content.cp.testing.FunctionalTestCase)
         lead.automatic = True
         lead.elasticsearch_raw_query = (
             '{"query": {"match": {"title": "foo"}},'
-            '"sort": [{"payload.document.date_first_released": "desc"}]}'
+            '"sort": [{"payload.document.date_last_published_semantic": "desc"}]}'
         )
         lead.is_complete_query = True
         lead.automatic_type = 'elasticsearch-query'
@@ -892,7 +892,7 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
                         ],
                     }
                 },
-                'sort': [{'payload.document.date_first_released': 'desc'}],
+                'sort': [{'payload.document.date_last_published_semantic': 'desc'}],
             },
             self.elasticsearch.search.call_args[0][0],
         )
@@ -922,7 +922,7 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
                         ],
                     }
                 },
-                'sort': [{'payload.document.date_first_released': 'desc'}],
+                'sort': [{'payload.document.date_last_published_semantic': 'desc'}],
             },
             self.elasticsearch.search.call_args[0][0],
         )
