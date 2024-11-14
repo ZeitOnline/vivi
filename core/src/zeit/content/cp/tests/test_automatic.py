@@ -1098,8 +1098,12 @@ class AutomaticAreaSQLTest(zeit.content.cp.testing.FunctionalTestCase):
         self.assertEqual('International', content[0].ressort)
 
     def test_clauses_extend_query(self):
+        self.area.sql_query = "type='article' OR ressort='International'"
+        self.area.sql_restrict_time = False
         IRenderedArea(self.area).values()
-        query = "...type='article' AND published=true..."
+        query = """
+...WHERE (type='article' OR ressort='International') AND published=true ORDER...
+"""
         self.assertEllipsis(query, self.connector.search_args[0])
 
     def test_query_order_default(self):
