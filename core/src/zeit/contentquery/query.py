@@ -146,7 +146,9 @@ class SQLCustomContentQuery(SQLContentQuery):
 
     @property
     def order(self):
-        return f'{self.order_column} desc nulls last'
+        # everything date related desc, pages asc
+        direction = 'asc' if self.order_column == 'page' else 'desc'
+        return f'{self.order_column} {direction} nulls last'
 
     @property
     def order_column(self):

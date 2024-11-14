@@ -1263,10 +1263,12 @@ AND published=true...
             ('volume', 'eq', 10),
             ('printRessort', 'eq', 'DIE ZEIT'),
         )
+        self.area.query_order = 'page'
         IRenderedArea(self.area).values()
         query = """
 ...properties.volume_year = '2024'
  AND properties.volume_number = '10'
  AND properties.print_ressort = 'DIE ZEIT'...
+ ORDER BY page asc...
 """
         self.assertEllipsis(query, self.connector.search_args[0])

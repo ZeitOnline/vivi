@@ -53,6 +53,7 @@ class QuerySortOrderSource(zeit.cms.content.sources.SimpleDictSource):
         'date_last_published_semantic': _('query-sort-order-last-published-semantic'),
         'date_first_released': _('query-sort-order-first-released'),
         'date_last_published': _('query-sort-order-last-published'),
+        'page': _('query-sort-order-page'),
     }
 
 
