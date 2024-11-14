@@ -39,7 +39,6 @@ class Liveblog(zeit.content.article.edit.block.Block):
         '.',
         'timeline_template',
         zeit.content.article.edit.interfaces.ILiveblog['timeline_template'],
-        use_default=True,
     )
 
     LIVEBLOG_VERSION_UPDATE = pendulum.datetime(2018, 8, 6)
