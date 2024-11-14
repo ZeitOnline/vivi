@@ -26,6 +26,15 @@ class Liveblog(zeit.content.article.edit.block.Block):
         zeit.content.article.edit.interfaces.ILiveblog['collapse_preceding_content'],
         use_default=True,
     )
+
+    # BBB
+    show_timeline_in_teaser = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.',
+        'show-timeline-in-teaser',
+        zeit.content.article.edit.interfaces.ILiveblog['show_timeline_in_teaser'],
+        use_default=True,
+    )
+
     timeline_template = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.',
         'timeline_template',

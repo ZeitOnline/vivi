@@ -414,6 +414,11 @@ class ILiveblog(IBlock):
         title=_('Collapse preceding content'), default=True, required=False
     )
 
+    # BBB
+    show_timeline_in_teaser = zope.schema.Bool(
+        title=_('Show liveblog in teaser'), default=True, required=False
+    )
+
     timeline_template = zope.schema.Choice(
         title=_('Timeline Content'),
         required=False,
