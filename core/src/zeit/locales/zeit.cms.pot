@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Fri Nov  8 10:44:20 2024\n"
+"POT-Creation-Date: Fri Nov 15 10:55:14 2024\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -262,8 +262,8 @@ msgstr ""
 #: zeit/cms/retractlog/browser/retractlog.py:22
 #: zeit/cms/retractlog/interfaces.py:25
 #: zeit/content/advertisement/interfaces.py:24
-#: zeit/content/article/edit/interfaces.py:455
-#: zeit/content/article/edit/interfaces.py:603
+#: zeit/content/article/edit/interfaces.py:456
+#: zeit/content/article/edit/interfaces.py:604
 #: zeit/content/article/interfaces.py:191
 #: zeit/content/article/interfaces.py:231
 #: zeit/content/audio/interfaces.py:36
@@ -302,7 +302,7 @@ msgstr ""
 #: zeit/cms/content/interfaces.py:500
 #: zeit/content/volume/browser/toc-listing.pt:25
 #: zeit/content/volume/browser/toc_listing.py:39
-#: zeit/contentquery/interfaces.py:174
+#: zeit/contentquery/interfaces.py:178
 msgid "Ressort"
 msgstr ""
 
@@ -704,7 +704,7 @@ msgstr ""
 
 #: zeit/cms/content/interfaces.py:71
 #: zeit/cms/content/interfaces.py:507
-#: zeit/content/article/edit/interfaces.py:545
+#: zeit/content/article/edit/interfaces.py:546
 #: zeit/content/article/interfaces.py:211
 #: zeit/content/volume/interfaces.py:36
 msgid "Year"
@@ -720,7 +720,7 @@ msgstr ""
 
 #: zeit/cms/content/interfaces.py:82
 #: zeit/cms/content/interfaces.py:504
-#: zeit/contentquery/interfaces.py:177
+#: zeit/contentquery/interfaces.py:181
 msgid "Sub ressort"
 msgstr ""
 
@@ -772,13 +772,13 @@ msgstr ""
 
 #: zeit/cms/content/interfaces.py:148
 #: zeit/cms/content/interfaces.py:167
-#: zeit/content/article/edit/interfaces.py:450
-#: zeit/content/article/edit/interfaces.py:600
+#: zeit/content/article/edit/interfaces.py:451
+#: zeit/content/article/edit/interfaces.py:601
 msgid "Please take care of capitalisation."
 msgstr ""
 
 #: zeit/cms/content/interfaces.py:157
-#: zeit/content/article/edit/interfaces.py:457
+#: zeit/content/article/edit/interfaces.py:458
 #: zeit/content/modules/interfaces.py:166
 msgid "Subtitle"
 msgstr ""
@@ -2009,7 +2009,7 @@ msgstr ""
 #: zeit/content/article/edit/interfaces.py:277
 #: zeit/content/article/edit/interfaces.py:388
 #: zeit/content/article/edit/interfaces.py:398
-#: zeit/content/article/edit/interfaces.py:459
+#: zeit/content/article/edit/interfaces.py:460
 #: zeit/content/cp/interfaces.py:532
 #: zeit/content/gallery/interfaces.py:98
 #: zeit/wysiwyg/browser/resources/citation/dialog.pt:39
@@ -2152,7 +2152,7 @@ msgid "URL"
 msgstr ""
 
 #: zeit/content/article/edit/interfaces.py:407
-#: zeit/content/modules/interfaces.py:270
+#: zeit/content/modules/interfaces.py:269
 msgid "Liveblog id"
 msgstr ""
 
@@ -2161,31 +2161,31 @@ msgid "Liveblog version"
 msgstr ""
 
 #: zeit/content/article/edit/interfaces.py:414
-#: zeit/content/modules/interfaces.py:273
+#: zeit/content/modules/interfaces.py:272
 msgid "Collapse preceding content"
 msgstr ""
 
-#: zeit/content/article/edit/interfaces.py:418
+#: zeit/content/article/edit/interfaces.py:419
 msgid "Show liveblog in teaser"
 msgstr ""
 
-#: zeit/content/article/edit/interfaces.py:421
-#: zeit/content/modules/interfaces.py:277
+#: zeit/content/article/edit/interfaces.py:423
+#: zeit/content/modules/interfaces.py:276
 msgid "Timeline Content"
 msgstr ""
 
-#: zeit/content/article/edit/interfaces.py:433
+#: zeit/content/article/edit/interfaces.py:434
 #: zeit/content/cp/interfaces.py:672
 msgid "Cardstack id"
 msgstr ""
 
-#: zeit/content/article/edit/interfaces.py:434
+#: zeit/content/article/edit/interfaces.py:435
 #: zeit/content/cp/interfaces.py:674
 msgid "Advertorial?"
 msgstr ""
 
-#: zeit/content/article/edit/interfaces.py:449
-#: zeit/content/article/edit/interfaces.py:600
+#: zeit/content/article/edit/interfaces.py:450
+#: zeit/content/article/edit/interfaces.py:601
 #: zeit/content/cp/interfaces.py:273
 #: zeit/content/cp/interfaces.py:400
 #: zeit/content/infobox/interfaces.py:15
@@ -2194,51 +2194,51 @@ msgstr ""
 msgid "Supertitle"
 msgstr ""
 
-#: zeit/content/article/edit/interfaces.py:468
+#: zeit/content/article/edit/interfaces.py:469
 msgid "Jobbox ticker"
 msgstr ""
 
-#: zeit/content/article/edit/interfaces.py:477
+#: zeit/content/article/edit/interfaces.py:478
 msgid "Article body"
 msgstr ""
 
-#: zeit/content/article/edit/interfaces.py:477
+#: zeit/content/article/edit/interfaces.py:478
 msgid "breaking-news-more-shortly"
 msgstr ""
 
-#: zeit/content/article/edit/interfaces.py:502
+#: zeit/content/article/edit/interfaces.py:503
 msgid "Adplace Tile"
 msgstr ""
 
-#: zeit/content/article/edit/interfaces.py:542
+#: zeit/content/article/edit/interfaces.py:543
 msgid "Puzzle"
 msgstr ""
 
-#: zeit/content/article/edit/interfaces.py:564
+#: zeit/content/article/edit/interfaces.py:565
 msgid "manual"
 msgstr ""
 
-#: zeit/content/article/edit/interfaces.py:565
+#: zeit/content/article/edit/interfaces.py:566
 msgid "centerpage"
 msgstr ""
 
-#: zeit/content/article/edit/interfaces.py:566
+#: zeit/content/article/edit/interfaces.py:567
 msgid "topicpage"
 msgstr ""
 
-#: zeit/content/article/edit/interfaces.py:567
+#: zeit/content/article/edit/interfaces.py:568
 msgid "elasticsearch-query"
 msgstr ""
 
-#: zeit/content/article/edit/interfaces.py:568
+#: zeit/content/article/edit/interfaces.py:569
 msgid "related-api"
 msgstr ""
 
-#: zeit/content/article/edit/interfaces.py:569
+#: zeit/content/article/edit/interfaces.py:570
 msgid "preconfigured-query"
 msgstr ""
 
-#: zeit/content/article/edit/interfaces.py:606
+#: zeit/content/article/edit/interfaces.py:607
 #: zeit/content/image/interfaces.py:67
 #: zeit/content/link/browser/configure.zcml:8
 #: zeit/content/link/browser/form.py:47
@@ -2246,31 +2246,31 @@ msgstr ""
 msgid "Link"
 msgstr ""
 
-#: zeit/content/article/edit/interfaces.py:609
+#: zeit/content/article/edit/interfaces.py:610
 msgid "Linktext"
 msgstr ""
 
-#: zeit/content/article/edit/interfaces.py:612
+#: zeit/content/article/edit/interfaces.py:613
 #: zeit/content/cp/interfaces.py:312
 msgid "Automatic type"
 msgstr ""
 
-#: zeit/content/article/edit/interfaces.py:616
-#: zeit/content/article/edit/interfaces.py:623
-#: zeit/content/article/edit/interfaces.py:630
+#: zeit/content/article/edit/interfaces.py:617
+#: zeit/content/article/edit/interfaces.py:624
+#: zeit/content/article/edit/interfaces.py:631
 msgid "Reference"
 msgstr ""
 
-#: zeit/content/article/edit/interfaces.py:617
+#: zeit/content/article/edit/interfaces.py:618
 msgid "Drag article/cp/link here"
 msgstr ""
 
-#: zeit/content/article/edit/interfaces.py:624
-#: zeit/content/article/edit/interfaces.py:631
+#: zeit/content/article/edit/interfaces.py:625
+#: zeit/content/article/edit/interfaces.py:632
 msgid "Drag article/link here"
 msgstr ""
 
-#: zeit/content/article/edit/interfaces.py:637
+#: zeit/content/article/edit/interfaces.py:638
 msgid "Filter"
 msgstr ""
 
@@ -2278,11 +2278,11 @@ msgstr ""
 msgid "Jobbox ticker block"
 msgstr ""
 
-#: zeit/content/article/edit/liveblog.py:69
+#: zeit/content/article/edit/liveblog.py:71
 msgid "Liveblog"
 msgstr ""
 
-#: zeit/content/article/edit/liveblog.py:94
+#: zeit/content/article/edit/liveblog.py:96
 msgid "Tickaroo liveblog block"
 msgstr ""
 
@@ -3938,15 +3938,11 @@ msgstr ""
 msgid "Recent events"
 msgstr ""
 
-#: zeit/content/modules/interfaces.py:265
-msgid "No timeline in teaser"
-msgstr ""
-
-#: zeit/content/modules/interfaces.py:284
+#: zeit/content/modules/interfaces.py:282
 msgid "Liveblog status"
 msgstr ""
 
-#: zeit/content/modules/interfaces.py:288
+#: zeit/content/modules/interfaces.py:286
 msgid "Liveblog theme"
 msgstr ""
 
@@ -4230,169 +4226,185 @@ msgstr ""
 msgid "query-sort-order-last-published"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:61
-msgid "query-type-channels"
+#: zeit/contentquery/interfaces.py:56
+msgid "query-sort-order-page"
 msgstr ""
 
 #: zeit/contentquery/interfaces.py:62
-msgid "query-type-serie"
+msgid "query-type-channels"
 msgstr ""
 
 #: zeit/contentquery/interfaces.py:63
-msgid "query-type-product"
+msgid "query-type-serie"
 msgstr ""
 
 #: zeit/contentquery/interfaces.py:64
-msgid "query-type-ressort"
+msgid "query-type-product"
 msgstr ""
 
 #: zeit/contentquery/interfaces.py:65
-msgid "query-type-genre"
+msgid "query-type-ressort"
 msgstr ""
 
 #: zeit/contentquery/interfaces.py:66
-msgid "query-type-access"
+msgid "query-type-genre"
 msgstr ""
 
 #: zeit/contentquery/interfaces.py:67
+msgid "query-type-access"
+msgstr ""
+
+#: zeit/contentquery/interfaces.py:68
 msgid "query-type-content-type"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:73
+#: zeit/contentquery/interfaces.py:69
+msgid "query-type-year"
+msgstr ""
+
+#: zeit/contentquery/interfaces.py:70
+msgid "query-type-volume"
+msgstr ""
+
+#: zeit/contentquery/interfaces.py:71
+msgid "query-type-print_ressort"
+msgstr ""
+
+#: zeit/contentquery/interfaces.py:77
 msgid "query-operator-equal"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:74
+#: zeit/contentquery/interfaces.py:78
 msgid "query-operator-notequal"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:123
+#: zeit/contentquery/interfaces.py:127
 msgid "tms-order-date"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:124
+#: zeit/contentquery/interfaces.py:128
 msgid "tms-order-relevance"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:125
-#: zeit/contentquery/interfaces.py:134
+#: zeit/contentquery/interfaces.py:129
+#: zeit/contentquery/interfaces.py:138
 msgid "tms-order-kpi_visits"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:126
-#: zeit/contentquery/interfaces.py:135
+#: zeit/contentquery/interfaces.py:130
+#: zeit/contentquery/interfaces.py:139
 msgid "tms-order-kpi_comments"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:127
-#: zeit/contentquery/interfaces.py:136
+#: zeit/contentquery/interfaces.py:131
+#: zeit/contentquery/interfaces.py:140
 msgid "tms-order-kpi_subscriptions"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:133
+#: zeit/contentquery/interfaces.py:137
 msgid "tms-order-title"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:153
+#: zeit/contentquery/interfaces.py:157
 msgid "reach-access-abo"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:188
+#: zeit/contentquery/interfaces.py:192
 msgid "Content type"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:216
+#: zeit/contentquery/interfaces.py:220
 msgid "Amount of teasers"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:224
+#: zeit/contentquery/interfaces.py:228
 msgid "Hide duplicate teasers"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:226
+#: zeit/contentquery/interfaces.py:230
 msgid "Consider for duplicate teasers"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:229
+#: zeit/contentquery/interfaces.py:233
 msgid "Custom Query"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:232
+#: zeit/contentquery/interfaces.py:236
 msgid "Custom Query Type"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:236
+#: zeit/contentquery/interfaces.py:240
 msgid "Custom Query Operator"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:244
-#: zeit/contentquery/interfaces.py:253
-#: zeit/contentquery/interfaces.py:307
+#: zeit/contentquery/interfaces.py:248
+#: zeit/contentquery/interfaces.py:257
+#: zeit/contentquery/interfaces.py:313
 msgid "Sort order"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:250
+#: zeit/contentquery/interfaces.py:254
 msgid "Elasticsearch raw query"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:257
+#: zeit/contentquery/interfaces.py:263
 msgid "Take over complete query body"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:258
+#: zeit/contentquery/interfaces.py:264
 msgid "Remember to add payload.workflow.published:true"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:264
+#: zeit/contentquery/interfaces.py:270
 msgid "Get teasers from CenterPage"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:269
+#: zeit/contentquery/interfaces.py:275
 msgid "Referenced Topicpage"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:272
+#: zeit/contentquery/interfaces.py:278
 msgid "Topicpage filter"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:276
-#: zeit/contentquery/interfaces.py:280
+#: zeit/contentquery/interfaces.py:282
+#: zeit/contentquery/interfaces.py:286
 msgid "Topicpage order"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:283
+#: zeit/contentquery/interfaces.py:289
 msgid "Referenced Topicpage Id"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:285
+#: zeit/contentquery/interfaces.py:291
 msgid "RSS-Feed"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:288
+#: zeit/contentquery/interfaces.py:294
 msgid "Reach Metric"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:292
+#: zeit/contentquery/interfaces.py:298
 msgid "Reach Section"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:296
+#: zeit/contentquery/interfaces.py:302
 msgid "Reach Access"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:297
+#: zeit/contentquery/interfaces.py:303
 msgid "Reach access ignores section if set"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:302
+#: zeit/contentquery/interfaces.py:308
 msgid "Reach Age (days)"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:304
+#: zeit/contentquery/interfaces.py:310
 msgid "SQL query"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:312
+#: zeit/contentquery/interfaces.py:318
 msgid "Restrict time interval"
 msgstr ""
 
