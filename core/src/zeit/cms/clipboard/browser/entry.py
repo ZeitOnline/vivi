@@ -11,7 +11,7 @@ import zeit.cms.clipboard.interfaces
 class Entry:
     def __call__(self):
         url = zope.traversing.browser.absoluteURL(self.context.references, self.request)
-        self.request.response.redirect(url + '/@@view.html')
+        self.request.response.redirect(url)
 
     def get_unique_id(self):
         return self.context.references.uniqueId

@@ -121,7 +121,7 @@ Let's click the link in the tree. We'll be redirect to the object's main view:
 
 >>> browser.getLink('Somalia').click()
 >>> browser.url
-'http://localhost/++skin++vivi/repository/online/2007/01/Somalia/@@view.html'
+'http://localhost/++skin++vivi/repository/online/2007/01/Somalia'
 
 
 The clipboard link calls the default view of the clipboard entry:
@@ -134,14 +134,14 @@ which also redirects to the referenced object.
 
 >>> browser.open('%s/@@view.html' % browser.getLink('Somalia', index=1).url)
 >>> browser.url
-'http://localhost/++skin++vivi/repository/online/2007/01/Somalia/@@view.html'
+'http://localhost/++skin++vivi/repository/online/2007/01/Somalia'
 
 And there also is an @@edit.html for clipboard entries, which redirects to
 the referenced object, too:
 
 >>> browser.open('%s/@@edit.html' % browser.getLink('Somalia', index=1).url)
 >>> browser.url
-'http://localhost/++skin++vivi/repository/online/2007/01/Somalia/@@view.html'
+'http://localhost/++skin++vivi/repository/online/2007/01/Somalia'
 
 We can also get the unique id from an entry:  XXX why do we need this?
 
