@@ -1,0 +1,1 @@
+WCM-526: Encapsulate raw sql query in parens, so adding more clauses works if it uses OR

@@ -76,7 +76,7 @@ class SQLContentQuery(ContentQuery):
 
     @property
     def conditions(self):
-        return select(ConnectorModel).where(sql(self.context.sql_query))
+        return select(ConnectorModel).where(sql(f'({self.context.sql_query})'))
 
     @property
     def order(self):
