@@ -3,6 +3,16 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.67.0 (2024-11-14)
+-------------------
+
+- WCM-519: Redirect clipboard to index instead of view to open the working copy if available
+
+- WCM-526: Encapsulate raw sql query in parens, so adding more clauses works if it uses OR
+
+- ZO-6156: Restore show_timeline liveblog checkbox in UI, until zeit.web is updated
+
+
 6.66.0 (2024-11-13)
 -------------------
 
