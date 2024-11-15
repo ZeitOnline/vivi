@@ -68,7 +68,7 @@ class QueryTypeSource(zeit.cms.content.sources.SimpleDictSource):
         'content_type': _('query-type-content-type'),
         'year': _('query-type-year'),
         'volume': _('query-type-volume'),
-        'printRessort': _('query-type-printRessort'),
+        'print_ressort': _('query-type-print_ressort'),
     }
 
 
@@ -191,7 +191,7 @@ class IQueryConditions(zeit.content.article.interfaces.IArticle):
     content_type = zope.schema.Choice(
         title=_('Content type'), source=zeit.cms.content.sources.CMSContentTypeSource()
     )
-    printRessort = zope.schema.Choice(
+    print_ressort = zope.schema.Choice(
         title=_('Print Ressort'), source=zeit.cms.content.sources.PrintRessortSource()
     )
 

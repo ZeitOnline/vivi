@@ -84,9 +84,9 @@ class CommonListRepresentation(BaseListRepresentation):
         return self.context.ressort
 
     @zope.cachedescriptors.property.Lazy
-    def printRessort(self):
-        if self.context.printRessort:
-            return self.context.printRessort
+    def print_ressort(self):
+        if self.context.print_ressort:
+            return self.context.print_ressort
         return self.context.ressort
 
     @zope.cachedescriptors.property.Lazy

@@ -36,7 +36,7 @@ class TocListing(zeit.cms.browser.listing.Listing):
         + zeit.cms.browser.listing.Listing.columns[4:6]
         + (
             zeit.cms.browser.listing.GetterColumn(
-                _('Ressort'), name='ressort', getter=lambda t, c: t.printRessort
+                _('Ressort'), name='ressort', getter=lambda t, c: t.print_ressort
             ),
         )
         + (

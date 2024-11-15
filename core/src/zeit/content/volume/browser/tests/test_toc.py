@@ -161,7 +161,7 @@ class TocBrowserTest(zeit.content.volume.testing.BrowserTestCase):
                 article.title = self.article_title
                 article.subtitle = 'required'
                 article.page = self.article_page
-                article.printRessort = 'ressort %s' % ressort
+                article.print_ressort = 'ressort %s' % ressort
                 self.repository['2015']['01']['test_artikel_%s' % ressort] = article
 
     def test_toc_view_is_csv_file_download(self):
