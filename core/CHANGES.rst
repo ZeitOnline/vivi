@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.68.0 (2024-11-15)
+-------------------
+
+- WCM-401: Auto area with CP source now also hides dupes of the source CP
+
+
 6.67.0 (2024-11-14)
 -------------------
 
