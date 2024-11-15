@@ -118,6 +118,11 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
             return None
         return value
 
+    # XXX remove after zeit.web update
+    @property
+    def printRessort(self):
+        return self.print_ressort
+
     @color_scheme.setter
     def color_scheme(self, value):
         self._color_scheme = value
