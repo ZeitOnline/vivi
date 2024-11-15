@@ -191,9 +191,6 @@ class IQueryConditions(zeit.content.article.interfaces.IArticle):
     content_type = zope.schema.Choice(
         title=_('Content type'), source=zeit.cms.content.sources.CMSContentTypeSource()
     )
-    print_ressort = zope.schema.Choice(
-        title=_('Print Ressort'), source=zeit.cms.content.sources.PrintRessortSource()
-    )
 
 
 class IContentQuery(zope.interface.Interface):
