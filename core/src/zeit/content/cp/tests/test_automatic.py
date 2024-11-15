@@ -743,6 +743,18 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
             'http://xml.zeit.de/t3', list(IRenderedArea(self.area).values()[0])[0].uniqueId
         )
 
+    def test_cp_content_query_filters_even_if_source_cp_did_not(self):
+        source = self.create_and_checkout_centerpage(
+            name='cp_with_dupes',
+            contents=[self.repository['t1'], self.repository['t1'], self.repository['t2']],
+        )
+        zeit.cms.checkout.interfaces.ICheckinManager(source).checkin()
+        self.area.referenced_cp = self.repository['cp_with_dupes']
+        self.assertEqual(
+            ['http://xml.zeit.de/t1', 'http://xml.zeit.de/t2'],
+            [list(x)[0].uniqueId for x in IRenderedArea(self.area).values()],
+        )
+
     def test_tms_content_query_filters_duplicates(self):
         self.area.automatic_type = 'topicpage'
         self.area.referenced_topicpage = 'mytopic'

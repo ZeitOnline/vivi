@@ -600,16 +600,18 @@ class CenterpageContentQuery(ContentQuery):
 
     def __call__(self):
         teasered = zeit.content.cp.interfaces.ITeaseredContent(self.context.referenced_cp, iter([]))
-        result = []
+        result = {}
         for content in teasered:
             if zeit.content.cp.blocks.rss.IRSSLink.providedBy(content):
                 continue
-            if self.context.hide_dupes and content in self.context.existing_teasers:
+            if self.context.hide_dupes and (
+                content in self.context.existing_teasers or content in result
+            ):
                 continue
-            result.append(content)
+            result[content] = True
             if len(result) >= self.rows:
                 break
-        return result
+        return list(result)
 
 
 class RSSFeedContentQuery(ContentQuery):
