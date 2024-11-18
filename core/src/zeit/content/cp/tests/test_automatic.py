@@ -1213,7 +1213,10 @@ class AutomaticAreaSQLCustomTest(zeit.content.cp.testing.FunctionalTestCase):
     def test_applies_configured_operator(self):
         self.area.query = (('content_type', 'neq', zeit.content.article.interfaces.IArticle),)
         IRenderedArea(self.area).values()
-        self.assertEllipsis("...type != 'article'...", self.connector.search_args[0])
+        self.assertEllipsis(
+            "...(properties.type != 'article' OR properties.type IS NULL)...",
+            self.connector.search_args[0],
+        )
 
     def test_creates_appropriate_condition_for_channels(self):
         self.area.query = (

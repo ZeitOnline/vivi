@@ -176,11 +176,6 @@ class SQLCustomContentQuery(SQLContentQuery):
         'content_type': 'type',
     }
 
-    OPERATORS = {
-        'eq': '__eq__',
-        'neq': '__ne__',
-    }
-
     serialize = CustomQueryProperty()._serialize_query_item
 
     def _make_clause(self, typ, item):
@@ -191,8 +186,13 @@ class SQLCustomContentQuery(SQLContentQuery):
             return self._make_condition(*self.serialize(self.context, item))
 
     def _make_condition(self, typ, operator, value):
-        condition = getattr(self._column(typ), self.OPERATORS[operator])
-        return condition(value)
+        column = self._column(typ)
+        if operator == 'eq':
+            return column == value
+        elif operator == 'neq':
+            return sql_or(column != value, column == None)  # noqa
+        else:
+            raise ValueError('Unknown operator %r', operator)
 
     @classmethod
     def _column(cls, typ):

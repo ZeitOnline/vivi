@@ -1,0 +1,1 @@
+WCM-539: SQL custom query handles NULL in not-equal comparisons
