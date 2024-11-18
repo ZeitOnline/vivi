@@ -618,7 +618,12 @@ class Connector:
         return result
 
     def search_sql_count(self, query):
-        rows = self._execute_suppress_errors(query.with_only_columns(sqlalchemy.func.count()))
+        rows = self._execute_suppress_errors(
+            query.with_only_columns(
+                sqlalchemy.func.count(),
+                maintain_column_froms=True,
+            )
+        )
         if rows is None:
             return 0
         return rows.one()
