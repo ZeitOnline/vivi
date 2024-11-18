@@ -167,7 +167,7 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
         self.add_resource('one', type='article')
         self.add_resource('two', type='centerpage')
         self.add_resource('three', type='article')
-        query = select(Content).filter_by(type='article')
+        query = select(Content).where(sql("type='article'"))
         self.assertEqual(self.connector.search_sql_count(query), 2)
 
     def test_search_sql_suppresses_errors(self):
