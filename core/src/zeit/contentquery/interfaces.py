@@ -53,6 +53,7 @@ class QuerySortOrderSource(zeit.cms.content.sources.SimpleDictSource):
         'date_last_published_semantic': _('query-sort-order-last-published-semantic'),
         'date_first_released': _('query-sort-order-first-released'),
         'date_last_published': _('query-sort-order-last-published'),
+        'page': _('query-sort-order-page'),
     }
 
 
@@ -65,6 +66,9 @@ class QueryTypeSource(zeit.cms.content.sources.SimpleDictSource):
         'genre': _('query-type-genre'),
         'access': _('query-type-access'),
         'content_type': _('query-type-content-type'),
+        'year': _('query-type-year'),
+        'volume': _('query-type-volume'),
+        'print_ressort': _('query-type-print_ressort'),
     }
 
 
@@ -183,7 +187,7 @@ class IQueryConditions(zeit.content.article.interfaces.IArticle):
     )
     zope.interface.alsoProvides(ressort.value_type, zeit.cms.content.interfaces.IChannelField)
 
-    # non-ICommonMetadata field
+    # non-ICommonMetadata fields
     content_type = zope.schema.Choice(
         title=_('Content type'), source=zeit.cms.content.sources.CMSContentTypeSource()
     )

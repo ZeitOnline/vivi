@@ -78,8 +78,8 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
         '.teaser.supertitle', ICommonMetadata['teaserSupertitle']
     )
 
-    printRessort = zeit.cms.content.dav.DAVProperty(
-        ICommonMetadata['printRessort'], zeit.cms.interfaces.PRINT_NAMESPACE, 'ressort'
+    print_ressort = zeit.cms.content.dav.DAVProperty(
+        ICommonMetadata['print_ressort'], zeit.cms.interfaces.PRINT_NAMESPACE, 'ressort'
     )
 
     commentsPremoderate = zeit.cms.content.dav.DAVProperty(

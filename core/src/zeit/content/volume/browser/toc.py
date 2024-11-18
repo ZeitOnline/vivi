@@ -77,7 +77,7 @@ class Toc(zeit.cms.browser.view.Base):
                     toc_entry['preview_url'] = zope.component.getMultiAdapter(
                         (article, 'preview'), IPreviewURL
                     )
-                    result_for_product[article.printRessort].append(toc_entry)
+                    result_for_product[article.print_ressort].append(toc_entry)
             results[product.title] = result_for_product
         return results
 

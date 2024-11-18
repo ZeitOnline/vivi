@@ -281,7 +281,7 @@ class PrintFormGroup(zeit.edit.browser.form.FoldableFormGroup):
 class PrintMetadata(zeit.edit.browser.form.InlineForm):
     legend = _('')
     prefix = 'print-metadata'
-    form_fields = FormFields(ICommonMetadata).select('year', 'volume', 'page', 'printRessort')
+    form_fields = FormFields(ICommonMetadata).select('year', 'volume', 'page', 'print_ressort')
 
     def _success_handler(self):
         self.signal('reload-inline-view', 'edit.heading')

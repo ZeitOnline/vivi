@@ -1268,3 +1268,19 @@ AND published=true...
         self.area.query_restrict_time = False
         IRenderedArea(self.area).values()
         self.assertNotIn('CURRENT_DATE', self.connector.search_args[0])
+
+    def test_print_queries(self):
+        self.area.query = (
+            ('year', 'eq', 2024),
+            ('volume', 'eq', 10),
+            ('print_ressort', 'eq', 'Politik'),
+        )
+        self.area.query_order = 'page'
+        IRenderedArea(self.area).values()
+        query = """
+...properties.volume_year = '2024'
+ AND properties.volume_number = '10'
+ AND properties.print_ressort = 'Politik'...
+ ORDER BY page asc...
+"""
+        self.assertEllipsis(query, self.connector.search_args[0])
