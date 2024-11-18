@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.69.0 (2024-11-18)
+-------------------
+
+- WCM-527: add content query fields print-volume, -year and -ressort
+
+
 6.68.0 (2024-11-15)
 -------------------
 
