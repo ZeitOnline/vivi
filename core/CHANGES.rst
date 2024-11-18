@@ -3,6 +3,22 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.70.0 (2024-11-18)
+-------------------
+
+- WCM-520: Fix total_hits sqlalchemy error in SQL queries
+
+- WCM-539: SQL custom query handles NULL in not-equal comparisons
+
+
+FIX:
+- Use correct field name to sort elastic raw queries by dlps (belongs to 6.66.0)
+
+
+MAINT:
+- Allow using zc.form Combination field in pembeds
+
+
 6.69.0 (2024-11-18)
 -------------------
 
