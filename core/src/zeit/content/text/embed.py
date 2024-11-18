@@ -1,6 +1,7 @@
 import collections  # noqa make available to eval()
 import logging
 
+import zc.form.field  # noqa make available to eval()
 import zope.interface
 import zope.schema  # noqa make available to eval()
 
