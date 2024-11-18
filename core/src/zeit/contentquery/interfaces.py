@@ -255,7 +255,7 @@ class IConfiguration(zope.interface.Interface):
 
     elasticsearch_raw_order = zope.schema.TextLine(
         title=_('Sort order'),
-        default='payload.document.date_last_published_semantic:desc',
+        default='payload.workflow.date_last_published_semantic:desc',
         required=False,
     )
 
