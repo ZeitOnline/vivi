@@ -1114,7 +1114,8 @@ class AutomaticAreaSQLTest(zeit.content.cp.testing.FunctionalTestCase):
         self.area.sql_restrict_time = False
         IRenderedArea(self.area).values()
         query = """
-...WHERE (type='article' OR ressort='International') AND published=true ORDER...
+...WHERE (type='article' OR ressort='International') AND published=true AND
+(gallery_type IS NULL OR gallery_type!='inline') ORDER...
 """
         self.assertEllipsis(query, self.connector.search_args[0])
 
