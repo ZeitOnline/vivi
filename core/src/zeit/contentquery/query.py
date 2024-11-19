@@ -8,6 +8,7 @@ from sqlalchemy import not_ as sql_not
 from sqlalchemy import or_ as sql_or
 from sqlalchemy import select
 from sqlalchemy import text as sql
+from sqlalchemy.orm import aliased
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
 import lxml
@@ -92,8 +93,15 @@ class SQLContentQuery(ContentQuery):
         query = self.conditions
         query = self.add_clauses(query)
         query = self.hide_dupes_clause(query)
-        if order:  # `order by` is not allowed by SQL when using `count()`
-            query = self.restrict_time(query)
+        if not order:  # `order by` is not allowed by SQL when using `count()`
+            return query
+
+        # Pagination needs to know the number of all rows, so restrict time
+        # only for non-count usage.
+        query = self.restrict_time(query)
+        query = self.force_queryplan(query)
+
+        if order:
             query = query.order_by(sql(self.order))
             query = query.limit(self.rows).offset(self.start)
         return query
@@ -138,6 +146,21 @@ class SQLContentQuery(ContentQuery):
     def _restrict_time_enabled(self):
         return self.context.sql_restrict_time
 
+    def force_queryplan(self, query):
+        if not self._force_queryplan_enabled:
+            return query
+        # Use CTE to enforce evaluation of `where` before `order by`, so indexes
+        # are used, which may result in much better performance than the psql
+        # default strategy of "sort first, then filter via table/heap scan".
+        # Specifying `offset` forces the actually separate evaluation of the CTE,
+        # see <https://www.endpointdev.com/blog/2009/04/offset-0-ftw/>.
+        query = select(aliased(ConnectorModel, query.offset(0).cte()))
+        return query
+
+    @property
+    def _force_queryplan_enabled(self):
+        return self.context.sql_force_queryplan
+
 
 class SQLCustomContentQuery(SQLContentQuery):
     grok.baseclass()  # See dispatch_custom_query
@@ -155,6 +178,10 @@ class SQLCustomContentQuery(SQLContentQuery):
     @property
     def _restrict_time_enabled(self):
         return self.context.query_restrict_time
+
+    @property
+    def _force_queryplan_enabled(self):
+        return self.context.query_force_queryplan
 
     @property
     def conditions(self):

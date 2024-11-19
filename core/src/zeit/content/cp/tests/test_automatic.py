@@ -1181,6 +1181,14 @@ class AutomaticAreaSQLTest(zeit.content.cp.testing.FunctionalTestCase):
         # ProductConfigLayer does not foreign packages. Maybe it should?
         zeit.cms.config.set('zeit.reach', 'freeze-now', None)
 
+    def test_force_queryplan_compiles_to_cte_with_offset_to_force_filter_before_sort(self):
+        self.area.sql_force_queryplan = True
+        IRenderedArea(self.area).values()
+        self.assertEllipsis(
+            "WITH...WHERE (type='article'...OFFSET 0)...ORDER BY...LIMIT 3 OFFSET 0...",
+            self.connector.search_args[0],
+        )
+
 
 class AutomaticAreaSQLCustomTest(zeit.content.cp.testing.FunctionalTestCase):
     def setUp(self):
@@ -1267,6 +1275,15 @@ AND published=true...
         self.area.query_restrict_time = False
         IRenderedArea(self.area).values()
         self.assertNotIn('CURRENT_DATE', self.connector.search_args[0])
+
+    def test_supports_force_queryplan(self):
+        self.area.query = (('ressort', 'eq', 'Wissen', None),)
+        self.area.query_force_queryplan = True
+        IRenderedArea(self.area).values()
+        self.assertEllipsis(
+            "WITH...WHERE properties.ressort = 'Wissen'...OFFSET 0)...ORDER BY...LIMIT 3 OFFSET 0...",
+            self.connector.search_args[0],
+        )
 
     def test_print_queries(self):
         self.area.query = (
