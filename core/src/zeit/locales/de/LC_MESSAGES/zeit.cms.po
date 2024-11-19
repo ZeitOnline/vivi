@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Fri Nov 15 10:55:14 2024\n"
+"POT-Creation-Date: Tue Nov 19 14:24:41 2024\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -22,7 +22,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.4.4\n"
+"X-Generator: Poedit 3.5\n"
 
 #: zeit/addcentral/sidebar.pt:10 zeit/addcentral/sidebar.py:39
 #: zeit/cms/browser/form.py:220 zeit/cms/menu.zcml:17 zeit/cms/menu.zcml:24
@@ -2802,35 +2802,35 @@ msgstr "Kein Default-Layout für diese Fläche vorhanden"
 msgid "List of teasers"
 msgstr "Teaser"
 
-#: zeit/content/cp/browser/area.py:211 zeit/content/cp/interfaces.py:212
+#: zeit/content/cp/browser/area.py:213 zeit/content/cp/interfaces.py:212
 msgid "automatic-area-type-centerpage"
 msgstr "Centerpage"
 
-#: zeit/content/cp/browser/area.py:212 zeit/content/cp/interfaces.py:219
+#: zeit/content/cp/browser/area.py:214 zeit/content/cp/interfaces.py:219
 msgid "automatic-area-type-rss-feed"
 msgstr "RSS-Feed"
 
-#: zeit/content/cp/browser/area.py:214 zeit/content/cp/interfaces.py:213
+#: zeit/content/cp/browser/area.py:216 zeit/content/cp/interfaces.py:213
 msgid "automatic-area-type-custom"
 msgstr "Individuelle Abfrage"
 
-#: zeit/content/cp/browser/area.py:217 zeit/content/cp/interfaces.py:214
+#: zeit/content/cp/browser/area.py:220 zeit/content/cp/interfaces.py:214
 msgid "automatic-area-type-topicpage"
 msgstr "TMS-Themenseite"
 
-#: zeit/content/cp/browser/area.py:221 zeit/content/cp/interfaces.py:216
+#: zeit/content/cp/browser/area.py:224 zeit/content/cp/interfaces.py:216
 msgid "automatic-area-type-elasticsearch-query"
 msgstr "ES-Query"
 
-#: zeit/content/cp/browser/area.py:224 zeit/content/cp/interfaces.py:215
+#: zeit/content/cp/browser/area.py:227 zeit/content/cp/interfaces.py:215
 msgid "automatic-area-type-related-topics"
 msgstr "Verwandte TMS-Themenseiten"
 
-#: zeit/content/cp/browser/area.py:226 zeit/content/cp/interfaces.py:217
+#: zeit/content/cp/browser/area.py:229 zeit/content/cp/interfaces.py:217
 msgid "automatic-area-type-reach"
 msgstr "Reach"
 
-#: zeit/content/cp/browser/area.py:230 zeit/content/cp/interfaces.py:220
+#: zeit/content/cp/browser/area.py:233 zeit/content/cp/interfaces.py:220
 msgid "automatic-area-type-sql-query"
 msgstr "SQL-Query"
 
@@ -3935,7 +3935,7 @@ msgstr "JSON-Datei"
 msgid "Validate"
 msgstr "Validieren"
 
-#: zeit/content/text/browser/configure.zcml:133 zeit/content/text/embed.py:75
+#: zeit/content/text/browser/configure.zcml:133 zeit/content/text/embed.py:76
 msgid "Embed"
 msgstr "Embed"
 
@@ -4342,6 +4342,10 @@ msgstr "SQL-Abfrage"
 #: zeit/contentquery/interfaces.py:318
 msgid "Restrict time interval"
 msgstr "Zeitraum einschränken (Performance-Optimierung)"
+
+#: zeit/contentquery/interfaces.py:321
+msgid "Force sql filter before sort"
+msgstr "Filtern vor Sortieren (Performance-Optimierung)"
 
 #: zeit/edit/browser/block.py:66
 msgid "Unknown block"
