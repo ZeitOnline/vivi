@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.71.0 (2024-11-19)
+-------------------
+
+- WCM-527: sort by print_page not page
+
+
 6.70.0 (2024-11-18)
 -------------------
 
