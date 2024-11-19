@@ -147,7 +147,7 @@ class SQLCustomContentQuery(SQLContentQuery):
     @property
     def order(self):
         # everything date related desc, pages asc
-        direction = 'asc' if self.order_column == 'page' else 'desc'
+        direction = 'asc' if self.order_column == 'print_page' else 'desc'
         return f'{self.order_column} {direction} nulls last'
 
     @property
@@ -378,7 +378,7 @@ class CustomContentQuery(ElasticsearchContentQuery):
         'date_last_published_semantic': 'payload.workflow.date_last_published_semantic:desc',
         'date_first_released': 'payload.document.date_first_released:desc',
         'date_last_published': 'payload.workflow.date_last_published:desc',
-        'page': 'payload.document.page:asc',
+        'print_page': 'payload.document.page:asc',
     }
     ES_ORDER_BWCOMPAT = {v: k for k, v in ES_ORDER.items()}
 
