@@ -2,6 +2,7 @@ import json
 import sys
 import traceback
 
+import zeit.cms.checkout.helper
 import zeit.content.text.jinja
 import zeit.content.text.testing
 
@@ -45,3 +46,9 @@ class PythonScriptTest(zeit.content.text.testing.FunctionalTestCase):
         result = tpl({'foo': 'with "quotes"'}, output_format='json')
         result = json.loads(result)
         self.assertEqual({'title': 'with "quotes"', 'undefined': ''}, result)
+
+    def test_template_could_have_channels(self):
+        self.repository['template'] = self.create('{{foo}}')
+        with zeit.cms.checkout.helper.checked_out(self.repository['template']) as co:
+            co.channels = (('Push', 'Eilmeldung'),)
+        self.assertEqual((('Push', 'Eilmeldung'),), self.repository['template'].channels)
