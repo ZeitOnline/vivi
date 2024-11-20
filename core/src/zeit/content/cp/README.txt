@@ -16,7 +16,7 @@ Centerpage
 The ancient XML representation looked as follows:
 
 >>> print(zeit.cms.testing.xmltotext(cp.xml))
-<centerpage... type="homepage"...>
+<centerpage...>
   <head/>
   <body>
     <cluster area="feature" kind="duo">
