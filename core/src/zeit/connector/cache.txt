@@ -21,7 +21,7 @@ For getting data from the cache, the cache needs the etag from the properties:
 Initially the cache is empty and asking for a non  cached entry yields a
 KeyError:
 
->>> cache.getData('some-id', 'etag1')
+>>> cache['some-id']
 Traceback (most recent call last):
     ...
 KeyError: "Object 'some-id' is not cached."
@@ -33,7 +33,7 @@ StringIO:
 
 >>> from io import BytesIO
 >>> data = BytesIO(b'datadata/end of line.')
->>> f = cache.setData('some-id', data, 'etag1')
+>>> f = cache.update('some-id', data)
 >>> f
 <...BytesIO object at 0x...>
 >>> f.read()
@@ -43,7 +43,7 @@ b'datadata/end of line.'
 We can get the data also via `getData` now which also returns a StringIO for
 small objects:
 
->>> f = cache.getData('some-id', 'etag1')
+>>> f = cache['some-id']
 >>> f
 <...BytesIO object at 0x...>
 >>> f.close()
@@ -77,7 +77,7 @@ True
 When we now access getData the access time will be updated by at most one
 count since less time than the update interval should have passed:
 
->>> f = cache.getData('some-id', 'etag1')
+>>> f = cache['some-id']
 >>> f
 <...BytesIO object at 0x...>
 >>> f.close()
@@ -91,7 +91,7 @@ Let's wait 1 second:
 
 If we access now the time will be updated:
 
->>> f = cache.getData('some-id', 'etag1')
+>>> f = cache['some-id']
 >>> f
 <...BytesIO object at 0x...>
 >>> f.close()
@@ -115,7 +115,7 @@ Add another resource to the cache to see how resources are removed from the
 cache:
 
 >>> data = BytesIO(b'another text')
->>> cache.setData('another-id', data, 'etag1').close()
+>>> cache.update('another-id', data).close()
 
 We now have two elements in the cache:
 
@@ -126,7 +126,7 @@ Now sleep another 4 second and see the `some-id` will be gone after sweeping:
 
 >>> time.sleep(1)
 >>> cache.sweep(4)
->>> f = cache.getData('another-id', 'etag1')
+>>> f = cache['another-id']
 >>> f
 <...BytesIO object at 0x...>
 >>> f.close()
@@ -137,7 +137,7 @@ Still there ...
 
 >>> time.sleep(1)
 >>> cache.sweep(4)
->>> f = cache.getData('another-id', 'etag1')
+>>> f = cache['another-id']
 >>> f
 <...BytesIO object at 0x...>
 >>> f.close()
@@ -148,7 +148,7 @@ Still there ...
 
 >>> time.sleep(1)
 >>> cache.sweep(4)
->>> f = cache.getData('another-id', 'etag1')
+>>> f = cache['another-id']
 >>> f
 <...BytesIO object at 0x...>
 >>> f.close()
@@ -159,7 +159,7 @@ Now it's gone:
 
 >>> time.sleep(1)
 >>> cache.sweep(4)
->>> f = cache.getData('another-id', 'etag1')
+>>> f = cache['another-id']
 >>> f
 <...BytesIO object at 0x...>
 >>> f.close()
@@ -188,14 +188,14 @@ Create data which is larger than that:
 >>> large_data = 'Large' + ('Data' * BUFFER_SIZE)
 >>> large_data = bytes(large_data.encode('utf-8'))
 >>>
->>> f = cache.setData('some-id', BytesIO(large_data), 'etag1')
+>>> f = cache.update('some-id', BytesIO(large_data))
 >>> f.read() == large_data
 True
 >>> f.close()
 
 We can get the data also via `getData` which returns an open file handle:
 
->>> f = cache.getData('some-id', 'etag1')
+>>> f = cache['some-id']
 >>> hasattr(f, 'read')
 True
 >>> f.close()
@@ -216,7 +216,7 @@ storage. Make the blob commited:
 
 We get the commited data now:
 
->>> f = cache.getData('some-id', 'etag1')
+>>> f = cache['some-id']
 >>> f.read() == large_data
 True
 >>> f.close()
@@ -236,13 +236,13 @@ Create a new cache and attach it to the database root:
 Add an object to the cache and commit:
 
 >>> data = BytesIO(b'Frodo went deep into Mordor.')
->>> cache.setData('mordor', data, 'ent').close()
+>>> cache.update('mordor', data).close()
 >>> transaction.commit()
 
 After commiting everything is "not changed" of course. Now get an the object
 from the cache:
 
->>> f = cache.getData('mordor', 'ent')
+>>> f = cache['mordor']
 >>> f.close()
 
 All the cache parts are still not changed:
@@ -257,79 +257,6 @@ False
 False
 >>> [s for s in cache._access_time_to_ids.values() if s._p_changed]
 []
-
-
-Conflict resolution
--------------------
-
-Body conflict resolution works by comparing etags. When conflicting etags are
-different the result state is "not cached". When the etags are equal, the state
-is preserved.
-
-Note that we don't handle the case where the etags are equal but the bodies are
-different. We don't expect this to happen.
-
->>> from ZODB import DB
->>> import ZODB.blob
->>> import tempfile
->>> import zc.queue.tests
->>> blob_dir = tempfile.mkdtemp()
->>> storage = zc.queue.tests.ConflictResolvingMappingStorage('test')
->>> storage = ZODB.blob.BlobStorage(blob_dir, storage)
->>> db = DB(storage)
->>> transactionmanager_1 = transaction.TransactionManager()
->>> transactionmanager_2 = transaction.TransactionManager()
->>> connection_1 = db.open(transaction_manager=transactionmanager_1)
->>> root_1 = connection_1.root()
-
->>> c_1 = root_1["cache"] = zeit.connector.cache.ResourceCache()
->>> body = b'A small file' * BUFFER_SIZE
->>> c_1.setData('id', BytesIO(body), 'initial-etag').close()
->>> transactionmanager_1.commit()
-
->>> transactionmanager_2 = transaction.TransactionManager()
->>> connection_2 = db.open(transaction_manager=transactionmanager_2)
->>> root_2 = connection_2.root()
->>> c_2 = root_2['cache']
-
-Different ETAGS:
-
->>> body1 = BytesIO(b'Body 1' * BUFFER_SIZE)
->>> body2 = BytesIO(b'Body 2' * BUFFER_SIZE)
->>> c_1.setData('id', body1, 'etag1').close()
->>> c_2.setData('id', body2, 'etag2').close()
->>> transactionmanager_2.commit()
->>> transactionmanager_1.commit()
->>> connection_1.sync()
->>> connection_2.sync()
->>> c_1.getData('id', 'etag1')
-Traceback (most recent call last):
-    ...
-KeyError: "Object 'id' is not cached."
->>> c_2.getData('id', 'etag2')
-Traceback (most recent call last):
-    ...
-KeyError: "Object 'id' is not cached."
-
-The same ETAG also doesn't generate a conflict:
-
->>> c_1.setData('id', BytesIO(body), 'etag3').close()
->>> c_2.setData('id', BytesIO(body), 'etag3').close()
->>> transactionmanager_2.commit()
->>> transactionmanager_1.commit()
->>> connection_1.sync()
->>> connection_2.sync()
->>> f = c_1.getData('id', 'etag3')
->>> f.read()
-b'A small fileA small...'
->>> f.close()
->>> f = c_2.getData('id', 'etag3')
->>> f.read()
-b'A small fileA small...'
->>> f.close()
-
-The SQL connector does not use etag, so conflicts always result in "not cached";
-the test for this behaviour is in test_cache.py.
 
 
 Property Cache
@@ -466,100 +393,6 @@ does conflict resolution:
 
 
 
-Conflict resolution
--------------------
-
-XXX This section is obsolete and not used in production anymore
->>> import zeit.cms.content.sources
->>> zeit.cms.content.sources.FEATURE_TOGGLES.set(
-...     'dav_cache_delete_property_on_conflict')
-
-The property cache resolves conflicts in a very brutal way as it considers the
-cache stale when ever there was a conflict. Since it is only a cache we do not
-loose any data here.
-
-Note that the most common conflicts are value changes *in* the cache. We do not
-change the conflict resolution of the underling btree.
-
->>> c_1 = root_1["cache"] = zeit.connector.cache.PropertyCache()
->>> c_1['id'] = {('ns', 'foo'): 'bar'}
->>> transactionmanager_1.commit()
-
->>> transactionmanager_2 = transaction.TransactionManager()
->>> connection_2 = db.open(transaction_manager=transactionmanager_2)
->>> root_2 = connection_2.root()
->>> c_2 = root_2['cache']
-
->>> c_1['id'] = {('ns', 'foo'): 'baz'}
->>> c_2['id'] = {('ns', 'oink'): 'chackalacka'}
->>> transactionmanager_2.commit()
->>> transactionmanager_1.commit()
->>> connection_1.sync()
->>> connection_2.sync()
->>> c_1['id']
-Traceback (most recent call last):
-    ...
-KeyError: 'id'
->>> c_2['id']
-Traceback (most recent call last):
-    ...
-KeyError: 'id'
-
-
-When the conflicting state is *equal* it is kept, though:
-
->>> c_1['id'] = {('ns', 'foo'): 'baz'}
->>> c_2['id'] = {('ns', 'foo'): 'baz'}
->>> transactionmanager_2.commit()
->>> transactionmanager_1.commit()
->>> connection_1.sync()
->>> connection_2.sync()
->>> dict(c_1['id'])
-{<WebDAVPropertyKey ('ns', 'foo')>: 'baz'}
->>> dict(c_2['id'])
-{<WebDAVPropertyKey ('ns', 'foo')>: 'baz'}
-
-
-The conflict resolution ignores the property {INTERNAL}cached-time when
-determining if two property sets are equal. This is fairly save because:
-
-1. The cached-time is only relevant when the resource is locked.
-
-2. When the resource is locked, the lock timeout is indicated in seconds from
-   the cached time. When the cached times differ much, the lock timeout will
-   differ. Thus the properties are not equal.
-
-Note that the cached time of the transaction wins which is commited last:
-
->>> from pendulum import datetime
->>> from zeit.connector.interfaces import CACHED_TIME_PROPERTY
->>> c_1['id'][CACHED_TIME_PROPERTY] = datetime(2008, 1, 1).isoformat()
->>> c_2['id'][CACHED_TIME_PROPERTY] = datetime(2009, 4, 7).isoformat()
->>> transactionmanager_2.commit()
->>> transactionmanager_1.commit()
->>> connection_1.sync()
->>> connection_2.sync()
->>> pprint.pprint(dict(c_1['id']))
-{<WebDAVPropertyKey ('cached-time', 'INTERNAL')>: '2008-01-01T00:00:00+00:00',
- <WebDAVPropertyKey ('ns', 'foo')>: 'baz'}
->>> pprint.pprint(dict(c_2['id']))
-{<WebDAVPropertyKey ('cached-time', 'INTERNAL')>: '2008-01-01T00:00:00+00:00',
- <WebDAVPropertyKey ('ns', 'foo')>: 'baz'}
-
-
-When there was an attribute set on the cache entry, it cannot be resolved any
-longer:
-
->>> c_1['id'].foo = 'bar'
->>> c_2['id'][('hick', 'hack')] = 'huck'
->>> transactionmanager_2.commit()
->>> transactionmanager_1.commit()
-Traceback (most recent call last):
-    ...
-ConflictError: database conflict error...
-
->>> transactionmanager_1.abort()
-
 Child name cache
 ++++++++++++++++
 
@@ -607,56 +440,3 @@ Setting ``new_children`` does not update ``baz`` to unicode:
 >>> cache['id'] = new_children
 >>> list(cache['id'])
 ['bar', 'baz', 'foo']
-
-Conflict resolution
--------------------
-
-XXX This section is obsolete and not used in production anymore
->>> zeit.cms.content.sources.FEATURE_TOGGLES.set(
-...     'dav_cache_delete_childname_on_conflict')
-
-The conflict resolution works like the property cache:
-
->>> c_1 = root_1["cache"] = zeit.connector.cache.ChildNameCache()
->>> c_1['id'] = ('foo', 'bar')
->>> transactionmanager_1.commit()
-
->>> transactionmanager_2 = transaction.TransactionManager()
->>> connection_2 = db.open(transaction_manager=transactionmanager_2)
->>> root_2 = connection_2.root()
->>> c_2 = root_2['cache']
-
->>> c_1['id'] = ('baz',)
->>> c_2['id'] = ('oink', 'chackalacka')
->>> transactionmanager_2.commit()
->>> transactionmanager_1.commit()
->>> connection_1.sync()
->>> connection_2.sync()
->>> c_1['id']
-Traceback (most recent call last):
-    ...
-KeyError: 'id'
->>> c_2['id']
-Traceback (most recent call last):
-    ...
-KeyError: 'id'
-
-When the conflicting state is *equal* it is kept, though:
-
->>> c_1['id'] = ('foo',)
->>> c_2['id'] = ('foo',)
->>> transactionmanager_2.commit()
->>> transactionmanager_1.commit()
->>> connection_1.sync()
->>> connection_2.sync()
->>> list(c_1['id'])
-['foo']
->>> list(c_2['id'])
-['foo']
-
-
-Clean up
-++++++++
-
->>> import shutil
->>> shutil.rmtree(blob_dir)

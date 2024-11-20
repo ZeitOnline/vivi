@@ -17,8 +17,6 @@ import ZODB.POSException
 import zope.interface
 import zope.security.proxy
 
-from zeit.cms.content.sources import FEATURE_TOGGLES
-from zeit.connector.interfaces import CACHED_TIME_PROPERTY
 import zeit.cms.cli
 import zeit.cms.config
 import zeit.connector.interfaces
@@ -58,7 +56,7 @@ INVALID_ETAG = '__invalid__'
 
 
 class Body(persistent.Persistent):
-    __slots__ = ('data', 'etag')
+    __slots__ = ('data', 'etag')  # BBB remove etag field after refreshing zodb
 
     def __init__(self):
         self.data = self.etag = None
@@ -94,12 +92,6 @@ class Body(persistent.Persistent):
             raise RuntimeError('self.data is of unsupported type %s' % type(self.data))
         return data_file
 
-    def update(self, data, etag):
-        if etag == self.etag:
-            return
-        self.etag = etag
-        self.update_data(data)
-
     def update_data(self, data):
         if data.seekable():
             data.seek(0)
@@ -122,13 +114,8 @@ class Body(persistent.Persistent):
         target.close()
 
     def _p_resolveConflict(self, old, commited, newstate):
-        com_etag = commited[1]['etag']
-        new_etag = newstate[1]['etag']
-        if com_etag is not None and new_etag is not None and com_etag == new_etag:
-            return commited
-        # Different ETags. Invalidate the cache.
-        commited[1]['etag'] = INVALID_ETAG
-        return commited
+        log.info('Overwriting body after ConflictError')
+        return newstate
 
 
 class AccessTimes:
@@ -229,59 +216,10 @@ class ResourceCache(AccessTimes, persistent.Persistent):
         super().__init__()
         self._data = BTrees.family64.OO.BTree()
 
-    def getData(self, unique_id, current_etag):
-        key = get_storage_key(unique_id)
-
-        value = self._data.get(key)
-        if value is not None and not isinstance(value, Body):
-            if isinstance(value, str):
-                log.warning('Loaded str for %s' % unique_id)
-                raise KeyError(unique_id)
-            # Legacy, meke a temporary body
-            old_etags = getattr(self, '_etags', None)
-            etag = None
-            if old_etags is not None:
-                etag = old_etags.get(key)
-            if etag is None:
-                raise KeyError('No ETAG for legacy value.')
-            body = Body()
-            body.update(value.open('r'), etag)
-            value = body
-
-        if value is None or value.etag != current_etag:
-            raise KeyError('Object %r is not cached.' % unique_id)
-        self._update_cache_access(key)
-        return value.open()
-
-    def setData(self, unique_id, data, current_etag):
-        key = get_storage_key(unique_id)
-        if current_etag is None:
-            # When we have no etag, we must not store the data as we have no
-            # means of invalidation then.
-            f = BytesIO(data.read())
-            return f
-
-        log.debug('Storing body of %s with etag %s' % (unique_id, current_etag))
-
-        # Reuse previously stored container
-        store = self._data.get(key)
-        if store is None or not isinstance(store, Body):
-            self._data[key] = store = Body()
-        store.update(data, current_etag)
-
-        self._update_cache_access(key)
-        return store.open()
-
-    def remove(self, unique_id, default=None):
-        key = get_storage_key(unique_id)
-        return self._data.pop(key, default)
-
-    # Non-etag version is used by postgresql Connector
-
     def __getitem__(self, uniqueid):
         key = get_storage_key(uniqueid)
         value = self._data.get(key)
-        if value is None or value.etag == INVALID_ETAG:
+        if value is None:
             raise KeyError('Object %r is not cached.' % uniqueid)
         self._update_cache_access(key)
         return value.open()
@@ -307,7 +245,11 @@ class ResourceCache(AccessTimes, persistent.Persistent):
         self._update_cache_access(key)
         return stored.open()
 
-    pop = remove
+    def pop(self, unique_id, default=None):
+        key = get_storage_key(unique_id)
+        return self._data.pop(key, default)
+
+    remove = pop
 
 
 @zope.interface.implementer(zeit.connector.interfaces.IPersistentCache)
@@ -436,24 +378,8 @@ class Properties(persistent.mapping.PersistentMapping):
     cached_time = None
 
     def _p_resolveConflict(self, old, commited, newstate):
-        if not FEATURE_TOGGLES.find('dav_cache_delete_property_on_conflict'):
-            log.info('Overwriting %s with %s after ConflictError', commited, newstate)
-            return newstate
-
-        if not (list(old.keys()) == list(commited.keys()) == list(newstate.keys()) == ['data']):
-            # We can only resolve data.
-            raise ZODB.POSException.ConflictError
-        commited_data = commited['data']
-        newstate_data = newstate['data'].copy()
-
-        commited_data.pop(CACHED_TIME_PROPERTY, None)
-        newstate_data.pop(CACHED_TIME_PROPERTY, None)
-        if newstate_data == commited_data:
-            return newstate
-        # Completely invalidate cache entry when we cannot resolve.
-        log.info('Emptying %s due to ConflictError', newstate)
-        old['data'] = {zeit.connector.interfaces.DeleteProperty: None}
-        return old
+        log.info('Overwriting %s with %s after ConflictError', commited, newstate)
+        return newstate
 
     def __setitem__(self, key, value):
         key = zope.security.proxy.removeSecurityProxy(key)
@@ -495,8 +421,6 @@ class ChildNames(zc.set.Set):
     def _p_resolveConflict(self, old, commited, newstate):
         if commited == newstate:
             return commited
-        if not FEATURE_TOGGLES.find('dav_cache_delete_childname_on_conflict'):
-            raise ZODB.POSException.ConflictError()
         log.info('Emptying %s due to ConflictError', newstate)
         old['_data'] = {zeit.connector.interfaces.DeleteProperty}
         return old
