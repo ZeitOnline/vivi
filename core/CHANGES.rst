@@ -3,6 +3,18 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.72.0 (2024-11-20)
+-------------------
+
+- WCM-468: Only freeze staging sql time interval old end, not today end as well
+
+- WCM-490: Trace errors, result count for sql contentquery
+
+- WCM-542: Add option to force sql filter before sort
+
+- WCM-543: Remove obsolete DAV-style etag-based conflict resolution in connector body cache
+
+
 6.71.0 (2024-11-19)
 -------------------
 
