@@ -56,10 +56,10 @@ INVALID_ETAG = '__invalid__'
 
 
 class Body(persistent.Persistent):
-    __slots__ = ('data',)
+    __slots__ = ('data', 'etag')  # BBB remove etag field after refreshing zodb
 
     def __init__(self):
-        self.data = None
+        self.data = self.etag = None
 
     @property
     def BUFFER_SIZE(self):
