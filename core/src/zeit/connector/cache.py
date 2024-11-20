@@ -120,13 +120,8 @@ class Body(persistent.Persistent):
         target.close()
 
     def _p_resolveConflict(self, old, commited, newstate):
-        com_etag = commited[1]['etag']
-        new_etag = newstate[1]['etag']
-        if com_etag is not None and new_etag is not None and com_etag == new_etag:
-            return commited
-        # Different ETags. Invalidate the cache.
-        commited[1]['etag'] = INVALID_ETAG
-        return commited
+        log.info('Overwriting body after ConflictError')
+        return newstate
 
 
 class AccessTimes:

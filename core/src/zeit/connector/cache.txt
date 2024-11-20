@@ -259,79 +259,6 @@ False
 []
 
 
-Conflict resolution
--------------------
-
-Body conflict resolution works by comparing etags. When conflicting etags are
-different the result state is "not cached". When the etags are equal, the state
-is preserved.
-
-Note that we don't handle the case where the etags are equal but the bodies are
-different. We don't expect this to happen.
-
->>> from ZODB import DB
->>> import ZODB.blob
->>> import tempfile
->>> import zc.queue.tests
->>> blob_dir = tempfile.mkdtemp()
->>> storage = zc.queue.tests.ConflictResolvingMappingStorage('test')
->>> storage = ZODB.blob.BlobStorage(blob_dir, storage)
->>> db = DB(storage)
->>> transactionmanager_1 = transaction.TransactionManager()
->>> transactionmanager_2 = transaction.TransactionManager()
->>> connection_1 = db.open(transaction_manager=transactionmanager_1)
->>> root_1 = connection_1.root()
-
->>> c_1 = root_1["cache"] = zeit.connector.cache.ResourceCache()
->>> body = b'A small file' * BUFFER_SIZE
->>> c_1.setData('id', BytesIO(body), 'initial-etag').close()
->>> transactionmanager_1.commit()
-
->>> transactionmanager_2 = transaction.TransactionManager()
->>> connection_2 = db.open(transaction_manager=transactionmanager_2)
->>> root_2 = connection_2.root()
->>> c_2 = root_2['cache']
-
-Different ETAGS:
-
->>> body1 = BytesIO(b'Body 1' * BUFFER_SIZE)
->>> body2 = BytesIO(b'Body 2' * BUFFER_SIZE)
->>> c_1.setData('id', body1, 'etag1').close()
->>> c_2.setData('id', body2, 'etag2').close()
->>> transactionmanager_2.commit()
->>> transactionmanager_1.commit()
->>> connection_1.sync()
->>> connection_2.sync()
->>> c_1.getData('id', 'etag1')
-Traceback (most recent call last):
-    ...
-KeyError: "Object 'id' is not cached."
->>> c_2.getData('id', 'etag2')
-Traceback (most recent call last):
-    ...
-KeyError: "Object 'id' is not cached."
-
-The same ETAG also doesn't generate a conflict:
-
->>> c_1.setData('id', BytesIO(body), 'etag3').close()
->>> c_2.setData('id', BytesIO(body), 'etag3').close()
->>> transactionmanager_2.commit()
->>> transactionmanager_1.commit()
->>> connection_1.sync()
->>> connection_2.sync()
->>> f = c_1.getData('id', 'etag3')
->>> f.read()
-b'A small fileA small...'
->>> f.close()
->>> f = c_2.getData('id', 'etag3')
->>> f.read()
-b'A small fileA small...'
->>> f.close()
-
-The SQL connector does not use etag, so conflicts always result in "not cached";
-the test for this behaviour is in test_cache.py.
-
-
 Property Cache
 ++++++++++++++
 
@@ -513,10 +440,3 @@ Setting ``new_children`` does not update ``baz`` to unicode:
 >>> cache['id'] = new_children
 >>> list(cache['id'])
 ['bar', 'baz', 'foo']
-
-
-Clean up
-++++++++
-
->>> import shutil
->>> shutil.rmtree(blob_dir)
