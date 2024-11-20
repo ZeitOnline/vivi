@@ -17,8 +17,6 @@ import ZODB.POSException
 import zope.interface
 import zope.security.proxy
 
-from zeit.cms.content.sources import FEATURE_TOGGLES
-from zeit.connector.interfaces import CACHED_TIME_PROPERTY
 import zeit.cms.cli
 import zeit.cms.config
 import zeit.connector.interfaces
@@ -436,24 +434,8 @@ class Properties(persistent.mapping.PersistentMapping):
     cached_time = None
 
     def _p_resolveConflict(self, old, commited, newstate):
-        if not FEATURE_TOGGLES.find('dav_cache_delete_property_on_conflict'):
-            log.info('Overwriting %s with %s after ConflictError', commited, newstate)
-            return newstate
-
-        if not (list(old.keys()) == list(commited.keys()) == list(newstate.keys()) == ['data']):
-            # We can only resolve data.
-            raise ZODB.POSException.ConflictError
-        commited_data = commited['data']
-        newstate_data = newstate['data'].copy()
-
-        commited_data.pop(CACHED_TIME_PROPERTY, None)
-        newstate_data.pop(CACHED_TIME_PROPERTY, None)
-        if newstate_data == commited_data:
-            return newstate
-        # Completely invalidate cache entry when we cannot resolve.
-        log.info('Emptying %s due to ConflictError', newstate)
-        old['data'] = {zeit.connector.interfaces.DeleteProperty: None}
-        return old
+        log.info('Overwriting %s with %s after ConflictError', commited, newstate)
+        return newstate
 
     def __setitem__(self, key, value):
         key = zope.security.proxy.removeSecurityProxy(key)
@@ -495,8 +477,6 @@ class ChildNames(zc.set.Set):
     def _p_resolveConflict(self, old, commited, newstate):
         if commited == newstate:
             return commited
-        if not FEATURE_TOGGLES.find('dav_cache_delete_childname_on_conflict'):
-            raise ZODB.POSException.ConflictError()
         log.info('Emptying %s due to ConflictError', newstate)
         old['_data'] = {zeit.connector.interfaces.DeleteProperty}
         return old
