@@ -1,6 +1,7 @@
 import json
 import logging
 
+from opentelemetry.trace import SpanKind
 from sqlalchemy import and_ as sql_and
 from sqlalchemy import cast as sql_cast
 from sqlalchemy import func as sql_func
@@ -66,13 +67,35 @@ class SQLContentQuery(ContentQuery):
         connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
         repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
         query = self._build_query()
-        result = [repository.makeContent(x) for x in connector.search_sql(query)]
+        tracer = zope.component.getUtility(zeit.cms.interfaces.ITracer)
+        with tracer.start_as_current_span('sql_contentquery', kind=SpanKind.CLIENT) as span:
+            span.set_attributes(
+                {
+                    'db.statement': str(query),
+                    'db.limit': self.rows,
+                    'db.offset': self.start,
+                    'app.unique_id': self.context.uniqueId,
+                }
+            )
+            result = [repository.makeContent(x) for x in connector.search_sql(query)]
+            span.set_attribute('db.count', len(result))
         return result
 
     @cachedproperty
     def total_hits(self):
         connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
-        return connector.search_sql_count(self._build_query(order=False))
+        query = self._build_query(order=False)
+        tracer = zope.component.getUtility(zeit.cms.interfaces.ITracer)
+        with tracer.start_as_current_span('sql_contentquery_count', kind=SpanKind.CLIENT) as span:
+            span.set_attributes(
+                {
+                    'db.statement': str(query),
+                    'app.unique_id': self.context.uniqueId,
+                }
+            )
+            result = connector.search_sql_count(query)
+            span.set_attribute('db.count', result)
+            return result
 
     @property
     def conditions(self):

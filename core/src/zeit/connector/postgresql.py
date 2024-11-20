@@ -14,6 +14,7 @@ from gocept.cache.property import TransactionBoundCache
 from google.cloud import storage
 from google.cloud.storage.retry import DEFAULT_RETRY
 from opentelemetry.trace import SpanKind
+from opentelemetry.trace.status import Status, StatusCode
 from sqlalchemy import (
     delete,
     insert,
@@ -629,17 +630,16 @@ class Connector:
         return rows.one()
 
     def _execute_suppress_errors(self, query, timeout=None):
-        tracer = zope.component.getUtility(zeit.cms.interfaces.ITracer)
-        with tracer.start_as_current_span('sql_contentquery', kind=SpanKind.CLIENT) as span:
-            span.set_attributes({'db.statement': str(query)})
-            try:
-                return self.session.execute(
-                    query, execution_options={'statement_timeout': timeout}
-                ).scalars()
-            except Exception:
-                log.warning('Error during search_sql, suppressed', exc_info=True)
-                self.session.rollback()
-                return None
+        try:
+            return self.session.execute(
+                query, execution_options={'statement_timeout': timeout}
+            ).scalars()
+        except Exception as e:
+            log.warning('Error during search_sql, suppressed', exc_info=True)
+            span = opentelemetry.trace.get_current_span()
+            span.set_status(Status(StatusCode.ERROR, str(e)))
+            self.session.rollback()
+            return None
 
     def _build_filter(self, expr):
         op = expr.operator
