@@ -21,7 +21,7 @@ For getting data from the cache, the cache needs the etag from the properties:
 Initially the cache is empty and asking for a non  cached entry yields a
 KeyError:
 
->>> cache.getData('some-id', 'etag1')
+>>> cache['some-id']
 Traceback (most recent call last):
     ...
 KeyError: "Object 'some-id' is not cached."
@@ -33,7 +33,7 @@ StringIO:
 
 >>> from io import BytesIO
 >>> data = BytesIO(b'datadata/end of line.')
->>> f = cache.setData('some-id', data, 'etag1')
+>>> f = cache.update('some-id', data)
 >>> f
 <...BytesIO object at 0x...>
 >>> f.read()
@@ -43,7 +43,7 @@ b'datadata/end of line.'
 We can get the data also via `getData` now which also returns a StringIO for
 small objects:
 
->>> f = cache.getData('some-id', 'etag1')
+>>> f = cache['some-id']
 >>> f
 <...BytesIO object at 0x...>
 >>> f.close()
@@ -77,7 +77,7 @@ True
 When we now access getData the access time will be updated by at most one
 count since less time than the update interval should have passed:
 
->>> f = cache.getData('some-id', 'etag1')
+>>> f = cache['some-id']
 >>> f
 <...BytesIO object at 0x...>
 >>> f.close()
@@ -91,7 +91,7 @@ Let's wait 1 second:
 
 If we access now the time will be updated:
 
->>> f = cache.getData('some-id', 'etag1')
+>>> f = cache['some-id']
 >>> f
 <...BytesIO object at 0x...>
 >>> f.close()
@@ -115,7 +115,7 @@ Add another resource to the cache to see how resources are removed from the
 cache:
 
 >>> data = BytesIO(b'another text')
->>> cache.setData('another-id', data, 'etag1').close()
+>>> cache.update('another-id', data).close()
 
 We now have two elements in the cache:
 
@@ -126,7 +126,7 @@ Now sleep another 4 second and see the `some-id` will be gone after sweeping:
 
 >>> time.sleep(1)
 >>> cache.sweep(4)
->>> f = cache.getData('another-id', 'etag1')
+>>> f = cache['another-id']
 >>> f
 <...BytesIO object at 0x...>
 >>> f.close()
@@ -137,7 +137,7 @@ Still there ...
 
 >>> time.sleep(1)
 >>> cache.sweep(4)
->>> f = cache.getData('another-id', 'etag1')
+>>> f = cache['another-id']
 >>> f
 <...BytesIO object at 0x...>
 >>> f.close()
@@ -148,7 +148,7 @@ Still there ...
 
 >>> time.sleep(1)
 >>> cache.sweep(4)
->>> f = cache.getData('another-id', 'etag1')
+>>> f = cache['another-id']
 >>> f
 <...BytesIO object at 0x...>
 >>> f.close()
@@ -159,7 +159,7 @@ Now it's gone:
 
 >>> time.sleep(1)
 >>> cache.sweep(4)
->>> f = cache.getData('another-id', 'etag1')
+>>> f = cache['another-id']
 >>> f
 <...BytesIO object at 0x...>
 >>> f.close()
@@ -188,14 +188,14 @@ Create data which is larger than that:
 >>> large_data = 'Large' + ('Data' * BUFFER_SIZE)
 >>> large_data = bytes(large_data.encode('utf-8'))
 >>>
->>> f = cache.setData('some-id', BytesIO(large_data), 'etag1')
+>>> f = cache.update('some-id', BytesIO(large_data))
 >>> f.read() == large_data
 True
 >>> f.close()
 
 We can get the data also via `getData` which returns an open file handle:
 
->>> f = cache.getData('some-id', 'etag1')
+>>> f = cache['some-id']
 >>> hasattr(f, 'read')
 True
 >>> f.close()
@@ -216,7 +216,7 @@ storage. Make the blob commited:
 
 We get the commited data now:
 
->>> f = cache.getData('some-id', 'etag1')
+>>> f = cache['some-id']
 >>> f.read() == large_data
 True
 >>> f.close()
@@ -236,13 +236,13 @@ Create a new cache and attach it to the database root:
 Add an object to the cache and commit:
 
 >>> data = BytesIO(b'Frodo went deep into Mordor.')
->>> cache.setData('mordor', data, 'ent').close()
+>>> cache.update('mordor', data).close()
 >>> transaction.commit()
 
 After commiting everything is "not changed" of course. Now get an the object
 from the cache:
 
->>> f = cache.getData('mordor', 'ent')
+>>> f = cache['mordor']
 >>> f.close()
 
 All the cache parts are still not changed:

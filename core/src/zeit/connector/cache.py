@@ -56,10 +56,10 @@ INVALID_ETAG = '__invalid__'
 
 
 class Body(persistent.Persistent):
-    __slots__ = ('data', 'etag')
+    __slots__ = ('data',)
 
     def __init__(self):
-        self.data = self.etag = None
+        self.data = None
 
     @property
     def BUFFER_SIZE(self):
@@ -91,12 +91,6 @@ class Body(persistent.Persistent):
         else:
             raise RuntimeError('self.data is of unsupported type %s' % type(self.data))
         return data_file
-
-    def update(self, data, etag):
-        if etag == self.etag:
-            return
-        self.etag = etag
-        self.update_data(data)
 
     def update_data(self, data):
         if data.seekable():
@@ -222,59 +216,10 @@ class ResourceCache(AccessTimes, persistent.Persistent):
         super().__init__()
         self._data = BTrees.family64.OO.BTree()
 
-    def getData(self, unique_id, current_etag):
-        key = get_storage_key(unique_id)
-
-        value = self._data.get(key)
-        if value is not None and not isinstance(value, Body):
-            if isinstance(value, str):
-                log.warning('Loaded str for %s' % unique_id)
-                raise KeyError(unique_id)
-            # Legacy, meke a temporary body
-            old_etags = getattr(self, '_etags', None)
-            etag = None
-            if old_etags is not None:
-                etag = old_etags.get(key)
-            if etag is None:
-                raise KeyError('No ETAG for legacy value.')
-            body = Body()
-            body.update(value.open('r'), etag)
-            value = body
-
-        if value is None or value.etag != current_etag:
-            raise KeyError('Object %r is not cached.' % unique_id)
-        self._update_cache_access(key)
-        return value.open()
-
-    def setData(self, unique_id, data, current_etag):
-        key = get_storage_key(unique_id)
-        if current_etag is None:
-            # When we have no etag, we must not store the data as we have no
-            # means of invalidation then.
-            f = BytesIO(data.read())
-            return f
-
-        log.debug('Storing body of %s with etag %s' % (unique_id, current_etag))
-
-        # Reuse previously stored container
-        store = self._data.get(key)
-        if store is None or not isinstance(store, Body):
-            self._data[key] = store = Body()
-        store.update(data, current_etag)
-
-        self._update_cache_access(key)
-        return store.open()
-
-    def remove(self, unique_id, default=None):
-        key = get_storage_key(unique_id)
-        return self._data.pop(key, default)
-
-    # Non-etag version is used by postgresql Connector
-
     def __getitem__(self, uniqueid):
         key = get_storage_key(uniqueid)
         value = self._data.get(key)
-        if value is None or value.etag == INVALID_ETAG:
+        if value is None:
             raise KeyError('Object %r is not cached.' % uniqueid)
         self._update_cache_access(key)
         return value.open()
@@ -300,7 +245,11 @@ class ResourceCache(AccessTimes, persistent.Persistent):
         self._update_cache_access(key)
         return stored.open()
 
-    pop = remove
+    def pop(self, unique_id, default=None):
+        key = get_storage_key(unique_id)
+        return self._data.pop(key, default)
+
+    remove = pop
 
 
 @zope.interface.implementer(zeit.connector.interfaces.IPersistentCache)
