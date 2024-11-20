@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Fri Nov 15 10:55:14 2024\n"
+"POT-Creation-Date: Tue Nov 19 14:24:41 2024\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -2860,42 +2860,42 @@ msgstr ""
 msgid "List of teasers"
 msgstr ""
 
-#: zeit/content/cp/browser/area.py:211
+#: zeit/content/cp/browser/area.py:213
 #: zeit/content/cp/interfaces.py:212
 msgid "automatic-area-type-centerpage"
 msgstr ""
 
-#: zeit/content/cp/browser/area.py:212
+#: zeit/content/cp/browser/area.py:214
 #: zeit/content/cp/interfaces.py:219
 msgid "automatic-area-type-rss-feed"
 msgstr ""
 
-#: zeit/content/cp/browser/area.py:214
+#: zeit/content/cp/browser/area.py:216
 #: zeit/content/cp/interfaces.py:213
 msgid "automatic-area-type-custom"
 msgstr ""
 
-#: zeit/content/cp/browser/area.py:217
+#: zeit/content/cp/browser/area.py:220
 #: zeit/content/cp/interfaces.py:214
 msgid "automatic-area-type-topicpage"
 msgstr ""
 
-#: zeit/content/cp/browser/area.py:221
+#: zeit/content/cp/browser/area.py:224
 #: zeit/content/cp/interfaces.py:216
 msgid "automatic-area-type-elasticsearch-query"
 msgstr ""
 
-#: zeit/content/cp/browser/area.py:224
+#: zeit/content/cp/browser/area.py:227
 #: zeit/content/cp/interfaces.py:215
 msgid "automatic-area-type-related-topics"
 msgstr ""
 
-#: zeit/content/cp/browser/area.py:226
+#: zeit/content/cp/browser/area.py:229
 #: zeit/content/cp/interfaces.py:217
 msgid "automatic-area-type-reach"
 msgstr ""
 
-#: zeit/content/cp/browser/area.py:230
+#: zeit/content/cp/browser/area.py:233
 #: zeit/content/cp/interfaces.py:220
 msgid "automatic-area-type-sql-query"
 msgstr ""
@@ -3999,7 +3999,7 @@ msgid "Validate"
 msgstr ""
 
 #: zeit/content/text/browser/configure.zcml:133
-#: zeit/content/text/embed.py:75
+#: zeit/content/text/embed.py:76
 msgid "Embed"
 msgstr ""
 
@@ -4406,6 +4406,10 @@ msgstr ""
 
 #: zeit/contentquery/interfaces.py:318
 msgid "Restrict time interval"
+msgstr ""
+
+#: zeit/contentquery/interfaces.py:321
+msgid "Force sql filter before sort"
 msgstr ""
 
 #: zeit/edit/browser/block.py:66

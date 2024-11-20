@@ -156,10 +156,12 @@ class Configuration:
         'reach_age': False,
         # For automatic_type=custom
         'query_restrict_time': True,
+        'query_force_queryplan': False,
         # For automatic_type=sql-query
         'sql_query': False,
         'sql_order': True,
         'sql_restrict_time': True,
+        'sql_force_queryplan': False,
     }.items():
         locals()[name] = zeit.cms.content.property.ObjectPathProperty(
             '.%s' % name, IConfiguration[name], use_default=default

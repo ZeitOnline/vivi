@@ -317,3 +317,6 @@ class IConfiguration(zope.interface.Interface):
 
     sql_restrict_time = zope.schema.Bool(title=_('Restrict time interval'), default=True)
     query_restrict_time = sql_restrict_time.bind(object())
+
+    sql_force_queryplan = zope.schema.Bool(title=_('Force sql filter before sort'))
+    query_force_queryplan = sql_force_queryplan.bind(object())
