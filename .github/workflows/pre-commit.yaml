@@ -19,13 +19,13 @@ jobs:
       contents: read
 
     steps:
-    - uses: actions/checkout@v4.1.7
-    - uses: actions/setup-python@v5.1.0
+    - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+    - uses: actions/setup-python@82c7e631bb3cdc910f68e0081d67478d79c6982d # v5.1.0
       with:
         python-version: "3.12"
-    - uses: pre-commit/action@v3.0.1
+    - uses: pre-commit/action@2c7b3805fd2a0fd8c1884dcaebf91fc102a13ecd # v3.0.1
 
-    - uses: slackapi/slack-github-action@v1.26.0
+    - uses: slackapi/slack-github-action@70cd7be8e40a46e8b0eced40b0de447bdb42f68e # v1.26.0
       if: failure() && github.ref_name == 'main'
       with:
         channel-id: "${{secrets.SLACK_TEAM_CONTENT_CHANNEL_ID}}"
