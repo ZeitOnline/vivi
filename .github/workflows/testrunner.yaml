@@ -165,7 +165,8 @@ jobs:
       - uses: slackapi/slack-github-action@485a9d42d3a73031f12ec201c457e2162c45d02d # v2.0.0
         if: failure() && github.ref_name == 'main' && github.event_name != 'schedule'
         with:
-          channel-id: "${{env.team_content_alerts}}"
-          slack-message: ":small_red_triangle_down: <${{env.build_url}}|${{env.project}}> tests failed"
-        env:
-          SLACK_BOT_TOKEN: ${{secrets.SLACK_BOT_TOKEN}}
+          method: chat.postMessage
+          token: ${{secrets.SLACK_BOT_TOKEN}}
+          payload: |
+            channel: "${{env.team_content_alerts}}"
+            text: ":small_red_triangle_down: <${{env.build_url}}|${{env.project}}> tests failed"
