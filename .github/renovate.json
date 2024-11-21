@@ -3,7 +3,7 @@
     "dependencyDashboard": true,
     "commitMessagePrefix": "MAINT: ",
     "schedule": [
-        "before 8am every wednesday"
+        "before 8am on wednesday"
     ],
     "enabledManagers": [
         "github-actions",
