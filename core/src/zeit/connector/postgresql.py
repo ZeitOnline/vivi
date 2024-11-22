@@ -145,12 +145,13 @@ class Connector:
 
     def __getitem__(self, uniqueid):
         uniqueid = self._normalize(uniqueid)
-        properties = self._get_properties(uniqueid)  # may raise KeyError
+        # may raise KeyError
+        properties = self._get_properties(uniqueid, update_body_cache=True)
         return self.resource(uniqueid, properties)
 
     property_cache = TransactionBoundCache('_v_property_cache', zeit.connector.cache.PropertyCache)
 
-    def _get_properties(self, uniqueid):
+    def _get_properties(self, uniqueid, update_body_cache=False):
         if uniqueid == ID_NAMESPACE:
             content = Content(id='root', type='folder', is_collection=True, unsorted={})
             return content.to_webdav()
@@ -163,6 +164,12 @@ class Connector:
             raise KeyError(f'The resource {uniqueid} does not exist.')
         properties = content.to_webdav()
         self.property_cache[uniqueid] = properties
+        # Performance optimization: Until WCM-10 lands, non-binary body is
+        # always parsed on ICMSContent conversion, and thus we always load the
+        # column anyway. So we might as well put it in the cache right here,
+        # instead of performing an extra query shortly afterwards in _get_body().
+        if update_body_cache:
+            self._update_body_cache(uniqueid, content)
         return properties
 
     body_cache = TransactionBoundCache('_v_body_cache', zeit.connector.cache.ResourceCache)
@@ -296,7 +303,8 @@ class Connector:
             self._reload_child_name_cache(uniqueid)
         parent = os.path.split(uniqueid)[0]
         self._reload_child_name_cache(parent)
-        self.body_cache.pop(uniqueid, None)
+        if not self._update_body_cache(uniqueid, content):
+            self.body_cache.pop(uniqueid, None)
 
     def changeProperties(self, uniqueid, properties):
         uniqueid = self._normalize(uniqueid)
@@ -444,6 +452,7 @@ class Connector:
 
         for content in targets:
             self.property_cache[content.uniqueid] = content.to_webdav()
+            self._update_body_cache(content.uniqueid, content)
             if content.is_collection:
                 self.child_name_cache[content.uniqueid] = set()
             self._update_parent_child_name_cache(content.uniqueid, 'add')
@@ -502,6 +511,7 @@ class Connector:
             self.property_cache.pop(source_uniqueid, None)
             self.property_cache[target_uniqueid] = content.to_webdav()
             self.body_cache.pop(source_uniqueid, None)
+            self._update_body_cache(target_uniqueid, content)
             if content.is_collection:
                 self.child_name_cache.pop(source_uniqueid, None)
                 self.child_name_cache[target_uniqueid] = set()
@@ -660,14 +670,16 @@ class Connector:
         content = self._get_content(uniqueid)
         if content is None:
             self.property_cache.pop(uniqueid, None)
+            self.body_cache.pop(uniqueid, None)
             self.child_name_cache.pop(uniqueid, None)
         else:
             self.property_cache[uniqueid] = content.to_webdav()
+            if not self._update_body_cache(content.uniqueid, content):
+                self.body_cache.pop(uniqueid, None)
             if content.is_collection:
                 self._reload_child_name_cache(uniqueid)
         parent = os.path.split(uniqueid)[0]
         self._reload_child_name_cache(parent)
-        self.body_cache.pop(uniqueid, None)
 
 
 factory = Connector.factory

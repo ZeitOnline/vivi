@@ -4,6 +4,7 @@ from unittest import mock
 import collections.abc
 import datetime
 import time
+import unittest
 
 import pendulum
 import transaction
@@ -556,6 +557,7 @@ class ContractCache:
         self.mkdir(folder)
         self.assertEqual([], self.child_name_cache[folder])
 
+    @unittest.skip('Waiting for WCM-10')
     def test_setitem_removes_body_cache(self):
         res = self.add_resource('foo', body=b'foo')
         self.connector[res.id].data
@@ -700,6 +702,7 @@ class ContractCache:
         self.connector.invalidate_cache(res.id)
         self.assertEqual([], self.child_name_cache[ROOT])
 
+    @unittest.skip('Waiting for WCM-10')
     def test_invalidate_removes_body_cache(self):
         res = self.add_resource('foo', body=b'foo')
         self.connector[res.id].data
