@@ -175,9 +175,14 @@ class Connector:
             return self.body_cache[uniqueid]
 
         content = self._get_content(uniqueid, getlock=False)
+        return self._update_body_cache(uniqueid, content, load_binary=True)
+
+    def _update_body_cache(self, uniqueid, content, load_binary=False):
         if content.is_collection:
             body = b''
         elif content.binary_body:
+            if not load_binary:
+                return None
             body = self._get_binary_body(content.id)
         elif not content.body:
             body = b''
@@ -607,13 +612,7 @@ class Connector:
             properties = content.to_webdav()
             resource = self.resource(uniqueid, properties)
             self.property_cache[uniqueid] = properties
-
-            if content.is_collection or not content.body:
-                body = b''
-            else:
-                body = content.body.encode('utf-8')
-            self.body_cache.update(uniqueid, BytesIO(body))
-
+            self._update_body_cache(content.uniqueid, content)
             result.append(resource)
 
         return result
