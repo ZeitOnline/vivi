@@ -665,6 +665,7 @@ class IImageRow(IBlock):
     show_source = zope.schema.Bool(title=_('Show source'), required=False, default=True)
     images = zope.schema.Tuple(
         title=_('Images'),
+        max_length=3,
         default=(),
         required=False,
         value_type=zc.form.field.Combination(

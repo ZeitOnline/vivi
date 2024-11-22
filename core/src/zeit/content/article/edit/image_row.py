@@ -76,6 +76,11 @@ class ImageRow(zeit.content.article.edit.block.Block):
 
     @display_mode.setter
     def display_mode(self, value):
+        max_images_dict = {'float': 1, 'column-width': 2, 'large': 3}
+        max_images = max_images_dict.get(value, 1)
+        # Remove images in xml if there are too many
+        for i in range(len(self.xml.getchildren()) - max_images):
+            self.xml.remove(self.xml.getchildren()[-1])
         self._display_mode = value
 
     @property

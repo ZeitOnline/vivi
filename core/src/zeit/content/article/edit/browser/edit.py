@@ -586,3 +586,13 @@ class EditImageRow(zeit.edit.browser.form.InlineForm):
     @property
     def prefix(self):
         return 'image_row.{0}'.format(self.context.__name__)
+
+    def setUpWidgets(self, *args, **kw):
+        super().setUpWidgets(*args, **kw)
+        # s : float, m: column-width, l: large
+        max_images_dict = {'float': 1, 'column-width': 2, 'large': 3}
+        display_mode = self.context.display_mode
+        if display_mode is None:
+            return
+        max_images = max_images_dict.get(display_mode)
+        self.widgets['images'].context.max_length = max_images
