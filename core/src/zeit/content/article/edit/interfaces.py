@@ -666,9 +666,16 @@ class IImageRow(IBlock):
     images = zope.schema.Tuple(
         title=_('Images'),
         default=(),
-        max_length=3,
         required=False,
-        value_type=zope.schema.Choice(source=zeit.content.image.interfaces.ImageGroupSource()),
+        value_type=zc.form.field.Combination(
+            fields=(
+                zope.schema.Choice(
+                    title=_('Image'), source=zeit.content.image.interfaces.ImageGroupSource()
+                ),
+                zope.schema.TextLine(title=_('Caption'), required=False),
+                zope.schema.TextLine(title=_('Alt-Text'), required=False),
+            )
+        ),
     )
     display_mode = zope.schema.Choice(
         title=_('Display Mode'),
