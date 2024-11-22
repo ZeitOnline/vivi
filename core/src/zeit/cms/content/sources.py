@@ -452,41 +452,25 @@ class FeatureToggleSource(ShortCachedXMLBase, XMLSource):
             self.factory.override(False, *names)
 
     def find(self, name):
-        # Allow tests to set overrides
-        overrides = self._overrides()
-        if name in overrides:
-            return overrides[name]
-
         # Allow to override toggles via environment, for local development.
         key = 'toggle_{}'.format(name)
         if key in os.environ:
             return bool(os.environ[key])
 
-        node = self._get_tree().xpath(f'//*[name() = "{name}"]')
-        if not node:
-            return False
-        node = node[0]
-        try:
-            return bool(node)
-        except TypeError:
-            return False
+        return self._values().get(name)
 
     def override(self, value, *names):
         for name in names:
-            self._overrides()[name] = value
-
-    # Changes are discarded between tests, as they call dogpile clear()
-    @FEATURE_CACHE.cache_on_arguments()
-    def _overrides(self):
-        return {}
+            # Changes are discarded between tests, as they call dogpile clear()
+            self._values()[name] = value
 
     def getValues(self, context):
         return [k for k, v in self._values().items() if v]
 
+    @FEATURE_CACHE.cache_on_arguments()
     def _values(self):
         tree = self._get_tree()
         result = {node.tag: bool(node) for node in tree.xpath('//*') if not node.getchildren()}
-        result.update(self._overrides())
         return result
 
 
