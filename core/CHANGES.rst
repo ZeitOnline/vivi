@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.73.0 (2024-11-22)
+-------------------
+
+- WCM-544: read centerpage type from properties and not from xml body
+
+- WCM-466: remove free/dynamic access toggle
+
+
 6.72.0 (2024-11-20)
 -------------------
 
