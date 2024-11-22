@@ -11,6 +11,7 @@ import zope.component
 import zope.event
 
 from zeit.cms.interfaces import ICMSContent
+from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.cms.workflow.interfaces import IPublish
 import zeit.cms.checkout.helper
 import zeit.cms.content.interfaces
@@ -121,8 +122,6 @@ class MessageTest(zeit.push.testing.TestCase):
 
     def create_content(self, with_authors=False, **kw):
         """Create content with values given in arguments."""
-        from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
-
         content = ExampleContentType()
         for key, value in kw.items():
             setattr(content, key, value)
@@ -223,8 +222,6 @@ class MessageTest(zeit.push.testing.TestCase):
 
 class IntegrationTest(zeit.push.testing.TestCase):
     def setUp(self):
-        from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
-
         super().setUp()
         content = ExampleContentType()
         content.title = 'content_title'
