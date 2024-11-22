@@ -462,14 +462,7 @@ class FeatureToggleSource(ShortCachedXMLBase, XMLSource):
         if key in os.environ:
             return bool(os.environ[key])
 
-        node = self._get_tree().xpath(f'//*[name() = "{name}"]')
-        if not node:
-            return False
-        node = node[0]
-        try:
-            return bool(node)
-        except TypeError:
-            return False
+        return self._values().get(name)
 
     def override(self, value, *names):
         for name in names:
