@@ -229,9 +229,7 @@ class IntegrationTest(zeit.push.testing.TestCase):
         self.content = self.repository['content']
 
     def test_publish_triggers_push_notification_via_message_config(self):
-        from zeit.push.interfaces import IPushMessages
-
-        push = IPushMessages(self.content)
+        push = zeit.push.interfaces.IPushMessages(self.content)
         push.message_config = [{'type': 'mobile', 'enabled': True}]
         IPublish(self.content).publish()
         calls = zope.component.getUtility(
@@ -241,6 +239,79 @@ class IntegrationTest(zeit.push.testing.TestCase):
         self.assertEqual(calls[0][1], 'http://www.zeit.de/content')
         self.assertEqual(calls[0][2].get('enabled'), True)
         self.assertEqual(calls[0][2].get('type'), 'mobile')
+
+
+class ChannelsTest(zeit.push.testing.TestCase):
+    def setUp(self):
+        super().setUp()
+        content = ExampleContentType()
+        content.title = 'content_title'
+        self.repository['content'] = content
+        self.content = self.repository['content']
+
+        for name in ['coffee', 'cake']:
+            self.create_payload_template('{"messages": {"sweets": 42}}', f'{name}.json')
+            template = self.repository['data']['urbanairship-templates'][f'{name}.json']
+            with zeit.cms.checkout.helper.checked_out(template) as co:
+                co.channels = (('Push', name),)
+
+    def message_config(self, name, enabled=True, template_type='mobile'):
+        return {
+            'enabled': enabled,
+            'payload_template': f'{name}.json',
+            'type': template_type,
+        }
+
+    def test_template_sets_content_channels(self):
+        with zeit.cms.checkout.helper.checked_out(self.content) as co:
+            co.channels = (('Politik', None),)
+        with zeit.cms.checkout.helper.checked_out(self.content) as co:
+            push = zeit.push.interfaces.IPushMessages(co)
+            push.message_config = (self.message_config('coffee'),)
+
+        self.assertIn(('Push', 'coffee'), self.content.channels)
+        self.assertIn(('Politik', None), self.content.channels)
+
+    def test_multiple_templates_add_multiple_channels(self):
+        with zeit.cms.checkout.helper.checked_out(self.content) as co:
+            push = zeit.push.interfaces.IPushMessages(co)
+            push.message_config = (
+                self.message_config('coffee'),
+                self.message_config('cake'),
+            )
+
+        self.assertIn(('Push', 'coffee'), self.content.channels)
+        self.assertIn(('Push', 'cake'), self.content.channels)
+
+    def test_must_not_add_channels_twice(self):
+        with zeit.cms.checkout.helper.checked_out(self.content) as co:
+            co.channels = (('Push', 'coffee'),)
+            push = zeit.push.interfaces.IPushMessages(co)
+            push.message_config = (self.message_config('coffee'),)
+
+        self.assertEqual((('Push', 'coffee'),), self.content.channels)
+
+    def test_no_channel_template_does_not_break(self):
+        self.create_payload_template('{"messages": {"sweets": 42}}', 'cookies.json')
+        with zeit.cms.checkout.helper.checked_out(self.content) as co:
+            co.channels = (('Politik', None),)
+            push = zeit.push.interfaces.IPushMessages(co)
+            push.message_config = (self.message_config('cookies'),)
+
+        self.assertEqual((('Politik', None),), self.content.channels)
+
+    def test_only_mobile_templates_allowed(self):
+        self.create_payload_template('{"messages": {"sweets": 42}}', 'not_mobile.json')
+        with zeit.cms.checkout.helper.checked_out(self.content) as co:
+            push = zeit.push.interfaces.IPushMessages(co)
+            push.message_config = (self.message_config('not_mobile', template_type='stone'),)
+        self.assertEqual((), self.content.channels)
+
+    def test_disabled_push_does_not_add_channel(self):
+        with zeit.cms.checkout.helper.checked_out(self.content) as co:
+            push = zeit.push.interfaces.IPushMessages(co)
+            push.message_config = (self.message_config('cake', False),)
+        self.assertEqual((), self.content.channels)
 
 
 @pytest.mark.integration()

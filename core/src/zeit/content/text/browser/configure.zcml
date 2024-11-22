@@ -52,6 +52,14 @@
   <browser:page
     for="zeit.content.text.interfaces.IJinjaTemplate"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="view.html"
+    class=".jinja.Display"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="zeit.content.text.interfaces.IJinjaTemplate"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="edit.html"
     class=".jinja.Edit"
     permission="zeit.EditContent"
