@@ -46,10 +46,7 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata):
     def body(self):
         return zeit.content.cp.interfaces.IBody(self)
 
-    _type_xml = zeit.cms.content.property.ObjectPathAttributeProperty(
-        None, 'type', zeit.content.cp.interfaces.ICenterPage['type']
-    )
-    _type_dav = zeit.cms.content.dav.DAVProperty(
+    type = zeit.cms.content.dav.DAVProperty(
         zeit.content.cp.interfaces.ICenterPage['type'],
         zeit.content.cp.interfaces.DAV_NAMESPACE,
         'type',
@@ -148,15 +145,6 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata):
     og_image = zeit.cms.content.property.ObjectPathProperty(
         '.head.og_meta.og_image', zeit.content.cp.interfaces.ICenterPage['og_image']
     )
-
-    @property
-    def type(self):
-        return self._type_xml
-
-    @type.setter
-    def type(self, value):
-        self._type_xml = value
-        self._type_dav = value
 
     cache = gocept.cache.property.TransactionBoundCache('_v_cache', writeabledict)
 
