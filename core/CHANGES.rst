@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.74.0 (2024-11-22)
+-------------------
+
+- WCM-551: Cache analyzed toggles, not just their XML nodes (5% performance gain)
+
+
 6.73.0 (2024-11-22)
 -------------------
 
