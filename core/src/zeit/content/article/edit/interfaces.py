@@ -2,6 +2,7 @@ import datetime
 import logging
 
 import pendulum
+import zc.form.field
 import zc.sourcefactory.contextual
 import zope.schema
 import zope.security.proxy
@@ -9,7 +10,11 @@ import zope.security.proxy
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.interfaces import CONFIG_CACHE
 from zeit.content.animation.interfaces import IAnimation
-from zeit.content.article.source import BodyAwareXMLSource
+from zeit.content.article.source import (
+    IMAGE_DISPLAY_MODE_SOURCE,
+    IMAGE_VARIANT_NAME_SOURCE,
+    BodyAwareXMLSource,
+)
 import zeit.cms.content.field
 import zeit.cms.content.sources
 import zeit.content.article.interfaces
@@ -658,3 +663,27 @@ class IIngredientDice(IBlock):
     """
 
     pass
+
+
+class IImageGrid(IBlock):
+    show_caption = zope.schema.Bool(title=_('Show caption'), required=False, default=True)
+    show_source = zope.schema.Bool(title=_('Show source'), required=False, default=True)
+    rows = zope.schema.Tuple(
+        value_type=zc.form.field.Combination(
+            fields=(
+                zope.schema.Choice(
+                    title=_('Display mode'), source=IMAGE_DISPLAY_MODE_SOURCE
+                ),  # Display mode
+                zope.schema.Choice(
+                    title=_('Variant Name'), source=IMAGE_VARIANT_NAME_SOURCE
+                ),  # Image Variant
+                zope.schema.Tuple(
+                    zope.schema.Choice(
+                        title=_('Image'),
+                        description=_('Drag an image group here'),
+                        source=zeit.content.image.interfaces.imageGroupSource,
+                    )
+                ),
+            )
+        )
+    )

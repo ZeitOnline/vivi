@@ -827,4 +827,24 @@
     permission="zope.View"
     />
 
+  <!-- ImageGrid -->
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IImageGrid"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit-image-grid"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IImageGrid"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-image-grid"
+    class=".edit.EditImageGrid"
+    permission="zope.View"
+    />
+
+
 </configure>

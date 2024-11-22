@@ -16,6 +16,7 @@ import zeit.cms.interfaces
 import zeit.content.article.edit.header
 import zeit.content.article.edit.interfaces
 import zeit.content.article.interfaces
+import zeit.content.image.interfaces
 import zeit.content.modules.rawtext
 import zeit.contentquery.interfaces
 import zeit.edit.browser.form
@@ -575,3 +576,14 @@ class EditAnimation(zeit.cms.browser.manual.FormMixin, zeit.edit.browser.form.In
     @property
     def prefix(self):
         return 'animation.{0}'.format(self.context.__name__)
+
+
+class EditImageGrid(zeit.edit.browser.form.InlineForm):
+    legend = ''
+    form_fields = zope.formlib.form.FormFields(
+        zeit.content.article.edit.interfaces.IImageGrid
+    ).omit(*list(zeit.edit.interfaces.IBlock))
+
+    @property
+    def prefix(self):
+        return 'image_grid.{0}'.format(self.context.__name__)
