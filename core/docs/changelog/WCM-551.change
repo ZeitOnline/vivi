@@ -1,0 +1,1 @@
+WCM-551: Cache analyzed toggles, not just their XML nodes (5% performance gain)
