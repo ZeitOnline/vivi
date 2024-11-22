@@ -1,1 +1,0 @@
-WCM-551: Update body cache when loading content anyway (prevents an extra sql query for each load)

@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.75.0 (2024-11-22)
+-------------------
+
+- WCM-551: Update body cache when loading content anyway (prevents an extra sql query for each load)
+
+
 6.74.0 (2024-11-22)
 -------------------
 
