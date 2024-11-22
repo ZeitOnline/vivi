@@ -155,7 +155,7 @@ else:
             with super().transaction(principal_id):
                 yield
 
-    @celery.signals.task_failure.connect
+    @celery.signals.task_failure.connect(weak=False)
     def on_task_failure(**kw):
         log.error(
             'Task %s (%s) failed',
