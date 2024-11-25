@@ -2,7 +2,6 @@ import grokcore.component as grok
 import lxml
 import zope
 
-from zeit.cms.content.property import ObjectPathAttributeProperty
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.article.source import LEGACY_DISPLAY_MODE_SOURCE, LEGACY_VARIANT_NAME_SOURCE
 import zeit.cms.content.property
@@ -14,13 +13,6 @@ import zeit.content.article.edit.interfaces
 @grok.implementer(zeit.content.article.edit.interfaces.IImageRow)
 class ImageRow(zeit.content.article.edit.block.Block):
     type = 'image_row'
-
-    show_caption = ObjectPathAttributeProperty(
-        '.', 'show_caption', zeit.content.article.edit.interfaces.IImageRow['show_caption']
-    )
-    show_source = ObjectPathAttributeProperty(
-        '.', 'show_source', zeit.content.article.edit.interfaces.IImageRow['show_source']
-    )
     _display_mode = zeit.cms.content.property.ObjectPathAttributeProperty('.', 'display_mode')
     _variant_name = zeit.cms.content.property.ObjectPathAttributeProperty('.', 'variant_name')
     _images = []

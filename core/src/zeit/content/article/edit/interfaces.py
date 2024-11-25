@@ -661,8 +661,6 @@ class IIngredientDice(IBlock):
 
 
 class IImageRow(IBlock):
-    show_caption = zope.schema.Bool(title=_('Show caption'), required=False, default=True)
-    show_source = zope.schema.Bool(title=_('Show source'), required=False, default=True)
     images = zope.schema.Tuple(
         title=_('Images'),
         max_length=3,
