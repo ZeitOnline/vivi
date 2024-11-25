@@ -1,5 +1,6 @@
 import lxml.builder
 
+from zeit.content.article.edit.image_parallax_properties import ImageParallaxProperties
 from zeit.content.article.edit.image_row import ImageRow
 import zeit.content.article.testing
 import zeit.edit.interfaces
@@ -32,3 +33,11 @@ class ImageRowTest(zeit.content.article.testing.FunctionalTestCase):
         )
         self.assertEqual('Fortune of Count Olaf', image_row.xml.xpath('./image')[0].get('caption'))
         self.assertEqual('fortune-count-olaf', image_row.xml.xpath('./image')[0].get('alt_text'))
+
+    def test_image_parallax_properties_should_be_set(self):
+        image_properties = ImageParallaxProperties(None, lxml.builder.E.image_parallax_properties())
+
+        image_properties.show_source = True
+        image_properties.show_caption = True
+        self.assertEqual('True', image_properties.xml.xpath('.')[0].get('show_source'))
+        self.assertEqual('True', image_properties.xml.xpath('.')[0].get('show_caption'))
