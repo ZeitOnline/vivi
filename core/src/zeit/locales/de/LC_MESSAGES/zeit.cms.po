@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Tue Nov 19 14:24:41 2024\n"
+"POT-Creation-Date: Tue Nov 26 17:02:26 2024\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -190,7 +190,7 @@ msgid "Edit"
 msgstr "Bearbeiten"
 
 #: zeit/cms/browser/form.py:293 zeit/cms/repository/browser/file.py:89
-#: zeit/content/article/edit/browser/edit.py:299
+#: zeit/content/article/edit/browser/edit.py:300
 #: zeit/content/article/edit/browser/form.py:469
 #: zeit/content/article/edit/browser/push.py:52
 #: zeit/content/article/edit/browser/reference.py:54
@@ -1504,6 +1504,7 @@ msgstr "Farbe Button"
 #: zeit/content/advertisement/interfaces.py:33
 #: zeit/content/article/edit/image.py:85
 #: zeit/content/article/edit/interfaces.py:199
+#: zeit/content/article/edit/interfaces.py:672
 #: zeit/content/article/interfaces.py:68 zeit/content/cp/interfaces.py:126
 #: zeit/content/cp/interfaces.py:284 zeit/content/cp/interfaces.py:626
 #: zeit/content/image/browser/configure.zcml:262
@@ -1560,7 +1561,7 @@ msgid "View metadata"
 msgstr "Metadaten anzeigen"
 
 #: zeit/content/animation/browser/form.py:21
-#: zeit/content/animation/interfaces.py:28 zeit/content/article/article.py:232
+#: zeit/content/animation/interfaces.py:28 zeit/content/article/article.py:217
 #: zeit/content/article/browser/configure.zcml:74
 #: zeit/content/article/edit/browser/form.py:58
 msgid "Article"
@@ -1607,6 +1608,7 @@ msgid "Video to use for animation"
 msgstr "Video"
 
 #: zeit/content/animation/interfaces.py:44
+#: zeit/content/article/edit/interfaces.py:665
 #: zeit/content/gallery/browser/configure.zcml:79
 #: zeit/content/image/browser/configure.zcml:167
 #: zeit/content/image/browser/imagebrowser.py:6
@@ -1689,21 +1691,21 @@ msgstr "zuletzt veröffentlicht am ${date} um ${time} von ${by}"
 msgid "not published"
 msgstr "Nicht veröffentlicht"
 
-#: zeit/content/article/edit/browser/edit.py:102
+#: zeit/content/article/edit/browser/edit.py:103
 #: zeit/content/cp/browser/landing.py:53
 msgid "The object \"${name}\" does not exist."
 msgstr "Das Objekt »${name}« konnte nicht gefunden werden."
 
-#: zeit/content/article/edit/browser/edit.py:110
+#: zeit/content/article/edit/browser/edit.py:111
 msgid "Could not create block for \"${name}\", because I don't know which one."
 msgstr "Kann für \"${name}\" keinen Block anlegen, weil ich nicht weiß welchen"
 
-#: zeit/content/article/edit/browser/edit.py:303
+#: zeit/content/article/edit/browser/edit.py:304
 msgid "generate-video-recommendation"
 msgstr "Videoempfehlung generieren"
 
-#: zeit/content/article/edit/browser/edit.py:341
-#: zeit/content/article/edit/browser/edit.py:346
+#: zeit/content/article/edit/browser/edit.py:342
+#: zeit/content/article/edit/browser/edit.py:347
 #: zeit/content/author/browser/form.py:170
 #: zeit/content/author/browser/honorar.py:53
 #: zeit/content/volume/browser/form.py:142
@@ -1924,6 +1926,14 @@ msgstr "Seitenumbruch"
 msgid "Embed block"
 msgstr "Easy-Embed"
 
+#: zeit/content/article/edit/image_parallax_properties.py:29
+msgid "Image Parallax Properties"
+msgstr "Bilder-Parallax-Eigenschaften"
+
+#: zeit/content/article/edit/image_row.py:56
+msgid "Image Row"
+msgstr "Bilderreihe"
+
 #: zeit/content/article/edit/ingredientdice.py:15
 msgid "Ingredient dice block"
 msgstr "Zutatenwürfel bearbeiten"
@@ -1986,10 +1996,12 @@ msgid "Edited"
 msgstr "redigiert"
 
 #: zeit/content/article/edit/interfaces.py:209
+#: zeit/content/article/edit/interfaces.py:680
 msgid "Display Mode"
 msgstr "Darstellung"
 
 #: zeit/content/article/edit/interfaces.py:217
+#: zeit/content/article/edit/interfaces.py:687
 #: zeit/content/article/interfaces.py:76
 msgid "Variant Name"
 msgstr "Seitenverhältnis"
@@ -2209,6 +2221,23 @@ msgstr "Ziehen Sie einen Artikel/Link hierher"
 #: zeit/content/article/edit/interfaces.py:638
 msgid "Filter"
 msgstr "Filter"
+
+#: zeit/content/article/edit/interfaces.py:674
+#: zeit/content/gallery/interfaces.py:102
+msgid "Image caption"
+msgstr "Bildunterschrift"
+
+#: zeit/content/article/edit/interfaces.py:675
+msgid "Alternative Text"
+msgstr "ALT-Text"
+
+#: zeit/content/article/edit/interfaces.py:695
+msgid "Show caption"
+msgstr "Bildunterschrift anzeigen"
+
+#: zeit/content/article/edit/interfaces.py:696
+msgid "Show source"
+msgstr "Bildquelle anzeigen"
 
 #: zeit/content/article/edit/jobticker.py:18
 msgid "Jobbox ticker block"
@@ -2962,7 +2991,7 @@ msgid "Could not publish ${id} since it has validation errors."
 msgstr ""
 "${id} hat Validierungsfehler und  kann daher nicht veröffentlicht werden."
 
-#: zeit/content/cp/centerpage.py:177
+#: zeit/content/cp/centerpage.py:165
 msgid "Centerpage 2009"
 msgstr "Center-Page"
 
@@ -3380,10 +3409,6 @@ msgstr ""
 #: zeit/content/gallery/interfaces.py:88
 msgid "Is a cropped image of"
 msgstr "Ist ein Zuschnitt von"
-
-#: zeit/content/gallery/interfaces.py:102
-msgid "Image caption"
-msgstr "Bildunterschrift"
 
 #: zeit/content/gallery/interfaces.py:103
 msgid "gallery-image-caption-description"
@@ -4813,6 +4838,12 @@ msgstr "Format"
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:53
 msgid "with info"
 msgstr "mit Info"
+
+#~ msgid "Caption"
+#~ msgstr "Bildunterschrift"
+
+#~ msgid "Alt-Text"
+#~ msgstr "Alternativtext"
 
 #~ msgid "Print Ressort"
 #~ msgstr "Print-Ressort"
