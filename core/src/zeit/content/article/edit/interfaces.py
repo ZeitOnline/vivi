@@ -691,3 +691,8 @@ class IImageRow(IBlock):
         default='wide',
         required=False,
     )
+
+
+class IImageParallaxProperties(IBlock):
+    show_caption = zope.schema.Bool(title=_('Show caption'), required=False, default=True)
+    show_source = zope.schema.Bool(title=_('Show source'), required=False, default=True)

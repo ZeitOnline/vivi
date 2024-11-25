@@ -30,4 +30,5 @@
   <module id="volume">Ausgabe</module>
   <module id="videotagesschau">ARD Video</module>
   <module id="image_row">Bilderreihe</module>
+  <module id="image_parallax_properties">Bilder-Parallax-Modul</module>
 </modules>

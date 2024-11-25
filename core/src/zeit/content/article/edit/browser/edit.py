@@ -596,3 +596,14 @@ class EditImageRow(zeit.edit.browser.form.InlineForm):
             return
         max_images = max_images_dict.get(display_mode)
         self.widgets['images'].context.max_length = max_images
+
+
+class EditImageParallaxProperties(zeit.edit.browser.form.InlineForm):
+    legend = ''
+    form_fields = zope.formlib.form.FormFields(
+        zeit.content.article.edit.interfaces.IImageParallaxProperties
+    ).omit(*list(zeit.edit.interfaces.IBlock))
+
+    @property
+    def prefix(self):
+        return 'image_parallax_properties.{0}'.format(self.context.__name__)
