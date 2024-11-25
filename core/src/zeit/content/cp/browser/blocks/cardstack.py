@@ -7,7 +7,6 @@ import zeit.content.cp.interfaces
 
 
 class ColorSourceWidget(zope.formlib.source.SourceDropdownWidget):
-
     """
     A color picker which expects hex values as the underlying source
     """

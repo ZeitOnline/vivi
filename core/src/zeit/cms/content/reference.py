@@ -11,6 +11,7 @@ XML nodes::
 Terminology note: the "source" (A or C) references the "target" (B).
 
 """
+
 import copy
 import urllib.parse
 
