@@ -6,6 +6,7 @@ cat articles_without_vgwort_payload.js | \
         jq -r '@text "http://xml.zeit.de" + .hits.hits[]._source.url' \
             > vgwort-nachzuegler-production
 """
+
 import argparse
 import logging
 import time

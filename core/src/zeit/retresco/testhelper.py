@@ -5,6 +5,7 @@ The Right Thing(tm) to do would probably be to abstract ITMS/IElasticsearch
 and move them to zeit.cms (like we do with e.g. IPublish), but that's a lot of
 busy work for (so far) not _much_ gain.
 """
+
 from unittest import mock
 
 import plone.testing

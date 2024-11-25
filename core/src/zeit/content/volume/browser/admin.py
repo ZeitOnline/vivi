@@ -15,7 +15,6 @@ class PublishAction(zope.formlib.form.Action):
 
 
 class VolumeAdminForm(zeit.cms.admin.browser.admin.EditFormCI):
-
     """
     Add an additional Action to the Admin view, which publishes the content
     of a volume.
