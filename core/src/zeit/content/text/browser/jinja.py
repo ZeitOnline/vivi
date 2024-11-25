@@ -10,6 +10,10 @@ import zeit.cms.repository.browser.adapter
 import zeit.content.text.interfaces
 
 
+class Display(zeit.cms.browser.form.DisplayForm):
+    form_fields = zope.formlib.form.FormFields(zeit.content.text.interfaces.IJinjaTemplate)
+
+
 class Edit(zeit.cms.browser.form.EditForm):
     title = _('Edit plain text')
     form_fields = zope.formlib.form.FormFields(zeit.content.text.interfaces.IJinjaTemplate)

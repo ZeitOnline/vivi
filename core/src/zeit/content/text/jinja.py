@@ -21,6 +21,13 @@ class JinjaTemplate(zeit.content.text.text.Text):
         'title',
     )
 
+    channels = zeit.cms.content.dav.DAVProperty(
+        zeit.content.text.interfaces.IJinjaTemplate['channels'],
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
+        'channels',
+        use_default=True,
+    )
+
     def __call__(self, variables, **kw):
         patch = None
         if kw.pop('output_format', None) == 'json':

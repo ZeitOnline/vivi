@@ -1,5 +1,6 @@
 import zope.schema
 
+from zeit.cms.content.interfaces import ICommonMetadata
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.contentsource
 import zeit.cms.repository.interfaces
@@ -62,6 +63,8 @@ class IPythonScript(IText):
 
 class IJinjaTemplate(IText):
     title = zope.schema.TextLine(title=_('Title'))
+
+    channels = ICommonMetadata['channels'].bind(object())
 
     def __call__(**kw):
         """Renders the content as a jina template and returns the result.

@@ -6,6 +6,7 @@ import zope.interface
 from zeit.cms.content.interfaces import WRITEABLE_ALWAYS
 from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
+import zeit.cms.checkout.interfaces
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
 import zeit.objectlog.interfaces
@@ -70,6 +71,29 @@ class PushMessages(zeit.cms.content.dav.DAVPropertiesAdapter):
         config = list(self.message_config)
         config.remove(query)
         self.message_config = tuple(config)
+
+
+@grok.subscribe(
+    zeit.cms.content.interfaces.ICommonMetadata, zeit.cms.checkout.interfaces.IBeforeCheckinEvent
+)
+def update_content_channel_from_template(context, event):
+    push = zeit.push.interfaces.IPushMessages(context)
+    source = zeit.push.interfaces.PAYLOAD_TEMPLATE_SOURCE
+    channels = set()
+    for config in push.message_config:
+        if config.get('type') != 'mobile':
+            continue
+        if not config.get('enabled'):
+            continue
+        template = source.find(config.get('payload_template'))
+        if template is None:
+            continue
+        for channel in template.channels:
+            if channel not in context.channels:
+                channels.add(channel)
+
+    if channels:
+        context.channels += tuple(channels)
 
 
 @grok.subscribe(zeit.cms.interfaces.ICMSContent, zeit.cms.workflow.interfaces.IPublishedEvent)
