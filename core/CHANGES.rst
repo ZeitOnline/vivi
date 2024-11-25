@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.76.0 (2024-11-25)
+-------------------
+
+- WCM-477: Update content channels from urbanairship template channels
+
+
 6.75.0 (2024-11-22)
 -------------------
 
