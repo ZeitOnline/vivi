@@ -671,8 +671,8 @@ class IImageRow(IBlock):
                 zope.schema.Choice(
                     title=_('Image'), source=zeit.content.image.interfaces.ImageGroupSource()
                 ),
-                zope.schema.TextLine(title=_('Caption'), required=False),
-                zope.schema.TextLine(title=_('Alt-Text'), required=False),
+                zope.schema.TextLine(title=_('Image caption'), required=False),
+                zope.schema.TextLine(title=_('Alternative Text'), required=False),
             )
         ),
     )

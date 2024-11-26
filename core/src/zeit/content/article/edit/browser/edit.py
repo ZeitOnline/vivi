@@ -1,6 +1,7 @@
 import json
 import logging
 
+import grokcore.component as grok
 import zope.cachedescriptors.property
 import zope.component
 import zope.security
@@ -577,11 +578,37 @@ class EditAnimation(zeit.cms.browser.manual.FormMixin, zeit.edit.browser.form.In
         return 'animation.{0}'.format(self.context.__name__)
 
 
+class IImageRowForm(zeit.content.article.edit.interfaces.IImageRow):
+    pass
+
+
+@grok.implementer(IImageRowForm)
+class ImageRowForm(grok.Adapter):
+    grok.context(zeit.content.article.edit.interfaces.IImageRow)
+
+    @property
+    def images(self):
+        return [(x.target, x.caption, x.alt) for x in self.context.images]
+
+    @images.setter
+    def images(self, value):
+        if not value:
+            self.context.images = ()
+            return
+        result = []
+        for img, caption, alt in value:
+            ref = self.context.images.create(img)
+            ref.caption = caption
+            ref.alt = alt
+            result.append(ref)
+        self.context.images = result
+
+
 class EditImageRow(zeit.edit.browser.form.InlineForm):
     legend = ''
     form_fields = zope.formlib.form.FormFields(zeit.content.article.edit.interfaces.IImageRow).omit(
-        *list(zeit.edit.interfaces.IBlock)
-    )
+        'images', *list(zeit.edit.interfaces.IBlock)
+    ) + zope.formlib.form.FormFields(IImageRowForm).select('images')
 
     @property
     def prefix(self):
