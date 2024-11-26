@@ -78,6 +78,8 @@ class SQLContentQuery(ContentQuery):
                     'app.unique_id': self.context.uniqueId,
                 }
             )
+            if self.rows == 0:
+                return []
             result = [repository.makeContent(x) for x in connector.search_sql(query)]
             span.set_attribute('db.count', len(result))
         return result

@@ -1143,6 +1143,11 @@ class AutomaticAreaSQLTest(zeit.content.cp.testing.FunctionalTestCase):
         self.assertEqual(1, IRenderedArea(self.area)._content_query.total_hits)
         self.assertNotIn('CURRENT_DATE', self.connector.search_args[0])
 
+    def test_does_not_execute_query_if_limit_is_zero(self):
+        self.area.count = 0
+        self.assertFalse(IRenderedArea(self.area).values())
+        self.assertFalse(self.connector.search_args)
+
     def test_restrict_time_adds_clause(self):
         IRenderedArea(self.area).values()
         self.assertEllipsis(

@@ -1,0 +1,1 @@
+PERF: Skip query if count is zero anyway (e.g. in zeit.web pagination)
