@@ -34,6 +34,10 @@ class PodcastSourceTest(FunctionalTestCase):
             'http://xml.zeit.de/2006/DSC00109_2.JPG',
             distribution_channels,
             'https://feeds.example.com/aRDC72E_',
+            True,
+            'Author Mc Cat Face',
+            'News',
+            'serial',
         )
         assert values[0] == podcast
 
