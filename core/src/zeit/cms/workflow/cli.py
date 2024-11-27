@@ -9,7 +9,7 @@ import zeit.cms.cli
 
 
 log = logging.getLogger(__name__)
-IGNORE_SERVICES = ['speechbert']
+IGNORE_SERVICES = ['airship', 'speechbert']
 
 
 @zeit.cms.cli.runner(principal=zeit.cms.cli.principal_from_args)
@@ -47,7 +47,6 @@ def publish():
         action='store_true',
         help='Skip TMS enrich, e.g. checkin already happened',
     )
-    parser.add_argument('--push', action='store_true', help='Enable push messages')
     parser.add_argument(
         '--dlps', action='store_true', help='Update date_last_published_semantic timestamp'
     )
@@ -57,13 +56,12 @@ def publish():
         parser.print_help()
         raise SystemExit(1)
 
-    if not options.push:
-        log.info('Deactivating push messages')
-        mock.patch(
-            'zeit.push.workflow.PushMessages.messages', new=mock.PropertyMock(return_value=())
-        ).start()
-
     registry = zope.component.getGlobalSiteManager()
+
+    # No option, since there is no usecase for re-activating old breaking news
+    log.info('Deactivating breaking news banner')
+    assert registry.unregisterHandler(zeit.push.workflow.send_push_on_publish)
+
     if not options.dlps:
         log.info('Deactivating date_last_published_semantic')
         assert registry.unregisterHandler(
