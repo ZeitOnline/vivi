@@ -14,7 +14,6 @@ from zeit.connector.interfaces import (
     CopyError,
     DeleteProperty,
     LockedByOtherSystemError,
-    LockingError,
     MoveError,
 )
 from zeit.connector.resource import Resource
@@ -314,19 +313,21 @@ class ContractLock:
         with self.assertRaises(LockedByOtherSystemError):
             self.connector.unlock(id)
 
-    def test_locking_already_locked_resource_by_same_user_raises(self):
+    def test_locking_already_locked_resource_by_same(self):
         id = self.add_resource('foo').id
         self.connector.lock(id, 'zope.user', pendulum.now('UTC').add(hours=2))
         transaction.commit()
-        with self.assertRaises(LockingError):
-            self.connector.lock(id, 'zope.user', pendulum.now('UTC').add(hours=2))
+        self.connector.lock(id, 'zope.user', pendulum.now('UTC').add(hours=2))
+        self.connector.unlock(id)
+        self.assertEqual((None, None, False), self.connector.locked(id))
 
     def test_locking_already_locked_resource_raises(self):
-        id = self.add_resource('foo').id
-        self.connector.lock(id, 'zope.user', pendulum.now('UTC').add(hours=2))
+        self.lock_resource('foo', user='external')
         transaction.commit()
-        with self.assertRaises(LockingError):
-            self.connector.lock(id, 'zope.another_user', pendulum.now('UTC').add(hours=2))
+        with self.assertRaises(LockedByOtherSystemError):
+            self.connector.lock(
+                'http://xml.zeit.de/testing/foo', 'zope.user', pendulum.now('UTC').add(hours=2)
+            )
 
     def test_move_operation_removes_lock(self):
         id = self.add_resource('foo').id

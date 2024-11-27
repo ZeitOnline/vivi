@@ -155,8 +155,6 @@ class IConnector(zope.interface.Interface):
     def lock(id, principal, until):
         """Lock resource for principal until a given datetime.
 
-        A client MUST NOT submit the same write lock request twice.
-
         A successful request for an write lock results in the generation of a unique lock token
         associated with the requesting principal.
 

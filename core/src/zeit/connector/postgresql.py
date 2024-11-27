@@ -40,7 +40,6 @@ from zeit.connector.interfaces import (
     INTERNAL_PROPERTY,
     CopyError,
     LockedByOtherSystemError,
-    LockingError,
     LockStatus,
     MoveError,
 )
@@ -538,7 +537,7 @@ class Connector:
                 self._update_lock_cache(content.uniqueid, principal, until)
                 return lock.token
             case LockStatus.OWN:
-                raise LockingError(id, f'You already own the lock of {uniqueid}.')
+                self._update_lock_cache(content.uniqueid, principal, until)
             case LockStatus.FOREIGN:
                 raise LockedByOtherSystemError(uniqueid, f'{uniqueid} is already locked.')
 
