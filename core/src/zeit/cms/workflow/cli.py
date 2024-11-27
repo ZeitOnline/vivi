@@ -35,8 +35,8 @@ def publish():
 
     parser.add_argument(
         '--ignore-services',
-        default=IGNORE_SERVICES,
-        help=f'Ignore 3rd party services; default: {IGNORE_SERVICES}; use to overwrite',
+        default=[],
+        help=f'Ignore 3rd party services; default: {IGNORE_SERVICES} will be extended by yours;',
         nargs='+',
     )
     parser.add_argument(
@@ -93,7 +93,7 @@ def publish():
         ).start()
 
     log.info('Ignoring services %s', options.ignore_services)
-    zeit.workflow.publish_3rdparty.PublisherData.ignore = options.ignore_services
+    zeit.workflow.publish_3rdparty.PublisherData.ignore = options.ignore_services + IGNORE_SERVICES
 
     for line in open(options.filename):
         id = line.strip()
