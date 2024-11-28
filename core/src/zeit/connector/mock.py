@@ -274,7 +274,7 @@ class Connector(zeit.connector.filesystem.Connector):
         id = self._get_cannonical_id(id)
         (another_principal, _, my_lock) = self.locked(id)
         if another_principal and not my_lock:
-            raise LockedByOtherSystemError('Resource is already locked by another principal')
+            raise LockedByOtherSystemError(id, '')
         self._locked[id] = (principal, until, my_lock)
 
     def unlock(self, id):
