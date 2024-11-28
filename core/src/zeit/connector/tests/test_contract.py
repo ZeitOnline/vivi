@@ -313,15 +313,18 @@ class ContractLock:
         with self.assertRaises(LockedByOtherSystemError):
             self.connector.unlock(id)
 
-    def test_locking_already_locked_resource_by_same(self):
+    def test_lock_when_locked_by_same_user_updates_lock(self):
         id = self.add_resource('foo').id
-        self.connector.lock(id, 'zope.user', pendulum.now('UTC').add(hours=2))
+        now = pendulum.now('UTC')
+        self.connector.lock(id, 'zope.user', now.add(hours=2))
         transaction.commit()
-        self.connector.lock(id, 'zope.user', pendulum.now('UTC').add(hours=2))
-        self.connector.unlock(id)
-        self.assertEqual((None, None, False), self.connector.locked(id))
+        self.connector.lock(id, 'zope.user', now.add(hours=4))
+        transaction.commit()
+        user, until, mine = self.connector.locked(id)
+        self.assertEqual('zope.user', user)
+        self.assertGreater(until, now.add(hours=3))
 
-    def test_locking_already_locked_resource_raises(self):
+    def test_lock_when_locked_by_other_user_raises(self):
         self.lock_resource('foo', user='external')
         transaction.commit()
         with self.assertRaises(LockedByOtherSystemError):

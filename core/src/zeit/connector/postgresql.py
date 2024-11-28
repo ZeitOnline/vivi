@@ -537,7 +537,9 @@ class Connector:
                 self._update_lock_cache(content.uniqueid, principal, until)
                 return lock.token
             case LockStatus.OWN:
+                content.lock.until = until
                 self._update_lock_cache(content.uniqueid, principal, until)
+                return content.lock.token
             case LockStatus.FOREIGN:
                 raise LockedByOtherSystemError(uniqueid, f'{uniqueid} is already locked.')
 
