@@ -40,6 +40,7 @@ from zeit.connector.interfaces import (
     INTERNAL_PROPERTY,
     CopyError,
     LockedByOtherSystemError,
+    LockingError,
     LockStatus,
     MoveError,
 )
@@ -546,9 +547,15 @@ class Connector:
                 self._update_lock_cache(content.uniqueid, principal, until)
                 return lock.token
             case LockStatus.OWN:
-                content.lock.until = until
-                self._update_lock_cache(content.uniqueid, principal, until)
-                return content.lock.token
+                lock = content.lock
+                if lock.principal == principal:
+                    lock.until = until
+                    self._update_lock_cache(content.uniqueid, principal, until)
+                    return lock.token
+                else:
+                    raise LockingError(
+                        uniqueid, f'{uniqueid} is already locked by {lock.principal}'
+                    )
             case LockStatus.FOREIGN:
                 raise LockedByOtherSystemError(
                     uniqueid, f'{uniqueid} is already locked by {content.lock.principal}'

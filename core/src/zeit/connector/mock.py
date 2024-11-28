@@ -18,6 +18,7 @@ from zeit.connector.interfaces import (
     CannonicalId,
     CopyError,
     LockedByOtherSystemError,
+    LockingError,
     MoveError,
 )
 from zeit.connector.lock import lock_is_foreign
@@ -273,8 +274,11 @@ class Connector(zeit.connector.filesystem.Connector):
 
         id = self._get_cannonical_id(id)
         (another_principal, _, my_lock) = self.locked(id)
-        if another_principal and not my_lock:
-            raise LockedByOtherSystemError(id, '')
+        if another_principal:
+            if not my_lock:
+                raise LockedByOtherSystemError(id, '')
+            elif another_principal != principal:
+                raise LockingError(id, '')
         self._locked[id] = (principal, until, my_lock)
 
     def unlock(self, id):

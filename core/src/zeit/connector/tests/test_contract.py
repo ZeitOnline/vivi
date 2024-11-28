@@ -14,6 +14,7 @@ from zeit.connector.interfaces import (
     CopyError,
     DeleteProperty,
     LockedByOtherSystemError,
+    LockingError,
     MoveError,
 )
 from zeit.connector.resource import Resource
@@ -306,7 +307,7 @@ class ContractLock:
         self.connector.unlock(id)
         self.assertEqual((None, None, False), self.connector.locked(id))
 
-    def test_unlock_for_unknown_user_raises(self):
+    def test_unlock_when_locked_by_external_user_raises(self):
         id = self.add_resource('foo').id
         self.connector.lock(id, 'external', pendulum.now('UTC').add(hours=2))
         transaction.commit()
@@ -325,6 +326,14 @@ class ContractLock:
         self.assertGreater(until, now.add(hours=3))
 
     def test_lock_when_locked_by_other_user_raises(self):
+        self.lock_resource('foo', user='zope.seo')
+        transaction.commit()
+        with self.assertRaises(LockingError):
+            self.connector.lock(
+                'http://xml.zeit.de/testing/foo', 'zope.user', pendulum.now('UTC').add(hours=2)
+            )
+
+    def test_lock_when_locked_by_external_user_raises(self):
         self.lock_resource('foo', user='external')
         transaction.commit()
         with self.assertRaises(LockedByOtherSystemError):
@@ -808,7 +817,7 @@ class ContractMock(
     # not implemented copy_inherited_functions(ContractSearch, locals())
     # not implemented copy_inherited_functions(ContractCache, locals())
 
-    def test_unlock_for_unknown_user_raises(self):
+    def test_unlock_when_locked_by_external_user_raises(self):
         """Not worth implementing for mock; no client (i.e. test in vivi) needs
         this behaviour.
         """
