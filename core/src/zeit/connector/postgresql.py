@@ -261,7 +261,9 @@ class Connector:
             self.session.add(content)
         else:
             if content.lock_status == LockStatus.FOREIGN:
-                raise LockedByOtherSystemError(uniqueid, f'{uniqueid} is already locked.')
+                raise LockedByOtherSystemError(
+                    uniqueid, f'{uniqueid} is already locked by {content.lock.principal}'
+                )
 
         (content.parent_path, content.name) = self._pathkey(uniqueid)
         current = content.to_webdav()
@@ -312,7 +314,9 @@ class Connector:
         if content is None:
             raise KeyError(f'The resource {uniqueid} does not exist.')
         if content.lock_status == LockStatus.FOREIGN:
-            raise LockedByOtherSystemError(uniqueid, f'{uniqueid} is already locked.')
+            raise LockedByOtherSystemError(
+                uniqueid, f'{uniqueid} is already locked by {content.lock.principal}'
+            )
         current = content.to_webdav()
         current.update(properties)
         content.from_webdav(current)
@@ -333,7 +337,9 @@ class Connector:
             for child in to_delete:
                 if child.lock and child.lock.status == LockStatus.FOREIGN:
                     raise LockedByOtherSystemError(
-                        child.uniqueid, f'Could not delete {child.uniqueid}, because it is locked.'
+                        child.uniqueid,
+                        f'Could not delete {child.uniqueid}, because it is locked'
+                        f' by {child.lock.principal}',
                     )
 
         for content in to_delete:
@@ -487,7 +493,9 @@ class Connector:
             )
         if content.lock:
             if content.lock.status == LockStatus.FOREIGN:
-                raise LockedByOtherSystemError(old_uniqueid, f'{old_uniqueid} is already locked.')
+                raise LockedByOtherSystemError(
+                    old_uniqueid, f'{old_uniqueid} is already locked by {content.lock.principal}'
+                )
             del content.lock
 
         sources = [content]
@@ -498,7 +506,8 @@ class Connector:
                 if child.lock and child.lock.status == LockStatus.FOREIGN:
                     raise LockedByOtherSystemError(
                         old_uniqueid,
-                        f'Could not move {child.uniqueid} to {new_uniqueid}, because it is locked.',
+                        f'Could not move {child.uniqueid} to {new_uniqueid}, because it is locked'
+                        f' by {child.lock.principal}',
                     )
 
         updates = []
@@ -538,9 +547,13 @@ class Connector:
                 self._update_lock_cache(content.uniqueid, principal, until)
                 return lock.token
             case LockStatus.OWN:
-                raise LockingError(id, f'You already own the lock of {uniqueid}.')
+                raise LockingError(
+                    uniqueid, f'{uniqueid} is already locked' f' by {content.lock.principal}'
+                )
             case LockStatus.FOREIGN:
-                raise LockedByOtherSystemError(uniqueid, f'{uniqueid} is already locked.')
+                raise LockedByOtherSystemError(
+                    uniqueid, f'{uniqueid} is already locked by {content.lock.principal}'
+                )
 
     def unlock(self, uniqueid):
         uniqueid = self._normalize(uniqueid)
@@ -548,7 +561,9 @@ class Connector:
         if not lock:
             return
         if lock.status == LockStatus.FOREIGN:
-            raise LockedByOtherSystemError(uniqueid, f'{uniqueid} is already locked.')
+            raise LockedByOtherSystemError(
+                uniqueid, f'{uniqueid} is already locked by {lock.principal}'
+            )
         self.session.delete(lock)
         self._update_lock_cache(uniqueid, None)
 
