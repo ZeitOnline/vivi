@@ -22,7 +22,7 @@ class MockPublish:
     """A mock publisher."""
 
     def __init__(self, context):
-        self.context = context
+        self.context = zeit.cms.interfaces.ICMSContent(context.uniqueId)
 
     def _result(self):
         return celery.result.EagerResult('eager', None, celery.states.SUCCESS)

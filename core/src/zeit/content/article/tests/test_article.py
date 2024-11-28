@@ -360,13 +360,15 @@ class ArticleSpeechbertTest(zeit.content.article.testing.FunctionalTestCase):
         article = self.get_article()
         article.body.create_item('p').text = 'foo'
         article = self.repository['article'] = article
-        IPublishInfo(article).urgent = True
+        with checked_out(article) as co:
+            IPublishInfo(co).urgent = True
         IPublish(article).publish()
 
-        checksum = zeit.content.article.interfaces.ISpeechbertChecksum(article)
+        checksum = zeit.content.article.interfaces.ISpeechbertChecksum(self.repository['article'])
         first = checksum.checksum
         assert len(first) == 32
 
+        article = self.repository['article']
         article.body.create_item('p').text = 'bar'
         article = self.repository['article'] = article
         IPublish(article).publish()
@@ -377,18 +379,17 @@ class ArticleSpeechbertTest(zeit.content.article.testing.FunctionalTestCase):
 
     def test_no_body_does_not_break(self):
         article = self.repository['article'] = self.get_article()
-        IPublishInfo(article).urgent = True
+        IPublishInfo(self.repository['article']).urgent = True
         IPublish(article).publish()
-        checksum = zeit.content.article.interfaces.ISpeechbertChecksum(article)
+        checksum = zeit.content.article.interfaces.ISpeechbertChecksum(self.repository['article'])
         assert checksum.checksum == 'd751713988987e9331980363e24189ce'
 
     def test_no_checksum_for_ignored_genres(self):
-        article = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept'
-        )
+        uid = 'http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept'
+        article = self.repository['article'] = zeit.cms.interfaces.ICMSContent(uid)
         zeit.cms.config.set('zeit.workflow', 'speechbert-ignore-genres', 'rezept-vorstellung')
         IPublish(article).publish()
-        checksum = zeit.content.article.interfaces.ISpeechbertChecksum(article)
+        checksum = zeit.content.article.interfaces.ISpeechbertChecksum(self.repository['article'])
         assert not checksum.checksum
 
 
