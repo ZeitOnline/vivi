@@ -634,10 +634,12 @@ class Connector:
 
         for content in rows:
             uniqueid = content.uniqueid
-            properties = content.to_webdav()
+            properties = self.property_cache.get(uniqueid)
+            if properties is None:
+                properties = content.to_webdav()
+                self.property_cache[uniqueid] = properties
+                self._update_body_cache(content.uniqueid, content)
             resource = self.resource(uniqueid, properties)
-            self.property_cache[uniqueid] = properties
-            self._update_body_cache(content.uniqueid, content)
             result.append(resource)
 
         return result
