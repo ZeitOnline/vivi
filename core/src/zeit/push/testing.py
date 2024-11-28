@@ -64,9 +64,8 @@ class PushMockLayer(plone.testing.Layer):
     """Helper layer to reset mock notifiers."""
 
     def testSetUp(self):
-        for service in ['urbanairship', 'homepage']:
-            notifier = zope.component.getUtility(zeit.push.interfaces.IPushNotifier, name=service)
-            notifier.reset()
+        notifier = zope.component.getUtility(zeit.push.interfaces.IPushNotifier, name='homepage')
+        notifier.reset()
 
 
 PUSH_MOCK_LAYER = PushMockLayer()
