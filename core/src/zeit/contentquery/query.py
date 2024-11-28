@@ -9,7 +9,7 @@ from sqlalchemy import not_ as sql_not
 from sqlalchemy import or_ as sql_or
 from sqlalchemy import select
 from sqlalchemy import text as sql
-from sqlalchemy.orm import aliased
+from sqlalchemy.orm import aliased, joinedload
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
 import lxml
@@ -24,6 +24,7 @@ from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.interfaces import ICMSContent
 from zeit.connector.models import TIMESTAMP
 from zeit.connector.models import Content as ConnectorModel
+from zeit.connector.postgresql import Connector as SQLConnector
 from zeit.contentquery.configuration import CustomQueryProperty
 import zeit.cms.config
 import zeit.cms.content.interfaces
@@ -100,9 +101,12 @@ class SQLContentQuery(ContentQuery):
             span.set_attribute('db.count', result)
             return result
 
-    @property
-    def conditions(self):
-        return select(ConnectorModel).where(sql(f'({self.context.sql_query})'))
+    def conditions(self, order):
+        query = select(ConnectorModel)
+        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+        if order and isinstance(connector, SQLConnector) and connector.support_locking:
+            query = query.options(joinedload(ConnectorModel.lock))
+        return query.where(sql(f'({self.context.sql_query})'))
 
     @property
     def order(self):
@@ -115,7 +119,7 @@ class SQLContentQuery(ContentQuery):
         return self.context.sql_order.split(' ')[0]
 
     def _build_query(self, order=True):
-        query = self.conditions
+        query = self.conditions(order)
         query = self.add_clauses(query)
         query = self.hide_dupes_clause(query)
         if not order:  # `order by` is not allowed by SQL when using `count()`
@@ -208,14 +212,16 @@ class SQLCustomContentQuery(SQLContentQuery):
     def _force_queryplan_enabled(self):
         return self.context.query_force_queryplan
 
-    @property
-    def conditions(self):
+    def conditions(self, order):
         fields = {}
         for item in self.context.query:
             typ = item[0]
             fields.setdefault(typ, []).append(item)
 
         query = select(ConnectorModel)
+        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+        if order and isinstance(connector, SQLConnector) and connector.support_locking:
+            query = query.options(joinedload(ConnectorModel.lock))
         for typ in fields:
             conditions = []
             for item in fields[typ]:
