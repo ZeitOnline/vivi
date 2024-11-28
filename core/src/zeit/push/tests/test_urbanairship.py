@@ -1,6 +1,5 @@
 # coding=utf-8
 from datetime import datetime
-from unittest import mock
 import os
 import unittest
 
@@ -12,7 +11,6 @@ import zope.event
 
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
-from zeit.cms.workflow.interfaces import IPublish
 import zeit.cms.checkout.helper
 import zeit.cms.content.interfaces
 import zeit.push.interfaces
@@ -23,7 +21,6 @@ import zeit.push.urbanairship
 class ConnectionTest(zeit.push.testing.TestCase):
     def setUp(self):
         super().setUp()
-        self.api = zeit.push.urbanairship.Connection(None, None, None, expire_interval=3600)
         self.message = zeit.push.urbanairship.Message(
             ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         )
@@ -38,53 +35,37 @@ class ConnectionTest(zeit.push.testing.TestCase):
 
     @time_machine.travel(datetime(2014, 7, 1, 10, 15, 7, 38))
     def test_template_content_is_transformed_to_ua_payload(self):
-        with mock.patch.object(self.api, 'push') as push:
-            self.api.send('any', 'any', message=self.message)
-            android = push.call_args[0][0][0]
-            self.assertEqual(['android'], android['device_types'])
-            self.assertEqual(
-                # Given in template
-                '2014-07-01T10:45:07',
-                android['options']['expiry'],
-            )
-            self.assertEqual(
-                {'group': 'subscriptions', 'tag': 'Eilmeldung'}, android['audience']['OR'][0]
-            )
-            self.assertEqual('foo', android['notification']['alert'])
-            self.assertEqual(
-                'Rückkehr der Warlords', android['notification']['android']['extra']['headline']
-            )
-            self.assertEqual(
-                '4850d936-a3b7-4ff0-8434-57d26ca7521b',
-                android['notification']['android']['uuid'],
-            )
+        message = self.message.render()
+        android = message[0]
+        self.assertEqual(['android'], android['device_types'])
+        self.assertEqual(
+            {'group': 'subscriptions', 'tag': 'Eilmeldung'}, android['audience']['OR'][0]
+        )
+        self.assertEqual('foo', android['notification']['alert'])
+        self.assertEqual(
+            'Rückkehr der Warlords', android['notification']['android']['extra']['headline']
+        )
+        self.assertEqual(
+            '4850d936-a3b7-4ff0-8434-57d26ca7521b',
+            android['notification']['android']['uuid'],
+        )
 
-            ios = push.call_args[0][0][1]
-            self.assertEqual(['ios'], ios['device_types'])
-            self.assertEqual(
-                # Defaults to configured expiration_interval
-                '2014-07-01T11:15:07',
-                ios['options']['expiry'],
-            )
-            self.assertEqual(
-                {'group': 'subscriptions', 'tag': 'Eilmeldung'}, ios['audience']['OR'][0]
-            )
-            self.assertEqual('foo', ios['notification']['alert'])
-            self.assertEqual('Rückkehr der Warlords', ios['notification']['ios']['title'])
-            self.assertEqual(
-                '4850d936-a3b7-4ff0-8434-57d26ca7521b', ios['notification']['ios']['uuid']
-            )
+        ios = message[1]
+        self.assertEqual(['ios'], ios['device_types'])
+        self.assertEqual({'group': 'subscriptions', 'tag': 'Eilmeldung'}, ios['audience']['OR'][0])
+        self.assertEqual('foo', ios['notification']['alert'])
+        self.assertEqual('Rückkehr der Warlords', ios['notification']['ios']['title'])
+        self.assertEqual('4850d936-a3b7-4ff0-8434-57d26ca7521b', ios['notification']['ios']['uuid'])
 
-            open_slack = push.call_args[0][0][2]
-            self.assertEqual(['open::slack'], open_slack['device_types'])
-            self.assertEqual('2014-07-01T11:15:07', open_slack['options']['expiry'])
-            self.assertEqual(
-                {'open_channel': 'cec48c28-4486-4c95-989e-0bbed3edc714'}, open_slack['audience']
-            )
-            self.assertEqual('foo', open_slack['notification']['alert'])
-            self.assertEqual(
-                'Nicht Corona', open_slack['notification']['open::slack']['extra']['recipients']
-            )
+        open_slack = message[2]
+        self.assertEqual(['open::slack'], open_slack['device_types'])
+        self.assertEqual(
+            {'open_channel': 'cec48c28-4486-4c95-989e-0bbed3edc714'}, open_slack['audience']
+        )
+        self.assertEqual('foo', open_slack['notification']['alert'])
+        self.assertEqual(
+            'Nicht Corona', open_slack['notification']['open::slack']['extra']['recipients']
+        )
 
 
 class PayloadSourceTest(zeit.push.testing.TestCase):
@@ -143,21 +124,6 @@ class MessageTest(zeit.push.testing.TestCase):
         self.repository['content'] = content
         return self.repository['content']
 
-    def get_calls(self, service_name):
-        push_notifier = zope.component.getUtility(
-            zeit.push.interfaces.IPushNotifier, name=service_name
-        )
-        return push_notifier.calls
-
-    def test_sends_push_via_urbanairship(self):
-        message = zope.component.getAdapter(
-            self.create_content(title='content_title'),
-            zeit.push.interfaces.IMessage,
-            name=self.name,
-        )
-        message.send()
-        self.assertEqual(1, len(self.get_calls('urbanairship')))
-
     def test_provides_image_url_if_image_is_referenced(self):
         message = zope.component.getAdapter(
             self.create_content(), zeit.push.interfaces.IMessage, name=self.name
@@ -165,31 +131,12 @@ class MessageTest(zeit.push.testing.TestCase):
         message.config['image'] = 'http://xml.zeit.de/2006/DSC00109_2.JPG'
         self.assertEqual('http://img.zeit.de/2006/DSC00109_2.JPG', message.image_url)
 
-    def test_reads_metadata_from_content(self):
-        message = zope.component.getAdapter(
-            self.create_content(
-                title='content_title',
-                teaserTitle='title',
-                teaserSupertitle='super',
-                teaserText='teaser',
-            ),
-            zeit.push.interfaces.IMessage,
-            name=self.name,
-        )
-        message.send()
-        self.assertEqual(
-            [('content_title', 'http://www.zeit.de/content', {'message': message})],
-            self.get_calls('urbanairship'),
-        )
-
     def test_message_text_favours_override_text_over_title(self):
         message = zope.component.getAdapter(
             self.create_content(title='nay'), zeit.push.interfaces.IMessage, name=self.name
         )
         message.config = {'override_text': 'yay'}
-        message.send()
         self.assertEqual('yay', message.text)
-        self.assertEqual('yay', self.get_calls('urbanairship')[0][0])
 
     def test_changes_to_template_are_applied_immediately(self):
         message = zeit.push.urbanairship.Message(self.repository['testcontent'])
@@ -218,27 +165,6 @@ class MessageTest(zeit.push.testing.TestCase):
             self.create_content(), zeit.push.interfaces.IMessage, name=self.name
         )
         self.assertStartsWith(message.app_link, 'zeitapp://content')
-
-
-class IntegrationTest(zeit.push.testing.TestCase):
-    def setUp(self):
-        super().setUp()
-        content = ExampleContentType()
-        content.title = 'content_title'
-        self.repository['content'] = content
-        self.content = self.repository['content']
-
-    def test_publish_triggers_push_notification_via_message_config(self):
-        push = zeit.push.interfaces.IPushMessages(self.content)
-        push.message_config = [{'type': 'mobile', 'enabled': True}]
-        IPublish(self.content).publish()
-        calls = zope.component.getUtility(
-            zeit.push.interfaces.IPushNotifier, name='urbanairship'
-        ).calls
-        self.assertEqual(calls[0][0], 'content_title')
-        self.assertEqual(calls[0][1], 'http://www.zeit.de/content')
-        self.assertEqual(calls[0][2].get('enabled'), True)
-        self.assertEqual(calls[0][2].get('type'), 'mobile')
 
 
 class ChannelsTest(zeit.push.testing.TestCase):
