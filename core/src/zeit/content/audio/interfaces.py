@@ -66,6 +66,7 @@ class IPodcast(zope.interface.Interface):
     author = zope.interface.Attribute('author')
     category = zope.interface.Attribute('category')
     podcast_type = zope.schema.Choice(title=_('Type'), readonly=True, source=PodcastTypeSource())
+    rss_image = zope.schema.URI(title=_('rss_image'))
 
 
 class Podcast(zeit.cms.content.sources.AllowedBase):
@@ -83,6 +84,7 @@ class Podcast(zeit.cms.content.sources.AllowedBase):
         author=None,
         category=None,
         podcast_type=None,
+        rss_image=None,
     ):
         super().__init__(id, title, available=None)
         self.external_id = external_id
@@ -97,6 +99,7 @@ class Podcast(zeit.cms.content.sources.AllowedBase):
         self.author = author
         self.category = category
         self.podcast_type = podcast_type
+        self.rss_image = rss_image
 
     def __eq__(self, other):
         return (
@@ -113,6 +116,7 @@ class Podcast(zeit.cms.content.sources.AllowedBase):
             and self.author == other.author
             and self.category == other.category
             and self.podcast_type == other.podcast_type
+            and self.rss_image == other.rss_image
         )
 
 
@@ -147,6 +151,7 @@ class PodcastSource(zeit.cms.content.sources.ObjectSource, zeit.cms.content.sour
             node.get('author'),
             node.get('category'),
             node.get('podcast_type'),
+            node.get('rss_image'),
         )
         return podcast
 
