@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.78.0 (2024-11-28)
+-------------------
+
+- WCM-563: Include lock info when updating connector cache in sql contentquery
+
+- WCM-563-update: Only prefill cache with missing entries from search_sql, don't (needlessly) update
+
+
 6.77.0 (2024-11-28)
 -------------------
 
