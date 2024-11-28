@@ -154,7 +154,7 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0].id, res.id)
 
-    def test_search_by_sql_uses_cache(self):
+    def test_search_by_sql_prefills_cache(self):
         self.add_resource('one', body=b'mybody', type='article')
         query = select(Content).filter_by(type='article')
         result = self.connector.search_sql(query)
@@ -162,6 +162,15 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
             self.connector.session, 'execute', side_effect=RuntimeError('disabled')
         ):
             self.assertEqual(result[0].data.read(), b'mybody')
+
+    def test_search_by_sql_reuses_existing_cache(self):
+        prop = ('foo', f'{NS}testing')
+        res = self.get_resource('foo', b'mybody', {('foo', f'{NS}testing'): 'foo'}, type='article')
+        self.connector.add(res)
+        self.connector.property_cache[res.id][prop] = 'bar'
+        query = select(Content).filter_by(type='article')
+        result = self.connector.search_sql(query)
+        self.assertEqual('bar', result[0].properties[prop])
 
     def test_search_sql_count_returns_result_count(self):
         self.add_resource('one', type='article')
