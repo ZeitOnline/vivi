@@ -34,9 +34,6 @@ class Airship(grok.Adapter):
     grok.name('airship')
 
     def publish_json(self):
-        if not FEATURE_TOGGLES.find('push_airship_via_publisher'):
-            return None
-
         message = None
         info = zeit.push.interfaces.IPushMessages(self.context)
         for config in info.message_config:
