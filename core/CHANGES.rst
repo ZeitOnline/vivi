@@ -3,6 +3,18 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.77.0 (2024-11-28)
+-------------------
+
+- WCM-558: Update bulk publish script to ignore airship again after ZO-5382
+
+- WCM-563-message: Add more known data to the LockingError message
+
+
+MAINT:
+- PERF: Skip query if count is zero anyway (e.g. in zeit.web pagination)
+
+
 6.76.0 (2024-11-25)
 -------------------
 
