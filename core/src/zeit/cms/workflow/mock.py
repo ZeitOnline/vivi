@@ -44,6 +44,10 @@ class MockPublish:
             zeit.cms.workflow.interfaces.BeforePublishEvent(self.context, self.context)
         )
         print('Publishing: %s' % self.context.uniqueId)
+        for element in zeit.cms.workflow.interfaces.IPublicationDependencies(
+            self.context
+        ).get_dependencies():
+            zeit.cms.workflow.interfaces.IPublish(element).publish(priority, background)
         zope.event.notify(zeit.cms.workflow.interfaces.PublishedEvent(self.context, self.context))
         return self._result()
 
@@ -60,6 +64,10 @@ class MockPublish:
         print('Retracting: %s' % self.context.uniqueId)
         info = zeit.cms.workflow.interfaces.IPublishInfo(self.context)
         info.published = False
+        for element in zeit.cms.workflow.interfaces.IPublicationDependencies(
+            self.context
+        ).get_retract_dependencies():
+            zeit.cms.workflow.interfaces.IPublish(element).retract(priority, background)
         zope.event.notify(zeit.cms.workflow.interfaces.RetractedEvent(self.context, self.context))
         return self._result()
 
