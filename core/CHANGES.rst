@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.79.0 (2024-11-28)
+-------------------
+
+- WCM-566: only publish tts once in creation process
+
+
 6.78.0 (2024-11-28)
 -------------------
 
