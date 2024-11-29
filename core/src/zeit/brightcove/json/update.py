@@ -1,6 +1,8 @@
 import json
 import logging
 
+import opentelemetry.trace
+
 import zeit.brightcove.update
 import zeit.cms.config
 
@@ -26,9 +28,13 @@ class Notification:
 
     def __call__(self):
         body = self.request.bodyStream.read(int(self.request['CONTENT_LENGTH']))
+        current_span = opentelemetry.trace.get_current_span()
+        current_span.set_attributes({'http.body': body})
+
         data = json.loads(body)
         if data.get('event') != 'video-change' or not data.get('video'):
             return
+
         zeit.brightcove.update.import_video_async.delay(
             data.get('video'),
             _principal_id_=zeit.cms.config.required('zeit.brightcove', 'index-principal'),
