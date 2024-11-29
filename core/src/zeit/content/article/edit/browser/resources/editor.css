@@ -2069,6 +2069,10 @@
     height: 140px;
 }
 
+.type-article .block.type-image_row .block-inner {
+    height: 800px;
+}
+
 /* .type-article .block.type-raw .block-inner
    is obsolete and can not be added anymore, see ZO-5487
 */
