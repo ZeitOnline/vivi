@@ -19,12 +19,3 @@ class NotificationTest(zeit.brightcove.testing.BrowserTestCase):
             )
             self.assertEqual('myvid', import_video.call_args[0][0])
             self.assertEqual('zope.user', import_video.call_args[1]['_principal_id_'])
-
-    def create_video(self):
-        bc = zeit.brightcove.convert.Video()
-        bc.data = {
-            'id': 'myvid',
-            'created_at': '2017-05-15T08:24:55.916Z',
-            'state': 'INACTIVE',
-        }
-        return bc
