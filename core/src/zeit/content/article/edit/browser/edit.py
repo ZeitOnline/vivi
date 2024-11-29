@@ -584,6 +584,11 @@ class IImageRowForm(zeit.content.article.edit.interfaces.IImageRow):
 
 @grok.implementer(IImageRowForm)
 class ImageRowForm(grok.Adapter):
+    """
+    We'd prefer Tuple(ReferenceField) over Tuple(Combination), but ReferenceSequenceWidget
+    nesting fails due to Mochikit-Sortable's limitations.
+    """
+
     grok.context(zeit.content.article.edit.interfaces.IImageRow)
 
     @property
