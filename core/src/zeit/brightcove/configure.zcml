@@ -27,9 +27,4 @@
     factory=".connection.playback_from_product_config"
     />
 
-  <subscriber
-    for="zeit.content.video.interfaces.IVideo
-         zeit.cms.checkout.interfaces.IAfterCheckinEvent"
-    handler=".update.export_video" />
-
 </configure>
