@@ -1,5 +1,6 @@
 import logging
 
+import grokcore.component as grok
 import z3c.celery.celery
 import zope.event
 import zope.lifecycleevent
@@ -171,6 +172,9 @@ def import_video_async(video_id):
     import_video(zeit.brightcove.convert.Video.find_by_id(video_id))
 
 
+@grok.subscribe(
+    zeit.content.video.interfaces.IVideo, zeit.cms.checkout.interfaces.IAfterCheckinEvent
+)
 def export_video(context, event):
     if event.publishing or FEATURE_TOGGLES.find('video_disable_export_on_checkin'):
         return
