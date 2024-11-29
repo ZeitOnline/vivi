@@ -473,7 +473,7 @@
       />
   </class>
 
-  <class class=".image_parallax_properties.ImageParallaxProperties">
+  <class class=".image_row.ImageParallaxProperties">
     <require
       interface=".interfaces.IImageParallaxProperties"
       permission="zope.View"

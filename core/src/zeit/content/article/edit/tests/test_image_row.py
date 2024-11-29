@@ -3,8 +3,7 @@ import lxml.builder
 from zeit.cms.content.reference import ReferenceProperty
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
-from zeit.content.article.edit.image_parallax_properties import ImageParallaxProperties
-from zeit.content.article.edit.image_row import ImageRow
+from zeit.content.article.edit.image_row import ImageParallaxProperties, ImageRow
 import zeit.content.article.testing
 import zeit.edit.interfaces
 
