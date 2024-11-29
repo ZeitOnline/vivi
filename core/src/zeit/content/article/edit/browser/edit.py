@@ -1,6 +1,7 @@
 import json
 import logging
 
+import grokcore.component as grok
 import zope.cachedescriptors.property
 import zope.component
 import zope.security
@@ -575,3 +576,66 @@ class EditAnimation(zeit.cms.browser.manual.FormMixin, zeit.edit.browser.form.In
     @property
     def prefix(self):
         return 'animation.{0}'.format(self.context.__name__)
+
+
+class IImageRowForm(zeit.content.article.edit.interfaces.IImageRow):
+    pass
+
+
+@grok.implementer(IImageRowForm)
+class ImageRowForm(grok.Adapter):
+    """
+    We'd prefer Tuple(ReferenceField) over Tuple(Combination), but ReferenceSequenceWidget
+    nesting fails due to Mochikit-Sortable's limitations.
+    """
+
+    grok.context(zeit.content.article.edit.interfaces.IImageRow)
+
+    @property
+    def images(self):
+        return [(x.target, x.caption, x.alt) for x in self.context.images]
+
+    @images.setter
+    def images(self, value):
+        if not value:
+            self.context.images = ()
+            return
+        result = []
+        for img, caption, alt in value:
+            ref = self.context.images.create(img)
+            ref.caption = caption
+            ref.alt = alt
+            result.append(ref)
+        self.context.images = result
+
+
+class EditImageRow(zeit.edit.browser.form.InlineForm):
+    legend = ''
+    form_fields = zope.formlib.form.FormFields(zeit.content.article.edit.interfaces.IImageRow).omit(
+        'images', *list(zeit.edit.interfaces.IBlock)
+    ) + zope.formlib.form.FormFields(IImageRowForm).select('images')
+
+    @property
+    def prefix(self):
+        return 'image_row.{0}'.format(self.context.__name__)
+
+    def setUpWidgets(self, *args, **kw):
+        super().setUpWidgets(*args, **kw)
+        # s : float, m: column-width, l: large
+        max_images_dict = {'float': 1, 'column-width': 2, 'large': 3}
+        display_mode = self.context.display_mode
+        if display_mode is None:
+            return
+        max_images = max_images_dict.get(display_mode)
+        self.widgets['images'].context.max_length = max_images
+
+
+class EditImageParallaxProperties(zeit.edit.browser.form.InlineForm):
+    legend = ''
+    form_fields = zope.formlib.form.FormFields(
+        zeit.content.article.edit.interfaces.IImageParallaxProperties
+    ).omit(*list(zeit.edit.interfaces.IBlock))
+
+    @property
+    def prefix(self):
+        return 'image_parallax_properties.{0}'.format(self.context.__name__)

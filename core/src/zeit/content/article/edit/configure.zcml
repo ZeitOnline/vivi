@@ -462,6 +462,28 @@
       />
   </class>
 
+  <class class=".image_row.ImageRow">
+    <require
+      interface=".interfaces.IImageRow"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IImageRow"
+      permission="zeit.EditContent"
+      />
+  </class>
+
+  <class class=".image_row.ImageParallaxProperties">
+    <require
+      interface=".interfaces.IImageParallaxProperties"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IImageParallaxProperties"
+      permission="zeit.EditContent"
+      />
+  </class>
+
   <utility factory=".videotagesschau.from_product_config" zcml:condition="not-have zeit.cms.testing" />
   <utility factory="zeit.content.article.edit.videotagesschau.MockVideoTagesschau" zcml:condition="have zeit.cms.testing" />
 

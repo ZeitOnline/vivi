@@ -827,4 +827,46 @@
     permission="zope.View"
     />
 
+  <!-- ImageRow -->
+
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IImageRow"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit-image-row"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IImageRow"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-image-row"
+    class=".edit.EditImageRow"
+    permission="zope.View"
+    />
+
+    <!-- ImageParallaxProperties -->
+
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IImageParallaxProperties"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit-image-parallax-properties"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IImageParallaxProperties"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-image-parallax-properties"
+    class=".edit.EditImageParallaxProperties"
+    permission="zope.View"
+    />
+
 </configure>
