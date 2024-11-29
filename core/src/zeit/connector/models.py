@@ -323,7 +323,13 @@ class Content(Base, CommonMetadata, ContentTypes, Timestamps, Miscellaneous):
                 raise ValueError('Expected str, got %r' % value)
 
             converter = zeit.connector.interfaces.IConverter(column)
-            setattr(self, column.name, converter.deserialize(value))
+            try:
+                setattr(self, column.name, converter.deserialize(value))
+            except Exception as e:
+                converter = converter.__class__.__name__
+                raise ValueError(
+                    f'Cannot convert {value!r} to {column.name} with {converter}: {e}'
+                ) from e
 
             migration = column.info['migration']
             if FEATURE_TOGGLES.find(f'column_strict_{migration}'):

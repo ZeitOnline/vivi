@@ -419,3 +419,10 @@ class PropertiesColumnTest(zeit.connector.testing.SQLTest):
         FEATURE_TOGGLES.set('column_write_document_date_created')
         with raises(ValueError):
             self.add_resource('bar', properties={('date_created', f'{NS}document'): date})
+
+    def test_convert_exception_includes_column_name(self):
+        FEATURE_TOGGLES.set('column_write_wcm_430')
+        FEATURE_TOGGLES.set('column_read_wcm_430')
+        with raises(ValueError) as e:
+            self.add_resource('foo', properties={('date_created', f'{NS}document'): 'not a date'})
+        self.assertIn("Cannot convert 'not a date' to date_created", str(e.value))
