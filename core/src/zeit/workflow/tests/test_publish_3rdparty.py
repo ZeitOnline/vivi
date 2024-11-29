@@ -396,9 +396,6 @@ class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
 class AirshipTest(zeit.workflow.testing.FunctionalTestCase):
     def setUp(self):
         super().setUp()
-
-        FEATURE_TOGGLES.set('push_airship_via_publisher')
-
         # We don't care about the whole zeit.push templating infrastructure here
         self.patch = unittest.mock.patch('zeit.push.urbanairship.Message.render')
         render = self.patch.start()

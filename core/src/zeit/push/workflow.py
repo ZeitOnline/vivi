@@ -4,7 +4,6 @@ import grokcore.component as grok
 import zope.interface
 
 from zeit.cms.content.interfaces import WRITEABLE_ALWAYS
-from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.dav
@@ -36,7 +35,7 @@ class PushMessages(zeit.cms.content.dav.DAVPropertiesAdapter):
         for config in self.message_config:
             if not config.get('enabled'):
                 continue
-            if FEATURE_TOGGLES.find('push_airship_via_publisher') and config['type'] == 'mobile':
+            if config['type'] == 'mobile':
                 continue
             result.append(self._create_message(config['type'], self.context, config))
         return result

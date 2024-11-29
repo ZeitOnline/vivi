@@ -64,17 +64,9 @@ class TestAdding(zeit.content.article.testing.BrowserTestCase):
         self.browser.open('@@publish')
         article = ICMSContent('http://xml.zeit.de/online/2007/01/foo')
         self.assertEqual(True, IPublishInfo(article).published)
-        for service in ['homepage', 'urbanairship']:
-            notifier = zope.component.getUtility(zeit.push.interfaces.IPushNotifier, name=service)
-            self.assertEqual(1, len(notifier.calls))
-            self.assertEqual(article.title, notifier.calls[0][0])
-
-        urbanairship = zope.component.getUtility(
-            zeit.push.interfaces.IPushNotifier, name='urbanairship'
-        )
-        self.assertEqual(
-            'eilmeldung.json', urbanairship.calls[0][2]['message'].config['payload_template']
-        )
+        notifier = zope.component.getUtility(zeit.push.interfaces.IPushNotifier, name='homepage')
+        self.assertEqual(1, len(notifier.calls))
+        self.assertEqual(article.title, notifier.calls[0][0])
 
     def test_banners_and_mobile_are_disabled_after_publish(self):
         # The breaking news is a normal article, so it has the normal social
