@@ -28,6 +28,7 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
         'oauth-url': 'none',
         'client-id': 'none',
         'client-secret': 'none',
+        'client-email': 'vivi@example.com',
         'timeout': '300',
         'playback-url': 'none',
         'playback-policy-key': 'none',

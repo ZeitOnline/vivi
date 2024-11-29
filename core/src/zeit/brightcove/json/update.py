@@ -35,6 +35,13 @@ class Notification:
         if data.get('event') != 'video-change' or not data.get('video'):
             return
 
+        own_apikey = zeit.cms.config.required('zeit.brightcove', 'client-email')
+        origin = data.get('updated_by', {})
+        if origin.get('type') == 'api_key' and origin.get('email') == own_apikey:
+            # Nothing left to do if we ourselves originated this change
+            # (see zeit.brighcove.update.export_video).
+            return
+
         zeit.brightcove.update.import_video_async.delay(
             data.get('video'),
             _principal_id_=zeit.cms.config.required('zeit.brightcove', 'index-principal'),
