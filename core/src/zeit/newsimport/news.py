@@ -246,7 +246,7 @@ class ArticleEntry(Entry):
 
     def apply_to_cms(self, article):
         image = self.add_main_image(article)
-        with zeit.cms.checkout.helper.checked_out(article) as co:
+        with zeit.cms.checkout.helper.checked_out(article, will_publish_soon=True) as co:
             co.supertitle = self.supertitle
             co.title = self.entry['headline']
             co.channels = (('News', None),)
