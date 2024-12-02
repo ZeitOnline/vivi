@@ -2,9 +2,11 @@ import fractions
 import json
 import logging
 
+import zc.sourcefactory.contextual
 import zope.i18n
 import zope.interface
 
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
 from zeit.contentquery.interfaces import IConfiguration
 import zeit.cms.content.contentsource
@@ -207,7 +209,7 @@ class IRegion(IReadRegion, IWriteRegion, zeit.edit.interfaces.IContainer, IEleme
     zope.interface.invariant(zeit.edit.interfaces.unique_name_invariant)
 
 
-class AutomaticTypeSource(zeit.cms.content.sources.SimpleDictSource):
+class AutomaticTypeSource(zc.sourcefactory.contextual.BasicContextualSourceFactory):
     values = {
         'centerpage': _('automatic-area-type-centerpage'),
         'custom': _('automatic-area-type-custom'),
@@ -220,7 +222,23 @@ class AutomaticTypeSource(zeit.cms.content.sources.SimpleDictSource):
         'sql-query': _('automatic-area-type-sql-query'),
     }
 
-    def getToken(self, value):
+    def getValues(self, context):
+        return [x for x in self.values if self.isAvailable(context, x)]
+
+    def isAvailable(self, context, value):
+        from zeit.magazin.interfaces import IZMOContent
+
+        if value != 'elasticsearch-query':
+            return True
+
+        if FEATURE_TOGGLES.find('contentquery_ui_show_elastic'):
+            return True
+        return IZMOContent.providedBy(ICenterPage(context))
+
+    def getTitle(self, context, value):
+        return self.values.get(value, value)
+
+    def getToken(self, context, value):
         # JS needs to use these values, don't MD5 them.
         return value
 

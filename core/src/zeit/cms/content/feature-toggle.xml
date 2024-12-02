@@ -18,4 +18,5 @@
   <speech_webhook>true</speech_webhook>
   <publish_commit_transaction>true</publish_commit_transaction>
   <publish_multiple_abort_transaction>false</publish_multiple_abort_transaction>
+  <contentquery_ui_show_elastic>true</contentquery_ui_show_elastic>
 </features>
