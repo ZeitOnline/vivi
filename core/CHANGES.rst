@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.81.0 (2024-12-02)
+-------------------
+
+- WCM-257: Improve news import handling
+
+
 6.80.0 (2024-12-02)
 -------------------
 
