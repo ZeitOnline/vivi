@@ -28,6 +28,7 @@ def checked_out(
     ignore_conflicts=False,
     temporary=True,
     raise_if_error=False,
+    will_publish_soon=False,
 ):
     __traceback_info__ = (content.uniqueId,)
     manager = zeit.cms.checkout.interfaces.ICheckoutManager(content)
@@ -47,5 +48,8 @@ def checked_out(
         else:
             manager = zeit.cms.checkout.interfaces.ICheckinManager(checked_out)
             manager.checkin(
-                event=events, semantic_change=semantic_change, ignore_conflicts=ignore_conflicts
+                event=events,
+                semantic_change=semantic_change,
+                ignore_conflicts=ignore_conflicts,
+                will_publish_soon=will_publish_soon,
             )

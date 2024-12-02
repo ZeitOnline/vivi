@@ -246,7 +246,7 @@ class ArticleEntry(Entry):
 
     def apply_to_cms(self, article):
         image = self.add_main_image(article)
-        with zeit.cms.checkout.helper.checked_out(article) as co:
+        with zeit.cms.checkout.helper.checked_out(article, will_publish_soon=True) as co:
             co.supertitle = self.supertitle
             co.title = self.entry['headline']
             co.channels = (('News', None),)
@@ -342,7 +342,9 @@ class ImageEntry(Entry):
         self.apply_to_cms()
 
     def apply_to_cms(self):
-        with zeit.cms.checkout.helper.checked_out(self.article_context) as co:
+        with zeit.cms.checkout.helper.checked_out(
+            self.article_context, will_publish_soon=True
+        ) as co:
             news = zeit.newsimport.news.Image(self.entry, co)
             image = news.do_import()
             if image is not None:

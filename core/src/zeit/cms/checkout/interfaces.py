@@ -15,7 +15,7 @@ class ICheckoutManager(zope.interface.Interface):
         'True if the object can be checked out, False otherwise.'
     )
 
-    def checkout(event=True, temporary=False):
+    def checkout(event=True, temporary=False, publishing=False):
         """Checkout the managed object.
 
         returns the checked out object.
@@ -25,6 +25,7 @@ class ICheckoutManager(zope.interface.Interface):
         - If temporary is True the object will be added to a temporary
           workingcopy.
 
+        -  ``publishing``: True if this checkout happens during publishing.
         """
 
 
@@ -38,7 +39,13 @@ class ICheckinManager(zope.interface.Interface):
         """
     )
 
-    def checkin(event=True, semantic_change=None, ignore_conflicts=False):
+    def checkin(
+        event=True,
+        semantic_change=None,
+        ignore_conflicts=False,
+        publishing=False,
+        will_publish_soon=False,
+    ):
         """Check in the managed object and return the checked-in object.
 
         Checking in effectively removes the object from the working copy.
@@ -54,6 +61,14 @@ class ICheckinManager(zope.interface.Interface):
         - If ``ignore_conflicts`` is True, no conflict detection will take
           place.
 
+        -  ``publishing``: True if this checkin happens during publishing.
+
+        Event handlers can use this to prevent infinite loops (since another
+        checkout/checkin cycle happens during publishing to update XML
+        references etc.).
+
+        - ``will_publish_soon``: Flag to indicate a workflow where publish
+        will soon follow the checkin. (XXX kludgy workaround for concurrency issues)
         """
 
     def delete():
