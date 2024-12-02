@@ -3,6 +3,18 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.80.0 (2024-12-02)
+-------------------
+
+- WCM-456: Include column name in sql converter error messages
+
+- WCM-474: Hide elastic-query option in UI except for ZMO
+
+- WCM-568: Ignore brightcove change events that were triggered by our own checkin handler
+
+- ZO-6370: add image row module
+
+
 6.79.0 (2024-11-28)
 -------------------
 
