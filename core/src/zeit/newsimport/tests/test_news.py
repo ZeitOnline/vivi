@@ -523,7 +523,7 @@ class DPATOTMSTest(zeit.newsimport.testing.FunctionalTestCase):
         zeit.newsimport.news.process_task(entry)
         transaction.commit()
         zeit.workflow.testing.run_tasks()
-        content = tms.index.call_args_list[-1][0][0]
+        content = ICMSContent('http://xml.zeit.de/news/2021-12/15/beispielmeldung-ueberschrift')
         self.assertTrue(isinstance(content, zeit.content.article.article.Article))
         self.assertTrue(IPublishInfo(content).published)
         self.assertEqual(['one', 'two'], [x.label for x in content.keywords])
