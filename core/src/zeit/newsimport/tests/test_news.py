@@ -1,6 +1,7 @@
 from unittest import mock
 
 from lxml import etree
+import pytest
 import transaction
 import zope.component
 
@@ -507,11 +508,15 @@ class TestProcess(zeit.newsimport.testing.FunctionalTestCase):
 class DPATOTMSTest(zeit.newsimport.testing.FunctionalTestCase):
     layer = zeit.newsimport.testing.CELERY_LAYER
 
+    @pytest.fixture(autouse=True)
+    def _caplog(self, caplog):
+        self.caplog = caplog
+
     def tearDown(self):
         self.layer['tms'].generate_keyword_list.return_value = mock.DEFAULT
         super().tearDown()
 
-    def test_article_should_send_keywords_to_tms_after_publish(self):
+    def test_article_should_send_keywords_to_tms_before_publish(self):
         tms = self.layer['tms']
         zope.component.getGlobalSiteManager().registerUtility(tms, ITMS)
         tms.generate_keyword_list.return_value = [
@@ -523,7 +528,24 @@ class DPATOTMSTest(zeit.newsimport.testing.FunctionalTestCase):
         zeit.newsimport.news.process_task(entry)
         transaction.commit()
         zeit.workflow.testing.run_tasks()
-        content = ICMSContent('http://xml.zeit.de/news/2021-12/15/beispielmeldung-ueberschrift')
+
+        uniqueid = 'http://xml.zeit.de/news/2021-12/15/beispielmeldung-ueberschrift'
+
+        log_publish = f'Publishing {uniqueid}'
+        log_tags = f'Updating tags for {uniqueid}'
+
+        index_tags, index_publish = None, None
+        for i, record in enumerate(self.caplog.records):
+            if record.message == log_publish:
+                index_publish = i
+            elif record.message == log_tags:
+                index_tags = i
+
+            if index_publish and index_tags:
+                break
+
+        self.assertGreater(index_publish, index_tags, 'Publish should happen after tags update')
+        content = ICMSContent(uniqueid)
         self.assertTrue(isinstance(content, zeit.content.article.article.Article))
         self.assertTrue(IPublishInfo(content).published)
         self.assertEqual(['one', 'two'], [x.label for x in content.keywords])
