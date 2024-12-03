@@ -126,17 +126,6 @@ class AddableCMSContentTypeSourceTest(zeit.cms.testing.ZeitCmsTestCase):
         self.assertEqual(str(IBar), source.getToken(None, IBar))
 
 
-class AccessSourceTest(zeit.cms.testing.ZeitCmsTestCase):
-    def test_cms_ids_should_be_translatable_to_c1_ids(self):
-        access_source = zeit.cms.content.sources.AccessSource().factory
-        for node in access_source._get_tree().iterchildren('*'):
-            assert access_source.translate_to_c1(node.get('id')) == (node.get('c1_id'))
-
-    def test_non_translatable_ids_should_return_none(self):
-        access_source = zeit.cms.content.sources.AccessSource().factory
-        assert access_source.translate_to_c1('hrmpf') is None
-
-
 class ProductSourceTest(zeit.cms.testing.ZeitCmsTestCase):
     def setUp(self):
         source = zeit.cms.content.sources.PRODUCT_SOURCE

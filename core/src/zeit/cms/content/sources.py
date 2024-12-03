@@ -288,6 +288,16 @@ class SimpleDictSource(zc.sourcefactory.basic.BasicSourceFactory):
         return self.values.get(value, value)
 
 
+class ContextualDictSource(zc.sourcefactory.contextual.BasicContextualSourceFactory):
+    values = {}
+
+    def getValues(self, context):
+        return self.values.keys()
+
+    def getTitle(self, context, value):
+        return self.values.get(value, value)
+
+
 class RessortSource(XMLSource):
     config_url = 'source-ressorts'
     default_filename = 'ressorts.xml'
@@ -677,21 +687,6 @@ class AddableCMSContentTypeSource(CMSContentTypeSource):
         if not permission:  # most content types need no special permission
             return True
         return zope.security.management.getInteraction().checkPermission(permission, context)
-
-
-class AccessSource(XMLSource):
-    config_url = 'source-access'
-    default_filename = 'access.xml'
-    attribute = 'id'
-
-    def translate_to_c1(self, value):
-        try:
-            return self._get_tree().xpath('//type[@id = "{}"]/@c1_id'.format(value))[0]
-        except IndexError:
-            return None
-
-
-ACCESS_SOURCE = AccessSource()
 
 
 class PrintRessortSource(XMLSource):

@@ -52,6 +52,15 @@ class ColorSchemeSource(zeit.cms.content.sources.SimpleDictSource):
     }
 
 
+class AccessSource(zeit.cms.content.sources.ContextualDictSource):
+    values = {
+        'free': _('access-free'),
+        'registration': _('access-registration'),
+        'abo': _('access-abo'),
+        'dynamic': _('access-dynamic'),
+    }
+
+
 class IChannelField(zc.form.interfaces.ICombinationField):
     """Marker interface so we can register a specialized widget
     for this field."""
@@ -122,9 +131,7 @@ class ICommonMetadata(zope.interface.Interface):
         required=False,
     )
 
-    access = zope.schema.Choice(
-        title=_('Access'), default='free', source=zeit.cms.content.sources.ACCESS_SOURCE
-    )
+    access = zope.schema.Choice(title=_('Access'), default='free', source=AccessSource())
 
     keywords = zeit.cms.tagging.interfaces.Keywords(required=False, default=())
 
