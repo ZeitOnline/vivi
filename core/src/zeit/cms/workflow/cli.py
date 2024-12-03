@@ -15,9 +15,12 @@ IGNORE_SERVICES = ['airship', 'speechbert']
 @zeit.cms.cli.runner(principal=zeit.cms.cli.principal_from_args)
 def publish():
     parser = argparse.ArgumentParser(description='Publish content')
-    parser.add_argument('--filename', help='filename with uniqueId per line')
+    parser.add_argument('--filename', '-f', help='filename with uniqueId per line')
     parser.add_argument(
-        '--force', '-f', action='store_true', help='Publish even if currently unpublished'
+        '--force-unpublished', action='store_true', help='Publish even if currently unpublished'
+    )
+    parser.add_argument(
+        '--force-changed', action='store_true', help='Publish even if with semantic change'
     )
     parser.add_argument('--skip-deps', action='store_true', help='Ignore publication dependencies')
 
@@ -26,7 +29,6 @@ def publish():
         action='store_true',
         help='Notify webhooks after checkin, like contenthub',
     )
-
     parser.add_argument(
         '--use-publish-hooks',
         action='store_true',
@@ -103,8 +105,12 @@ def publish():
             continue
 
         info = zeit.cms.workflow.interfaces.IPublishInfo(content)
-        if not (info.published or options.force):
-            log.info('Skipping %s, not published and no --force', id)
+        if not (info.published or options.force_unpublished):
+            log.info('Skipping %s, not published and no --force-unpublished', id)
+            continue
+        semantic = zeit.cms.content.interfaces.ISemanticChange(content)
+        if semantic.last_semantic_change > info.date_last_published and not options.force_changed:
+            log.info('Skipping %s, has semantic change and no --force-changed', id)
             continue
 
         try:
