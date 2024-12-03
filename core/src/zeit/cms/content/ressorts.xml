@@ -77,5 +77,11 @@
     <ressort name="angebote"><title>angebote</title></ressort>
     <ressort name="Wochenende"><title>Wochenende</title></ressort>
 
+    <ressort name="zeit-magazin">
+        <title>Zeit Magazin</title>
+        <subnavigation name="wochenmarkt">
+            <title>Wochenmarkt</title>
+        </subnavigation>
+    </ressort>
 
 </ressorts>
