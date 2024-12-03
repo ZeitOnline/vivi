@@ -9,7 +9,7 @@ import zeit.cms.cli
 
 
 log = logging.getLogger(__name__)
-IGNORE_SERVICES = ['airship', 'speechbert']
+IGNORE_SERVICES = ['airship', 'speechbert', 'summy']
 
 
 @zeit.cms.cli.runner(principal=zeit.cms.cli.principal_from_args)
