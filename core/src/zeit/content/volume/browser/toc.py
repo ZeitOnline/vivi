@@ -199,8 +199,10 @@ class Toc(zeit.cms.browser.view.Base):
         if not toc_entry['access']:
             toc_entry['access'] = 'Nicht Gesetzt'
         else:
-            toc_entry['access'] = zeit.cms.content.sources.ACCESS_SOURCE.factory.getTitle(
-                self.context, toc_entry['access']
+            toc_entry['access'] = (
+                zeit.cms.content.interfaces.ICommonMetadata['access']
+                .source(None)
+                .factory.getTitle(None, toc_entry['access'])
             )
 
     def _full_product_name(self, product_id):

@@ -30,13 +30,15 @@ class SourceSecurityTest(zeit.cms.testing.ZeitCmsBrowserTestCase):
 
 class SourceAPI(zeit.cms.testing.ZeitCmsBrowserTestCase):
     def test_serializes_source_to_json(self):
-        self.browser.open('http://localhost/@@source' '?name=zeit.cms.content.sources.AccessSource')
+        self.browser.open(
+            'http://localhost/@@source' '?name=zeit.cms.content.interfaces.AccessSource'
+        )
         self.assert_json(
             [
-                {'id': 'free', 'title': 'frei verfügbar'},
-                {'id': 'registration', 'title': 'registrierungspflichtig'},
-                {'id': 'dynamic', 'title': 'dynamisch'},
-                {'id': 'abo', 'title': 'abopflichtig'},
+                {'id': 'free', 'title': 'access-free'},
+                {'id': 'registration', 'title': 'access-registration'},
+                {'id': 'abo', 'title': 'access-abo'},
+                {'id': 'dynamic', 'title': 'access-dynamic'},
             ]
         )
 

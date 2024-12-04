@@ -26,7 +26,7 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
                     'page': '1',
                     'title': 'title',
                     'teaser': 'tease',
-                    'access': 'frei verfügbar',
+                    'access': 'access-free',
                     'authors': 'Helmut Schmidt',
                     'volume': '1',
                     'year': '2015',
@@ -39,7 +39,7 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
             'Dossier': [
                 {
                     'page': '1',
-                    'access': 'frei verfügbar',
+                    'access': 'access-free',
                     'authors': 'Helmut Kohl',
                     'title': 'title',
                     'teaser': 'tease',
@@ -50,7 +50,7 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
                 },
                 {
                     'page': '3',
-                    'access': 'frei verfügbar',
+                    'access': 'access-free',
                     'authors': 'Helmut Schmidt, Helmut Kohl',
                     'title': 'title2',
                     'teaser': 'tease',
@@ -92,7 +92,7 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
             'title': 'Titel',
             'teaser': 'Das soll der Teaser sein',
             'supertitle': '',
-            'access': 'frei verfügbar',
+            'access': 'access-free',
             'authors': 'Helmut Schmidt',
             'article_id': '123456',
         }
@@ -101,9 +101,9 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
         self.assertEqual(expected, result)
 
     def test_csv_is_created_from_toc_data(self):
-        expected = """1\ttitle tease\t\t\tfrei verfügbar\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tPolitik\t2015\t1\tDie Zeit\tHelmut Schmidt\t1234567\r
-1\ttitle tease\t\t\tfrei verfügbar\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tDossier\t2015\t1\tAnderer\tHelmut Kohl\t0123456\r
-3\ttitle2 tease\t\t\tfrei verfügbar\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tDossier\t2015\t1\tAnderer\tHelmut Schmidt, Helmut Kohl\t0123456\r
+        expected = """1\ttitle tease\t\t\taccess-free\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tPolitik\t2015\t1\tDie Zeit\tHelmut Schmidt\t1234567\r
+1\ttitle tease\t\t\taccess-free\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tDossier\t2015\t1\tAnderer\tHelmut Kohl\t0123456\r
+3\ttitle2 tease\t\t\taccess-free\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tDossier\t2015\t1\tAnderer\tHelmut Schmidt, Helmut Kohl\t0123456\r
 """
         context = mock.Mock()
         context.year = 2015

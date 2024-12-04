@@ -539,7 +539,6 @@ HERE = importlib.resources.files(__package__)
 CONFIG_LAYER = ProductConfigLayer(
     {
         'environment': 'testing',
-        'source-access': f'file://{HERE}/content/access.xml',
         'source-serie': f'file://{HERE}/content/serie.xml',
         'source-ressorts': f'file://{HERE}/content/ressorts.xml',
         'source-keyword': f'file://{HERE}/content/zeit-ontologie-prism.xml',
@@ -569,7 +568,7 @@ CONFIG_LAYER = ProductConfigLayer(
         'sso-private-key-file': f'{HERE}/tests/sso-private.pem',
         'source-api-mapping': 'product=zeit.cms.content.sources.ProductSource',
         # We just need a dummy XML file
-        'checkin-webhook-config': f'file://{HERE}/content/access.xml',
+        'checkin-webhook-config': f'file://{HERE}/content/ressorts.xml',
     },
     patches={
         'zeit.connector': {

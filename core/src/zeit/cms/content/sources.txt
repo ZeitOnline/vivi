@@ -75,7 +75,8 @@ Ressort
  'e-balance',
  'bundeskunsthalle',
  'angebote',
- 'Wochenende']
+ 'Wochenende',
+ 'zeit-magazin']
 
 
 Titles and tokens are working, too:
@@ -117,7 +118,8 @@ that we get *all* sub ressort elements
  'Joschka Fisher',
  'Meinung',
  'Nahost',
- 'US-Wahl']
+ 'US-Wahl',
+ 'wochenmarkt']
 
 Select 'Deutschland'. Since IExampleContentType is an ICMSContent we still get
 everything. This is actually not desired but is the only way we can avoid
@@ -130,7 +132,8 @@ saving the ressort first and then the subressort:
  'Joschka Fisher',
  'Meinung',
  'Nahost',
- 'US-Wahl']
+ 'US-Wahl',
+ 'wochenmarkt']
 
 When we use an object as context which does not provide ICMSContent but is
 adaptable to ICommonMetadata we'll get filtered results:
