@@ -66,6 +66,17 @@
     for="zeit.content.dynamicfolder.interfaces.IDynamicFolder"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     class="zeit.content.dynamicfolder.browser.materialize.PublishMenuItem"
+    manager="zeit.cms.browser.interfaces.IContextActions"
+    permission="zeit.MaterializeContent"
+    action="@@publish-content"
+    icon="/@@/zeit.cms/icons/page_white_lightning.png"
+    />
+
+  <browser:viewlet
+    name="SecondaryPublish"
+    for="zeit.content.dynamicfolder.interfaces.IDynamicFolder"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class="zeit.content.dynamicfolder.browser.materialize.PublishMenuItem"
     manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
     permission="zeit.MaterializeContent"
     action="@@publish-content"
