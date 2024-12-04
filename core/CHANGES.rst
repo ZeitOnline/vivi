@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.83.0 (2024-12-04)
+-------------------
+
+- WCM-532: Add zeit.entitlements.accepted() API to calculate required entitlements
+
+
 6.82.0 (2024-12-04)
 -------------------
 
