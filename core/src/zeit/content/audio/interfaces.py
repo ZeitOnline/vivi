@@ -40,6 +40,19 @@ class IAudio(
     audio_type = zope.schema.Choice(title=_('Type'), readonly=True, source=AudioTypeSource())
 
 
+class PodcastTypeSource(zeit.cms.content.sources.SimpleFixedValueSource):
+    """
+    Define podcast types. This is especially interesting for third party platforms
+    or podcatchers.
+    """
+
+    values = {
+        'serial': _('Serial'),
+        'episodic': _('Episodic'),
+        'episodic_seasons': _('Episodic seasons'),
+    }
+
+
 class IPodcast(zope.interface.Interface):
     id = zope.interface.Attribute('id')
     title = zope.interface.Attribute('title')
@@ -49,6 +62,11 @@ class IPodcast(zope.interface.Interface):
     image = zope.schema.URI(title=_('show art'))
     distribution_channels = zope.interface.Attribute('distribution_channels')
     feed = zope.schema.URI(title=_('feed'))
+    explicit = zope.schema.Bool(title=_('Explicit'), readonly=True, default=False)
+    author = zope.interface.Attribute('author')
+    category = zope.interface.Attribute('category')
+    podcast_type = zope.schema.Choice(title=_('Type'), readonly=True, source=PodcastTypeSource())
+    rss_image = zope.schema.URI(title=_('rss_image'))
 
 
 class Podcast(zeit.cms.content.sources.AllowedBase):
@@ -62,6 +80,11 @@ class Podcast(zeit.cms.content.sources.AllowedBase):
         image=None,
         distribution_channels=None,
         feed=None,
+        explicit=None,
+        author=None,
+        category=None,
+        podcast_type=None,
+        rss_image=None,
     ):
         super().__init__(id, title, available=None)
         self.external_id = external_id
@@ -72,6 +95,11 @@ class Podcast(zeit.cms.content.sources.AllowedBase):
         self.distribution_channels = distribution_channels
         # For parallel use of podcast hosts
         self.feed = feed
+        self.explicit = explicit
+        self.author = author
+        self.category = category
+        self.podcast_type = podcast_type
+        self.rss_image = rss_image
 
     def __eq__(self, other):
         return (
@@ -84,6 +112,11 @@ class Podcast(zeit.cms.content.sources.AllowedBase):
             and self.image == other.image
             and self.distribution_channels == other.distribution_channels
             and self.feed == other.feed
+            and self.explicit == other.explicit
+            and self.author == other.author
+            and self.category == other.category
+            and self.podcast_type == other.podcast_type
+            and self.rss_image == other.rss_image
         )
 
 
@@ -114,6 +147,11 @@ class PodcastSource(zeit.cms.content.sources.ObjectSource, zeit.cms.content.sour
             node.get('image'),
             distribution_channels,
             node.get('feed'),
+            bool(node.get('explicit')),
+            node.get('author'),
+            node.get('category'),
+            node.get('podcast_type'),
+            node.get('rss_image'),
         )
         return podcast
 
