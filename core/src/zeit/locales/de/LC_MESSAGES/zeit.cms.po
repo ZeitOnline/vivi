@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Tue Dec  3 14:28:59 2024\n"
+"POT-Creation-Date: Wed Dec  4 14:03:35 2024\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -22,7 +22,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.5\n"
+"X-Generator: Poedit 3.4.4\n"
 
 #: zeit/addcentral/sidebar.pt:10 zeit/addcentral/sidebar.py:39
 #: zeit/cms/browser/form.py:220 zeit/cms/menu.zcml:17 zeit/cms/menu.zcml:24
@@ -454,7 +454,7 @@ msgstr "Auschecken ^O"
 msgid "Checkin ^I"
 msgstr "Einchecken ^I"
 
-#: zeit/cms/checkout/interfaces.py:201
+#: zeit/cms/checkout/interfaces.py:216
 msgid "not allowed"
 msgstr "nicht zugelassen"
 
@@ -869,7 +869,7 @@ msgstr "Memo"
 
 #: zeit/cms/content/interfaces.py:503
 #: zeit/content/audio/browser/object-details-body.pt:10
-#: zeit/content/audio/interfaces.py:40
+#: zeit/content/audio/interfaces.py:40 zeit/content/audio/interfaces.py:68
 #: zeit/content/image/browser/image_view.pt:6
 #: zeit/content/volume/browser/toc_listing.py:61
 msgid "Type"
@@ -895,7 +895,7 @@ msgstr "Remote Bild URL"
 msgid "Remote timestamp URL"
 msgstr "Remote Zeitstempel URL"
 
-#: zeit/cms/content/metadata.py:163
+#: zeit/cms/content/metadata.py:165
 msgid "Access changed from \"${old}\" to \"${new}\""
 msgstr "Verfügbarkeit geändert von \"${old}\" nach \"${new}\""
 
@@ -2404,7 +2404,7 @@ msgstr "Preis in €"
 msgid "Breaking news article"
 msgstr "Eilmeldungsartikel"
 
-#: zeit/content/article/interfaces.py:259 zeit/content/audio/interfaces.py:162
+#: zeit/content/article/interfaces.py:259 zeit/content/audio/interfaces.py:200
 msgid "Speechbert Checksum"
 msgstr "TTS Checksumme"
 
@@ -2505,51 +2505,77 @@ msgstr "Benutzerdefiniertes Audio"
 msgid "External Id"
 msgstr "Externe ID"
 
-#: zeit/content/audio/interfaces.py:49
+#: zeit/content/audio/interfaces.py:50
+#, fuzzy
+#| msgid "Serie"
+msgid "Serial"
+msgstr "Serie"
+
+#: zeit/content/audio/interfaces.py:51
+#, fuzzy
+#| msgid "Episode No"
+msgid "Episodic"
+msgstr "Nummer der Folge"
+
+#: zeit/content/audio/interfaces.py:52
+#, fuzzy
+#| msgid "Episode Notes"
+msgid "Episodic seasons"
+msgstr "Beschreibung der Folge"
+
+#: zeit/content/audio/interfaces.py:62
 msgid "show art"
 msgstr "Show art"
 
-#: zeit/content/audio/interfaces.py:51
+#: zeit/content/audio/interfaces.py:64
 msgid "feed"
 msgstr "RSS (Web-Feed)"
 
-#: zeit/content/audio/interfaces.py:125
+#: zeit/content/audio/interfaces.py:65
+msgid "Explicit"
+msgstr ""
+
+#: zeit/content/audio/interfaces.py:69
+msgid "rss_image"
+msgstr "URL zum RSS Bild"
+
+#: zeit/content/audio/interfaces.py:163
 msgid "Podcast Serie"
 msgstr "Podcast"
 
-#: zeit/content/audio/interfaces.py:127
+#: zeit/content/audio/interfaces.py:165
 msgid "External Podcast Id"
 msgstr "Externe Podcast ID"
 
-#: zeit/content/audio/interfaces.py:128
+#: zeit/content/audio/interfaces.py:166
 msgid "Episode No"
 msgstr "Nummer der Folge"
 
-#: zeit/content/audio/interfaces.py:129
+#: zeit/content/audio/interfaces.py:167
 msgid "URL ad-free"
 msgstr "Ad-free URL"
 
-#: zeit/content/audio/interfaces.py:130
+#: zeit/content/audio/interfaces.py:168
 msgid "Episode Summary"
 msgstr "Zusammenfassung der Folge"
 
-#: zeit/content/audio/interfaces.py:131
+#: zeit/content/audio/interfaces.py:169
 msgid "Episode Notes"
 msgstr "Beschreibung der Folge"
 
-#: zeit/content/audio/interfaces.py:132
+#: zeit/content/audio/interfaces.py:170
 msgid "Is Published"
 msgstr "Veröffentlicht"
 
-#: zeit/content/audio/interfaces.py:133
+#: zeit/content/audio/interfaces.py:171
 msgid "Dashboard Link"
 msgstr "Dashboard Link"
 
-#: zeit/content/audio/interfaces.py:143
+#: zeit/content/audio/interfaces.py:181
 msgid "AudioReferences"
 msgstr "Audioreferenzen"
 
-#: zeit/content/audio/interfaces.py:160
+#: zeit/content/audio/interfaces.py:198
 msgid "Preview URL"
 msgstr "Vorschau URL"
 
@@ -3303,7 +3329,7 @@ msgstr "Löschen und erneut materialisieren"
 
 #: zeit/content/dynamicfolder/browser/materialize.py:49
 msgid "Materialize dynamic folder and update content"
-msgstr "Inhalte löschen und erneut materialisieren"
+msgstr "Dynamischen Ordner materialisieren und Inhalte aktualisieren"
 
 #: zeit/content/dynamicfolder/browser/materialize.py:60
 msgid "Publish content of dynamic folder"
@@ -3321,7 +3347,7 @@ msgstr "Materialisieren ermöglichen"
 msgid "Configuration file"
 msgstr "Konfigurationsdatei"
 
-#: zeit/content/dynamicfolder/materialize.py:62
+#: zeit/content/dynamicfolder/materialize.py:63
 msgid "Materialize ${materialize}, Regenerate ${regenerate}"
 msgstr "Materialisiere ${materialize}, regeneriere ${regenerate}"
 
@@ -3337,7 +3363,7 @@ msgstr "Regeneriert ${count}"
 msgid "Materialized"
 msgstr "Materialisiert"
 
-#: zeit/content/dynamicfolder/materialize.py:131
+#: zeit/content/dynamicfolder/materialize.py:132
 msgid "About to publish ${count} objects"
 msgstr "Starte Sammelveröffentlichung (${count} Objekte insgesamt)"
 
@@ -4881,9 +4907,6 @@ msgstr "mit Info"
 
 #~ msgid "automatic-area-type-query"
 #~ msgstr "Query"
-
-#~ msgid "use images"
-#~ msgstr "Bilder verwenden"
 
 #~ msgid "use gallery"
 #~ msgstr "Bildergalerie verwenden"

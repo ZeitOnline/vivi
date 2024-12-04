@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Tue Dec  3 14:28:59 2024\n"
+"POT-Creation-Date: Wed Dec  4 14:03:35 2024\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -482,7 +482,7 @@ msgstr ""
 msgid "Checkin ^I"
 msgstr ""
 
-#: zeit/cms/checkout/interfaces.py:201
+#: zeit/cms/checkout/interfaces.py:216
 msgid "not allowed"
 msgstr ""
 
@@ -912,6 +912,7 @@ msgstr ""
 #: zeit/cms/content/interfaces.py:503
 #: zeit/content/audio/browser/object-details-body.pt:10
 #: zeit/content/audio/interfaces.py:40
+#: zeit/content/audio/interfaces.py:68
 #: zeit/content/image/browser/image_view.pt:6
 #: zeit/content/volume/browser/toc_listing.py:61
 msgid "Type"
@@ -937,7 +938,7 @@ msgstr ""
 msgid "Remote timestamp URL"
 msgstr ""
 
-#: zeit/cms/content/metadata.py:163
+#: zeit/cms/content/metadata.py:165
 msgid "Access changed from \"${old}\" to \"${new}\""
 msgstr ""
 
@@ -2474,7 +2475,7 @@ msgid "Breaking news article"
 msgstr ""
 
 #: zeit/content/article/interfaces.py:259
-#: zeit/content/audio/interfaces.py:162
+#: zeit/content/audio/interfaces.py:200
 msgid "Speechbert Checksum"
 msgstr ""
 
@@ -2575,51 +2576,71 @@ msgstr ""
 msgid "External Id"
 msgstr ""
 
-#: zeit/content/audio/interfaces.py:49
-msgid "show art"
+#: zeit/content/audio/interfaces.py:50
+msgid "Serial"
 msgstr ""
 
 #: zeit/content/audio/interfaces.py:51
+msgid "Episodic"
+msgstr ""
+
+#: zeit/content/audio/interfaces.py:52
+msgid "Episodic seasons"
+msgstr ""
+
+#: zeit/content/audio/interfaces.py:62
+msgid "show art"
+msgstr ""
+
+#: zeit/content/audio/interfaces.py:64
 msgid "feed"
 msgstr ""
 
-#: zeit/content/audio/interfaces.py:125
+#: zeit/content/audio/interfaces.py:65
+msgid "Explicit"
+msgstr ""
+
+#: zeit/content/audio/interfaces.py:69
+msgid "rss_image"
+msgstr ""
+
+#: zeit/content/audio/interfaces.py:163
 msgid "Podcast Serie"
 msgstr ""
 
-#: zeit/content/audio/interfaces.py:127
+#: zeit/content/audio/interfaces.py:165
 msgid "External Podcast Id"
 msgstr ""
 
-#: zeit/content/audio/interfaces.py:128
+#: zeit/content/audio/interfaces.py:166
 msgid "Episode No"
 msgstr ""
 
-#: zeit/content/audio/interfaces.py:129
+#: zeit/content/audio/interfaces.py:167
 msgid "URL ad-free"
 msgstr ""
 
-#: zeit/content/audio/interfaces.py:130
+#: zeit/content/audio/interfaces.py:168
 msgid "Episode Summary"
 msgstr ""
 
-#: zeit/content/audio/interfaces.py:131
+#: zeit/content/audio/interfaces.py:169
 msgid "Episode Notes"
 msgstr ""
 
-#: zeit/content/audio/interfaces.py:132
+#: zeit/content/audio/interfaces.py:170
 msgid "Is Published"
 msgstr ""
 
-#: zeit/content/audio/interfaces.py:133
+#: zeit/content/audio/interfaces.py:171
 msgid "Dashboard Link"
 msgstr ""
 
-#: zeit/content/audio/interfaces.py:143
+#: zeit/content/audio/interfaces.py:181
 msgid "AudioReferences"
 msgstr ""
 
-#: zeit/content/audio/interfaces.py:160
+#: zeit/content/audio/interfaces.py:198
 msgid "Preview URL"
 msgstr ""
 
@@ -3395,7 +3416,7 @@ msgstr ""
 msgid "Configuration file"
 msgstr ""
 
-#: zeit/content/dynamicfolder/materialize.py:62
+#: zeit/content/dynamicfolder/materialize.py:63
 msgid "Materialize ${materialize}, Regenerate ${regenerate}"
 msgstr ""
 
@@ -3411,7 +3432,7 @@ msgstr ""
 msgid "Materialized"
 msgstr ""
 
-#: zeit/content/dynamicfolder/materialize.py:131
+#: zeit/content/dynamicfolder/materialize.py:132
 msgid "About to publish ${count} objects"
 msgstr ""
 
