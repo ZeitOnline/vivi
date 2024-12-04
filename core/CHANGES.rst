@@ -8,7 +8,7 @@ vivi.core changes
 
 - WCM-477: Do not bulk-publish content with semantic change by default
 
-- WCM-560: Extend attributes of IPodcast for Spotify RSS feed
+- WCM-540: Extend attributes of IPodcast for Spotify RSS feed
 
 
 6.81.0 (2024-12-02)
