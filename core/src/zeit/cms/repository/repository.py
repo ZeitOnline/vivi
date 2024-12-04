@@ -198,6 +198,7 @@ class Container(ContentBase):
 
         id = self._get_id_for_name(name)
         del self.connector[id]
+        zope.event.notify(zeit.connector.interfaces.ResourceInvalidatedEvent(id))
         self._local_unique_map_data.clear()
 
     # Internal helper methods and properties:
