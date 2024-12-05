@@ -413,9 +413,8 @@ class PublishTask(PublishRetractTask):
             except Exception as e:
                 errors.append((obj, e))
         locked = okay
-        if FEATURE_TOGGLES.find('publish_commit_transaction'):
-            # Persist locks as soon as possible, to prevent concurrent access.
-            transaction.commit()
+        # Persist locks as soon as possible, to prevent concurrent access.
+        transaction.commit()
 
         objs = okay
         okay = []
@@ -436,9 +435,8 @@ class PublishTask(PublishRetractTask):
 
         try:
             if to_publish:
-                if FEATURE_TOGGLES.find('publish_commit_transaction'):
-                    # Persist changes before having an external system read them.
-                    transaction.commit()
+                # Persist changes before having an external system read them.
+                transaction.commit()
                 publisher = zope.component.getUtility(zeit.cms.workflow.interfaces.IPublisher)
                 publisher.request(to_publish, self.mode)
         except transaction.interfaces.TransientError:
@@ -534,8 +532,7 @@ class RetractTask(PublishRetractTask):
             except Exception as e:
                 errors.append((obj, e))
         locked = okay
-        if FEATURE_TOGGLES.find('publish_commit_transaction'):
-            transaction.commit()
+        transaction.commit()
 
         objs = okay
         okay = []
@@ -556,8 +553,7 @@ class RetractTask(PublishRetractTask):
 
         try:
             if to_retract:
-                if FEATURE_TOGGLES.find('publish_commit_transaction'):
-                    transaction.commit()
+                transaction.commit()
                 publisher = zope.component.getUtility(zeit.cms.workflow.interfaces.IPublisher)
                 publisher.request(to_retract, self.mode)
         except transaction.interfaces.TransientError:
