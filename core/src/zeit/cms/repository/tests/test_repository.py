@@ -156,6 +156,13 @@ class RepositoryTest(zeit.cms.testing.ZeitCmsTestCase):
                 ['http://xml.zeit.de/cache/one'], [x.uniqueId for x in folder.values()]
             )
 
+    def test_delete_must_clear_cache(self):
+        self.assertEqual(0, len(self.repository._content))
+        self.repository.getContent('http://xml.zeit.de/testcontent')
+        self.assertEqual(1, len(self.repository._content))
+        del self.repository['testcontent']
+        self.assertEqual(0, len(self.repository._content))
+
 
 class ContentBaseTest(zeit.cms.testing.ZeitCmsTestCase):
     def test_implements_IRepositoryContent(self):
