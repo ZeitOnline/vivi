@@ -7,12 +7,12 @@ class MainTemplateTest(zeit.cms.testing.ZeitCmsBrowserTestCase):
         b = self.browser
         b.open('/repository')
         self.assertEllipsis(
-            '...var feature_toggles = {..."article_agencies": true, ...};...', b.contents
+            '...var feature_toggles = {..."speech_webhook": true, ...};...', b.contents
         )
 
         # Test overrides also work
-        FEATURE_TOGGLES.unset('article_agencies')
+        FEATURE_TOGGLES.unset('speech_webhook')
         b.open('/repository')
         self.assertEllipsis(
-            '...var feature_toggles = {..."article_agencies": false, ...};...', b.contents
+            '...var feature_toggles = {..."speech_webhook": false, ...};...', b.contents
         )

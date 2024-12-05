@@ -247,8 +247,7 @@ class MetadataAgency(zeit.edit.browser.form.InlineForm):
 
     def __init__(self, context, request):
         super().__init__(context, request)
-        if FEATURE_TOGGLES.find('article_agencies'):
-            self.form_fields = FormFields(ICommonMetadata).select('agencies')
+        self.form_fields = FormFields(ICommonMetadata).select('agencies')
 
 
 class MetadataAccess(zeit.edit.browser.form.InlineForm):
