@@ -10,7 +10,6 @@ import zope.component
 import zope.site.site
 
 from zeit.cms.browser.interfaces import IPreviewURL
-from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.browser.view
 import zeit.cms.config
@@ -52,10 +51,7 @@ class Toc(zeit.cms.browser.view.Base):
     MEDIASYNC_ID = ('mediasync_id', 'http://namespaces.zeit.de/CMS/interred')
 
     def _get_ir_content(self):
-        if FEATURE_TOGGLES.find('volume_toc_products_from_config'):
-            products = [PRODUCTS.find(x) for x in self.product_ids]
-        else:
-            products = [self.context.product] + self.context.product.dependent_products
+        products = [self.context.product] + self.context.product.dependent_products
 
         results = {}
         for product in products:
