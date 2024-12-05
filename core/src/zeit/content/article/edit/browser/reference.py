@@ -43,8 +43,6 @@ class EditImage(EditBase):
             and self.context.references.target.display_type == INFOGRAPHIC_DISPLAY_TYPE
         ):
             return form_fields.omit('variant_name')
-        if not FEATURE_TOGGLES.find('article_image_animation'):
-            return form_fields.omit('animation')
         return form_fields
 
     def setUpWidgets(self, *args, **kw):
