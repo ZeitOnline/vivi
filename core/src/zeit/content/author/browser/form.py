@@ -2,16 +2,13 @@
 import re
 
 import gocept.form.grouped
-import transaction
 import zope.container.interfaces
 import zope.formlib.form
 import zope.formlib.interfaces
 import zope.interface
 import zope.schema
 
-from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
-from zeit.content.author.browser.interfaces import DuplicateAuthorWarning
 import zeit.cms.browser.form
 import zeit.cms.config
 import zeit.content.author.author
@@ -157,22 +154,8 @@ class AddContextfree(zeit.cms.browser.form.AddForm):
         self.applyChanges(self.new_object, data)
         return self.new_object
 
-    def ask_before_adding_author_twice(self, author):
-        if (
-            FEATURE_TOGGLES.find('author_lookup_in_hdok')
-            or self.confirmed_duplicate
-            or not author.exists(author.firstname, author.lastname)
-        ):
-            return False
-        transaction.doom()
-        self.need_confirmation_checkbox = True
-        self.errors = (DuplicateAuthorWarning(),)
-        self.status = _('There were errors')
-        self.form_reset = False
-        return True
-
     def prevent_duplicate_honorar_id(self, author):
-        if not FEATURE_TOGGLES.find('author_lookup_in_hdok') or not author.honorar_id:
+        if not author.honorar_id:
             return False
         exists = author.find_by_honorar_id(author.honorar_id)
         if exists is None:
@@ -185,8 +168,6 @@ class AddContextfree(zeit.cms.browser.form.AddForm):
         return True
 
     def add(self, object):
-        if self.ask_before_adding_author_twice(object):
-            return
         if self.prevent_duplicate_honorar_id(object):
             return
         super().add(object, self.create_folder(object), 'index')
