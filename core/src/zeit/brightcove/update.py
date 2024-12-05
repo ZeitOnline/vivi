@@ -109,8 +109,6 @@ class import_video(import_base):
         # already one in place.
         # this allows manual overrides by the editors to take prioty during
         # subsequent updates.
-        if not FEATURE_TOGGLES.find('video_import_images'):
-            return
         still = download_teaser_image(self.folder, self.bcobj.data, 'still')
         img = zeit.content.image.interfaces.IImages(cmsobj)
         if img.image is None and still is not None:
