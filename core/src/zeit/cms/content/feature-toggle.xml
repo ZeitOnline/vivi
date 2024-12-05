@@ -9,7 +9,6 @@
   <reference_index>true</reference_index>
   <tms_enrich_on_checkin>true</tms_enrich_on_checkin>
   <video_import_images>true</video_import_images>
-  <show_automatic_type_in_topicbox>true</show_automatic_type_in_topicbox>
   <ard_sync_api>true</ard_sync_api>
   <normalize_quotes>false</normalize_quotes>
   <simplecast_webhook>true</simplecast_webhook>

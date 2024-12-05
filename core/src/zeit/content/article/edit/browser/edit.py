@@ -508,9 +508,6 @@ class EditTopicbox(zeit.edit.browser.form.InlineForm, zeit.cms.browser.form.Char
             .omit(*list(zeit.edit.interfaces.IBlock))
         )
 
-        if not FEATURE_TOGGLES.find('show_automatic_type_in_topicbox'):
-            form_fields = form_fields.omit('automatic_type')
-
         return form_fields
 
     def setUpWidgets(self, *args, **kw):

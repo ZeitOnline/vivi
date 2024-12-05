@@ -1,7 +1,6 @@
 import zope.formlib.form
 import zope.interface
 
-from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.author.interfaces import IAuthor
 from zeit.content.gallery.interfaces import IGallery

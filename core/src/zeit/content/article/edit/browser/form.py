@@ -5,7 +5,6 @@ import zope.formlib.interfaces
 
 from zeit.cms.browser.widget import CheckboxDisplayWidget, RestructuredTextWidget
 from zeit.cms.content.interfaces import ICommonMetadata, IRemoteMetadata
-from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.repository.interfaces import IAutomaticallyRenameable
 from zeit.content.article.interfaces import IArticle
