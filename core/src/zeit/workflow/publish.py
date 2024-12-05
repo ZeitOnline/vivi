@@ -13,7 +13,6 @@ import zope.i18n
 import zope.interface
 
 from zeit.cms.content.interfaces import IUUID
-from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR, CAN_RETRACT_ERROR, PRIORITY_LOW
 import zeit.cms.celery
@@ -602,29 +601,6 @@ def RETRACT_TASK(self, ids, collect_errors_on=None):
 
 
 class MultiTask:
-    def _run(self, objs):
-        if not FEATURE_TOGGLES.find('publish_multiple_abort_transaction'):
-            return super()._run(objs)
-        self._to_log = []
-        result = super()._run(objs)
-        # Work around limitations of our ZODB-based DAV cache.
-        # Since publishing a sizeable amount of objects will result in a rather
-        # long-running transaction (100 articles take about two minutes), the
-        # probability of ConflictErrors is very high there, see ZON-3715 for
-        # details. We prevent this by simply not writing to the DAV cache
-        # inside the job, which is the only change this commit() would be
-        # writing -- since the DAV changes itself happen immediately without
-        # transaction isolation anyway. The DAV cache will then be updated
-        # shortly afterwards by the invalidator (since that runs for all
-        # changes and doesn't discriminate changes made by vivi itself).
-        raise z3c.celery.celery.Abort(self._log_messages, self._to_log, message=result)
-
-    def log(self, obj, message):
-        if not FEATURE_TOGGLES.find('publish_multiple_abort_transaction'):
-            super().log(obj, message)
-        else:
-            self._to_log.append((obj, message))
-
     def _assign_publisher_error_details(self, exc, objects):
         errors = []
         msg = f'{exc.url} returned {exc.status}'
