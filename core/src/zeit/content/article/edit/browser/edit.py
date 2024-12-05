@@ -479,36 +479,31 @@ class EditMail(zeit.edit.browser.form.InlineForm):
 
 class EditTopicbox(zeit.edit.browser.form.InlineForm, zeit.cms.browser.form.CharlimitMixin):
     legend = None
-
-    @property
-    def form_fields(self):
-        form_fields = (
-            zope.formlib.form.Fields(zeit.content.article.edit.interfaces.ITopicbox)
-            .select('supertitle', 'title', 'link', 'link_text')
-            .omit(*list(zeit.edit.interfaces.IBlock))
+    form_fields = (
+        zope.formlib.form.Fields(zeit.content.article.edit.interfaces.ITopicbox)
+        .select('supertitle', 'title', 'link', 'link_text')
+        .omit(*list(zeit.edit.interfaces.IBlock))
+    )
+    form_fields += zope.formlib.form.Fields(zeit.content.image.interfaces.IImages).omit(
+        *list(zeit.edit.interfaces.IBlock)
+    )
+    form_fields += (
+        zope.formlib.form.Fields(zeit.content.article.edit.interfaces.ITopicbox)
+        .select(
+            'first_reference',
+            'second_reference',
+            'third_reference',
+            'automatic_type',
+            'referenced_cp',
+            'elasticsearch_raw_query',
+            'elasticsearch_raw_order',
+            'referenced_topicpage',
+            'topicpage_filter',
+            'topicpage_order',
+            'preconfigured_query',
         )
-        form_fields += zope.formlib.form.Fields(zeit.content.image.interfaces.IImages).omit(
-            *list(zeit.edit.interfaces.IBlock)
-        )
-        form_fields += (
-            zope.formlib.form.Fields(zeit.content.article.edit.interfaces.ITopicbox)
-            .select(
-                'first_reference',
-                'second_reference',
-                'third_reference',
-                'automatic_type',
-                'referenced_cp',
-                'elasticsearch_raw_query',
-                'elasticsearch_raw_order',
-                'referenced_topicpage',
-                'topicpage_filter',
-                'topicpage_order',
-                'preconfigured_query',
-            )
-            .omit(*list(zeit.edit.interfaces.IBlock))
-        )
-
-        return form_fields
+        .omit(*list(zeit.edit.interfaces.IBlock))
+    )
 
     def setUpWidgets(self, *args, **kw):
         super().setUpWidgets(*args, **kw)

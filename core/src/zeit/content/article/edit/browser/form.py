@@ -242,11 +242,7 @@ class MetadataC(zeit.edit.browser.form.InlineForm):
 class MetadataAgency(zeit.edit.browser.form.InlineForm):
     legend = _('')
     prefix = 'metadata-agency'
-    form_fields = FormFields()
-
-    def __init__(self, context, request):
-        super().__init__(context, request)
-        self.form_fields = FormFields(ICommonMetadata).select('agencies')
+    form_fields = FormFields(ICommonMetadata).select('agencies')
 
 
 class MetadataAccess(zeit.edit.browser.form.InlineForm):
