@@ -382,11 +382,16 @@ def cmscontentFactory(context):
     return content
 
 
-@zope.component.adapter(zeit.connector.interfaces.IResourceInvalidatedEvent)
+@grok.subscribe(zeit.connector.interfaces.IResourceInvalidatedEvent)
+@grok.subscribe(zeit.cms.repository.interfaces.IBeforeObjectRemovedEvent)
 def invalidate_content_cache(event):
     repository = zope.component.queryUtility(zeit.cms.repository.interfaces.IRepository)
     if repository is not None:
-        repository._content.pop(event.id, None)
+        if zeit.connector.interfaces.IResourceInvalidatedEvent.providedBy(event):
+            uniqueid = event.id
+        else:
+            uniqueid = event.object.uniqueId
+        repository._content.pop(uniqueid, None)
 
 
 @grok.adapter(str, name=zeit.cms.interfaces.ID_NAMESPACE)
