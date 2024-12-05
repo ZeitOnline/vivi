@@ -2,7 +2,6 @@
   <add_content_permissions>true</add_content_permissions>
   <content_caching>true</content_caching>
   <dpa_import_delete_image>true</dpa_import_delete_image>
-  <embed_cmp_thirdparty>true</embed_cmp_thirdparty>
   <inlineform_alert_error>true</inlineform_alert_error>
   <reference_index>true</reference_index>
   <tms_enrich_on_checkin>true</tms_enrich_on_checkin>
