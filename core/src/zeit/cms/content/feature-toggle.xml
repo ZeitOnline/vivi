@@ -4,7 +4,6 @@
   <dpa_import_delete_image>true</dpa_import_delete_image>
   <embed_cmp_thirdparty>true</embed_cmp_thirdparty>
   <inlineform_alert_error>true</inlineform_alert_error>
-  <breakingnews_with_channel>true</breakingnews_with_channel>
   <reference_index>true</reference_index>
   <tms_enrich_on_checkin>true</tms_enrich_on_checkin>
   <video_import_images>true</video_import_images>
