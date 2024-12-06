@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.84.0 (2024-12-06)
+-------------------
+
+- WCM-327: improve dynamic folder publication
+
+- WCM-574: remove obsolete feature toggles
+
+
 6.83.0 (2024-12-04)
 -------------------
 
