@@ -1,10 +1,8 @@
-import functools
 import urllib.parse
 
 import grokcore.component as grok
 import zope.component
 
-import zeit.cms.content.caching
 import zeit.cms.interfaces
 import zeit.cms.workingcopy.interfaces
 
@@ -12,11 +10,6 @@ import zeit.cms.workingcopy.interfaces
 @grok.adapter(str)
 @grok.implementer(zeit.cms.interfaces.ICMSContent)
 def unique_id_to_cms_content(unique_id):
-    factory = functools.partial(get_cms_content, unique_id)
-    return zeit.cms.content.caching.get(unique_id, key='id', factory=factory)
-
-
-def get_cms_content(unique_id):
     parsed = urllib.parse.urlparse(unique_id)
     name = '%s://' % (parsed.scheme or '<no-scheme>')
     return zope.component.queryAdapter(unique_id, zeit.cms.interfaces.ICMSContent, name=name)

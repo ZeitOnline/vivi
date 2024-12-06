@@ -16,7 +16,6 @@ import zope.xmlpickle
 
 from zeit.cms.content.interfaces import WRITEABLE_ON_CHECKIN
 from zeit.connector.resource import PropertyKey
-import zeit.cms.content.caching
 import zeit.cms.content.interfaces
 import zeit.cms.content.liveproperty
 import zeit.cms.grok
@@ -55,14 +54,7 @@ class DAVProperty:
         if instance is None:
             return self
         fact = functools.partial(self.__fetch__, instance, class_, properties)
-        uniqueId = getattr(instance, 'uniqueId', None) or (
-            getattr(getattr(instance, 'context', None), 'uniqueId', None)
-        )
-        if properties is None and uniqueId is not None:
-            key = self.field.__name__, self.namespace, self.name
-            return zeit.cms.content.caching.get(uniqueId, key=key, factory=fact, suffix='.meta')
-        else:
-            return fact()
+        return fact()
 
     def __fetch__(self, instance, class_, properties=None):
         if properties is None:
