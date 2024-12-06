@@ -59,9 +59,11 @@ class Edit(FormBase, zeit.cms.browser.form.EditForm):
 
 
 class CMPFields:
-    form_fields = zope.formlib.form.FormFields(zeit.cmp.interfaces.IConsentInfo).select(
-        'has_thirdparty', 'thirdparty_vendors'
-    )
+    def __init__(self, context, request):
+        super().__init__(context, request)
+        self.form_fields += zope.formlib.form.FormFields(zeit.cmp.interfaces.IConsentInfo).select(
+            'has_thirdparty', 'thirdparty_vendors'
+        )
 
 
 class Parameters(CMPFields, FormBase, zeit.cms.browser.form.EditForm):
