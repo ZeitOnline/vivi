@@ -43,6 +43,7 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
         DOCUMENT_SCHEMA_NS,
         (
             'access',
+            'accepted_entitlements',
             'banner_outer',
             'channels',
         ),

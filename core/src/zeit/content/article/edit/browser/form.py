@@ -248,7 +248,7 @@ class MetadataAgency(zeit.edit.browser.form.InlineForm):
 class MetadataAccess(zeit.edit.browser.form.InlineForm):
     legend = _('')
     prefix = 'metadata-access'
-    form_fields = FormFields(ICommonMetadata).select('access')
+    form_fields = FormFields(ICommonMetadata).select('access', 'accepted_entitlements')
 
     def _success_handler(self):
         self.signal('reload-inline-form', 'social')
