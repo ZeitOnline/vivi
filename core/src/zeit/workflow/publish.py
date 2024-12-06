@@ -13,7 +13,6 @@ import zope.i18n
 import zope.interface
 
 from zeit.cms.content.interfaces import IUUID
-from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR, CAN_RETRACT_ERROR, PRIORITY_LOW
 import zeit.cms.celery
@@ -413,9 +412,8 @@ class PublishTask(PublishRetractTask):
             except Exception as e:
                 errors.append((obj, e))
         locked = okay
-        if FEATURE_TOGGLES.find('publish_commit_transaction'):
-            # Persist locks as soon as possible, to prevent concurrent access.
-            transaction.commit()
+        # Persist locks as soon as possible, to prevent concurrent access.
+        transaction.commit()
 
         objs = okay
         okay = []
@@ -436,9 +434,8 @@ class PublishTask(PublishRetractTask):
 
         try:
             if to_publish:
-                if FEATURE_TOGGLES.find('publish_commit_transaction'):
-                    # Persist changes before having an external system read them.
-                    transaction.commit()
+                # Persist changes before having an external system read them.
+                transaction.commit()
                 publisher = zope.component.getUtility(zeit.cms.workflow.interfaces.IPublisher)
                 publisher.request(to_publish, self.mode)
         except transaction.interfaces.TransientError:
@@ -534,8 +531,7 @@ class RetractTask(PublishRetractTask):
             except Exception as e:
                 errors.append((obj, e))
         locked = okay
-        if FEATURE_TOGGLES.find('publish_commit_transaction'):
-            transaction.commit()
+        transaction.commit()
 
         objs = okay
         okay = []
@@ -556,8 +552,7 @@ class RetractTask(PublishRetractTask):
 
         try:
             if to_retract:
-                if FEATURE_TOGGLES.find('publish_commit_transaction'):
-                    transaction.commit()
+                transaction.commit()
                 publisher = zope.component.getUtility(zeit.cms.workflow.interfaces.IPublisher)
                 publisher.request(to_retract, self.mode)
         except transaction.interfaces.TransientError:
@@ -606,29 +601,6 @@ def RETRACT_TASK(self, ids, collect_errors_on=None):
 
 
 class MultiTask:
-    def _run(self, objs):
-        if not FEATURE_TOGGLES.find('publish_multiple_abort_transaction'):
-            return super()._run(objs)
-        self._to_log = []
-        result = super()._run(objs)
-        # Work around limitations of our ZODB-based DAV cache.
-        # Since publishing a sizeable amount of objects will result in a rather
-        # long-running transaction (100 articles take about two minutes), the
-        # probability of ConflictErrors is very high there, see ZON-3715 for
-        # details. We prevent this by simply not writing to the DAV cache
-        # inside the job, which is the only change this commit() would be
-        # writing -- since the DAV changes itself happen immediately without
-        # transaction isolation anyway. The DAV cache will then be updated
-        # shortly afterwards by the invalidator (since that runs for all
-        # changes and doesn't discriminate changes made by vivi itself).
-        raise z3c.celery.celery.Abort(self._log_messages, self._to_log, message=result)
-
-    def log(self, obj, message):
-        if not FEATURE_TOGGLES.find('publish_multiple_abort_transaction'):
-            super().log(obj, message)
-        else:
-            self._to_log.append((obj, message))
-
     def _assign_publisher_error_details(self, exc, objects):
         errors = []
         msg = f'{exc.url} returned {exc.status}'

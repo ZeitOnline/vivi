@@ -126,7 +126,7 @@ class AuthorType(zeit.cms.type.XMLContentTypeDeclaration):
     interface = zeit.content.author.interfaces.IAuthor
     type = 'author'
     title = _('Author')
-    addform = 'zeit.content.author.dispatch'
+    addform = 'zeit.content.author.lookup'
 
 
 @zope.component.adapter(zeit.content.author.interfaces.IAuthor)

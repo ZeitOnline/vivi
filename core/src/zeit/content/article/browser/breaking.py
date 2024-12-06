@@ -6,7 +6,6 @@ import zope.interface
 import zope.schema
 
 from zeit.cms.checkout.interfaces import ICheckinManager
-from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import IPublishInfo
 import zeit.cms.browser.form
@@ -62,8 +61,6 @@ class Add(zeit.cms.browser.form.AddForm, zeit.cms.browser.form.CharlimitMixin):
     )
 
     def setUpWidgets(self, *args, **kw):
-        if not FEATURE_TOGGLES.find('breakingnews_with_channel'):
-            self.form_fields = self.form_fields.omit('channels')
         GET = self.request.form
         GET['form.channels.0..combination_00'] = GET.get('form.ressort')
         GET['form.channels.0..combination_01'] = GET.get('form.sub_ressort')

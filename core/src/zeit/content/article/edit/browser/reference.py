@@ -1,7 +1,6 @@
 import zope.formlib.form
 import zope.interface
 
-from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.author.interfaces import IAuthor
 from zeit.content.gallery.interfaces import IGallery
@@ -43,8 +42,6 @@ class EditImage(EditBase):
             and self.context.references.target.display_type == INFOGRAPHIC_DISPLAY_TYPE
         ):
             return form_fields.omit('variant_name')
-        if not FEATURE_TOGGLES.find('article_image_animation'):
-            return form_fields.omit('animation')
         return form_fields
 
     def setUpWidgets(self, *args, **kw):

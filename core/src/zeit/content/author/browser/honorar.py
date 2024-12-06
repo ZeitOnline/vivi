@@ -10,7 +10,6 @@ import zope.formlib.form
 import zope.formlib.interfaces
 import zope.interface
 
-from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.author.author import Author
 from zeit.content.author.browser.interfaces import DuplicateAuthorWarning
@@ -134,15 +133,6 @@ class Lookup(zeit.cms.browser.view.Base):
         firstname = ' '.join(parts[:-1])
         lastname = parts[-1]
         return self._form_parameters({'vorname': firstname, 'nachname': lastname})
-
-
-class DispatchAdd(zeit.cms.browser.view.Base):
-    def __call__(self):
-        if FEATURE_TOGGLES.find('author_lookup_in_hdok'):
-            view = 'zeit.content.author.lookup'
-        else:
-            view = 'zeit.content.author.add_contextfree'
-        self.redirect(self.url(view))
 
 
 class HonorarReports(zeit.cms.browser.view.Base):

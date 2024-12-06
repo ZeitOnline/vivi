@@ -5,7 +5,6 @@ import zope.formlib.interfaces
 
 from zeit.cms.browser.widget import CheckboxDisplayWidget, RestructuredTextWidget
 from zeit.cms.content.interfaces import ICommonMetadata, IRemoteMetadata
-from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.repository.interfaces import IAutomaticallyRenameable
 from zeit.content.article.interfaces import IArticle
@@ -243,12 +242,7 @@ class MetadataC(zeit.edit.browser.form.InlineForm):
 class MetadataAgency(zeit.edit.browser.form.InlineForm):
     legend = _('')
     prefix = 'metadata-agency'
-    form_fields = FormFields()
-
-    def __init__(self, context, request):
-        super().__init__(context, request)
-        if FEATURE_TOGGLES.find('article_agencies'):
-            self.form_fields = FormFields(ICommonMetadata).select('agencies')
+    form_fields = FormFields(ICommonMetadata).select('agencies')
 
 
 class MetadataAccess(zeit.edit.browser.form.InlineForm):

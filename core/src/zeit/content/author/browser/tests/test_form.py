@@ -2,7 +2,6 @@
 from unittest import mock
 import unittest
 
-from zeit.cms.content.sources import FEATURE_TOGGLES
 import zeit.content.author.testing
 
 
@@ -25,48 +24,6 @@ class FormTest(zeit.content.author.testing.BrowserTestCase):
 
     def open(self, tail):
         self.browser.open('http://localhost/++skin++vivi' + tail)
-
-    def test_adding_name_twice_warns_then_creates_different_author(self):
-        FEATURE_TOGGLES.unset('author_lookup_in_hdok')
-        b = self.browser
-        self.open('/@@zeit.content.author.add_contextfree')
-        self.add_william()
-        self.author_exists.return_value = True
-
-        self.open('/@@zeit.content.author.add_contextfree')
-        self.assertNotIn('Add duplicate author', b.contents)
-        self.add_william(vgwort_id='9876')
-        self.assertEllipsis(
-            """\
-            ...There were errors...
-            ...An author with the given name already exists...
-            """,
-            b.contents,
-        )
-        # No new author has been created in DAV so far.
-        self.assertEqual(1, len(self.repository['foo']['bar']['authors']['S']))
-
-        b.getControl('Add duplicate author').selected = True
-        b.getControl(name='form.actions.add').click()
-        self.assertNotIn('There were errors', b.contents)
-        # Make sure the new author gets a new __name__ rather than overwriting
-        # the existing one.
-        self.assertEqual(
-            'http://localhost/++skin++vivi/repository/foo/bar/authors/S/'
-            'William_Shakespeare-2/index/@@view.html',
-            b.url,
-        )
-        self.assertEllipsis(
-            """...
-            <label for="form.firstname">...
-            <div class="widget">William</div>...
-            <label for="form.lastname">...
-            <div class="widget">Shakespeare</div>...
-            <label for="form.vgwortid">...
-            <div class="widget">9876</div>...
-            """,
-            b.contents,
-        )
 
     def add_william(self, browser=None, vgwort_id='12345'):
         b = self.browser if browser is None else browser

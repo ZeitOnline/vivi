@@ -15,7 +15,6 @@ import zope.i18n
 
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.content.interfaces import IUUID
-from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.related.interfaces import IRelatedContent
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
@@ -86,8 +85,6 @@ class PublishTest(zeit.workflow.testing.FunctionalTestCase):
                 self.assertEqual(c2.uniqueId, items[0]['uniqueId'])
 
     def test_conflict_error_on_commit_is_raised(self):
-        FEATURE_TOGGLES.set('publish_commit_transaction')
-
         def provoke_conflict(*args, **kw):
             transaction.get().join(CommitExceptionDataManager(ConflictError()))
 
