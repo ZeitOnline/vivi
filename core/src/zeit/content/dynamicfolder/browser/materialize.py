@@ -52,7 +52,7 @@ class MaterializeMenuItem(CloneArmyGuard, zeit.cms.browser.menu.LightboxActionMe
 class PublishMaterializedContent(zeit.cms.browser.view.Base):
     def __call__(self):
         zeit.content.dynamicfolder.materialize.publish_content(self.context)
-        self.redirect(self.url(self.context, '@@view.html'))
+        self.redirect(self.url(self.context, '@@workflow.html'))
         return ''
 
 
