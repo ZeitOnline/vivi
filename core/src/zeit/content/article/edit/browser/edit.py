@@ -1,7 +1,9 @@
 import json
 import logging
+import re
 
 import grokcore.component as grok
+import requests
 import zope.cachedescriptors.property
 import zope.component
 import zope.security
@@ -254,6 +256,34 @@ class EditEmbed(zeit.cms.browser.manual.FormMixin, zeit.edit.browser.form.Inline
     form_fields = zope.formlib.form.FormFields(zeit.content.article.edit.interfaces.IEmbed).omit(
         '__name__', '__parent__', 'xml'
     )
+
+    def _resolve_bsky_url(self, url):
+        regex = r'^(https://bsky\.app/profile/)([^/]+)(/post/.*)$'
+        api_url = 'https://public.api.bsky.app/xrpc/com.atproto.identity.resolveHandle'
+
+        match = None
+        api_result = None
+        try:
+            match = re.fullmatch(regex, url)
+            if match[2].startswith('did:'):
+                return url
+
+            api_result = requests.get(f'{api_url}?handle={match[2]}', timeout=5)
+            assert api_result.status_code == 200
+            return match[1] + api_result.json()['did'] + match[3]
+
+        except Exception:
+            raise Exception(
+                f'Error resolving Bluesky-URL {url} (match={match}, '
+                'api_result={api_result}): {e}'
+            )
+
+    def success_handler(self, action, data, errors=None):
+        if FEATURE_TOGGLES.find('resolve_bsky_embed_url') and data['url'].startswith(
+            'https://bsky.app/'
+        ):
+            data['url'] = self._resolve_bsky_url(data['url'])
+        return super().success_handler(action, data, errors)
 
     @property
     def prefix(self):

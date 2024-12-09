@@ -11,6 +11,20 @@ class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
         b.reload()
         self.assertEqual('https://twitter.com/foo/status/123', b.getControl('Embed URL').value)
 
+    def test_embed_resolves_bluesky_urls(self):
+        self.get_article(with_block='embed')
+        b = self.browser
+        b.open('editable-body/blockname/@@edit-embed?show_form=1')
+        b.getControl(
+            'Embed URL'
+        ).value = 'https://bsky.app/profile/denniskberlin.bsky.social/post/3lbcovlxajs2x'
+        b.getControl('Apply').click()
+        b.reload()
+        self.assertEqual(
+            'https://bsky.app/profile/did:plc:2d4i6jgzxpxuwsttkark575m/post/3lbcovlxajs2x',
+            b.getControl('Embed URL').value,
+        )
+
     def test_domain_must_be_included_in_supported_list(self):
         self.get_article(with_block='embed')
         b = self.browser

@@ -1,3 +1,4 @@
 <providers>
   <provider>twitter.com</provider>
+  <provider>bsky.app</provider>
 </providers>
