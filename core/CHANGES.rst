@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.85.0 (2024-12-09)
+-------------------
+
+- WCM-463: remove obsolete content cache
+
+
 6.84.0 (2024-12-06)
 -------------------
 
