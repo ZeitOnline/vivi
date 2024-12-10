@@ -61,8 +61,6 @@ class ContentQuery(grok.Adapter):
 
 
 class SQLContentQuery(ContentQuery):
-    """Search via SQL."""
-
     grok.name('sql-query')
 
     def __call__(self):
@@ -192,6 +190,7 @@ class SQLContentQuery(ContentQuery):
 
 
 class SQLCustomContentQuery(SQLContentQuery):
+    grok.name('custom')
     grok.baseclass()  # See dispatch_custom_query
 
     @property
@@ -307,8 +306,6 @@ def query_to_content(context):
 
 
 class ElasticsearchContentQuery(ContentQuery):
-    """Search via Elasticsearch."""
-
     grok.name('elasticsearch-query')
 
     include_payload = False  # Extension point for zeit.web and its LazyProxy.
@@ -423,6 +420,7 @@ class ElasticsearchContentQuery(ContentQuery):
 
 
 class CustomContentQuery(ElasticsearchContentQuery):
+    grok.name('custom')
     grok.baseclass()  # See dispatch_custom_query
 
     ES_FIELD_NAMES = {
@@ -760,8 +758,6 @@ class ArticleTMSRelatedApiQuery(TMSRelatedApiQuery):
 
 
 class PreconfiguredQuery(ElasticsearchContentQuery):
-    """Search via Elasticsearch."""
-
     grok.name('preconfigured-query')
 
     def __init__(self, context):
