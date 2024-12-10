@@ -107,26 +107,29 @@ def _materialize(content):
     zeit.objectlog.interfaces.ILog(content).log(_('Materialized'))
 
 
-def publish_content(folder):
-    batch_size = int(
-        zeit.cms.config.get('zeit.content.dynamicfolder', 'materialized-publish-batch-size', 100)
-    )
-    publish = zeit.cms.workflow.interfaces.IPublish(folder)
-    count = 0
-    objects = []
-    for item in folder.values():
-        if IMaterializedContent.providedBy(item):
-            count += 1
-            objects.append(item)
-        if len(objects) >= batch_size:
-            publish.publish_multiple(objects, priority='manual')
-            objects = []
+@zeit.cms.celery.task(queue='manual')
+def _publish_content(folder_id):
+    to_publish = []
+    folder = zeit.cms.interfaces.ICMSContent(folder_id)
+    for content in folder.values():
+        if IMaterializedContent.providedBy(content):
+            to_publish.append(content)
+
     # The folder itself does not actually need to be published, we're only
     # doing it for the objectlog message. Add it as the last object, so the
     # user can confirm when all publish tasks have completed.
-    objects.append(folder)
-    # This also handles any batch that may be remaining after the loop.
-    publish.publish_multiple(objects, priority='manual')
+    to_publish.append(folder)
+
     zeit.objectlog.interfaces.ILog(folder).log(
-        _('About to publish ${count} objects', mapping={'count': count})
+        _('About to publish ${count} objects', mapping={'count': len(to_publish)}),
     )
+
+    if to_publish:
+        publish = zeit.cms.workflow.interfaces.IPublish(folder)
+        publish.publish_multiple(to_publish, priority='manual')
+
+
+def publish_content(folder):
+    # run inside celery task because very large
+    # running publications would block the UI
+    _publish_content.delay(folder.uniqueId)
