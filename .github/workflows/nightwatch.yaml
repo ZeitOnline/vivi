@@ -24,6 +24,7 @@ jobs:
       args: |
         --override-type=json --overrides='[
           {"op": "add", "path": "/spec/serviceAccount", "value": "baseproject"},
+          {"op": "add", "path": "/spec/containers/0/envFrom", "value": [{"secretRef": {"name": "nightwatch-secrets"}}]},
           {"op": "add", "path": "/spec/containers/0/env", "value": [
             {"name": "VIVI_XMLRPC_PASSWORD", "valueFrom": {"secretKeyRef": {
               "name": "principals",
