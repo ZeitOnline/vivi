@@ -17,11 +17,11 @@ class MemoTest(zeit.content.article.testing.BrowserTestCase):
     def test_memo_is_editable_while_checked_in(self):
         self.repository['article'] = Article()
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository' '/article/@@edit.form.memo?show_form=1')
+        b.open('http://localhost/++skin++vivi/repository/article/@@edit.form.memo?show_form=1')
         b.getControl('Memo').value = 'foo bar baz'
         b.getControl('Apply').click()
         # reload() forgets the query-paramter, sigh.
-        b.open('http://localhost/++skin++vivi/repository' '/article/@@edit.form.memo?show_form=1')
+        b.open('http://localhost/++skin++vivi/repository/article/@@edit.form.memo?show_form=1')
         self.assertEqual('foo bar baz', b.getControl('Memo').value)
 
 
@@ -34,7 +34,7 @@ class ReadonlyTest(zeit.content.article.testing.BrowserTestCase):
     def setUp(self):
         super().setUp()
         self.browser.open(
-            'http://localhost/++skin++vivi/repository/online/2007/01/Somalia' '/@@edit-forms'
+            'http://localhost/++skin++vivi/repository/online/2007/01/Somalia/@@edit-forms'
         )
 
     def test_text_is_displayed(self):
@@ -50,7 +50,7 @@ class WorkflowStatusDisplayTest(zeit.content.article.testing.BrowserTestCase):
         somalia = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         IContentWorkflow(somalia).corrected = True
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository' '/online/2007/01/Somalia/@@checkout')
+        b.open('http://localhost/++skin++vivi/repository/online/2007/01/Somalia/@@checkout')
         b.open('@@edit.form.workflow-display?show_form=1')
         self.assertFalse(b.getControl('Edited').selected)
         self.assertTrue(b.getControl('Corrected').selected)
@@ -61,10 +61,10 @@ class WorkflowStatusDisplayTest(zeit.content.article.testing.BrowserTestCase):
         IPublish(article).publish()
         IPublishInfo(article).date_last_published = datetime(2013, 7, 2, 9, 31, 24)
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository' '/online/2007/01/Somalia/@@checkout')
+        b.open('http://localhost/++skin++vivi/repository/online/2007/01/Somalia/@@checkout')
         b.open('@@contents')
         self.assertEllipsis(
-            '...last published at...02.07.2013...on...11:31...by' '...zope.user...', b.contents
+            '...last published at...02.07.2013...on...11:31...by...zope.user...', b.contents
         )
 
 
@@ -74,7 +74,7 @@ class PageNumberDisplay(zeit.content.article.testing.BrowserTestCase):
         with zeit.cms.checkout.helper.checked_out(article) as co:
             co.page = '4711'
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository' '/online/2007/01/Somalia/@@checkout')
+        b.open('http://localhost/++skin++vivi/repository/online/2007/01/Somalia/@@checkout')
         b.open('@@edit.form.print-metadata')
         self.assertEllipsis('...Page...4711...', b.contents)
 
@@ -132,7 +132,7 @@ class FilenameTest(zeit.content.article.testing.BrowserTestCase):
         IAutomaticallyRenameable(article).renameable = True
         self.repository['online']['2007']['01']['article'] = article
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository' '/online/2007/01/article/@@checkout')
+        b.open('http://localhost/++skin++vivi/repository/online/2007/01/article/@@checkout')
         b.open('@@edit.form.new-filename?show_form=1')
         b.getControl('New file name').value = 'Somalia'
         b.getControl('Apply').click()
@@ -140,7 +140,7 @@ class FilenameTest(zeit.content.article.testing.BrowserTestCase):
 
 
 @unittest.skip(
-    'Channels need special permission, and selenium breaks when' ' trying to change HTTP Basic auth'
+    'Channels need special permission, and selenium breaks when trying to change HTTP Basic auth'
 )
 class ChannelSelector(zeit.content.article.edit.browser.testing.EditorTestCase):
     def setUp(self):
@@ -167,7 +167,7 @@ class ChannelSelector(zeit.content.article.edit.browser.testing.EditorTestCase):
 class SetRemoteMetadata(zeit.content.article.testing.BrowserTestCase):
     def test_remote_metadata_fields_are_displayed_for_article(self):
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository' '/online/2007/01/Somalia/@@checkout')
+        b.open('http://localhost/++skin++vivi/repository/online/2007/01/Somalia/@@checkout')
         b.open('@@edit.form.options-interactive')
         self.assertEllipsis('...Remote image...', b.contents)
         self.assertEllipsis('...Remote timestamp...', b.contents)
@@ -179,7 +179,7 @@ class SetRemoteMetadata(zeit.content.article.testing.BrowserTestCase):
             article.remote_image = 'https://my-remote-image.de'
             article.remote_timestamp = 'https://my-remote-timestamp.de'
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository' '/online/2007/01/Somalia/@@checkout')
+        b.open('http://localhost/++skin++vivi/repository/online/2007/01/Somalia/@@checkout')
         b.open('@@edit.form.options-interactive')
         self.assertEllipsis('...Remote image...https://my-remote-image.de...', b.contents)
         self.assertEllipsis('...Remote timestamp...https://my-remote-timestamp.de...', b.contents)
