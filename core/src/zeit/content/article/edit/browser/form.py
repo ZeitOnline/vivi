@@ -252,6 +252,7 @@ class MetadataAccess(zeit.edit.browser.form.InlineForm):
 
     def _success_handler(self):
         self.signal('reload-inline-form', 'social')
+        self.signal('reload-inline-form', 'options-access-control')
 
 
 class MetadataGenre(zeit.edit.browser.form.InlineForm):
@@ -412,6 +413,18 @@ class OptionsInteractive(zeit.edit.browser.form.InlineForm):
     legend = _('Interactive')
     prefix = 'options-interactive'
     form_fields = FormFields(IRemoteMetadata).select('remote_image', 'remote_timestamp')
+
+
+class OptionsAccessControl(zeit.edit.browser.form.InlineForm):
+    legend = _('Access control')
+    prefix = 'options-access-control'
+
+    @property
+    def form_fields(self):
+        form_fields = []
+        if self.context.access == 'abo':
+            form_fields = FormFields(ICommonMetadata).select('accepted_entitlements')
+        return form_fields
 
 
 class OptionsProductManagementB(zeit.edit.browser.form.InlineForm):
