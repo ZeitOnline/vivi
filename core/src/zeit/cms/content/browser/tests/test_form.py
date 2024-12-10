@@ -20,3 +20,9 @@ class MetadataForm(zeit.cms.testing.ZeitCmsBrowserTestCase):
         b.getControl('Apply').click()
         self.assertEllipsis('...Updated on...', b.contents)
         self.assertEqual('', b.getControl('Subtitle').value)
+
+    def test_accepted_entitlements_validation(self):
+        b = self.browser
+        b.getControl('Accepted entitlements').value = 'irgendwas 123'
+        b.getControl('Apply').click()
+        self.assertEllipsis('...Invalid characters in entitlement...', b.contents)

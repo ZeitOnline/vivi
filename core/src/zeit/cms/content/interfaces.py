@@ -136,6 +136,7 @@ class ICommonMetadata(zope.interface.Interface):
         title=_('Accepted entitlements'),
         description=_('Comma separated list of accepted entitlements.'),
         required=False,
+        constraint=zeit.cms.interfaces.valid_entitlements,
     )
 
     keywords = zeit.cms.tagging.interfaces.Keywords(required=False, default=())

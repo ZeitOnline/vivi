@@ -51,17 +51,31 @@ class InvalidName(zope.schema.ValidationError):
     __doc__ = _('Name contains invalid characters')
 
 
+class InvalidEntitlement(zope.schema.ValidationError):
+    __doc__ = _(
+        'Invalid characters in entitlement, only entitlements'
+        ' with lowercase letters separated by commas are allowed'
+    )
+
+
 class ValidationError(zope.schema.ValidationError):
     def doc(self):
         return self.args[0]
 
 
 valid_name_regex = re.compile(r'^[A-Za-z0-9\.\,\-_*()~]+$').match
+valid_entitlement_regex = re.compile(r'^[a-z_,]*$').match
 
 
 def valid_name(value):
     if not valid_name_regex(value):
         raise InvalidName(value)
+    return True
+
+
+def valid_entitlements(value):
+    if not valid_entitlement_regex(value):
+        raise InvalidEntitlement(value)
     return True
 
 
