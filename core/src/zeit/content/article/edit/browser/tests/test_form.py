@@ -183,3 +183,22 @@ class SetRemoteMetadata(zeit.content.article.testing.BrowserTestCase):
         b.open('@@edit.form.options-interactive')
         self.assertEllipsis('...Remote image...https://my-remote-image.de...', b.contents)
         self.assertEllipsis('...Remote timestamp...https://my-remote-timestamp.de...', b.contents)
+
+
+class SetAccessControl(zeit.content.article.testing.BrowserTestCase):
+    def test_access_control_fields_are_not_displayed(self):
+        b = self.browser
+        b.open('http://localhost/++skin++vivi/repository/online/2007/01/Somalia/@@checkout')
+        b.open('@@edit.form.options-interactive')
+        self.assertNotIn('Accepted entitlements', b.contents)
+
+    def test_access_control_fields_are_displayed(self):
+        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        with zeit.cms.checkout.helper.checked_out(article) as co:
+            article = zeit.cms.content.interfaces.ICommonMetadata(co)
+            article.access = 'abo'
+            article.accepted_entitlements = 'zplus'
+        b = self.browser
+        b.open('http://localhost/++skin++vivi/repository/online/2007/01/Somalia/@@checkout')
+        b.open('@@edit.form.options-access-control')
+        self.assert_ellipsis('...Accepted entitlements...zplus...', b.contents)
