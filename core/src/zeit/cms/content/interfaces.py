@@ -132,6 +132,11 @@ class ICommonMetadata(zope.interface.Interface):
     )
 
     access = zope.schema.Choice(title=_('Access'), default='free', source=AccessSource())
+    accepted_entitlements = zope.schema.TextLine(
+        title=_('Accepted entitlements'),
+        description=_('Comma separated list of accepted entitlements.'),
+        required=False,
+    )
 
     keywords = zeit.cms.tagging.interfaces.Keywords(required=False, default=())
 

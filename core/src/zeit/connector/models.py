@@ -73,6 +73,11 @@ class CommonMetadata:
         Integer, info={'namespace': 'document', 'name': 'page', 'migration': 'wcm_471'}
     )
 
+    accepted_entitlements = mapped_column(
+        Unicode,
+        info={'namespace': 'document', 'name': 'accepted_entitlements', 'migration': 'wcm_574'},
+    )
+
 
 class ContentTypes:
     audio_premium_enabled = mapped_column(
