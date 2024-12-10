@@ -3,6 +3,8 @@ import os
 import pytest
 import requests
 
+import zeit.nightwatch
+
 
 XMLRPC_AUTH = 'nightwatch:' + os.environ['VIVI_XMLRPC_PASSWORD']
 CONFIG_STAGING = {
@@ -37,6 +39,29 @@ def pytest_configure(config):
     if config.option.prometheus_extra_labels is None:
         config.option.prometheus_extra_labels = []
     config.option.prometheus_extra_labels.append('project=vivi')
+
+
+@pytest.fixture
+def http(nightwatch_config, oidc_token):
+    config = nightwatch_config.get('browser', {})
+    browser = zeit.nightwatch.Browser(**config)
+    if oidc_token:
+        browser.session.cookies.set('zeit_oidc_www_staging', oidc_token)
+    return browser
+
+
+@pytest.fixture(scope='session')
+def oidc_token(nightwatch_config):
+    if nightwatch_config['environment'] != 'staging':
+        return None
+    with requests.Session() as http:
+        r = http.post(
+            'https://openid.zeit.de/realms/zeit-online/protocol/openid-connect/token',
+            data={'grant_type': 'client_credentials', 'scope': 'openid'},
+            auth=(os.environ['OIDC_CLIENT_ID'], os.environ['OIDC_CLIENT_SECRET']),
+        )
+        r.raise_for_status()
+        return r.json()['id_token']
 
 
 class StorageClient:
