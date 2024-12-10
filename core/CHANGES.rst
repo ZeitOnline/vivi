@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.86.0 (2024-12-10)
+-------------------
+
+- WCM-327: collective publication in a single task for dynamic folders
+
+
 6.85.0 (2024-12-09)
 -------------------
 
