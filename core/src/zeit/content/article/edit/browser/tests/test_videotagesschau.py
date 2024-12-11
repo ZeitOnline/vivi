@@ -5,7 +5,6 @@ import json
 import lxml.etree
 import zope.component
 
-from zeit.cms.content.sources import FEATURE_TOGGLES
 import zeit.cms.config
 import zeit.content.article.edit.browser.testing
 import zeit.content.article.edit.interfaces
@@ -220,12 +219,11 @@ class Form2(zeit.content.article.testing.FunctionalTestCase):
         api = zeit.content.article.edit.videotagesschau.VideoTagesschauAPI(
             zeit.cms.config.package('zeit.content.article')
         )
-        FEATURE_TOGGLES.unset('ard_sync_api')
         with mock.patch(
             'zeit.content.article.edit.' 'videotagesschau.VideoTagesschauAPI._request'
         ) as rq:
             api_request = api.request_videos(article)
-            path, args = rq.call_args_list[0]
+            path, _ = rq.call_args_list[0]
             self.assertEqual(
                 'GET https://ard-tagesschau/get/'
                 '6b0a8d0a2d3724730be6bde771c6c4cdd183757367'
@@ -234,7 +232,7 @@ class Form2(zeit.content.article.testing.FunctionalTestCase):
             )
             path, args = rq.call_args_list[1]
             self.assertEqual(
-                'POST https://ard-tagesschau/post?SIG_URI=XYZ'
+                'POST https://ard-tagesschau/post/sync?SIG_URI=XYZ'
                 '&API_KEY=1a2b3c4d5e&ART_HASH=6b0a8d0a2d37247'
                 '30be6bde771c6c4cdd1837573679289abd8809a881e3'
                 '4cd4f',
@@ -245,22 +243,6 @@ class Form2(zeit.content.article.testing.FunctionalTestCase):
                 'GET https://ard-tagesschau/get/'
                 '6b0a8d0a2d3724730be6bde771c6c4cdd183757367'
                 '9289abd8809a881e34cd4f',
-                path[0],
-            )
-            assert isinstance(api_request, dict)
-            assert isinstance(api_request['recommendations'], list)
-        FEATURE_TOGGLES.set('ard_sync_api')
-        with mock.patch(
-            'zeit.content.article.edit.' 'videotagesschau.VideoTagesschauAPI._request'
-        ) as rq:
-            api_request = api.request_videos(article)
-            path, args = rq.call_args_list[1]
-            self.assertEqual(
-                'POST https://ard-tagesschau/post/sync'
-                '?SIG_URI=XYZ'
-                '&API_KEY=1a2b3c4d5e&ART_HASH=6b0a8d0a2d37247'
-                '30be6bde771c6c4cdd1837573679289abd8809a881e3'
-                '4cd4f',
                 path[0],
             )
             assert isinstance(api_request, dict)
