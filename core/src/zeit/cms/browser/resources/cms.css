@@ -440,10 +440,6 @@ pre {
   background: transparent url("layout/logo_zco.png") no-repeat left center;
 }
 
-.section-IZARSection #main-navigation > li:first-child > a {
-  background: transparent url("layout/logo_zar.png") no-repeat left center;
-}
-
 .section-IZTTSection #main-navigation > li:first-child > a {
     background: transparent url("layout/logo_ztt.png") no-repeat left center;
 }
