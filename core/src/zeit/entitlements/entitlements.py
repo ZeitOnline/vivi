@@ -18,6 +18,8 @@ class AcceptedEntitlements(grok.Adapter):
             case 'registration':
                 return {'registration'}
             case 'abo':
+                if content.accepted_entitlements:
+                    return set(content.accepted_entitlements.split(','))
                 result = {'zplus'}
 
                 if content.ressort == 'zeit-magazin' and content.sub_ressort == 'wochenmarkt':
