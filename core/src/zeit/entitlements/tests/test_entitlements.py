@@ -41,3 +41,12 @@ class Entitlements(zeit.entitlements.testing.FunctionalTestCase):
         self.assertEqual(
             {'podcast', 'zplus'}, zeit.entitlements.accepted(self.repository['testcontent'])
         )
+
+    def test_accepted_entitlements(self):
+        self.content.access = 'abo'
+        self.content.accepted_entitlements = 'podcast,wochenmarkt'
+        self.assertEqual({'podcast', 'wochenmarkt'}, zeit.entitlements.accepted(self.content))
+        self.content.accepted_entitlements = 'podcast'
+        self.assertEqual({'podcast'}, zeit.entitlements.accepted(self.content))
+        self.content.accepted_entitlements = ''
+        self.assertEqual({'zplus'}, zeit.entitlements.accepted(self.content))
