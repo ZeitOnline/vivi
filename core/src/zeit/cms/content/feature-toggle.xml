@@ -1,5 +1,4 @@
 <features>
-  <add_content_permissions>true</add_content_permissions>
   <content_caching>true</content_caching>
   <dpa_import_delete_image>true</dpa_import_delete_image>
   <reference_index>true</reference_index>
