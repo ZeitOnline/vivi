@@ -111,6 +111,7 @@ def publish():
         semantic = zeit.cms.content.interfaces.ISemanticChange(content)
         if (
             info.date_last_published is not None
+            and semantic.last_semantic_change is not None
             and semantic.last_semantic_change > info.date_last_published
             and not options.force_changed
         ):
