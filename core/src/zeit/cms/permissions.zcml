@@ -182,16 +182,6 @@
     />
 
   <permission
-    id="zeit.content.text.AddEmbed"
-    title="Add Embed objects"
-    />
-
-  <permission
-    id="zeit.content.text.EditEmbed"
-    title="Edit Embed objects"
-    />
-
-  <permission
    id="zeit.MaterializeContent"
    title="Materialize dynamic folder content"
    />

@@ -76,4 +76,3 @@ class EmbedType(zeit.content.text.text.TextType):
     title = _('Embed')
     factory = Embed
     addform = 'zeit.content.text.embed.Add'
-    addpermission = 'zeit.content.text.AddEmbed'
