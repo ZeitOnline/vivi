@@ -129,22 +129,12 @@
     permission="zope.Public"
     />
 
-
-  <!-- XXX Fold back together once the feature toggle `add_content_permissions`
-       is fully in production -->
   <browser:page
     for="zeit.cms.repository.interfaces.IFolder"
     name="zeit.content.text.embed.Add"
-    permission="zeit.AddContent"
+    permission="zeit.content.text.AddEmbed"
     class=".embed.Add"
-    />
-  <browser:menuItem
-    for="zeit.cms.repository.interfaces.IFolder"
-    layer="zope.publisher.interfaces.browser.IDefaultBrowserLayer"
-    menu="zeit-add-menu"
-    title="Embed"
-    action="zeit.content.text.embed.Add"
-    item_class=".embed.AddMenuItem"
+    menu="zeit-add-menu" title="Embed"
     />
 
   <browser:viewlet
