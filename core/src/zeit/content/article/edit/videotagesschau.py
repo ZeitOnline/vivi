@@ -13,7 +13,6 @@ import zope.security.proxy
 
 from zeit.cms.content.interfaces import IUUID
 from zeit.cms.content.property import ObjectPathAttributeProperty
-from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.config
 import zeit.cms.interfaces
@@ -48,7 +47,6 @@ VIDEO_ATTRIBUTES = {
 class VideoTagesschauAPI:
     def __init__(self, config):
         self.api_url_post = config['tagesschau-api-url-post']
-        self.api_url_post_sync = config['tagesschau-api-url-post-sync']
         self.api_url_get = config['tagesschau-api-url-get']
         self.sig_uri = config['tagesschau-sig-uri']
         self.api_key = config['tagesschau-api-key']
@@ -64,12 +62,9 @@ class VideoTagesschauAPI:
                 f'Found tagesschauvideo for "{article.title}" ' f'{payload["article_custom_id"]}'
             )
             return video_recommendations
-        api_url = self.api_url_post
-        if FEATURE_TOGGLES.find('ard_sync_api'):
-            api_url = self.api_url_post_sync
         try:
             rpost = self._request(
-                f'POST {api_url}?SIG_URI={self.sig_uri}'
+                f'POST {self.api_url_post}?SIG_URI={self.sig_uri}'
                 f'&API_KEY={self.api_key}&ART_HASH={article_hash}',
                 json=payload,
                 timeout=3,

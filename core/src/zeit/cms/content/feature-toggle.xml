@@ -1,10 +1,8 @@
 <features>
-  <add_content_permissions>true</add_content_permissions>
   <content_caching>true</content_caching>
   <dpa_import_delete_image>true</dpa_import_delete_image>
   <reference_index>true</reference_index>
   <tms_enrich_on_checkin>true</tms_enrich_on_checkin>
-  <ard_sync_api>true</ard_sync_api>
   <normalize_quotes>false</normalize_quotes>
   <simplecast_webhook>true</simplecast_webhook>
   <speech_webhook>true</speech_webhook>
