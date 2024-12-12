@@ -1,1 +1,0 @@
-FIX: publish script not working when info.date_last_published is None

@@ -3,6 +3,20 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.88.0 (2024-12-12)
+-------------------
+
+- FIX: publish script not working when info.date_last_published is None
+
+- WCM-533: added new column for custom access entitlements
+
+- WCM-574: remove more obsolete toggles
+
+
+MAINT:
+- Make text in property table selectable/copyable
+
+
 6.86.0 (2024-12-10)
 -------------------
 
