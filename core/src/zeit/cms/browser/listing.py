@@ -250,7 +250,7 @@ class Listing:
     """Object listing view"""
 
     title = _('Directory listing')
-    css_class = 'contentListing hasMetadata'
+    css_class = 'contentListing hasMetadata filterable'
     filter_interface = None
     no_content_message = _('There are no objects in this folder.')
 

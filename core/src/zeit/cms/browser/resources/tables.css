@@ -28,6 +28,10 @@ table > * > tr > td {
 .contentListing {
    border-collapse: collapse;
    width: 100%;
+   cursor: inherit;
+}
+
+.contentListing.filterable {
    cursor: pointer;
 }
 
@@ -42,6 +46,30 @@ table > * > tr > td {
 
 .contentListing > thead > tr > th {
   white-space: nowrap;
+}
+
+.contentListing > tbody > tr > td > .filename {
+    font-size: 0.8em;
+}
+
+ul.contentListing {
+    cursor: default;
+    list-style: none;
+    padding: 0;
+}
+
+ul.contentListing > li {
+    clear: both;
+    margin-bottom: 1em;
+}
+
+ul.contentListing > li > a {
+    display: block;
+    margin-left: 28px;
+}
+
+ul.contentListing > li > img {
+    float: left;
 }
 
 /* don't display the filter column */
