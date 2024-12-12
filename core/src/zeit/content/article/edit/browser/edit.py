@@ -258,25 +258,21 @@ class EditEmbed(zeit.cms.browser.manual.FormMixin, zeit.edit.browser.form.Inline
     )
 
     def _resolve_bsky_url(self, url):
-        regex = r'^(https://bsky\.app/profile/)([^/]+)(/post/.*)$'
+        regex = r'^(?P<prefix>https://bsky\.app/profile/)(?P<user>[^/]+)(?P<suffix>/post/.*)$'
         api_url = 'https://public.api.bsky.app/xrpc/com.atproto.identity.resolveHandle'
 
         match = None
-        api_result = None
         try:
             match = re.fullmatch(regex, url)
-            if match[2].startswith('did:'):
+            if match['user'].startswith('did:'):
                 return url
 
-            api_result = requests.get(f'{api_url}?handle={match[2]}', timeout=5)
-            assert api_result.status_code == 200
-            return match[1] + api_result.json()['did'] + match[3]
+            api_result = requests.get(f'{api_url}?handle={match["user"]}', timeout=5)
+            api_result.raise_for_status()
+            return match['prefix'] + api_result.json()['did'] + match['suffix']
 
-        except Exception:
-            raise Exception(
-                f'Error resolving Bluesky-URL {url} (match={match}, '
-                'api_result={api_result}): {e}'
-            )
+        except Exception as e:
+            raise Exception(f'Error resolving Bluesky-URL {url} (match={match}): {e}')
 
     def success_handler(self, action, data, errors=None):
         if FEATURE_TOGGLES.find('resolve_bsky_embed_url') and data['url'].startswith(
