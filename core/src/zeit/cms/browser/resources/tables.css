@@ -28,6 +28,10 @@ table > * > tr > td {
 .contentListing {
    border-collapse: collapse;
    width: 100%;
+   cursor: inherit;
+}
+
+.contentListing.filterable {
    cursor: pointer;
 }
 
