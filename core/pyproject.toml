@@ -311,9 +311,6 @@ exclude = [
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/zeit"]
-strict-naming = false  # required for proper output filename
-[tool.hatch.build.targets.sdist]
-strict-naming = false  # required for proper output filename
 
 
 [tool.towncrier]
