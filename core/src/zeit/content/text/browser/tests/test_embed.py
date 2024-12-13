@@ -1,3 +1,5 @@
+from zope.testbrowser.browser import LinkNotFoundError
+
 import zeit.cms.testing
 import zeit.content.text.embed
 import zeit.content.text.testing
@@ -25,12 +27,38 @@ class EmbedBrowserTest(zeit.content.text.testing.BrowserTestCase):
         b.getLink('Checkin').click()
         self.assertEllipsis('...<pre>changed</pre>...', b.contents)
 
+    def test_special_permission_is_required_to_add_embed_via_addcentral(self):
+        b = self.browser
+        b.open('http://localhost/++skin++vivi/@@addcentral')
+        self.assertIn('Embed', b.getControl('Type').displayOptions)
+
+        b = zeit.cms.testing.Browser(self.layer['wsgi_app'])
+        b.login('user', 'userpw')
+        b.open('http://localhost/++skin++vivi/@@addcentral')
+        self.assertNotIn('Embed', b.getControl('Type').displayOptions)
+
+    def test_special_permission_is_required_to_edit_embed(self):
+        embed = zeit.content.text.embed.Embed()
+        embed.text = ''
+        self.repository['embed'] = embed
+        b = self.browser
+        b.open('http://localhost/++skin++vivi/repository/embed')
+        with self.assertNothingRaised():
+            b.getLink('Checkout')
+
+        b = zeit.cms.testing.Browser(self.layer['wsgi_app'])
+        b.login('user', 'userpw')
+        b.open('http://localhost/++skin++vivi/repository/embed')
+        with self.assertRaises(LinkNotFoundError):
+            b.getLink('Checkout')
+
     def test_edit_cmp_fields(self):
         embed = zeit.content.text.embed.Embed()
         embed.text = ''
         self.repository['embed'] = embed
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/embed/@@checkout')
+        b.open('http://localhost/++skin++vivi/repository/embed')
+        b.getLink('Checkout').click()
         b.getLink('Edit embed parameters').click()
         b.getControl('Contains thirdparty code').displayValue = ['yes']
         b.getControl('Add Vendors').click()
