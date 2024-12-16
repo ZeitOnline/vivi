@@ -276,8 +276,10 @@ class EditEmbed(zeit.cms.browser.manual.FormMixin, zeit.edit.browser.form.Inline
             raise Exception(f'Error resolving Bluesky-URL {url} (match={match}): {e}')
 
     def success_handler(self, action, data, errors=None):
-        if FEATURE_TOGGLES.find('resolve_bsky_embed_url') and data['url'].startswith(
-            'https://bsky.app/'
+        if (
+            FEATURE_TOGGLES.find('resolve_bsky_embed_url')
+            and data is not None
+            and data['url'].startswith('https://bsky.app/')
         ):
             data['url'] = self._resolve_bsky_url(data['url'])
         return super().success_handler(action, data, errors)
