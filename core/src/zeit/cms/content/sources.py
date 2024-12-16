@@ -679,7 +679,12 @@ class AddableCMSContentTypeSource(CMSContentTypeSource):
     def filterValue(self, context, value):
         import zeit.cms.type  # break circular import
 
-        return value.queryTaggedValue('zeit.cms.addform') != zeit.cms.type.SKIP_ADD
+        if value.queryTaggedValue('zeit.cms.addform') == zeit.cms.type.SKIP_ADD:
+            return False
+        permission = value.queryTaggedValue('zeit.cms.addpermission')
+        if not permission:  # most content types need no special permission
+            return True
+        return zope.security.management.getInteraction().checkPermission(permission, context)
 
 
 class PrintRessortSource(XMLSource):

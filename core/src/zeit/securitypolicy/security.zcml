@@ -203,6 +203,14 @@
     role="zeit.Producer"
     permission="zeit.content.author.Delete"
     />
+  <grant
+    role="zeit.Producer"
+    permission="zeit.content.text.AddEmbed"
+    />
+  <grant
+    role="zeit.Producer"
+    permission="zeit.content.text.EditEmbed"
+    />
 
   <grant
     role="zeit.Producer"

@@ -20,6 +20,15 @@ class Add(FormBase, zeit.cms.browser.form.AddForm):
     factory = zeit.content.text.embed.Embed
 
 
+class CheckoutMenuItem(zeit.cms.checkout.browser.manager.CheckoutMenuItem):
+    def is_visible(self):
+        if not self.request.interaction.checkPermission(
+            'zeit.content.text.EditEmbed', self.context
+        ):
+            return False
+        return super().is_visible()
+
+
 class Edit(FormBase, zeit.cms.browser.form.EditForm):
     title = _('Edit embed')
 
