@@ -267,7 +267,8 @@ class EditEmbed(zeit.cms.browser.manual.FormMixin, zeit.edit.browser.form.Inline
             if match['user'].startswith('did:'):
                 return url
 
-            api_result = requests.get(f'{api_url}?handle={match["user"]}', timeout=5)
+            timeout = zeit.cms.config.get('zeit.content.article', 'bluesky-api-timeout', 5)
+            api_result = requests.get(f'{api_url}?handle={match["user"]}', timeout=timeout)
             api_result.raise_for_status()
             return match['prefix'] + api_result.json()['did'] + match['suffix']
 
