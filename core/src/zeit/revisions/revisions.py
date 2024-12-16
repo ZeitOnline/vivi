@@ -3,7 +3,6 @@ import logging
 
 from google.cloud import storage
 import grokcore.component as grok
-import pendulum
 import zope.interface
 
 import zeit.workflow.interfaces
@@ -44,9 +43,8 @@ class ContentRevision:
             self.upload_to_bucket(uuid, 'text/xml', content['body'])
 
     def upload_to_bucket(self, uuid, content_type, payload):
-        timestamp = pendulum.now(tz='Europe/Berlin').strftime('%Y-%m-%dT%H%M%S')
         file_type = 'xml' if content_type == 'text/xml' else 'json'
-        blob = self.bucket.blob(f'{uuid}_{timestamp}.{file_type}')
+        blob = self.bucket.blob(f'{uuid}.{file_type}')
         blob.upload_from_string(payload, content_type=content_type)
 
 
