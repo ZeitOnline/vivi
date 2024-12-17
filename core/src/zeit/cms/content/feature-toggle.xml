@@ -7,4 +7,5 @@
   <simplecast_webhook>true</simplecast_webhook>
   <speech_webhook>true</speech_webhook>
   <contentquery_ui_show_elastic>true</contentquery_ui_show_elastic>
+  <resolve_bsky_embed_url>true</resolve_bsky_embed_url>
 </features>
