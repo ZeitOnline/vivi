@@ -3,6 +3,18 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.89.0 (2024-12-17)
+-------------------
+
+- ZO-6758: Resolve account name in Bluesky post url
+
+- WCM-574: remove toggle add_content_permissions and use new content permissions for embeds
+
+
+MAINT:
+- MAINT: Remove vivi logo for deprecated ZAR vertical
+
+
 6.88.0 (2024-12-12)
 -------------------
 
