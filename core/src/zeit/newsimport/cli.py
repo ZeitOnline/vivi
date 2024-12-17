@@ -4,15 +4,12 @@ import logging
 import socket
 import sys
 
-from prometheus_client import push_to_gateway
 from zope.security.management import getInteraction
 import gocept.runner
 import zope.component
 
 import zeit.cms.cli
-import zeit.cms.config
 import zeit.newsimport.interfaces
-import zeit.newsimport.metrics as metrics
 import zeit.newsimport.news
 
 
@@ -44,25 +41,11 @@ def import_dpa_news_api(args=None):
         )
         dpa = zope.component.getUtility(zeit.newsimport.interfaces.IDPA, name=args.profile)
         entries = dpa.get_entries()
-        metrics.LENGTH.set(len(entries))
         log.info('%s entries received from dpa', len(entries))
 
         for entry in entries:
             process = functools.partial(zeit.newsimport.news.process_task, entry, args.profile)
             yield process
-
-        env = zeit.cms.config.required('zeit.cms', 'environment')
-        if env in ['staging', 'production']:
-            push_to_gateway(
-                zeit.cms.config.get(
-                    'zeit.newsimport',
-                    'push_gateway',
-                    'http://pushgateway.cluster-infra.svc.cluster.local:9091',
-                ),
-                job='vivi-newsimport',
-                registry=metrics.REGISTRY,
-                grouping_key={'environment_zni': env},
-            )
 
     run = zeit.cms.cli.runner(ticks=args.interval, principal=args.owner, once=False)(importer)
     return run()
