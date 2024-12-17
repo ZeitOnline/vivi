@@ -176,16 +176,16 @@ class TestNews(zeit.newsimport.testing.FunctionalTestCase):
         article = self.news.publish(self.news.create())
         self.assertFalse(self.news.update(article))
 
-    def test_update_article_with_retracted_images(self):
+    def test_update_article_with_implicitly_retracted_images(self):
         article = self.news.publish(self.news.create())
         image_group = ICMSContent(f'{article.uniqueId}-image-group', None)
         self.assertTrue(IPublishInfo(image_group).published)
         entry = self.dpa.get_entries()[0].copy()
         entry['associations'] = []
-        with mock.patch('zeit.newsimport.news.Image.delete') as delete:
+        with mock.patch('zeit.newsimport.news.Image.retract') as retract:
             article_new = zeit.newsimport.news.ArticleEntry(entry)
             article_new.update(article)
-            self.assertTrue(delete.called)
+            self.assertTrue(retract.called)
 
 
 class TestImage(zeit.newsimport.testing.FunctionalTestCase):
@@ -390,7 +390,8 @@ class TestImage(zeit.newsimport.testing.FunctionalTestCase):
         self.connector.search_result = [f'{NEWS_ARTICLE_UNIQUEID}-image-group/']
         image_entry = zeit.newsimport.news.ImageEntry(entry)
         image_entry.retract()
-        self.assertFalse(article.main_image.target)
+        imagegroup = ICMSContent(f'{NEWS_ARTICLE_UNIQUEID}-image-group/')
+        self.assertFalse(IPublishInfo(imagegroup).published)
 
     def test_non_existend_image_entry_does_not_break(self):
         entry = self.dpa.get_entries()[-1].copy()
@@ -398,6 +399,30 @@ class TestImage(zeit.newsimport.testing.FunctionalTestCase):
         news = zeit.newsimport.news.ImageEntry(entry)
         image_group = news.do_import()
         self.assertEqual(None, image_group)
+
+    def test_retract_article_retracts_article_image_group(self):
+        image_group_id = f'{NEWS_ARTICLE_UNIQUEID}-image-group/'
+        entry = self.dpa.get_entries()[-1].copy()
+        news = zeit.newsimport.news.ArticleEntry(entry)
+        article = news.publish(news.create())
+        image_group = ICMSContent(image_group_id)
+        self.assertTrue(IPublishInfo(article).published)
+        self.assertTrue(IPublishInfo(image_group).published)
+
+        self.connector.search_result = [article.uniqueId]
+        article = news.retract()
+        image_group = ICMSContent(image_group_id)
+        self.assertFalse(IPublishInfo(article).published)
+        self.assertFalse(IPublishInfo(image_group).published)
+
+    def test_retract_article_without_image_does_not_break(self):
+        entry = self.dpa.get_entries()[2].copy()
+        news = zeit.newsimport.news.ArticleEntry(entry)
+        article = news.publish(news.create())
+        self.assertTrue(IPublishInfo(article).published)
+        self.connector.search_result = [article.uniqueId]
+        article = news.retract()
+        self.assertFalse(IPublishInfo(article).published)
 
 
 class TestProcess(zeit.newsimport.testing.FunctionalTestCase):
