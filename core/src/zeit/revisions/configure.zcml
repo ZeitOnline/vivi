@@ -6,5 +6,4 @@
 
   <grok:grok package="." />
   <utility factory=".revisions.factory" />
-  <subscriber handler=".revisions.create_revision_after_checkin" />
 </configure>
