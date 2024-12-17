@@ -1,3 +1,8 @@
+import re
+import urllib
+
+import requests_mock
+
 import zeit.content.article.edit.browser.testing
 
 
@@ -24,6 +29,20 @@ class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
             'https://bsky.app/profile/did:plc:2d4i6jgzxpxuwsttkark575m/post/3lbcovlxajs2x',
             b.getControl('Embed URL').value,
         )
+
+    @requests_mock.Mocker()
+    def test_embed_resolve_bsky_url_fails(self, m):
+        self.get_article(with_block='embed')
+        b = self.browser
+        b.open('editable-body/blockname/@@edit-embed?show_form=1')
+        b.getControl(
+            'Embed URL'
+        ).value = 'https://bsky.app/profile/denniskberlin.bsky.social/post/3lbcovlxajs2x'
+        matcher = re.compile('.+handle=denniskberlin.bsky.social')
+        m.register_uri('GET', matcher, text='resp', status_code=400)
+        with self.assertRaises(urllib.error.HTTPError):
+            b.getControl('Apply').click()
+            b.reload()
 
     def test_domain_must_be_included_in_supported_list(self):
         self.get_article(with_block='embed')

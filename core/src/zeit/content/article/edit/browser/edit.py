@@ -257,23 +257,29 @@ class EditEmbed(zeit.cms.browser.manual.FormMixin, zeit.edit.browser.form.Inline
         '__name__', '__parent__', 'xml'
     )
 
+    bsky_api = 'https://public.api.bsky.app/xrpc/com.atproto.identity.resolveHandle'
+    bsky_regex = re.compile(
+        r'^(?P<prefix>https://bsky\.app/profile/)(?P<user>[^/]+)(?P<suffix>/post/.*)$'
+    )
+
     def _resolve_bsky_url(self, url):
-        regex = r'^(?P<prefix>https://bsky\.app/profile/)(?P<user>[^/]+)(?P<suffix>/post/.*)$'
-        api_url = 'https://public.api.bsky.app/xrpc/com.atproto.identity.resolveHandle'
-
-        match = None
+        match = self.bsky_regex.fullmatch(url)
+        if match['user'].startswith('did:'):
+            return url
+        timeout = zeit.cms.config.get('zeit.content.article', 'bluesky-api-timeout', 1)
+        request = f'{self.bsky_api}?handle={match["user"]}'
         try:
-            match = re.fullmatch(regex, url)
-            if match['user'].startswith('did:'):
-                return url
-
-            timeout = zeit.cms.config.get('zeit.content.article', 'bluesky-api-timeout', 1)
-            api_result = requests.get(f'{api_url}?handle={match["user"]}', timeout=timeout)
+            api_result = requests.get(request, timeout=timeout)
             api_result.raise_for_status()
+        except requests.exceptions.RequestException as err:
+            status = getattr(err.response, 'status_code', 599)
+            message = getattr(err.response, 'text', '<no message>')
+            log.error(
+                'GET %s returned %s %s (Input: %s)', request, status, message, url, exc_info=True
+            )
+            raise
+        else:
             return match['prefix'] + api_result.json()['did'] + match['suffix']
-
-        except Exception as e:
-            raise Exception(f'Error resolving Bluesky-URL {url} (match={match}): {e}')
 
     def success_handler(self, action, data, errors=None):
         if (
