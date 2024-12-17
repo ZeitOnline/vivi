@@ -18,11 +18,6 @@ class Revisions(zeit.revisions.testing.FunctionalTestCase):
         self.uuid = zeit.cms.content.interfaces.IUUID(self.article).shortened
         self.revision = zope.component.getUtility(IContentRevision)
 
-    def tearDown(self):
-        # clear bucket
-        self.revision.bucket.delete_blobs([i for i in self.revision.bucket.list_blobs()])
-        return super().tearDown()
-
     def test_create_revision_after_checkin_for_articles(self):
         with checked_out(self.article) as co:
             co.access = 'abo'  # trigger AfterCheckinEvent
