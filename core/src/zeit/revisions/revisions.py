@@ -61,7 +61,7 @@ def create_revision_after_checkin(context, event):
     if event.publishing or FEATURE_TOGGLES.find('disable_revisions_on_checkin'):
         return
     filter = FILTERS.factory.getValues()
-    if filter.matches_criteria(context):
+    if filter(context):
         log.info('AfterCheckinEvent: Creating async revision job for %s', context.uniqueId)
         create_revision.apply_async((context.uniqueId,), countdown=5)
 
