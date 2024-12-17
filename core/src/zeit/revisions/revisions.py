@@ -6,6 +6,10 @@ import grokcore.component as grok
 import zope.interface
 
 from zeit.cms.content.sources import FEATURE_TOGGLES
+from zeit.cms.interfaces import CONFIG_CACHE
+import zeit.cms.checkout.webhook
+import zeit.content.article.interfaces
+import zeit.content.cp.interfaces
 import zeit.workflow.interfaces
 
 from .interfaces import IContentRevision
@@ -56,8 +60,10 @@ factory = ContentRevision.factory
 def create_revision_after_checkin(context, event):
     if event.publishing or FEATURE_TOGGLES.find('disable_revisions_on_checkin'):
         return
-    log.info('AfterCheckinEvent: Creating async revision job for %s', context.uniqueId)
-    create_revision.apply_async((context.uniqueId,), countdown=5)
+    filter = FILTERS.factory.getValues()
+    if filter.matches_criteria(context):
+        log.info('AfterCheckinEvent: Creating async revision job for %s', context.uniqueId)
+        create_revision.apply_async((context.uniqueId,), countdown=5)
 
 
 # XXX should we create our own queue?
@@ -70,3 +76,33 @@ def create_revision(self, uniqueId):
         return
     revision = zope.component.getUtility(IContentRevision)
     revision(content)
+
+
+class Filter(zeit.cms.checkout.webhook.Hook):
+    def __init__(self):
+        super().__init__('not-required', 'not-required')
+
+    def __call__(self, content):
+        return self.matches_criteria(content)
+
+
+class FilterSource(zeit.cms.content.sources.SimpleXMLSource):
+    config_url = 'checkin-revisions-config'
+    default_filename = 'checkin-revisions.xml'
+
+    @CONFIG_CACHE.cache_on_arguments()
+    def _values(self):
+        filter = Filter()
+        tree = self._get_tree()
+        for node in tree.iterchildren('filter'):
+            for include in node.xpath('include/*'):
+                filter.add_include(include.tag, include.text)
+            for exclude in node.xpath('exclude/*'):
+                filter.add_exclude(exclude.tag, exclude.text)
+        return filter
+
+    def getValues(self):
+        return self._values()
+
+
+FILTERS = FilterSource()
