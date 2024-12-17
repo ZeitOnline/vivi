@@ -1,7 +1,3 @@
-from unittest import mock
-
-import lxml
-
 from zeit.connector.testing import GCS_SERVER_LAYER
 import zeit.cms.checkout
 import zeit.cms.testing
@@ -23,25 +19,3 @@ ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
 
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
     layer = ZOPE_LAYER
-
-    @property
-    def config(self):
-        return """<revisions>
-          <filter/>
-        </revisions>
-        """
-
-    def setUp(self):
-        super().setUp()
-        self.patch = mock.patch(
-            'zeit.revisions.revisions.FilterSource._get_tree',
-            side_effect=lambda: lxml.etree.fromstring(self.config),
-        )
-        self.patch.start()
-        source = zeit.revisions.revisions.FILTERS.factory
-        # XXX Have to pass the instance because of zc.factory init shenanigans.
-        source._values.invalidate(source)
-
-    def tearDown(self):
-        self.patch.stop()
-        super().tearDown()
