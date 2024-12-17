@@ -66,8 +66,7 @@ def create_revision_after_checkin(context, event):
         create_revision.apply_async((context.uniqueId,), countdown=5)
 
 
-# XXX should we create our own queue?
-@zeit.cms.celery.task(bind=True, queue='manual')
+@zeit.cms.celery.task(bind=True, queue='revisions')
 def create_revision(self, uniqueId):
     # XXX can we check if the checksum has changed and only fire event if true?
     content = zeit.cms.interfaces.ICMSContent(uniqueId, None)
