@@ -2,5 +2,6 @@
   <include package="zeit.cms" file="ftesting.zcml" />
   <include package="zeit.content.article" file="ctesting.zcml"/>
   <include package="zeit.content.cp" file="ftesting.zcml"/>
+  <include package="zeit.content.link" file="ftesting.zcml"/>
   <include package="zeit.revisions" />
 </configure>

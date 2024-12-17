@@ -5,6 +5,8 @@ from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.interfaces import ICMSContent
 from zeit.revisions.interfaces import IContentRevision
 import zeit.cms.checkout.webhook
+import zeit.content.cp.centerpage
+import zeit.content.link.link
 import zeit.revisions
 import zeit.revisions.testing
 
@@ -43,6 +45,13 @@ class Revisions(zeit.revisions.testing.FunctionalTestCase):
         with checked_out(self.article) as co:
             co.access = 'abo'  # trigger AfterCheckinEvent
         self.assertFalse(self.revision.bucket.blob(f'{self.uuid}.xml').exists())
+
+    def test_create_revision_after_checkin_skip_non_versionable_content(self):
+        self.repository['link'] = zeit.content.link.link.Link()
+        with checked_out(self.repository['link']) as co:
+            co.title = 'foo'  # trigger AfterCheckinEvent
+        uuid = zeit.cms.content.interfaces.IUUID(self.repository['link']).shortened
+        self.assertFalse(self.revision.bucket.blob(f'{uuid}.xml').exists())
 
     def test_toggle_safeguard(self):
         FEATURE_TOGGLES.set('disable_revisions_on_checkin')

@@ -3,14 +3,15 @@ import logging
 
 from google.cloud import storage
 import grokcore.component as grok
+import zope.component
 import zope.interface
 
 from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.interfaces import CONFIG_CACHE
+from zeit.workflow.interfaces import IPublisherData
 import zeit.cms.checkout.webhook
 import zeit.content.article.interfaces
 import zeit.content.cp.interfaces
-import zeit.workflow.interfaces
 
 from .interfaces import IContentRevision
 
@@ -32,7 +33,7 @@ class ContentRevision:
 
     def __call__(self, context):
         content = zope.component.getAdapter(
-            context, zeit.workflow.interfaces.IPublisherData, name='datascience'
+            context, IPublisherData, name='datascience'
         ).publish_json()
         uuid = zeit.cms.content.interfaces.IUUID(context).shortened
         with zeit.cms.tracing.use_span(
@@ -58,7 +59,11 @@ factory = ContentRevision.factory
 
 @grok.subscribe(zeit.cms.interfaces.ICMSContent, zeit.cms.checkout.interfaces.IAfterCheckinEvent)
 def create_revision_after_checkin(context, event):
-    if event.publishing or FEATURE_TOGGLES.find('disable_revisions_on_checkin'):
+    if (
+        event.publishing
+        or FEATURE_TOGGLES.find('disable_revisions_on_checkin')
+        or zope.component.queryAdapter(context, IPublisherData, name='datascience') is None
+    ):
         return
     filter = FILTERS.factory.getValues()
     if filter(context):
@@ -68,7 +73,6 @@ def create_revision_after_checkin(context, event):
 
 @zeit.cms.celery.task(bind=True, queue='revisions')
 def create_revision(self, uniqueId):
-    # XXX can we check if the checksum has changed and only fire event if true?
     content = zeit.cms.interfaces.ICMSContent(uniqueId, None)
     if content is None:
         log.warning('Could not resolve %s, ignoring.', uniqueId)
