@@ -36,7 +36,8 @@ class ContentRevision:
             context, IPublisherData, name='datascience'
         ).publish_json()
         uuid = zeit.cms.content.interfaces.IUUID(context).shortened
-        with zeit.cms.tracing.use_span(
+        tracer = zope.component.getUtility(zeit.cms.interfaces.ITracer)
+        with tracer.start_as_current_span(
             __name__ + '.tracing',
             'gcs',
             attributes={'db.operation': 'upload', 'id': uuid},
