@@ -5,6 +5,7 @@ from google.cloud import storage
 import grokcore.component as grok
 import zope.interface
 
+from zeit.cms.content.sources import FEATURE_TOGGLES
 import zeit.workflow.interfaces
 
 from .interfaces import IContentRevision
@@ -53,7 +54,7 @@ factory = ContentRevision.factory
 
 @grok.subscribe(zeit.cms.interfaces.ICMSContent, zeit.cms.checkout.interfaces.IAfterCheckinEvent)
 def create_revision_after_checkin(context, event):
-    if event.publishing:
+    if event.publishing or FEATURE_TOGGLES.find('disable_revisions_on_checkin'):
         return
     log.info('AfterCheckinEvent: Creating async revision job for %s', context.uniqueId)
     create_revision.apply_async((context.uniqueId,), countdown=5)
