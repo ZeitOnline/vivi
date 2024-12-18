@@ -304,6 +304,9 @@ class Speechbert(grok.Adapter, IgnoreMixin):
         return f'{prefix}{variant_url}'
 
     def _json(self):
+        if self.context.audio_speechbert is False:
+            return None
+
         checksum = zeit.content.article.interfaces.ISpeechbertChecksum(self.context)
         payload = {
             'authors': [x.target.display_name for x in self.context.authorships if not x.role],

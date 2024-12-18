@@ -219,10 +219,14 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             )
         self.assertTrue(IPublishInfo(article).published)
 
-    def test_speechbert_audiospeechbert(self):
-        # TODO: add a test which checks audiospeechbert which should
-        # set hasAudio to False to tell speechbert to skip audio generation
-        pass
+    def test_speechbert_audio_speechbert_is_false(self):
+        article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        json = zeit.workflow.testing.publish_json(article, 'speechbert')
+        assert json is not None
+        with checked_out(article) as co:
+            co.audio_speechbert = False
+        json = zeit.workflow.testing.publish_json(article, 'speechbert')
+        assert json is None
 
     def test_speechbert_ignore_genres(self):
         article = ICMSContent('http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept')

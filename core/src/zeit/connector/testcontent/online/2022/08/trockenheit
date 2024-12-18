@@ -13,7 +13,7 @@
       <tag type="keyword">Hitze</tag>
     </rankedTags>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="artbox_thema">no</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="audio_speechbert">no</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="audio_speechbert">yes</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="banner">yes</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="banner_content">yes</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="channels">News</attribute>
