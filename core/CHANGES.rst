@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.91.0 (2024-12-18)
+-------------------
+
+- WCM-326: add new celery queue for revisions
+
+
 6.90.0 (2024-12-18)
 -------------------
 
