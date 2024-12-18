@@ -27,7 +27,6 @@ import zeit.connector.interfaces
 import zeit.content.article.interfaces
 import zeit.content.image.image
 import zeit.content.image.imagegroup
-import zeit.newsimport.metrics as metrics
 import zeit.retresco.update
 import zeit.workflow.interfaces
 
@@ -461,8 +460,6 @@ class Image(Entry):
             raise
 
 
-@metrics.EXECUTION_TIME.time()
-@metrics.COUNT_EXCEPTIONS.count_exceptions()
 def process_task(entry, profile_name='weblines'):
     log.info('Process %s', entry['urn'])
     if log.isEnabledFor(logging.DEBUG):
@@ -472,10 +469,8 @@ def process_task(entry, profile_name='weblines'):
     if news.usable:
         try:
             content = news.do_import()
-            metrics.COUNT_PUBLISH.inc()
         except Exception:
             log.error('Error while publishing %s', entry['urn'])
-            metrics.COUNT_PUBLISH_ERROR.inc()
             return
         if content is None:
             log.info('Skipped import of %s', entry['urn'])
@@ -485,10 +480,8 @@ def process_task(entry, profile_name='weblines'):
         try:
             if content := news.retract():
                 del content.__parent__[content.__name__]
-                metrics.COUNT_RETRACT.inc()
         except Exception:
             log.error('Error while retracting %s', entry['urn'])
-            metrics.COUNT_RETRACT_ERROR.inc()
             return
         if content is None:
             log.info('Skipped retracting %s, not found in vivi', entry['urn'])
