@@ -241,11 +241,20 @@ class TestTrace:
 
 @contextlib.contextmanager
 def captrace():
+    previous_provider = opentelemetry.trace._TRACER_PROVIDER
+    registry = zope.component.getGlobalSiteManager()
+    previous_tracer = registry.queryUtility(zeit.cms.interfaces.ITracer)
+
     provider, exporter = TestTrace.provider()
     _testing_set_tracer_provider(provider)
+    tracer = provider.get_tracer('testing')
+    registry.registerUtility(tracer, zeit.cms.interfaces.ITracer)
+
     yield TestTrace(exporter)
     exporter.clear()
-    _testing_set_tracer_provider(None)
+    _testing_set_tracer_provider(previous_provider)
+    if previous_tracer is not None:
+        registry.registerUtility(previous_tracer, zeit.cms.interfaces.ITracer)
 
 
 def _testing_set_tracer_provider(provider):
