@@ -569,6 +569,7 @@ CONFIG_LAYER = ProductConfigLayer(
         'source-api-mapping': 'product=zeit.cms.content.sources.ProductSource',
         # We just need a dummy XML file
         'checkin-webhook-config': f'file://{HERE}/content/ressorts.xml',
+        'checkin-revisions-config': f'file://{HERE}/content/checkin-revisions.xml',
     },
     patches={
         'zeit.connector': {

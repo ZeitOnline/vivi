@@ -109,6 +109,9 @@ class GCSServerLayer(plone.testing.Layer):
         # Evaluated automatically by google.cloud.storage.Client
         os.environ['STORAGE_EMULATOR_HOST'] = 'http://localhost:%s' % port
 
+    def testSetUp(self):
+        requests.get(os.environ['STORAGE_EMULATOR_HOST'] + '/wipe?keep-buckets=True')
+
     def tearDown(self):
         self['gcp_server'].stop()
         del self['gcp_server']
