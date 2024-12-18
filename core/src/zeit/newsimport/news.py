@@ -289,15 +289,13 @@ class ArticleEntry(Entry):
         if not article:
             return None
         IPublish(article).retract(background=False)
-        if zeit.cms.content.sources.FEATURE_TOGGLES.find('dpa_import_delete_image'):
-            if article.main_image is not None:
-                Image(self.entry, article).delete()
+        if article.main_image:
+            Image(self.entry, article).retract()
         return article
 
     def update(self, article):
-        if zeit.cms.content.sources.FEATURE_TOGGLES.find('dpa_import_delete_image'):
-            if article.main_image.target and not self.entry.get('associations', None):
-                Image(self.entry, article).delete()
+        if article.main_image and not self.entry.get('associations'):
+            Image(self.entry, article).retract()
         if not self.has_changes(article):
             return None
         log.info('Update %s', article)
@@ -350,11 +348,10 @@ class ImageEntry(Entry):
                 co.main_image = co.main_image.create(image)
 
     def retract(self):
-        if not self.content:
+        image = self.content
+        if not image:
             return
-        if zeit.cms.content.sources.FEATURE_TOGGLES.find('dpa_import_delete_image'):
-            if self.article_context.main_image is not None:
-                Image(self.entry, self.article_context).delete()
+        IPublish(image).retract(background=False)
 
 
 class Image(Entry):
@@ -437,13 +434,14 @@ class Image(Entry):
         log.info('Update %s for article %s', image_group, self.entry['urn'])
         return self.construct_image_group(image_group)
 
+    def retract(self):
+        image_group = self.article.main_image.target
+        IPublish(image_group).retract(background=False)
+        return image_group
+
     def delete(self):
         try:
-            image_group = zeit.cms.interfaces.ICMSContent(self.article.main_image.target)
-            # NOTE: this line has no effect when testing against
-            # IPublishInfo(image_group).published. But we decide to keep
-            # it here:
-            IPublish(image_group).retract(background=False)
+            image_group = self.retract()
             del self.article.__parent__[image_group.__name__]
             log.info(
                 'Retracted and deleted article image %s for article %s',
