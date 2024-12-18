@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.90.0 (2024-12-18)
+-------------------
+
+- WCM-175: Remove broken newsimport metrics
+
+- WCM-326: create revision after every checkin
+
+
 6.89.0 (2024-12-17)
 -------------------
 
