@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.94.0 (2024-12-19)
+-------------------
+
+FIX:
+- Increase volumes per year validation to 60
+
+
 6.93.0 (2024-12-19)
 -------------------
 
