@@ -3,6 +3,16 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.92.0 (2024-12-19)
+-------------------
+
+- WCM-599: Retract news images instead of deleting them.
+
+- WCM-102: actually respect audio_speechbert flag
+
+- WCM-559: add tts references to articles even if the checksum does not match
+
+
 6.91.0 (2024-12-18)
 -------------------
 
