@@ -38,8 +38,7 @@ class ContentRevision:
         uuid = zeit.cms.content.interfaces.IUUID(context).shortened
         tracer = zope.component.getUtility(zeit.cms.interfaces.ITracer)
         with tracer.start_as_current_span(
-            __name__ + '.tracing',
-            'gcs',
+            'revisions',
             attributes={'db.operation': 'upload', 'id': uuid},
         ):
             self.upload_to_bucket(
