@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.96.0 (2024-12-19)
+-------------------
+
+FIX:
+- Unify IVolume/ICommonMetadata validation settings
+
+
 6.95.0 (2024-12-19)
 -------------------
 
