@@ -10,7 +10,6 @@ from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
 from zeit.content.audio.interfaces import IAudioReferences, ISpeechInfo
 from zeit.content.audio.testing import AudioBuilder
 from zeit.speech.connection import Speech
-from zeit.speech.errors import AudioReferenceError
 from zeit.speech.testing import TTS_CREATED, TTS_DELETED, FunctionalTestCase
 import zeit.cms.checkout.interfaces
 import zeit.cms.workflow.mock
@@ -87,18 +86,19 @@ class TestSpeech(FunctionalTestCase):
         assert zeit.cms.workflow.mock._publish_count[article.uniqueId] == 2
         assert zeit.cms.workflow.mock._publish_count[audio.uniqueId] == 2
 
-    def test_if_article_changed_do_not_add_reference(self):
+    def test_if_article_changed_do_not_republish_article(self):
         IPublish(self.article).publish(background=False)
         with checked_out(self.article) as co:
             paragraph = co.body.create_item('p')
             paragraph.text = 'the article has changed'
-        with pytest.raises(AudioReferenceError):
-            self.create_audio(TTS_CREATED)
+        audio = self.create_audio(TTS_CREATED)
         article = ICMSContent(self.article_uid)
         reference = IAudioReferences(article)
-        assert not reference.items
+        assert audio in reference.items
+        assert zeit.cms.workflow.mock._publish_count[audio.uniqueId] == 0
+        assert zeit.cms.workflow.mock._publish_count[article.uniqueId] == 2
 
-    def test_update_audio_fails_if_article_changed(self):
+    def test_update_audio_still_works_even_if_article_changed(self):
         audio = self.create_audio(TTS_CREATED)
         article = ICMSContent(self.article_uid)
         reference = IAudioReferences(article)
@@ -108,8 +108,7 @@ class TestSpeech(FunctionalTestCase):
             paragraph.text = 'the article has changed'
         self.repository.connector.search_result = [(self.article.uniqueId)]
         with mock.patch('zeit.speech.connection.Speech._find', return_value=audio):
-            with pytest.raises(AudioReferenceError):
-                Speech().update(TTS_CREATED)
+            Speech().update(TTS_CREATED)
 
     def test_handle_delete_event(self):
         audio = self.create_audio(TTS_CREATED)

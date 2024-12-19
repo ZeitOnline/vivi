@@ -14,7 +14,6 @@ from zeit.connector.search import SearchVar
 from zeit.content.article.interfaces import IArticle
 from zeit.content.audio.audio import AUDIO_SCHEMA_NS, Audio
 from zeit.content.audio.interfaces import IAudio, IAudioReferences, ISpeechInfo
-from zeit.speech.errors import AudioReferenceError
 import zeit.cms.config
 import zeit.cms.interfaces
 import zeit.cms.repository.folder
@@ -95,7 +94,9 @@ class Speech:
         self._add_audio_reference(speech)
 
     def _add_audio_reference(self, speech: IAudio):
-        article = self._assert_article_unchanged(speech)
+        article = self._article(speech)
+        # republish only articles without changes made to them afterwards
+        pub_status = zeit.cms.workflow.interfaces.IPublicationStatus(article).published
         if speech in IAudioReferences(article).items:
             log.debug('%s already references %s', article, speech)
             # XXX countdown is workaround race condition between celery/redis BUG-796
@@ -105,23 +106,13 @@ class Speech:
             references = IAudioReferences(co)
             references.add(speech)
         log.info('Added reference from %s to %s', article, speech)
-        # XXX countdown is workaround race condition between celery/redis BUG-796
-        IPublish(article).publish(priority=PRIORITY_LOW, countdown=5)
+        if pub_status == 'published':
+            # XXX countdown is workaround race condition between celery/redis BUG-796
+            IPublish(article).publish(priority=PRIORITY_LOW, countdown=5)
 
     def _article(self, speech: IAudio) -> IArticle:
         return zeit.cms.interfaces.ICMSContent(
             zeit.cms.content.interfaces.IUUID(ISpeechInfo(speech).article_uuid), None
-        )
-
-    def _assert_article_unchanged(self, speech: IAudio) -> IArticle:
-        article = self._article(speech)
-        pub_status = zeit.cms.workflow.interfaces.IPublicationStatus(article).published
-        if pub_status == 'published':
-            return article
-        raise AudioReferenceError(
-            '%s was modified after publish. Skipped adding reference %s.',
-            article,
-            speech,
         )
 
     def _remove_reference_from_article(self, speech: IAudio):
