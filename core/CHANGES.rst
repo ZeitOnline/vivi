@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.95.0 (2024-12-19)
+-------------------
+
+FIX:
+- Unify volume/year validation settings
+
+
 6.94.0 (2024-12-19)
 -------------------
 
