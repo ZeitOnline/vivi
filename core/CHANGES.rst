@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.93.0 (2024-12-19)
+-------------------
+
+FIX:
+- Use wrong argument in telemetry span
+
+
 6.92.0 (2024-12-19)
 -------------------
 
