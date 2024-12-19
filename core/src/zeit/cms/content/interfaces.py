@@ -79,7 +79,7 @@ class ReferenceField(zope.schema.Choice):
 class ICommonMetadata(zope.interface.Interface):
     year = zope.schema.Int(title=_('Year'), min=1900, max=2100, required=False)
 
-    volume = zope.schema.Int(title=_('Volume'), min=1, max=54, required=False)
+    volume = zope.schema.Int(title=_('Volume'), min=1, max=60, required=False)
 
     page = zope.schema.Int(title=_('Page'), required=False)
 
