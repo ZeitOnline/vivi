@@ -3,6 +3,7 @@ import zc.sourcefactory.source
 import zope.interface
 import zope.schema
 
+from zeit.cms.content.interfaces import ICommonMetadata
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.interfaces
 import zeit.cms.content.sources
@@ -24,18 +25,14 @@ PRODUCT_SOURCE = ProductSource()
 
 
 class IVolume(zeit.cms.content.interfaces.IXMLContent):
+    year = ICommonMetadata['year'].bind(object())
+    volume = ICommonMetadata['volume'].bind(object())
+    # Cannot copy from ICommonMetadata, as we need to change the source here.
     product = zope.schema.Choice(
         title=_('Product id'),
-        # XXX kludgy, we expect a product with this ID to be present in the XML
-        # file. We only need to set an ID here, since to read the product we'll
-        # ask the source anyway.
         default=zeit.cms.content.sources.Product('ZEI'),
         source=PRODUCT_SOURCE,
     )
-
-    year = zope.schema.Int(title=_('Year'), min=1900, max=2100)
-
-    volume = zope.schema.Int(title=_('Volume'), min=1, max=54)
 
     volume_note = zope.schema.Text(title=_('Volume text'), required=False, max_length=170)
 
@@ -44,7 +41,6 @@ class IVolume(zeit.cms.content.interfaces.IXMLContent):
     previous = zope.interface.Attribute(
         'The previous IVolume object (by date_digital_published) or None'
     )
-
     next = zope.interface.Attribute('The next IVolume object (by date_digital_published) or None')
 
     title = zope.schema.TextLine(title=_('Title'), required=False)
@@ -134,7 +130,7 @@ class IVolume(zeit.cms.content.interfaces.IXMLContent):
 
 
 class IVolumeReference(zeit.cms.content.interfaces.IReference):
-    volume_note = zope.schema.Text(title=_('Volume text'), required=False, max_length=170)
+    volume_note = IVolume['volume_note'].bind(object())
 
 
 class ITocConnector(zope.interface.Interface):
