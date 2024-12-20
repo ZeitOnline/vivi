@@ -171,6 +171,7 @@ class OpenTelemetryMiddleware(opentelemetry.instrumentation.wsgi.OpenTelemetryMi
     """Port excluded_urls feature from opentelemetry-instrumentation-asgi"""
 
     def __init__(self, wsgi, excluded_urls=None, *args, **kw):
+        os.environ['OTEL_SEMCONV_STABILITY_OPT_IN'] = 'http'
         super().__init__(wsgi, *args, **kw)
         self.excluded_urls = excluded_urls
         # We're not interested (and Gauges cause bloat due to multiprocess)
