@@ -3,6 +3,7 @@ import os
 import urllib.parse
 import wsgiref.util
 
+from opentelemetry.metrics import NoOpUpDownCounter
 from opentelemetry.util.http import ExcludeList
 from zope.app.publication.httpfactory import HTTPPublicationRequestFactory
 from zope.authentication.interfaces import IUnauthenticatedPrincipal
@@ -172,6 +173,8 @@ class OpenTelemetryMiddleware(opentelemetry.instrumentation.wsgi.OpenTelemetryMi
     def __init__(self, wsgi, excluded_urls=None, *args, **kw):
         super().__init__(wsgi, *args, **kw)
         self.excluded_urls = excluded_urls
+        # We're not interested (and Gauges cause bloat due to multiprocess)
+        self.active_requests_counter = NoOpUpDownCounter('')
 
     def __call__(self, environ, start_response):
         url = wsgiref.util.request_uri(environ)
