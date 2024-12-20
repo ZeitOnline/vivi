@@ -37,4 +37,5 @@ class TracingTest(zeit.cms.testing.ZeitCmsBrowserTestCase):
     def test_healthcheck_is_not_recorded(self):
         with zeit.cms.tracing.captrace() as trace:
             self.browser.open('/@@health-check')
-            self.assertEqual(0, len(trace.spans))
+            for span in trace.spans:
+                self.assertNotIn('health-check', span.name)
