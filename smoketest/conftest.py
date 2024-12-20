@@ -3,6 +3,7 @@ import os
 import pytest
 import requests
 
+import zeit.msal
 import zeit.nightwatch
 
 
@@ -12,6 +13,9 @@ CONFIG_STAGING = {
     'storage': 'https://content-storage.staging.zon.zeit.de/internal',
     'vivi': f'https://{XMLRPC_AUTH}@vivi.staging.zon.zeit.de',
     'elasticsearch': 'https://tms-es.staging.zon.zeit.de/zeit_content/_search',
+    'ad_client_id': os.environ.get('AD_CLIENT_ID'),
+    'ad_client_secret': os.environ.get('AD_CLIENT_SECRET'),
+    'ad_refresh_token': os.environ.get('AD_REFRESH_TOKEN'),
 }
 
 
@@ -20,6 +24,9 @@ CONFIG_PRODUCTION = {
     'storage': 'https://content-storage.prod.zon.zeit.de/internal',
     'vivi': f'https://{XMLRPC_AUTH}@vivi.prod.zon.zeit.de',
     'elasticsearch': 'https://tms-es.zon.zeit.de/zeit_content/_search',
+    'ad_client_id': os.environ.get('AD_CLIENT_ID'),
+    'ad_client_secret': os.environ.get('AD_CLIENT_SECRET'),
+    'ad_refresh_token': os.environ.get('AD_REFRESH_TOKEN'),
 }
 
 
@@ -103,3 +110,18 @@ class StorageClient:
 @pytest.fixture(scope='session')
 def vivi(config):
     return StorageClient(config['storage'], config['vivi'])
+
+
+@pytest.fixture(scope='session')
+def azure_id_token(nightwatch_config):
+    c = nightwatch_config
+    cache = 'file://%s/msal.json' % os.getcwd()
+    auth = zeit.msal.Authenticator(c['ad_client_id'], c['ad_client_secret'], cache)
+    # Change into smoketest directory and run:
+    # >> pipenv run msal-token --client-id=myclient --client-secret=mysecret \ # noqa: E800
+    #       --cache-url=file:///tmp/msal.json login
+    # Secrets are stored in zon/v1/azure/activedirectory/oidc/<staging/production>/preview
+    # Replace new refresh token in secret with key refresh_token
+    if not os.path.exists(cache):
+        auth.login_with_refresh_token(c['ad_refresh_token'])
+    return auth.get_id_token()
