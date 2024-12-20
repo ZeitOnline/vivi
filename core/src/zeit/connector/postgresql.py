@@ -13,6 +13,7 @@ import time
 from gocept.cache.property import TransactionBoundCache
 from google.cloud import storage
 from google.cloud.storage.retry import DEFAULT_RETRY
+from opentelemetry.metrics import NoOpUpDownCounter
 from opentelemetry.trace import SpanKind
 from opentelemetry.trace.status import Status, StatusCode
 from sqlalchemy import (
@@ -747,12 +748,7 @@ zope_factory = SQLZopeConnector.factory
 class EngineTracer(opentelemetry.instrumentation.sqlalchemy.EngineTracer):
     def __init__(self, engine, **kw):
         tracer = self  # Kludge to inject zeit.cms.tracing.start_span()
-        meter = opentelemetry.metrics.get_meter(
-            __name__,
-            'unused',
-        )
-        unused_metrics = meter.create_up_down_counter('unused')
-        super().__init__(tracer, engine, unused_metrics, **kw)
+        super().__init__(tracer, engine, NoOpUpDownCounter(''), **kw)
 
     def start_span(self, *args, **kw):
         kw.setdefault('kind', SpanKind.CLIENT)
