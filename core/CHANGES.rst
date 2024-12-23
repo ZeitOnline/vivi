@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.97.0 (2024-12-23)
+-------------------
+
+- WCM-111: Make prometheus metrics export fully opt-in
+
+
 6.96.0 (2024-12-19)
 -------------------
 
