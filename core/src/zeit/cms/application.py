@@ -152,7 +152,10 @@ grok.global_utility(BrowserRequest.factory, zope.app.publication.interfaces.IBro
 class MetricsMiddleware:
     def __init__(self, wsgi):
         self.wsgi = wsgi
-        registry = zope.component.getUtility(zeit.cms.interfaces.IPrometheusRegistry)
+        registry = zope.component.queryUtility(zeit.cms.interfaces.IPrometheusRegistry)
+        if registry is None:
+            log.warning('No prometheus registry configured')
+            registry = prometheus_client.CollectorRegistry()
         self.metrics = prometheus_client.make_wsgi_app(registry)
 
     def __call__(self, environ, start_response):
