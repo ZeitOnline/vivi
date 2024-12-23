@@ -11,7 +11,7 @@
   <meta:provides feature="zeit.cms.decentral-syndication" />
   <meta:provides feature="zeit.cms.repository.tree" />
 
-  <meta:provides feature="zeit.cms.tracing.prometheus" />
+  <meta:provides feature="zeit.cms.tracing.prometheus.singleproc" />
 
   <include package="zeit.cms" file="ui.zcml" />
   <include package="zeit.cms" />

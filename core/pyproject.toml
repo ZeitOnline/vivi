@@ -190,6 +190,7 @@ deploy = [
     "gunicorn_environmentconfig",
     "gunicorn_worker_healthcheck",
     "opentelemetry-exporter-otlp",
+    "opentelemetry-exporter-prometheus",
     "opentelemetry-sdk",
     "opentelemetry-sdk-extension-prometheus-multiprocess",
     "pastescript",

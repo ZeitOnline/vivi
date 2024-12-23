@@ -47,16 +47,19 @@
   <utility factory=".tracing.default_tracer"
     zcml:condition="not-have zeit.cms.tracing.otlp"/>
 
-  <utility factory=".tracing.prometheus_metrics"
-    zcml:condition="have zeit.cms.tracing.prometheus"/>
+  <utility factory=".tracing.prometheus_metrics_multiproc"
+    zcml:condition="have zeit.cms.tracing.prometheus.multiproc"/>
   <utility
       factory="opentelemetry.sdk.extension.prometheus_multiprocess.MultiProcessRegistry"
       provides=".interfaces.IPrometheusRegistry"
-    zcml:condition="have zeit.cms.tracing.prometheus"/>
-  <utility
-      factory="prometheus_client.CollectorRegistry"
-      provides=".interfaces.IPrometheusRegistry"
-    zcml:condition="not-have zeit.cms.tracing.prometheus"/>
+    zcml:condition="have zeit.cms.tracing.prometheus.multiproc"/>
+
+  <utility factory=".tracing.prometheus_metrics_singleproc"
+    zcml:condition="have zeit.cms.tracing.prometheus.singleproc"/>
+	<utility
+		component="prometheus_client.REGISTRY"
+		provides=".interfaces.IPrometheusRegistry"
+	  zcml:condition="have zeit.cms.tracing.prometheus.singleproc"/>
 
   <subscriber handler=".cleanup.clean_previous_interaction" />
 

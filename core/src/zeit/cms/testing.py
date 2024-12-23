@@ -9,14 +9,12 @@ import json
 import logging
 import os
 import re
-import shutil
 import sys
 import tempfile
 import threading
 import unittest
 import xml.sax.saxutils
 
-from opentelemetry.sdk.extension.prometheus_multiprocess import MultiProcessRegistry
 import celery.contrib.testing.app
 import celery.contrib.testing.worker
 import celery_longterm_scheduler
@@ -284,38 +282,9 @@ def reset_connector():
         connector._reset()
 
 
-class PrometheusMultiprocessingLayer(plone.testing.Layer):
-    key = 'PROMETHEUS_MULTIPROC_DIR'
-
-    def setUp(self):
-        # At least on developer machines, the default of `$TMPDIR/*.db` might
-        # be occupied by a lot of things, and not only prometheus metric files.
-        self['tmpdir'] = tempfile.mkdtemp()
-        self['old_multiproc_dir'] = os.environ.get(self.key)
-
-        # Note: This change is not restored on tearDown, because
-        # prometheus_client puts this path into all sorts of places that we
-        # cannot get to. But practically speaking, no tests that use this
-        # should run anyway without an active ZopeLayer.
-        os.environ[self.key] = self['tmpdir']
-        MultiProcessRegistry.tmpdir = self['tmpdir']
-
-    def tearDown(self):
-        shutil.rmtree(self['tmpdir'])
-        del self['tmpdir']
-
-        if self['old_multiproc_dir']:
-            os.environ[self.key] = self['old_multiproc_dir']
-        del self['old_multiproc_dir']
-
-
-PROMETHEUS_MULTIPROC_LAYER = PrometheusMultiprocessingLayer()
-
-
 class ZopeLayer(plone.testing.Layer):
     defaultBases = (
         CELERY_EAGER_LAYER,
-        PROMETHEUS_MULTIPROC_LAYER,
         MOCK_RESET_LAYER,
     )
 

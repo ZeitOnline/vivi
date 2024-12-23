@@ -6,6 +6,7 @@ import socket
 import time
 
 from cryptography.fernet import Fernet
+from opentelemetry.exporter.prometheus import PrometheusMetricReader
 from opentelemetry.instrumentation.utils import http_status_to_status_code
 from opentelemetry.trace.status import Status
 import opentelemetry.context
@@ -155,7 +156,14 @@ def stdout_tracer():
 
 
 @zope.interface.implementer(zeit.cms.interfaces.IMetrics)
-def prometheus_metrics():
+def prometheus_metrics_singleproc():
+    opentelemetry.metrics.set_meter_provider(
+        opentelemetry.sdk.metrics.MeterProvider([PrometheusMetricReader()])
+    )
+
+
+@zope.interface.implementer(zeit.cms.interfaces.IMetrics)
+def prometheus_metrics_multiproc():
     from opentelemetry.sdk.extension.prometheus_multiprocess import PrometheusMeterProvider
 
     opentelemetry.metrics.set_meter_provider(PrometheusMeterProvider())
