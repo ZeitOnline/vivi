@@ -9,7 +9,6 @@
   <adapter
     factory=".related.create_related_reference_suppress_errors"
     name="related_suppress_errors" />
-  <adapter factory=".related.related_references" name="zeit.cms.related" />
 
   <class class=".related.RelatedContent">
     <require

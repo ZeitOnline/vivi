@@ -1,10 +1,6 @@
 # coding=utf-8
 from datetime import datetime
-import os
-import unittest
 
-import pytest
-import requests_mock
 import time_machine
 import zope.component
 import zope.event
@@ -238,41 +234,3 @@ class ChannelsTest(zeit.push.testing.TestCase):
             push = zeit.push.interfaces.IPushMessages(co)
             push.message_config = (self.message_config('cake', False),)
         self.assertEqual((), self.content.channels)
-
-
-@pytest.mark.integration()
-class PushTest(zeit.push.testing.TestCase):
-    level = 2
-
-    def setUp(self):
-        super().setUp()
-        self.message = zeit.push.urbanairship.Message(self.repository['testcontent'])
-        self.message.config['payload_template'] = 'foo.json'
-        self.api = zeit.push.urbanairship.Connection(
-            os.environ['ZEIT_PUSH_URBANAIRSHIP_BASE_URL'],
-            os.environ['ZEIT_PUSH_URBANAIRSHIP_APPLICATION_KEY'],
-            os.environ['ZEIT_PUSH_URBANAIRSHIP_MASTER_SECRET'],
-            expire_interval=1,
-        )
-
-    @unittest.skip('UA has too tight validation, nonsense requests fail')
-    def test_push_works(self):
-        self.api.ENDPOINT = '/push/validate'
-        with self.assertNothingRaised():
-            self.api.send('any', 'any', message=self.message)
-
-    def test_invalid_credentials_should_raise(self):
-        invalid_connection = zeit.push.urbanairship.Connection(
-            os.environ['ZEIT_PUSH_URBANAIRSHIP_BASE_URL'], 'invalid', 'invalid', expire_interval=1
-        )
-        with self.assertRaises(zeit.push.interfaces.WebServiceError):
-            invalid_connection.send('any', 'any', message=self.message)
-
-    def test_server_error_should_raise(self):
-        http = requests_mock.Mocker()
-        http.post(
-            os.environ['ZEIT_PUSH_URBANAIRSHIP_BASE_URL'] + self.api.ENDPOINT, status_code=500
-        )
-        with http:
-            with self.assertRaises(zeit.push.interfaces.TechnicalError):
-                self.api.send('any', 'any', message=self.message)

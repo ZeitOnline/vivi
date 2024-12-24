@@ -121,18 +121,6 @@ relevant for the article):
 []
 
 
-References
-==========
-
-We can track which articles an author is referenced by:
-
->>> import zeit.cms.relation.interfaces
->>> rel = zope.component.getUtility(
-...     zeit.cms.relation.interfaces.IRelations)
->>> [x.uniqueId for x in rel.get_relations(repository['shakespeare'])]
-['http://xml.zeit.de/testcontent']
-
-
 Equality
 ========
 

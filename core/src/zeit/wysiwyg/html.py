@@ -19,7 +19,6 @@ from zeit.wysiwyg.util import contains_element
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
-import zeit.cms.relation.interfaces
 import zeit.cms.repository.interfaces
 import zeit.wysiwyg.interfaces
 
@@ -100,32 +99,6 @@ class HTMLConverter:
                 if filtered is not None:
                     node.getparent().replace(node, filtered)
                     filtered.tail = node.tail
-
-    def references(self, tree):
-        return self._retrieve_content(self._extract_referenced_ids(tree))
-
-    def _extract_referenced_ids(self, tree):
-        result = []
-        tree = zope.security.proxy.removeSecurityProxy(tree)
-        for adapter in self._steps('to_html'):
-            xp = adapter.xpath_xml
-            if xp is SKIP:
-                continue
-            for node in tree.xpath(xp):
-                result.extend(adapter.references(node))
-        return result
-
-    def _retrieve_content(self, ids):
-        result = []
-        for id in ids:
-            if not id:
-                continue
-            if not id.startswith(zeit.cms.interfaces.ID_NAMESPACE):
-                continue
-            obj = zeit.cms.interfaces.ICMSContent(id, None)
-            if obj is not None:
-                result.append(obj)
-        return result
 
     def covered_xpath(self):
         """return an xpath query that matches all nodes for which there is a
@@ -210,9 +183,6 @@ class ConversionStep:
 
     def to_xml(self, node):
         raise NotImplementedError('when specifiyng xpath_html, to_xml() must be implemented')
-
-    def references(self, node):
-        return []
 
     @zope.cachedescriptors.property.Lazy
     def repository(self):
@@ -474,10 +444,6 @@ class ImageStep(ConversionStep):
             new_node.set('layout', layout)
         return new_node
 
-    def references(self, node):
-        unique_id = node.get('src', '')
-        return [unique_id]
-
 
 class URLStep(ConversionStep):
     """Convert uniqueIds to clickable CMS-URLs and vice versa."""
@@ -715,10 +681,6 @@ class ReferenceStep(ConversionStep):
         new_node.set('href', unique_id)
         return new_node
 
-    def references(self, node):
-        unique_id = node.get('href')
-        return [unique_id]
-
 
 class PortraitboxStep(ReferenceStep):
     content_type = 'portraitbox'
@@ -805,10 +767,6 @@ class HTMLContentBase:
     @html.setter
     def html(self, value):
         return self.convert.from_html(self.get_tree(), value)
-
-    @property
-    def references(self):
-        return self.convert.references(self.get_tree())
 
     @property
     def convert(self):

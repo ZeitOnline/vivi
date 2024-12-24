@@ -8,7 +8,6 @@ import zeit.cms.content.reference
 import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces
 import zeit.cms.related.related
-import zeit.cms.relation.interfaces
 import zeit.content.image.interfaces
 
 
@@ -82,28 +81,3 @@ class ImageReference(zeit.cms.content.reference.Reference):
 @zope.interface.implementer(zeit.content.image.interfaces.IImages)
 def images_from_template(context):
     return ImagesAdapter(context)
-
-
-@zope.component.adapter(zeit.cms.interfaces.ICMSContent)
-@zope.interface.implementer(zeit.cms.relation.interfaces.IReferenceProvider)
-def image_references(context):
-    images = zeit.content.image.interfaces.IImages(context, None)
-    if images is None:
-        return None
-    image = images.image
-    if image is None:
-        return ()
-    return (image,)
-
-
-@zope.component.adapter(zeit.content.image.interfaces.IImageGroup)
-@zope.interface.implementer(zeit.content.image.interfaces.IReferences)
-class References:
-    def __init__(self, context):
-        self.context = context
-
-    @property
-    def references(self):
-        relations = zope.component.getUtility(zeit.cms.relation.interfaces.IRelations)
-        relating_objects = relations.get_relations(self.context)
-        return tuple(relating_objects)

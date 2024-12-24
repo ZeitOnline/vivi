@@ -27,7 +27,4 @@
   <adapter factory=".html.HTMLImageStructureStep" name="HTMLImageStructureStep" />
   <adapter factory=".html.XMLImageStructureStep" name="XMLImageStructureStep" />
 
-
-  <adapter factory=".reference.html_references" name="zeit.wysiwyg.html" />
-
 </configure>

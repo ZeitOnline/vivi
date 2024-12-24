@@ -234,12 +234,6 @@ class Dependencies(zeit.cms.workflow.dependency.DependencyBase):
         return result
 
 
-@grok.adapter(zeit.cms.content.interfaces.ICommonMetadata, name='zeit.content.author')
-@grok.implementer(zeit.cms.relation.interfaces.IReferenceProvider)
-def references(context):
-    return [x.target for x in context.authorships]
-
-
 @grok.adapter(zeit.content.author.interfaces.IAuthor, zeit.cms.content.interfaces.IContentAdder)
 @grok.implementer(zeit.cms.content.interfaces.IAddLocation)
 def author_location(type_, adder):

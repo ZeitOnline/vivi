@@ -132,10 +132,6 @@ It will have a menu for the source
 <Link...http://localhost/++skin++cms/repository/.../asdf/@@xml_source_view.html'>
 
 
-It will have a menu for references
->>> browser.getLink('References')
-<Link...http://localhost/++skin++cms/repository/.../asdf/@@references.html'>
-
 When we checkout the article we will get the following
 >>> browser.getLink('View').click()
 >>> browser.getLink('Checkout').click()
@@ -146,10 +142,6 @@ When we checkout the article we will get the following
 The edit source link...
 >>> browser.getLink('Source')
 <Link...@@xml_source_edit.html'>
-
-...and the references
->>> browser.getLink('References')
-<Link...@@references.html'>
 
 There was a bug once where after editing an article there were edit fields on
 the read only form:

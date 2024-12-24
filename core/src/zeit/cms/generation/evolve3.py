@@ -1,14 +1,11 @@
-import zope.component
-
 import zeit.cms.generation
 import zeit.cms.generation.install
-import zeit.cms.relation.interfaces
-import zeit.cms.relation.relation
 
 
 def update(root):
-    relations = zope.component.getUtility(zeit.cms.relation.interfaces.IRelations)
-    relations.add_index(zeit.cms.syndication.feed.syndicated_in, multiple=True)
+    return
+    # relations = zope.component.getUtility(zeit.cms.relation.interfaces.IRelations)
+    # relations.add_index(zeit.cms.syndication.feed.syndicated_in, multiple=True)
 
 
 def evolve(context):

@@ -16,15 +16,3 @@ class IRelations(zope.interface.Interface):
 
     def add_index(element, multiple=False):
         """add a value index for given element."""
-
-
-class IReferences(zope.interface.Interface):
-    """An adapter that returns a list of objects that are referenced by the
-    context. This is the client-side entry point, it delegates to all
-    IReferenceProviders."""
-
-
-class IReferenceProvider(zope.interface.Interface):
-    """An adapter that returns a list of objects that are referenced by the
-    context. If you want to provide additional referenced objects, implement
-    this interface."""
