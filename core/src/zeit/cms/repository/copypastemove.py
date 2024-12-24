@@ -87,5 +87,3 @@ def store_rename_info(context, event):
         return
     old_id = os.path.join(event.oldParent.uniqueId, event.oldName)
     zeit.cms.repository.interfaces.IRenameInfo(context).previous_uniqueIds += (old_id,)
-    # We need to update objects referencing the old name.
-    zeit.cms.relation.corehandlers.update_referencing_objects.delay(old_id)

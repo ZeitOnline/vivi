@@ -1,5 +1,4 @@
 import BTrees
-import grokcore.component as grok
 import persistent
 import zc.relation.catalog
 import zope.interface
@@ -48,20 +47,4 @@ def _load_content(token, catalog, cache):
 
 def referenced_by(content, catalog):
     """Index for the zeit.cms.relation catalog."""
-    return zeit.cms.relation.interfaces.IReferences(content, None)
-
-
-@grok.adapter(zeit.cms.interfaces.ICMSContent)
-@grok.implementer(zeit.cms.relation.interfaces.IReferences)
-def references(context):
-    result = []
-    for name, adapter in zope.component.getAdapters(
-        (context,), zeit.cms.relation.interfaces.IReferenceProvider
-    ):
-        if not name:
-            raise ValueError(
-                'IReferenceProvider %r is registered without a name,'
-                ' this will cause configuration conflicts.'
-            )
-        result.extend(adapter)
-    return result
+    return None

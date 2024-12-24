@@ -241,10 +241,6 @@ The image file is required:
 Load the opernball image data an add w/o setting a file name. This selects the
 filename automatically.
 
-There must not be the "references" field on the add form:
->>> 'Objects using this image' in browser.contents
-False
-
 >>> file_control = browser.getControl(name='form.blob')
 >>> with open(test_file, 'rb') as f:
 ...     file_control.add_file(f, 'image/jpeg', 'opernball.jpg')
@@ -323,10 +319,6 @@ Lets create an image group:
 >>> browser.open(menu.value[0])
 >>> print(browser.title.strip())
 2006 – Add image group
-
-There must not be the "references" field on the add form:
->>> 'Objects using this image' in browser.contents
-False
 
 >>> def set_file_data(name, field):
 ...     test_file = os.path.join(
@@ -466,13 +458,6 @@ in the workingcopy)
 >>> browser.getLink('Checkout').click()
 >>> browser.url
 'http://localhost/++skin++cms/workingcopy/zope.user/new-hampshire-2/@@edit.html'
-
->>> print(browser.contents)
-<?xml version="1.0"?>
-<!DOCTYPE html ...
-    <title> New Hampshire – Edit image group </title>
-    ...Objects using this image...
-
 
 Set the alt text:
 

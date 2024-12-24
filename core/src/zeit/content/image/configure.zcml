@@ -194,21 +194,6 @@
       permission="zeit.EditContent" />
   </class>
 
-  <adapter factory=".imagereference.References"/>
-  <adapter
-    factory=".imagereference.References"
-    for=".interfaces.IImage"
-    />
-  <class class=".imagereference.References">
-    <require
-      interface=".interfaces.IReferences"
-      permission="zope.View" />
-  </class>
-
-  <adapter
-    factory=".imagereference.image_references"
-    name="zeit.content.image"
-    />
 
   <class class=".imagereference.ImageReference">
     <require

@@ -337,9 +337,6 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         :param content: CMSContent
         :return: [referenced_content1, ..., content]
         """
-        # XXX Using zeit.cms.relation.IReferences would make sense here as
-        # well but due to some license issues with images referenced by
-        # articles we have to be careful what we want to publish
         with_dependencies = [
             content
             for content in zeit.edit.interfaces.IElementReferences(article, [])

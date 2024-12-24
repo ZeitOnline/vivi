@@ -27,7 +27,6 @@
   <include package=".clipboard" />
   <include package=".locking" />
   <include package=".workflow" />
-  <include package=".relation" />
   <include package=".settings" />
   <include package=".tagging" />
   <include package=".section" />

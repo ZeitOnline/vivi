@@ -35,7 +35,6 @@ class FormBase:
     form_fields = zope.formlib.form.FormFields(
         zeit.content.image.interfaces.IImageGroup,
         zeit.content.image.interfaces.IImageMetadata,
-        zeit.content.image.interfaces.IReferences,
     ).omit('acquire_metadata', 'variants')
 
 
@@ -49,7 +48,7 @@ class AddForm(
     factory = zeit.content.image.imagegroup.ImageGroup
     checkout = False
     form_fields = (
-        FormBase.form_fields.omit('references', 'master_images', 'external_id')
+        FormBase.form_fields.omit('master_images', 'external_id')
         + zope.formlib.form.FormFields(IMasterImageUploadSchema)
         + zope.formlib.form.FormFields(zeit.workflow.interfaces.ITimeBasedPublishing).select(
             'release_period'

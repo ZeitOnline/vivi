@@ -29,9 +29,9 @@ class ImageFormBase(zeit.cms.repository.browser.file.FormBase):
         ),
     )
 
-    form_fields = zope.formlib.form.FormFields(
-        zeit.content.image.interfaces.IImageMetadata, zeit.content.image.interfaces.IReferences
-    ).omit('acquire_metadata', 'origin')
+    form_fields = zope.formlib.form.FormFields(zeit.content.image.interfaces.IImageMetadata).omit(
+        'acquire_metadata', 'origin'
+    )
 
     def __init__(self, *args, **kw):
         self.form_fields['blob'].custom_widget = zeit.cms.repository.browser.file.BlobWidget

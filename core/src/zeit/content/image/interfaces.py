@@ -396,14 +396,6 @@ class IImages(zope.interface.Interface):
     )
 
 
-class IReferences(zope.interface.Interface):
-    references = zope.schema.Tuple(
-        title=_('Objects using this image'),
-        readonly=True,
-        value_type=zope.schema.Choice(source=zeit.cms.content.contentsource.cmsContentSource),
-    )
-
-
 class IMasterImage(zope.interface.Interface):
     """Marks an image in an image group as master for the other images."""
 
