@@ -428,7 +428,7 @@ pre {
 }
 
 #main-navigation > li:first-child > a {
-  background: transparent url("layout/logo-santa.png") no-repeat left center;
+  background: transparent url("layout/logo.png") no-repeat left center;
   right: 0;
 }
 
