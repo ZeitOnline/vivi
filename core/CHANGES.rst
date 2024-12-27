@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.98.0 (2024-12-27)
+-------------------
+
+- WCM-562: Christmas is over
+
+- WCM-609: Remove zeit.cms.relation usage and persistent utility
+
+
 6.97.0 (2024-12-23)
 -------------------
 
