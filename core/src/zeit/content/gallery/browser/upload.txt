@@ -73,7 +73,7 @@ Construct a POST which looks like a post which the Flash movie would generate:
 ...
 ... %s
 ... ------------Ij5Ij5KM7ei4GI3ae--
-... """
+... """.replace(b'\n', b'\r\n')
 >>> content_type = (
 ...     "multipart/form-data; boundary=----------Ij5Ij5KM7ei4GI3ae")
 
