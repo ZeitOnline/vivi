@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+6.99.0 (2024-12-27)
+-------------------
+
+- WCM-111: Remove undeclared but optional prometheus dependency
+
+
 6.98.0 (2024-12-27)
 -------------------
 
