@@ -1,0 +1,37 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  i18n_domain="zeit.cms">
+
+  <utility
+    provides="zope.pluggableauth.interfaces.IAuthenticatorPlugin"
+    factory=".zcml.PrincipalRegistryAuthenticator"
+    name="principalregistry"
+    />
+
+  <utility
+    provides="zope.pluggableauth.interfaces.ICredentialsPlugin"
+    name="xmlrpc-basic-auth"
+    factory=".authentication.BasicAuthCredentials"
+    />
+
+  <utility
+    provides="zope.pluggableauth.interfaces.ICredentialsPlugin"
+    name="session"
+    factory=".authentication.SessionCredentials"
+    />
+
+  <utility
+    provides="zope.pluggableauth.interfaces.ICredentialsPlugin"
+    name="oidc"
+    factory=".oidc.from_product_config"
+    />
+  <utility
+    provides="zope.pluggableauth.interfaces.IAuthenticatorPlugin"
+    factory=".oidc.AzureADAuthenticator"
+    name="azuread"
+    />
+
+  <utility factory=".azure.from_product_config" />
+
+</configure>
+

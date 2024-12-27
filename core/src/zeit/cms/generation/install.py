@@ -1,6 +1,7 @@
 import zope.component
 import zope.error.interfaces
 
+import zeit.authentication.azure
 import zeit.cms.browser.error
 import zeit.cms.content.interfaces
 import zeit.cms.content.template
@@ -49,6 +50,12 @@ def install(root):
         zeit.cms.content.interfaces.ITemplateManagerContainer,
     )
     root['retractlog'] = zeit.cms.retractlog.retractlog.RetractLog()
+    installLocalUtility(
+        root,
+        zeit.authentication.azure.PersistentTokenCache,
+        'azure-token-cache',
+        zeit.authentication.azure.ITokenCache,
+    )
 
 
 def evolve(context):

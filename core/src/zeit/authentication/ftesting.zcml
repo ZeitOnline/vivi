@@ -1,0 +1,10 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:meta="http://namespaces.zope.org/meta"
+  i18n_domain="zope">
+
+  <includeOverrides package="zeit.authentication" file="authentication.zcml" />
+  <include package="zeit.authentication" />
+  <include package="zeit.cms" file="ftesting.zcml" />
+
+</configure>
