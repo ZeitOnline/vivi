@@ -1,5 +1,4 @@
 import argparse
-import csv
 import logging
 import os.path
 import time
@@ -19,12 +18,12 @@ log = logging.getLogger(__name__)
 @zeit.cms.cli.runner(principal=zeit.cms.cli.principal_from_args)
 def delete_content_from_tms_indexes():
     errors = []
+    infos = []
     parser = argparse.ArgumentParser(description='Delete content from TMS indexes')
     required = parser.add_argument_group('required arguments')
     required.add_argument(
         '--inputfile',
-        help='Filename input of a list of resources with one \
-              url and their KPIs per line.',
+        help='Filename input of a list of resources with one uniqueId per line.',
     )
     required.add_argument(
         '--retract', action='store_true', help='Delete contents from public zeit_content index'
@@ -37,23 +36,26 @@ def delete_content_from_tms_indexes():
     options = parser.parse_args()
 
     with open(options.inputfile, encoding='utf-8-sig') as input:
-        for input_row in csv.reader(input):
+        for uniqueId in input.read().splitlines():
+            uniqueId = uniqueId.strip()
             time.sleep(0.2)
-            log.info(input_row[0])
+            log.info(uniqueId)
             try:
-                content = zeit.cms.interfaces.ICMSContent(input_row[0], None)
+                content = zeit.cms.interfaces.ICMSContent(uniqueId, None)
                 uuid = zeit.cms.content.interfaces.IUUID(content).id
                 tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
                 if options.retract:
                     tms.unpublish_id(uuid)
+                    infos.append('Deleted from zeit_content', uniqueId)
                 if options.delete:
                     tms.delete_id(uuid)
+                    infos.append('Deleted from zeit_pool_content', uniqueId)
             except TypeError:
-                errors.append(('no content/uuid', input_row[0]))
+                errors.append(('no content/uuid', uniqueId))
             except zeit.retresco.interfaces.TMSError as e:
-                errors.append((f'tms unpublishing/deleting: {e}', input_row[0]))  # noqa
+                errors.append((f'tms unpublishing/deleting: {e}', uniqueId))  # noqa
             except Exception as e:
-                errors.append((f'Error: {e}', input_row[0]))
+                errors.append((f'Error: {e}', uniqueId))
             finally:
                 continue
 
@@ -62,6 +64,15 @@ def delete_content_from_tms_indexes():
         filename = os.path.expanduser(f'~/errors_{current_time}.txt')
         log.info(f'\n🚨 {len(set(errors))}. Writing {filename} ...')
         with open(filename, 'w') as f:
-            for content, error in set(errors):
+            for error, content in set(errors):
                 f.write(f'{error}: {content}\n')
         log.info(f'\nSee errors in {filename}')
+
+    if infos:
+        current_time = pendulum.now().strftime('%Y%m%d%H%M%S')
+        filename = os.path.expanduser(f'~/infos_{current_time}.txt')
+        log.info(f'\nℹ️ {len(set(infos))}. Writing {filename} ...')
+        with open(filename, 'w') as f:
+            for info, content in set(infos):
+                f.write(f'{info}: {content}\n')
+        log.info(f'\nSee infos in {filename}')
