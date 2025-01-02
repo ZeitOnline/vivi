@@ -416,14 +416,16 @@ class OptionsInteractive(zeit.edit.browser.form.InlineForm):
 
 
 class OptionsAccessControl(zeit.edit.browser.form.InlineForm):
-    legend = _('Access control')
+    _legend = _('Access control')
     prefix = 'options-access-control'
 
     @property
     def form_fields(self):
         form_fields = []
+        self.legend = ''
         if self.context.access == 'abo':
             form_fields = FormFields(ICommonMetadata).select('accepted_entitlements')
+            self.legend = self._legend
         return form_fields
 
 
