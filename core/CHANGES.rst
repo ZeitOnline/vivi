@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.0.0 (2025-01-02)
+------------------
+
+- WCM-533: hide legend for access entitlements if field is not available
+
+- WCM-610: Integrate zeit.ldap package as zeit.authentication
+
+
 6.99.0 (2024-12-27)
 -------------------
 
