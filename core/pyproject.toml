@@ -22,6 +22,7 @@ dependencies = [
     "markdown",
     "markdownify",
     "martian",
+    "msal",  # XXX Should be [ui], but ZODB contains persistent objects
     "openapi-schema-validator>=0.6.0.dev0",
     "opentelemetry-api>=1.23.0.dev.0",
     "opentelemetry-instrumentation",
@@ -141,6 +142,7 @@ ui = [
     "zope.formlib",
     "zope.login",
     "zope.pluggableauth",
+    "zope.principalregistry",
     "zope.session",
     "zope.viewlet",
 ]
