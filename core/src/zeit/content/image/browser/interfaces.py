@@ -60,3 +60,15 @@ class IMasterImageUploadSchema(zope.interface.Interface):
         required=False,
         constraint=is_image,
     )
+
+
+class IPurchaseReport(zope.interface.Interface):
+    """Copyright company purchase report"""
+
+    date_start = zope.schema.Datetime(
+        title=_('Start'),
+    )
+
+    date_end = zope.schema.Datetime(
+        title=_('End'),
+    )
