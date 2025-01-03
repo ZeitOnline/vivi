@@ -3,7 +3,10 @@
   xmlns:browser="http://namespaces.zope.org/browser"
   xmlns:gocept="http://namespaces.gocept.com/zcml"
   xmlns:zcml="http://namespaces.zope.org/zcml"
+  xmlns:grok="http://namespaces.zope.org/grok"
   i18n_domain="zeit.cms">
+
+  <grok:grok package="." />
 
   <adapter factory=".image.imagefolder_browse_location" />
   <adapter factory=".image.imageadapter_browse_location" />
