@@ -28,7 +28,7 @@ class ESResultToCSV(zeit.content.image.testing.FunctionalTestCase):
         ) as findimgr:
             self.find_imagegroups = findimgr
             findimgr.return_value = [group]
-            csv_list = CopyrightCompanyPurchaseReport.create_imagegroup_list(self)
+            csv_list = list(CopyrightCompanyPurchaseReport.create_imagegroup_list(self, dfr, dfr))
 
             expected = [
                 ['publish_date', 'image_number', 'copyright infos', 'internal link'],
@@ -50,8 +50,9 @@ class PurchaseToCSVDocument(zeit.content.image.testing.BrowserTestCase):
         ) as create_content:  # noqa
             create_content.return_value = 'some csv'
             b.open('http://localhost/++skin++vivi/CopyrightCompanyPurchaseReport')  # noqa
+            b.getControl('Apply').click()
             self.assertIn(b.headers['content-type'], ('text/csv', 'text/csv;charset=utf-8'))
-            now = pendulum.now('UTC').year
+            now = pendulum.now('UTC').subtract(days=40).start_of('day').strftime('%Y-%m-%d')
             self.assertStartsWith(
                 f'attachment; filename="copyright-payment-report_{now}',
                 b.headers['content-disposition'],
