@@ -252,7 +252,7 @@ class IgnoreMixin:
         'genre': 'genres',
         'template': 'templates',
         'ressort': 'ressorts',
-        'uniqueId': 'uniqueid',
+        'uniqueId': 'uniqueids',
     }
 
     @property
