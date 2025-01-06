@@ -313,7 +313,7 @@ def purchase_report_factory(_):
     return PurchaseReport()
 
 
-@zope.interface.implementer(IPurchaseReport)
+@grok.implementer(IPurchaseReport)
 class PurchaseReport:
     def __init__(self):
         self.date_start = pendulum.now('UTC').subtract(days=40).start_of('day')
