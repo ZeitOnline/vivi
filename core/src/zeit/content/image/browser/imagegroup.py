@@ -12,7 +12,7 @@ import zope.publisher.interfaces
 
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import IPublishInfo
-from zeit.content.image.browser.interfaces import IMasterImageUploadSchema
+from zeit.content.image.browser.interfaces import IMasterImageUploadSchema, IPurchaseReport
 from zeit.content.image.browser.mdb import MDBImportWidget
 from zeit.content.image.interfaces import INFOGRAPHIC_DISPLAY_TYPE
 import zeit.cms.browser.form
@@ -28,8 +28,6 @@ import zeit.find.interfaces
 import zeit.ghost.ghost
 import zeit.retresco.interfaces
 import zeit.workflow.interfaces
-
-from .interfaces import IPurchaseReport
 
 
 class FormBase:
