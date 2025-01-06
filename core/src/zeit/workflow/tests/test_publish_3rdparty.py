@@ -583,7 +583,9 @@ class DatasciencePayloadTest(zeit.workflow.testing.FunctionalTestCase):
     def test_datascience_payload_ignore_article(self):
         article = zeit.content.article.testing.create_article()
         zeit.cms.config.set(
-            'zeit.workflow', 'datascience-ignore-uniqueid', 'http://xml.zeit.de/article'
+            'zeit.workflow',
+            'datascience-ignore-uniqueids',
+            'http://xml.zeit.de/article http://xml.zeit.de/article-two',
         )
         p = article.body.create_item('p')
         p.text = 'foo'
