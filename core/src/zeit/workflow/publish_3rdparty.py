@@ -252,6 +252,7 @@ class IgnoreMixin:
         'genre': 'genres',
         'template': 'templates',
         'ressort': 'ressorts',
+        'uniqueId': 'uniqueid',
     }
 
     @property
@@ -438,7 +439,7 @@ class CenterPageIndexNow(grok.Adapter, IndexNowMixin):
 
 
 class DataScienceMixin(PropertiesMixin):
-    def publish_json(self):
+    def _json(self):
         if self.properties is None:
             return None
         return {
@@ -446,12 +447,15 @@ class DataScienceMixin(PropertiesMixin):
             'body': lxml.etree.tostring(self.context.xml, encoding='unicode'),
         }
 
+    def publish_json(self):
+        return self._json()
+
     def retract_json(self):
         return {}
 
 
 @grok.implementer(zeit.workflow.interfaces.IPublisherData)
-class ArticleDataScience(grok.Adapter, DataScienceMixin):
+class ArticleDataScience(grok.Adapter, IgnoreMixin, DataScienceMixin):
     grok.context(zeit.content.article.interfaces.IArticle)
     grok.name('datascience')
 
