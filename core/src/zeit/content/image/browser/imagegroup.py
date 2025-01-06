@@ -4,6 +4,7 @@ import re
 
 from zope.formlib.widget import CustomWidgetFactory
 import gocept.form.grouped
+import grokcore.component as grok
 import pendulum
 import zc.table.column
 import zope.formlib.form
@@ -11,7 +12,7 @@ import zope.publisher.interfaces
 
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import IPublishInfo
-from zeit.content.image.browser.interfaces import IMasterImageUploadSchema
+from zeit.content.image.browser.interfaces import IMasterImageUploadSchema, IPurchaseReport
 from zeit.content.image.browser.mdb import MDBImportWidget
 from zeit.content.image.interfaces import INFOGRAPHIC_DISPLAY_TYPE
 import zeit.cms.browser.form
@@ -304,15 +305,25 @@ class DefaultView(zeit.cms.browser.view.Base):
         self.request.response.redirect(self.url(self.context, view))
 
 
-class CopyrightCompanyPurchaseReport(zeit.cms.browser.view.Base):
-    CSV_SEPERATOR = '\t'
+@grok.implementer(IPurchaseReport)
+@grok.adapter(zope.location.interfaces.ISite)
+def purchase_report_factory(_):
+    return PurchaseReport()
 
-    def __init__(self, context, request):
-        self.context = context
-        self.request = request
 
-    def __call__(self):
-        filedate = pendulum.now('UTC').strftime('%Y-%m-%d-%H-%M-%S')
+@grok.implementer(IPurchaseReport)
+class PurchaseReport:
+    def __init__(self):
+        self.date_start = pendulum.now('UTC').subtract(days=40).start_of('day')
+        self.date_end = pendulum.now('UTC').end_of('day')
+
+
+class CopyrightCompanyPurchaseReport(zeit.cms.browser.form.EditForm):
+    form_fields = zope.formlib.form.FormFields(IPurchaseReport)
+
+    @zope.formlib.form.action(_('Apply'), condition=zope.formlib.form.haveInputWidgets)
+    def handle_edit_action(self, action, data):
+        filedate = data['date_start'].strftime('%Y-%m-%d')
         filename = f'copyright-payment-report_{filedate}.csv'
         self.request.response.setHeader('Content-Type', 'text/csv')
         self.request.response.setHeader('location', 'https://www.zeit.de')
@@ -320,28 +331,18 @@ class CopyrightCompanyPurchaseReport(zeit.cms.browser.view.Base):
             'Content-Disposition', 'attachment; filename="%s"' % filename
         )
         self.send_message(f'Download {filename}')
-        return self.create_csv()
+        return self.create_csv(data['date_start'], data['date_end'])
 
-    def create_csv(self):
-        """
-        Creates CSV File of image groups.
-        :return: unicode - csv content
-        """
-        file_content = ''
+    def create_csv(self, date_start, date_end):
         out = io.StringIO()
-        writer = csv.writer(out, delimiter=self.CSV_SEPERATOR)
-        for row in self.create_imagegroup_list():
+        writer = csv.writer(out, delimiter='\t')
+        for row in self.create_imagegroup_list(date_start, date_end):
             writer.writerow(row)
+        return out.getvalue()
 
-        file_content = out.getvalue()
-        return file_content
-
-    def create_imagegroup_list(self):
-        csv_rows = []
-        csv_rows.append(
-            [_('publish_date'), _('image_number'), _('copyright infos'), _('internal link')]
-        )
-        for imgr_content in self.find_imagegroups():
+    def create_imagegroup_list(self, date_start, date_end):
+        yield [_('publish_date'), _('image_number'), _('copyright infos'), _('internal link')]
+        for imgr_content in self.find_imagegroups(date_start, date_end):
             try:
                 imgr_metadata = zeit.content.image.interfaces.IImageMetadata(imgr_content)
                 publish_date = IPublishInfo(imgr_content).date_first_released
@@ -349,20 +350,17 @@ class CopyrightCompanyPurchaseReport(zeit.cms.browser.view.Base):
                 vivi_url = imgr_content.uniqueId.replace(
                     'http://xml.zeit.de', 'https://vivi.zeit.de/repository'
                 )
-                csv_rows.append(
-                    [
-                        publish_date.to_datetime_string(),
-                        imgr_content.master_image,
-                        copyrights,
-                        vivi_url,
-                    ]
-                )
+                yield [
+                    publish_date.to_datetime_string(),
+                    imgr_content.master_image,
+                    copyrights,
+                    vivi_url,
+                ]
             except Exception as e:
-                csv_rows.append(['ERROR', str(e), imgr_content.uniqueId])
+                yield ['ERROR', str(e), imgr_content.uniqueId]
                 continue
-        return csv_rows
 
-    def find_imagegroups(self, days_ago=40):
+    def find_imagegroups(self, date_start, date_end):
         es = zope.component.getUtility(zeit.find.interfaces.ICMSSearch)
         query = {
             'query': {
@@ -371,7 +369,8 @@ class CopyrightCompanyPurchaseReport(zeit.cms.browser.view.Base):
                         {
                             'range': {
                                 'payload.document.date_first_released': {
-                                    'gte': f'now-{days_ago}d/d'
+                                    'gte': date_start.isoformat(),
+                                    'lte': date_end.isoformat(),
                                 }
                             }
                         },
