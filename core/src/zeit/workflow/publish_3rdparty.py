@@ -251,8 +251,8 @@ class IgnoreMixin:
     attr_setting_mapping = {
         'genre': ('genres', zeit.content.article.interfaces.IArticleMetadata),
         'template': ('templates', zeit.content.article.interfaces.IArticleMetadata),
-        'ressort': ('ressorts', zeit.content.article.interfaces.IArticleMetadata),
-        'uniqueId': ('uniqueids', zeit.cms.content.interfaces.ICommonMetadata),
+        'ressort': ('ressorts', zeit.cms.content.interfaces.ICommonMetadata),
+        'uniqueId': ('uniqueids', zeit.cms.interfaces.ICMSContent),
     }
 
     @property
