@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.1.0 (2025-01-07)
+------------------
+
+- WCM-608: company purchase report with date range input
+
+- WCM-617: provide fake root querysearchview
+
+
 7.0.0 (2025-01-02)
 ------------------
 
