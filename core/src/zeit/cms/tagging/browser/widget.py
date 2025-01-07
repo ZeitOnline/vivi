@@ -146,5 +146,6 @@ class DisplayWidget(grok.MultiAdapter, zope.formlib.itemswidgets.ItemsWidgetBase
         for item in self._getFormValue():
             link = self.tags_with_topicpages.get(item.uniqueId)
             css_class = self.tag_highling_css_class if link else ''
-            items.append(Tag(item.title, link, css_class))
+            title = f'{item.title} | {urllib.parse.urlparse(link).path}' if link else item.title
+            items.append(Tag(title, link, css_class))
         return items
