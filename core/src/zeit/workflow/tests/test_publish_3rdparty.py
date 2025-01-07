@@ -580,6 +580,19 @@ class DatasciencePayloadTest(zeit.workflow.testing.FunctionalTestCase):
         payload = zeit.workflow.testing.publish_json(article, 'datascience')
         self.assertEqual(payload['body'], lxml.etree.tostring(article.xml, encoding=str))
 
+    def test_datascience_payload_ignore_article(self):
+        article = zeit.content.article.testing.create_article()
+        zeit.cms.config.set(
+            'zeit.workflow',
+            'datascience-ignore-uniqueids',
+            'http://xml.zeit.de/article http://xml.zeit.de/article-two',
+        )
+        p = article.body.create_item('p')
+        p.text = 'foo'
+        article = self.repository['article'] = article
+        payload = zeit.workflow.testing.publish_json(article, 'datascience')
+        self.assertEqual(payload, None)
+
     def test_datascience_payload_centerpage(self):
         cp = self.repository['testcontent']
         zope.interface.alsoProvides(cp, zeit.content.cp.interfaces.ICenterPage)

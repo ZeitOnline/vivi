@@ -249,9 +249,10 @@ class IgnoreMixin:
 
     #: map article attributes to settings
     attr_setting_mapping = {
-        'genre': 'genres',
-        'template': 'templates',
-        'ressort': 'ressorts',
+        'genre': ('genres', zeit.content.article.interfaces.IArticleMetadata),
+        'template': ('templates', zeit.content.article.interfaces.IArticleMetadata),
+        'ressort': ('ressorts', zeit.cms.content.interfaces.ICommonMetadata),
+        'uniqueId': ('uniqueids', zeit.cms.interfaces.ICMSContent),
     }
 
     @property
@@ -260,15 +261,21 @@ class IgnoreMixin:
         return self.__class__.__dict__['grokcore.component.directive.name']
 
     def ignore(self, method):
-        if self.context.product and self.context.product.is_news:
+        if (
+            zeit.cms.content.interfaces.ICommonMetadata.providedBy(self.context)
+            and self.context.product
+            and self.context.product.is_news
+        ):
             return True
         if method == 'publish':
             for attribute, setting in self.attr_setting_mapping.items():
-                if self.is_on_ignorelist(attribute, setting):
+                if self.is_on_ignorelist(attribute, *setting):
                     return True
         return False
 
-    def is_on_ignorelist(self, attribute, setting):
+    def is_on_ignorelist(self, attribute, setting, interface):
+        if not interface.providedBy(self.context):
+            return False
         ignore_list = (
             zeit.cms.config.get('zeit.workflow', f'{self.name}-ignore-{setting}', '')
             .lower()
@@ -437,17 +444,14 @@ class CenterPageIndexNow(grok.Adapter, IndexNowMixin):
     grok.name('indexnow')
 
 
-class DataScienceMixin(PropertiesMixin):
-    def publish_json(self):
+class DataScienceMixin(PropertiesMixin, IgnoreMixin):
+    def _json(self):
         if self.properties is None:
             return None
         return {
             'properties': self.properties,
             'body': lxml.etree.tostring(self.context.xml, encoding='unicode'),
         }
-
-    def retract_json(self):
-        return {}
 
 
 @grok.implementer(zeit.workflow.interfaces.IPublisherData)
