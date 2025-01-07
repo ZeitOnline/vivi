@@ -2,6 +2,7 @@ import zope.authentication.interfaces
 import zope.component
 import zope.component.hooks
 import zope.interface
+import zope.location.interfaces
 import zope.pluggableauth.authentication
 import zope.pluggableauth.plugins.httpplugins
 import zope.pluggableauth.plugins.session
@@ -17,6 +18,8 @@ def from_product_config():
     pau = zope.pluggableauth.authentication.PluggableAuthentication()
     pau.authenticatorPlugins = conf['authenticator-plugins'].split(',')
     pau.credentialsPlugins = conf['credentials-plugins'].split(',')
+    pau.__parent__ = FakeRoot()
+    pau.__name__ = 'authentication'
     return pau
 
 
@@ -71,3 +74,9 @@ class SessionCredentials(zope.pluggableauth.plugins.session.SessionCredentialsPl
         home = zope.traversing.browser.absoluteURL(zope.component.hooks.getSite(), request)
         request.response.redirect(home)
         return True
+
+
+@zope.interface.implementer(zope.location.interfaces.IRoot)
+class FakeRoot:
+    # Required by IQuerySchemaSearchView, because it looks for a path
+    pass
