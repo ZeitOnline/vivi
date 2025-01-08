@@ -61,14 +61,6 @@ jobs:
         run: |
             mkdir -p deployment/work/source
             ln -s $PWD deployment/work/source/vivi
-      # Keys have been added manually (both the key in the target repo and
-      # the GHA+Dependabot secret in vivi and vivi-deployment)
-      - name: checkout zeit.ldap
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-        with:
-          repository: ZeitOnline/zeit.ldap
-          path: deployment/work/source/zeit.ldap
-          ssh-key: ${{secrets.DEPLOY_KEY_LDAP}}
 
       - uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
         with:

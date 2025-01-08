@@ -201,7 +201,6 @@ deploy = [
     "relstorage",
     "repoze.vhm",
     "waitress",
-    "zeit.ldap",
 ]
 
 zon = [
