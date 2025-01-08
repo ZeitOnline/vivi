@@ -13,7 +13,7 @@ import zeit.cms.config
 
 class Login:
     """The actual login (authentication and remembering) is performed behind
-    the scenes by the IAuthentication utility, registered by zeit.ldap.
+    the scenes by the IAuthentication utility, registered by zeit.authentication.
     (The view name `loginForm.html` and the `camefrom` parameter are part of
     that protocol.)
     """
