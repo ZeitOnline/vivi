@@ -3,6 +3,16 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.2.0 (2025-01-09)
+------------------
+
+- WCM-498: WCM-489: add functionality to ignore uniqueids on publish
+
+
+MAINT:
+- WCM-610: Remove zeit.ldap from deploy depencencies
+
+
 7.1.0 (2025-01-07)
 ------------------
 
