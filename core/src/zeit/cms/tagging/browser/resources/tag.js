@@ -163,6 +163,8 @@ zeit.cms.tagging.Widget = gocept.Class.extend({
                     var el = $('a', this);
                     el.addClass('with-topic-page');
                     el.attr('href', href);
+                    const url = new URL(href);
+                    el.text(`${el.text()} | ${url.pathname}`);
                 }
             });
         });
