@@ -344,3 +344,12 @@ class MaterializeDynamicFolder(zeit.cms.testing.FunctionalTestCase):
                 self.folder['wahlergebnis-kiel-wahlkreis-5-live']
             )
         )
+
+    def test_remove_config_file_does_not_break_dynamic_folder(self):
+        self.repository['dynamicfolder']['config.xml'] = self.repository['data']['config.xml']
+        with checked_out(self.folder) as co:
+            co.config_file = self.repository['dynamicfolder']['config.xml']
+        zeit.content.dynamicfolder.materialize.materialize_content(self.folder)
+        del self.repository['dynamicfolder']['config.xml']
+        transaction.commit()
+        [i for i in self.folder.values()]  # does not raise RecursionError

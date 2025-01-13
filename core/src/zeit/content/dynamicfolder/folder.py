@@ -18,6 +18,7 @@ from zeit.cms.content.contentuuid import ContentUUID
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.dynamicfolder.interfaces import IVirtualContent
 import zeit.cms.content.dav
+import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.repository.folder
 import zeit.cms.repository.interfaces
@@ -39,6 +40,8 @@ class DynamicFolderBase:
         zeit.content.dynamicfolder.interfaces.IDynamicFolder,
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
         ('config_file',),
+        False,
+        zeit.cms.content.interfaces.WRITEABLE_ALWAYS,
     )
 
 
@@ -74,6 +77,11 @@ class RepositoryDynamicFolder(DynamicFolderBase, zeit.cms.repository.folder.Fold
         value = self.get(key)
         if value is not None and IVirtualContent.providedBy(value):
             return
+        elif value is not None and value == self.config_file:
+            # if the configfile is stored inside the dynamic folder
+            # we need to remove the setting or we are trapped in an
+            # infinite __getitem__ endless loop
+            self.config_file = None
         super().__delitem__(key)
 
     @property
