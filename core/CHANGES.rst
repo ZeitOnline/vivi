@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.3.0 (2025-01-13)
+------------------
+
+- WCM-195: display link next to tag title
+
+
 7.2.0 (2025-01-09)
 ------------------
 
