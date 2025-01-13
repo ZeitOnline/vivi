@@ -244,3 +244,35 @@ class BeforeRetractEvent(WithMasterObjectEvent):
 @zope.interface.implementer(IRetractedEvent)
 class RetractedEvent(WithMasterObjectEvent):
     """Issued after an object has been retracted."""
+
+
+class IManualPublicationOptions(zope.interface.Interface):
+    """Formfields and cli input for our manual publish process"""
+
+    force_unpublished = zope.schema.Bool(
+        title=_('Publish even if currently unpublished'), default=False
+    )
+    force_unchanged = zope.schema.Bool(
+        title=_('Publish even if with semantic change'), default=False
+    )
+    skip_deps = zope.schema.Bool(title=_('Ignore publication dependencies'), default=False)
+    use_checkin_hooks = zope.schema.Bool(
+        title=_('Notify webhooks after checkin, like contenthub'), default=False
+    )
+    use_publish_hooks = zope.schema.Bool(
+        title=_('Notify webhooks after publish, like contenthub'), default=False
+    )
+    ignore_services = zope.schema.TextLine(
+        title=_('Ignore 3rd party services'),
+        default='airship,speechbert,summy',
+        missing_value='airship,speechbert,summy',
+    )
+    wait_tms = zope.schema.Bool(
+        title=_('Have publisher wait for TMS before fastly purge'), default=False
+    )
+    skip_tms_enrich = zope.schema.Bool(
+        title=_('Skip TMS enrich, e.g. checkin already happened'), default=False
+    )
+    dlps = zope.schema.Bool(title=_('Update date_last_published_semantic timestamp'), default=False)
+    # newline separated list of unique ids
+    unique_ids = zope.schema.Text(title=_('Unique IDs'))
