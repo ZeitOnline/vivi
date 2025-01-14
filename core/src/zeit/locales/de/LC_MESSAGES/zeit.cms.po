@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Wed Jan 22 10:44:29 2025\n"
+"POT-Creation-Date: Tue Jan 14 09:30:31 2025\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -190,7 +190,8 @@ msgid "Edit"
 msgstr "Bearbeiten"
 
 #: zeit/cms/browser/form.py:293 zeit/cms/repository/browser/file.py:89
-#: zeit/content/article/edit/browser/edit.py:336
+#: zeit/cms/workflow/browser/form.py:24
+#: zeit/content/article/edit/browser/edit.py:335
 #: zeit/content/article/edit/browser/form.py:478
 #: zeit/content/article/edit/browser/push.py:52
 #: zeit/content/article/edit/browser/reference.py:51
@@ -1405,6 +1406,10 @@ msgstr "Bitte mindestens 3 Schlagworte vergeben."
 msgid "Keywords"
 msgstr "Schlagworte"
 
+#: zeit/cms/workflow/browser/form.py:33
+msgid "Publish content"
+msgstr "Inhalte veröffentlichen"
+
 #: zeit/cms/workflow/browser/indicator.py:12 zeit/cms/workflow/interfaces.py:48
 #: zeit/workflow/publish.py:506 zeit/workflow/publishinfo.py:61
 msgid "Published"
@@ -1470,6 +1475,46 @@ msgstr "Sperrvermerk-Notizen"
 #: zeit/cms/workflow/interfaces.py:102
 msgid "Publication state"
 msgstr "Veröffentlichungszustand"
+
+#: zeit/cms/workflow/interfaces.py:253
+msgid "Publish even if currently unpublished"
+msgstr "Unveröffentlichte Inhalte veröffentlichen"
+
+#: zeit/cms/workflow/interfaces.py:256
+msgid "Publish even if with semantic change"
+msgstr "Veröffentlichen, auch mit inhaltlicher Änderung"
+
+#: zeit/cms/workflow/interfaces.py:258
+msgid "Ignore publication dependencies"
+msgstr "Abhängigkeiten bei der Veröffentlichung ignorieren"
+
+#: zeit/cms/workflow/interfaces.py:260
+msgid "Notify webhooks after checkin, like contenthub"
+msgstr "Webhooks nach Checkin benachrichtigen, z.B. contenthub"
+
+#: zeit/cms/workflow/interfaces.py:263
+msgid "Notify webhooks after publish, like contenthub"
+msgstr "Webhoooks nach Veröffentlichung benachrichtigen, z.B. contenthub"
+
+#: zeit/cms/workflow/interfaces.py:266
+msgid "Ignore 3rd party services"
+msgstr "Drittanbieterdienste ignorieren"
+
+#: zeit/cms/workflow/interfaces.py:271
+msgid "Have publisher wait for TMS before fastly purge"
+msgstr "Publisher auf das TMS warten lassen bevor fastly gepurged wird"
+
+#: zeit/cms/workflow/interfaces.py:274
+msgid "Skip TMS enrich, e.g. checkin already happened"
+msgstr "TMS-Enrich überspringen, z.B. der checkin erfolgte bereits"
+
+#: zeit/cms/workflow/interfaces.py:276
+msgid "Update date_last_published_semantic timestamp"
+msgstr "Zeitwert für date_last_published_semantic aktualisieren"
+
+#: zeit/cms/workflow/interfaces.py:278
+msgid "Unique IDs"
+msgstr "Unique IDs"
 
 #: zeit/cms/workingcopy/browser/configure.zcml:19
 #: zeit/content/article/browser/form.py:122 zeit/content/text/interfaces.py:38
@@ -5012,9 +5057,6 @@ msgstr "mit Info"
 
 #~ msgid "View playlist"
 #~ msgstr "Playlist anzeigen"
-
-#~ msgid "Video IDs"
-#~ msgstr "Video-Ids"
 
 #~ msgid "Videos in the playlist"
 #~ msgstr "Video-Playlist anzeigen"

@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Wed Jan 22 10:44:29 2025\n"
+"POT-Creation-Date: Tue Jan 14 09:30:31 2025\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -1437,6 +1437,10 @@ msgstr ""
 msgid "Keywords"
 msgstr ""
 
+#: zeit/cms/workflow/browser/form.py:33
+msgid "Publish content"
+msgstr ""
+
 #: zeit/cms/workflow/browser/indicator.py:12
 #: zeit/cms/workflow/interfaces.py:48
 #: zeit/workflow/publish.py:506
@@ -1504,6 +1508,46 @@ msgstr ""
 
 #: zeit/cms/workflow/interfaces.py:102
 msgid "Publication state"
+msgstr ""
+
+#: zeit/cms/workflow/interfaces.py:253
+msgid "Publish even if currently unpublished"
+msgstr ""
+
+#: zeit/cms/workflow/interfaces.py:256
+msgid "Publish even if with semantic change"
+msgstr ""
+
+#: zeit/cms/workflow/interfaces.py:258
+msgid "Ignore publication dependencies"
+msgstr ""
+
+#: zeit/cms/workflow/interfaces.py:260
+msgid "Notify webhooks after checkin, like contenthub"
+msgstr ""
+
+#: zeit/cms/workflow/interfaces.py:263
+msgid "Notify webhooks after publish, like contenthub"
+msgstr ""
+
+#: zeit/cms/workflow/interfaces.py:266
+msgid "Ignore 3rd party services"
+msgstr ""
+
+#: zeit/cms/workflow/interfaces.py:271
+msgid "Have publisher wait for TMS before fastly purge"
+msgstr ""
+
+#: zeit/cms/workflow/interfaces.py:274
+msgid "Skip TMS enrich, e.g. checkin already happened"
+msgstr ""
+
+#: zeit/cms/workflow/interfaces.py:276
+msgid "Update date_last_published_semantic timestamp"
+msgstr ""
+
+#: zeit/cms/workflow/interfaces.py:278
+msgid "Unique IDs"
 msgstr ""
 
 #: zeit/cms/workingcopy/browser/configure.zcml:19
