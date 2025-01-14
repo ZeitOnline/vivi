@@ -285,6 +285,7 @@ class EditEmbed(zeit.cms.browser.manual.FormMixin, zeit.edit.browser.form.Inline
         if (
             FEATURE_TOGGLES.find('resolve_bsky_embed_url')
             and data is not None
+            and data['url'] is not None
             and data['url'].startswith('https://bsky.app/')
         ):
             data['url'] = self._resolve_bsky_url(data['url'])
