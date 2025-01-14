@@ -77,7 +77,7 @@ class RepositoryDynamicFolder(DynamicFolderBase, zeit.cms.repository.folder.Fold
         value = self.get(key)
         if value is not None and IVirtualContent.providedBy(value):
             return
-        elif value is not None and value == self.config_file:
+        if value == self.config_file:
             # if the configfile is stored inside the dynamic folder
             # we need to remove the setting or we are trapped in an
             # infinite __getitem__ endless loop
