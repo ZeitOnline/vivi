@@ -648,7 +648,6 @@ a.button.configure_search:hover {
 .ingredients-widget ol li,
 .keyword-widget ol li {
     clear: both;
-    cursor: default;
     padding-top: 4px;
     padding-bottom: 4px;
     border-bottom: 1px solid #dddddd;
