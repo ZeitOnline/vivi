@@ -3858,7 +3858,7 @@ msgstr "Unbekannte Embed-URL"
 #: zeit/content/modules/interfaces.py:62
 msgid "Add URL"
 msgstr ""
-"Füge hier eine Twitter-, Instagram-, Youtube-, Datawrapper-, Facebook- oder "
+"Füge hier eine Tiktok-, Bluesky-, Twitter-, X-, Instagram-, Youtube-, Datawrapper-, Facebook- oder "
 "Vimeo-URL ein."
 
 #: zeit/content/modules/interfaces.py:62
