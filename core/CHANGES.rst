@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.4.0 (2025-01-14)
+------------------
+
+- WCM-626: resolve load dynamic content with removed config
+
+
 7.3.0 (2025-01-13)
 ------------------
 
