@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Fri Jan  3 13:21:47 2025\n"
+"POT-Creation-Date: Tue Jan 14 09:30:31 2025\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -190,12 +190,13 @@ msgid "Edit"
 msgstr "Bearbeiten"
 
 #: zeit/cms/browser/form.py:293 zeit/cms/repository/browser/file.py:89
+#: zeit/cms/workflow/browser/form.py:24
 #: zeit/content/article/edit/browser/edit.py:335
 #: zeit/content/article/edit/browser/form.py:478
 #: zeit/content/article/edit/browser/push.py:52
 #: zeit/content/article/edit/browser/reference.py:51
 #: zeit/content/cp/browser/view.py:11 zeit/content/image/browser/form.py:98
-#: zeit/content/image/browser/imagegroup.py:326 zeit/edit/browser/form.py:65
+#: zeit/content/image/browser/imagegroup.py:324 zeit/edit/browser/form.py:65
 #: zeit/edit/browser/view.py:103 zeit/seo/browser/form.py:31
 msgid "Apply"
 msgstr "Speichern"
@@ -254,7 +255,7 @@ msgstr "Titel"
 #: zeit/cms/repository/browser/file.py:30
 #: zeit/cms/repository/browser/file_details.pt:2
 #: zeit/content/dynamicfolder/browser/folder.py:25
-#: zeit/content/image/browser/imagegroup.py:214
+#: zeit/content/image/browser/imagegroup.py:212
 #: zeit/content/image/browser/interfaces.py:32
 msgid "File name"
 msgstr "Dateiname"
@@ -1404,6 +1405,10 @@ msgstr "Bitte mindestens 3 Schlagworte vergeben."
 msgid "Keywords"
 msgstr "Schlagworte"
 
+#: zeit/cms/workflow/browser/form.py:33
+msgid "Publish content"
+msgstr "Inhalte veröffentlichen"
+
 #: zeit/cms/workflow/browser/indicator.py:12 zeit/cms/workflow/interfaces.py:48
 #: zeit/workflow/publish.py:506 zeit/workflow/publishinfo.py:61
 msgid "Published"
@@ -1470,6 +1475,46 @@ msgstr "Sperrvermerk-Notizen"
 msgid "Publication state"
 msgstr "Veröffentlichungszustand"
 
+#: zeit/cms/workflow/interfaces.py:253
+msgid "Publish even if currently unpublished"
+msgstr "Unveröffentlichte Inhalte veröffentlichen"
+
+#: zeit/cms/workflow/interfaces.py:256
+msgid "Publish even if with semantic change"
+msgstr "Veröffentlichen, auch mit inhaltlicher Änderung"
+
+#: zeit/cms/workflow/interfaces.py:258
+msgid "Ignore publication dependencies"
+msgstr "Abhängigkeiten bei der Veröffentlichung ignorieren"
+
+#: zeit/cms/workflow/interfaces.py:260
+msgid "Notify webhooks after checkin, like contenthub"
+msgstr "Webhooks nach Checkin benachrichtigen, z.B. contenthub"
+
+#: zeit/cms/workflow/interfaces.py:263
+msgid "Notify webhooks after publish, like contenthub"
+msgstr "Webhoooks nach Veröffentlichung benachrichtigen, z.B. contenthub"
+
+#: zeit/cms/workflow/interfaces.py:266
+msgid "Ignore 3rd party services"
+msgstr "Drittanbieterdienste ignorieren"
+
+#: zeit/cms/workflow/interfaces.py:271
+msgid "Have publisher wait for TMS before fastly purge"
+msgstr "Publisher auf das TMS warten lassen bevor fastly gepurged wird"
+
+#: zeit/cms/workflow/interfaces.py:274
+msgid "Skip TMS enrich, e.g. checkin already happened"
+msgstr "TMS-Enrich überspringen, z.B. der checkin erfolgte bereits"
+
+#: zeit/cms/workflow/interfaces.py:276
+msgid "Update date_last_published_semantic timestamp"
+msgstr "Zeitwert für date_last_published_semantic aktualisieren"
+
+#: zeit/cms/workflow/interfaces.py:278
+msgid "Unique IDs"
+msgstr "Unique IDs"
+
 #: zeit/cms/workingcopy/browser/configure.zcml:19
 #: zeit/content/article/browser/form.py:122 zeit/content/text/interfaces.py:38
 #: zeit/content/text/interfaces.py:81
@@ -1535,7 +1580,7 @@ msgstr "Farbe Button"
 #: zeit/content/article/interfaces.py:68 zeit/content/cp/interfaces.py:128
 #: zeit/content/cp/interfaces.py:302 zeit/content/cp/interfaces.py:644
 #: zeit/content/image/browser/configure.zcml:265
-#: zeit/content/image/browser/imagegroup.py:224 zeit/content/image/image.py:126
+#: zeit/content/image/browser/imagegroup.py:222 zeit/content/image/image.py:126
 #: zeit/content/portraitbox/interfaces.py:16
 #: zeit/wysiwyg/browser/resources/reference/image.pt:17
 msgid "Image"
@@ -3007,7 +3052,7 @@ msgid "Checking out"
 msgstr "Auschecken"
 
 #: zeit/content/cp/browser/workflow.py:33
-#: zeit/content/image/browser/imagegroup.py:68
+#: zeit/content/image/browser/imagegroup.py:66
 #: zeit/workflow/browser/form.py:140 zeit/workflow/browser/form.py:166
 msgid "Settings"
 msgstr "Einstellungen"
@@ -3489,7 +3534,7 @@ msgid "Image (single)"
 msgstr "Einzelbild"
 
 #: zeit/content/image/browser/configure.zcml:208
-#: zeit/content/image/browser/imagegroup.py:208
+#: zeit/content/image/browser/imagegroup.py:206
 #: zeit/content/image/interfaces.py:385
 msgid "Image group"
 msgstr "Bildergruppe"
@@ -3515,7 +3560,7 @@ msgid "Copyright changed for: ${changes}"
 msgstr "Copyright geändert für: ${changes}."
 
 #: zeit/content/image/browser/form.py:18
-#: zeit/content/image/browser/imagegroup.py:239
+#: zeit/content/image/browser/imagegroup.py:237
 msgid "Image data"
 msgstr "Bilddaten"
 
@@ -3536,7 +3581,7 @@ msgid "View image"
 msgstr "Bild zeigen"
 
 #: zeit/content/image/browser/image_view.pt:10
-#: zeit/content/image/browser/imagegroup.py:220
+#: zeit/content/image/browser/imagegroup.py:218
 msgid "Dimensions"
 msgstr "Ausmaße"
 
@@ -3556,47 +3601,47 @@ msgstr "Bildunterschrift: ${caption}"
 msgid "Links to: ${link} rel=\"nofollow\""
 msgstr "Verlinkt nach: ${link} (nofollow)"
 
-#: zeit/content/image/browser/imagegroup.py:50
+#: zeit/content/image/browser/imagegroup.py:48
 msgid "Add image group"
 msgstr "Bildergruppe hinzufügen"
 
-#: zeit/content/image/browser/imagegroup.py:168
+#: zeit/content/image/browser/imagegroup.py:166
 msgid "Add motif"
 msgstr "Datei für weiteres Motiv wählen"
 
-#: zeit/content/image/browser/imagegroup.py:176
+#: zeit/content/image/browser/imagegroup.py:174
 msgid "Edit image group"
 msgstr "Bildergruppe bearbeiten"
 
-#: zeit/content/image/browser/imagegroup.py:181
+#: zeit/content/image/browser/imagegroup.py:179
 msgid "Add viewport to master image mapping"
 msgstr "Bild hinzufügen"
 
-#: zeit/content/image/browser/imagegroup.py:186
+#: zeit/content/image/browser/imagegroup.py:184
 msgid "Image group metadata"
 msgstr "Metadaten der Bildergruppe"
 
-#: zeit/content/image/browser/imagegroup.py:202
+#: zeit/content/image/browser/imagegroup.py:200
 msgid "Master image"
 msgstr "Hauptbild"
 
-#: zeit/content/image/browser/imagegroup.py:346
+#: zeit/content/image/browser/imagegroup.py:344
 msgid "copyright infos"
 msgstr "Copyright Informationen"
 
-#: zeit/content/image/browser/imagegroup.py:346
+#: zeit/content/image/browser/imagegroup.py:344
 msgid "image_number"
 msgstr "Bild Nummer"
 
-#: zeit/content/image/browser/imagegroup.py:346
+#: zeit/content/image/browser/imagegroup.py:344
 msgid "internal link"
 msgstr "Vivi-Link"
 
-#: zeit/content/image/browser/imagegroup.py:346
+#: zeit/content/image/browser/imagegroup.py:344
 msgid "publish_date"
 msgstr "Veröffentlichungsdatum"
 
-#: zeit/content/image/browser/imagegroup.py:393
+#: zeit/content/image/browser/imagegroup.py:391
 msgid "CopyrightPurchaseReport"
 msgstr "Urheberrecht Bezahl Bericht"
 
@@ -4989,9 +5034,6 @@ msgstr "mit Info"
 
 #~ msgid "View playlist"
 #~ msgstr "Playlist anzeigen"
-
-#~ msgid "Video IDs"
-#~ msgstr "Video-Ids"
 
 #~ msgid "Videos in the playlist"
 #~ msgstr "Video-Playlist anzeigen"
