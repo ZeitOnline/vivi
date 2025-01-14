@@ -657,6 +657,12 @@ a.button.configure_search:hover {
     cursor: move;
 }
 
+.keyword-widget ol li {
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 0.5em;
+}
+
 .recipe-categories-widget .icon,
 .ingredients-widget .icon,
 .keyword-widget .icon {
@@ -664,7 +670,6 @@ a.button.configure_search:hover {
     float: right;
     width: 18px;
     height: 18px;
-    margin-left: 1em;
     padding-top: 0px;
     line-height: 18px;
     background: url("./icons/icons_sprites.png") no-repeat scroll transparent;
@@ -689,6 +694,24 @@ a.button.configure_search:hover {
 
 .keyword-widget .toggle-pin:hover, .keyword-widget .pinned {
     background-position: 1px -2665px;
+}
+
+.keyword-widget a {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    flex-grow: 1;
+}
+
+.keyword-widget ol li:hover {
+    height: unset;
+}
+
+.keyword-widget ol li:hover a {
+    white-space: wrap;
+    background: white;
+    overflow: visible;
 }
 
 .keyword-widget a.with-topic-page{
