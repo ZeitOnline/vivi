@@ -5,6 +5,8 @@ import logging
 import transaction
 import zope.component
 
+from zeit.cms.workflow.interfaces import IManualPublicationOptions, IPublish, IPublishInfo
+import zeit.cms.celery
 import zeit.cms.cli
 
 
@@ -12,52 +14,13 @@ log = logging.getLogger(__name__)
 IGNORE_SERVICES = ['airship', 'speechbert', 'summy']
 
 
-@zeit.cms.cli.runner(principal=zeit.cms.cli.principal_from_args)
-def publish():
-    parser = argparse.ArgumentParser(description='Publish content')
-    parser.add_argument('--filename', '-f', help='filename with uniqueId per line')
-    parser.add_argument(
-        '--force-unpublished', action='store_true', help='Publish even if currently unpublished'
-    )
-    parser.add_argument(
-        '--force-changed', action='store_true', help='Publish even if with semantic change'
-    )
-    parser.add_argument('--skip-deps', action='store_true', help='Ignore publication dependencies')
-
-    parser.add_argument(
-        '--use-checkin-hooks',
-        action='store_true',
-        help='Notify webhooks after checkin, like contenthub',
-    )
-    parser.add_argument(
-        '--use-publish-hooks',
-        action='store_true',
-        help='Notify webhooks after publish, like contenthub',
-    )
-
-    parser.add_argument(
-        '--ignore-services',
-        default=[],
-        help=f'Ignore 3rd party services; default: {IGNORE_SERVICES} will be extended by yours;',
-        nargs='+',
-    )
-    parser.add_argument(
-        '--wait-tms', action='store_true', help='Have publisher wait for TMS before fastly purge'
-    )
-    parser.add_argument(
-        '--skip-tms-enrich',
-        action='store_true',
-        help='Skip TMS enrich, e.g. checkin already happened',
-    )
-    parser.add_argument(
-        '--dlps', action='store_true', help='Update date_last_published_semantic timestamp'
-    )
-
-    options = parser.parse_args()
-    if not options.filename:
-        parser.print_help()
-        raise SystemExit(1)
-
+@zeit.cms.celery.task(queue='manual')
+def publish_content(options: dict):
+    """This publish task is running inside a celery worker because
+    we do not want to unregister and reregister the hooks for the application if this
+    function is called inside the regular vivi process
+    """
+    options = IManualPublicationOptions(options)
     registry = zope.component.getGlobalSiteManager()
 
     # No option, since there is no usecase for re-activating old breaking news
@@ -72,7 +35,6 @@ def publish():
 
     if options.skip_tms_enrich:
         log.info('Deactivating TMS enrich')
-
         assert registry.unregisterHandler(zeit.retresco.update.index_before_publish)
 
     if options.skip_deps:
@@ -95,18 +57,19 @@ def publish():
         ).start()
 
     log.info('Ignoring services %s', options.ignore_services)
-    zeit.workflow.publish_3rdparty.PublisherData.ignore = options.ignore_services + IGNORE_SERVICES
+    zeit.workflow.publish_3rdparty.PublisherData.ignore = (
+        options.ignore_services.split(',') + IGNORE_SERVICES
+    )
 
-    for line in open(options.filename):
-        id = line.strip()
-        content = zeit.cms.interfaces.ICMSContent(id, None)
+    for uid in options.unique_ids:
+        content = zeit.cms.interfaces.ICMSContent(uid, None)
         if content is None:
-            log.warn('Skipping %s, not found', id)
+            log.warn('Skipping %s, not found', uid)
             continue
 
-        info = zeit.cms.workflow.interfaces.IPublishInfo(content)
+        info = IPublishInfo(content)
         if not (info.published or options.force_unpublished):
-            log.info('Skipping %s, not published and no --force-unpublished', id)
+            log.info('Skipping %s, not published and no --force-unpublished', uid)
             continue
         semantic = zeit.cms.content.interfaces.ISemanticChange(content)
         if (
@@ -115,14 +78,43 @@ def publish():
             and semantic.last_semantic_change > info.date_last_published
             and not options.force_changed
         ):
-            log.info('Skipping %s, has semantic change and no --force-changed', id)
+            log.info('Skipping %s, has semantic change and no --force-changed', uid)
             continue
 
         try:
-            zeit.cms.workflow.interfaces.IPublish(content).publish(background=False)
+            IPublish(content).publish(background=False)
             transaction.commit()
         except Exception:
             transaction.abort()
+
+
+@zeit.cms.cli.runner(principal=zeit.cms.cli.principal_from_args)
+def publish():
+    parser = argparse.ArgumentParser(description='Publish content')
+    parser.add_argument('--filename', '-f', help='filename with uniqueId per line')
+
+    for name, field in zope.schema.getFields(IManualPublicationOptions).items():
+        arg_name = f'--{name.replace("_", "-")}'
+        if isinstance(field, zope.schema.Bool):
+            parser.add_argument(arg_name, action='store_true', help=field.title)
+        elif isinstance(field, zope.schema.TextLine):
+            parser.add_argument(arg_name, help=field.title, default=field.default)
+        elif isinstance(field, zope.schema.Text):
+            parser.add_argument(arg_name, help=field.title, default=field.default)
+        else:
+            parser.add_argument(arg_name, help=field.title)
+
+    options = parser.parse_args()
+    if not options.filename:
+        parser.print_help()
+        raise SystemExit(1)
+
+    to_publish = open(options.filename).read()
+
+    options = options.__dict__
+    options['unique_ids'] = to_publish
+
+    publish_content.delay(options)
 
 
 @zeit.cms.cli.runner(principal=zeit.cms.cli.principal_from_args)
@@ -136,7 +128,6 @@ def retract():
         '--ignore-services',
         default=IGNORE_SERVICES,
         help=f'Ignore 3rd party services; default: {IGNORE_SERVICES}; use to overwrite',
-        nargs='+',
     )
 
     options = parser.parse_args()
@@ -154,13 +145,13 @@ def retract():
             log.warn('Skipping %s, not found', id)
             continue
 
-        info = zeit.cms.workflow.interfaces.IPublishInfo(content)
+        info = IPublishInfo(content)
         if not (info.published or options.force):
             log.info('Skipping %s, not published and no --force', id)
             continue
 
         try:
-            zeit.cms.workflow.interfaces.IPublish(content).retract(background=False)
+            IPublish(content).retract(background=False)
             transaction.commit()
         except Exception:
             transaction.abort()

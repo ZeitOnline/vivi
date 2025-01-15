@@ -1,6 +1,7 @@
 <configure
   xmlns="http://namespaces.zope.org/zope"
-  xmlns:browser="http://namespaces.zope.org/browser">
+  xmlns:browser="http://namespaces.zope.org/browser"
+  xmlns:grok="http://namespaces.zope.org/grok">
 
   <browser:viewletManager
     provides=".interfaces.IWorkflowIndicator"
@@ -27,5 +28,23 @@
     class=".indicator.PublishedView"
     permission="zope.View"
     />
+
+  <browser:viewlet
+    name="ManualMultiPublish"
+    for="*"
+    manager="zeit.cms.browser.interfaces.ISecondaryGlobalViews"
+    class=".form.MenuItem"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    permission="zeit.cms.admin.View"
+    weight="400"
+  />
+
+  <browser:page
+    for="*"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="ManualMultiPublish"
+    class=".form.ManualMultiPublishForm"
+    permission="zeit.cms.admin.View"
+  />
 
 </configure>
