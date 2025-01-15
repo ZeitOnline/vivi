@@ -127,10 +127,8 @@ class Configuration:
 
     @property
     def query_order(self):
-        from zeit.contentquery.query import CustomContentQuery  # break cycle
-
-        value = self._query_order
-        return CustomContentQuery.ES_ORDER_BWCOMPAT.get(value, value)
+        # TODO: check if that is right
+        return self._query_order
 
     @query_order.setter
     def query_order(self, value):

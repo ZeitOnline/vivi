@@ -9,7 +9,6 @@ import requests_mock
 import transaction
 import zope.component
 
-from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.content.cp.interfaces import IRenderedArea
 import zeit.cms.content.interfaces
@@ -144,260 +143,6 @@ class AutomaticAreaElasticsearchTest(zeit.content.cp.testing.FunctionalTestCase)
             self.elasticsearch.search.call_args,
         )
 
-    def test_builds_query_from_conditions(self):
-        lead = self.repository['cp'].body['lead']
-        lead.count = 1
-        source = zeit.cms.content.interfaces.ICommonMetadata['serie'].source(None)
-        autotest = source.find('Autotest')
-        lead.query = (('serie', 'eq', autotest),)
-        lead.automatic = True
-        lead.automatic_type = 'custom'
-        IRenderedArea(lead).values()
-        self.assertEqual(
-            {
-                'query': {
-                    'bool': {
-                        'filter': [
-                            {
-                                'bool': {
-                                    'filter': [
-                                        {'term': {'payload.document.serie': 'Autotest'}},
-                                    ]
-                                }
-                            },
-                            {'term': {'payload.workflow.published': True}},
-                        ],
-                        'must_not': [
-                            {'term': {'payload.zeit__DOT__content__DOT__gallery.type': 'inline'}}
-                        ],
-                    }
-                },
-                'sort': [{'payload.workflow.date_last_published_semantic': 'desc'}],
-            },
-            self.elasticsearch.search.call_args[0][0],
-        )
-
-    def test_builds_query_with_elasticsearch_fieldname_exceptions(self):
-        lead = self.repository['cp'].body['lead']
-        lead.count = 1
-        lead.query = (
-            ('channels', 'eq', 'International', 'Nahost'),
-            ('channels', 'eq', 'Wissen', None),
-        )
-        lead.automatic = True
-        lead.automatic_type = 'custom'
-        IRenderedArea(lead).values()
-        self.assertEqual(
-            {
-                'query': {
-                    'bool': {
-                        'filter': [
-                            {
-                                'bool': {
-                                    'filter': [
-                                        {
-                                            'bool': {
-                                                'should': [
-                                                    {
-                                                        'term': {
-                                                            'payload.document.channels.hierarchy': 'International Nahost'
-                                                        }
-                                                    },
-                                                    {
-                                                        'term': {
-                                                            'payload.document.channels.hierarchy': 'Wissen'
-                                                        }
-                                                    },
-                                                ]
-                                            }
-                                        },
-                                    ]
-                                }
-                            },
-                            {'term': {'payload.workflow.published': True}},
-                        ],
-                        'must_not': [
-                            {'term': {'payload.zeit__DOT__content__DOT__gallery.type': 'inline'}}
-                        ],
-                    }
-                },
-                'sort': [{'payload.workflow.date_last_published_semantic': 'desc'}],
-            },
-            self.elasticsearch.search.call_args[0][0],
-        )
-
-    def test_builds_query_with_condition_exception(self):
-        lead = self.repository['cp'].body['lead']
-        lead.count = 1
-        lead.query = (
-            ('ressort', 'eq', 'International', 'Nahost'),
-            ('ressort', 'eq', 'Wissen', None),
-        )
-        lead.automatic = True
-        lead.automatic_type = 'custom'
-        IRenderedArea(lead).values()
-        self.assertEqual(
-            {
-                'query': {
-                    'bool': {
-                        'filter': [
-                            {
-                                'bool': {
-                                    'filter': [
-                                        {
-                                            'bool': {
-                                                'should': [
-                                                    {
-                                                        'bool': {
-                                                            'must': [
-                                                                {
-                                                                    'term': {
-                                                                        'payload.document.ressort': 'International'
-                                                                    }
-                                                                },
-                                                                {
-                                                                    'term': {
-                                                                        'payload.document.sub_ressort': 'Nahost'
-                                                                    }
-                                                                },
-                                                            ]
-                                                        }
-                                                    },
-                                                    {
-                                                        'term': {
-                                                            'payload.document.ressort': 'Wissen'
-                                                        }
-                                                    },
-                                                ]
-                                            }
-                                        },
-                                    ]
-                                }
-                            },
-                            {'term': {'payload.workflow.published': True}},
-                        ],
-                        'must_not': [
-                            {'term': {'payload.zeit__DOT__content__DOT__gallery.type': 'inline'}}
-                        ],
-                    }
-                },
-                'sort': [{'payload.workflow.date_last_published_semantic': 'desc'}],
-            },
-            self.elasticsearch.search.call_args[0][0],
-        )
-
-    def test_joins_different_fields_with_AND_but_same_fields_with_OR(self):
-        lead = self.repository['cp'].body['lead']
-        lead.count = 1
-        source = zeit.cms.content.interfaces.ICommonMetadata['serie'].source(None)
-        autotest = source.find('Autotest')
-        lead.query = (
-            ('channels', 'eq', 'International', 'Nahost'),
-            ('channels', 'eq', 'Wissen', None),
-            ('serie', 'eq', autotest),
-            ('ressort', 'eq', 'Wissen', None),
-        )
-        lead.automatic = True
-        lead.automatic_type = 'custom'
-        IRenderedArea(lead).values()
-        self.assertEqual(
-            {
-                'query': {
-                    'bool': {
-                        'filter': [
-                            {
-                                'bool': {
-                                    'filter': [
-                                        {
-                                            'bool': {
-                                                'should': [
-                                                    {
-                                                        'term': {
-                                                            'payload.document.channels.hierarchy': 'International Nahost'
-                                                        }
-                                                    },
-                                                    {
-                                                        'term': {
-                                                            'payload.document.channels.hierarchy': 'Wissen'
-                                                        }
-                                                    },
-                                                ]
-                                            }
-                                        },
-                                        {'term': {'payload.document.serie': 'Autotest'}},
-                                        {'term': {'payload.document.ressort': 'Wissen'}},
-                                    ]
-                                }
-                            },
-                            {'term': {'payload.workflow.published': True}},
-                        ],
-                        'must_not': [
-                            {'term': {'payload.zeit__DOT__content__DOT__gallery.type': 'inline'}}
-                        ],
-                    }
-                },
-                'sort': [{'payload.workflow.date_last_published_semantic': 'desc'}],
-            },
-            self.elasticsearch.search.call_args[0][0],
-        )
-
-    def test_puts_fields_into_bool_according_to_operator(self):
-        lead = self.repository['cp'].body['lead']
-        lead.count = 1
-        source = zeit.cms.content.interfaces.ICommonMetadata['serie'].source(None)
-        autotest = source.find('Autotest')
-        lead.query = (
-            ('channels', 'eq', 'International', 'Nahost'),
-            ('channels', 'eq', 'Wissen', None),
-            ('serie', 'eq', autotest),
-            ('ressort', 'neq', 'Wissen', None),
-        )
-        lead.automatic = True
-        lead.automatic_type = 'custom'
-        IRenderedArea(lead).values()
-        self.assertEqual(
-            {
-                'query': {
-                    'bool': {
-                        'filter': [
-                            {
-                                'bool': {
-                                    'filter': [
-                                        {
-                                            'bool': {
-                                                'should': [
-                                                    {
-                                                        'term': {
-                                                            'payload.document.channels.hierarchy': 'International Nahost'
-                                                        }
-                                                    },
-                                                    {
-                                                        'term': {
-                                                            'payload.document.channels.hierarchy': 'Wissen'
-                                                        }
-                                                    },
-                                                ]
-                                            }
-                                        },
-                                        {'term': {'payload.document.serie': 'Autotest'}},
-                                    ],
-                                    'must_not': [
-                                        {'term': {'payload.document.ressort': 'Wissen'}},
-                                    ],
-                                }
-                            },
-                            {'term': {'payload.workflow.published': True}},
-                        ],
-                        'must_not': [
-                            {'term': {'payload.zeit__DOT__content__DOT__gallery.type': 'inline'}}
-                        ],
-                    }
-                },
-                'sort': [{'payload.workflow.date_last_published_semantic': 'desc'}],
-            },
-            self.elasticsearch.search.call_args[0][0],
-        )
-
     def test_can_take_over_whole_query_body(self):
         lead = self.repository['cp'].body['lead']
         lead.count = 1
@@ -434,59 +179,19 @@ class AutomaticAreaElasticsearchTest(zeit.content.cp.testing.FunctionalTestCase)
         )
 
     def test_custom_query_order_defaults_to_semantic_publish(self):
-        self.area.automatic_type = 'custom'
+        self.area.automatic_type = 'elasticsearch-query'
+        self.area.query = (('ressort', 'eq', 'International', 'Nahost'),)
         IRenderedArea(self.area).values()
         self.assertEqual(
             [{'payload.workflow.date_last_published_semantic': 'desc'}],
             self.elasticsearch.search.call_args[0][0]['sort'],
         )
 
-    def test_custom_query_can_be_forced_to_elastic(self):
-        FEATURE_TOGGLES.set('contentquery_custom_as_sql')
-        self.area.automatic_type = 'custom'
-        self.area.query = (('ressort', 'eq', 'International', 'Nahost'),)
-        self.area.xml.find('query').set('type', 'elastic')
-        IRenderedArea(self.area).values()
-        self.assertTrue(self.elasticsearch.search.called)
-
     def test_query_order_can_be_set(self):
         self.area.elasticsearch_raw_order = 'order:desc'
         IRenderedArea(self.area).values()
         query = self.elasticsearch.search.call_args[0][0]
         self.assertEqual([{'order': 'desc'}], query['sort'])
-
-    def test_bbb_converts_automatic_type_channel_to_custom(self):
-        lead = self.repository['cp'].body['lead']
-        lead.count = 1
-        source = zeit.cms.content.interfaces.ICommonMetadata['serie'].source(None)
-        autotest = source.find('Autotest')
-        lead.query = (('serie', 'eq', autotest),)
-        lead.automatic = True
-        lead.xml.set('automatic_type', 'channel')
-        IRenderedArea(lead).values()
-        self.assertEqual(
-            {
-                'query': {
-                    'bool': {
-                        'filter': [
-                            {
-                                'bool': {
-                                    'filter': [
-                                        {'term': {'payload.document.serie': 'Autotest'}},
-                                    ]
-                                }
-                            },
-                            {'term': {'payload.workflow.published': True}},
-                        ],
-                        'must_not': [
-                            {'term': {'payload.zeit__DOT__content__DOT__gallery.type': 'inline'}}
-                        ],
-                    }
-                },
-                'sort': [{'payload.workflow.date_last_published_semantic': 'desc'}],
-            },
-            self.elasticsearch.search.call_args[0][0],
-        )
 
     def test_valid_query_despite_missing_order(self):
         self.area.elasticsearch_raw_query = '{"query": {}}'
@@ -1205,7 +910,6 @@ class AutomaticAreaSQLCustomTest(zeit.content.cp.testing.FunctionalTestCase):
         self.area.automatic_type = 'custom'
         self.repository['cp'] = self.cp
         self.connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
-        FEATURE_TOGGLES.set('contentquery_custom_as_sql')
 
     def test_builds_query_from_conditions(self):
         source = zeit.cms.content.interfaces.ICommonMetadata['serie'].source(None)

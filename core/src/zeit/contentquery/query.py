@@ -20,7 +20,6 @@ import zope.interface
 
 from zeit.cms.content.cache import content_cache
 from zeit.cms.content.interfaces import IUUID
-from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.interfaces import ICMSContent
 from zeit.connector.models import TIMESTAMP
 from zeit.connector.models import Content as ConnectorModel
@@ -191,7 +190,6 @@ class SQLContentQuery(ContentQuery):
 
 class SQLCustomContentQuery(SQLContentQuery):
     grok.name('custom')
-    grok.baseclass()  # See dispatch_custom_query
 
     @property
     def order(self):
@@ -283,20 +281,6 @@ class SQLCustomContentQuery(SQLContentQuery):
         if value[1]:
             condition = sql_and(condition, self._make_condition('sub_ressort', operator, value[1]))
         return condition
-
-
-@grok.adapter(zeit.contentquery.interfaces.IConfiguration, name='custom')
-@grok.implementer(zeit.contentquery.interfaces.IContentQuery)
-def dispatch_custom_query(context):
-    """Helper for switching during transition phase"""
-    query = context.xml.find('query')
-    if query is not None and query.get('type') == 'elastic':
-        return CustomContentQuery(context)
-    if FEATURE_TOGGLES.find('contentquery_custom_as_sql'):
-        return SQLCustomContentQuery(context)
-    if query is not None and query.get('type') == 'sql':
-        return SQLCustomContentQuery(context)
-    return CustomContentQuery(context)
 
 
 @grok.adapter(zeit.contentquery.interfaces.IContentQuery)
@@ -417,97 +401,6 @@ class ElasticsearchContentQuery(ContentQuery):
         if not ids:
             return None
         return {'ids': {'values': ids}}
-
-
-class CustomContentQuery(ElasticsearchContentQuery):
-    grok.name('custom')
-    grok.baseclass()  # See dispatch_custom_query
-
-    ES_FIELD_NAMES = {
-        'channels': 'payload.document.channels.hierarchy',
-        'content_type': 'doc_type',
-    }
-
-    ES_ORDER = {
-        'date_last_published_semantic': 'payload.workflow.date_last_published_semantic:desc',
-        'date_first_released': 'payload.document.date_first_released:desc',
-        'date_last_published': 'payload.workflow.date_last_published:desc',
-        'print_page': 'payload.document.page:asc',
-    }
-    ES_ORDER_BWCOMPAT = {v: k for k, v in ES_ORDER.items()}
-
-    serialize = CustomQueryProperty()._serialize_query_item
-
-    def __init__(self, context):
-        # Skip direct superclass, as we set `query` and `order` differently.
-        super(ElasticsearchContentQuery, self).__init__(context)
-        self.query = self._make_custom_query()
-        self.order_default = self.ES_ORDER[self.context.query_order]
-
-    def _make_custom_query(self):
-        fields = {}
-        for item in self.context.query:
-            typ = item[0]
-            fields.setdefault(typ, []).append(item)
-
-        must = []
-        must_not = []
-        for typ in fields:
-            positive = []
-            for item in fields[typ]:
-                if item[1] == 'neq':
-                    must_not.append(self._make_clause(typ, item))
-                else:
-                    positive.append(item)
-            if len(positive) > 1:
-                must.append({'bool': {'should': [self._make_clause(typ, x) for x in positive]}})
-            elif len(positive) == 1:
-                must.append(self._make_clause(typ, positive[0]))
-        # We rely on _build_query() putting this inside a bool/filter context
-        query = {'query': {'bool': {}}}
-        if must:
-            query['query']['bool']['filter'] = must
-        if must_not:
-            query['query']['bool']['must_not'] = must_not
-        return query
-
-    def _make_clause(self, typ, item):
-        try:
-            func = getattr(self, '_make_{}_condition'.format(typ))
-            return func(item)
-        except AttributeError:
-            return self._make_condition(item)
-
-    def _make_condition(self, item):
-        typ, operator, value = self.serialize(self.context, item)
-        return {'term': {self._fieldname(typ): value}}
-
-    @classmethod
-    def _fieldname(cls, typ):
-        fieldname = cls.ES_FIELD_NAMES.get(typ)
-        if fieldname:
-            return fieldname
-
-        # XXX Generalize the class?
-        prop = getattr(zeit.content.article.article.Article, typ)
-        if not isinstance(prop, zeit.cms.content.dav.DAVProperty):
-            raise ValueError('Cannot determine field name for %s', typ)
-        return 'payload.%s.%s' % (
-            zeit.retresco.content.davproperty_to_es(prop.namespace, prop.name)
-        )
-
-    def _make_ressort_condition(self, item):
-        if item[3]:
-            return {
-                'bool': {
-                    'must': [
-                        {'term': {self._fieldname('ressort'): item[2]}},
-                        {'term': {self._fieldname('sub_ressort'): item[3]}},
-                    ]
-                }
-            }
-        else:
-            return {'term': {self._fieldname('ressort'): item[2]}}
 
 
 class TMSContentQuery(ContentQuery):
