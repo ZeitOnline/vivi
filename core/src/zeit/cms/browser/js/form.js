@@ -101,6 +101,7 @@ zeit.cms.SubPageForm = gocept.Class.extend({
             if (result === null) {
                 return null;
             }
+            self.set_successful();
             // XXX this is the third place that calls post_process_html and
             // sends signals -- refactor! (#11270).
             self.post_process_html();
@@ -191,6 +192,15 @@ zeit.cms.SubPageForm = gocept.Class.extend({
     unset_busy: function() {
         var self = this;
         $(self.container).removeClass('busy');
+    },
+
+    set_successful() {
+        this.container.classList.add('submitted-successfully');
+        setTimeout(() => this.unset_successful(), 2500);
+    },
+
+    unset_successful() {
+        this.container.classList.remove('submitted-successfully');
     },
 
     post_process_html: function() {

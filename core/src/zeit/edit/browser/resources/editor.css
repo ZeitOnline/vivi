@@ -540,6 +540,13 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
   padding-left:2px;
 }
 
+.inline-form.busy .widget > :is(input, textarea, div > div > select) {
+    background: linear-gradient(0deg, #FFF, #FFC) !important;
+}
+.inline-form.submitted-successfully .widget > :where(input, textarea, div > div > select) {
+    background: linear-gradient(0deg, #FFF, #CFD) !important;
+}
+
 .inline-form .error div.widget > input,
 .inline-form .error div.widget > textarea,
 .inline-form .error div.widget > div > div > select {
