@@ -7,6 +7,7 @@ import time
 import unittest
 
 import pendulum
+import relstorage.interfaces
 import transaction
 import zope.interface.verify
 
@@ -20,6 +21,7 @@ from zeit.connector.interfaces import (
 from zeit.connector.resource import Resource
 from zeit.connector.testing import ROOT, copy_inherited_functions
 import zeit.cms.config
+import zeit.connector.cache
 import zeit.connector.interfaces
 import zeit.connector.testing
 
@@ -582,11 +584,34 @@ class ContractCache:
         self.assertEqual([], self.listCollection(ROOT))
         self.assertEqual([], self.child_name_cache[ROOT])
 
+    def test_changeProperties_handles_cache_with_data_loss(self):
+        prop = ('foo', self.NS)
+        res = self.add_resource('foo', properties={prop: 'foo'})
+        with mock.patch.object(
+            zeit.connector.cache.PropertyCache,
+            '_cache_values_equal',
+            side_effect=relstorage.interfaces.POSKeyError('cache loss'),
+        ):
+            self.connector.changeProperties(res.id, {prop: 'bar'})
+        self.assertEqual('bar', self.connector.property_cache[res.id][prop])
+
     def test_changeProperties_updates_property_cache(self):
         prop = ('foo', self.NS)
         res = self.add_resource('foo', properties={prop: 'foo'})
         self.connector.changeProperties(res.id, {prop: 'bar'})
         self.assertEqual('bar', self.connector.property_cache[res.id][prop])
+
+    def test_delitem_handles_cache_with_data_loss(self):
+        prop = ('foo', self.NS)
+        res = self.add_resource('foo', properties={prop: 'foo'})
+        # XXX mock is not working :(
+        with mock.patch.object(
+            zeit.connector.cache.PersistentCache,
+            '_is_deleted',
+            side_effect=relstorage.interfaces.POSKeyError('cache loss'),
+        ):
+            del self.connector[res.id]
+        self.assertNotIn(res.id, self.connector.property_cache)
 
     def test_delitem_removes_property_cache(self):
         prop = ('foo', self.NS)

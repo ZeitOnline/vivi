@@ -311,14 +311,26 @@ class PersistentCache(AccessTimes, persistent.Persistent):
         skey = get_storage_key(key)
         old_value = self._storage.get(skey)
         if isinstance(old_value, self.CACHE_VALUE_CLASS):
-            self._set_value(old_value, value)
+            try:
+                self._set_value(old_value, value)
+            except ZODB.POSException.POSKeyError:
+                # cache value is lossed most likely due to a issue in relstorage
+                # see WCM-633
+                value = self.CACHE_VALUE_CLASS(value)
+                self._storage[skey] = value
         else:
             value = self.CACHE_VALUE_CLASS(value)
             self._storage[skey] = value
         self._update_cache_access(skey)
 
-    def _is_deleted(self, value):
-        return zeit.connector.interfaces.DeleteProperty in value
+    @staticmethod
+    def _is_deleted(value):
+        try:
+            return zeit.connector.interfaces.DeleteProperty in value
+        except ZODB.POSException.POSKeyError:
+            # cache value is lossed most likely due to a issue in relstorage
+            # see WCM-633
+            return True
 
     def _set_value(self, old_value, new_value):
         if self._cache_values_equal(old_value, new_value):
