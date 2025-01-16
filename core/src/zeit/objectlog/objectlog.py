@@ -7,6 +7,7 @@ import BTrees
 import pendulum
 import persistent
 import transaction
+import ZODB.POSException
 import zope.app.keyreference.interfaces
 import zope.component
 import zope.interface
@@ -71,8 +72,12 @@ class ObjectLog(persistent.Persistent):
         remove = []
         for key in self._object_log:
             log = self._object_log[key]
-            for time_key in list(log.keys(max=reference_time)):
-                del log[time_key]
+            try:
+                for time_key in list(log.keys(max=reference_time)):
+                    del log[time_key]
+            except ZODB.POSException.POSKeyError:
+                logger.warning('ZODB.POSException.POSKeyError, removing lost key %s', key)
+                remove.append(key)
             if not log:
                 remove.append(key)
         for key in remove:
