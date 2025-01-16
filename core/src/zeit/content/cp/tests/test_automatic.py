@@ -178,15 +178,6 @@ class AutomaticAreaElasticsearchTest(zeit.content.cp.testing.FunctionalTestCase)
             self.elasticsearch.search.call_args[0][0]['query'],
         )
 
-    def test_custom_query_order_defaults_to_semantic_publish(self):
-        self.area.automatic_type = 'elasticsearch-query'
-        self.area.query = (('ressort', 'eq', 'International', 'Nahost'),)
-        IRenderedArea(self.area).values()
-        self.assertEqual(
-            [{'payload.workflow.date_last_published_semantic': 'desc'}],
-            self.elasticsearch.search.call_args[0][0]['sort'],
-        )
-
     def test_query_order_can_be_set(self):
         self.area.elasticsearch_raw_order = 'order:desc'
         IRenderedArea(self.area).values()
@@ -1009,3 +1000,12 @@ AND published=true...
  ORDER BY print_page asc...
 """
         self.assertEllipsis(query, self.connector.search_args[0])
+
+    def test_custom_query_order_defaults_to_semantic_publish(self):
+        self.area.automatic_type = 'elasticsearch-query'
+        self.area.query = (('ressort', 'eq', 'International', 'Nahost'),)
+        IRenderedArea(self.area).values()
+        self.assertEqual(
+            [{'payload.workflow.date_last_published_semantic': 'desc'}],
+            self.elasticsearch.search.call_args[0][0]['sort'],
+        )
