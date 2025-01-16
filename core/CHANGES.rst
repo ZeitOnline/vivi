@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.7.0 (2025-01-16)
+------------------
+
+MAINT:
+- Gracefully handle empty social embed URLs
+
+
 7.6.0 (2025-01-16)
 ------------------
 
