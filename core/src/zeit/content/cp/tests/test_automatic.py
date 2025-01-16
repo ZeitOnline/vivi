@@ -1002,10 +1002,8 @@ AND published=true...
         self.assertEllipsis(query, self.connector.search_args[0])
 
     def test_custom_query_order_defaults_to_semantic_publish(self):
-        self.area.automatic_type = 'elasticsearch-query'
+        self.area.automatic_type = 'custom'
         self.area.query = (('ressort', 'eq', 'International', 'Nahost'),)
         IRenderedArea(self.area).values()
-        self.assertEqual(
-            [{'payload.workflow.date_last_published_semantic': 'desc'}],
-            self.elasticsearch.search.call_args[0][0]['sort'],
-        )
+        query = '...ORDER BY date_last_published_semantic desc...'
+        self.assertEllipsis(query, self.connector.search_args[0])
