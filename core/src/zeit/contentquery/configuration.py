@@ -120,22 +120,6 @@ class Configuration:
     def referenced_cp(self, value):
         self._referenced_cp = value
 
-    # For automatic_type=custom
-    _query_order = zeit.cms.content.property.ObjectPathProperty(
-        '.query_order', IConfiguration['query_order'], use_default=True
-    )
-
-    @property
-    def query_order(self):
-        from zeit.contentquery.query import CustomContentQuery  # break cycle
-
-        value = self._query_order
-        return CustomContentQuery.ES_ORDER_BWCOMPAT.get(value, value)
-
-    @query_order.setter
-    def query_order(self, value):
-        self._query_order = value
-
     for name, default in {
         # For automatic_type=topicpage
         'referenced_topicpage': False,
@@ -155,6 +139,7 @@ class Configuration:
         'reach_access': False,
         'reach_age': False,
         # For automatic_type=custom
+        'query_order': True,
         'query_restrict_time': True,
         'query_force_queryplan': False,
         # For automatic_type=sql-query
