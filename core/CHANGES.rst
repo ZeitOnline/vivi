@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.5.0 (2025-01-16)
+------------------
+
+- WCM-195: truncate keywords using ellipsis and show them on hover in full height
+
+
 7.4.0 (2025-01-14)
 ------------------
 
