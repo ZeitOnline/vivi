@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.6.0 (2025-01-16)
+------------------
+
+- WCM-575: remove feature flag contentquery_custom_as_sql
+
+
 7.5.0 (2025-01-16)
 ------------------
 
