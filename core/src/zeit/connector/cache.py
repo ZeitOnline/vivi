@@ -8,6 +8,7 @@ import time
 
 from zope.dottedname.resolve import resolve
 import BTrees
+import opentelemetry.trace
 import persistent
 import persistent.mapping
 import transaction
@@ -313,9 +314,11 @@ class PersistentCache(AccessTimes, persistent.Persistent):
         if isinstance(old_value, self.CACHE_VALUE_CLASS):
             try:
                 self._set_value(old_value, value)
-            except ZODB.POSException.POSKeyError:
+            except ZODB.POSException.POSKeyError as err:
                 # cache value is lossed most likely due to a issue in relstorage
                 # see WCM-633
+                current_span = opentelemetry.trace.get_current_span()
+                current_span.record_exception(err)
                 value = self.CACHE_VALUE_CLASS(value)
                 self._storage[skey] = value
         else:
@@ -327,9 +330,11 @@ class PersistentCache(AccessTimes, persistent.Persistent):
     def _is_deleted(value):
         try:
             return zeit.connector.interfaces.DeleteProperty in value
-        except ZODB.POSException.POSKeyError:
+        except ZODB.POSException.POSKeyError as err:
             # cache value is lossed most likely due to a issue in relstorage
             # see WCM-633
+            current_span = opentelemetry.trace.get_current_span()
+            current_span.record_exception(err)
             return True
 
     def _set_value(self, old_value, new_value):
