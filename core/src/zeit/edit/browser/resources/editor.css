@@ -550,13 +550,13 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
 .inline-form .error div.widget > input,
 .inline-form .error div.widget > textarea,
 .inline-form .error div.widget > div > div > select {
-  background: linear-gradient(0deg, #FFF, #FDD);
+  background: linear-gradient(0deg, #FFF, #FDD) !important;
 }
 
 .inline-form .dirty div.widget > input,
 .inline-form .dirty div.widget > textarea,
 .inline-form .dirty div.widget > div > div > select {
-  background: linear-gradient(0deg, #FFF, #CFD);
+  background: linear-gradient(0deg, #FFF, #CEF) !important;
 }
 
 .inline-form .dirty div.widget > input[type=checkbox] {
