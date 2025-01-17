@@ -68,7 +68,7 @@ class Factory(zeit.content.article.edit.reference.ReferenceFactory):
 
 @grok.adapter(
     zeit.content.article.edit.interfaces.IArticleArea,
-    zeit.content.video.interfaces.IVideoContent,
+    zeit.content.video.interfaces.IVideo,
     int,
 )
 @grok.implementer(zeit.edit.interfaces.IElement)

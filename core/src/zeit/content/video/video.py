@@ -65,8 +65,6 @@ class Video(zeit.cms.content.metadata.CommonMetadata):
         zeit.content.video.interfaces.IVideo['type'], 'http://namespaces.zeit.de/CMS/video', 'type'
     )
 
-    id_prefix = 'vid'
-
     external_id = zeit.cms.content.dav.DAVProperty(
         zeit.content.video.interfaces.IVideo['external_id'],
         # BBB This field used to be injected into here from zeit.brightcove

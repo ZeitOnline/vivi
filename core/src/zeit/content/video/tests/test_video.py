@@ -9,20 +9,6 @@ import zeit.content.video.video
 
 
 class TestVideo(zeit.content.video.testing.TestCase):
-    def test_security_should_allow_access_to_id_prefix(self):
-        from zope.security.proxy import ProxyFactory
-        import zope.security.management
-
-        import zeit.cms.testing
-
-        factory = zeit.content.video.testing.video_factory(self)
-        next(factory)
-        video = next(factory)  # in repository
-        zope.security.management.endInteraction()
-        with zeit.cms.testing.interaction('zope.mgr'):
-            proxied = ProxyFactory(video)
-            self.assertEqual('vid', proxied.id_prefix)
-
     def test_has_advertisement_defaults_to_true(self):
         # For bw-compat to videos imported before we recognized the field.
         factory = zeit.content.video.testing.video_factory(self)

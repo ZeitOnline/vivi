@@ -5,20 +5,6 @@ import zeit.cms.content.interfaces
 import zeit.content.image.interfaces
 
 
-class IVideoContent(
-    zeit.cms.content.interfaces.ICommonMetadata,
-    zeit.cms.content.interfaces.IXMLContent,
-    zeit.cms.content.interfaces.ISkipDefaultChannel,
-):
-    """Video like content.
-
-    This could be a video.
-
-    """
-
-    id_prefix = zope.schema.TextLine(title=_('Id prefix'), required=True, readonly=True)
-
-
 class IVideoRendition(zope.interface.interfaces.IInterface):
     url = zope.schema.URI(title=_('URI of the rendition'), required=False, readonly=True)
 
@@ -32,7 +18,11 @@ class VideoTypeSource(zeit.cms.content.sources.SimpleFixedValueSource):
     values = ['livestream']
 
 
-class IVideo(IVideoContent):
+class IVideo(
+    zeit.cms.content.interfaces.ICommonMetadata,
+    zeit.cms.content.interfaces.IXMLContent,
+    zeit.cms.content.interfaces.ISkipDefaultChannel,
+):
     external_id = zope.schema.TextLine(title=_('External ID'), readonly=True)
 
     has_recensions = zope.schema.Bool(title=_('Has recension content'), default=False)
