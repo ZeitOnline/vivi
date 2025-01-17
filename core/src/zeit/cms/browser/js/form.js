@@ -261,6 +261,7 @@ zeit.cms.InlineForm = zeit.cms.SubPageForm.extend({
         //   that we need to save on mouse up, when a field lost focus
         //   before.
         self.bind(self.container, 'input', self.mark_dirty);
+        self.bind(self.container, 'change', self.mark_dirty);
         self.bind(self.container, 'focusin', self.store_focus);
         self.bind(self.container, 'focusout', function(event) {
             self.release_focus(event);
