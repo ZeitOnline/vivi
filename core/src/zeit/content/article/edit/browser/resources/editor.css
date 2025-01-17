@@ -169,9 +169,12 @@
   margin: 0 10px;
   padding: 0px 10px;
   position: relative;
-  border-bottom: 1px solid #DDD;
   height: 26px;
   line-height: 26px;
+}
+
+.folded .edit-bar {
+  border-bottom: 1px solid #DDD;
 }
 
 .location-workingcopy.type-article #editor-forms div.editable-area > div.edit-bar {
@@ -378,8 +381,8 @@
 
 .type-article .editable-area .block-inner{
   padding-top: 0px !important;
-  border-radius: 5px 5px 0px 0px;
   border: 1px solid #DDD;
+  border-top-width: 0;
 }
 
 .type-article #article-editor-header .block-inner .object-details,
