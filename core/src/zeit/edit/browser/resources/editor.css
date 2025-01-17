@@ -545,9 +545,19 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
     background: linear-gradient(0deg, #FFF, #FFC) !important;
 }
 
+@keyframes bg-fadeout {
+    from {
+        background-size: 100% 100%;
+    }
+    to {
+        background-size: 100% 0;
+    }
+}
 .inline-form.submitted-successfully .widget > :where(input, textarea),
 .inline-form.submitted-successfully .widget > div > div > select {
-    background: linear-gradient(0deg, #FFF, #CFD) !important;
+    animation: 2.5s bg-fadeout forwards;
+    background-image: linear-gradient(0deg, #FFF, #CFD) !important;
+    background-repeat: no-repeat;
 }
 
 .inline-form .error div.widget > input,
