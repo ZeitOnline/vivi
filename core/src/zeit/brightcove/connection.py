@@ -160,7 +160,7 @@ class PlaybackAPI:
         self.timeout = timeout
 
     def get_video(self, id):
-        data = {'renditions': (), 'video_still': None}
+        data = {'renditions': []}
         try:
             data.update(self._request('GET /videos/%s' % id))
         except requests.exceptions.RequestException as e:
@@ -185,7 +185,6 @@ class PlaybackAPI:
                 )
             return data
 
-        data['video_still'] = data.get('poster')
         data['renditions'] = []
         for item in data.get('sources', ()):
             vr = zeit.content.video.video.VideoRendition()

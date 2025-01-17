@@ -31,8 +31,6 @@ class IVideo(
         title=_('Video expires on'), required=False, readonly=True, default=None
     )
 
-    video_still = zope.schema.URI(title=_('URI of the still image'), required=False, readonly=True)
-
     renditions = zope.schema.Tuple(
         title=_('Renditions of the Video'),
         required=False,
@@ -71,7 +69,6 @@ class IPlayer(zope.interface.Interface):
     """
 
     def get_video(id):
-        """Must return a dict with at least the following keys:
-        * video_still: str
+        """Returns a dict with at least the following keys:
         * renditions: list of IVideoRendition
         """

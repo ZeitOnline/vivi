@@ -43,7 +43,6 @@ class Base(zeit.push.browser.form.SocialBase, zeit.push.browser.form.MobileBase)
         'date_first_released',
         'date_last_modified',
         'expires',
-        'video_still',
         'authorships',
     )
 
@@ -86,19 +85,3 @@ class Edit(Base, zeit.cms.browser.form.EditForm):
 
 class Display(Base, zeit.cms.browser.form.DisplayForm):
     title = _('Video')
-
-
-class Still(zeit.cms.browser.view.Base):
-    @property
-    def video_still_url(self):
-        return self.context.video_still
-
-    def __call__(self):
-        return self.redirect(self.video_still_url, trusted=True)
-
-
-class StillURL(zope.traversing.browser.absoluteurl.AbsoluteURL):
-    def __str__(self):
-        if self.context.video_still_url:
-            return self.context.video_still_url
-        raise TypeError('No still url')

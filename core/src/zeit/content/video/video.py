@@ -83,10 +83,6 @@ class Video(zeit.cms.content.metadata.CommonMetadata):
         high = sorted(self.renditions, key=lambda r: r.frame_width).pop()
         return getattr(high, 'url', '')
 
-    @property
-    def video_still(self):
-        return self._player_data['video_still']
-
     @cachedproperty
     def _player_data(self):
         player = zope.component.getUtility(zeit.content.video.interfaces.IPlayer)
