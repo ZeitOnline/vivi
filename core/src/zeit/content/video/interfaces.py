@@ -58,6 +58,11 @@ class IVideo(
 
     kind = zope.schema.Choice(title=_('Video type'), source=VideoKindSource(), required=False)
 
+    # For manual editing of `video_type=youtube`, copied from IVideoRendition
+    duration = zope.schema.Int(title=_('Duration of the rendition'), required=False)
+    width = zope.schema.Int(title=_('Width of the Frame'), required=False)
+    url = zope.schema.URI(title=_('URI of the rendition'), required=False)
+
 
 class VideoSource(zeit.cms.content.contentsource.CMSContentSource):
     name = 'video'

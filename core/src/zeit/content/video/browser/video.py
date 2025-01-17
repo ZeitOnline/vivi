@@ -34,6 +34,9 @@ class Base(zeit.push.browser.form.SocialBase, zeit.push.browser.form.MobileBase)
         'channels',
         'video_still_copyright',
         'has_advertisement',
+        'duration',
+        'width',
+        'url',
         # remaining:
         '__name__',
         'image',

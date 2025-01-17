@@ -21,10 +21,10 @@ class PlayerMockLayer(plone.testing.Layer):
     def setUp(self):
         self['player'] = mock.Mock()
         zope.interface.alsoProvides(self['player'], zeit.content.video.interfaces.IPlayer)
-        zope.component.getSiteManager().registerUtility(self['player'])
+        zope.component.getSiteManager().registerUtility(self['player'], name='brightcove')
 
     def tearDown(self):
-        zope.component.getSiteManager().unregisterUtility(self['player'])
+        zope.component.getSiteManager().unregisterUtility(self['player'], name='brightcove')
 
     def testSetUp(self):
         self['player'].reset_mock()

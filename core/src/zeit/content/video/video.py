@@ -79,6 +79,12 @@ class Video(zeit.cms.content.metadata.CommonMetadata):
         zeit.content.video.interfaces.IVideo['kind'], 'http://namespaces.zeit.de/CMS/video', 'kind'
     )
 
+    zeit.cms.content.dav.mapProperties(
+        zeit.content.video.interfaces.IVideo,
+        'http://namespaces.zeit.de/CMS/video',
+        ('duration', 'width', 'url'),
+    )
+
     @property
     def renditions(self):
         return self._player_data['renditions']
@@ -92,6 +98,13 @@ class Video(zeit.cms.content.metadata.CommonMetadata):
 
     @cachedproperty
     def _player_data(self):
+        # XXX Kludgy temporary workaround until we integrate with Youtube API.
+        if self.video_type == 'youtube':
+            rendition = VideoRendition()
+            rendition.url = self.url
+            rendition.frame_width = self.width
+            rendition.video_duration = self.duration
+            return {'renditions': [rendition]}
         player = zope.component.getUtility(zeit.content.video.interfaces.IPlayer)
         return player.get_video(self.external_id)
 
