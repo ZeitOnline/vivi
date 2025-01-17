@@ -14,6 +14,13 @@ class IVideoRendition(zope.interface.interfaces.IInterface):
     video_duration = zope.schema.Int(title=_('Duration of the rendition'))
 
 
+class VideoTypeSource(zeit.cms.content.sources.SimpleFixedValueSource):
+    values = {
+        'brightcove': _('Brightcove'),
+        'youtube': _('Youtube'),
+    }
+
+
 class VideoKindSource(zeit.cms.content.sources.SimpleFixedValueSource):
     values = ['livestream']
 
@@ -23,11 +30,10 @@ class IVideo(
     zeit.cms.content.interfaces.IXMLContent,
     zeit.cms.content.interfaces.ISkipDefaultChannel,
 ):
-    external_id = zope.schema.TextLine(title=_('External ID'), readonly=True)
+    type = zope.schema.Choice(title=_('Type'), source=VideoTypeSource(), default='brightcove')
+    external_id = zope.schema.TextLine(title=_('External ID'))
 
-    expires = zope.schema.Datetime(
-        title=_('Video expires on'), required=False, readonly=True, default=None
-    )
+    expires = zope.schema.Datetime(title=_('Video expires on'), required=False)
 
     renditions = zope.schema.Tuple(
         title=_('Renditions of the Video'),

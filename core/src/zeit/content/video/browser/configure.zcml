@@ -6,6 +6,14 @@
    i18n_domain="zeit.cms">
 
   <browser:page
+    for="zeit.cms.repository.interfaces.IFolder"
+    name="zeit.content.video.Add"
+    permission="zeit.AddContent"
+    class=".video.Add"
+    menu="zeit-add-menu" title="Video"
+    />
+
+  <browser:page
      for="..interfaces.IVideo"
      layer="zeit.cms.browser.interfaces.ICMSLayer"
      name="edit.html"

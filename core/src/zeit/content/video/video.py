@@ -48,6 +48,20 @@ class Video(zeit.cms.content.metadata.CommonMetadata):
     <body/>
 </video>"""
 
+    external_id = zeit.cms.content.dav.DAVProperty(
+        zeit.content.video.interfaces.IVideo['external_id'],
+        # BBB This field used to be injected into here from zeit.brightcove
+        'http://namespaces.zeit.de/CMS/brightcove',
+        'id',
+    )
+
+    type = zeit.cms.content.dav.DAVProperty(
+        zeit.content.video.interfaces.IVideo['type'],
+        'http://namespaces.zeit.de/CMS/video',
+        'type',
+        use_default=True,
+    )
+
     zeit.cms.content.dav.mapProperties(
         zeit.content.video.interfaces.IVideo,
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
@@ -63,13 +77,6 @@ class Video(zeit.cms.content.metadata.CommonMetadata):
 
     kind = zeit.cms.content.dav.DAVProperty(
         zeit.content.video.interfaces.IVideo['kind'], 'http://namespaces.zeit.de/CMS/video', 'kind'
-    )
-
-    external_id = zeit.cms.content.dav.DAVProperty(
-        zeit.content.video.interfaces.IVideo['external_id'],
-        # BBB This field used to be injected into here from zeit.brightcove
-        'http://namespaces.zeit.de/CMS/brightcove',
-        'id',
     )
 
     @property

@@ -25,3 +25,21 @@ class VideoFormTest(zeit.content.video.testing.BrowserTestCase):
 
         b.getLink('Checkin').click()
         self.assertEllipsis('..."video" has been checked in...', b.contents)
+
+    def test_add_video(self):
+        b = self.browser
+        b.open('http://localhost/repository')
+        menu = b.getControl(name='add_menu')
+        menu.displayValue = ['Video']
+        b.open(menu.value[0])
+        self.assertEllipsis('...Add Video...', b.contents)
+        b.getControl('File name').value = 'myvideo'
+        b.getControl('Type').displayValue = ['Youtube']
+        b.getControl('Title').value = 'myvid'
+        b.getControl('External ID').value = '1234'
+        b.getControl('Ressort').displayValue = ['Deutschland']
+        b.getControl(name='form.actions.add').click()
+        self.assertEllipsis('...Edit Video...', b.contents)
+        b.getLink('Checkin').click()
+        self.assertEllipsis('..."myvideo" has been checked in...', b.contents)
+        self.assertEllipsis('...External ID...1234...', b.contents)

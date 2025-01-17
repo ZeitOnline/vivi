@@ -6,6 +6,7 @@ from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.related.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.content.video.interfaces
+import zeit.content.video.video
 import zeit.push.browser.form
 
 
@@ -27,6 +28,7 @@ class Base(zeit.push.browser.form.SocialBase, zeit.push.browser.form.MobileBase)
         'banner',
         'banner_id',
         'kind',
+        'type',
         'commentsAllowed',
         'commentsPremoderate',
         'channels',
@@ -39,6 +41,7 @@ class Base(zeit.push.browser.form.SocialBase, zeit.push.browser.form.MobileBase)
         'date_first_released',
         'date_last_modified',
         'expires',
+        'external_id',
         'authorships',
     )
 
@@ -60,7 +63,9 @@ class Base(zeit.push.browser.form.SocialBase, zeit.push.browser.form.MobileBase)
                 'commentsAllowed',
                 'commentsPremoderate',
                 'has_advertisement',
+                'kind',
                 'type',
+                'external_id',
             ),
             css_class='column-right checkboxes',
         ),
@@ -74,9 +79,14 @@ class Base(zeit.push.browser.form.SocialBase, zeit.push.browser.form.MobileBase)
     )
 
 
+class Add(Base, zeit.cms.browser.form.AddForm):
+    title = _('Add Video')
+    factory = zeit.content.video.video.Video
+
+
 class Edit(Base, zeit.cms.browser.form.EditForm):
-    title = _('Video')
+    title = _('Edit Video')
 
 
 class Display(Base, zeit.cms.browser.form.DisplayForm):
-    title = _('Video')
+    title = _('View Video')
