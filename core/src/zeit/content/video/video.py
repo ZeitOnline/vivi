@@ -1,5 +1,3 @@
-import importlib.resources
-
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
 import zope.interface
@@ -44,9 +42,11 @@ class AuthorshipsProperty(zeit.cms.content.reference.ReferenceProperty):
 
 @zope.interface.implementer(zeit.content.video.interfaces.IVideo, zeit.cms.interfaces.IAsset)
 class Video(zeit.cms.content.metadata.CommonMetadata):
-    default_template = (importlib.resources.files(__package__) / 'video-template.xml').read_text(
-        'utf-8'
-    )
+    default_template = """\
+<video>
+    <head/>
+    <body/>
+</video>"""
 
     zeit.cms.content.dav.mapProperties(
         zeit.content.video.interfaces.IVideo,
