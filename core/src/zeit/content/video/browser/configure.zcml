@@ -51,6 +51,7 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="object-details-body"
     class=".details.Details"
+    template="object-details-body.pt"
     permission="zope.View"
     />
 
