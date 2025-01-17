@@ -35,7 +35,7 @@ case $COMMAND in
         docker run --rm -it \
             -e VIVI_XMLRPC_PASSWORD=$(vault_read vivi/$environment/nightwatch password) \
             -e OIDC_CLIENT_ID=edge-www \
-            -e OIDC_CLIENT_SECRETA=$(vault_read keycloak/production/zeit-online/edge-www client_secret) \
+            -e OIDC_CLIENT_SECRET=$(vault_read keycloak/production/zeit-online/edge-www client_secret) \
             $image \
             --nightwatch-environment=$environment "$@"
         ;;
