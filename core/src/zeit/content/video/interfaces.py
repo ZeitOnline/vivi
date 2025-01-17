@@ -24,6 +24,7 @@ class IVideoRendition(zope.interface.interfaces.IInterface):
 
     frame_width = zope.schema.Int(title=_('Width of the Frame'))
 
+    # milliseconds (we inherited this from Brightcove)
     video_duration = zope.schema.Int(title=_('Duration of the rendition'))
 
 
