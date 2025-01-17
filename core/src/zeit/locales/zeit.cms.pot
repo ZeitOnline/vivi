@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Fri Jan  3 13:21:47 2025\n"
+"POT-Creation-Date: Fri Jan 17 15:38:57 2025\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -209,13 +209,13 @@ msgstr ""
 
 #: zeit/cms/browser/form.py:293
 #: zeit/cms/repository/browser/file.py:89
-#: zeit/content/article/edit/browser/edit.py:335
+#: zeit/content/article/edit/browser/edit.py:336
 #: zeit/content/article/edit/browser/form.py:478
 #: zeit/content/article/edit/browser/push.py:52
 #: zeit/content/article/edit/browser/reference.py:51
 #: zeit/content/cp/browser/view.py:11
 #: zeit/content/image/browser/form.py:98
-#: zeit/content/image/browser/imagegroup.py:326
+#: zeit/content/image/browser/imagegroup.py:324
 #: zeit/edit/browser/form.py:65
 #: zeit/edit/browser/view.py:103
 #: zeit/seo/browser/form.py:31
@@ -289,7 +289,7 @@ msgstr ""
 #: zeit/cms/repository/browser/file.py:30
 #: zeit/cms/repository/browser/file_details.pt:2
 #: zeit/content/dynamicfolder/browser/folder.py:25
-#: zeit/content/image/browser/imagegroup.py:214
+#: zeit/content/image/browser/imagegroup.py:212
 #: zeit/content/image/browser/interfaces.py:32
 msgid "File name"
 msgstr ""
@@ -561,7 +561,7 @@ msgstr ""
 #: zeit/content/audio/browser/form.py:96
 #: zeit/content/cp/browser/form.py:76
 #: zeit/content/markup/browser/form.py:29
-#: zeit/content/video/browser/video.py:57
+#: zeit/content/video/browser/video.py:58
 msgid "Navigation"
 msgstr ""
 
@@ -580,7 +580,7 @@ msgstr ""
 #: zeit/content/image/browser/form.py:23
 #: zeit/content/infobox/browser/form.py:25
 #: zeit/content/infobox/browser/form.py:87
-#: zeit/content/video/browser/video.py:52
+#: zeit/content/video/browser/video.py:53
 msgid "Texts"
 msgstr ""
 
@@ -589,7 +589,7 @@ msgstr ""
 #: zeit/content/article/edit/browser/form.py:389
 #: zeit/content/cp/browser/form.py:59
 #: zeit/content/link/browser/form.py:39
-#: zeit/content/video/browser/video.py:60
+#: zeit/content/video/browser/video.py:61
 msgid "Options"
 msgstr ""
 
@@ -921,6 +921,7 @@ msgstr ""
 #: zeit/content/audio/interfaces.py:40
 #: zeit/content/audio/interfaces.py:68
 #: zeit/content/image/browser/image_view.pt:6
+#: zeit/content/video/interfaces.py:34
 #: zeit/content/volume/browser/toc_listing.py:61
 msgid "Type"
 msgstr ""
@@ -1571,7 +1572,7 @@ msgstr ""
 #: zeit/content/cp/interfaces.py:302
 #: zeit/content/cp/interfaces.py:644
 #: zeit/content/image/browser/configure.zcml:265
-#: zeit/content/image/browser/imagegroup.py:224
+#: zeit/content/image/browser/imagegroup.py:222
 #: zeit/content/image/image.py:126
 #: zeit/content/portraitbox/interfaces.py:16
 #: zeit/wysiwyg/browser/resources/reference/image.pt:17
@@ -1771,12 +1772,12 @@ msgstr ""
 msgid "Could not create block for \"${name}\", because I don't know which one."
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:339
+#: zeit/content/article/edit/browser/edit.py:340
 msgid "generate-video-recommendation"
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:377
-#: zeit/content/article/edit/browser/edit.py:382
+#: zeit/content/article/edit/browser/edit.py:378
+#: zeit/content/article/edit/browser/edit.py:383
 #: zeit/content/author/browser/honorar.py:52
 #: zeit/content/volume/browser/form.py:142
 msgid "There were errors"
@@ -2030,9 +2031,8 @@ msgstr ""
 
 #: zeit/content/article/edit/interfaces.py:124
 #: zeit/content/article/edit/video.py:66
-#: zeit/content/video/browser/video.py:84
-#: zeit/content/video/browser/video.py:88
-#: zeit/content/video/video.py:141
+#: zeit/content/video/browser/configure.zcml:8
+#: zeit/content/video/video.py:151
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:21
 msgid "Video"
 msgstr ""
@@ -2181,7 +2181,7 @@ msgstr ""
 #: zeit/content/article/edit/interfaces.py:385
 #: zeit/content/article/edit/interfaces.py:395
 #: zeit/content/audio/interfaces.py:38
-#: zeit/content/video/interfaces.py:64
+#: zeit/content/video/interfaces.py:58
 #: zeit/wysiwyg/browser/resources/citation/dialog.pt:23
 #: zeit/wysiwyg/browser/resources/reference/gallery.pt:17
 #: zeit/wysiwyg/browser/resources/reference/infobox.pt:17
@@ -2402,7 +2402,6 @@ msgid "Textlength"
 msgstr ""
 
 #: zeit/content/article/interfaces.py:53
-#: zeit/content/video/interfaces.py:37
 msgid "Has recension content"
 msgstr ""
 
@@ -3072,7 +3071,7 @@ msgid "Checking out"
 msgstr ""
 
 #: zeit/content/cp/browser/workflow.py:33
-#: zeit/content/image/browser/imagegroup.py:68
+#: zeit/content/image/browser/imagegroup.py:66
 #: zeit/workflow/browser/form.py:140
 #: zeit/workflow/browser/form.py:166
 msgid "Settings"
@@ -3414,7 +3413,7 @@ msgstr ""
 msgid "Publish content of dynamic folder"
 msgstr ""
 
-#: zeit/content/dynamicfolder/folder.py:213
+#: zeit/content/dynamicfolder/folder.py:221
 msgid "Dynamic Folder"
 msgstr ""
 
@@ -3554,7 +3553,7 @@ msgid "Image (single)"
 msgstr ""
 
 #: zeit/content/image/browser/configure.zcml:208
-#: zeit/content/image/browser/imagegroup.py:208
+#: zeit/content/image/browser/imagegroup.py:206
 #: zeit/content/image/interfaces.py:385
 msgid "Image group"
 msgstr ""
@@ -3580,7 +3579,7 @@ msgid "Copyright changed for: ${changes}"
 msgstr ""
 
 #: zeit/content/image/browser/form.py:18
-#: zeit/content/image/browser/imagegroup.py:239
+#: zeit/content/image/browser/imagegroup.py:237
 msgid "Image data"
 msgstr ""
 
@@ -3601,7 +3600,7 @@ msgid "View image"
 msgstr ""
 
 #: zeit/content/image/browser/image_view.pt:10
-#: zeit/content/image/browser/imagegroup.py:220
+#: zeit/content/image/browser/imagegroup.py:218
 msgid "Dimensions"
 msgstr ""
 
@@ -3621,47 +3620,47 @@ msgstr ""
 msgid "Links to: ${link} rel=\"nofollow\""
 msgstr ""
 
-#: zeit/content/image/browser/imagegroup.py:50
+#: zeit/content/image/browser/imagegroup.py:48
 msgid "Add image group"
 msgstr ""
 
-#: zeit/content/image/browser/imagegroup.py:168
+#: zeit/content/image/browser/imagegroup.py:166
 msgid "Add motif"
 msgstr ""
 
-#: zeit/content/image/browser/imagegroup.py:176
+#: zeit/content/image/browser/imagegroup.py:174
 msgid "Edit image group"
 msgstr ""
 
-#: zeit/content/image/browser/imagegroup.py:181
+#: zeit/content/image/browser/imagegroup.py:179
 msgid "Add viewport to master image mapping"
 msgstr ""
 
-#: zeit/content/image/browser/imagegroup.py:186
+#: zeit/content/image/browser/imagegroup.py:184
 msgid "Image group metadata"
 msgstr ""
 
-#: zeit/content/image/browser/imagegroup.py:202
+#: zeit/content/image/browser/imagegroup.py:200
 msgid "Master image"
 msgstr ""
 
-#: zeit/content/image/browser/imagegroup.py:346
+#: zeit/content/image/browser/imagegroup.py:344
 msgid "copyright infos"
 msgstr ""
 
-#: zeit/content/image/browser/imagegroup.py:346
+#: zeit/content/image/browser/imagegroup.py:344
 msgid "image_number"
 msgstr ""
 
-#: zeit/content/image/browser/imagegroup.py:346
+#: zeit/content/image/browser/imagegroup.py:344
 msgid "internal link"
 msgstr ""
 
-#: zeit/content/image/browser/imagegroup.py:346
+#: zeit/content/image/browser/imagegroup.py:344
 msgid "publish_date"
 msgstr ""
 
-#: zeit/content/image/browser/imagegroup.py:393
+#: zeit/content/image/browser/imagegroup.py:391
 msgid "CopyrightPurchaseReport"
 msgstr ""
 
@@ -4165,51 +4164,63 @@ msgstr ""
 msgid "Python script"
 msgstr ""
 
-#: zeit/content/video/browser/video.py:77
+#: zeit/content/video/browser/video.py:79
 msgid "Video-Thumbnail"
 msgstr ""
 
-#: zeit/content/video/interfaces.py:19
-msgid "Id prefix"
+#: zeit/content/video/browser/video.py:86
+msgid "Add Video"
 msgstr ""
 
-#: zeit/content/video/interfaces.py:23
+#: zeit/content/video/browser/video.py:91
+msgid "Edit Video"
+msgstr ""
+
+#: zeit/content/video/browser/video.py:95
+msgid "View Video"
+msgstr ""
+
+#: zeit/content/video/interfaces.py:9
 msgid "URI of the rendition"
 msgstr ""
 
-#: zeit/content/video/interfaces.py:25
+#: zeit/content/video/interfaces.py:11
 msgid "Width of the Frame"
 msgstr ""
 
-#: zeit/content/video/interfaces.py:27
+#: zeit/content/video/interfaces.py:14
 msgid "Duration of the rendition"
+msgstr ""
+
+#: zeit/content/video/interfaces.py:19
+msgid "Brightcove"
+msgstr ""
+
+#: zeit/content/video/interfaces.py:20
+msgid "Youtube"
 msgstr ""
 
 #: zeit/content/video/interfaces.py:35
 msgid "External ID"
 msgstr ""
 
-#: zeit/content/video/interfaces.py:40
+#: zeit/content/video/interfaces.py:37
 msgid "Video expires on"
 msgstr ""
 
-#: zeit/content/video/interfaces.py:43
-msgid "URI of the still image"
-msgstr ""
-
-#: zeit/content/video/interfaces.py:46
+#: zeit/content/video/interfaces.py:40
 msgid "Renditions of the Video"
 msgstr ""
 
-#: zeit/content/video/interfaces.py:58
+#: zeit/content/video/interfaces.py:52
 msgid "Video still copyright"
 msgstr ""
 
-#: zeit/content/video/interfaces.py:62
+#: zeit/content/video/interfaces.py:56
 msgid "Has advertisement"
 msgstr ""
 
-#: zeit/content/video/interfaces.py:66
+#: zeit/content/video/interfaces.py:61
 msgid "Video type"
 msgstr ""
 
