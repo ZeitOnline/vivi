@@ -3,12 +3,14 @@ import os
 import pytest
 import requests
 
+import zeit.msal
 import zeit.nightwatch
 
 
 XMLRPC_AUTH = 'nightwatch:' + os.environ['VIVI_XMLRPC_PASSWORD']
 CONFIG_STAGING = {
-    'browser': {'baseurl': 'https://www.staging.zeit.de'},
+    'www_baseurl': 'https://www.staging.zeit.de',
+    'vivi_baseurl': 'https://vivi.staging.zeit.de',
     'storage': 'https://content-storage.staging.zon.zeit.de/internal',
     'vivi': f'https://{XMLRPC_AUTH}@vivi.staging.zon.zeit.de',
     'elasticsearch': 'https://tms-es.staging.zon.zeit.de/zeit_content/_search',
@@ -16,7 +18,8 @@ CONFIG_STAGING = {
 
 
 CONFIG_PRODUCTION = {
-    'browser': {'baseurl': 'https://www.zeit.de'},
+    'www_baseurl': 'https://www.zeit.de',
+    'vivi_baseurl': 'https://vivi.zeit.de',
     'storage': 'https://content-storage.prod.zon.zeit.de/internal',
     'vivi': f'https://{XMLRPC_AUTH}@vivi.prod.zon.zeit.de',
     'elasticsearch': 'https://tms-es.zon.zeit.de/zeit_content/_search',
@@ -43,8 +46,8 @@ def pytest_configure(config):
 
 @pytest.fixture
 def http(nightwatch_config, oidc_token):
-    config = nightwatch_config.get('browser', {})
-    browser = zeit.nightwatch.Browser(**config)
+    baseurl = nightwatch_config.get('www_baseurl', '')
+    browser = zeit.nightwatch.Browser(baseurl=baseurl)
     if oidc_token:
         browser.session.cookies.set('zeit_oidc_www_staging', oidc_token)
     return browser
@@ -103,3 +106,20 @@ class StorageClient:
 @pytest.fixture(scope='session')
 def vivi(config):
     return StorageClient(config['storage'], config['vivi'])
+
+
+@pytest.fixture(scope='session')
+def azure_id_token():
+    path = f'{os.getcwd()}/msal.json'
+    cache = f'file://{path}'
+    auth = zeit.msal.Authenticator(
+        os.environ.get('AD_CLIENT_ID'), os.environ.get('AD_CLIENT_SECRET'), cache
+    )
+    # Change into smoketest directory and run:
+    # >> pipenv run msal-token --client-id=myclient --client-secret=mysecret \ # noqa: E800
+    #       --cache-url=file:///tmp/msal.json login
+    # Secrets are stored in zon/v1/azure/activedirectory/oidc/<staging/production>/vivi
+    # Replace new refresh token in secret with key refresh_token
+    if not os.path.exists(path):
+        auth.login_with_refresh_token(os.environ.get('AD_REFRESH_TOKEN'))
+    return auth.get_id_token()

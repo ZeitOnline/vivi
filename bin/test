@@ -36,6 +36,9 @@ case $COMMAND in
             -e VIVI_XMLRPC_PASSWORD=$(vault_read vivi/$environment/nightwatch password) \
             -e OIDC_CLIENT_ID=edge-www \
             -e OIDC_CLIENT_SECRET=$(vault_read keycloak/production/zeit-online/edge-www client_secret) \
+            -e AD_CLIENT_ID=$(vault_read azure/activedirectory/oidc/$environment/vivi client_id) \
+            -e AD_CLIENT_SECRET=$(vault_read azure/activedirectory/oidc/$environment/vivi client_secret) \
+            -e AD_REFRESH_TOKEN=$(vault_read azure/activedirectory/oidc/$environment/vivi refresh_token) \
             $image \
             --nightwatch-environment=$environment "$@"
         ;;
