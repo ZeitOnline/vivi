@@ -12,7 +12,6 @@ import zeit.push.browser.form
 class Base(zeit.push.browser.form.SocialBase, zeit.push.browser.form.MobileBase):
     form_fields = zope.formlib.form.FormFields(
         zeit.content.video.interfaces.IVideo,
-        zeit.cms.related.interfaces.IRelatedContent,
         zeit.content.image.interfaces.IImages,
         zeit.cms.workflow.interfaces.IPublishInfo,
         zeit.cms.workflow.interfaces.IModified,
@@ -20,7 +19,6 @@ class Base(zeit.push.browser.form.SocialBase, zeit.push.browser.form.MobileBase)
     ).select(
         'supertitle',
         'title',
-        'subtitle',
         'teaserText',
         'product',
         'ressort',
@@ -31,7 +29,6 @@ class Base(zeit.push.browser.form.SocialBase, zeit.push.browser.form.MobileBase)
         'type',
         'commentsAllowed',
         'commentsPremoderate',
-        'related',
         'channels',
         'video_still_copyright',
         'has_advertisement',
