@@ -25,8 +25,6 @@ class IVideo(
 ):
     external_id = zope.schema.TextLine(title=_('External ID'), readonly=True)
 
-    has_recensions = zope.schema.Bool(title=_('Has recension content'), default=False)
-
     expires = zope.schema.Datetime(
         title=_('Video expires on'), required=False, readonly=True, default=None
     )

@@ -51,7 +51,7 @@ class Video(zeit.cms.content.metadata.CommonMetadata):
     zeit.cms.content.dav.mapProperties(
         zeit.content.video.interfaces.IVideo,
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
-        ('has_recensions', 'expires', 'video_still_copyright'),
+        ('expires', 'video_still_copyright'),
     )
 
     zeit.cms.content.dav.mapProperties(
