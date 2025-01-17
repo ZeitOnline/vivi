@@ -262,10 +262,10 @@ class IManualPublicationOptions(zope.interface.Interface):
     use_publish_hooks = zope.schema.Bool(
         title=_('Notify webhooks after publish, like contenthub'), default=False
     )
-    ignore_services = zope.schema.TextLine(
+    ignore_services = zope.schema.List(
         title=_('Ignore 3rd party services'),
-        default='airship,speechbert,summy',
-        missing_value='airship,speechbert,summy',
+        default=['airship', 'speechbert', 'summy'],
+        value_type=zope.schema.TextLine(__name__='Service'),
     )
     wait_tms = zope.schema.Bool(
         title=_('Have publisher wait for TMS before fastly purge'), default=False
@@ -274,5 +274,7 @@ class IManualPublicationOptions(zope.interface.Interface):
         title=_('Skip TMS enrich, e.g. checkin already happened'), default=False
     )
     dlps = zope.schema.Bool(title=_('Update date_last_published_semantic timestamp'), default=False)
-    # newline separated list of unique ids
-    unique_ids = zope.schema.Text(title=_('Unique IDs'))
+    filename = zope.schema.Bytes(
+        title=_('Upload file with Unique IDs'),
+        required=False,
+    )

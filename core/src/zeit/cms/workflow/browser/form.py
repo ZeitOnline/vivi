@@ -1,4 +1,6 @@
-import gocept.form.grouped
+from zope.formlib.sequencewidget import ListSequenceWidget
+from zope.formlib.widget import CustomWidgetFactory
+from zope.formlib.widgets import FileWidget
 import zope.formlib.form
 import zope.location.interfaces
 import zope.site.folder
@@ -9,24 +11,24 @@ import zeit.cms.browser.form
 import zeit.cms.browser.menu
 import zeit.cms.interfaces
 import zeit.cms.workflow.interfaces
+import zeit.cms.workflow.options
 
 
-class ManualMultiPublishForm(zeit.cms.browser.form.FormBase, gocept.form.grouped.DisplayForm):
+class ManualMultiPublishForm(zeit.cms.browser.form.AddForm):
+    factory = zeit.cms.workflow.options.PublicationOptions
     form_fields = zope.formlib.form.FormFields(
         IManualPublicationOptions,
     )
+    form_fields['ignore_services'].custom_widget = CustomWidgetFactory(ListSequenceWidget)
+    form_fields['filename'].custom_widget = CustomWidgetFactory(FileWidget)
 
-    def _get_widgets(self, form_fields, ignore_request):
-        return zope.formlib.form.setUpInputWidgets(
-            form_fields, self.prefix, self.context, self.request, ignore_request=ignore_request
-        )
+    def create(self, data):
+        return self.factory(**data)
 
-    @zope.formlib.form.action(_('Apply'), condition=zope.formlib.form.haveInputWidgets)
-    def handle_edit_action(self, _, data):
-        to_publish = data['unique_ids']
-        if not to_publish:
-            return
-        zeit.cms.workflow.cli.publish_content.delay(data)
+    @zope.formlib.form.action(_('Add'), condition=zope.formlib.form.haveInputWidgets)
+    def handle_add(self, _, data):
+        options = self.create(data)
+        zeit.cms.workflow.cli.publish_content(options)
 
 
 class MenuItem(zeit.cms.browser.menu.GlobalMenuItem):

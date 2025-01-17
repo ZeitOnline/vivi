@@ -6,6 +6,7 @@ import transaction
 import zope.component
 
 from zeit.cms.workflow.interfaces import IManualPublicationOptions, IPublish, IPublishInfo
+from zeit.cms.workflow.options import PublicationOptions
 import zeit.cms.celery
 import zeit.cms.cli
 
@@ -15,12 +16,11 @@ IGNORE_SERVICES = ['airship', 'speechbert', 'summy']
 
 
 @zeit.cms.celery.task(queue='manual')
-def publish_content(options: dict):
+def publish_content(options: IManualPublicationOptions):
     """This publish task is running inside a celery worker because
     we do not want to unregister and reregister the hooks for the application if this
     function is called inside the regular vivi process
     """
-    options = IManualPublicationOptions(options)
     registry = zope.component.getGlobalSiteManager()
 
     # No option, since there is no usecase for re-activating old breaking news
@@ -57,11 +57,10 @@ def publish_content(options: dict):
         ).start()
 
     log.info('Ignoring services %s', options.ignore_services)
-    zeit.workflow.publish_3rdparty.PublisherData.ignore = (
-        options.ignore_services.split(',') + IGNORE_SERVICES
-    )
+    zeit.workflow.publish_3rdparty.PublisherData.ignore = options.ignore_services + IGNORE_SERVICES
 
-    for uid in options.unique_ids:
+    for line in options.filename.decode('utf-8').splitlines():
+        uid = line.strip()
         content = zeit.cms.interfaces.ICMSContent(uid, None)
         if content is None:
             log.warn('Skipping %s, not found', uid)
@@ -91,30 +90,20 @@ def publish_content(options: dict):
 @zeit.cms.cli.runner(principal=zeit.cms.cli.principal_from_args)
 def publish():
     parser = argparse.ArgumentParser(description='Publish content')
-    parser.add_argument('--filename', '-f', help='filename with uniqueId per line')
 
     for name, field in zope.schema.getFields(IManualPublicationOptions).items():
         arg_name = f'--{name.replace("_", "-")}'
         if isinstance(field, zope.schema.Bool):
             parser.add_argument(arg_name, action='store_true', help=field.title)
-        elif isinstance(field, zope.schema.TextLine):
-            parser.add_argument(arg_name, help=field.title, default=field.default)
-        elif isinstance(field, zope.schema.Text):
-            parser.add_argument(arg_name, help=field.title, default=field.default)
+        elif isinstance(field, zope.schema.List):
+            parser.add_argument(arg_name, help=field.title, default=field.default, nargs='+')
+        elif isinstance(field, zope.schema.Bytes):
+            parser.add_argument(arg_name, type=lambda x: open(x, 'rb').read(), help=field.title)
         else:
-            parser.add_argument(arg_name, help=field.title)
+            parser.add_argument(arg_name, help=field.title, default=field.default)
 
     options = parser.parse_args()
-    if not options.filename:
-        parser.print_help()
-        raise SystemExit(1)
-
-    to_publish = open(options.filename).read()
-
-    options = options.__dict__
-    options['unique_ids'] = to_publish
-
-    publish_content.delay(options)
+    publish_content(PublicationOptions(**options.__dict__))
 
 
 @zeit.cms.cli.runner(principal=zeit.cms.cli.principal_from_args)
