@@ -1830,8 +1830,8 @@
 /* breaking news */
 
 #breaking-retract {
-    margin-top: 10px;
-    margin-bottom: 5px;
+    padding-top: 10px;
+    padding-bottom: 5px;
 }
 
 #breaking-retract-banner {
