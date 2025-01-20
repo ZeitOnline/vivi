@@ -101,6 +101,7 @@ zeit.cms.SubPageForm = gocept.Class.extend({
             if (result === null) {
                 return null;
             }
+            self.set_successful();
             // XXX this is the third place that calls post_process_html and
             // sends signals -- refactor! (#11270).
             self.post_process_html();
@@ -193,6 +194,15 @@ zeit.cms.SubPageForm = gocept.Class.extend({
         $(self.container).removeClass('busy');
     },
 
+    set_successful() {
+        this.container.classList.add('submitted-successfully');
+        setTimeout(() => this.unset_successful(), 2500);
+    },
+
+    unset_successful() {
+        this.container.classList.remove('submitted-successfully');
+    },
+
     post_process_html: function() {
         var self = this;
         self.form = self.find_form_tag();
@@ -250,6 +260,7 @@ zeit.cms.InlineForm = zeit.cms.SubPageForm.extend({
         // - Since we prevent saving while the mouse is down, chances are
         //   that we need to save on mouse up, when a field lost focus
         //   before.
+        self.bind(self.container, 'input', self.mark_dirty);
         self.bind(self.container, 'change', self.mark_dirty);
         self.bind(self.container, 'focusin', self.store_focus);
         self.bind(self.container, 'focusout', function(event) {

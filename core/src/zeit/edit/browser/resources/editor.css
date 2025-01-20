@@ -540,16 +540,36 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
   padding-left:2px;
 }
 
+.inline-form.busy .widget > :is(input, textarea),
+.inline-form.busy .widget > div > div > select {
+    background: linear-gradient(0deg, #FFF, #FFC) !important;
+}
+
+@keyframes bg-fadeout {
+    from {
+        background-size: 100% 100%;
+    }
+    to {
+        background-size: 100% 0;
+    }
+}
+.inline-form.submitted-successfully .widget > :where(input, textarea),
+.inline-form.submitted-successfully .widget > div > div > select {
+    animation: 2.5s bg-fadeout forwards;
+    background-image: linear-gradient(0deg, #FFF, #CFD) !important;
+    background-repeat: no-repeat;
+}
+
 .inline-form .error div.widget > input,
 .inline-form .error div.widget > textarea,
 .inline-form .error div.widget > div > div > select {
-  background: linear-gradient(0deg, #FFF, #FDD);
+  background: linear-gradient(0deg, #FFF, #FDD) !important;
 }
 
 .inline-form .dirty div.widget > input,
 .inline-form .dirty div.widget > textarea,
 .inline-form .dirty div.widget > div > div > select {
-  background: linear-gradient(0deg, #FFF, #CFD);
+  background: linear-gradient(0deg, #FFF, #CEF) !important;
 }
 
 .inline-form .dirty div.widget > input[type=checkbox] {
