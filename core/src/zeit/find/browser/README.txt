@@ -74,7 +74,8 @@ Content-Type: text/json...
  'ressorts': [{'ressort': 'Deutschland', 'ressort_name': 'Deutschland'},...
  'series': [{'serie': '-', 'serie_title': '-'},...
  'template_url': 'http://localhost/++skin++vivi/fanstatic/zeit.find/search_form.jsont',
- 'types': [{'title': 'Image Group', 'type': 'image-group'}]}
+ 'types': [{'title': 'Image Group', 'type': 'image-group'}],
+ 'video_type': [{'key': 'brightcove', 'value': 'Brightcove'},...]}
 
 
 Favorites

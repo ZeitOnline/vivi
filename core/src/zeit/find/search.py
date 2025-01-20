@@ -42,6 +42,7 @@ field_map = {
     'podcast': 'payload.audio.podcast',
     'topic': 'payload.document.ressort',
     'types': 'doc_type',
+    'video_type': 'payload.video.type',
     'volume': 'payload.document.volume',
     'year': 'payload.document.year',
 }
