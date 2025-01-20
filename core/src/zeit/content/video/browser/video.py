@@ -10,42 +10,47 @@ import zeit.content.video.video
 import zeit.push.browser.form
 
 
+class FormFields(zope.formlib.form.FormFields):
+    def __init__(self, *args, **kw):
+        kw.setdefault('render_context', zope.formlib.interfaces.DISPLAY_UNWRITEABLE)
+        super().__init__(*args, **kw)
+
+
 class Base(zeit.push.browser.form.SocialBase, zeit.push.browser.form.MobileBase):
-    form_fields = zope.formlib.form.FormFields(
-        zeit.content.video.interfaces.IVideo,
-        zeit.content.image.interfaces.IImages,
-        zeit.cms.workflow.interfaces.IPublishInfo,
-        zeit.cms.workflow.interfaces.IModified,
-        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE,
-    ).select(
-        'supertitle',
-        'title',
-        'teaserText',
-        'product',
-        'ressort',
-        'keywords',
-        'serie',
-        'banner',
-        'banner_id',
-        'kind',
-        'type',
-        'commentsAllowed',
-        'commentsPremoderate',
-        'channels',
-        'video_still_copyright',
-        'has_advertisement',
-        'duration',
-        'width',
-        'url',
-        # remaining:
-        '__name__',
-        'image',
-        'date_created',
-        'date_first_released',
-        'date_last_modified',
-        'expires',
-        'external_id',
-        'authorships',
+    form_fields = (
+        FormFields(zeit.content.video.interfaces.IVideo).select(
+            '__name__',
+            'authorships',
+            'banner',
+            'banner_id',
+            'channels',
+            'commentsAllowed',
+            'commentsPremoderate',
+            'keywords',
+            'product',
+            'ressort',
+            'serie',
+            'supertitle',
+            'teaserText',
+            'title',
+        )
+        + FormFields(zeit.content.video.interfaces.IVideo).select(
+            'duration',
+            'expires',
+            'external_id',
+            'has_advertisement',
+            'kind',
+            'type',
+            'url',
+            'video_still_copyright',
+            'width',
+        )
+        + FormFields(zeit.content.image.interfaces.IImages).select('image')
+        + FormFields(zeit.cms.workflow.interfaces.IPublishInfo).select('date_first_released')
+        + FormFields(zeit.cms.workflow.interfaces.IModified).select(
+            'date_created',
+            'date_last_modified',
+        )
     )
 
     field_groups = (
