@@ -611,10 +611,13 @@ textarea {
 
 /* Fieldsets */
 
+#editor-forms > .inline-form {
+  margin: 1em 10px;
+}
+
 #cp-content fieldset {
   background: none 0;
   border: medium none;
-  margin: 0 0 0 10px;
   padding: 0;
 }
 
