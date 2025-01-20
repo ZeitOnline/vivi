@@ -101,6 +101,9 @@ class ContentTypes:
     gallery_type = mapped_column(
         Unicode, info={'namespace': 'zeit.content.gallery', 'name': 'type', 'migration': 'wcm_471'}
     )
+    video_type = mapped_column(
+        Unicode, info={'namespace': 'video', 'name': 'type', 'migration': 'always'}
+    )
 
 
 class Timestamps:
@@ -197,6 +200,7 @@ class Content(Base, CommonMetadata, ContentTypes, Timestamps, Miscellaneous):
                     'ressort',
                     'series',
                     'sub_ressort',
+                    'video_type',
                     'volume_number',
                     'volume_year',
                 ]
