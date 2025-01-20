@@ -85,6 +85,8 @@ class Video(zeit.cms.content.metadata.CommonMetadata):
         ('duration', 'width', 'url'),
     )
 
+    body = zeit.cms.content.property.Structure('.body.text')
+
     @property
     def renditions(self):
         return self._player_data['renditions']

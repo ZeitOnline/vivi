@@ -63,6 +63,8 @@ class IVideo(
     width = zope.schema.Int(title=_('Width of the Frame'), required=False)
     url = zope.schema.URI(title=_('URI of the rendition'), required=False)
 
+    body = zeit.cms.content.field.Markdown(title=_('Markdown content'), required=False)
+
 
 class VideoSource(zeit.cms.content.contentsource.CMSContentSource):
     name = 'video'

@@ -35,6 +35,7 @@ class Base(zeit.push.browser.form.SocialBase, zeit.push.browser.form.MobileBase)
             'title',
         )
         + FormFields(zeit.content.video.interfaces.IVideo).select(
+            'body',
             'duration',
             'expires',
             'external_id',
@@ -82,6 +83,11 @@ class Base(zeit.push.browser.form.SocialBase, zeit.push.browser.form.MobileBase)
         CommonMetadataFormBase.auto_cp_fields,
         gocept.form.grouped.Fields(
             _('Video-Thumbnail'), ('image',), css_class='wide-widgets column-left'
+        ),
+        gocept.form.grouped.Fields(
+            _('Texts'),
+            ('body',),
+            css_class='wide-widgets column-left',
         ),
         gocept.form.grouped.RemainingFields('', css_class='column-left'),
     )
