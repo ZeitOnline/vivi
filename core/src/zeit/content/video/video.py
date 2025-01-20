@@ -61,8 +61,8 @@ class Video(zeit.cms.content.metadata.CommonMetadata):
         use_default=True,
     )
 
-    type = zeit.cms.content.dav.DAVProperty(
-        zeit.content.video.interfaces.IVideo['type'], 'http://namespaces.zeit.de/CMS/video', 'type'
+    kind = zeit.cms.content.dav.DAVProperty(
+        zeit.content.video.interfaces.IVideo['kind'], 'http://namespaces.zeit.de/CMS/video', 'kind'
     )
 
     external_id = zeit.cms.content.dav.DAVProperty(

@@ -14,7 +14,7 @@ class IVideoRendition(zope.interface.interfaces.IInterface):
     video_duration = zope.schema.Int(title=_('Duration of the rendition'))
 
 
-class VideoTypeSource(zeit.cms.content.sources.SimpleFixedValueSource):
+class VideoKindSource(zeit.cms.content.sources.SimpleFixedValueSource):
     values = ['livestream']
 
 
@@ -50,7 +50,7 @@ class IVideo(
 
     live_url_base = zope.schema.URI(title=_('URL'), required=False, readonly=True)
 
-    type = zope.schema.Choice(title=_('Video type'), source=VideoTypeSource(), required=False)
+    kind = zope.schema.Choice(title=_('Video type'), source=VideoKindSource(), required=False)
 
 
 class VideoSource(zeit.cms.content.contentsource.CMSContentSource):

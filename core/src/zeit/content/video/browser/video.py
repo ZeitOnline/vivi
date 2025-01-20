@@ -26,7 +26,7 @@ class Base(zeit.push.browser.form.SocialBase, zeit.push.browser.form.MobileBase)
         'serie',
         'banner',
         'banner_id',
-        'type',
+        'kind',
         'commentsAllowed',
         'commentsPremoderate',
         'channels',
