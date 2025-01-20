@@ -15,19 +15,15 @@ import zeit.cms.workflow.options
 
 
 class ManualMultiPublishForm(zeit.cms.browser.form.AddForm):
-    factory = zeit.cms.workflow.options.PublicationOptions
     form_fields = zope.formlib.form.FormFields(
         IManualPublicationOptions,
     )
     form_fields['ignore_services'].custom_widget = CustomWidgetFactory(ListSequenceWidget)
     form_fields['filename'].custom_widget = CustomWidgetFactory(FileWidget)
 
-    def create(self, data):
-        return self.factory(**data)
-
     @zope.formlib.form.action(_('Add'), condition=zope.formlib.form.haveInputWidgets)
     def handle_add(self, _, data):
-        options = self.create(data)
+        options = zeit.cms.workflow.options.PublicationOptions(**data)
         zeit.cms.workflow.cli.publish_content(options)
 
 
