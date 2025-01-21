@@ -67,6 +67,20 @@ def oidc_token(nightwatch_config):
         return r.json()['id_token']
 
 
+@pytest.fixture(scope='session')
+def firefox_page(playwright, azure_id_token, nightwatch_config):
+    firefox = playwright.firefox
+    browser = firefox.launch()
+    context = browser.new_context(
+        base_url=nightwatch_config['vivi_baseurl'],
+        extra_http_headers={'Authorization': f'Bearer {azure_id_token}'},
+    )
+    page = context.new_page()
+    yield page
+    context.close()
+    browser.close()
+
+
 class StorageClient:
     def __init__(self, storage_url, vivi_url):
         self.storage_url = storage_url

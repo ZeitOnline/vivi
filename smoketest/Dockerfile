@@ -4,6 +4,7 @@ WORKDIR /app
 RUN pip --no-cache-dir install pipenv
 COPY Pipfile Pipfile.lock ./
 RUN pipenv sync
+RUN pipenv run playwright install firefox --with-deps
 COPY *.py ./
 # See https://github.com/ZeitOnline/kustomize/blob/main/components/nightwatch/deployment.yaml
-ENTRYPOINT ["pipenv", "run", "pytest", "--tb=native"]
+ENTRYPOINT ["pipenv", "run", "pytest", "--tb=native", "--browser-channel=firefox"]
