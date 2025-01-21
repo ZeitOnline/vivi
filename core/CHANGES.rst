@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.8.0 (2025-01-21)
+------------------
+
+- WCM-614: Support manually creating video objects
+
+- ZO-2426: Add visual submit indicator
+
+
 7.7.0 (2025-01-16)
 ------------------
 
