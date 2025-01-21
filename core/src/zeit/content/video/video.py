@@ -1,5 +1,3 @@
-import importlib.resources
-
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
 import zope.interface
@@ -44,14 +42,30 @@ class AuthorshipsProperty(zeit.cms.content.reference.ReferenceProperty):
 
 @zope.interface.implementer(zeit.content.video.interfaces.IVideo, zeit.cms.interfaces.IAsset)
 class Video(zeit.cms.content.metadata.CommonMetadata):
-    default_template = (importlib.resources.files(__package__) / 'video-template.xml').read_text(
-        'utf-8'
+    default_template = """\
+<video>
+    <head/>
+    <body/>
+</video>"""
+
+    external_id = zeit.cms.content.dav.DAVProperty(
+        zeit.content.video.interfaces.IVideo['external_id'],
+        # BBB This field used to be injected into here from zeit.brightcove
+        'http://namespaces.zeit.de/CMS/brightcove',
+        'id',
+    )
+
+    type = zeit.cms.content.dav.DAVProperty(
+        zeit.content.video.interfaces.IVideo['type'],
+        'http://namespaces.zeit.de/CMS/video',
+        'type',
+        use_default=True,
     )
 
     zeit.cms.content.dav.mapProperties(
         zeit.content.video.interfaces.IVideo,
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
-        ('has_recensions', 'expires', 'video_still_copyright'),
+        ('expires', 'video_still_copyright'),
     )
 
     zeit.cms.content.dav.mapProperties(
@@ -61,18 +75,17 @@ class Video(zeit.cms.content.metadata.CommonMetadata):
         use_default=True,
     )
 
-    type = zeit.cms.content.dav.DAVProperty(
-        zeit.content.video.interfaces.IVideo['type'], 'http://namespaces.zeit.de/CMS/video', 'type'
+    kind = zeit.cms.content.dav.DAVProperty(
+        zeit.content.video.interfaces.IVideo['kind'], 'http://namespaces.zeit.de/CMS/video', 'kind'
     )
 
-    id_prefix = 'vid'
-
-    external_id = zeit.cms.content.dav.DAVProperty(
-        zeit.content.video.interfaces.IVideo['external_id'],
-        # BBB This field used to be injected into here from zeit.brightcove
-        'http://namespaces.zeit.de/CMS/brightcove',
-        'id',
+    zeit.cms.content.dav.mapProperties(
+        zeit.content.video.interfaces.IVideo,
+        'http://namespaces.zeit.de/CMS/video',
+        ('duration', 'width', 'url'),
     )
+
+    body = zeit.cms.content.property.Structure('.body.text')
 
     @property
     def renditions(self):
@@ -85,12 +98,15 @@ class Video(zeit.cms.content.metadata.CommonMetadata):
         high = sorted(self.renditions, key=lambda r: r.frame_width).pop()
         return getattr(high, 'url', '')
 
-    @property
-    def video_still(self):
-        return self._player_data['video_still']
-
     @cachedproperty
     def _player_data(self):
+        # XXX Kludgy temporary workaround until we integrate with Youtube API.
+        if self.video_type == 'youtube':
+            rendition = VideoRendition()
+            rendition.url = self.url
+            rendition.frame_width = self.width
+            rendition.video_duration = self.duration
+            return {'renditions': [rendition]}
         player = zope.component.getUtility(zeit.content.video.interfaces.IPlayer)
         return player.get_video(self.external_id)
 

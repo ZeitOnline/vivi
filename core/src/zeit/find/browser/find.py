@@ -14,6 +14,7 @@ import zeit.cms.clipboard.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.content.audio.interfaces
+import zeit.content.video.interfaces
 import zeit.find.interfaces
 import zeit.find.search
 
@@ -44,6 +45,7 @@ class SearchForm(JSONView):
             'series': self.series,
             'audio_type': self.audio_types,
             'podcasts': self.podcasts,
+            'video_type': self.video_types,
             'types': self.types,
         }
 
@@ -86,6 +88,11 @@ class SearchForm(JSONView):
     @property
     def audio_types(self):
         types = zeit.content.audio.interfaces.AudioTypeSource().factory.values
+        return [{'key': key, 'value': value} for key, value in types.items()]
+
+    @property
+    def video_types(self):
+        types = zeit.content.video.interfaces.VideoTypeSource().factory.values
         return [{'key': key, 'value': value} for key, value in types.items()]
 
     CONTENT_TYPES = [
@@ -424,6 +431,7 @@ def search_form(request):
     serie = g('serie', None)
     audio_type = g('audio_type', None)
     podcast = g('podcast', None)
+    video_type = g('video_type', None)
     # four states: published, not-published, published-with-changes,
     # don't care (None)
     published = g('published', None)
@@ -448,6 +456,7 @@ def search_form(request):
         'topic': topic,
         'types': types,
         'until': until,
+        'video_type': video_type,
         'volume': volume,
         'year': year,
     }

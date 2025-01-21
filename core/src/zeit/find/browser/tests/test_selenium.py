@@ -122,3 +122,14 @@ class TestSearch(zeit.cms.testing.SeleniumTestCase):
         s.verifyValue('name=audio_type', 'tts')
         s.select('name=audio_type', 'Podcast')
         s.verifyValue('name=audio_type', 'podcast')
+
+    def test_video_type_selection(self):
+        s = self.selenium
+        s.verifyNotVisible('id=extended_search')
+        s.click('id=extended_search_button')
+        s.waitForVisible('id=extended_search')
+        s.verifyNotVisible('id=extended_search_info')
+        s.select('name=video_type', 'Brightcove')
+        s.verifyValue('name=video_type', 'brightcove')
+        s.select('name=video_type', 'Youtube')
+        s.verifyValue('name=video_type', 'youtube')

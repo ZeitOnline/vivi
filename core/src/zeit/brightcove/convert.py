@@ -105,7 +105,6 @@ class Video(Converter):
         custom['premoderate_comments'] = cls.bc_bool(cmsobj.commentsPremoderate)
         custom['banner'] = cls.bc_bool(cmsobj.banner)
         custom['banner_id'] = cmsobj.banner_id
-        custom['recensions'] = cls.bc_bool(cmsobj.has_recensions)
         custom['produkt-id'] = cmsobj.product.id if cmsobj.product else None
         custom['cmskeywords'] = ';'.join(x.code for x in cmsobj.keywords)
         custom['ressort'] = cmsobj.ressort
@@ -115,7 +114,7 @@ class Video(Converter):
         )
         custom['supertitle'] = cmsobj.supertitle
         custom['credit'] = cmsobj.video_still_copyright
-        custom['type'] = cmsobj.type
+        custom['type'] = cmsobj.kind
 
         related = zeit.cms.related.interfaces.IRelatedContent(cmsobj).related
         for i in range(1, 6):
@@ -165,15 +164,12 @@ class Video(Converter):
         cmsobj.banner = self._default_if_missing(custom, 'banner', IVideo['banner'], self.cms_bool)
         cmsobj.banner_id = custom.get('banner_id')
         cmsobj.expires = self.cms_date((data.get('schedule') or {}).get('ends_at'))
-        cmsobj.has_recensions = self._default_if_missing(
-            custom, 'recensions', IVideo['has_recensions'], self.cms_bool
-        )
         cmsobj.has_advertisement = data.get('economics') == 'AD_SUPPORTED'
         cmsobj.ressort = custom.get('ressort')
         cmsobj.serie = IVideo['serie'].source(None).find(custom.get('serie'))
         cmsobj.supertitle = custom.get('supertitle')
         cmsobj.video_still_copyright = custom.get('credit')
-        cmsobj.type = custom.get('type')
+        cmsobj.kind = custom.get('type')
 
         product_source = IVideo['product'].source(cmsobj)
         if not custom.get('produkt-id') and data.get('reference_id'):

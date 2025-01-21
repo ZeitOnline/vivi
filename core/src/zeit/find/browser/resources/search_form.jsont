@@ -103,6 +103,15 @@
         </select>
       </fieldset>
       <fieldset>
+        <label>Videotyp:</label>
+        <select name="video_type">
+        <option value=""></option>
+        {.repeated section video_type}
+        <option value="{key}">{value}</option>
+        {.end}
+        </select>
+      </fieldset>
+      <fieldset>
           <label>Verfügbarkeit:</label>
           <select name="access">
               <option value=""></option>

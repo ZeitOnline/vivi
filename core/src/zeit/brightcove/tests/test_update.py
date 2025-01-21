@@ -43,14 +43,12 @@ class ImportVideoTest(zeit.brightcove.testing.FunctionalTestCase):
 
     def test_new_video_should_create_still_image_group(self):
         import_video(create_video())
-        assert self.repository['video']['2017-05']['myvid'].video_still is None
         assert self.repository['video']['2017-05']['myvid-still'] is not None
 
     def test_should_not_create_still_image_group_for_missing_src(self):
         video = create_video()
         del video.data['images']
         import_video(video)
-        assert self.repository['video']['2017-05']['myvid'].video_still is None
         assert self.repository['video']['2017-05'].get('myvid-still') is None
 
     def test_changed_video_should_be_written_to_cms(self):

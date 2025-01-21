@@ -5,42 +5,35 @@ import zeit.cms.content.interfaces
 import zeit.content.image.interfaces
 
 
-class IVideoContent(
-    zeit.cms.content.interfaces.ICommonMetadata,
-    zeit.cms.content.interfaces.IXMLContent,
-    zeit.cms.content.interfaces.ISkipDefaultChannel,
-):
-    """Video like content.
-
-    This could be a video.
-
-    """
-
-    id_prefix = zope.schema.TextLine(title=_('Id prefix'), required=True, readonly=True)
-
-
 class IVideoRendition(zope.interface.interfaces.IInterface):
     url = zope.schema.URI(title=_('URI of the rendition'), required=False, readonly=True)
 
     frame_width = zope.schema.Int(title=_('Width of the Frame'))
 
+    # milliseconds (we inherited this from Brightcove)
     video_duration = zope.schema.Int(title=_('Duration of the rendition'))
 
 
 class VideoTypeSource(zeit.cms.content.sources.SimpleFixedValueSource):
+    values = {
+        'brightcove': _('Brightcove'),
+        'youtube': _('Youtube'),
+    }
+
+
+class VideoKindSource(zeit.cms.content.sources.SimpleFixedValueSource):
     values = ['livestream']
 
 
-class IVideo(IVideoContent):
-    external_id = zope.schema.TextLine(title=_('External ID'), readonly=True)
+class IVideo(
+    zeit.cms.content.interfaces.ICommonMetadata,
+    zeit.cms.content.interfaces.IXMLContent,
+    zeit.cms.content.interfaces.ISkipDefaultChannel,
+):
+    type = zope.schema.Choice(title=_('Type'), source=VideoTypeSource(), default='brightcove')
+    external_id = zope.schema.TextLine(title=_('External ID'))
 
-    has_recensions = zope.schema.Bool(title=_('Has recension content'), default=False)
-
-    expires = zope.schema.Datetime(
-        title=_('Video expires on'), required=False, readonly=True, default=None
-    )
-
-    video_still = zope.schema.URI(title=_('URI of the still image'), required=False, readonly=True)
+    expires = zope.schema.Datetime(title=_('Video expires on'), required=False)
 
     renditions = zope.schema.Tuple(
         title=_('Renditions of the Video'),
@@ -63,7 +56,14 @@ class IVideo(IVideoContent):
 
     live_url_base = zope.schema.URI(title=_('URL'), required=False, readonly=True)
 
-    type = zope.schema.Choice(title=_('Video type'), source=VideoTypeSource(), required=False)
+    kind = zope.schema.Choice(title=_('Video type'), source=VideoKindSource(), required=False)
+
+    # For manual editing of `video_type=youtube`, copied from IVideoRendition
+    duration = zope.schema.Int(title=_('Duration of the rendition'), required=False)
+    width = zope.schema.Int(title=_('Width of the Frame'), required=False)
+    url = zope.schema.URI(title=_('URI of the rendition'), required=False)
+
+    body = zeit.cms.content.field.Markdown(title=_('Markdown content'), required=False)
 
 
 class VideoSource(zeit.cms.content.contentsource.CMSContentSource):
@@ -80,7 +80,6 @@ class IPlayer(zope.interface.Interface):
     """
 
     def get_video(id):
-        """Must return a dict with at least the following keys:
-        * video_still: str
+        """Returns a dict with at least the following keys:
         * renditions: list of IVideoRendition
         """

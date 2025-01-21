@@ -176,5 +176,7 @@ def import_video_async(video_id):
 def export_video(context, event):
     if event.publishing or FEATURE_TOGGLES.find('video_disable_export_on_checkin'):
         return
+    if context.type != 'brightcove':
+        return
     session = zeit.brightcove.session.get()
     session.update_video(zeit.brightcove.convert.Video.from_cms(context))
