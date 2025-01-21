@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Fri Jan 17 15:38:57 2025\n"
+"POT-Creation-Date: Tue Jan 21 10:44:53 2025\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -4013,11 +4013,15 @@ msgstr ""
 msgid "Recent events"
 msgstr ""
 
-#: zeit/content/modules/interfaces.py:282
-msgid "Liveblog status"
+#: zeit/content/modules/interfaces.py:276
+msgid "Collapse highlighted events"
 msgstr ""
 
 #: zeit/content/modules/interfaces.py:286
+msgid "Liveblog status"
+msgstr ""
+
+#: zeit/content/modules/interfaces.py:290
 msgid "Liveblog theme"
 msgstr ""
 
