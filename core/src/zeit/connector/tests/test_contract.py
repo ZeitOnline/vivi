@@ -549,6 +549,20 @@ class ContractCache:
         res = self.add_resource('foo', properties={prop: 'foo'})
         self.assertEqual('foo', self.connector.property_cache[res.id][prop])
 
+    def test_setitem_populates_property_cache_handles_cache_loss(self):
+        prop = ('foo', self.NS)
+        with mock.patch.object(
+            zeit.connector.cache.PropertyCache,
+            '_update_cache_access',
+            side_effect=relstorage.interfaces.POSKeyError('cache loss'),
+        ):
+            res = self.add_resource('foo', properties={prop: 'foo'})
+        # cache is empty
+        self.assertIsNone(self.connector.property_cache.get(res.id))
+        # fill cache
+        self.connector[res.id]
+        self.assertEqual('foo', self.connector.property_cache[res.id][prop])
+
     def test_setitem_updates_parent_child_name_cache(self):
         res = self.add_resource('foo')
         self.assertEqual([res.id], self.child_name_cache[ROOT])
@@ -574,6 +588,19 @@ class ContractCache:
         res = self.connector[res.id]
         self.assertEqual('foo', self.connector.property_cache[res.id][prop])
 
+    def test_getitem_populates_property_cache_handles_cache_loss(self):
+        prop = ('foo', self.NS)
+        res = self.add_resource('foo', properties={prop: 'foo'})
+        del self.connector.property_cache[res.id]
+        with mock.patch.object(
+            zeit.connector.cache.PropertyCache,
+            '_is_deleted',
+            side_effect=relstorage.interfaces.POSKeyError('cache loss'),
+        ):
+            with self.assertRaises(KeyError):
+                self.connector.property_cache[res.id]
+        self.assertIsNone(self.connector.property_cache.get(res.id))
+
     def test_resource_read_populates_body_cache(self):
         res = self.add_resource('foo', body=b'foo')
         self.connector[res.id].data
@@ -593,6 +620,10 @@ class ContractCache:
             side_effect=relstorage.interfaces.POSKeyError('cache loss'),
         ):
             self.connector.changeProperties(res.id, {prop: 'bar'})
+        # cache is empty
+        self.assertIsNone(self.connector.property_cache.get(res.id))
+        # fill cache
+        self.connector[res.id]
         self.assertEqual('bar', self.connector.property_cache[res.id][prop])
 
     def test_changeProperties_updates_property_cache(self):
@@ -604,13 +635,12 @@ class ContractCache:
     def test_delitem_handles_cache_with_data_loss(self):
         prop = ('foo', self.NS)
         res = self.add_resource('foo', properties={prop: 'foo'})
-        # XXX mock is not working :(
         with mock.patch.object(
-            zeit.connector.cache.PersistentCache,
-            '_is_deleted',
+            zeit.connector.cache.PropertyCache,
+            '_mark_deleted',
             side_effect=relstorage.interfaces.POSKeyError('cache loss'),
         ):
-            del self.connector[res.id]
+            del self.connector.property_cache[res.id]
         self.assertNotIn(res.id, self.connector.property_cache)
 
     def test_delitem_removes_property_cache(self):
