@@ -27,6 +27,8 @@ class MockConnectorTest(zeit.connector.testing.MockTest):
         self.assertNotIn('http://xml.zeit.de/testing/foo', self.connector)
 
     def test_search_is_mocked_and_logs_query(self):
+        self.connector.search_result = ['http://xml.zeit.de/online/2007/01/Somalia']
+
         author = SV('author', 'http://namespaces.zeit.de/CMS/document')
         volume = SV('volume', 'http://namespaces.zeit.de/CMS/document')
         ressort = SV('ressort', 'http://namespaces.zeit.de/CMS/document')
@@ -36,8 +38,6 @@ class MockConnectorTest(zeit.connector.testing.MockTest):
         self.assertEqual(
             [
                 ('http://xml.zeit.de/online/2007/01/Somalia', 'pm', '07', None),
-                ('http://xml.zeit.de/online/2007/01/Saarland', 'pm', '07', None),
-                ('http://xml.zeit.de/2006/52/Stimmts', 'pm', '07', None),
             ],
             result,
         )

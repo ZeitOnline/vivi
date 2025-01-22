@@ -72,7 +72,7 @@ class Connector(zeit.connector.filesystem.Connector):
         self._paths = {}
         self._deleted = set()
         self._properties = {}
-        self.search_result = self.search_result_default[:]
+        self.search_result = []
         self.search_args = []
 
     def listCollection(self, id):
@@ -295,12 +295,6 @@ class Connector(zeit.connector.filesystem.Connector):
         if lock_principal:
             my_lock = not lock_is_foreign(lock_principal)
         return (lock_principal, until, my_lock)
-
-    search_result_default = [
-        'http://xml.zeit.de/online/2007/01/Somalia',
-        'http://xml.zeit.de/online/2007/01/Saarland',
-        'http://xml.zeit.de/2006/52/Stimmts',
-    ]
 
     def search(self, attributes, expression):
         log.debug('Searching: %s', expression._render())
