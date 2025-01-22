@@ -57,11 +57,13 @@ class Base(zeit.push.browser.form.SocialBase, zeit.push.browser.form.MobileBase)
     field_groups = (
         gocept.form.grouped.Fields(
             _('Texts'),
-            ('supertitle', 'title', 'teaserText', 'video_still_copyright'),
+            ('supertitle', 'title', 'teaserText', 'video_still_copyright', 'authorships'),
             css_class='wide-widgets column-left',
         ),
         gocept.form.grouped.Fields(
-            _('Navigation'), ('product', 'ressort', 'keywords', 'serie'), css_class='column-right'
+            _('Navigation'),
+            ('__name__', 'keywords', 'serie', 'product', 'ressort'),
+            css_class='column-right',
         ),
         gocept.form.grouped.Fields(
             _('Options'),
