@@ -10,7 +10,10 @@ class TickarooLiveblog(zeit.edit.block.Element):
     liveblog_id = ObjectPathAttributeProperty('.', 'liveblog_id', ITickarooLiveblog['liveblog_id'])
 
     collapse_preceding_content = ObjectPathAttributeProperty(
-        '.', 'collapse_preceding_content', ITickarooLiveblog['collapse_preceding_content']
+        '.',
+        'collapse_preceding_content',
+        ITickarooLiveblog['collapse_preceding_content'],
+        use_default=True,
     )
 
     collapse_highlighted_events = ObjectPathAttributeProperty(

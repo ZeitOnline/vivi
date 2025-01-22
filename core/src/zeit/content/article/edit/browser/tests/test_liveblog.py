@@ -1,10 +1,7 @@
-import pytest
-
 import zeit.content.article.edit.browser.testing
 
 
 class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
-    @pytest.mark.xfail()
     def test_inline_form_saves_default_values(self):
         self.get_article(with_block='tickaroo_liveblog')
         b = self.browser

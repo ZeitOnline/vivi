@@ -43,7 +43,6 @@ class LiveblogTest(zeit.content.article.testing.FunctionalTestCase):
         self.assertEqual('highlighted', liveblog.xml.xpath('.')[0].get('timeline_template'))
         self.assertIsNone(liveblog.xml.xpath('.')[0].get('invalid_attribute'))
 
-    @pytest.mark.xfail()
     def test_liveblog_collapse_preceding_content_should_be_set(self):
         liveblog = self.get_liveblog()
         self.assertTrue(liveblog.collapse_preceding_content)
