@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.9.0 (2025-01-22)
+------------------
+
+- WCM-614: Reorder video form fields
+
+- ZO-6982: Add collapse_highlighted_events setting
+
+
 7.8.0 (2025-01-21)
 ------------------
 
