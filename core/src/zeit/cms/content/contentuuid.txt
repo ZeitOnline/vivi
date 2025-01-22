@@ -88,6 +88,11 @@ This object can be adapted then:
 >>> handler = logging.StreamHandler(sys.stdout)
 >>> logging.root.addHandler(handler)
 >>> logging.root.setLevel(logging.DEBUG)
+>>> import zeit.cms.repository.interfaces
+>>> import zope.component
+>>> repository = zope.component.getUtility(
+...     zeit.cms.repository.interfaces.IRepository)
+>>> repository.connector.search_result = ['http://xml.zeit.de/online/2007/01/Somalia']
 >>> content = zeit.cms.interfaces.ICMSContent(uuid_obj)
 Searching:  (:eq "http://namespaces.zeit.de/CMS/document" "uuid" "{urn:uuid:8e6a97ba-131d-4cd0-90b2-f52feecaabb0}")...
 >>> logging.root.removeHandler(handler)
@@ -109,11 +114,7 @@ TypeError: ('Could not adapt',
 
 Objects also get an UUID when they're added to the repository:
 
->>> import zeit.cms.repository.interfaces
 >>> import zeit.cms.testcontenttype.testcontenttype
->>> import zope.component
->>> repository = zope.component.getUtility(
-...     zeit.cms.repository.interfaces.IRepository)
 >>> repository['content'] = (
 ...     zeit.cms.testcontenttype.testcontenttype.ExampleContentType())
 >>> zeit.cms.content.interfaces.IUUID(repository['content']).id

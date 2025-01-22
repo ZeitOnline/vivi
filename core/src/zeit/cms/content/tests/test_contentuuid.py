@@ -7,6 +7,7 @@ import zeit.cms.testing
 class ContentUUIDTest(zeit.cms.testing.ZeitCmsTestCase):
     def test_use_short_uuid_to_get_content(self):
         unique_id = 'http://xml.zeit.de/online/2007/01/Somalia'
+        self.repository.connector.search_result = [unique_id]
         with checked_out(ICMSContent(unique_id)):
             pass
         content = ICMSContent(unique_id)

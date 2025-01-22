@@ -11,6 +11,7 @@ class TMSUpdateRequestTest(zeit.retresco.testing.BrowserTestCase):
     def setUp(self):
         super().setUp()
         self.browser = zeit.cms.testing.Browser(self.layer['wsgi_app'])
+        self.repository.connector.search_result = ['http://xml.zeit.de/online/2007/01/Somalia']
 
     def test_endpoint_avoids_get(self):
         b = self.browser
@@ -59,7 +60,7 @@ class TMSUpdateRequestTest(zeit.retresco.testing.BrowserTestCase):
         b = self.browser
         b.post(
             'http://localhost/@@update_keywords',
-            '{"doc_ids" : [' '"{urn:uuid:9cb93717-2467-4af5-9521-25110e1a7ed8}"]}',
+            '{"doc_ids" : ["{urn:uuid:9cb93717-2467-4af5-9521-25110e1a7ed8}"]}',
             'application/x-javascript',
         )
         self.assertEqual('200 Ok', b.headers.get('status'))
