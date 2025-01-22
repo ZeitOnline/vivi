@@ -13,3 +13,16 @@ patches:
       path: /spec/template/spec/containers/0/args
       value:
         - "--nightwatch-environment=production"
+- target:
+    kind: ExternalSecret
+    name: activedirectory
+  patch: |
+    - op: replace
+      path: /spec/data/0/remoteRef/key
+      value: zon/v1/azure/activedirectory/oidc/production/vivi
+    - op: replace
+      path: /spec/data/1/remoteRef/key
+      value: zon/v1/azure/activedirectory/oidc/production/vivi
+    - op: replace
+      path: /spec/data/2/remoteRef/key
+      value: zon/v1/azure/activedirectory/oidc/production/vivi

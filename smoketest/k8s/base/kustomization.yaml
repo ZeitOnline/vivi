@@ -5,6 +5,10 @@ components:
 - github.com/ZeitOnline/kustomize/components/nightwatch?ref=1.12
 - versions
 
+resources:
+- secrets.yaml
+
+
 patches:
 - target:
     kind: Deployment
