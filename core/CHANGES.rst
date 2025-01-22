@@ -3,6 +3,16 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.10.0 (2025-01-22)
+-------------------
+
+- WCM-124: Add secrets to nightwatch in k8s
+
+- WCM-575: Mock connector search with empty resultset by default
+
+- WCM-614: Return manual "player data" for youtube videos
+
+
 7.9.0 (2025-01-22)
 ------------------
 
