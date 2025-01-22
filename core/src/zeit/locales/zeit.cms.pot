@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Tue Jan 21 10:44:53 2025\n"
+"POT-Creation-Date: Wed Jan 22 10:44:29 2025\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -561,7 +561,7 @@ msgstr ""
 #: zeit/content/audio/browser/form.py:96
 #: zeit/content/cp/browser/form.py:76
 #: zeit/content/markup/browser/form.py:29
-#: zeit/content/video/browser/video.py:58
+#: zeit/content/video/browser/video.py:64
 msgid "Navigation"
 msgstr ""
 
@@ -580,7 +580,8 @@ msgstr ""
 #: zeit/content/image/browser/form.py:23
 #: zeit/content/infobox/browser/form.py:25
 #: zeit/content/infobox/browser/form.py:87
-#: zeit/content/video/browser/video.py:53
+#: zeit/content/video/browser/video.py:59
+#: zeit/content/video/browser/video.py:90
 msgid "Texts"
 msgstr ""
 
@@ -589,7 +590,7 @@ msgstr ""
 #: zeit/content/article/edit/browser/form.py:389
 #: zeit/content/cp/browser/form.py:59
 #: zeit/content/link/browser/form.py:39
-#: zeit/content/video/browser/video.py:61
+#: zeit/content/video/browser/video.py:69
 msgid "Options"
 msgstr ""
 
@@ -921,7 +922,6 @@ msgstr ""
 #: zeit/content/audio/interfaces.py:40
 #: zeit/content/audio/interfaces.py:68
 #: zeit/content/image/browser/image_view.pt:6
-#: zeit/content/video/interfaces.py:34
 #: zeit/content/volume/browser/toc_listing.py:61
 msgid "Type"
 msgstr ""
@@ -2032,7 +2032,7 @@ msgstr ""
 #: zeit/content/article/edit/interfaces.py:124
 #: zeit/content/article/edit/video.py:66
 #: zeit/content/video/browser/configure.zcml:8
-#: zeit/content/video/video.py:151
+#: zeit/content/video/video.py:157
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:21
 msgid "Video"
 msgstr ""
@@ -2181,7 +2181,7 @@ msgstr ""
 #: zeit/content/article/edit/interfaces.py:385
 #: zeit/content/article/edit/interfaces.py:395
 #: zeit/content/audio/interfaces.py:38
-#: zeit/content/video/interfaces.py:58
+#: zeit/content/video/interfaces.py:59
 #: zeit/wysiwyg/browser/resources/citation/dialog.pt:23
 #: zeit/wysiwyg/browser/resources/reference/gallery.pt:17
 #: zeit/wysiwyg/browser/resources/reference/infobox.pt:17
@@ -2209,7 +2209,7 @@ msgid "Show liveblog in teaser"
 msgstr ""
 
 #: zeit/content/article/edit/interfaces.py:423
-#: zeit/content/modules/interfaces.py:276
+#: zeit/content/modules/interfaces.py:280
 msgid "Timeline Content"
 msgstr ""
 
@@ -3897,6 +3897,7 @@ msgid "Display markup metadata"
 msgstr ""
 
 #: zeit/content/markup/interfaces.py:7
+#: zeit/content/video/interfaces.py:68
 msgid "Markdown content"
 msgstr ""
 
@@ -4168,31 +4169,34 @@ msgstr ""
 msgid "Python script"
 msgstr ""
 
-#: zeit/content/video/browser/video.py:79
+#: zeit/content/video/browser/video.py:87
 msgid "Video-Thumbnail"
 msgstr ""
 
-#: zeit/content/video/browser/video.py:86
+#: zeit/content/video/browser/video.py:99
 msgid "Add Video"
 msgstr ""
 
-#: zeit/content/video/browser/video.py:91
+#: zeit/content/video/browser/video.py:104
 msgid "Edit Video"
 msgstr ""
 
-#: zeit/content/video/browser/video.py:95
+#: zeit/content/video/browser/video.py:108
 msgid "View Video"
 msgstr ""
 
 #: zeit/content/video/interfaces.py:9
+#: zeit/content/video/interfaces.py:66
 msgid "URI of the rendition"
 msgstr ""
 
 #: zeit/content/video/interfaces.py:11
+#: zeit/content/video/interfaces.py:65
 msgid "Width of the Frame"
 msgstr ""
 
 #: zeit/content/video/interfaces.py:14
+#: zeit/content/video/interfaces.py:64
 msgid "Duration of the rendition"
 msgstr ""
 
@@ -4204,23 +4208,27 @@ msgstr ""
 msgid "Youtube"
 msgstr ""
 
-#: zeit/content/video/interfaces.py:35
+#: zeit/content/video/interfaces.py:34
+msgid "Video platform"
+msgstr ""
+
+#: zeit/content/video/interfaces.py:36
 msgid "External ID"
 msgstr ""
 
-#: zeit/content/video/interfaces.py:37
+#: zeit/content/video/interfaces.py:38
 msgid "Video expires on"
 msgstr ""
 
-#: zeit/content/video/interfaces.py:40
+#: zeit/content/video/interfaces.py:41
 msgid "Renditions of the Video"
 msgstr ""
 
-#: zeit/content/video/interfaces.py:52
+#: zeit/content/video/interfaces.py:53
 msgid "Video still copyright"
 msgstr ""
 
-#: zeit/content/video/interfaces.py:56
+#: zeit/content/video/interfaces.py:57
 msgid "Has advertisement"
 msgstr ""
 

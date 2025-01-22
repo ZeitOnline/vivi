@@ -34,7 +34,7 @@ class VideoFormTest(zeit.content.video.testing.BrowserTestCase):
         b.open(menu.value[0])
         self.assertEllipsis('...Add Video...', b.contents)
         b.getControl('File name').value = 'myvideo'
-        b.getControl('Type').displayValue = ['Youtube']
+        b.getControl('Video platform').displayValue = ['Youtube']
         b.getControl('Title').value = 'myvid'
         b.getControl('External ID').value = '1234'
         b.getControl('Ressort').displayValue = ['Deutschland']
