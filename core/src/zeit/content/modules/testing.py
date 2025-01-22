@@ -15,6 +15,7 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
         'jobticker-source': f'file://{HERE}/tests/fixtures/jobticker.xml',
         'subject-source': f'file://{HERE}/tests/fixtures/mail-subjects.xml',
         'embed-provider-source': f'file://{HERE}/tests/fixtures/embed-providers.xml',
+        'liveblog-source': f'file://{HERE}/tests/fixtures/liveblog-source.xml',
         'newsletter-source': f'file://{HERE}/tests/fixtures/newsletter.xml',
         'recipe-metadata-source': f'file://{HERE}/tests/fixtures/recipe-metadata.xml',
     },
