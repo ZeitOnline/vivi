@@ -30,7 +30,9 @@ class IVideo(
     zeit.cms.content.interfaces.IXMLContent,
     zeit.cms.content.interfaces.ISkipDefaultChannel,
 ):
-    type = zope.schema.Choice(title=_('Type'), source=VideoTypeSource(), default='brightcove')
+    type = zope.schema.Choice(
+        title=_('Video platform'), source=VideoTypeSource(), default='brightcove'
+    )
     external_id = zope.schema.TextLine(title=_('External ID'))
 
     expires = zope.schema.Datetime(title=_('Video expires on'), required=False)
