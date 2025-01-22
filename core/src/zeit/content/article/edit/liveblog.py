@@ -78,7 +78,7 @@ def set_lsc_default_for_liveblogs(context, event):
     if event.publishing:
         return
     for block in context.body.values():
-        if zeit.content.article.edit.interfaces.ILiveblog.providedBy(block):
+        if zeit.content.article.edit.interfaces.ITickarooLiveblog.providedBy(block):
             zeit.cms.content.interfaces.ISemanticChange(context).has_semantic_change = True
             break
 
