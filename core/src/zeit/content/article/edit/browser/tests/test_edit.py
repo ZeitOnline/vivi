@@ -683,9 +683,6 @@ class TestFolding(zeit.content.article.edit.browser.testing.EditorTestCase):
     def test_video_should_be_foldable(self):
         self.assert_foldable('video')
 
-    def test_liveblog_should_be_foldable(self):
-        self.assert_foldable('liveblog')
-
     def test_division_should_be_foldable(self):
         self.assert_foldable('division')
 
