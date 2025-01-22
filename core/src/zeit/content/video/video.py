@@ -101,7 +101,7 @@ class Video(zeit.cms.content.metadata.CommonMetadata):
     @cachedproperty
     def _player_data(self):
         # XXX Kludgy temporary workaround until we integrate with Youtube API.
-        if self.video_type == 'youtube':
+        if self.type == 'youtube':
             rendition = VideoRendition()
             rendition.url = self.url
             rendition.frame_width = self.width
