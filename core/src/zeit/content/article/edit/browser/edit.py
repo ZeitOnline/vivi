@@ -394,17 +394,6 @@ class EditPuzzleForm(zeit.edit.browser.form.InlineForm):
         return 'puzzleform.{0}'.format(self.context.__name__)
 
 
-class EditLiveblog(zeit.edit.browser.form.InlineForm):
-    legend = None
-    form_fields = zope.formlib.form.FormFields(zeit.content.article.edit.interfaces.ILiveblog).omit(
-        *list(zeit.edit.interfaces.IBlock)
-    )
-
-    @property
-    def prefix(self):
-        return 'liveblog.{0}'.format(self.context.__name__)
-
-
 class EditTickarooLiveblog(zeit.edit.browser.form.InlineForm):
     legend = None
     form_fields = zope.formlib.form.FormFields(
