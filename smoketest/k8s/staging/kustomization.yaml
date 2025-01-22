@@ -3,4 +3,23 @@ kind: Kustomization
 
 resources:
 - ../base
-- secrets.yaml
+
+patches:
+  - target:
+      kind: ExternalSecret
+      name: nightwatch-secrets
+    patch: |
+      - op: add
+        path: /spec/data/-
+        value:
+          secretKey: OIDC_CLIENT_ID
+          remoteRef:
+            key: zon/v1/keycloak/production/zeit-online/edge-www
+            property: client_id
+      - op: add
+        path: /spec/data/-
+        value:
+          secretKey: OIDC_CLIENT_SECRET
+          remoteRef:
+            key: zon/v1/keycloak/production/zeit-online/edge-www
+            property: client_secret
