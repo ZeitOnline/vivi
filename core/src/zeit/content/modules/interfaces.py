@@ -272,6 +272,10 @@ class ITickarooLiveblog(zeit.edit.interfaces.IBlock):
         title=_('Collapse preceding content'), default=True, required=False
     )
 
+    collapse_highlighted_events = zope.schema.Bool(
+        title=_('Collapse highlighted events'), default=False, required=False
+    )
+
     timeline_template = zope.schema.Choice(
         title=_('Timeline Content'),
         required=False,

@@ -21,3 +21,10 @@ class ConsentInfo(zeit.content.modules.testing.FunctionalTestCase):
         assert lxml.etree.tostring(self.module.xml) == (
             b'<container liveblog_id="1234" ' b'collapse_preceding_content="True"/>'
         )
+
+    def test_liveblog_stores_collapse_highlighted_events_in_xml(self):
+        self.module.liveblog_id = '1234'
+        self.module.collapse_highlighted_events = True
+        assert lxml.etree.tostring(self.module.xml) == (
+            b'<container liveblog_id="1234" ' b'collapse_highlighted_events="True"/>'
+        )
