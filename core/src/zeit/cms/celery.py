@@ -43,6 +43,7 @@ except ImportError:
             return Callable
 else:
     import bugsnag
+    import grokcore.component as grok
     import kombu
     import opentelemetry.trace
     import prometheus_client
@@ -186,48 +187,50 @@ else:
     # Export decorator, so client modules can say `@zeit.cms.celery.task()`.
     task = CELERY.task
 
-    # NOTE: Ordering matters here. We rely on the fact that celery signal
-    # handlers are called in the order they are defined, so that our nested
-    # context is attached after the upstream one, and detached before.
-    @celery.signals.task_postrun.connect(weak=False)
-    def remove_samplerate(*args, **kw):
-        task = otel_celery.retrieve_task(kw)
-        _, _, token = otel_celery.retrieve_context(task, 'zeit.cms.tracing')
-        opentelemetry.context.detach(token)
-        otel_celery.detach_context(task, 'zeit.cms.tracing')
+    @grok.subscribe(zeit.cms.zope.ZCMLLoaded)
+    def configure_tracing(event):
+        # NOTE: Ordering matters here. We rely on the fact that celery signal
+        # handlers are called in the order they are defined, so that our nested
+        # context is attached after the upstream one, and detached before.
+        @celery.signals.task_postrun.connect(weak=False)
+        def remove_samplerate(*args, **kw):
+            task = otel_celery.retrieve_task(kw)
+            _, _, token = otel_celery.retrieve_context(task, 'zeit.cms.tracing')
+            opentelemetry.context.detach(token)
+            otel_celery.detach_context(task, 'zeit.cms.tracing')
 
-    CeleryInstrumentor().instrument()
+        CeleryInstrumentor().instrument()
 
-    @celery.signals.task_prerun.connect(weak=False)
-    def apply_samplerate(*args, **kw):
-        span = opentelemetry.trace.get_current_span()
-        span.set_attributes({'celery.args': str(kw.get('args'))})
+        @celery.signals.task_prerun.connect(weak=False)
+        def apply_samplerate(*args, **kw):
+            span = opentelemetry.trace.get_current_span()
+            span.set_attributes({'celery.args': str(kw.get('args'))})
 
-        context = zeit.cms.tracing.apply_samplerate_productconfig(
-            'zeit.cms.relstorage',
-            'zeit.cms',
-            'samplerate-zodb',
-            opentelemetry.context.get_current(),
-        )
-        context = zeit.cms.tracing.apply_samplerate_productconfig(
-            'zeit.connector.postgresql.tracing', 'zeit.cms', 'samplerate-sql', context
-        )
-        context = zeit.cms.tracing.apply_samplerate_productconfig(
-            'zeit.workflow.publish', 'zeit.cms', 'samplerate-publish', context
-        )
-        task = otel_celery.retrieve_task(kw)
-        context = opentelemetry.context.set_value(
-            # See opentelemetry.instrumentation.sqlcommenter_utils
-            'SQLCOMMENTER_ORM_TAGS_AND_VALUES',
-            {
-                'application': 'vivi',
-                'controller': 'celery',
-                'route': getattr(task, 'name', 'unknown'),
-                # 'action':
-            },
-            context,
-        )
-        token = opentelemetry.context.attach(context)
-        # This is a bit of a semantic misuse, but mechanically it's
-        # exactly what we want: store this bit of data on the task object.
-        otel_celery.attach_context(task, 'zeit.cms.tracing', span, None, token)
+            context = zeit.cms.tracing.apply_samplerate_productconfig(
+                'zeit.cms.relstorage',
+                'zeit.cms',
+                'samplerate-zodb',
+                opentelemetry.context.get_current(),
+            )
+            context = zeit.cms.tracing.apply_samplerate_productconfig(
+                'zeit.connector.postgresql.tracing', 'zeit.cms', 'samplerate-sql', context
+            )
+            context = zeit.cms.tracing.apply_samplerate_productconfig(
+                'zeit.workflow.publish', 'zeit.cms', 'samplerate-publish', context
+            )
+            task = otel_celery.retrieve_task(kw)
+            context = opentelemetry.context.set_value(
+                # See opentelemetry.instrumentation.sqlcommenter_utils
+                'SQLCOMMENTER_ORM_TAGS_AND_VALUES',
+                {
+                    'application': 'vivi',
+                    'controller': 'celery',
+                    'route': getattr(task, 'name', 'unknown'),
+                    # 'action':
+                },
+                context,
+            )
+            token = opentelemetry.context.attach(context)
+            # This is a bit of a semantic misuse, but mechanically it's
+            # exactly what we want: store this bit of data on the task object.
+            otel_celery.attach_context(task, 'zeit.cms.tracing', span, None, token)

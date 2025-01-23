@@ -194,7 +194,7 @@ deploy = [
     "opentelemetry-exporter-otlp",
     "opentelemetry-exporter-prometheus",
     "opentelemetry-sdk",
-    "opentelemetry-sdk-extension-prometheus-multiprocess",
+    "opentelemetry-sdk-extension-prometheus-multiprocess >= 1.2.0.dev0",
     "pastescript",
     "psycopg2-binary",
     "python-json-logger",
