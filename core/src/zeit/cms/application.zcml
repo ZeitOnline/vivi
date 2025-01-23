@@ -23,5 +23,6 @@
     <include package="zope.generations" file="subscriber.zcml" />
     <include package="grokcore.component" file="meta.zcml" />
     <grok:grok package="zeit.cms.zope" />
+    <grok:grok package="zeit.cms.celery" />
 
 </configure>
