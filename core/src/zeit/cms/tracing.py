@@ -113,7 +113,6 @@ def default_tracer():
     * We don't really care about the `library.name` field that's populated by
       the argument to get_tracer().
     """
-    _setup_instrumentors(None)
     return opentelemetry.trace.get_tracer(__name__)
 
 
@@ -138,6 +137,21 @@ def tracer_from_product_config():
     return default_tracer()
 
 
+@zope.interface.implementer(zeit.cms.interfaces.ITracer)
+def stdout_tracer():
+    provider = TracerProvider()
+    provider.add_span_processor(BatchSpanProcessor(ConsoleSpanExporter()))
+    opentelemetry.trace.set_tracer_provider(provider)
+    _setup_instrumentors(provider)
+    return default_tracer()
+
+
+@zope.interface.implementer(zeit.cms.interfaces.ITracer)
+def testing_tracer():
+    _setup_instrumentors(None)
+    return default_tracer()
+
+
 def _setup_instrumentors(provider):
     from opentelemetry.instrumentation.requests import RequestsInstrumentor
 
@@ -151,15 +165,6 @@ def _setup_instrumentors(provider):
     RequestsInstrumentor().instrument(tracer_provider=provider)
     RelStorageInstrumentor().instrument(tracer_provider=provider)
     TransactionInstrumentor().instrument(tracer_provider=provider)
-
-
-@zope.interface.implementer(zeit.cms.interfaces.ITracer)
-def stdout_tracer():
-    provider = TracerProvider()
-    provider.add_span_processor(BatchSpanProcessor(ConsoleSpanExporter()))
-    opentelemetry.trace.set_tracer_provider(provider)
-    _setup_instrumentors(provider)
-    return default_tracer()
 
 
 @zope.interface.implementer(zeit.cms.interfaces.IMetrics)

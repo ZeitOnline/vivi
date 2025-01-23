@@ -12,6 +12,8 @@
   <meta:provides feature="zeit.cms.repository.tree" />
 
   <meta:provides feature="zeit.cms.tracing.prometheus.singleproc" />
+  <include package="zope.component" file="meta.zcml" />
+  <utility factory="zeit.cms.tracing.testing_tracer" />
 
   <include package="zeit.cms" file="ui.zcml" />
   <include package="zeit.cms" />
