@@ -8,6 +8,7 @@ import time
 
 from zope.dottedname.resolve import resolve
 import BTrees
+import opentelemetry.trace
 import persistent
 import persistent.mapping
 import transaction
@@ -266,9 +267,15 @@ class PersistentCache(AccessTimes, persistent.Persistent):
             value = self._storage[skey]
         except KeyError:
             raise KeyError(key)
-        if self._is_deleted(value):
-            log.info('%s not found in %s', key, self)
+        try:
+            if self._is_deleted(value):
+                log.info('%s not found in %s', key, self)
+                raise KeyError(key)
+        except ZODB.POSException.POSKeyError as err:
+            current_span = opentelemetry.trace.get_current_span()
+            current_span.record_exception(err)
             raise KeyError(key)
+
         self._update_cache_access(skey)
         return value
 
@@ -279,10 +286,15 @@ class PersistentCache(AccessTimes, persistent.Persistent):
             return default
 
     def __contains__(self, key):
-        key = get_storage_key(key)
-        value = self._storage.get(key, self)
-        self._update_cache_access(key)
-        return value is not self and not self._is_deleted(value)
+        try:
+            key = get_storage_key(key)
+            value = self._storage.get(key, self)
+            self._update_cache_access(key)
+            return value is not self and not self._is_deleted(value)
+        except ZODB.POSException.POSKeyError as err:
+            current_span = opentelemetry.trace.get_current_span()
+            current_span.record_exception(err)
+            return False
 
     def keys(self, include_deleted=False, min=None, max=None):
         if min is not None:
@@ -295,10 +307,15 @@ class PersistentCache(AccessTimes, persistent.Persistent):
         return (key for key in keys if key in self)
 
     def __delitem__(self, key):
-        value = self._storage[get_storage_key(key)]
-        if isinstance(value, self.CACHE_VALUE_CLASS):
-            self._mark_deleted(value)
-        else:
+        try:
+            value = self._storage[get_storage_key(key)]
+            if isinstance(value, self.CACHE_VALUE_CLASS):
+                self._mark_deleted(value)
+            else:
+                self.remove(key)
+        except ZODB.POSException.POSKeyError as err:
+            current_span = opentelemetry.trace.get_current_span()
+            current_span.record_exception(err)
             self.remove(key)
 
     def remove(self, key):
@@ -308,14 +325,19 @@ class PersistentCache(AccessTimes, persistent.Persistent):
         return self._storage.pop(get_storage_key(key), default)
 
     def __setitem__(self, key, value):
-        skey = get_storage_key(key)
-        old_value = self._storage.get(skey)
-        if isinstance(old_value, self.CACHE_VALUE_CLASS):
-            self._set_value(old_value, value)
-        else:
-            value = self.CACHE_VALUE_CLASS(value)
-            self._storage[skey] = value
-        self._update_cache_access(skey)
+        try:
+            skey = get_storage_key(key)
+            old_value = self._storage.get(skey)
+            if isinstance(old_value, self.CACHE_VALUE_CLASS):
+                self._set_value(old_value, value)
+            else:
+                value = self.CACHE_VALUE_CLASS(value)
+                self._storage[skey] = value
+            self._update_cache_access(skey)
+        except ZODB.POSException.POSKeyError as err:
+            current_span = opentelemetry.trace.get_current_span()
+            current_span.record_exception(err)
+            self.remove(key)
 
     def _is_deleted(self, value):
         return zeit.connector.interfaces.DeleteProperty in value

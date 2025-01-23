@@ -1,10 +1,25 @@
-from datetime import datetime
+from datetime import datetime, timedelta
+from unittest import mock
 
 import transaction
+import ZODB.Connection
+import ZODB.POSException
 import zope.component
 
 import zeit.objectlog.interfaces
+import zeit.objectlog.objectlog
 import zeit.objectlog.testing
+
+
+class FakeLogItem:
+    # broken LogItem that mimics the cache loss behaviour of ZODB
+    def keys(self, *args, **kw):
+        raise ZODB.POSException.POSKeyError('foo')
+
+
+class FakeObjectLog(dict):
+    def __setitem__(self, key, _):
+        return super().__setitem__(key, FakeLogItem())
 
 
 class ObjectLog(zeit.objectlog.testing.FunctionalTestCase):
@@ -30,3 +45,10 @@ class ObjectLog(zeit.objectlog.testing.FunctionalTestCase):
         log.delete(content2)
         self.assertEqual(0, len(list(log.get_log(content2))))
         self.assertEqual(1, len(list(log.get_log(self.content))))
+
+    def test_clean(self):
+        log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
+        with mock.patch.object(log, '_object_log', FakeObjectLog()):
+            zeit.objectlog.interfaces.ILog(self.content).log('one')
+            log.clean(timedelta(days=0))
+            self.assertEqual(0, len(list(log.get_log(self.content))))
