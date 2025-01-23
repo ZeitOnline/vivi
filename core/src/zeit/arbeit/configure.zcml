@@ -6,23 +6,10 @@
   <grok:grok package="." exclude="browser" />
 
   <adapter
-    factory=".interfaces.IZARContent"
-    for=".interfaces.IZARSection"
-    provides="zeit.cms.section.interfaces.ISectionMarker"
-    />
-
-  <adapter
     factory=".interfaces.IZARFolder"
     for=".interfaces.IZARSection"
     provides="zeit.cms.section.interfaces.ISectionMarker"
     name="collection"
-    />
-
-  <adapter
-    factory=".interfaces.IZARArticle"
-    for=".interfaces.IZARSection"
-    provides="zeit.cms.section.interfaces.ISectionMarker"
-    name="article"
     />
 
   <adapter
