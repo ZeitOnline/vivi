@@ -43,6 +43,8 @@ def pytest_configure(config):
         config.option.prometheus_extra_labels = []
     config.option.prometheus_extra_labels.append('project=vivi')
 
+    config.option.browser = ['firefox']
+
 
 @pytest.fixture
 def http(nightwatch_config, oidc_token):
