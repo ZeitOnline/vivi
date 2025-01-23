@@ -255,6 +255,7 @@ class LiveblogSource(zeit.cms.content.sources.SearchableXMLSource):
 
     attribute = 'id'
     default_filename = 'liveblog.xml'
+    config_url = 'liveblog-source'
     product_configuration = 'zeit.content.modules'
 
 

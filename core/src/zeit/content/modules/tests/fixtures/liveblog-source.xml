@@ -1,0 +1,19 @@
+<liveblog xmlns:cp="http://namespaces.zeit.de/CMS/cp" xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <!--
+  Hinweis:
+  Bei dieser Konfiguration, wo sie `<select>`-Formelemente definiert,
+  ist darauf zu achten, dass die gewuenschte Default-Option an erster Stelle stehen muss!
+  -->
+  <status>
+    <status id="active">Liveblog aktiv</status>
+    <status id="inactive">Liveblog inaktiv</status>
+  </status>
+  <themes>
+    <theme id="default">Default</theme>
+    <theme id="solo">Solo</theme>
+  </themes>
+  <intersection_types>
+    <intersection_type id="date">Datum</intersection_type>
+    <intersection_type id="chapter">Kapitel</intersection_type>
+  </intersection_types>
+</liveblog>

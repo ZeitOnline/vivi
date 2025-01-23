@@ -399,33 +399,6 @@ class ICitationComment(IBlock):
     )
 
 
-class LiveblogVersions(zeit.cms.content.sources.SimpleFixedValueSource):
-    values = {'3': '3'}
-
-
-class ILiveblog(IBlock):
-    blog_id = zope.schema.TextLine(title=_('Liveblog id'))
-
-    version = zope.schema.Choice(
-        title=_('Liveblog version'), source=LiveblogVersions(), default='3', required=False
-    )
-
-    collapse_preceding_content = zope.schema.Bool(
-        title=_('Collapse preceding content'), default=True, required=False
-    )
-
-    # BBB
-    show_timeline_in_teaser = zope.schema.Bool(
-        title=_('Show liveblog in teaser'), default=True, required=False
-    )
-
-    timeline_template = zope.schema.Choice(
-        title=_('Timeline Content'),
-        required=False,
-        source=zeit.content.modules.interfaces.TimelineTemplateSource(),
-    )
-
-
 class ITickarooLiveblog(IBlock, zeit.content.modules.interfaces.ITickarooLiveblog):
     pass
 

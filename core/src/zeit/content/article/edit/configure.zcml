@@ -266,17 +266,6 @@
       />
   </class>
 
-  <class class=".liveblog.Liveblog">
-    <require
-      interface=".interfaces.ILiveblog"
-      permission="zope.View"
-      />
-    <require
-      set_schema=".interfaces.ILiveblog"
-      permission="zeit.EditContent"
-      />
-  </class>
-
   <adapter
     factory=".liveblog.TickarooLiveblogFactory"
     provides=".interfaces.ITickarooLiveblog"

@@ -2,7 +2,7 @@ import lxml.builder
 
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.content.interfaces import ISemanticChange
-from zeit.content.article.edit.liveblog import Liveblog
+from zeit.content.article.edit.liveblog import TickarooLiveblog
 import zeit.content.article.testing
 import zeit.edit.interfaces
 
@@ -12,10 +12,10 @@ class LSCDefaultTest(zeit.content.article.testing.FunctionalTestCase):
         super().setUp()
         self.repository['article'] = zeit.content.article.testing.create_article()
         with checked_out(self.repository['article']) as co:
-            co.body.create_item('liveblog')
+            co.body.create_item('tickaroo_liveblog')
             self.assertFalse(ISemanticChange(co).has_semantic_change)
 
-    def test_article_with_liveblog_old_has_lsc_on_checkout(self):
+    def test_article_with_liveblog_has_lsc_on_checkout(self):
         with checked_out(self.repository['article']) as co:
             self.assertTrue(ISemanticChange(co).has_semantic_change)
 
@@ -29,23 +29,17 @@ class LSCDefaultTest(zeit.content.article.testing.FunctionalTestCase):
 
 class LiveblogTest(zeit.content.article.testing.FunctionalTestCase):
     def get_liveblog(self):
-        liveblog = Liveblog(None, lxml.builder.E.liveblog())
+        liveblog = TickarooLiveblog(None, lxml.builder.E.liveblog())
         return liveblog
 
     def test_liveblog_should_be_set(self):
         liveblog = self.get_liveblog()
-        liveblog.blog_id = '290'
+        liveblog.liveblog_id = '290'
         liveblog.invalid_attribute = 'this should not be set'
         liveblog.timeline_template = 'highlighted'
-        self.assertEqual('290', liveblog.xml.xpath('.')[0].get('blogID'))
+        self.assertEqual('290', liveblog.xml.xpath('.')[0].get('liveblog_id'))
         self.assertEqual('highlighted', liveblog.xml.xpath('.')[0].get('timeline_template'))
         self.assertIsNone(liveblog.xml.xpath('.')[0].get('invalid_attribute'))
-
-    def test_liveblog_version_should_be_set(self):
-        liveblog = self.get_liveblog()
-        self.assertIsNone(liveblog.xml.xpath('.')[0].get('version'))
-        liveblog.version = '3'
-        self.assertEqual('3', liveblog.xml.xpath('.')[0].get('version'))
 
     def test_liveblog_collapse_preceding_content_should_be_set(self):
         liveblog = self.get_liveblog()
