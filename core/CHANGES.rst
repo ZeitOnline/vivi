@@ -3,6 +3,24 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.11.0 (2025-01-23)
+-------------------
+
+- WCM-124: Nightwatch test vivi ui
+
+- WCM-195: fix keyword widget design
+
+
+FIX:
+- FIX: Set LSC for tickaroo liveblogs
+
+- FIX: Set use_default for collapse_preceding_content in liveblogs
+
+
+MAINT:
+- MAINT: Remove legacy liveblog
+
+
 7.10.0 (2025-01-22)
 -------------------
 
