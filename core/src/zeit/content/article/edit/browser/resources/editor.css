@@ -1864,22 +1864,10 @@
     clear: none;
 }
 
-.type-article #form-article-content-main-image {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 1em;
-}
-.type-article #form-article-content-main-image > * {
-    flex: 1;
-}
-
-#form-article-content-main-image .fieldname-main_image_variant_name .value {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 0.5em;
-    line-height: 22px;
+.type-article #form-article-content-main-image > .fieldname-main_image_variant_name {
+  position: relative;
+  top: -2.1em;
+  left: 19em;
 }
 
 .type-article #form-article-content-main-image .label {
@@ -1887,6 +1875,8 @@
 }
 .type-article #form-article-content-main-image > .fieldname-main_image_variant_name div.value:before {
     content: "Seitenverhältnis";
+    float: left;
+    padding-right: 0.5em;
     color: #4c4c4c;
     font-weight: bold;
     text-transform: uppercase;
