@@ -27,6 +27,55 @@ var wire_forms = function(parent) {
     });
 };
 
+var save_dirty_before_leaving = function() {
+    if ($('.inline-form').length == 0) {
+        return;
+    }
+    window.addEventListener('beforeunload', function(event) {
+        var fields = $('.inline-form .field.dirty');
+        if (fields.length == 0) {
+            return;
+        }
+
+        // Causes browser to show dialog "do you really want to leave this page?"
+        event.preventDefault();
+
+        // That dialog is not customizeable though, so we show an overlay.
+        var forms = [];
+        var labels = [];
+        fields.each(function(i, field) {
+            field = $(field);
+            var form = field.closest('.inline-form')[0].form;
+            forms.push(form);
+            var label = field.find('label').text().trim();
+            labels.push(label);
+        });
+
+        var message = '<h1>Ungespeicherte Änderungen</h1>\n';
+        message += '<p>Die folgenden Änderungen werden erst jetzt gespeichert</p><ul>\n';
+        for (var label of labels) {
+            message += '<li>' + label + '</li>\n';
+        }
+        message += '</ul>\n';
+        var lightbox = new gocept.Lightbox(document.body, {use_ids: false});
+        lightbox.replace_content(message);
+
+        // Automatically save all the dirty forms
+        if (zeit.cms._follow_with_lock_called) {
+            // follow_with_lock intentionally keeps the lock, and the new
+            // page load will clear it. But since we want the user to abort,
+            // we have to release the lock ourselves.
+            zeit.cms.request_lock.release();
+        }
+        var requests = forms.map((x) => x.submit());
+        MochiKit.Async.gatherResults(requests).addCallback(function() {
+            message += '<p>Speichern abgeschlossen</p>';
+            lightbox.replace_content(message);
+            MochiKit.Async.callLater(1, function() { lightbox.close(); });
+        });
+    });
+};
+
 var evaluate_form_signals = function(event) {
     // we don't get the usual MochiKit behaviour that additional arguments to
     // signal() are passed along, since window is a DOM object and thus handles
@@ -64,6 +113,9 @@ var reload_inline_view = function(selector) {
 MochiKit.Signal.connect(window, 'script-loading-finished', function() {
     setup_views();
     wire_forms();
+    if (window.feature_toggles && window.feature_toggles.inlineform_save_beforeunload) {
+        save_dirty_before_leaving();
+    }
 });
 
 MochiKit.Signal.connect(window, 'cp-editor-initialized', function() {
