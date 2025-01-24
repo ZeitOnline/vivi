@@ -208,6 +208,7 @@
   margin-top: -2em;
   margin-right: 2em; /* Leave space for the close button */
   background-color: transparent;
+  position: fixed;
 }
 
 
