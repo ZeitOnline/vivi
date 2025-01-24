@@ -49,6 +49,7 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
         'tagesschau-api-url-get': 'https://ard-tagesschau/get',
         'tagesschau-sig-uri': 'XYZ',
         'tagesschau-api-key': '1a2b3c4d5e',
+        'bluesky-api-timeout': 10,
     },
     bases=(
         zeit.content.author.testing.CONFIG_LAYER,
