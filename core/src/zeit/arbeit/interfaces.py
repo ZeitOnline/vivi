@@ -12,18 +12,8 @@ class IZARSection(zeit.cms.section.interfaces.ISection):
     pass
 
 
-class IZARContent(zeit.cms.interfaces.ICMSContent, zeit.cms.section.interfaces.ISectionMarker):
-    pass
-
-
 class IZARFolder(
     zeit.cms.repository.interfaces.IFolder, zeit.cms.section.interfaces.ISectionMarker
-):
-    pass
-
-
-class IZARArticle(
-    zeit.content.article.interfaces.IArticle, zeit.cms.section.interfaces.ISectionMarker
 ):
     pass
 
