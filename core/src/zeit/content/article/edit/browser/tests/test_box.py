@@ -1,7 +1,6 @@
 from subprocess import check_output
 import unittest
 
-import zeit.arbeit.interfaces
 import zeit.content.article.edit.browser.testing
 import zeit.content.image.testing
 
