@@ -142,7 +142,6 @@ def stdout_tracer():
     provider = TracerProvider()
     provider.add_span_processor(BatchSpanProcessor(ConsoleSpanExporter()))
     opentelemetry.trace.set_tracer_provider(provider)
-    _setup_instrumentors(provider)
     return default_tracer()
 
 
