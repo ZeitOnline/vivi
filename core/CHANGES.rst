@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.12.0 (2025-01-27)
+-------------------
+
+- WCM-605: Report server/client duration as seconds instead of ms
+
+- WCM-633: handle property cache loss
+
+
 7.11.0 (2025-01-23)
 -------------------
 
