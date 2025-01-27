@@ -307,12 +307,15 @@ zeit.cms.follow_with_lock = function(element) {
                     window.open(element.href, element.target);
                     zeit.cms.request_lock.release();
                 } else {
-                    window.location.href = element.href;
                     // Don't release the lock when replacing the current
                     // window. Opening the new page will implicitly reset
                     // everything. In fact it is necessary to keep the lock to
                     // prevent other requests to start until dispossing is
                     // properly finished.
+                    // Store this, so window.beforeunload can release,
+                    // see zeit.edit.inlineform
+                    zeit.cms._follow_with_lock_called = true;
+                    window.location.href = element.href;
                 }
             });
         });
