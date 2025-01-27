@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.15.0 (2025-01-27)
+-------------------
+
+- WCM-605: Separate tracing instrumentors mechanics and policy
+
+
 7.14.0 (2025-01-27)
 -------------------
 
