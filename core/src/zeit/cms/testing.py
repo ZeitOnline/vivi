@@ -65,7 +65,6 @@ class LoggingLayer(plone.testing.Layer):
         logging.getLogger('zeit').setLevel(logging.DEBUG)
         logging.getLogger('zeit.cms.repository').setLevel(logging.INFO)
         logging.getLogger('selenium').setLevel(logging.INFO)
-        logging.getLogger('bugsnag').setLevel(logging.FATAL)
         logging.getLogger('waitress').setLevel(logging.ERROR)
 
 
@@ -1157,7 +1156,7 @@ class JSLintTestCase(gocept.jslint.TestCase):
         "Use '!==' to compare with",
         'Missing radix parameter',
         'Misleading line break',
-        'Expected an assignment or function call and instead' ' saw an expression',
+        'Expected an assignment or function call and instead saw an expression',
     )
 
     def _write_config_file(self):
