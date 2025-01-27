@@ -1,11 +1,17 @@
 from unittest import mock
 import argparse
+import contextlib
 import logging
 
 import transaction
 import zope.component
 
-from zeit.cms.workflow.interfaces import IManualPublicationOptions, IPublish, IPublishInfo
+from zeit.cms.workflow.interfaces import (
+    IManualPublicationOptions,
+    IPublicationDependencies,
+    IPublish,
+    IPublishInfo,
+)
 from zeit.cms.workflow.options import PublicationOptions
 import zeit.cms.celery
 import zeit.cms.cli
@@ -15,6 +21,33 @@ log = logging.getLogger(__name__)
 IGNORE_SERVICES = ['airship', 'speechbert', 'summy']
 
 
+@contextlib.contextmanager
+def temporary_unregister_handlers(registry, handlers):
+    try:
+        for handler in handlers:
+            assert registry.unregisterHandler(handler)
+        yield
+    finally:
+        for handler in handlers:
+            registry.registerHandler(handler)
+
+
+@contextlib.contextmanager
+def temporary_unregister_adapters(registry, adapters):
+    # registry.adapters._adapters[1][zeit.content.article.interfaces.IArticle]
+    try:
+        for provided, name in adapters:
+            adapter = registry.queryAdapter(None, provided, name)
+            if adapter is not None:
+                registry.unregisterAdapter(adapter, None, provided, name)
+        yield
+    finally:
+        for required, provided, name in adapters:
+            adapter = registry.queryAdapter(required, provided, name)
+            if adapter is not None:
+                registry.registerAdapter(adapter, required, provided, name)
+
+
 @zeit.cms.celery.task(queue='manual')
 def publish_content(options: IManualPublicationOptions):
     """This publish task is running inside a celery worker because
@@ -22,34 +55,34 @@ def publish_content(options: IManualPublicationOptions):
     function is called inside the regular vivi process
     """
     registry = zope.component.getGlobalSiteManager()
+    handlers_to_unregister = []
+    adapters_to_unregister = []
 
     # No option, since there is no usecase for re-activating old breaking news
     log.info('Deactivating breaking news banner')
-    assert registry.unregisterHandler(zeit.push.workflow.send_push_on_publish)
+    handlers_to_unregister.append(zeit.push.workflow.send_breaking_news_banner)
 
     if not options.dlps:
         log.info('Deactivating date_last_published_semantic')
-        assert registry.unregisterHandler(
+        handlers_to_unregister.append(
             zeit.cms.workflow.modified.update_date_last_published_semantic
         )
 
     if options.skip_tms_enrich:
         log.info('Deactivating TMS enrich')
-        assert registry.unregisterHandler(zeit.retresco.update.index_before_publish)
+        handlers_to_unregister.append(zeit.retresco.update.index_before_publish)
 
     if options.skip_deps:
         log.info('Deactivating publish dependencies')
-        mock.patch(
-            'zeit.cms.workflow.dependency.Dependencies._find_adapters', return_value=()
-        ).start()
+        adapters_to_unregister.append((IPublicationDependencies, ''))
 
     if not options.use_checkin_hooks:
         log.info('Deactivating checkin hooks')
-        assert registry.unregisterHandler(zeit.cms.checkout.webhook.notify_after_checkin)
+        handlers_to_unregister.append(zeit.cms.checkout.webhook.notify_after_checkin)
 
     if not options.use_publish_hooks:
         log.info('Deactivating publish hooks')
-        assert registry.unregisterHandler(zeit.cms.checkout.webhook.notify_after_publish)
+        handlers_to_unregister.append(zeit.cms.checkout.webhook.notify_after_publish)
 
     if not options.wait_tms:
         mock.patch(
@@ -57,34 +90,39 @@ def publish_content(options: IManualPublicationOptions):
         ).start()
 
     log.info('Ignoring services %s', options.ignore_services)
-    zeit.workflow.publish_3rdparty.PublisherData.ignore = options.ignore_services + IGNORE_SERVICES
+    for service in options.ignore_services:
+        adapters_to_unregister.append((zeit.workflow.interfaces.IPublisherData, service))
 
-    for line in options.filename.decode('utf-8').splitlines():
-        uid = line.strip()
-        content = zeit.cms.interfaces.ICMSContent(uid, None)
-        if content is None:
-            log.warn('Skipping %s, not found', uid)
-            continue
+    with (
+        temporary_unregister_handlers(registry, handlers_to_unregister),
+        temporary_unregister_adapters(registry, adapters_to_unregister),
+    ):
+        for line in options.filename.decode('utf-8').splitlines():
+            uid = line.strip()
+            content = zeit.cms.interfaces.ICMSContent(uid, None)
+            if content is None:
+                log.warn('Skipping %s, not found', uid)
+                continue
 
-        info = IPublishInfo(content)
-        if not (info.published or options.force_unpublished):
-            log.info('Skipping %s, not published and no --force-unpublished', uid)
-            continue
-        semantic = zeit.cms.content.interfaces.ISemanticChange(content)
-        if (
-            info.date_last_published is not None
-            and semantic.last_semantic_change is not None
-            and semantic.last_semantic_change > info.date_last_published
-            and not options.force_changed
-        ):
-            log.info('Skipping %s, has semantic change and no --force-changed', uid)
-            continue
+            info = IPublishInfo(content)
+            if not (info.published or options.force_unpublished):
+                log.info('Skipping %s, not published and no --force-unpublished', uid)
+                continue
+            semantic = zeit.cms.content.interfaces.ISemanticChange(content)
+            if (
+                info.date_last_published is not None
+                and semantic.last_semantic_change is not None
+                and semantic.last_semantic_change > info.date_last_published
+                and not options.force_changed
+            ):
+                log.info('Skipping %s, has semantic change and no --force-changed', uid)
+                continue
 
-        try:
-            IPublish(content).publish(background=False)
-            transaction.commit()
-        except Exception:
-            transaction.abort()
+            try:
+                IPublish(content).publish(background=False)
+                transaction.commit()
+            except Exception:
+                transaction.abort()
 
 
 @zeit.cms.cli.runner(principal=zeit.cms.cli.principal_from_args)
