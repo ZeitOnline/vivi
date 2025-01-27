@@ -48,7 +48,6 @@ FANSTATIC_SETTINGS = {
 
 class Application:
     pipeline = [
-        ('bugsnag', 'call:zeit.cms.bugsnag:bugsnag_filter'),
         ('prometheus', 'call:zeit.cms.application:prometheus_filter'),
         # fanstatic is confused by the SCRIPT_NAME that repoze.vhm sets, so
         # have it run first, before vhm applies any wsgi environ changes.
