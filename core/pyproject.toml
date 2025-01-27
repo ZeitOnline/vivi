@@ -6,7 +6,6 @@ dynamic = ["version"]
 dependencies = [
     "beautifulsoup4",
     "btrees",
-    "bugsnag",
     "collective.monkeypatcher",
     "cryptography",  # so pyjwt can offer rsa
     "elasticsearch >=7.16.0, <8.0.0",  # ZO-2516

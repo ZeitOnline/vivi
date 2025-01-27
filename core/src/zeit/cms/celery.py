@@ -42,7 +42,6 @@ except ImportError:
 
             return Callable
 else:
-    import bugsnag
     import grokcore.component as grok
     import kombu
     import opentelemetry.trace
@@ -73,13 +72,6 @@ else:
 
             zeit.cms.zope.configure_product_config(self.app.conf['SETTINGS'])
             zeit.cms.zope.load_zcml(self.app.conf['SETTINGS'])
-            prefix = 'bugsnag.'
-            bugsnag_conf = {
-                key.replace(prefix, '', 1): value
-                for key, value in self.app.conf['SETTINGS'].items()
-                if key.startswith(prefix)
-            }
-            zeit.cms.bugsnag.configure(bugsnag_conf)
 
             port = int(os.environ.get('CELERY_PROMETHEUS_PORT', 0))
             if port:
@@ -163,12 +155,6 @@ else:
             kw.get('sender', '<unknown task>'),
             kw.get('task_id', ''),
             exc_info=kw.get('exception'),
-        )
-        bugsnag.notify(
-            kw['exception'],
-            traceback=kw['traceback'],
-            context=kw['sender'].name,
-            extra_data={'task_id': kw['task_id'], 'args': kw['args'], 'kw': kw['kwargs']},
         )
 
     CELERY = celery.Celery(

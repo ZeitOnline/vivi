@@ -1,7 +1,6 @@
 import traceback
-import urllib.parse
 
-import bugsnag
+import opentelemetry.trace
 import zope.error.error
 import zope.exceptions.exceptionformatter
 import zope.i18n
@@ -51,22 +50,12 @@ class ErrorReportingUtility(zope.error.error.RootErrorReportingUtility):
         """
 
         super().raising(info, request)
-        self._notify_bugsnag(info, request)
+        opentelemetry.trace.get_current_span().record_exception(info[1])
         exception = info[1]
         if not isinstance(info[2], str):
             exception.traceback = getFormattedException(info)
         else:
             exception.traceback = zope.error.error.getPrintable(info[2])
-
-    def _notify_bugsnag(self, info, request):
-        url = str(getattr(request, 'URL', ''))
-        path = urllib.parse.urlparse(url).path if url else None
-        username = (self._getUsername(request) or '').split(', ')
-        if username:
-            user = {'id': username[1], 'name': username[2]}
-            if username[3]:
-                user['email'] = username[3]
-        bugsnag.notify(info[1], traceback=info[2], context=path, severity='error', user=user)
 
 
 # copy&paste from zope.error.error to customize the formatter
@@ -92,9 +81,7 @@ class ExceptionFormatter(zope.exceptions.exceptionformatter.TextExceptionFormatt
         while tb is not None and (limit is None or n < limit):
             if tb.tb_frame.f_locals.get('__exception_formatter__'):
                 # Stop recursion.
-                result.append(
-                    '(Recursive formatException() stopped,' ' trying traceback.format_tb)\n'
-                )
+                result.append('(Recursive formatException() stopped, trying traceback.format_tb)\n')
                 result.extend(traceback.format_tb(tb))
                 break
             # patched

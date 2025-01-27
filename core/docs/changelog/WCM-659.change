@@ -1,0 +1,1 @@
+WCM-659: Remove bugsnag integration, replaced by opentelemetry
