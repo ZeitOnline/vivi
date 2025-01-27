@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.14.0 (2025-01-27)
+-------------------
+
+- WCM-659: Remove bugsnag integration, replaced by opentelemetry
+
+
 7.13.0 (2025-01-27)
 -------------------
 
