@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.16.0 (2025-01-28)
+-------------------
+
+- WCM-8: Content from reach is no longer resolved via elasticsearch, don't declare it as such
+
+
 7.15.0 (2025-01-27)
 -------------------
 
