@@ -15,9 +15,7 @@ class IReach(zope.interface.Interface):
         """
 
 
-# XXX We probably should abstract ITMSContent into something like
-# zeit.cms.something.ISearchResultProxyPerformanceHelper
-class IReachContent(zeit.retresco.interfaces.ITMSContent):
+class IReachContent(zeit.cms.interfaces.ICMSContent):
     pass
 
 

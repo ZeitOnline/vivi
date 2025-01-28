@@ -1,0 +1,1 @@
+WCM-8: Content from reach is no longer resolved via elasticsearch, don't declare it as such
