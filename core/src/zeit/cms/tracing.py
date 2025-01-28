@@ -152,6 +152,7 @@ def testing_tracer():
 
 
 def _setup_instrumentors(provider):
+    from opentelemetry.instrumentation._semconv import _client_duration_attrs_new
     from opentelemetry.instrumentation.requests import RequestsInstrumentor
 
     from zeit.cms.relstorage import RelStorageInstrumentor
@@ -160,6 +161,16 @@ def _setup_instrumentors(provider):
     # This belongs to OpenTelemetryMiddleware, but has to be set here, because
     # the first instrumentor we call will evaluate it.
     os.environ['OTEL_SEMCONV_STABILITY_OPT_IN'] = 'http'
+
+    # Remove things like server.port and error.type that we don't care about.
+    # Also, this prevents errors because some combinations (e.g. URLs
+    # with/without port) can run afoul of the more static label allocation
+    # mechanics in the prometheus world, which then raises (sigh).
+    _client_duration_attrs_new[:] = [
+        'http.request.method',
+        'http.response.status_code',
+        'server.address',
+    ]
 
     RequestsInstrumentor().instrument(tracer_provider=provider)
     RelStorageInstrumentor().instrument(tracer_provider=provider)
