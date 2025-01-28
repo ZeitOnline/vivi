@@ -1,1 +1,0 @@
-WCM-605: Remove metric labels we don't care about, this also prevents combinatoric issues with prometheus more static label allocations

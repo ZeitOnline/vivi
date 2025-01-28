@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.18.0 (2025-01-28)
+-------------------
+
+- WCM-605: Remove metric labels we don't care about, this also prevents combinatoric issues with prometheus more static label allocations
+
+
 7.17.0 (2025-01-28)
 -------------------
 
