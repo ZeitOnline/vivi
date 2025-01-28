@@ -28,6 +28,8 @@ vivi.core changes
 
 - WCM-633: handle property cache loss
 
+- WCM-656: Revert "Support smaller viewports for article editing" (7.8.0)
+
 
 7.11.0 (2025-01-23)
 -------------------
