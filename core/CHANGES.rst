@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.17.0 (2025-01-28)
+-------------------
+
+- WCM-35: Disable elasticsearch version check
+
+
 7.16.0 (2025-01-28)
 -------------------
 
