@@ -26,7 +26,10 @@ class Connection(elasticsearch.connection.RequestsHttpConnection):
 def TransportWithConnection(connection_class):
     def factory(*args, **kw):
         kw['connection_class'] = connection_class
-        return elasticsearch.transport.Transport(*args, **kw)
+        transport = elasticsearch.transport.Transport(*args, **kw)
+        # Bypass version check, we're only talking to known servers anyway.
+        transport._verified_elasticsearch = True
+        return transport
 
     return factory
 
