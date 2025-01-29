@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.19.0 (2025-01-29)
+-------------------
+
+- WCM-633: catch more generous the object log sweep exception
+
+
 7.18.0 (2025-01-28)
 -------------------
 
