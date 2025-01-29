@@ -75,10 +75,10 @@ class ObjectLog(persistent.Persistent):
             try:
                 for time_key in list(log.keys(max=reference_time)):
                     del log[time_key]
+                if not log:
+                    remove.append(key)
             except ZODB.POSException.POSKeyError:
                 logger.warning('ZODB.POSException.POSKeyError, removing lost key %s', key)
-                remove.append(key)
-            if not log:
                 remove.append(key)
         for key in remove:
             del self._object_log[key]
