@@ -180,7 +180,7 @@ class HeaderTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.waitForElementPresent(icon)
         s.dragAndDropToObject(icon, clipboard)
         s.waitForElementPresent(
-            clipboard + '//span[contains(@class, "uniqueId") and ' 'contains(text(), "Somalia")]'
+            clipboard + '//span[contains(@class, "uniqueId") and contains(text(), "Somalia")]'
         )
 
 

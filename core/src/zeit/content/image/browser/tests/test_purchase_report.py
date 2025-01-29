@@ -22,9 +22,7 @@ class ESResultToCSV(zeit.content.image.testing.FunctionalTestCase):
         dfr = pendulum.datetime(2023, 8, 1)
         IPublishInfo(group).date_first_released = dfr
         with mock.patch(
-            'zeit.content.image.browser.imagegroup.'
-            'CopyrightCompanyPurchaseReport.'
-            'find_imagegroups'
+            'zeit.content.image.browser.imagegroup.CopyrightCompanyPurchaseReport.find_imagegroups'
         ) as findimgr:
             self.find_imagegroups = findimgr
             findimgr.return_value = [group]
@@ -46,7 +44,7 @@ class PurchaseToCSVDocument(zeit.content.image.testing.BrowserTestCase):
     def test_csv_copyright_purchase_view_is_csv_file_download(self):
         b = self.browser
         with mock.patch(
-            'zeit.content.image.browser.imagegroup' '.CopyrightCompanyPurchaseReport.create_csv'
+            'zeit.content.image.browser.imagegroup.CopyrightCompanyPurchaseReport.create_csv'
         ) as create_content:  # noqa
             create_content.return_value = 'some csv'
             b.open('http://localhost/++skin++vivi/CopyrightCompanyPurchaseReport')  # noqa

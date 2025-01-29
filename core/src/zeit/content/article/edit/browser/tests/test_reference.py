@@ -198,7 +198,7 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
     def test_changing_main_image_updates_body(self):
         self.add_group_to_clipboard()
         s = self.selenium
-        landing_zone = 'css=#form-article-content-main-image' ' .fieldname-main_image .landing-zone'
+        landing_zone = 'css=#form-article-content-main-image .fieldname-main_image .landing-zone'
         s.waitForElementPresent(landing_zone)
         s.dragAndDropToObject('//li[@uniqueid="Clip/my_group"]', landing_zone)
         s.waitForElementPresent('css=#form-article-content-main-image .image_details')

@@ -11,7 +11,7 @@ class HTMLConvertTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         self.add_article()
 
     def convert(self):
-        self.execute('window.zeit.content.article.html.to_xml(' "window.jQuery('.editable')[0])")
+        self.execute("window.zeit.content.article.html.to_xml(window.jQuery('.editable')[0])")
 
     def test_h3_is_translated_to_intertitle(self):
         s = self.selenium

@@ -13,14 +13,13 @@ class TestHeaderImage(zeit.content.cp.testing.BrowserTestCase):
         b.open('contents')
         self.content_url = b.url
         self.xml_url = (
-            'http://localhost/++skin++vivi/workingcopy/zope.user/'
-            'centerpage/@@xml_source_edit.html'
+            'http://localhost/++skin++vivi/workingcopy/zope.user/centerpage/@@xml_source_edit.html'
         )
 
     def test_can_create_headerimage_module_via_drag_n_drop_from_sidebar(self):
         b = self.browser
         self.assertEqual(1, b.contents.count('type-headerimage'))
-        b.open('body/informatives/@@landing-zone-drop-module?' 'block_type=headerimage')
+        b.open('body/informatives/@@landing-zone-drop-module?block_type=headerimage')
         b.open(self.content_url)
         self.assertEqual(2, b.contents.count('type-headerimage'))
 

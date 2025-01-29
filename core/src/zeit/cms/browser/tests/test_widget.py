@@ -460,7 +460,7 @@ class ObjectWidgetDetailViews(zeit.cms.testing.SeleniumTestCase):
         super().tearDown()
 
     def test_object_sequence_widgets_use_their_configured_views(self):
-        self.open('/@@/zeit.cms.browser.tests.fixtures/' 'objectsequencewidget-detail-views.html')
+        self.open('/@@/zeit.cms.browser.tests.fixtures/objectsequencewidget-detail-views.html')
         s = self.selenium
         s.assertElementNotPresent('css=div.supertitle')
         self.execute("zeit.cms.test_widget.add('http://xml.zeit.de/testcontent');")
@@ -470,7 +470,7 @@ class ObjectWidgetDetailViews(zeit.cms.testing.SeleniumTestCase):
         s.waitForElementPresent('css=div.mydetails')
 
     def test_drop_object_widgets_use_their_configured_views(self):
-        self.open('/@@/zeit.cms.browser.tests.fixtures/' 'dropobjectwidget-detail-views.html')
+        self.open('/@@/zeit.cms.browser.tests.fixtures/dropobjectwidget-detail-views.html')
         s = self.selenium
         s.assertElementNotPresent('css=div.supertitle')
         self.execute("zeit.cms.test_widget.set('http://xml.zeit.de/testcontent');")
@@ -484,7 +484,7 @@ class ObjectWidgetDetailViews(zeit.cms.testing.SeleniumTestCase):
         from zeit.cms.browser.tests.test_widget import ObjectWidgetMyDetails
 
         ObjectWidgetMyDetails.raise_error = True
-        self.open('/@@/zeit.cms.browser.tests.fixtures/' 'dropobjectwidget-detail-views.html')
+        self.open('/@@/zeit.cms.browser.tests.fixtures/dropobjectwidget-detail-views.html')
         s = self.selenium
         self.execute("zeit.cms.test_widget2.set('http://xml.zeit.de/testcontent');")
         s.waitForElementPresent('css=.object-reference.error')
@@ -496,7 +496,7 @@ class TestObjectSequenceWidgetAutocompleteJavascript(zeit.cms.testing.SeleniumTe
 
     def setUp(self):
         super().setUp()
-        self.open('/@@/zeit.cms.browser.tests.fixtures/' 'objectsequencewidget-autocomplete.html')
+        self.open('/@@/zeit.cms.browser.tests.fixtures/objectsequencewidget-autocomplete.html')
 
     def test_input_should_activate_autocomplete(self):
         s = self.selenium

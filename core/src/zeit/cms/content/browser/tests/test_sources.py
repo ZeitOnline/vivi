@@ -30,9 +30,7 @@ class SourceSecurityTest(zeit.cms.testing.ZeitCmsBrowserTestCase):
 
 class SourceAPI(zeit.cms.testing.ZeitCmsBrowserTestCase):
     def test_serializes_source_to_json(self):
-        self.browser.open(
-            'http://localhost/@@source' '?name=zeit.cms.content.interfaces.AccessSource'
-        )
+        self.browser.open('http://localhost/@@source?name=zeit.cms.content.interfaces.AccessSource')
         self.assert_json(
             [
                 {'id': 'free', 'title': 'access-free'},
@@ -44,7 +42,7 @@ class SourceAPI(zeit.cms.testing.ZeitCmsBrowserTestCase):
 
     def test_uses_id_for_object_source(self):
         b = self.browser
-        b.open('http://localhost/@@source' '?name=zeit.cms.content.sources.ProductSource')
+        b.open('http://localhost/@@source?name=zeit.cms.content.sources.ProductSource')
         data = json.loads(b.contents)
         self.assertIn({'id': 'ZEDE', 'title': 'Zeit Online'}, data)
 
@@ -56,7 +54,7 @@ class SourceAPI(zeit.cms.testing.ZeitCmsBrowserTestCase):
 
     def test_serializes_subressorts(self):
         b = self.browser
-        b.open('http://localhost/@@source' '?name=zeit.cms.content.sources.RessortSource')
+        b.open('http://localhost/@@source?name=zeit.cms.content.sources.RessortSource')
         data = json.loads(b.contents)
         row = data[0]
         self.assertEqual('deutschland', row['id'])

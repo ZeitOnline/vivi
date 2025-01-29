@@ -549,7 +549,7 @@ class Connector:
                 return lock.token
             case LockStatus.OWN:
                 raise LockingError(
-                    uniqueid, f'{uniqueid} is already locked' f' by {content.lock.principal}'
+                    uniqueid, f'{uniqueid} is already locked by {content.lock.principal}'
                 )
             case LockStatus.FOREIGN:
                 raise LockedByOtherSystemError(

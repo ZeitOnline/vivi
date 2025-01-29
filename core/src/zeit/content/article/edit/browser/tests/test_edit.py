@@ -164,7 +164,7 @@ class TestTextEditing(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.click('link=Struktur')
         s.waitForElementPresent('jquery=#article-modules .module:contains(Video)')
         s.assertElementNotPresent(
-            '//*[@id="article-modules"]//*' '[contains(@class, "module") and contains(., "<p>")]'
+            '//*[@id="article-modules"]//*[contains(@class, "module") and contains(., "<p>")]'
         )
 
     def test_clicking_empty_paragraph_at_end_should_create_paragraph(self):
@@ -802,7 +802,7 @@ class AutoSaveIntegration(zeit.content.article.edit.browser.testing.EditorTestCa
     def test_text_is_saved_correctly_by_autosave_and_normal_save_after(self):
         self.create('<p>foo</p><p>bar</p>')
         self.wait_for_condition(
-            "window.jQuery('.block.type-p .editable')[0]" '.editable.edited_paragraphs.length == 2'
+            "window.jQuery('.block.type-p .editable')[0].editable.edited_paragraphs.length == 2"
         )
         self.assert_paragraphs('foo', 'bar')
         self.save()

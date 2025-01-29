@@ -77,7 +77,7 @@ class ILayoutable(zope.interface.Interface):
     """A block with layout information."""
 
     layout = zope.interface.Attribute(
-        'Layout should be a string, limitations etc. defined on  more specific' ' interfaces'
+        'Layout should be a string, limitations etc. defined on  more specific interfaces'
     )
 
 
@@ -152,7 +152,7 @@ class VideoTagesschauSelection(zc.sourcefactory.contextual.BasicContextualSource
 
     def getTitle(self, context, value):
         date_published = pendulum.parse(value.date_published).to_datetime_string()
-        label = '<strong>%s</strong> - %s (%s)<br />' '<a href="%s" target="_blank">%s</a>' % (
+        label = '<strong>%s</strong> - %s (%s)<br /><a href="%s" target="_blank">%s</a>' % (
             value.title,
             date_published,
             value.type,

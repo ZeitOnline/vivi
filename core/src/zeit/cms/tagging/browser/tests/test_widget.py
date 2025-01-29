@@ -32,7 +32,7 @@ class DisplayWidget(
         self.add_topicpage_link(tags['t1'])
         self.browser.open('http://localhost/++skin++vivi/repository/testcontent')
         self.assertEllipsis(
-            '...<li>...<a...href="http://localhost/live-prefix/thema/t1"' '...t1...',
+            '...<li>...<a...href="http://localhost/live-prefix/thema/t1"...t1...',
             self.browser.contents,
         )
 

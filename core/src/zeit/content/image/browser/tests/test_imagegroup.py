@@ -106,7 +106,7 @@ class ImageGroupBrowserTest(zeit.content.image.testing.BrowserTestCase, ImageGro
     def test_traversing_thumbnail_yields_images(self):
         create_image_group_with_master_image()
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository' '/group/thumbnails/square/@@raw')
+        b.open('http://localhost/++skin++vivi/repository/group/thumbnails/square/@@raw')
         self.assertEqual('image/jpeg', b.headers['Content-Type'])
 
     def test_primary_master_image_is_marked_for_desktop_viewport(self):

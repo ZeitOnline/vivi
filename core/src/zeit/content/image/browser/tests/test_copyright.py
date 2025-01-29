@@ -14,7 +14,7 @@ class TestCopyrights(zeit.content.image.testing.BrowserTestCase, ImageGroupHelpe
 
     def bulk_change(self):
         b = self.browser
-        b.open('http://localhost/++skin++cms/repository/imagegroup/' '@@set-image-copyright')
+        b.open('http://localhost/++skin++cms/repository/imagegroup/@@set-image-copyright')
         b.getControl(name='form.copyright.combination_00').value = 'gocept'
         b.getControl(name='form.copyright.combination_01').displayValue = ['dpa']
         b.getControl(name='form.copyright.combination_03').value = 'http://www.gocept.com/'
@@ -34,7 +34,7 @@ class TestCopyrights(zeit.content.image.testing.BrowserTestCase, ImageGroupHelpe
     def test_image_group_bulk_copyright_change_shows_message(self):
         self.bulk_change()
         b = self.browser
-        b.open('http://localhost/++skin++cms/repository/' 'imagegroup/@@view.html')
+        b.open('http://localhost/++skin++cms/repository/imagegroup/@@view.html')
         self.assertIn('Copyright changed for: new-hampshire-artikel.jpg', b.contents)
 
     def test_image_group_bulk_copyright_are_set(self):

@@ -24,11 +24,11 @@ class ImageDetailsErrorHandling(zeit.content.image.testing.BrowserTestCase):
         self.repository['group'] = zeit.content.image.imagegroup.ImageGroup()
         b = self.browser
         b.handleErrors = False
-        b.open('http://localhost/++skin++vivi/repository' '/group/@@object-details-body')
+        b.open('http://localhost/++skin++vivi/repository/group/@@object-details-body')
         self.assertEllipsis('...edit-button...', b.contents)
 
     def test_metadata_view(self):
         self.repository['group'] = zeit.content.image.imagegroup.ImageGroup()
         b = self.browser
         b.handleErrors = False
-        b.open('http://localhost/++skin++vivi/repository' '/group/@@metadata.html')
+        b.open('http://localhost/++skin++vivi/repository/group/@@metadata.html')

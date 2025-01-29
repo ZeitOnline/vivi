@@ -308,7 +308,7 @@ class ResizeTests(zeit.crop.testing.SeleniumTestCase):
 
         s = self.selenium
         get_crop_args = (
-            'window.MochiKit.Base.serializeJSON(' '  window.document.imp.get_crop_arguments())'
+            'window.MochiKit.Base.serializeJSON(  window.document.imp.get_crop_arguments())'
         )
         crop_args = self.eval(get_crop_args)
 
@@ -393,8 +393,7 @@ class FilterTests(zeit.crop.testing.SeleniumTestCase):
         # Clicking > 0 increases the value:
         s.clickAt(selector, '100,5')
         s.verifyEval(
-            'new Number(window.document.getElementById('
-            "   'filter.%s.input').value) > -100" % name,
+            "new Number(window.document.getElementById(   'filter.%s.input').value) > -100" % name,
             'true',
         )
         s.verifyEval("window.document.imp.crop_arguments['filter.%s'] != 0" % name, 'true')

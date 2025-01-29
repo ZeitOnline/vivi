@@ -87,7 +87,7 @@ class FormLoader(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.click('css=ul.ui-autocomplete li')
         self.assertEqual(s.getCssCount('css=li.recipe-category__item'), 2)
         s.assertText(
-            '//li[@class="recipe-category__item"][2]' '/a[@class="recipe-category__label"]',
+            '//li[@class="recipe-category__item"][2]/a[@class="recipe-category__label"]',
             'Hülsenfrüchte',
         )
 
@@ -108,7 +108,7 @@ class FormLoader(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.dragAndDrop('css=li.recipe-category__item', '0,40')
         s.waitForVisible('css=li.recipe-category__item')
         s.assertText(
-            '//li[@class="recipe-category__item"][1]' '/a[@class="recipe-category__label"]',
+            '//li[@class="recipe-category__item"][1]/a[@class="recipe-category__label"]',
             'Hülsenfrüchte',
         )
 

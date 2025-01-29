@@ -57,7 +57,7 @@ class IngredientsWhitelist(grok.GlobalUtility, zeit.cms.content.sources.CachedXM
         # Get ingredients that start with the term, e.g. ei -> ei, eigelb and
         # sort alphabethically
         exact_matches = xml.xpath(
-            ('//ingredient[starts-with(' 'zeit:lower(@singular), "{0}")]').format(term.lower()),
+            ('//ingredient[starts-with(zeit:lower(@singular), "{0}")]').format(term.lower()),
             namespaces={'zeit': 'zeit.ingredients'},
         )
         exact_matches = sorted(exact_matches, key=lambda x: x.get('singular').lower())

@@ -114,7 +114,7 @@ class HonorarLookupTest(zeit.content.author.testing.BrowserTestCase):
 
     def test_checks_for_existing_honorar_id(self):
         b = self.browser
-        b.open('http://localhost/++skin++vivi' '/@@zeit.content.author.add_contextfree')
+        b.open('http://localhost/++skin++vivi/@@zeit.content.author.add_contextfree')
         b.getControl('Firstname').value = 'William'
         b.getControl('Lastname').value = 'Shakespeare'
         b.getControl('VG-Wort ID').value = '12345'

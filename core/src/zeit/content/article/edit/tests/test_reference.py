@@ -117,26 +117,26 @@ class TestPortraitbox(ReferenceTest):
 
     def test_default_name_should_be_read_from_referenced_box(self):
         ref = self.get_ref()
-        with mock.patch('zeit.content.article.edit.reference.Portraitbox' '.references') as pbox:
+        with mock.patch('zeit.content.article.edit.reference.Portraitbox.references') as pbox:
             pbox.name = 'ref-name'
             self.assertEqual(ref.name, 'ref-name')
 
     def test_local_name_should_override_value_from_referenced_box(self):
         ref = self.get_ref()
-        with mock.patch('zeit.content.article.edit.reference.Portraitbox' '.references') as pbox:
+        with mock.patch('zeit.content.article.edit.reference.Portraitbox.references') as pbox:
             pbox.name = 'ref-name'
             ref.name = 'local-name'
             self.assertEqual(ref.name, 'local-name')
 
     def test_default_text_should_be_read_from_referenced_box(self):
         ref = self.get_ref()
-        with mock.patch('zeit.content.article.edit.reference.Portraitbox' '.references') as pbox:
+        with mock.patch('zeit.content.article.edit.reference.Portraitbox.references') as pbox:
             pbox.text = 'ref-text'
             self.assertEqual(ref.text, 'ref-text')
 
     def test_local_text_should_override_value_from_referenced_box(self):
         ref = self.get_ref()
-        with mock.patch('zeit.content.article.edit.reference.Portraitbox' '.references') as pbox:
+        with mock.patch('zeit.content.article.edit.reference.Portraitbox.references') as pbox:
             pbox.text = 'ref-text'
             ref.text = 'local-text'
             self.assertEqual(ref.text, 'local-text')

@@ -60,7 +60,7 @@ class IImageMetadata(zope.interface.Interface):
             ),
             zope.schema.TextLine(
                 title=_('Copyright freetext'),
-                description=_('Copyright holder that is not part ' 'of image company list'),
+                description=_('Copyright holder that is not part of image company list'),
                 required=False,
             ),
             zope.schema.URI(
@@ -336,8 +336,7 @@ class IVariant(zope.interface.Interface):
         'If applicable, the legacy name this Variant was mapped from'
     )
     legacy_size = zope.interface.Attribute(
-        'If applicable, a [width, height] setting to use if no size'
-        ' was passed in through the URL'
+        'If applicable, a [width, height] setting to use if no size was passed in through the URL'
     )
 
 

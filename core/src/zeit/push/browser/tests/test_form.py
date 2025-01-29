@@ -9,7 +9,7 @@ import zeit.push.workflow
 class SocialFormTest(zeit.push.testing.BrowserTestCase):
     def setUp(self):
         super().setUp()
-        self.browser.open('http://localhost/++skin++vivi/repository/' 'testcontent/@@checkout')
+        self.browser.open('http://localhost/++skin++vivi/repository/testcontent/@@checkout')
 
     def get_article(self):
         return zeit.cms.interfaces.ICMSWCContent('http://xml.zeit.de/testcontent')
@@ -17,7 +17,7 @@ class SocialFormTest(zeit.push.testing.BrowserTestCase):
     def open_form(self):
         # XXX A simple browser.reload() does not work, why?
         self.browser.open(
-            'http://localhost/++skin++vivi/workingcopy/zope.user/' 'testcontent/@@edit-social.html'
+            'http://localhost/++skin++vivi/workingcopy/zope.user/testcontent/@@edit-social.html'
         )
         self.browser.getControl('Payload Template').displayValue = ['Foo']
 
@@ -169,7 +169,7 @@ class SocialAddFormTest(SocialFormTest):
 
     def test_applies_push_configuration_to_added_object(self):
         b = self.browser
-        b.open('http://localhost/++skin++vivi' '/repository/@@zeit.cms.testcontenttype.AddSocial')
+        b.open('http://localhost/++skin++vivi/repository/@@zeit.cms.testcontenttype.AddSocial')
         b.getControl('File name').value = 'social'
         b.getControl('Title').value = 'Social content'
         b.getControl('Ressort', index=0).displayValue = ['Deutschland']

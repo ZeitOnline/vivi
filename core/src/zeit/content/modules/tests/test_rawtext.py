@@ -56,7 +56,7 @@ class EmbedParameters(zeit.content.modules.testing.FunctionalTestCase):
         module.text_reference = self.repository['embed']
         module.params['ref'] = self.repository['testcontent']
         self.assertEllipsis(
-            '<container>...<param id="ref">http://xml.zeit.de/testcontent' '</param></container>',
+            '<container>...<param id="ref">http://xml.zeit.de/testcontent</param></container>',
             lxml.etree.tostring(module.xml, encoding=str),
         )
         self.assertEqual(self.repository['testcontent'], module.params['ref'])
@@ -135,7 +135,7 @@ class ConsentInfo(zeit.content.modules.testing.FunctionalTestCase):
         self.assertEqual(('twitter', 'facebook'), info.thirdparty_vendors)
         self.assertEqual(('cmp-twitter', 'cmp-facebook'), info.thirdparty_vendors_cmp_ids)
         self.assertEqual(
-            '<container has_thirdparty="yes"' ' thirdparty_vendors="twitter;facebook"/>',
+            '<container has_thirdparty="yes" thirdparty_vendors="twitter;facebook"/>',
             lxml.etree.tostring(self.module.xml, encoding=str),
         )
 

@@ -18,7 +18,7 @@ import zeit.edit.rule
 class Checkin(zeit.content.article.testing.BrowserTestCase):
     def test_validation_errors_should_be_displayed_at_checkin_button(self):
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/' '@@zeit.content.article.Add')
+        b.open('http://localhost/++skin++vivi/repository/@@zeit.content.article.Add')
         b.open('@@edit.form.checkin-errors')
         self.assert_ellipsis(
             """
@@ -259,16 +259,14 @@ class Publish(zeit.content.article.testing.BrowserTestCase):
         rules = [rm.create_rule(['error_if(True, "Custom Error")'], 0)]
         with mock.patch.object(zeit.edit.rule.RulesManager, 'rules', rules):
             b = self.browser
-            b.open(
-                'http://localhost/++skin++vivi/repository/' 'article_with_division/@@publish.html'
-            )
+            b.open('http://localhost/++skin++vivi/repository/article_with_division/@@publish.html')
         self.assertEllipsis('...Custom Error...', b.contents)
 
 
 class Delete(zeit.content.article.testing.BrowserTestCase):
     def test_checked_out_article_has_cancel_but_no_delete(self):
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/' 'online/2007/01/Somalia/@@checkout')
+        b.open('http://localhost/++skin++vivi/repository/online/2007/01/Somalia/@@checkout')
         b.open('@@edit.form.checkin-buttons?show_form=1')
         self.assertNothingRaised(b.getLink, 'Cancel')
         self.assertNotIn('Delete', b.contents)

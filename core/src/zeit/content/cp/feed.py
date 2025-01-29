@@ -70,7 +70,7 @@ class ContentList:
     def updateOrder(self, order):
         entries = self.entry_map
         if set(order) != set(entries.keys()):
-            raise ValueError('The order argument must contain the same ' 'keys as the feed.')
+            raise ValueError('The order argument must contain the same keys as the feed.')
         ordered = []
         for id in order:
             ordered.append(entries[id])

@@ -58,9 +58,7 @@ class VideoTagesschauAPI:
         # lookup for existing videos for given parameter
         video_recommendations = self._request_recommendations(article, payload, article_hash)
         if video_recommendations['recommendations']:
-            log.info(
-                f'Found tagesschauvideo for "{article.title}" ' f'{payload["article_custom_id"]}'
-            )
+            log.info(f'Found tagesschauvideo for "{article.title}" {payload["article_custom_id"]}')
             return video_recommendations
         try:
             rpost = self._request(
@@ -71,11 +69,7 @@ class VideoTagesschauAPI:
             )
         # TODO: more detailed exception report?
         except Exception as e:
-            log.error(
-                f'POST "{article.title}" '
-                f'[{payload["article_custom_id"]}] '
-                f'to Tagesschau: {e}'
-            )
+            log.error(f'POST "{article.title}" [{payload["article_custom_id"]}] to Tagesschau: {e}')
         if rpost.status_code == 200:
             return rpost.json()
         # Wait a moment, maybe the AI has computed recommendations in a few seconds
@@ -97,8 +91,7 @@ class VideoTagesschauAPI:
             return {'recommendations': []}
         except Exception as e:
             log.error(
-                f'GET Tagesschau video for "{article.title}" '
-                f'{payload["article_custom_id"]}: {e}',
+                f'GET Tagesschau video for "{article.title}" {payload["article_custom_id"]}: {e}',
                 exc_info=True,
             )
             pass
@@ -132,7 +125,7 @@ class VideoTagesschauAPI:
             'article_custom_id': IUUID(article).id,
             'article_title': article.title,
             'article_text': body,
-            'article_uri': f'{live}' f'{article_uri}',
+            'article_uri': f'{live}{article_uri}',
         }
         return payload
 

@@ -167,20 +167,20 @@ class TocBrowserTest(zeit.content.volume.testing.BrowserTestCase):
     def test_toc_view_is_csv_file_download(self):
         b = self.browser
         with mock.patch(
-            'zeit.content.volume.browser' '.toc.Toc._create_toc_content'
+            'zeit.content.volume.browser.toc.Toc._create_toc_content'
         ) as create_content:
             create_content.return_value = 'some csv'
-            b.open('http://localhost/++skin++vivi/repository/' '2015/01/ausgabe/@@toc.csv')
+            b.open('http://localhost/++skin++vivi/repository/2015/01/ausgabe/@@toc.csv')
             self.assertIn(b.headers['content-type'], ('text/csv', 'text/csv;charset=utf-8'))
             self.assertEqual(
-                'attachment; ' 'filename="table_of_content_2015_01.csv"',
+                'attachment; filename="table_of_content_2015_01.csv"',
                 b.headers['content-disposition'],
             )
             self.assertEllipsis('some csv', b.contents)
 
     def test_toc_generates_csv(self):
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/' '2015/01/ausgabe/@@toc.csv')
+        b.open('http://localhost/++skin++vivi/repository/2015/01/ausgabe/@@toc.csv')
         self.assertIn(self.article_title, b.contents)
         self.assertIn(str(self.article_page), b.contents)
         for ressort_name in self.ressort_names:

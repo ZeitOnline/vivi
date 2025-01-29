@@ -17,7 +17,7 @@ class Base:
         if isinstance(obj, str):
             if name is not None:
                 raise TypeError(
-                    'url() takes either obj argument, obj, string arguments, ' 'or string argument'
+                    'url() takes either obj argument, obj, string arguments, or string argument'
                 )
             name = obj
             obj = None

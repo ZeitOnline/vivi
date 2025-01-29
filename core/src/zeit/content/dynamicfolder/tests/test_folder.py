@@ -153,7 +153,7 @@ class TestDynamicFolder(zeit.content.dynamicfolder.testing.FunctionalTestCase):
 
     def test_parent_can_be_accessed_in_template(self):
         with mock.patch(
-            'zeit.content.dynamicfolder.folder.' 'RepositoryDynamicFolder.content_template',
+            'zeit.content.dynamicfolder.folder.RepositoryDynamicFolder.content_template',
             new_callable=mock.PropertyMock,
         ) as template:
             template.return_value = jinja2.Template(

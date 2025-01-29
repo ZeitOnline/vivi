@@ -115,7 +115,7 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
                     'tagging': {},
                     'teaser': {'text': teaser, 'title': 'Rückkehr der Warlords'},
                     'vivi': {
-                        'cms_icon': '/@@/zeit-content-article-interfaces-IArticle' '-zmi_icon.png',
+                        'cms_icon': '/@@/zeit-content-article-interfaces-IArticle-zmi_icon.png',
                         'publish_status': 'not-published',
                     },
                     'workflow': {
@@ -271,8 +271,8 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
                     },
                     'tagging': {},
                     'vivi': {
-                        'cms_icon': ('/@@/zeit-content-image-interfaces' '-IImage-zmi_icon.png'),
-                        'cms_preview_url': ('/repository/2006/' 'DSC00109_2.JPG/thumbnail'),
+                        'cms_icon': ('/@@/zeit-content-image-interfaces-IImage-zmi_icon.png'),
+                        'cms_preview_url': ('/repository/2006/DSC00109_2.JPG/thumbnail'),
                         'publish_status': 'not-published',
                     },
                 },
@@ -349,9 +349,7 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
                     },
                     'tagging': {},
                     'vivi': {
-                        'cms_icon': (
-                            '/@@/zeit-content-image-interfaces' '-IImageGroup-zmi_icon.png'
-                        ),
+                        'cms_icon': ('/@@/zeit-content-image-interfaces-IImageGroup-zmi_icon.png'),
                         'cms_preview_url': '/repository/image-group/thumbnail',
                         'publish_status': 'not-published',
                     },

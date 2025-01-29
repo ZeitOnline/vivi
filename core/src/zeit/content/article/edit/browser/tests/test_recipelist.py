@@ -43,7 +43,7 @@ class FormLoader(
         self.add_article()
         self.create_block('recipelist')
         s.assertElementPresent(
-            'css=.block.type-recipelist .inline-form ' '.field.fieldname-ingredients'
+            'css=.block.type-recipelist .inline-form .field.fieldname-ingredients'
         )
 
     def test_ingredients_should_be_organized_through_recipelist(self):

@@ -155,7 +155,7 @@ class ObjectReferenceDisplayWidget(zope.app.form.browser.widget.DisplayWidget):
             'a', href=url, id=link_id, contents=value.uniqueId
         )
         script = (
-            '<script language="javascript">\n' '    new zeit.cms.LinkToolTip("%s")\n' '</script>'
+            '<script language="javascript">\n    new zeit.cms.LinkToolTip("%s")\n</script>'
         ) % link_id
         workflow = zope.component.getMultiAdapter(
             (value, self.request, self),

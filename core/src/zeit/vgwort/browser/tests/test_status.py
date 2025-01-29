@@ -16,7 +16,7 @@ class RetryReport(zeit.vgwort.testing.BrowserTestCase):
         zeit.cms.workflow.interfaces.IPublishInfo(content).date_first_released = info.reported_on
 
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository' '/testcontent/@@vgwort.html')
+        b.open('http://localhost/++skin++vivi/repository/testcontent/@@vgwort.html')
         self.assertEllipsis('...Meldung erfolgreich...', b.contents)
         b.getControl('Erneut melden').click()
         self.assertEllipsis('...Nicht gemeldet...', b.contents)

@@ -21,7 +21,7 @@ import zeit.workflow.testing
 
 FIND_IMAGE = 'zeit.newsimport.news.Image.find_existing_content'
 NEWS_ARTICLE_UNIQUEID = (
-    'http://xml.zeit.de/news/2022-02/02/great-barrier-reef-' 'erneut-von-korallenbleiche-bedroht'
+    'http://xml.zeit.de/news/2022-02/02/great-barrier-reef-erneut-von-korallenbleiche-bedroht'
 )
 
 
