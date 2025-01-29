@@ -20,7 +20,7 @@ class FormLoader(zeit.content.article.edit.browser.testing.EditorTestCase):
         self.add_article()
         self.create_block('citation_comment')
         s.assertElementPresent(
-            'css=.block.type-citation_comment .inline-form ' '.field.fieldname-text'
+            'css=.block.type-citation_comment .inline-form .field.fieldname-text'
         )
         s.assertElementPresent(
             'css=.block.type-citation_comment .inline-form '

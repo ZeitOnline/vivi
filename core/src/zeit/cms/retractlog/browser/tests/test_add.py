@@ -130,17 +130,17 @@ class TestJobView(zeit.cms.testing.ZeitCmsBrowserTestCase):
 
     def open(self):
         b = self.browser
-        b.open('http://localhost:8080/++skin++vivi/' 'retractlog/foo/@@index.html')
+        b.open('http://localhost:8080/++skin++vivi/retractlog/foo/@@index.html')
         return b
 
     def test_job_view_shows_config(self):
         b = self.open()
-        self.assertTrue('/test/foo = 410\n' '/test/bar = 410' in b.contents)
+        self.assertTrue('/test/foo = 410\n/test/bar = 410' in b.contents)
 
     def test_job_view_shows_unknown(self):
         b = self.open()
         self.assertEllipsis(
-            '...<h4>Kein bekannter...<ul>...' '<li>http://xml.zeit.de/test/baz</li>...</ul>...',
+            '...<h4>Kein bekannter...<ul>...<li>http://xml.zeit.de/test/baz</li>...</ul>...',
             b.contents,
         )
 

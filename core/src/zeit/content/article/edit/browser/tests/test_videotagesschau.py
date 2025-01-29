@@ -191,7 +191,7 @@ class Form2(zeit.content.article.testing.FunctionalTestCase):
         self.assertEqual('myid', payload['article_custom_id'])
         self.assertEqual('Tagesschaurelevanter Artikel', payload['article_title'])
         self.assertEqual(
-            'Das ist Tagesschau relevant. Auch das ist ' 'Tagesschau relevant.',
+            'Das ist Tagesschau relevant. Auch das ist Tagesschau relevant.',
             payload['article_text'],
         )
         self.assertEqual('localhost/content/fuer/die/taggesschau', payload['article_uri'])
@@ -220,7 +220,7 @@ class Form2(zeit.content.article.testing.FunctionalTestCase):
             zeit.cms.config.package('zeit.content.article')
         )
         with mock.patch(
-            'zeit.content.article.edit.' 'videotagesschau.VideoTagesschauAPI._request'
+            'zeit.content.article.edit.videotagesschau.VideoTagesschauAPI._request'
         ) as rq:
             api_request = api.request_videos(article)
             path, args = rq.call_args_list[0]

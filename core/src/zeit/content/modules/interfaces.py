@@ -237,7 +237,7 @@ class IRecipeList(zeit.edit.interfaces.IBlock):
     special_ingredient = zope.schema.TextLine(
         title=_('Special ingredient'),
         description=_(
-            'A non-searchable free text ingredient without a cp ' '(e.g. an extra portion of love)'
+            'A non-searchable free text ingredient without a cp (e.g. an extra portion of love)'
         ),
         required=False,
     )

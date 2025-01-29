@@ -8,7 +8,7 @@ import zeit.workflow.testing
 class WorkflowFormTest(zeit.workflow.testing.BrowserTestCase):
     def test_publish_content(self):
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/testcontent' '/@@workflow.html')
+        b.open('http://localhost/++skin++vivi/repository/testcontent/@@workflow.html')
         b.getControl('Urgent').click()
         b.getControl('Save state and publish now').click()
         self.assertEllipsis('...Publication scheduled...', b.contents)
@@ -20,7 +20,7 @@ class WorkflowFormTest(zeit.workflow.testing.BrowserTestCase):
         lsc = zeit.cms.content.interfaces.ISemanticChange(self.repository['testcontent'])
         last_change = lsc.last_semantic_change
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/testcontent' '/@@workflow.html')
+        b.open('http://localhost/++skin++vivi/repository/testcontent/@@workflow.html')
         b.getControl('Update last semantic change').selected = True
         b.getControl('Save state only').click()
         self.assertEllipsis('...Updated on...', b.contents)
@@ -45,7 +45,7 @@ class ValidatingWorkflowFormTest(
         self.register_workflow_with_error()
 
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/testcontent' '/@@workflow.html')
+        b.open('http://localhost/++skin++vivi/repository/testcontent/@@workflow.html')
         b.getControl('Save state and publish now').click()
         self.assertEllipsis('...Validation Error Message...', b.contents)
 
@@ -53,7 +53,7 @@ class ValidatingWorkflowFormTest(
         self.register_workflow_with_warning()
 
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/testcontent' '/@@workflow.html')
+        b.open('http://localhost/++skin++vivi/repository/testcontent/@@workflow.html')
         b.getControl('Save state and publish now').click()
         self.assertEllipsis('...Validation Warning Message...', b.contents)
         zeit.workflow.testing.run_tasks()

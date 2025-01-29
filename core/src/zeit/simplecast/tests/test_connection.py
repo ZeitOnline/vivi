@@ -70,9 +70,7 @@ class TestSimplecast(zeit.simplecast.testing.FunctionalTestCase):
             self.simplecast.fetch_episode(episode_id)
         args, _ = self.trace_mock.call_args_list[0]
         self.assertEqual(200, args[1])
-        self.assertEqual(
-            'Invalid Json Expecting value: ' 'line 1 column 1 (char 0): no json', args[2]
-        )
+        self.assertEqual('Invalid Json Expecting value: line 1 column 1 (char 0): no json', args[2])
 
     @requests_mock.Mocker()
     def test_simplecast_too_many_requests_raises(self, m):
@@ -183,7 +181,7 @@ class TestSimplecast(zeit.simplecast.testing.FunctionalTestCase):
         assert workflow.published
 
         m.get(
-            f"https://testapi.simplecast.com/episodes/{self.episode_info['id']}",
+            f'https://testapi.simplecast.com/episodes/{self.episode_info["id"]}',
             json=simplecast_resp,
         )
 
@@ -201,13 +199,13 @@ class TestSimplecast(zeit.simplecast.testing.FunctionalTestCase):
         assert workflow.published
 
         m.get(
-            f"https://testapi.simplecast.com/episodes/{self.episode_info['id']}",
+            f'https://testapi.simplecast.com/episodes/{self.episode_info["id"]}',
             json=self.episode_info,
         )
         self.simplecast.synchronize_episode(self.episode_info['id'])
-        assert (
-            IPodcastEpisodeInfo(content).is_published is False
-        ), 'retract should set is_published to False'
+        assert IPodcastEpisodeInfo(content).is_published is False, (
+            'retract should set is_published to False'
+        )
 
         assert not workflow.published
 
@@ -227,7 +225,7 @@ class TestSimplecast(zeit.simplecast.testing.FunctionalTestCase):
 
         m_simple = requests_mock.Mocker()
         m_simple.get(
-            f"https://testapi.simplecast.com/episodes/{self.episode_info['id']}", status_code=404
+            f'https://testapi.simplecast.com/episodes/{self.episode_info["id"]}', status_code=404
         )
         with m_simple:
             self.simplecast.synchronize_episode(self.episode_info['id'])

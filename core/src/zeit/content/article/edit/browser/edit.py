@@ -111,7 +111,7 @@ class LandingZoneBase(zeit.edit.browser.landing.LandingZone):
         if self.block is None:
             raise ValueError(
                 _(
-                    'Could not create block for "${name}", because I ' "don't know which one.",
+                    'Could not create block for "${name}", because I don\'t know which one.',
                     mapping={'name': self.uniqueId},
                 )
             )

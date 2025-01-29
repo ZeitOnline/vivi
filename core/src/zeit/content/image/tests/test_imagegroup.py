@@ -318,7 +318,7 @@ class ImageGroupFromImage(zeit.content.image.testing.BrowserTestCase):
         imagegroup.ImageGroup.from_image(self.repository, 'group', local_image)
         b = self.browser
         b.handleErrors = False
-        b.open('http://localhost/++skin++vivi/repository' '/group/@@metadata.html')
+        b.open('http://localhost/++skin++vivi/repository/group/@@metadata.html')
 
 
 class ExternalIDTest(zeit.content.image.testing.FunctionalTestCase):

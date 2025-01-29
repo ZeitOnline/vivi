@@ -30,12 +30,12 @@ class AudioObjectDetails(BrowserTestCase):
             '...<li class="teaser_title" title="mytitle">mytitle</li>...', b.contents
         )
         assert 'Duration' not in b.contents, 'Duration should not be displayed without duration set'
-        assert (
-            'open-audio object-link' not in b.contents
-        ), 'Play should not be displayed without url'
-        assert (
-            'Podcast' not in b.contents
-        ), 'Podcast should not be displayed without audio_type set to podcast'
+        assert 'open-audio object-link' not in b.contents, (
+            'Play should not be displayed without url'
+        )
+        assert 'Podcast' not in b.contents, (
+            'Podcast should not be displayed without audio_type set to podcast'
+        )
 
     def test_cannot_delete_if_permissions_missing(self):
         AudioBuilder().build(self.repository)

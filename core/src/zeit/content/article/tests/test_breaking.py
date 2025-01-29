@@ -48,13 +48,11 @@ class BreakingBannerTest(zeit.content.article.testing.FunctionalTestCase):
     def test_url_equal_uniqueId_matches(self):
         with checked_out(self.repository['banner']) as co:
             co.xml = etree.fromstring(
-                '<xml><article_id>' 'http://xml.zeit.de/article' '</article_id></xml>'
+                '<xml><article_id>http://xml.zeit.de/article</article_id></xml>'
             )
         self.assertTrue(IBreakingNews(self.repository['article']).banner_matches())
 
     def test_url_not_equal_uniqueId_does_not_match(self):
         with checked_out(self.repository['banner']) as co:
-            co.xml = etree.fromstring(
-                '<xml><article_id>' 'http://xml.zeit.de/foo' '</article_id></xml>'
-            )
+            co.xml = etree.fromstring('<xml><article_id>http://xml.zeit.de/foo</article_id></xml>')
         self.assertFalse(IBreakingNews(self.repository['article']).banner_matches())

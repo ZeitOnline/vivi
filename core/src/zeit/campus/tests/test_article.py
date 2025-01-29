@@ -17,11 +17,7 @@ class TopicTest(zeit.campus.testing.FunctionalTestCase):
         tplink.page = refcp
         tplink.label = 'Moep'
         assert (
-            len(
-                tplink.xml.xpath(
-                    ('//head/topic[' '@href="http://xml.zeit.de/online/2007/01/index"]')
-                )
-            )
+            len(tplink.xml.xpath(('//head/topic[@href="http://xml.zeit.de/online/2007/01/index"]')))
             == 1
         )
         assert tplink.xml.xpath('//head/topic/label')[0].text == 'Moep'

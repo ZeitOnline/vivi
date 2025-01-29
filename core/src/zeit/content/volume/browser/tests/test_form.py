@@ -10,7 +10,7 @@ import zeit.content.volume.testing
 class VolumeBrowserTest(zeit.content.volume.testing.BrowserTestCase):
     def open_add_form(self):
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/' '@@zeit.content.volume.Add')
+        b.open('http://localhost/++skin++vivi/repository/@@zeit.content.volume.Add')
         b.getControl('Date of digital publication').value = '2017-01-01'
 
     def test_add_form_prefills_year_and_volume_from_global_settings(self):
@@ -27,7 +27,7 @@ class VolumeBrowserTest(zeit.content.volume.testing.BrowserTestCase):
         b.getControl('Add').click()
         b.getLink('Checkin').click()
         self.assertEqual(
-            'http://localhost/++skin++vivi/repository/' '2010/02/ausgabe/@@view.html', b.url
+            'http://localhost/++skin++vivi/repository/2010/02/ausgabe/@@view.html', b.url
         )
 
     def test_displays_dynamic_form_fields_for_imagegroup_references(self):
@@ -41,7 +41,7 @@ class VolumeBrowserTest(zeit.content.volume.testing.BrowserTestCase):
         self.open_add_form()
         b = self.browser
         b.getControl('Add').click()
-        b.getControl('Landscape', index=0).value = 'http://xml.zeit.de/' 'imagegroup'
+        b.getControl('Landscape', index=0).value = 'http://xml.zeit.de/imagegroup'
         b.getControl('Apply').click()
         b.getLink('Checkin').click()
         self.assertIn('<span class="uniqueId">http://xml.zeit.de/imagegroup/</span>', b.contents)
@@ -53,7 +53,7 @@ class VolumeBrowserTest(zeit.content.volume.testing.BrowserTestCase):
         b.getControl('Year').value = '2010'
         b.getControl(name='form.volume').value = '2'
         b.getControl('Add').click()
-        b.getControl('Landscape', index=1).value = 'http://xml.zeit.de/' 'imagegroup'
+        b.getControl('Landscape', index=1).value = 'http://xml.zeit.de/imagegroup'
         b.getControl('Apply').click()
         b.getLink('Checkin').click()
         volume = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2010/02/ausgabe')
@@ -73,7 +73,7 @@ class VolumeBrowserTest(zeit.content.volume.testing.BrowserTestCase):
         b.getControl(name='form.volume').value = '2'
         b.getControl('Add').click()
         self.assertEqual(
-            'http://localhost/++skin++vivi/repository/' '@@zeit.content.volume.Add', b.url
+            'http://localhost/++skin++vivi/repository/@@zeit.content.volume.Add', b.url
         )
         self.assertIn('volume with the given name already exists', b.contents)
 

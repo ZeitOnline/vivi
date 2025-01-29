@@ -344,29 +344,26 @@ class IReadArea(zeit.edit.interfaces.IReadContainer, ITopicLinks, IConfiguration
         if data.automatic and not automatic_area_can_read_teasers_automatically(data):
             if data.automatic_type == 'centerpage':
                 error_message = _(
-                    'Automatic area with teaser from centerpage '
-                    'requires a referenced centerpage.'
+                    'Automatic area with teaser from centerpage requires a referenced centerpage.'
                 )
             if data.automatic_type == 'custom':
                 error_message = _(
-                    'Automatic area with teaser from custom query ' 'requires a query condition.'
+                    'Automatic area with teaser from custom query requires a query condition.'
                 )
             if data.automatic_type == 'topicpage':
                 error_message = _(
-                    'Automatic area with teaser from TMS topicpage ' 'requires a topicpage ID.'
+                    'Automatic area with teaser from TMS topicpage requires a topicpage ID.'
                 )
             if data.automatic_type == 'elasticsearch-query':
                 error_message = _(
-                    'Automatic area with teaser from elasticsearch query ' 'requires a raw query.'
+                    'Automatic area with teaser from elasticsearch query requires a raw query.'
                 )
             if data.automatic_type == 'rss-feed':
                 error_message = _('Automatic area with rss-feed requires a given feed')
             if data.automatic_type == 'related-topics':
-                error_message = _(
-                    'Automatic area with related-topics requires a given' ' topicpage'
-                )
+                error_message = _('Automatic area with related-topics requires a given topicpage')
             if data.automatic_type == 'reach':
-                error_message = _('Automatic area with teasers from reach require a given' ' kind')
+                error_message = _('Automatic area with teasers from reach require a given kind')
             raise zeit.cms.interfaces.ValidationError(error_message)
         return True
 

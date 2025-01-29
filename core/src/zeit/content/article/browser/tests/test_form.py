@@ -169,7 +169,7 @@ class DefaultView(zeit.content.article.testing.BrowserTestCase):
 
     def test_in_repository_but_already_checked_out_redirects_to_wc(self):
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/online/2007/01/Somalia' '/@@checkout')
+        b.open('http://localhost/++skin++vivi/repository/online/2007/01/Somalia/@@checkout')
         b.open('http://localhost/++skin++vivi/repository/online/2007/01/Somalia')
         self.assertIn('workingcopy', b.url)
 
@@ -177,11 +177,11 @@ class DefaultView(zeit.content.article.testing.BrowserTestCase):
         # XXX tests don't load zeit.ghost, so this test doesn't really test
         # anything
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/online/2007/01/Somalia' '/@@checkout')
+        b.open('http://localhost/++skin++vivi/repository/online/2007/01/Somalia/@@checkout')
         b.open('@@checkin')
         self.assertEllipsis('...<div id="cp-content">...', b.contents)
 
     def test_in_workingcopy_shows_edit_view(self):
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/online/2007/01/Somalia' '/@@checkout')
+        b.open('http://localhost/++skin++vivi/repository/online/2007/01/Somalia/@@checkout')
         self.assertEllipsis('...<div id="cp-content">...', b.contents)

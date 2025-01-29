@@ -14,16 +14,14 @@ class TestDelete(zeit.content.image.testing.BrowserTestCase):
 
     def test_delete_message_in_repository(self):
         self.browser.open(
-            'http://localhost/++skin++vivi/repository/2006/' 'DSC00109_2.JPG/@@delete.html'
+            'http://localhost/++skin++vivi/repository/2006/DSC00109_2.JPG/@@delete.html'
         )
         self.assertEllipsis(
             '...Do you really want to delete the object from the folder...', self.browser.contents
         )
 
     def test_delete_message_in_workingcopy(self):
-        self.browser.open(
-            'http://localhost/++skin++vivi/repository/2006/' 'DSC00109_2.JPG/@@checkout'
-        )
+        self.browser.open('http://localhost/++skin++vivi/repository/2006/DSC00109_2.JPG/@@checkout')
         self.browser.open('@@delete.html')
         self.assertEllipsis(
             '...Do you really want to delete your workingcopy?...', self.browser.contents

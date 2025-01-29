@@ -299,7 +299,7 @@ def parse_properties(xml):
     # different format:
     tags = xml.xpath('//head/rankedTags')
     if tags:
-        value = '<tag:rankedTags xmlns:tag="http://namespaces.zeit.de' '/CMS/tagging">'
+        value = '<tag:rankedTags xmlns:tag="http://namespaces.zeit.de/CMS/tagging">'
         value += lxml.etree.tostring(tags[0], encoding=str)
         value += '</tag:rankedTags>'
         properties[('keywords', 'http://namespaces.zeit.de/CMS/tagging')] = value

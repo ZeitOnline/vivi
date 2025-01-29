@@ -6,7 +6,7 @@ class SocialFormTest(zeit.content.article.testing.BrowserTestCase):
     def setUp(self):
         super().setUp()
         self.browser.open(
-            'http://localhost/++skin++vivi/repository/' 'online/2007/01/Somalia/@@checkout'
+            'http://localhost/++skin++vivi/repository/online/2007/01/Somalia/@@checkout'
         )
 
     def get_article(self):
@@ -36,7 +36,7 @@ class MobileFormTest(zeit.content.article.testing.BrowserTestCase):
     def setUp(self):
         super().setUp()
         self.browser.open(
-            'http://localhost/++skin++vivi/repository/' 'online/2007/01/Somalia/@@checkout'
+            'http://localhost/++skin++vivi/repository/online/2007/01/Somalia/@@checkout'
         )
 
     def get_article(self):

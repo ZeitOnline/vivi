@@ -36,7 +36,7 @@ class ElementUniqueIdTest(zeit.edit.testing.FunctionalTestCase):
             'http://block.vivi.zeit.de/http://xml.zeit.de/testcontent#body', self.container.uniqueId
         )
         self.assertEqual(
-            'http://block.vivi.zeit.de/http://xml.zeit.de/testcontent#body/' 'foo',
+            'http://block.vivi.zeit.de/http://xml.zeit.de/testcontent#body/foo',
             self.block.uniqueId,
         )
 
@@ -49,7 +49,7 @@ class ElementUniqueIdTest(zeit.edit.testing.FunctionalTestCase):
         with mock.patch('zeit.edit.tests.fixture.Container.index') as index:
             index.return_value = 0
             self.assertEqual(
-                'http://block.vivi.zeit.de/http://xml.zeit.de' '/testcontent#body/0',
+                'http://block.vivi.zeit.de/http://xml.zeit.de/testcontent#body/0',
                 self.block.uniqueId,
             )
 

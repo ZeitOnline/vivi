@@ -120,7 +120,7 @@ class SSOTest(zeit.cms.testing.BrowserTestCase):
         self.login()
         b = self.browser
         b.follow_redirects = False
-        b.open('http://localhost/++skin++vivi/sso-login' '?url=http://example.com/path')
+        b.open('http://localhost/++skin++vivi/sso-login?url=http://example.com/path')
         self.assertEqual('http://example.com/path', b.headers.get('location'))
 
     def test_have_permission_sets_cookie(self):
@@ -151,7 +151,7 @@ class SSOTest(zeit.cms.testing.BrowserTestCase):
         perms.grantPermissionToPrincipal('zeit.cms.admin.View', 'principal.user')
         self.login()
         b = self.browser
-        b.open('http://localhost/++skin++vivi' '/sso-login?permission=zeit.cms.admin.View')
+        b.open('http://localhost/++skin++vivi/sso-login?permission=zeit.cms.admin.View')
         cookie = b.cookies.getinfo('my_sso_zeit.cms.admin.View')
         data = self.jwt_decode(cookie['value'])
         self.assertEqual('principal.user', data['id'])
@@ -160,7 +160,7 @@ class SSOTest(zeit.cms.testing.BrowserTestCase):
         self.login()
         b = self.browser
         with self.assertRaises(urllib.error.HTTPError) as info:
-            b.open('http://localhost/++skin++vivi' '/sso-login?permission=zeit.cms.admin.View')
+            b.open('http://localhost/++skin++vivi/sso-login?permission=zeit.cms.admin.View')
             self.assertEqual(403, info.exception.status)
 
     def test_logout_deletes_sso_cookies(self):

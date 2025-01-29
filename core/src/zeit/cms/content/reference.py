@@ -179,7 +179,7 @@ class ReferenceProperty:
         """
         if zeit.cms.content.interfaces.IReference.providedBy(target):
             raise TypeError(
-                'Cannot create reference for reference because it ' 'could lead to data loss.'
+                'Cannot create reference for reference because it could lead to data loss.'
             )
 
         element = None
@@ -199,7 +199,7 @@ class ReferenceProperty:
                 )
             except zope.component.ComponentLookupError:
                 raise ValueError(
-                    ("Could not create XML reference type '%s' for %s " '(referenced by %s).')
+                    ("Could not create XML reference type '%s' for %s (referenced by %s).")
                     % (xml_reference_name, target.uniqueId, source.uniqueId)
                 )
         reference = zope.component.queryMultiAdapter(

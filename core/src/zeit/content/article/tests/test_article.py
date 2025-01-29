@@ -480,9 +480,9 @@ class AudioArticle(zeit.content.article.testing.FunctionalTestCase):
         assert 'podcast' == self.article.header_layout
         assert self.audio.title != self.article.title
         assert self.info.summary != self.article.teaserText
-        assert (
-            len(self.article.body.values()) == 1
-        ), 'Without audio, body should only contain "main image block"'
+        assert len(self.article.body.values()) == 1, (
+            'Without audio, body should only contain "main image block"'
+        )
 
     def test_article_body_contains_all_warped_html_formats(self):
         p0 = 'I am a paragraph without the paragraph tags!'

@@ -137,7 +137,7 @@ class TestPublishValidationMessages(
         self.register_workflow_with_error()
 
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/testcontent' '/@@publish.html')
+        b.open('http://localhost/++skin++vivi/repository/testcontent/@@publish.html')
         self.assertEllipsis('...Cannot publish...', b.contents)
         self.assertEllipsis('...Validation Error Message...', b.contents)
 
@@ -145,7 +145,7 @@ class TestPublishValidationMessages(
         self.register_workflow_with_warning()
 
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/testcontent' '/@@publish.html')
+        b.open('http://localhost/++skin++vivi/repository/testcontent/@@publish.html')
         self.assertEllipsis('...Cannot publish...', b.contents)
         self.assertEllipsis('...Validation Warning Message...', b.contents)
 
@@ -153,12 +153,12 @@ class TestPublishValidationMessages(
         self.register_workflow_with_warning()
 
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/testcontent' '/@@publish.html')
+        b.open('http://localhost/++skin++vivi/repository/testcontent/@@publish.html')
         self.assertEllipsis('...Publish anyway...', b.contents)
 
     def test_publish_with_errors_should_not_offer_force_publish(self):
         self.register_workflow_with_error()
 
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/testcontent' '/@@publish.html')
+        b.open('http://localhost/++skin++vivi/repository/testcontent/@@publish.html')
         self.assertNotIn('Publish anyway', b.contents)

@@ -46,6 +46,6 @@ class TestFactory(zeit.content.article.testing.FunctionalTestCase):
         self.assertEqual(True, info.has_thirdparty)
         self.assertEqual(('Twitter', 'Facebook'), info.thirdparty_vendors)
         self.assertEllipsis(
-            '<...has_thirdparty="yes"' ' thirdparty_vendors="Twitter;Facebook"...',
+            '<...has_thirdparty="yes" thirdparty_vendors="Twitter;Facebook"...',
             lxml.etree.tostring(module.xml, encoding=str),
         )

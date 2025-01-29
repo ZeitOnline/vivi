@@ -158,7 +158,7 @@ class RetractBannerTest(zeit.content.article.testing.SeleniumTestCase):
         super().setUp()
         banner_config = zeit.content.rawxml.rawxml.RawXML()
         banner_config.xml = lxml.etree.fromstring(
-            '<xml><article_id>' 'http://xml.zeit.de/online/2007/01/Somalia' '</article_id></xml>'
+            '<xml><article_id>http://xml.zeit.de/online/2007/01/Somalia</article_id></xml>'
         )
         self.repository['banner'] = banner_config
         IPublish(self.repository['banner']).publish(background=False)

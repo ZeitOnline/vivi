@@ -38,4 +38,4 @@ class FormLoader(zeit.content.article.edit.browser.testing.EditorTestCase):
         s = self.selenium
         self.add_article()
         self.create_block('raw')
-        s.assertElementPresent('css=.block.type-raw .inline-form ' '.field.fieldname-xml')
+        s.assertElementPresent('css=.block.type-raw .inline-form .field.fieldname-xml')

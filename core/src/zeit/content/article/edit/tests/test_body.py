@@ -29,7 +29,7 @@ class EditableBodyTest(zeit.content.article.testing.FunctionalTestCase):
 
     def get_body(self, body=None):
         if not body:
-            body = '<division><p>Para1</p><p/></division>' '<division><p>Para2</p><p/></division>'
+            body = '<division><p>Para1</p><p/></division><division><p>Para2</p><p/></division>'
         article = zeit.content.article.article.Article()
         article.xml.replace(
             article.xml.find('body'), lxml.etree.fromstring('<body>%s</body>' % body)

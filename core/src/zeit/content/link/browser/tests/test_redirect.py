@@ -12,11 +12,11 @@ class LinkRedirectTest(zeit.content.link.testing.BrowserTestCase):
             co.title = 'My Title'
             IImages(co).image = image
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/testcontent/' '@@redirect-box')
+        b.open('http://localhost/++skin++vivi/repository/testcontent/@@redirect-box')
         b.getControl('Redirect path').value = '/link'
         b.getControl('Create redirect').click()
         self.assertEllipsis(
-            '...<span class="nextURL">http://localhost/++skin++vivi/repository' '/link...',
+            '...<span class="nextURL">http://localhost/++skin++vivi/repository/link...',
             b.contents,
         )
         link = self.repository['link']

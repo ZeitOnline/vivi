@@ -14,25 +14,21 @@ import zeit.content.article.testing
 class FindDOMTest(zeit.content.article.testing.SeleniumTestCase):
     def setUp(self):
         super().setUp()
-        self.open('/@@/zeit.content.article.edit.browser.tests.fixtures' '/replace.html')
+        self.open('/@@/zeit.content.article.edit.browser.tests.fixtures/replace.html')
 
     def test_no_current_selection_starts_search_at_beginning_of_node(self):
-        self.execute('zeit.content.article.find_next(' 'document.getElementById("one"), "foo")')
+        self.execute('zeit.content.article.find_next(document.getElementById("one"), "foo")')
         self.assertEqual(0, self.eval('window.getSelection().getRangeAt(0).startOffset'))
         self.assertEqual(3, self.eval('window.getSelection().getRangeAt(0).endOffset'))
 
     def test_starts_search_at_current_selection_if_one_exists(self):
-        self.execute(
-            'zeit.content.article.select(' 'document.getElementById("two").firstChild, 4, 4)'
-        )
-        self.execute('zeit.content.article.find_next(' 'document.getElementById("two"), "foo")')
+        self.execute('zeit.content.article.select(document.getElementById("two").firstChild, 4, 4)')
+        self.execute('zeit.content.article.find_next(document.getElementById("two"), "foo")')
         self.assertEqual(8, self.eval('window.getSelection().getRangeAt(0).startOffset'))
         self.assertEqual(11, self.eval('window.getSelection().getRangeAt(0).endOffset'))
 
     def test_searching_backward(self):
-        self.execute(
-            'zeit.content.article.select(' 'document.getElementById("two").firstChild, 4, 4)'
-        )
+        self.execute('zeit.content.article.select(document.getElementById("two").firstChild, 4, 4)')
         self.execute(
             'zeit.content.article.find_next('
             'document.getElementById("two"), "foo", '
@@ -42,60 +38,54 @@ class FindDOMTest(zeit.content.article.testing.SeleniumTestCase):
         self.assertEqual(3, self.eval('window.getSelection().getRangeAt(0).endOffset'))
 
     def test_setting_case_insensitive_ignores_case(self):
-        self.execute('zeit.content.article.find_next(' 'document.getElementById("one"), "FoO")')
+        self.execute('zeit.content.article.find_next(document.getElementById("one"), "FoO")')
         self.assertEqual(0, self.eval('window.getSelection().getRangeAt(0).startOffset'))
         self.assertEqual(3, self.eval('window.getSelection().getRangeAt(0).endOffset'))
 
     def test_selection_outside_of_node_is_ignored(self):
-        self.execute(
-            'zeit.content.article.select(' 'document.getElementById("one").firstChild, 4, 4)'
-        )
-        self.execute('zeit.content.article.find_next(' 'document.getElementById("two"), "foo")')
+        self.execute('zeit.content.article.select(document.getElementById("one").firstChild, 4, 4)')
+        self.execute('zeit.content.article.find_next(document.getElementById("two"), "foo")')
         self.assertEqual(0, self.eval('window.getSelection().getRangeAt(0).startOffset'))
         self.assertEqual(3, self.eval('window.getSelection().getRangeAt(0).endOffset'))
 
     def test_not_found_moves_to_sibling_text(self):
-        self.execute(
-            'zeit.content.article.select(' 'window.jQuery("#three b")[0].firstChild, 0, 0)'
-        )
-        self.execute('zeit.content.article.find_next(' 'document.getElementById("content"), "foo")')
+        self.execute('zeit.content.article.select(window.jQuery("#three b")[0].firstChild, 0, 0)')
+        self.execute('zeit.content.article.find_next(document.getElementById("content"), "foo")')
         self.assertEqual(1, self.eval('window.getSelection().getRangeAt(0).startOffset'))
         self.assertEqual(4, self.eval('window.getSelection().getRangeAt(0).endOffset'))
 
     def test_not_found_moves_to_sibling_element(self):
-        self.execute(
-            'zeit.content.article.select(' 'document.getElementById("one").firstChild, 4, 4)'
-        )
-        self.execute('zeit.content.article.find_next(' 'document.getElementById("content"), "foo")')
+        self.execute('zeit.content.article.select(document.getElementById("one").firstChild, 4, 4)')
+        self.execute('zeit.content.article.find_next(document.getElementById("content"), "foo")')
         self.assertEqual(
-            'two', self.eval('window.getSelection().getRangeAt(0).startContainer' '.parentNode.id')
+            'two', self.eval('window.getSelection().getRangeAt(0).startContainer.parentNode.id')
         )
         self.assertEqual(0, self.eval('window.getSelection().getRangeAt(0).startOffset'))
         self.assertEqual(3, self.eval('window.getSelection().getRangeAt(0).endOffset'))
 
     def test_moving_to_sibling_starts_from_the_beginning(self):
         self.execute(
-            'zeit.content.article.select(' 'document.getElementById("three").firstChild, 0, 3)'
+            'zeit.content.article.select(document.getElementById("three").firstChild, 0, 3)'
         )
-        self.execute('zeit.content.article.find_next(' 'document.getElementById("content"), "foo")')
+        self.execute('zeit.content.article.find_next(document.getElementById("content"), "foo")')
         self.assertEqual(1, self.eval('window.getSelection().getRangeAt(0).startOffset'))
         self.assertEqual(4, self.eval('window.getSelection().getRangeAt(0).endOffset'))
 
     def test_not_found_moves_to_parent_sibling(self):
         self.execute(
-            'zeit.content.article.select(' 'document.getElementById("list-c").firstChild, 3, 3)'
+            'zeit.content.article.select(document.getElementById("list-c").firstChild, 3, 3)'
         )
-        self.execute('zeit.content.article.find_next(' 'document.getElementById("content"), "foo")')
+        self.execute('zeit.content.article.find_next(document.getElementById("content"), "foo")')
         self.assertEqual(
             'three',
-            self.eval('window.getSelection().getRangeAt(0).startContainer' '.parentNode.id'),
+            self.eval('window.getSelection().getRangeAt(0).startContainer.parentNode.id'),
         )
         self.assertEqual(0, self.eval('window.getSelection().getRangeAt(0).startOffset'))
         self.assertEqual(3, self.eval('window.getSelection().getRangeAt(0).endOffset'))
 
     def test_not_found_at_all_returns_special_value(self):
         self.execute(
-            'zeit.content.article.select(' 'document.getElementById("three").firstChild, 0, 0)'
+            'zeit.content.article.select(document.getElementById("three").firstChild, 0, 0)'
         )
         self.assertEqual(
             -1,

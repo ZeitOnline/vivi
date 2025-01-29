@@ -28,7 +28,7 @@ class TestAdminMenu(zeit.cms.testing.ZeitCmsBrowserTestCase):
 
     def test_change_dates(self):
         b = self.browser
-        b.open('http://localhost/++skin++vivi' '/repository/testcontent/@@admin.html')
+        b.open('http://localhost/++skin++vivi/repository/testcontent/@@admin.html')
         b.getControl('Adjust last published').value = '2001-01-07 11:22:33'
         b.getControl('Adjust first released').value = '2001-01-08 11:22:33'
         b.getControl('Apply').click()
@@ -40,7 +40,7 @@ class TestAdminMenu(zeit.cms.testing.ZeitCmsBrowserTestCase):
 
     def test_admin_menu_co_has_caching_time_field(self):
         b = self.browser
-        b.open('http://localhost/++skin++vivi' '/repository/testcontent')
+        b.open('http://localhost/++skin++vivi/repository/testcontent')
         b.getLink('Checkout').click()
         b.getLink('Admin').click()
         b.getControl('Caching time browser').value = 0

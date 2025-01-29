@@ -29,5 +29,5 @@ class FindTitleTest(zeit.push.testing.BrowserTestCase):
             'template.json',
         )
         b = self.browser
-        b.open('http://localhost/++skin++vivi' '/zeit.push.payload_template_title?q=template.json')
+        b.open('http://localhost/++skin++vivi/zeit.push.payload_template_title?q=template.json')
         self.assertEqual('My title', b.contents)

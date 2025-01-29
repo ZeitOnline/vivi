@@ -53,7 +53,7 @@ class TestAutomaticTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
         sel.waitForElementPresent('css=.teaser-contents.two-side-by-side .teaser-list')
         sel.assertTextPresent(self.auto_teaser_title)
 
-    @unittest.skip('Since visible is not part of the form anymore,' ' we cannot observer anything')
+    @unittest.skip('Since visible is not part of the form anymore, we cannot observer anything')
     def test_change_common_property_reloads_teaser(self):
         sel = self.selenium
         sel.assertTextPresent(self.auto_teaser_title)

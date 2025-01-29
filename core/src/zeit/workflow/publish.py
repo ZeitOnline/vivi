@@ -107,9 +107,7 @@ class Publish:
     def retract_multiple(self, objects, priority=PRIORITY_LOW, background=True, **kw):
         """Retract multiple objects."""
         if not objects:
-            logger.warning(
-                'Not starting a retract task, because no objects' ' to retract were given'
-            )
+            logger.warning('Not starting a retract task, because no objects to retract were given')
             return None
         ids = []
         for obj in objects:

@@ -262,7 +262,7 @@ class TestVolumeQueries(zeit.content.volume.testing.FunctionalTestCase):
         )
 
     @mock.patch(
-        'zeit.content.volume.volume.' '_find_performing_articles_via_webtrekk', return_value='[]'
+        'zeit.content.volume.volume._find_performing_articles_via_webtrekk', return_value='[]'
     )
     def test_all_volume_contents_should_change_access_value(self, mock):
         volume = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2015/01/ausgabe')
@@ -292,7 +292,7 @@ class TestVolumeQueries(zeit.content.volume.testing.FunctionalTestCase):
             self.assertEqual('abo', c.access)
 
     @mock.patch(
-        'zeit.content.volume.volume.' '_find_performing_articles_via_webtrekk', return_value='[]'
+        'zeit.content.volume.volume._find_performing_articles_via_webtrekk', return_value='[]'
     )
     def test_volume_contents_access_dry_run_does_not_change_accces(self, mock):
         volume = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2015/01/ausgabe')

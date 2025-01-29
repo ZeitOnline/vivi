@@ -484,7 +484,7 @@ class AudioStep(ConversionStep):
     """Make editable."""
 
     xpath_xml = './/audio'
-    xpath_html = './/*[contains(@class, "inline-element") and ' 'contains(@class, "audio")]'
+    xpath_html = './/*[contains(@class, "inline-element") and contains(@class, "audio")]'
 
     def to_html(self, node):
         id_ = node.get('audioID')
@@ -514,7 +514,7 @@ class VideoStep(ConversionStep):
     """Make <video> editable."""
 
     xpath_xml = './/video'
-    xpath_html = './/*[contains(@class, "inline-element") and ' 'contains(@class, "video")]'
+    xpath_html = './/*[contains(@class, "inline-element") and contains(@class, "video")]'
 
     def to_html(self, node):
         id1 = node.get('href') or ''

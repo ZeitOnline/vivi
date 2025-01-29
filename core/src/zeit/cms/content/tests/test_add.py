@@ -27,7 +27,7 @@ class ContentAdderTest(zeit.cms.testing.ZeitCmsTestCase):
         )
         parts = urlparse(adder())
         self.assertEqual(
-            '/repository/wirtschaft/geldanlage/2009-02/' '@@zeit.cms.testcontenttype.Add',
+            '/repository/wirtschaft/geldanlage/2009-02/@@zeit.cms.testcontenttype.Add',
             parts.path,
         )
         query = dict(parse_qsl(parts.query))
@@ -49,7 +49,7 @@ class ContentAdderTest(zeit.cms.testing.ZeitCmsTestCase):
         )
         parts = urlparse(adder())
         self.assertEqual(
-            '/repository/wirtschaft/2009-02/' '@@zeit.cms.testcontenttype.Add', parts.path
+            '/repository/wirtschaft/2009-02/@@zeit.cms.testcontenttype.Add', parts.path
         )
         query = dict(parse_qsl(parts.query))
         self.assertEqual({'form.ressort': 'cb61e5a1d8e82f77f50ce4f86a114006'}, query)
@@ -62,7 +62,7 @@ class ContentAdderTest(zeit.cms.testing.ZeitCmsTestCase):
             month='02',
         )
         self.assertEqual(
-            'http://127.0.0.1/repository/2009-02/' '@@zeit.cms.testcontenttype.Add?', adder()
+            'http://127.0.0.1/repository/2009-02/@@zeit.cms.testcontenttype.Add?', adder()
         )
 
     def test_add_location_can_be_overriden_with_adapter(self):
@@ -81,9 +81,7 @@ class ContentAdderTest(zeit.cms.testing.ZeitCmsTestCase):
         adder = zeit.cms.content.add.ContentAdder(
             self.request, type_=zeit.cms.testcontenttype.interfaces.IExampleContentType
         )
-        self.assertEqual(
-            'http://127.0.0.1/repository/foo/' '@@zeit.cms.testcontenttype.Add?', adder()
-        )
+        self.assertEqual('http://127.0.0.1/repository/foo/@@zeit.cms.testcontenttype.Add?', adder())
 
 
 class RessortYearFolderTest(zeit.cms.testing.ZeitCmsTestCase):

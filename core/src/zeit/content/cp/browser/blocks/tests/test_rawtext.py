@@ -29,7 +29,7 @@ class TestRawText(zeit.content.cp.testing.BrowserTestCase):
 
     def test_can_create_rawtext_module_by_dropping_content(self):
         b = self.browser
-        b.open('body/lead/@@landing-zone-drop?uniqueId=http://xml.zeit.de/plaintext' '&order=top')
+        b.open('body/lead/@@landing-zone-drop?uniqueId=http://xml.zeit.de/plaintext&order=top')
         b.open(self.content_url)
         self.assertEqual(2, b.contents.count('type-rawtext'))
 

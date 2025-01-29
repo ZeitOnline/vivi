@@ -298,7 +298,7 @@ class Repository(persistent.Persistent, Container):
         zope.event.notify(zeit.cms.repository.interfaces.BeforeObjectAddEvent(content))
         resource = zeit.cms.interfaces.IResource(content)
         if resource.id is None:
-            raise ValueError('Objects to be added to the repository need a ' 'unique id.')
+            raise ValueError('Objects to be added to the repository need a unique id.')
         self.connector.add(resource, verify_etag=not ignore_conflicts)
 
     @property

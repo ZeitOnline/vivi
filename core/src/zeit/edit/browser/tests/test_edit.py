@@ -20,7 +20,7 @@ class EditorJavascript(zeit.edit.testing.SeleniumTestCase):
         # <http://www.snook.ca/archives/javascript/offsets_scrolling_overflow/>
         before = self.eval('document.getElementById("cp-content-inner").scrollTop')
         self.execute(
-            'window.MochiKit.Signal.signal(' 'zeit.edit.editor, "reload", "myblock", "empty.html")'
+            'window.MochiKit.Signal.signal(zeit.edit.editor, "reload", "myblock", "empty.html")'
         )
         self.wait_for_condition('!zeit.edit.editor.busy')
         after = self.eval('document.getElementById("cp-content-inner").scrollTop')

@@ -44,8 +44,7 @@ class XMLRPCTest(zeit.retresco.testing.BrowserTestCase):
         self.tms.index.assert_called_with(zeit.cms.interfaces.ICMSContent(id), {'body': None})
         self.tms.enrich.assert_called_with(zeit.cms.interfaces.ICMSContent(id))
         self.assertIn(
-            'zope.index triggered TMS index update for '
-            "'http://xml.zeit.de/online/2007/01/Somalia'",
+            "zope.index triggered TMS index update for 'http://xml.zeit.de/online/2007/01/Somalia'",
             self.log.getvalue(),
         )
 

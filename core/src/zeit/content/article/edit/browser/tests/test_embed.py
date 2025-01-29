@@ -65,4 +65,4 @@ class FormLoader(zeit.content.article.edit.browser.testing.EditorTestCase):
         s = self.selenium
         self.add_article()
         self.create_block('embed')
-        s.assertElementPresent('css=.block.type-embed .inline-form ' '.field.fieldname-url')
+        s.assertElementPresent('css=.block.type-embed .inline-form .field.fieldname-url')

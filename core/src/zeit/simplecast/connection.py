@@ -47,7 +47,7 @@ class Simplecast:
     def __init__(self, timeout=None):
         config = zeit.cms.config.package('zeit.simplecast')
         self.api_url = config['simplecast-url']
-        self.api_token = f"Bearer {config['simplecast-token']}"
+        self.api_token = f'Bearer {config["simplecast-token"]}'
         self.timeout = timeout or int(config.get('timeout', 1))
 
     def _request(self, request):

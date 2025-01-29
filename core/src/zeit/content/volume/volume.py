@@ -192,7 +192,7 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
     def set_cover(self, cover_id, product_id, imagegroup):
         if not self._is_valid_cover_id_and_product_id(cover_id, product_id):
             raise ValueError(
-                'Cover id {} or product id {} are not ' 'valid.'.format(cover_id, product_id)
+                'Cover id {} or product id {} are not valid.'.format(cover_id, product_id)
             )
         path = '//covers/cover[@id="{}" and @product_id="{}"]'.format(cover_id, product_id)
         node = self.xml.xpath(path)
@@ -309,7 +309,7 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
                         ),
                     )
             except Exception:
-                log.error("Couldn't change access for {}. Skipping " 'it.'.format(cnt.uniqueId))
+                log.error("Couldn't change access for {}. Skipping it.".format(cnt.uniqueId))
         return cnts
 
     def content_with_references_for_publishing(self):

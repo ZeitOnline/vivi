@@ -66,7 +66,7 @@ class Clipboard(zope.container.ordered.OrderedContainer):
 
     def __setitem__(self, key, value):
         if not zeit.cms.clipboard.interfaces.IClipboardEntry.providedBy(value):
-            raise ValueError('Can only contain IClipboardEntry objects. ' 'Got %r instead.' % value)
+            raise ValueError('Can only contain IClipboardEntry objects. Got %r instead.' % value)
         super().__setitem__(key, value)
 
 

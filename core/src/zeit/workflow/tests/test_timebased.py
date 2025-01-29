@@ -64,13 +64,13 @@ class PrintImportSchedulingTest(zeit.workflow.testing.FunctionalTestCase):
         workflow = zeit.cms.workflow.interfaces.IPublishInfo(content)
         workflow.release_period = (None, pendulum.now('UTC').add(days=1))
         self.assertNotEqual(None, workflow.retract_job_id)
-        with mock.patch('zeit.workflow.timebased.' 'TimeBasedWorkflow.setup_job') as setup_job:
+        with mock.patch('zeit.workflow.timebased.TimeBasedWorkflow.setup_job') as setup_job:
             zope.event.notify(zeit.cms.workflow.interfaces.PublishedEvent(content, content))
             self.assertFalse(setup_job.called)
 
     def test_no_retract_time_present_should_do_nothing(self):
         content = self.repository['testcontent']
-        with mock.patch('zeit.workflow.timebased.' 'TimeBasedWorkflow.setup_job') as setup_job:
+        with mock.patch('zeit.workflow.timebased.TimeBasedWorkflow.setup_job') as setup_job:
             zope.event.notify(zeit.cms.workflow.interfaces.PublishedEvent(content, content))
             self.assertFalse(setup_job.called)
 
@@ -78,7 +78,7 @@ class PrintImportSchedulingTest(zeit.workflow.testing.FunctionalTestCase):
         content = self.repository['testcontent']
         workflow = zeit.cms.workflow.interfaces.IPublishInfo(content)
         workflow.release_period = (None, pendulum.now('UTC').add(days=1))
-        with mock.patch('zeit.workflow.timebased.' 'TimeBasedWorkflow.setup_job') as setup_job:
+        with mock.patch('zeit.workflow.timebased.TimeBasedWorkflow.setup_job') as setup_job:
             zope.event.notify(zeit.cms.workflow.interfaces.PublishedEvent(content, content))
             self.assertFalse(setup_job.called)
 

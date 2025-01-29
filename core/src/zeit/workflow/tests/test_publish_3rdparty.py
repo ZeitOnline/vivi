@@ -331,7 +331,7 @@ class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
             ),
             'tags': ['Testtag', 'Testtag2', 'Testtag3'],
             'teaser': (
-                'Ist genug Brot und Kuchen gebacken, ' 'bleibt endlich wieder Zeit, zu kochen.'
+                'Ist genug Brot und Kuchen gebacken, bleibt endlich wieder Zeit, zu kochen.'
             ),
         }
 

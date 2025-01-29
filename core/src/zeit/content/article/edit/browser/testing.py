@@ -11,7 +11,7 @@ class BrowserTestCase(zeit.content.article.testing.BrowserTestCase):
         super().setUp()
         browser = self.browser
         browser.open(
-            'http://localhost:8080/++skin++vivi/repository/online' '/2007/01/Somalia/@@checkout'
+            'http://localhost:8080/++skin++vivi/repository/online/2007/01/Somalia/@@checkout'
         )
         self.article_url = browser.url
         browser.open('@@contents')

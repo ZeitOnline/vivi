@@ -22,7 +22,7 @@ class TestRenameMenuItem(zeit.cms.testing.ZeitCmsBrowserTestCase):
             b.getLink(url='@@rename-box')
 
         # Cannot rename even if one enters the URL manually
-        b.open('http://localhost:8080/++skin++vivi/repository/testcontent' '/@@rename-box')
+        b.open('http://localhost:8080/++skin++vivi/repository/testcontent/@@rename-box')
         with self.assertRaises(LookupError):
             b.getControl('Rename')  # 'Rename' button is missing
 
