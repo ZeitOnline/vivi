@@ -202,6 +202,12 @@ class GalleryBigQuery(grok.Adapter, BigQueryMixin):
 
 
 @grok.implementer(zeit.workflow.interfaces.IPublisherData)
+class AudioBigQuery(grok.Adapter, BigQueryMixin):
+    grok.context(zeit.content.audio.interfaces.IAudio)
+    grok.name('bigquery')
+
+
+@grok.implementer(zeit.workflow.interfaces.IPublisherData)
 class VideoBigQuery(grok.Adapter, BigQueryMixin):
     grok.context(zeit.content.video.interfaces.IVideo)
     grok.name('bigquery')

@@ -127,6 +127,13 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             )
             is not None
         )
+        audio = zeit.content.audio.audio.Audio()
+        assert (
+            zope.component.queryAdapter(
+                audio, zeit.workflow.interfaces.IPublisherData, name='bigquery'
+            )
+            is not None
+        )
         video = zeit.content.video.video.Video()
         assert (
             zope.component.queryAdapter(
