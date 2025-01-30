@@ -2,3 +2,4 @@
 # Ignore intelliJ configuration files
 .idea/
 *.pyc
+.pipenv.success
