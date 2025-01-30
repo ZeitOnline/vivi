@@ -14,7 +14,7 @@ import zeit.cms.interfaces
 import zeit.cms.type
 import zeit.content.article.edit.interfaces
 import zeit.content.article.interfaces
-import zeit.content.audio.audio
+import zeit.content.audio.interfaces
 import zeit.content.author.interfaces
 import zeit.content.cp.interfaces
 import zeit.content.gallery.interfaces
@@ -480,7 +480,7 @@ class CenterPageDataScience(grok.Adapter, DataScienceMixin):
 
 @grok.implementer(zeit.workflow.interfaces.IPublisherData)
 class AudioDataScience(grok.Adapter, DataScienceMixin):
-    grok.context(zeit.content.audio.audio.IAudio)
+    grok.context(zeit.content.audio.interfaces.IAudio)
     grok.name('datascience')
 
 
