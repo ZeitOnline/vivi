@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.20.0 (2025-01-30)
+-------------------
+
+- WCM-676: Transmit audio objects to data bigquery on publish
+
+
 7.19.0 (2025-01-29)
 -------------------
 
