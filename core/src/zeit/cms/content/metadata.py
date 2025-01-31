@@ -50,6 +50,22 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
         use_default=True,
     )
 
+    for prop, ns, name in [
+        ('print_ressort', 'print', 'ressort'),
+        ('commentSectionEnable', 'document', 'show_commentthread'),
+        ('commentsAllowed', 'document', 'comments'),
+        ('commentsPremoderate', 'document', 'comments_premoderate'),
+        ('product', 'workflow', 'product-id'),
+        ('ir_mediasync_id', 'interred', 'mediasync_id'),
+        ('ir_article_id', 'interred', 'article_id'),
+    ]:
+        locals()[prop] = zeit.cms.content.dav.DAVProperty(
+            ICommonMetadata[prop], f'http://namespaces.zeit.de/CMS/{ns}', name
+        )
+
+    keywords = zeit.cms.tagging.tag.Tags()
+    recipe_categories = zeit.wochenmarkt.categories.RecipeCategories()
+
     authorships = zeit.cms.content.reference.ReferenceProperty(
         '.head.author', xml_reference_name='author'
     )
@@ -57,54 +73,15 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
         '.head.agency', xml_reference_name='related'
     )
 
-    keywords = zeit.cms.tagging.tag.Tags()
-
-    recipe_categories = zeit.wochenmarkt.categories.RecipeCategories()
-
-    title = zeit.cms.content.property.ObjectPathProperty('.body.title', ICommonMetadata['title'])
-    subtitle = zeit.cms.content.property.ObjectPathProperty(
-        '.body.subtitle', ICommonMetadata['subtitle']
-    )
-    supertitle = zeit.cms.content.property.ObjectPathProperty(
-        '.body.supertitle', ICommonMetadata['supertitle']
-    )
-
-    teaserTitle = zeit.cms.content.property.ObjectPathProperty(
-        '.teaser.title', ICommonMetadata['teaserTitle']
-    )
-    teaserText = zeit.cms.content.property.ObjectPathProperty(
-        '.teaser.text', ICommonMetadata['teaserText']
-    )
-    teaserSupertitle = zeit.cms.content.property.ObjectPathProperty(
-        '.teaser.supertitle', ICommonMetadata['teaserSupertitle']
-    )
-
-    print_ressort = zeit.cms.content.dav.DAVProperty(
-        ICommonMetadata['print_ressort'], zeit.cms.interfaces.PRINT_NAMESPACE, 'ressort'
-    )
-
-    commentsPremoderate = zeit.cms.content.dav.DAVProperty(
-        ICommonMetadata['commentsPremoderate'], DOCUMENT_SCHEMA_NS, 'comments_premoderate'
-    )
-
-    commentsAllowed = zeit.cms.content.dav.DAVProperty(
-        ICommonMetadata['commentsAllowed'], DOCUMENT_SCHEMA_NS, 'comments'
-    )
-
-    commentSectionEnable = zeit.cms.content.dav.DAVProperty(
-        ICommonMetadata['commentSectionEnable'], DOCUMENT_SCHEMA_NS, 'show_commentthread'
-    )
-
-    product = zeit.cms.content.dav.DAVProperty(
-        ICommonMetadata['product'], 'http://namespaces.zeit.de/CMS/workflow', 'product-id'
-    )
-
-    ir_mediasync_id = zeit.cms.content.dav.DAVProperty(
-        ICommonMetadata['ir_mediasync_id'], zeit.cms.interfaces.IR_NAMESPACE, 'mediasync_id'
-    )
-    ir_article_id = zeit.cms.content.dav.DAVProperty(
-        ICommonMetadata['ir_article_id'], zeit.cms.interfaces.IR_NAMESPACE, 'article_id'
-    )
+    for prop, path in [
+        ('title', '.body.title'),
+        ('subtitle', '.body.subtitle'),
+        ('supertitle', '.body.supertitle'),
+        ('teaserTitle', '.teaser.title'),
+        ('teaserText', '.teaser.text'),
+        ('teaserSupertitle', '.teaser.supertitle'),
+    ]:
+        locals()[prop] = zeit.cms.content.property.ObjectPathProperty(path, ICommonMetadata[prop])
 
     _color_scheme = zeit.cms.content.dav.DAVProperty(
         ICommonMetadata['color_scheme'], DOCUMENT_SCHEMA_NS, 'color_scheme'

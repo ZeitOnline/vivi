@@ -34,6 +34,11 @@
       provides=".interfaces.ITMSContent"
       name="video"
       />
+    <utility
+      component=".content.TMSVolume"
+      provides=".interfaces.ITMSContent"
+      name="volume"
+      />
 
     <class class=".tagger.Tagger">
       <require
