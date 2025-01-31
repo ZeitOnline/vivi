@@ -11,7 +11,7 @@
     <span class="action-title"
       tal:content="view/title" i18n:translate="">Title</span>
   </a>
-  <script language="javascript" tal:content="string:
+  <script language="javascript" tal:condition="view/item_id" tal:content="string:
           new zeit.cms.ClickOnceAction('${view/item_id}');
           "></script>
 </li>
