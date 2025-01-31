@@ -115,21 +115,27 @@ zeit.edit.Editor = gocept.Class.extend({
 
     busy_until_reload_of: function(component, delay) {
         var self = this;
-        if (self.busy) {
-            // Already busy
-            return;
-        }
-        log("Entering BUSY state " + component.__name__);
-        self.busy = true;
-        MochiKit.Signal.signal(self, 'busy', delay);
+        self.mark_busy(component, delay);
         var ident = MochiKit.Signal.connect(
             component, 'after-reload', function() {
                 MochiKit.Signal.disconnect(ident);
-                self.idle();
+                self.mark_idle();
         });
     },
 
-    idle: function() {
+    mark_busy: function(component, delay) {
+        var self = this;
+        if (self.busy) {  // Already busy
+            return;
+        }
+        if (isUndefinedOrNull(component)) component = self;
+        if (isUndefinedOrNull(delay)) delay = 0;
+        log("Entering BUSY state " + component.__name__);
+        self.busy = true;
+        MochiKit.Signal.signal(self, 'busy', delay);
+    },
+
+    mark_idle: function() {
         var self = this;
         log("Entering IDLE state");
         if (self.busy) {
