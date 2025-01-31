@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.22.0 (2025-01-31)
+-------------------
+
+- WCM-423: Show editor as busy instead of trying to display a lightbox when saving before leaving
+
+
 7.21.0 (2025-01-31)
 -------------------
 
