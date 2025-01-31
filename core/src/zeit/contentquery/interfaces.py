@@ -83,7 +83,7 @@ class TopicpageFilterSource(
 ):
     product_configuration = 'zeit.content.cp'
     config_url = 'topicpage-filter-source'
-    default_filename = 'topicpage-filters-config-upload.json'
+    default_filename = 'topicpage-filters.json'
 
     def json_data(self):
         result = {}
