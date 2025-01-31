@@ -208,9 +208,13 @@ zeit.edit.BusyIndicator = gocept.Class.extend({
         if (isUndefinedOrNull(delay)) {
             delay = 0.1;
         }
-        self.delayer = MochiKit.Async.callLater(delay, function() {
+        if (delay == 0) {
             self.busy();
-        });
+        } else {
+            self.delayer = MochiKit.Async.callLater(delay, function() {
+                self.busy();
+            });
+        }
     },
 
     busy: function() {

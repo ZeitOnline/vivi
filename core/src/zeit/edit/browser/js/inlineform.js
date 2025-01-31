@@ -55,7 +55,9 @@ var save_dirty_before_leaving = function() {
             requests.push(form.submit());
         });
         MochiKit.Async.gatherResults(requests).addCallback(function() {
-            zeit.edit.editor.mark_idle();
+            MochiKit.Async.callLater(0.2, function() {
+                zeit.edit.editor.mark_idle();
+            });
         });
     });
 };
