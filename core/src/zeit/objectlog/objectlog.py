@@ -79,7 +79,7 @@ class ObjectLog(persistent.Persistent):
                     remove.append(key)
             except ZODB.POSException.POSKeyError:
                 logger.warning('ZODB.POSException.POSKeyError, removing lost key %s', key)
-                remove.append(key)
+                self._object_log.pop(key, None)
         for key in remove:
             del self._object_log[key]
 

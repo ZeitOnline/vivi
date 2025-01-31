@@ -1,0 +1,1 @@
+WCM-633: remove key from internal objectlog structure instead of removing from objectlog db
