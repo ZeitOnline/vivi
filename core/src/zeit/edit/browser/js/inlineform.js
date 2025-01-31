@@ -40,38 +40,22 @@ var save_dirty_before_leaving = function() {
         // Causes browser to show dialog "do you really want to leave this page?"
         event.preventDefault();
 
-        // That dialog is not customizeable though, so we show an overlay.
-        var forms = [];
-        var labels = [];
-        fields.each(function(i, field) {
-            field = $(field);
-            var form = field.closest('.inline-form')[0].form;
-            forms.push(form);
-            var label = field.find('label').text().trim();
-            labels.push(label);
-        });
-
-        var message = '<h1>Ungespeicherte Änderungen</h1>\n';
-        message += '<p>Die folgenden Änderungen werden erst jetzt gespeichert</p><ul>\n';
-        for (var label of labels) {
-            message += '<li>' + label + '</li>\n';
-        }
-        message += '</ul>\n';
-        var lightbox = new gocept.Lightbox(document.body, {use_ids: false});
-        lightbox.replace_content(message);
-
-        // Automatically save all the dirty forms
+        // Save all the dirty forms
+        zeit.edit.editor.mark_busy();
         if (zeit.cms._follow_with_lock_called) {
             // follow_with_lock intentionally keeps the lock, and the new
             // page load will clear it. But since we want the user to abort,
             // we have to release the lock ourselves.
             zeit.cms.request_lock.release();
+            zeit.cms._follow_with_lock_called = false;
         }
-        var requests = forms.map((x) => x.submit());
+        var requests = [];
+        fields.each(function(i, field) {
+            var form = $(field).closest('.inline-form')[0].form;
+            requests.push(form.submit());
+        });
         MochiKit.Async.gatherResults(requests).addCallback(function() {
-            message += '<p>Speichern abgeschlossen</p>';
-            lightbox.replace_content(message);
-            MochiKit.Async.callLater(1, function() { lightbox.close(); });
+            zeit.edit.editor.mark_idle();
         });
     });
 };
