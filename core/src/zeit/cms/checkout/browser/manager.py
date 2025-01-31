@@ -269,6 +269,7 @@ class CheckinMenuItem(MenuItem):
     base_action = 'checkin'
     accesskey = 'i'
     rel = 'zeit.cms.follow_with_lock'
+    click_once = False
 
     def is_visible(self):
         manager = zeit.cms.checkout.interfaces.ICheckinManager(self.context)

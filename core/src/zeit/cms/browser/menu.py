@@ -33,11 +33,14 @@ class ActionMenuItem(MenuItemBase, z3c.menu.simple.menu.SimpleMenuItem):
     """A simple action menu item with icon."""
 
     template = zope.app.pagetemplate.ViewPageTemplateFile('action-menu-item.pt')
+    click_once = True
+    item_id = None
     rel = None
 
     def update(self):
         super().update()
-        self.item_id = 'menuitem.%s' % time.time()
+        if self.click_once:
+            self.item_id = 'menuitem.%s' % time.time()
 
     def get_url(self):
         url = zope.component.getMultiAdapter((self.context, self.request), name='absolute_url')
