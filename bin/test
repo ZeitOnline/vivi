@@ -46,10 +46,17 @@ case $COMMAND in
             touch .pipenv.success
         fi
 
+        if ! [ -x "$(command -v yq)" ]; then
+            echo 'Error: yq is not installed, install with: brew install yq.' >&2
+            exit 1
+        fi
+
         while IFS=$'\t' read -r envName vaultName vaultPath _; do
             export $envName=$(vault read -field $vaultName $vaultPath);
         done < <(yq -re '.spec.data[] | [.secretKey, .remoteRef.property, .remoteRef.key] | @tsv' k8s/base/secrets.yaml)
         export VIVI_XMLRPC_PASSWORD=$(vault read -field password zon/v1/vivi/$environment/nightwatch)
+        export OIDC_CLIENT_SECRET=$(vault read -field client_secret zon/v1/keycloak/production/zeit-online/edge-www)
+        export OIDC_CLIENT_ID=edge-www
 
         exec pipenv run pytest -c none --tb=native --nightwatch-environment=$environment "$@"
         ;;
