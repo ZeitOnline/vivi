@@ -68,7 +68,7 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
         'vgwortid',
         'website',
     ]:
-        locals()[name] = ObjectPathProperty('.%s' % name, IAuthor[name])
+        locals()[name] = ObjectPathProperty(f'.{name}', IAuthor[name])
     del locals()['name']
 
     favourite_content = zeit.cms.content.reference.MultiResource('.favourites.reference', 'related')
@@ -136,7 +136,7 @@ def update_display_name(obj, event):
     if obj.entered_display_name:
         obj.display_name = obj.entered_display_name
     else:
-        obj.display_name = '%s %s' % (obj.firstname, obj.lastname)
+        obj.display_name = f'{obj.firstname} {obj.lastname}'
 
 
 @grok.subscribe(
@@ -242,11 +242,11 @@ class BiographyQuestions(
         object.__setattr__(self, '__parent__', context)
 
     def __getitem__(self, key):
-        node = self.xml.xpath('//question[@id="%s"]' % key)
+        node = self.xml.xpath(f'//question[@id="{key}"]')
         return Question(key, self.title(key), node[0].text if node else None)
 
     def __setitem__(self, key, value):
-        node = self.xml.xpath('//question[@id="%s"]' % key)
+        node = self.xml.xpath(f'//question[@id="{key}"]')
         if node:
             self.xml.remove(node[0])
         if value:
