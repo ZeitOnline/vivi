@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.23.0 (2025-02-03)
+-------------------
+
+- WCM-670: Load TMS filter config from /data
+
+
 7.22.0 (2025-01-31)
 -------------------
 
