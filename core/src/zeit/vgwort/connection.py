@@ -129,12 +129,12 @@ class MessageService(VGWortWebService):
                 if author is None:
                     continue
                 try:
-                    if author.vgwortcode:
+                    if author.vgwort_code:
                         # XXX Is this case still needed? Is there still content
                         # that references agencies in ICommonMetadata.authorships
                         # instead of .agencies? And are we *ever* going to report
                         # such content (again)?
-                        authors.append(self.create('Involved', code=author.vgwortcode))
+                        authors.append(self.create('Involved', code=author.vgwort_code))
                     elif (
                         author.firstname
                         and author.lastname
@@ -142,21 +142,21 @@ class MessageService(VGWortWebService):
                         and author.lastname.strip()
                     ):
                         params = {'firstName': author.firstname, 'surName': author.lastname}
-                        if author.vgwortid:
-                            params['cardNumber'] = author.vgwortid
+                        if author.vgwort_id:
+                            params['cardNumber'] = author.vgwort_id
                         authors.append(self.create('Involved', **params))
                 except AttributeError:
                     log.error('Could not report %s', content, exc_info=True)
 
         for author in content.agencies:
             try:
-                if not author.vgwortcode:
+                if not author.vgwort_code:
                     continue
-                authors.append(self.create('Involved', code=author.vgwortcode))
+                authors.append(self.create('Involved', code=author.vgwort_code))
             except AttributeError:
                 log.warning('Ignoring agencies for %s', content, exc_info=True)
-        if content.product and content.product.vgwortcode:
-            authors.append(self.create('Involved', code=content.product.vgwortcode))
+        if content.product and content.product.vgwort_code:
+            authors.append(self.create('Involved', code=content.product.vgwort_code))
 
         if not authors:
             raise zeit.vgwort.interfaces.WebServiceError('Kein Autor mit VG-Wort-Code gefunden.')

@@ -64,12 +64,14 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
         'topiclink_url_2',
         'topiclink_url_3',
         'twitter',
-        'vgwortcode',
-        'vgwortid',
         'website',
     ]:
         locals()[name] = ObjectPathProperty(f'.{name}', IAuthor[name])
     del locals()['name']
+
+    # BBB Diverging xpaths are for existing bodies, remove after WCM-26 is launched.
+    vgwort_id = ObjectPathProperty('.vgwortid', IAuthor['vgwort_id'])
+    vgwort_code = ObjectPathProperty('.vgwortcode', IAuthor['vgwort_code'])
 
     favourite_content = zeit.cms.content.reference.MultiResource('.favourites.reference', 'related')
 

@@ -48,7 +48,7 @@ class WebServiceTest(zeit.vgwort.testing.EndToEndTestCase):
         shakespeare.title = 'Sir'
         shakespeare.firstname = 'William'
         shakespeare.lastname = 'Shakespeare'
-        shakespeare.vgwortid = 12345
+        shakespeare.vgwort_id = 12345
         self.repository['shakespeare'] = shakespeare
         shakespeare = self.repository['shakespeare']
 
@@ -71,7 +71,7 @@ class WebServiceTest(zeit.vgwort.testing.EndToEndTestCase):
         author = zeit.content.author.author.Author()
         author.firstname = 'Tina'
         author.lastname = 'Groll'
-        author.vgwortid = 2601970
+        author.vgwort_id = 2601970
         self.repository['author'] = author
         author = self.repository['author']
 
@@ -88,7 +88,7 @@ class WebServiceTest(zeit.vgwort.testing.EndToEndTestCase):
         except zeit.vgwort.interfaces.TechnicalError:
             self.skipTest('vgwort test system down')
 
-    def test_author_without_vgwortid_works(self):
+    def test_author_without_vgwort_id_works(self):
         author = zeit.content.author.author.Author()
         author.firstname = 'Tina'
         author.lastname = 'Groll'
@@ -217,7 +217,7 @@ class MessageServiceTest(zeit.vgwort.testing.EndToEndTestCase):
         author = zeit.content.author.author.Author()
         author.firstname = 'Tina'
         author.lastname = 'Groll'
-        author.vgwortid = 2601970
+        author.vgwort_id = 2601970
         self.repository['author'] = author
         author = self.repository['author']
         content = self.get_content([author])
@@ -232,8 +232,8 @@ class MessageServiceTest(zeit.vgwort.testing.EndToEndTestCase):
         author = zeit.content.author.author.Author()
         author.firstname = 'Tina'
         author.lastname = 'Groll'
-        author.vgwortid = 2601970
-        author.vgwortcode = 'codecodecode'
+        author.vgwort_id = 2601970
+        author.vgwort_code = 'codecodecode'
         self.repository['author'] = author
         author = self.repository['author']
         content = self.get_content([author])
@@ -262,12 +262,12 @@ class MessageServiceTest(zeit.vgwort.testing.EndToEndTestCase):
     def test_only_authors_with_configured_roles_should_be_reported(self):
         tina = zeit.content.author.author.Author()
         tina.firstname = 'Tina'
-        tina.vgwortcode = 'Groll'
+        tina.vgwort_code = 'Groll'
         self.repository['tina'] = tina
         paul = zeit.content.author.author.Author()
         paul.firstname = 'Paul'
-        paul.vgwortcode = 'Auster'
-        paul.vgwortcode = 'code'
+        paul.lastname = 'Auster'
+        paul.vgwort_code = 'code'
         self.repository['paul'] = paul
         content = self.get_content([], product=None)
         with zeit.cms.checkout.helper.checked_out(content) as co:

@@ -29,6 +29,6 @@
     <product id="tdb">Zeit Schweiz</product>
     <product id="tbd">Zeit Oesterreich</product>
     <product id="Reuters">Reuters</product>
-    <product id="KINZ" vgwortcode="1234abc">Kinderzeit Magazin</product>
+    <product id="KINZ" vgwort_code="1234abc">Kinderzeit Magazin</product>
     <product id="ZEDE" counter="online">Zeit Online</product>
 </products>

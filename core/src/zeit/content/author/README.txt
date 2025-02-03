@@ -17,7 +17,7 @@ Authors
 >>> shakespeare.title = 'Sir'
 >>> shakespeare.firstname = 'William'
 >>> shakespeare.lastname = 'Shakespeare'
->>> shakespeare.vgwortid = 12345
+>>> shakespeare.vgwort_id = 12345
 >>> repository['shakespeare'] = shakespeare
 >>> shakespeare = repository['shakespeare']
 >>> print(zeit.cms.testing.xmltotext(shakespeare.xml))

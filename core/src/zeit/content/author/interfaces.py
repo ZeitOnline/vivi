@@ -21,11 +21,11 @@ class InvalidCode(zope.schema.ValidationError):
     __doc__ = _('Code contains invalid characters')
 
 
-valid_vgwortcode_regex = re.compile(r'^[A-Za-z]+$').match
+ONLY_LETTERS = re.compile(r'^[A-Za-z]+$').search
 
 
-def valid_vgwortcode(value):
-    if not valid_vgwortcode_regex(value):
+def valid_vgwort_code(value):
+    if not ONLY_LETTERS(value):
         raise InvalidCode(value)
     return True
 
@@ -56,7 +56,7 @@ class IAuthor(zope.interface.Interface, zeit.retresco.interfaces.ISkipEnrich):
     pgp = zope.schema.TextLine(title=_('PGP key'), required=False)
     website = zope.schema.TextLine(title=_('Website handle'), required=False)
 
-    vgwortid = zope.schema.Int(
+    vgwort_id = zope.schema.Int(
         title=_('VG-Wort ID'),
         required=False,
         # see messageService.wsdl:cardNumberType
@@ -64,8 +64,8 @@ class IAuthor(zope.interface.Interface, zeit.retresco.interfaces.ISkipEnrich):
         max=9999999,
     )
 
-    vgwortcode = zope.schema.TextLine(
-        title=_('VG-Wort Code'), required=False, constraint=valid_vgwortcode
+    vgwort_code = zope.schema.TextLine(  # Only for agencies
+        title=_('VG-Wort Code'), required=False, constraint=valid_vgwort_code
     )
 
     honorar_id = zope.schema.TextLine(title=_('Honorar ID'), required=False)
