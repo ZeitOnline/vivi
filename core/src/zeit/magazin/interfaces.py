@@ -46,24 +46,9 @@ class IZMOPortraitbox(
     pass
 
 
-class INextRead(zope.interface.Interface):
-    nextread = zope.schema.Tuple(
-        title=_('Next read'),
-        default=(),
-        required=False,
-        value_type=zope.schema.Choice(source=zeit.cms.related.interfaces.relatableContentSource),
-    )
-
-
 class IRelatedLayout(zope.interface.Interface):
     related_layout = zope.schema.Choice(
         title=_('Related layout'),
-        source=zeit.magazin.sources.ArticleRelatedLayoutSource(),
-        required=False,
-    )
-
-    nextread_layout = zope.schema.Choice(
-        title=_('Next read layout'),
         source=zeit.magazin.sources.ArticleRelatedLayoutSource(),
         required=False,
     )
