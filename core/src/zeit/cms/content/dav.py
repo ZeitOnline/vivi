@@ -1,4 +1,3 @@
-import functools
 import logging
 import re
 import sys
@@ -53,10 +52,6 @@ class DAVProperty:
         __traceback_info = (instance,)  # noqa
         if instance is None:
             return self
-        fact = functools.partial(self.__fetch__, instance, class_, properties)
-        return fact()
-
-    def __fetch__(self, instance, class_, properties=None):
         if properties is None:
             properties = zeit.cms.interfaces.IWebDAVReadProperties(instance)
         key = PropertyKey(self.name, self.namespace)
