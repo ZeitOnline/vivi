@@ -8,6 +8,7 @@ import zope.component
 import zope.interface
 import zope.schema
 
+from zeit.cms.content.property import DAVConverterWrapper, ObjectPathProperty, Structure
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import zeit.cms.content.interfaces
 
@@ -20,8 +21,6 @@ class TestDAVConverterWrapper(unittest.TestCase):
         plone.testing.zca.popGlobalRegistry()
 
     def test_get_should_convert_from_property(self):
-        from zeit.cms.content.property import DAVConverterWrapper
-
         prop = mock.Mock()
         prop.__get__ = mock.Mock()
         field = mock.Mock()
@@ -47,8 +46,6 @@ class TestDAVConverterWrapper(unittest.TestCase):
         prop.__get__.assert_called_with(mock.sentinel.instance, mock.sentinel.class_)
 
     def test_set_should_convert_to_property(self):
-        from zeit.cms.content.property import DAVConverterWrapper
-
         prop = mock.Mock()
         prop.__set__ = mock.Mock()
         field = mock.Mock()
@@ -75,8 +72,6 @@ class TestDAVConverterWrapper(unittest.TestCase):
 
 class TestStructure(unittest.TestCase, gocept.testing.assertion.Ellipsis):
     def test_setting_missing_value_deletes_xml_content(self):
-        from zeit.cms.content.property import Structure
-
         content = ExampleContentType()
         prop = Structure('.head.foo', zope.schema.Text(missing_value='missing'))
         prop.__set__(content, 'qux')
@@ -89,8 +84,6 @@ class TestStructure(unittest.TestCase, gocept.testing.assertion.Ellipsis):
 
 class TestObjectPathProperty(unittest.TestCase, gocept.testing.assertion.Ellipsis):
     def test_setting_none_value_deletes_xml_content(self):
-        from zeit.cms.content.property import ObjectPathProperty
-
         content = ExampleContentType()
         prop = ObjectPathProperty('.example', zope.schema.Text(missing_value='missing'))
         prop.__set__(content, 'foo')
