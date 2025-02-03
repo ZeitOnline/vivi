@@ -35,7 +35,13 @@ class Notification:
         self.execute_task(data)
 
         current_span = opentelemetry.trace.get_current_span()
-        current_span.set_attributes({'http.body': body})
+        current_span.set_attributes(
+            {
+                'http.body': body,
+                'app.event_type': data.get('event', ''),
+                'app.external_id': data.get('episode_id'),
+            }
+        )
 
     def execute_task(self, data: dict):
         SIMPLECAST_WEBHOOK_TASK.delay(data, _principal_id_=self._principal)

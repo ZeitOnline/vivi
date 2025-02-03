@@ -46,6 +46,13 @@ class Notification:
         except InvalidSpeechMessageError as e:
             self.request.response.setStatus(400, e)
             return
+        current_span.set_attributes(
+            {
+                'app.event_type': payload['event'],
+                'app.uuid': payload.get('uuid') or payload.get('article_uuid'),
+            }
+        )
+
         self.execute_task(payload)
 
     def execute_task(self, payload: dict):

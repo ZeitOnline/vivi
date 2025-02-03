@@ -34,6 +34,9 @@ class Notification:
         data = json.loads(body)
         if data.get('event') != 'video-change' or not data.get('video'):
             return
+        current_span.set_attributes(
+            {'app.event_type': data['event'], 'app.external_id': data['video']}
+        )
 
         own_apikey = zeit.cms.config.required('zeit.brightcove', 'client-email')
         origin = data.get('updated_by', {})
