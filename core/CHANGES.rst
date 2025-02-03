@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.24.0 (2025-02-03)
+-------------------
+
+FIX:
+- Remove temporary variables from CommonMetadata classes
+
+
 7.23.0 (2025-02-03)
 -------------------
 
