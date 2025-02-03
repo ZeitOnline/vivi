@@ -62,6 +62,9 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
         locals()[prop] = zeit.cms.content.dav.DAVProperty(
             ICommonMetadata[prop], f'http://namespaces.zeit.de/CMS/{ns}', name
         )
+    del locals()['prop']
+    del locals()['ns']
+    del locals()['name']
 
     keywords = zeit.cms.tagging.tag.Tags()
     recipe_categories = zeit.wochenmarkt.categories.RecipeCategories()
@@ -82,6 +85,8 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
         ('teaserSupertitle', '.teaser.supertitle'),
     ]:
         locals()[prop] = zeit.cms.content.property.ObjectPathProperty(path, ICommonMetadata[prop])
+    del locals()['prop']
+    del locals()['path']
 
     _color_scheme = zeit.cms.content.dav.DAVProperty(
         ICommonMetadata['color_scheme'], DOCUMENT_SCHEMA_NS, 'color_scheme'

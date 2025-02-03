@@ -70,6 +70,7 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
         'website',
     ]:
         locals()[name] = ObjectPathProperty('.%s' % name, IAuthor[name])
+    del locals()['name']
 
     community_profile = zeit.cms.content.property.ObjectPathProperty('.communityprofile')
 

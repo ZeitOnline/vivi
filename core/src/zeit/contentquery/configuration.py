@@ -151,6 +151,8 @@ class Configuration:
         locals()[name] = zeit.cms.content.property.ObjectPathProperty(
             '.%s' % name, IConfiguration[name], use_default=default
         )
+    del locals()['name']
+    del locals()['default']
 
     # For automatic_type=custom
     query = CustomQueryProperty()
