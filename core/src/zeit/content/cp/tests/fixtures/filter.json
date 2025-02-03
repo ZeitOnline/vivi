@@ -1,1 +1,7 @@
-[{"videos": {"term": {"doc_type": "video"}}}]
+// comments are allowed
+[
+{"videos": {
+ "title": "Nur Videos",
+ "query": {"term": {"doc_type": "video"}}}
+}
+]

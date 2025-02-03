@@ -1,7 +1,6 @@
-import json
 import logging
-import re
 
+import rapidjson
 import zc.sourcefactory.basic
 import zope.interface
 
@@ -82,11 +81,9 @@ class QueryOperatorSource(zeit.cms.content.sources.SimpleDictSource):
 class TopicpageFilterSource(
     zc.sourcefactory.basic.BasicSourceFactory, zeit.cms.content.sources.CachedXMLBase
 ):
-    COMMENT = re.compile(r'\s*//')
-
     product_configuration = 'zeit.content.cp'
     config_url = 'topicpage-filter-source'
-    default_filename = 'topicpage-filters-config-upload.json'
+    default_filename = 'topicpage-filters.json'
 
     def json_data(self):
         result = {}
@@ -100,14 +97,10 @@ class TopicpageFilterSource(
     @CONFIG_CACHE.cache_on_arguments()
     def _get_tree_from_url(self, url):
         try:
-            data = []
-            for line in zeit.cms.content.sources.load(url):
-                line = line.decode('utf-8')
-                if self.COMMENT.search(line):
-                    continue
-                data.append(line)
-            data = '\n'.join(data)
-            return json.loads(data)
+            return rapidjson.load(
+                zeit.cms.content.sources.load(url),
+                parse_mode=rapidjson.PM_COMMENTS,
+            )
         except Exception:
             log.warning('TopicpageFilterSource could not parse %s', url, exc_info=True)
             return {}
