@@ -130,6 +130,10 @@ class MessageService(VGWortWebService):
                     continue
                 try:
                     if author.vgwortcode:
+                        # XXX Is this case still needed? Is there still content
+                        # that references agencies in ICommonMetadata.authorships
+                        # instead of .agencies? And are we *ever* going to report
+                        # such content (again)?
                         authors.append(self.create('Involved', code=author.vgwortcode))
                     elif (
                         author.firstname
