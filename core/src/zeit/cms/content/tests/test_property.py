@@ -9,8 +9,12 @@ import zope.interface
 import zope.schema
 
 from zeit.cms.content.property import DAVConverterWrapper, ObjectPathProperty, Structure
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
+from zeit.connector.interfaces import IWebDAVProperties
+import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
+import zeit.cms.testing
 
 
 class TestDAVConverterWrapper(unittest.TestCase):
@@ -92,3 +96,38 @@ class TestObjectPathProperty(unittest.TestCase, gocept.testing.assertion.Ellipsi
         )
         prop.__set__(content, None)
         self.assertEqual(content.xml.findall('example'), [])
+
+
+class TestXMLOrDAVProperty(zeit.cms.testing.ZeitCmsTestCase):
+    DOCUMENT = 'http://namespaces.zeit.de/CMS/document'
+
+    def setUp(self):
+        super().setUp()
+        self.content = zeit.cms.checkout.interfaces.ICheckoutManager(
+            self.repository['testcontent']
+        ).checkout()
+        # Storing the descriptor on an instance allows us to use it "standalone".
+        self.prop = ObjectPathProperty(
+            '.example',
+            zope.schema.Text(),
+            dav_ns=self.DOCUMENT,
+            dav_name='foo',
+            dav_toggle='always',
+        )
+
+    def test_reads_from_dav_property(self):
+        IWebDAVProperties(self.content)[('foo', self.DOCUMENT)] = 'foo'
+        self.assertEqual('foo', self.prop.__get__(self.content, type(self.content)))
+
+    def test_writes_to_dav_property(self):
+        self.prop.__set__(self.content, 'foo')
+        self.assertEllipsis(
+            '<example...>foo</example>', lxml.etree.tostring(self.content.xml.find('example'))
+        )
+        self.assertEqual('foo', IWebDAVProperties(self.content)[('foo', self.DOCUMENT)])
+
+    def test_toggle_strict_does_not_write_to_xml(self):
+        FEATURE_TOGGLES.set('xmlproperty_strict_always')
+        self.prop.__set__(self.content, 'foo')
+        self.assertEqual(None, self.content.xml.find('example'))
+        self.assertEqual('foo', IWebDAVProperties(self.content)[('foo', self.DOCUMENT)])
