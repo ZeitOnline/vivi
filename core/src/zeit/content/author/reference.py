@@ -10,7 +10,7 @@ import zeit.content.author.interfaces
 @grok.adapter(zeit.content.author.interfaces.IAuthor, name='author')
 @grok.implementer(zeit.cms.content.interfaces.IXMLReference)
 def XMLReference(context):
-    node = lxml.builder.E.author(href=context.uniqueId, hdok=context.honorar_id or '')
+    node = lxml.builder.E.author(href=context.uniqueId, hdok=context.hdok_id or '')
     return node
 
 

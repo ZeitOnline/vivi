@@ -112,7 +112,7 @@ class HonorarLookupTest(zeit.content.author.testing.BrowserTestCase):
         self.assertEqual('Shakespeare', b.getControl('Lastname').value)
         self.assertEqual('1234', b.getControl('Honorar ID').value)
 
-    def test_checks_for_existing_honorar_id(self):
+    def test_checks_for_existing_hdok_id(self):
         b = self.browser
         b.open('http://localhost/++skin++vivi/@@zeit.content.author.add_contextfree')
         b.getControl('Firstname').value = 'William'

@@ -128,7 +128,7 @@ class AddContextfree(zeit.cms.browser.form.AddForm):
 
     need_confirmation_checkbox = False
 
-    duplicate_honorar_id = zope.app.pagetemplate.ViewPageTemplateFile('honorar-duplicate.pt')
+    duplicate_hdok_id = zope.app.pagetemplate.ViewPageTemplateFile('honorar-duplicate.pt')
     _duplicate_result = None
 
     def _validate_folder_name(self, folder_name):
@@ -154,21 +154,21 @@ class AddContextfree(zeit.cms.browser.form.AddForm):
         self.applyChanges(self.new_object, data)
         return self.new_object
 
-    def prevent_duplicate_honorar_id(self, author):
-        if not author.honorar_id:
+    def prevent_duplicate_hdok_id(self, author):
+        if not author.hdok_id:
             return False
-        exists = author.find_by_honorar_id(author.honorar_id)
+        exists = author.find_by_hdok_id(author.hdok_id)
         if exists is None:
             return False
         payload = exists.get('payload', {}).get('xml', {})
         data = {'uniqueId': zeit.cms.interfaces.ID_NAMESPACE[:-1] + exists['url']}
         for key in ['firstname', 'lastname', 'honorar_id']:
             data[key] = payload.get(key)
-        self._duplicate_result = self.duplicate_honorar_id(author=data)
+        self._duplicate_result = self.duplicate_hdok_id(author=data)
         return True
 
     def add(self, object):
-        if self.prevent_duplicate_honorar_id(object):
+        if self.prevent_duplicate_hdok_id(object):
             return
         super().add(object, self.create_folder(object), 'index')
 

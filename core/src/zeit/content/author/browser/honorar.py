@@ -102,7 +102,7 @@ class Lookup(zeit.cms.browser.view.Base):
             return json.dumps([x['form_parameters'] for x in self.results])
 
     FORM_FIELDS = {
-        'gcid': 'honorar_id',
+        'gcid': 'hdok_id',
         'vorname': 'firstname',
         'nachname': 'lastname',
         'titel': 'title',

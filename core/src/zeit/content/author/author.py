@@ -44,7 +44,6 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
         'entered_display_name',
         'facebook',
         'firstname',
-        'honorar_id',
         'instagram',
         'initials',
         'jabber',
@@ -70,6 +69,7 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
     del locals()['name']
 
     # BBB Diverging xpaths are for existing bodies, remove after WCM-26 is launched.
+    hdok_id = ObjectPathProperty('.honorar_id', IAuthor['hdok_id'])
     vgwort_id = ObjectPathProperty('.vgwortid', IAuthor['vgwort_id'])
     vgwort_code = ObjectPathProperty('.vgwortcode', IAuthor['vgwort_code'])
 
@@ -95,7 +95,7 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
         )
 
     @classmethod
-    def find_by_honorar_id(cls, honorar_id):
+    def find_by_hdok_id(cls, hdok_id):
         elastic = zope.component.getUtility(zeit.find.interfaces.ICMSSearch)
         result = elastic.search(
             {
@@ -103,7 +103,8 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
                     'bool': {
                         'filter': [
                             {'term': {'doc_type': 'author'}},
-                            {'term': {'payload.xml.honorar_id': honorar_id}},
+                            # BBB for existing indexed documents.
+                            {'term': {'payload.xml.honorar_id': hdok_id}},
                         ]
                     }
                 },
@@ -197,10 +198,10 @@ def create_honorar_on_add(context, event):
 
 
 def _create_honorar_entry(author):
-    if author.honorar_id:
+    if author.hdok_id:
         return
     api = zope.component.getUtility(zeit.content.author.interfaces.IHonorar)
-    author.honorar_id = api.create(
+    author.hdok_id = api.create(
         {
             'vorname': author.firstname,
             'nachname': author.lastname,
