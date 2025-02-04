@@ -523,6 +523,15 @@ class ContractSearch:
         result = list(search(offset=1))
         assert result == [('http://xml.zeit.de/testing/c2', 'foo')]
 
+    def test_search_field_exists(self):
+        self.add_resource('foo', body='mybody', properties={('foo', self.NS): 'foo'})
+        foo = SearchVar('foo', self.NS)
+        bar = SearchVar('bar', self.NS)
+        result = list(self.connector.search([foo], foo == '__exists__'))
+        assert result == [('http://xml.zeit.de/testing/foo', 'foo')]
+        result = list(self.connector.search([bar], bar == '__exists__'))
+        assert result == []
+
 
 class NormalizeFolders(collections.abc.MutableMapping):
     """DAV connector requires trailing slash for uniqueId of folders, while SQL

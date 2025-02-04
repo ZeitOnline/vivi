@@ -680,9 +680,18 @@ class Connector:
             namespace = var.namespace.replace(Content.NS, '', 1)
             column = Content.column_by_name(name, namespace, 'read')
             if column is not None:
-                return column == value
-            value = json.dumps(str(value))  # Apply correct quoting for jsonpath.
-            return Content.unsorted.path_match(f'$."{namespace}"."{name}" == {value}')
+                if value == '__exists__':
+                    return column != None  # noqa
+                else:
+                    return column == value
+
+            key = f'$."{namespace}"."{name}"'
+            if value == '__exists__':
+                query = f'exists({key})'
+            else:
+                value = json.dumps(str(value))  # Apply correct quoting for jsonpath.
+                query = f'{key} == {value}'
+            return Content.unsorted.path_match(query)
         else:
             raise RuntimeError(f'Unknown operand {op!r} while building search query')
 
