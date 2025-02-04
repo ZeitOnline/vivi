@@ -42,7 +42,6 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
         'enable_followpush',
         'enable_feedback',
         'entered_display_name',
-        'external',
         'facebook',
         'firstname',
         'honorar_id',

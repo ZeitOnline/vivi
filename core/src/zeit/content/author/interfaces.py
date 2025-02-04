@@ -92,8 +92,6 @@ class IAuthor(zope.interface.Interface, zeit.retresco.interfaces.ISkipEnrich):
         title=_('Redaktionszugehörigkeit'), source=StatusSource(), required=False
     )
 
-    external = zope.schema.Bool(title=_('External?'))
-
     enable_followpush = zope.schema.Bool(title=_('Enable followpush?'))
 
     enable_feedback = zope.schema.Bool(title=_('Enable feedback?'), default=False)
