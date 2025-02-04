@@ -1,4 +1,5 @@
 from contextlib import contextmanager
+from functools import partial
 from io import BytesIO
 from unittest import mock
 import collections.abc
@@ -504,6 +505,23 @@ class ContractSearch:
 
         result = list(self.connector.search([foo, ham], (foo == 'bar') & (ham == 'egg')))
         assert result == [('http://xml.zeit.de/testing/bar', 'bar', 'egg')]
+
+    def test_search_order_limit_offset(self):
+        self.add_resource('c1', body='mybody', properties={('foo', self.NS): 'foo'})
+        self.add_resource('c2', body='mybody', properties={('foo', self.NS): 'foo'})
+        var = SearchVar('foo', self.NS)
+        search = partial(self.connector.search, [var], var == 'foo', order='name asc')
+
+        result = list(search())
+        assert result == [
+            ('http://xml.zeit.de/testing/c1', 'foo'),
+            ('http://xml.zeit.de/testing/c2', 'foo'),
+        ]
+
+        result = list(search(limit=1))
+        assert result == [('http://xml.zeit.de/testing/c1', 'foo')]
+        result = list(search(offset=1))
+        assert result == [('http://xml.zeit.de/testing/c2', 'foo')]
 
 
 class NormalizeFolders(collections.abc.MutableMapping):

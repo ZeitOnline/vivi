@@ -16,12 +16,8 @@ from google.cloud.storage.retry import DEFAULT_RETRY
 from opentelemetry.metrics import NoOpUpDownCounter
 from opentelemetry.trace import SpanKind
 from opentelemetry.trace.status import Status, StatusCode
-from sqlalchemy import (
-    delete,
-    insert,
-    select,
-    update,
-)
+from sqlalchemy import delete, insert, select, update
+from sqlalchemy import text as sql
 from sqlalchemy.orm import joinedload
 import google.api_core.exceptions
 import opentelemetry.instrumentation.sqlalchemy
@@ -605,7 +601,7 @@ class Connector:
             until=properties.get(('lock_until', INTERNAL_PROPERTY)),
         )
 
-    def _search_dav(self, attrlist, expr):
+    def _search_dav(self, attrlist, expr, order=None, limit=None, offset=0):
         if (
             len(attrlist) == 1
             and attrlist[0].name == 'uuid'
@@ -618,6 +614,12 @@ class Connector:
                 yield (content.uniqueid, '{urn:uuid:%s}' % content.id)
         else:
             query = select(Content).where(self._build_filter(expr))
+            if order:
+                query = query.order_by(sql(order))
+            if limit:
+                query = query.limit(limit)
+            if offset:
+                query = query.offset(offset)
             result = self.session.execute(query)
             for item in result.scalars():
                 data = [item.uniqueid]
