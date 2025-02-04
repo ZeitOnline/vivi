@@ -71,8 +71,6 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
         locals()[name] = ObjectPathProperty('.%s' % name, IAuthor[name])
     del locals()['name']
 
-    community_profile = zeit.cms.content.property.ObjectPathProperty('.communityprofile')
-
     favourite_content = zeit.cms.content.reference.MultiResource('.favourites.reference', 'related')
 
     @classmethod

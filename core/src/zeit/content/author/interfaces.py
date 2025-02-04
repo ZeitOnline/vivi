@@ -82,8 +82,6 @@ class IAuthor(zope.interface.Interface, zeit.retresco.interfaces.ISkipEnrich):
 
     initials = zope.schema.TextLine(title=_('Initials'), required=False)
 
-    community_profile = zope.schema.TextLine(title=_('Community-Profile URL'), required=False)
-
     ssoid = zope.schema.Int(title=_('SSO-Id'), required=False, min=10, max=99999999)
 
     sso_connect = zope.schema.Bool(title=_('Connect with SSO-Account'), default=True)
