@@ -1,4 +1,5 @@
 from contextlib import contextmanager
+from functools import partial
 from io import BytesIO
 from unittest import mock
 import collections.abc
@@ -19,6 +20,7 @@ from zeit.connector.interfaces import (
     MoveError,
 )
 from zeit.connector.resource import Resource
+from zeit.connector.search import SearchVar
 from zeit.connector.testing import ROOT, copy_inherited_functions
 import zeit.cms.config
 import zeit.connector.cache
@@ -467,15 +469,11 @@ class ContractLock:
 
 class ContractSearch:
     def test_search_unknown_metadata(self):
-        from zeit.connector.search import SearchVar
-
         var = SearchVar('name', 'namespace')
         result = list(self.connector.search([var], var == 'foo'))
         assert result == []
 
     def test_search_known_metadata(self):
-        from zeit.connector.search import SearchVar
-
         self.add_resource('foo', body='mybody', properties={('foo-bar', self.NS): 'foo'})
         self.add_resource('bar', body='mybody', properties={('foo-bar', self.NS): 'bar'})
         var = SearchVar('foo-bar', self.NS)
@@ -487,7 +485,6 @@ class ContractSearch:
     def test_search_uuid(self):
         uuid = '{urn:uuid:deadbeef-dead-dead-dead-beefbeefbeef}'
         namespace = self.NS.replace('/testing', '/document')
-        from zeit.connector.search import SearchVar
 
         self.add_resource('foo', body='mybody', properties={('uuid', namespace): uuid})
         var = SearchVar('uuid', namespace)
@@ -495,8 +492,6 @@ class ContractSearch:
         assert result == [('http://xml.zeit.de/testing/foo', uuid)]
 
     def test_search_and_operator(self):
-        from zeit.connector.search import SearchVar
-
         self.add_resource('foo', body='mybody', properties={('foo', self.NS): 'foo'})
         self.add_resource(
             'bar', body='mybody', properties={('foo', self.NS): 'bar', ('ham', self.NS): 'egg'}
@@ -510,6 +505,32 @@ class ContractSearch:
 
         result = list(self.connector.search([foo, ham], (foo == 'bar') & (ham == 'egg')))
         assert result == [('http://xml.zeit.de/testing/bar', 'bar', 'egg')]
+
+    def test_search_order_limit_offset(self):
+        self.add_resource('c1', body='mybody', properties={('foo', self.NS): 'foo'})
+        self.add_resource('c2', body='mybody', properties={('foo', self.NS): 'foo'})
+        var = SearchVar('foo', self.NS)
+        search = partial(self.connector.search, [var], var == 'foo', order='name asc')
+
+        result = list(search())
+        assert result == [
+            ('http://xml.zeit.de/testing/c1', 'foo'),
+            ('http://xml.zeit.de/testing/c2', 'foo'),
+        ]
+
+        result = list(search(limit=1))
+        assert result == [('http://xml.zeit.de/testing/c1', 'foo')]
+        result = list(search(offset=1))
+        assert result == [('http://xml.zeit.de/testing/c2', 'foo')]
+
+    def test_search_field_exists(self):
+        self.add_resource('foo', body='mybody', properties={('foo', self.NS): 'foo'})
+        foo = SearchVar('foo', self.NS)
+        bar = SearchVar('bar', self.NS)
+        result = list(self.connector.search([foo], foo == '__exists__'))
+        assert result == [('http://xml.zeit.de/testing/foo', 'foo')]
+        result = list(self.connector.search([bar], bar == '__exists__'))
+        assert result == []
 
 
 class NormalizeFolders(collections.abc.MutableMapping):

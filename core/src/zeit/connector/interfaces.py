@@ -197,8 +197,13 @@ class IConnector(zope.interface.Interface):
         returns None, None, None if the resource is not locked or is non-existant
         """
 
-    def search(attributes, query):
+    def search(attributes, query, order=None, limit=None, offset=0):
         """Search for `query`
+
+        query: `SearchExpr`, see zeit.connector.search
+        order: SQL `order by` clause, e.g. `date_last_published desc nulls last`
+        limit: int, maximum number of results to return
+        offset: int, skip number of rows
 
         returns an iterator of tuples containing the unique id and the values
         of the requested `attributes`:

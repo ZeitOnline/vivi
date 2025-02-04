@@ -74,6 +74,7 @@ class Connector(zeit.connector.filesystem.Connector):
         self._properties = {}
         self.search_result = []
         self.search_args = []
+        self.search_dav_args = []
 
     def listCollection(self, id):
         """List the filenames of a collection identified by path."""
@@ -296,8 +297,9 @@ class Connector(zeit.connector.filesystem.Connector):
             my_lock = not lock_is_foreign(lock_principal)
         return (lock_principal, until, my_lock)
 
-    def search(self, attributes, expression):
+    def search(self, attributes, expression, order=None, limit=None, offset=0):
         log.debug('Searching: %s', expression._render())
+        self.search_dav_args.append((attributes, expression, order, limit, offset))
 
         unique_ids = self.search_result
 
