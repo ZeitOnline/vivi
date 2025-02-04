@@ -94,6 +94,34 @@ class ContentTypes:
         Unicode, info={'namespace': 'document', 'name': 'header_layout', 'migration': 'wcm_471'}
     )
 
+    author_firstname = mapped_column(
+        Unicode, info={'namespace': 'author', 'name': 'firstname', 'migration': 'wcm_26'}
+    )
+    author_lastname = mapped_column(
+        Unicode, info={'namespace': 'author', 'name': 'lastname', 'migration': 'wcm_26'}
+    )
+    author_displayname = mapped_column(
+        Unicode, info={'namespace': 'author', 'name': 'display_name', 'migration': 'wcm_26'}
+    )
+    author_initials = mapped_column(
+        Unicode, info={'namespace': 'author', 'name': 'initials', 'migration': 'wcm_26'}
+    )
+    author_department = mapped_column(
+        Unicode, info={'namespace': 'author', 'name': 'department', 'migration': 'wcm_26'}
+    )
+    author_ssoid = mapped_column(
+        Integer, info={'namespace': 'author', 'name': 'ssoid', 'migration': 'wcm_26'}
+    )
+    author_hdok_id = mapped_column(
+        Integer, info={'namespace': 'author', 'name': 'hdok_id', 'migration': 'wcm_26'}
+    )
+    author_vgwort_id = mapped_column(
+        Integer, info={'namespace': 'author', 'name': 'vgwort_id', 'migration': 'wcm_26'}
+    )
+    author_vgwort_code = mapped_column(
+        Unicode, info={'namespace': 'author', 'name': 'vgwort_code', 'migration': 'wcm_26'}
+    )
+
     centerpage_type = mapped_column(
         Unicode, info={'namespace': 'zeit.content.cp', 'name': 'type', 'migration': 'wcm_471'}
     )
@@ -193,6 +221,8 @@ class Content(Base, CommonMetadata, ContentTypes, Timestamps, Miscellaneous):
                     'article_genre',
                     'article_header',
                     'audio_premium_enabled',
+                    'author_hdok_id',
+                    'author_ssoid',
                     'centerpage_type',
                     'print_ressort',
                     'product',
