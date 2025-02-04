@@ -79,7 +79,7 @@ class HonorarIDTest(zeit.content.author.testing.FunctionalTestCase):
         zope.event.notify(zope.lifecycleevent.ObjectCreatedEvent(author))
         api = zope.component.getUtility(zeit.content.author.interfaces.IHonorar)
         self.assertTrue(api.create.called)
-        self.assertEqual('mock-honorar-id', author.hdok_id)
+        self.assertEqual(9876, author.hdok_id)
 
     def test_hdok_id_present_is_left_alone(self):
         author = zeit.content.author.author.Author()

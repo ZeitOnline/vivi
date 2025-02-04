@@ -68,7 +68,7 @@ class IAuthor(zope.interface.Interface, zeit.retresco.interfaces.ISkipEnrich):
         title=_('VG-Wort Code'), required=False, constraint=valid_vgwort_code
     )
 
-    hdok_id = zope.schema.TextLine(title=_('Honorar ID'), required=False)
+    hdok_id = zope.schema.Int(title=_('Honorar ID'), required=False)
 
     display_name = zope.schema.TextLine(
         title='The computed display name. Default is "firstname lastname",'
