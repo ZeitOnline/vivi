@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.25.0 (2025-02-04)
+-------------------
+
+- WCM-690: Record event type and uuid for tracing in webhooks (brightcove, simplecast, speechbert)
+
+- WCM-698: Implement exists, order, limit, offset for dav-style search
+
+
 7.24.0 (2025-02-03)
 -------------------
 
