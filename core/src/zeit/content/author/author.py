@@ -117,11 +117,6 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
     def bio_questions(self):
         return zeit.content.author.interfaces.IBiographyQuestions(self)
 
-    @property
-    def image_group(self):
-        # BBB Deprecated in favor of a separate images adapter
-        return zeit.content.image.interfaces.IImages(self).image
-
 
 class AuthorType(zeit.cms.type.XMLContentTypeDeclaration):
     factory = Author
