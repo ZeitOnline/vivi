@@ -13,7 +13,7 @@ import zeit.content.image.interfaces
 import zeit.retresco.interfaces
 
 
-class StatusSource(zeit.cms.content.sources.SimpleFixedValueSource):
+class DepartmentSource(zeit.cms.content.sources.SimpleFixedValueSource):
     values = ('Print', 'Online', 'Reader', 'Agentur')
 
 
@@ -86,8 +86,8 @@ class IAuthor(zope.interface.Interface, zeit.retresco.interfaces.ISkipEnrich):
 
     sso_connect = zope.schema.Bool(title=_('Connect with SSO-Account'), default=True)
 
-    status = zope.schema.Choice(
-        title=_('Redaktionszugehörigkeit'), source=StatusSource(), required=False
+    department = zope.schema.Choice(
+        title=_('Redaktionszugehörigkeit'), source=DepartmentSource(), required=False
     )
 
     enable_followpush = zope.schema.Bool(title=_('Enable followpush?'))

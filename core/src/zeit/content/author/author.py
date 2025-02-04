@@ -52,7 +52,6 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
         'pgp',
         'show_letterbox_link',
         'signal',
-        'status',
         'summary',
         'threema',
         'title',
@@ -69,6 +68,7 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
     del locals()['name']
 
     # BBB Diverging xpaths are for existing bodies, remove after WCM-26 is launched.
+    department = ObjectPathProperty('.status', IAuthor['department'])
     hdok_id = ObjectPathProperty('.honorar_id', IAuthor['hdok_id'])
     vgwort_id = ObjectPathProperty('.vgwortid', IAuthor['vgwort_id'])
     vgwort_code = ObjectPathProperty('.vgwortcode', IAuthor['vgwort_code'])
