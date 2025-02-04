@@ -19,6 +19,7 @@ from zeit.connector.interfaces import (
     MoveError,
 )
 from zeit.connector.resource import Resource
+from zeit.connector.search import SearchVar
 from zeit.connector.testing import ROOT, copy_inherited_functions
 import zeit.cms.config
 import zeit.connector.cache
@@ -467,15 +468,11 @@ class ContractLock:
 
 class ContractSearch:
     def test_search_unknown_metadata(self):
-        from zeit.connector.search import SearchVar
-
         var = SearchVar('name', 'namespace')
         result = list(self.connector.search([var], var == 'foo'))
         assert result == []
 
     def test_search_known_metadata(self):
-        from zeit.connector.search import SearchVar
-
         self.add_resource('foo', body='mybody', properties={('foo-bar', self.NS): 'foo'})
         self.add_resource('bar', body='mybody', properties={('foo-bar', self.NS): 'bar'})
         var = SearchVar('foo-bar', self.NS)
@@ -487,7 +484,6 @@ class ContractSearch:
     def test_search_uuid(self):
         uuid = '{urn:uuid:deadbeef-dead-dead-dead-beefbeefbeef}'
         namespace = self.NS.replace('/testing', '/document')
-        from zeit.connector.search import SearchVar
 
         self.add_resource('foo', body='mybody', properties={('uuid', namespace): uuid})
         var = SearchVar('uuid', namespace)
@@ -495,8 +491,6 @@ class ContractSearch:
         assert result == [('http://xml.zeit.de/testing/foo', uuid)]
 
     def test_search_and_operator(self):
-        from zeit.connector.search import SearchVar
-
         self.add_resource('foo', body='mybody', properties={('foo', self.NS): 'foo'})
         self.add_resource(
             'bar', body='mybody', properties={('foo', self.NS): 'bar', ('ham', self.NS): 'egg'}
