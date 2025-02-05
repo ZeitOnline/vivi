@@ -564,7 +564,7 @@ class Product(AllowedBase):
         self,
         id=None,
         title=None,
-        vgwortcode=None,
+        vgwort_code=None,
         href=None,
         target=None,
         label=None,
@@ -579,7 +579,7 @@ class Product(AllowedBase):
         counter=False,
     ):
         super().__init__(id, title, None)
-        self.vgwortcode = vgwortcode
+        self.vgwort_code = vgwort_code
         self.href = href
         self.target = target
         self.label = label
@@ -607,7 +607,7 @@ class ProductSource(ObjectSource, SimpleContextualXMLSource):
             product = Product(
                 str(node.get('id')),
                 str(node.text.strip()),
-                unicode_or_none(node.get('vgwortcode')),
+                unicode_or_none(node.get('vgwort_code')),
                 unicode_or_none(node.get('href')),
                 unicode_or_none(node.get('target')),
                 unicode_or_none(node.get('label')),

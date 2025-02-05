@@ -245,7 +245,7 @@ class IProduct(zope.interface.Interface):
 
     id = zope.interface.Attribute('id')
     title = zope.interface.Attribute('title')
-    vgwortcode = zope.interface.Attribute('VGWort code, optional')
+    vgwort_code = zope.interface.Attribute('VGWort code, optional')
     href = zope.interface.Attribute('URL for the "homepage" of this product')
     target = zope.interface.Attribute('Optional link target (e.g. _blank)')
     show = zope.interface.Attribute('Flag what to display in frontend byline. {issue,link,source}')

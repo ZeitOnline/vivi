@@ -38,7 +38,7 @@ class RelatedReferenceTest(zeit.content.author.testing.FunctionalTestCase):
 
     def test_hdok_id_is_added(self):
         author = zeit.content.author.author.Author()
-        author.honorar_id = 'honorar-id'
+        author.hdok_id = 'honorar-id'
         author = self.repository['testauthor'] = author
         result = zope.component.getAdapter(
             author, zeit.cms.content.interfaces.IXMLReference, name='author'

@@ -6,8 +6,10 @@ import lxml.objectify
 import zope.component
 import zope.schema.interfaces
 
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.content.util import create_parent_nodes
 from zeit.connector.resource import PropertyKey
+import zeit.cms.content.dav
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.connector.resource
@@ -16,7 +18,9 @@ import zeit.connector.resource
 class ObjectPathProperty:
     """Property which is stored in an XML node."""
 
-    def __init__(self, path, field=None, use_default=False):
+    def __init__(
+        self, path, field=None, use_default=False, dav_ns=None, dav_name=None, dav_toggle=None
+    ):
         if path is None:
             # This is the root itself.
             self.path = None
@@ -25,9 +29,21 @@ class ObjectPathProperty:
         self.field = field
         self.use_default = use_default
 
+        self.dav_toggle = dav_toggle
+        if dav_ns:
+            assert field is not None
+            self.dav = zeit.cms.content.dav.DAVProperty(field, dav_ns, dav_name, use_default)
+
     def __get__(self, instance, class_):
         if instance is None:
             return self
+
+        if self.dav_toggle and (
+            self.dav_toggle == 'always'
+            or FEATURE_TOGGLES.find(f'xmlproperty_read_{self.dav_toggle}')
+        ):
+            return self.dav.__get__(instance, class_)
+
         node = self.getNode(instance)
         if node is None:
             if self.field:
@@ -47,6 +63,14 @@ class ObjectPathProperty:
         return node.text or ''
 
     def __set__(self, instance, value):
+        if self.dav_toggle and (
+            self.dav_toggle == 'always'
+            or FEATURE_TOGGLES.find(f'xmlproperty_write_{self.dav_toggle}')
+        ):
+            self.dav.__set__(instance, value)
+            if FEATURE_TOGGLES.find(f'xmlproperty_strict_{self.dav_toggle}'):
+                return
+
         if self.path is None:
             # We cannot just set the new value because setting detaches the
             # instance.xml from the original tree leaving instance independent

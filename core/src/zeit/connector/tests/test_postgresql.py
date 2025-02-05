@@ -426,3 +426,17 @@ class PropertiesColumnTest(zeit.connector.testing.SQLTest):
         with raises(ValueError) as e:
             self.add_resource('foo', properties={('date_created', f'{NS}document'): 'not a date'})
         self.assertIn("Cannot convert 'not a date' to date_created", str(e.value))
+
+
+class ColumnDeclarationTest(zeit.connector.testing.TestCase):
+    layer = zeit.connector.testing.COLUMNS_ZOPE_LAYER
+
+    def test_column_declarations_match_dav_properties(self):
+        declared = {
+            (ns.replace(Content.NS, ''), name)
+            for name, ns in zeit.cms.content.dav.PROPERTY_REGISTRY.keys()
+        }
+        for column in Content._columns_with_name('always'):
+            ns = column.info['namespace']
+            name = column.info['name']
+            self.assertIn((ns, name), declared)

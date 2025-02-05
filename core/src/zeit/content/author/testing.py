@@ -27,7 +27,7 @@ class HonorarMockLayer(plone.testing.Layer):
         honorar = zope.component.getUtility(zeit.content.author.interfaces.IHonorar)
         if isinstance(honorar, mock.Mock):
             honorar.search.return_value = []
-            honorar.create.return_value = 'mock-honorar-id'
+            honorar.create.return_value = 9876
             honorar.reset_mock()
 
 

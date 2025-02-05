@@ -237,7 +237,7 @@ Products
 ...     zope.browser.interfaces.ITerms)
 >>> terms.getTerm(list(products)[-1]).title
 'Zeit Online'
->>> list(products)[-2].vgwortcode
+>>> list(products)[-2].vgwort_code
 '1234abc'
->>> list(products)[-1].vgwortcode is None
+>>> list(products)[-1].vgwort_code is None
 True

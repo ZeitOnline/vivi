@@ -263,6 +263,12 @@ SQL_CONTENT_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(SQL_CONTENT_ZCML_LAYE
 SQL_CONTENT_LAYER = SQLDatabaseLayer(bases=(SQL_CONTENT_ZOPE_LAYER,), zodb=True)
 
 
+COLUMNS_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
+    'testing-columns.zcml', bases=(zeit.cms.testing.CONFIG_LAYER,)
+)
+COLUMNS_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(COLUMNS_ZCML_LAYER,))
+
+
 class TestCase(zeit.cms.testing.FunctionalTestCase):
     @property
     def connector(self):

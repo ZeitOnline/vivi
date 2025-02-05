@@ -161,5 +161,5 @@ def MockHonorar():
     honorar = mock.Mock()
     zope.interface.alsoProvides(honorar, zeit.content.author.interfaces.IHonorar)
     honorar.search.return_value = []
-    honorar.create.return_value = 'mock-honorar-id'
+    honorar.create.return_value = 9876
     return honorar

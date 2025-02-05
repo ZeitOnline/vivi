@@ -346,7 +346,7 @@ class Author(Converter):
     grok.name(interface.__name__)
 
     def __call__(self):
-        return {
+        result = {
             'title': self.context.display_name,
             'teaser': self.context.summary or self.context.display_name,
             'payload': {
@@ -358,6 +358,14 @@ class Author(Converter):
                 },
             },
         }
+        xml = result.get('xml', {})
+        if 'hdok_id' in xml:  # BBB, remove after WCM-26/ZO-5655
+            xml['honorar_id'] = xml.pop('hdok_id')
+        if 'department' in xml:  # BBB, remove after WCM-26
+            xml['status'] = xml.pop('status')
+        if '_display_name' in xml:  # BBB, remove after WCM-26
+            xml['display_name'] = xml.pop('_display_name')
+        return result
 
 
 class Advertisement(Converter):

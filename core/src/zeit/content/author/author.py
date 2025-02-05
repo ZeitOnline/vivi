@@ -10,7 +10,10 @@ import zope.lifecycleevent
 import zope.security.proxy
 
 from zeit.cms.content.property import ObjectPathProperty
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
+from zeit.cms.interfaces import META_SCHEMA_NS
+from zeit.connector.search import SearchVar
 from zeit.content.author.interfaces import IAuthor
 import zeit.cms.config
 import zeit.cms.content.interfaces
@@ -27,6 +30,13 @@ import zeit.content.image.imagereference
 import zeit.find.interfaces
 
 
+AUTHOR_NS = 'http://namespaces.zeit.de/CMS/author'
+TYPE = SearchVar('type', META_SCHEMA_NS)
+FIRSTNAME = SearchVar('firstname', AUTHOR_NS)
+LASTNAME = SearchVar('lastname', AUTHOR_NS)
+HDOK_ID = SearchVar('hdok_id', AUTHOR_NS)
+
+
 @zope.interface.implementer(zeit.content.author.interfaces.IAuthor, zeit.cms.interfaces.IAsset)
 class Author(zeit.cms.content.xmlsupport.XMLContentBase):
     default_template = '<author></author>'
@@ -35,26 +45,17 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
         'additional_contact_title',
         'additional_contact_content',
         'biography',
-        'display_name',
         'email',
         'sso_connect',
-        'ssoid',
         'enable_followpush',
         'enable_feedback',
-        'entered_display_name',
-        'external',
         'facebook',
-        'firstname',
-        'honorar_id',
         'instagram',
-        'initials',
         'jabber',
-        'lastname',
         'occupation',
         'pgp',
         'show_letterbox_link',
         'signal',
-        'status',
         'summary',
         'threema',
         'title',
@@ -65,62 +66,115 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
         'topiclink_url_2',
         'topiclink_url_3',
         'twitter',
-        'vgwortcode',
-        'vgwortid',
         'website',
     ]:
-        locals()[name] = ObjectPathProperty('.%s' % name, IAuthor[name])
-    del locals()['name']
+        locals()[name] = ObjectPathProperty(f'.{name}', IAuthor[name])
 
-    community_profile = zeit.cms.content.property.ObjectPathProperty('.communityprofile')
+    for name in [
+        'firstname',
+        'lastname',
+        'initials',
+        'ssoid',
+    ]:
+        locals()[name] = ObjectPathProperty(
+            f'.{name}', IAuthor[name], dav_ns=AUTHOR_NS, dav_name=name, dav_toggle='wcm_26'
+        )
+
+    # BBB Diverging xpaths are for existing bodies, remove after WCM-26 is launched.
+    for name, xpath in [
+        ('department', 'status'),
+        ('hdok_id', 'honorar_id'),
+        ('vgwort_id', 'vgwortid'),
+        ('vgwort_code', 'vgwortcode'),
+    ]:
+        locals()[name] = ObjectPathProperty(
+            f'.{xpath}', IAuthor[name], dav_ns=AUTHOR_NS, dav_name=name, dav_toggle='wcm_26'
+        )
+    del locals()['name']
+    del locals()['xpath']
+
+    @property
+    def display_name(self):
+        if self._display_name:
+            return self._display_name
+        else:
+            return f'{self.firstname} {self.lastname}'
+
+    @display_name.setter
+    def display_name(self, value):
+        self._display_name = value
+
+    _display_name = ObjectPathProperty(
+        '.display_name',
+        IAuthor['display_name'],
+        dav_ns=AUTHOR_NS,
+        dav_name='display_name',
+        dav_toggle='wcm_26',
+    )
 
     favourite_content = zeit.cms.content.reference.MultiResource('.favourites.reference', 'related')
 
     @classmethod
     def exists(cls, firstname, lastname):
-        elastic = zope.component.getUtility(zeit.find.interfaces.ICMSSearch)
-        return bool(
-            elastic.search(
+        if FEATURE_TOGGLES.find('xmlproperty_read_wcm_26'):
+            connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+            result = list(
+                connector.search(
+                    [TYPE, FIRSTNAME, LASTNAME],
+                    (TYPE == 'author') & (FIRSTNAME == firstname) & (LASTNAME == lastname),
+                )
+            )
+            return bool(result)
+        else:
+            elastic = zope.component.getUtility(zeit.find.interfaces.ICMSSearch)
+            return bool(
+                elastic.search(
+                    {
+                        'query': {
+                            'bool': {
+                                'filter': [
+                                    {'term': {'doc_type': 'author'}},
+                                    {'term': {'payload.xml.firstname': firstname}},
+                                    {'term': {'payload.xml.lastname': lastname}},
+                                ]
+                            }
+                        }
+                    }
+                ).hits
+            )
+
+    @classmethod
+    def find_by_hdok_id(cls, hdok_id):
+        if FEATURE_TOGGLES.find('xmlproperty_read_wcm_26'):
+            connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+            result = list(
+                connector.search(
+                    [TYPE, HDOK_ID],
+                    (TYPE == 'author') & (HDOK_ID == hdok_id),
+                )
+            )
+            return result[0] if result else None
+        else:
+            elastic = zope.component.getUtility(zeit.find.interfaces.ICMSSearch)
+            result = elastic.search(
                 {
                     'query': {
                         'bool': {
                             'filter': [
                                 {'term': {'doc_type': 'author'}},
-                                {'term': {'payload.xml.firstname': firstname}},
-                                {'term': {'payload.xml.lastname': lastname}},
+                                # BBB for existing indexed documents.
+                                {'term': {'payload.xml.honorar_id': hdok_id}},
                             ]
                         }
-                    }
+                    },
+                    '_source': ['url', 'payload.xml'],
                 }
-            ).hits
-        )
-
-    @classmethod
-    def find_by_honorar_id(cls, honorar_id):
-        elastic = zope.component.getUtility(zeit.find.interfaces.ICMSSearch)
-        result = elastic.search(
-            {
-                'query': {
-                    'bool': {
-                        'filter': [
-                            {'term': {'doc_type': 'author'}},
-                            {'term': {'payload.xml.honorar_id': honorar_id}},
-                        ]
-                    }
-                },
-                '_source': ['url', 'payload.xml'],
-            }
-        )
-        return None if not result.hits else result[0]
+            )
+            return None if not result.hits else result[0]
 
     @property
     def bio_questions(self):
         return zeit.content.author.interfaces.IBiographyQuestions(self)
-
-    @property
-    def image_group(self):
-        # BBB Deprecated in favor of a separate images adapter
-        return zeit.content.image.interfaces.IImages(self).image
 
 
 class AuthorType(zeit.cms.type.XMLContentTypeDeclaration):
@@ -135,16 +189,6 @@ class AuthorType(zeit.cms.type.XMLContentTypeDeclaration):
 @zope.interface.implementer(zeit.content.image.interfaces.IImages)
 class AuthorImages(zeit.content.image.imagereference.ImagesAdapter):
     _image = zeit.cms.content.reference.SingleReferenceProperty('.image_group', 'image')
-
-
-@grok.subscribe(
-    zeit.content.author.interfaces.IAuthor, zeit.cms.repository.interfaces.IBeforeObjectAddEvent
-)
-def update_display_name(obj, event):
-    if obj.entered_display_name:
-        obj.display_name = obj.entered_display_name
-    else:
-        obj.display_name = '%s %s' % (obj.firstname, obj.lastname)
 
 
 @grok.subscribe(
@@ -203,10 +247,10 @@ def create_honorar_on_add(context, event):
 
 
 def _create_honorar_entry(author):
-    if author.honorar_id:
+    if author.hdok_id:
         return
     api = zope.component.getUtility(zeit.content.author.interfaces.IHonorar)
-    author.honorar_id = api.create(
+    author.hdok_id = api.create(
         {
             'vorname': author.firstname,
             'nachname': author.lastname,
@@ -250,11 +294,11 @@ class BiographyQuestions(
         object.__setattr__(self, '__parent__', context)
 
     def __getitem__(self, key):
-        node = self.xml.xpath('//question[@id="%s"]' % key)
+        node = self.xml.xpath(f'//question[@id="{key}"]')
         return Question(key, self.title(key), node[0].text if node else None)
 
     def __setitem__(self, key, value):
-        node = self.xml.xpath('//question[@id="%s"]' % key)
+        node = self.xml.xpath(f'//question[@id="{key}"]')
         if node:
             self.xml.remove(node[0])
         if value:

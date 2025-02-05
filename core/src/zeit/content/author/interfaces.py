@@ -13,7 +13,7 @@ import zeit.content.image.interfaces
 import zeit.retresco.interfaces
 
 
-class StatusSource(zeit.cms.content.sources.SimpleFixedValueSource):
+class DepartmentSource(zeit.cms.content.sources.SimpleFixedValueSource):
     values = ('Print', 'Online', 'Reader', 'Agentur')
 
 
@@ -21,11 +21,11 @@ class InvalidCode(zope.schema.ValidationError):
     __doc__ = _('Code contains invalid characters')
 
 
-valid_vgwortcode_regex = re.compile(r'^[A-Za-z]+$').match
+ONLY_LETTERS = re.compile(r'^[A-Za-z]+$').search
 
 
-def valid_vgwortcode(value):
-    if not valid_vgwortcode_regex(value):
+def valid_vgwort_code(value):
+    if not ONLY_LETTERS(value):
         raise InvalidCode(value)
     return True
 
@@ -56,7 +56,7 @@ class IAuthor(zope.interface.Interface, zeit.retresco.interfaces.ISkipEnrich):
     pgp = zope.schema.TextLine(title=_('PGP key'), required=False)
     website = zope.schema.TextLine(title=_('Website handle'), required=False)
 
-    vgwortid = zope.schema.Int(
+    vgwort_id = zope.schema.Int(
         title=_('VG-Wort ID'),
         required=False,
         # see messageService.wsdl:cardNumberType
@@ -64,35 +64,27 @@ class IAuthor(zope.interface.Interface, zeit.retresco.interfaces.ISkipEnrich):
         max=9999999,
     )
 
-    vgwortcode = zope.schema.TextLine(
-        title=_('VG-Wort Code'), required=False, constraint=valid_vgwortcode
+    vgwort_code = zope.schema.TextLine(  # Only for agencies
+        title=_('VG-Wort Code'), required=False, constraint=valid_vgwort_code
     )
 
-    honorar_id = zope.schema.TextLine(title=_('Honorar ID'), required=False)
+    hdok_id = zope.schema.Int(title=_('Honorar ID'), required=False)
 
     display_name = zope.schema.TextLine(
-        title='The computed display name. Default is "firstname lastname",'
-        ' a user entered value takes precedence.',
-        required=False,
-    )
-
-    entered_display_name = zope.schema.TextLine(
         title=_('Display name'), required=False, description=_("Default: 'Firstname Lastname'")
     )
+    # Help formlib to differentiate whether an override value exists.
+    _display_name = zope.schema.TextLine(readonly=True, required=False)
 
     initials = zope.schema.TextLine(title=_('Initials'), required=False)
-
-    community_profile = zope.schema.TextLine(title=_('Community-Profile URL'), required=False)
 
     ssoid = zope.schema.Int(title=_('SSO-Id'), required=False, min=10, max=99999999)
 
     sso_connect = zope.schema.Bool(title=_('Connect with SSO-Account'), default=True)
 
-    status = zope.schema.Choice(
-        title=_('Redaktionszugehörigkeit'), source=StatusSource(), required=False
+    department = zope.schema.Choice(
+        title=_('Redaktionszugehörigkeit'), source=DepartmentSource(), required=False
     )
-
-    external = zope.schema.Bool(title=_('External?'))
 
     enable_followpush = zope.schema.Bool(title=_('Enable followpush?'))
 
