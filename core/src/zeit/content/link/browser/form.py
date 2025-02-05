@@ -12,7 +12,7 @@ import zeit.content.link.link
 import zeit.push.browser.form
 
 
-class Base(zeit.push.browser.form.SocialBase, zeit.push.browser.form.MobileBase):
+class Base(zeit.push.browser.form.MobileBase):
     metadata_group = gocept.form.grouped.Fields(
         _('Metadata'),
         (
@@ -65,7 +65,6 @@ class Base(zeit.push.browser.form.SocialBase, zeit.push.browser.form.MobileBase)
         teaser_group,
         zeit.push.browser.form.MobileBase.mobile_fields,
         link_group,
-        zeit.push.browser.form.SocialBase.social_fields,
     )
 
     def setUpWidgets(self, *args, **kw):
