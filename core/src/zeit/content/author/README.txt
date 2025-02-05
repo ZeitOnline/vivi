@@ -26,13 +26,17 @@ Authors
   <firstname>William</firstname>
   <lastname>Shakespeare</lastname>
   <vgwortid>12345</vgwortid>
-  <display_name>William Shakespeare</display_name>
 </author>
 
 The default display name is 'Firstname Lastname', but any user-entered value
 takes precedence:
 
->>> shakespeare.entered_display_name = 'Flub'
+>>> shakespeare.display_name
+'William Shakespeare'
+>>> shakespeare.display_name = 'Flub'
+>>> shakespeare.display_name
+'Flub'
+
 >>> repository['shakespeare'] = shakespeare
 >>> shakespeare = repository['shakespeare']
 >>> print(zeit.cms.testing.xmltotext(shakespeare.xml))
@@ -42,20 +46,11 @@ takes precedence:
   <lastname>Shakespeare</lastname>
   <vgwortid>12345</vgwortid>
   <display_name>Flub</display_name>
-  <entered_display_name>Flub</entered_display_name>
 </author>
 
->>> shakespeare.entered_display_name = None
->>> repository['shakespeare'] = shakespeare
->>> shakespeare = repository['shakespeare']
->>> print(zeit.cms.testing.xmltotext(shakespeare.xml))
-<author...>
-  <title>Sir</title>
-  <firstname>William</firstname>
-  <lastname>Shakespeare</lastname>
-  <vgwortid>12345</vgwortid>
-  <display_name>William Shakespeare</display_name>
-</author>
+>>> shakespeare.display_name = None
+>>> shakespeare.display_name
+'William Shakespeare'
 
 The author image group is stored using the IImages interface.
 

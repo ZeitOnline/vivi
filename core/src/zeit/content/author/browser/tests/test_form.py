@@ -159,3 +159,10 @@ class FormTest(zeit.content.author.testing.BrowserTestCase):
         b.getControl('Apply').click()
         self.assertEllipsis('...Updated on...', b.contents)
         self.assertEqual('answer', b.getControl('Das treibt mich an').value)
+
+    def test_edit_form_does_not_show_firstname_lastname_as_display_name(self):
+        self.open('/@@zeit.content.author.add_contextfree')
+        self.add_william()
+        self.open('/repository/foo/bar/authors/S/William_Shakespeare/index/@@checkout')
+        b = self.browser
+        self.assertEqual('', b.getControl('Display name').value)

@@ -23,7 +23,7 @@ class FormBase(zeit.cms.browser.form.CharlimitMixin):
         zeit.content.image.interfaces.IImages,
         zeit.cms.interfaces.ICMSContent,
     )
-    omit_fields = ('display_name',)
+    omit_fields = ('_display_name',)
 
     field_groups = (
         gocept.form.grouped.Fields(
@@ -98,6 +98,11 @@ class AddForm(FormBase, zeit.cms.browser.form.AddForm):
 class EditForm(FormBase, zeit.cms.browser.form.EditForm):
     title = _('Edit author')
     omit_fields = FormBase.omit_fields + ('__name__',)
+
+    def setUpWidgets(self, *args, **kw):
+        super().setUpWidgets(*args, **kw)
+        if not self.context._display_name:
+            self.widgets['display_name'].setRenderedValue(None)
 
 
 class DisplayForm(FormBase, zeit.cms.browser.form.DisplayForm):

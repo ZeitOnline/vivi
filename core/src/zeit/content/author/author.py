@@ -49,7 +49,6 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
         'sso_connect',
         'enable_followpush',
         'enable_feedback',
-        'entered_display_name',
         'facebook',
         'instagram',
         'jabber',
@@ -74,7 +73,6 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
     for name in [
         'firstname',
         'lastname',
-        'display_name',
         'initials',
         'ssoid',
     ]:
@@ -94,6 +92,25 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
         )
     del locals()['name']
     del locals()['xpath']
+
+    @property
+    def display_name(self):
+        if self._display_name:
+            return self._display_name
+        else:
+            return f'{self.firstname} {self.lastname}'
+
+    @display_name.setter
+    def display_name(self, value):
+        self._display_name = value
+
+    _display_name = ObjectPathProperty(
+        '.display_name',
+        IAuthor['display_name'],
+        dav_ns=AUTHOR_NS,
+        dav_name='display_name',
+        dav_toggle='wcm_26',
+    )
 
     favourite_content = zeit.cms.content.reference.MultiResource('.favourites.reference', 'related')
 
@@ -172,16 +189,6 @@ class AuthorType(zeit.cms.type.XMLContentTypeDeclaration):
 @zope.interface.implementer(zeit.content.image.interfaces.IImages)
 class AuthorImages(zeit.content.image.imagereference.ImagesAdapter):
     _image = zeit.cms.content.reference.SingleReferenceProperty('.image_group', 'image')
-
-
-@grok.subscribe(
-    zeit.content.author.interfaces.IAuthor, zeit.cms.repository.interfaces.IBeforeObjectAddEvent
-)
-def update_display_name(obj, event):
-    if obj.entered_display_name:
-        obj.display_name = obj.entered_display_name
-    else:
-        obj.display_name = f'{obj.firstname} {obj.lastname}'
 
 
 @grok.subscribe(

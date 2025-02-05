@@ -71,14 +71,10 @@ class IAuthor(zope.interface.Interface, zeit.retresco.interfaces.ISkipEnrich):
     hdok_id = zope.schema.Int(title=_('Honorar ID'), required=False)
 
     display_name = zope.schema.TextLine(
-        title='The computed display name. Default is "firstname lastname",'
-        ' a user entered value takes precedence.',
-        required=False,
-    )
-
-    entered_display_name = zope.schema.TextLine(
         title=_('Display name'), required=False, description=_("Default: 'Firstname Lastname'")
     )
+    # Help formlib to differentiate whether an override value exists.
+    _display_name = zope.schema.TextLine(readonly=True, required=False)
 
     initials = zope.schema.TextLine(title=_('Initials'), required=False)
 
