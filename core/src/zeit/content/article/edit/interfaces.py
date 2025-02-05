@@ -522,25 +522,12 @@ class IPuzzleForm(IBlock):
     )
 
 
-class PreconfiguredQuerySource(zeit.contentquery.interfaces.TopicpageFilterSource):
-    product_configuration = 'zeit.content.article'
-    default_filename = 'topicpage-esqueries.json'
-
-    def getQuery(self, value):
-        try:
-            return self.json_data()[value].get('query', value)
-        except Exception:
-            return None
-
-
 class TopicboxTypeSource(zeit.cms.content.sources.SimpleDictSource):
     values = {
         'manual': _('manual'),
         'centerpage': _('centerpage'),
         'topicpage': _('topicpage'),
-        'elasticsearch-query': _('elasticsearch-query'),
         'related-api': _('related-api'),
-        'preconfigured-query': _('preconfigured-query'),
     }
 
     def getToken(self, value):
@@ -605,10 +592,6 @@ class ITopicbox(IBlock, zeit.contentquery.interfaces.IConfiguration):
         description=_('Drag article/link here'),
         source=TopicReferenceSource(),
         required=False,
-    )
-
-    preconfigured_query = zope.schema.Choice(
-        title=_('Filter'), source=PreconfiguredQuerySource(), required=False
     )
 
     def values():
