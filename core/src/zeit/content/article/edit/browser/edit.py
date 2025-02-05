@@ -525,7 +525,6 @@ class EditTopicbox(zeit.edit.browser.form.InlineForm, zeit.cms.browser.form.Char
             'referenced_topicpage',
             'topicpage_filter',
             'topicpage_order',
-            'preconfigured_query',
         )
         .omit(*list(zeit.edit.interfaces.IBlock))
     )

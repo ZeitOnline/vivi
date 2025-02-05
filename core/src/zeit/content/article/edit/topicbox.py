@@ -55,12 +55,6 @@ class Topicbox(
     second_reference = zeit.cms.content.reference.SingleResource('.second_reference', 'related')
     third_reference = zeit.cms.content.reference.SingleResource('.third_reference', 'related')
 
-    # For automatic_type=preconfigured-query
-    preconfigured_query = zeit.cms.content.property.ObjectPathProperty(
-        '.preconfigured_query',
-        zeit.content.article.edit.interfaces.ITopicbox['preconfigured_query'],
-    )
-
     @property
     def count(self):
         return int(zeit.cms.config.required('zeit.content.article', 'topicbox-teaser-amount'))

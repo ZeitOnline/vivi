@@ -650,20 +650,6 @@ class ArticleTMSRelatedApiQuery(TMSRelatedApiQuery):
         return self.context.count
 
 
-class PreconfiguredQuery(ElasticsearchContentQuery):
-    grok.name('preconfigured-query')
-
-    def __init__(self, context):
-        super().__init__(context)
-        factory = zeit.content.article.edit.interfaces.ITopicbox[
-            'preconfigured_query'
-        ].source.factory
-        self.query = {'query': factory.getQuery(context.preconfigured_query)}
-
-    def _build_query(self):
-        return self.query
-
-
 class TMSRelatedTopicsApiQuery(ContentQuery):
     grok.name('related-topics')
     grok.context(zeit.content.cp.interfaces.IArea)

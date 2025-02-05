@@ -108,7 +108,6 @@ class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
         b.getControl('Link').value = 'https://related.com'
         b.getControl('Linktext').value = 'Related-Baz'
         b.getControl('Automatic type').displayValue = ['related-api']
-        b.getControl('Filter').displayValue = ['(nothing selected)']
         b.getControl('Topicpage filter').value = 'videos'
         b.getControl('Apply').click()
         b.reload()
@@ -117,24 +116,4 @@ class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
         self.assertEqual(['related-api'], b.getControl('Automatic type').displayValue)
         self.assertEqual('https://related.com', b.getControl('Link').value)
         self.assertEqual('Related-Baz', b.getControl('Linktext').value)
-        self.assertEqual(['(nothing selected)'], b.getControl('Filter').displayValue)
         self.assertEqual(['videos'], b.getControl('Topicpage filter').value)
-
-    def test_topicbox_source_config_form_saves_values(self):
-        self.get_article(with_block='topicbox')
-        b = self.browser
-        b.open('editable-body/blockname/@@edit-topicbox?show_form=1')
-        b.getControl('Title').value = 'Config-Foo'
-        b.getControl('Supertitle').value = 'Config-Bar'
-        b.getControl('Link').value = 'https://config.com'
-        b.getControl('Linktext').value = 'Config-Baz'
-        b.getControl('Automatic type').displayValue = ['preconfigured-query']
-        b.getControl('Filter').displayValue = ['(nothing selected)']
-        b.getControl('Apply').click()
-        b.reload()
-        self.assertEqual('Config-Foo', b.getControl('Title').value)
-        self.assertEqual('Config-Bar', b.getControl('Supertitle').value)
-        self.assertEqual(['preconfigured-query'], b.getControl('Automatic type').displayValue)
-        self.assertEqual('https://config.com', b.getControl('Link').value)
-        self.assertEqual('Config-Baz', b.getControl('Linktext').value)
-        self.assertEqual(['(nothing selected)'], b.getControl('Filter').displayValue)

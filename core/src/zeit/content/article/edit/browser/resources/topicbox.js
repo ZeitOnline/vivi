@@ -3,7 +3,6 @@ var AUTOMATIC_FIELDS = {
     'centerpage': ['referenced_cp'],
     'topicpage': ['referenced_topicpage', 'topicpage_filter', 'topicpage_order'],
     'elasticsearch-query': ['elasticsearch_raw_query', 'elasticsearch_raw_order'],
-    'preconfigured-query': ['preconfigured_query'],
     'related-api': ['topicpage_filter']
 };
 
