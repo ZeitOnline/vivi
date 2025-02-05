@@ -527,7 +527,6 @@ class TopicboxTypeSource(zeit.cms.content.sources.SimpleDictSource):
         'manual': _('manual'),
         'centerpage': _('centerpage'),
         'topicpage': _('topicpage'),
-        'elasticsearch-query': _('elasticsearch-query'),
         'related-api': _('related-api'),
     }
 

@@ -77,28 +77,6 @@ class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
         self.assertEqual('angela-merkel', b.getControl('Referenced Topicpage').value)
         self.assertEqual(['videos'], b.getControl('Topicpage filter').value)
 
-    def test_topicbox_source_elasticsearch_form_saves_values(self):
-        self.get_article(with_block='topicbox')
-        b = self.browser
-        b.open('editable-body/blockname/@@edit-topicbox?show_form=1')
-        b.getControl('Title').value = 'ES-Foo'
-        b.getControl('Supertitle').value = 'ES-Bar'
-        b.getControl('Link').value = 'https://queries-es.com'
-        b.getControl('Linktext').value = 'ES-Baz'
-        b.getControl('Automatic type').displayValue = ['elasticsearch-query']
-        es_query = """{"query": {"term": {"doc_type": "article"}}}"""
-        b.getControl('Elasticsearch raw query').value = es_query
-        b.getControl('Sort order').value = 'asc'
-        b.getControl('Apply').click()
-        b.reload()
-        self.assertEqual('ES-Foo', b.getControl('Title').value)
-        self.assertEqual('ES-Bar', b.getControl('Supertitle').value)
-        self.assertEqual(['elasticsearch-query'], b.getControl('Automatic type').displayValue)
-        self.assertEqual('https://queries-es.com', b.getControl('Link').value)
-        self.assertEqual('ES-Baz', b.getControl('Linktext').value)
-        self.assertEqual(es_query, b.getControl('Elasticsearch raw query').value)
-        self.assertEqual('asc', b.getControl('Sort order').value)
-
     def test_topicbox_source_related_api_form_saves_values(self):
         self.get_article(with_block='topicbox')
         b = self.browser
