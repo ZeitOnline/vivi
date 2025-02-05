@@ -23,7 +23,7 @@ def etree_soup_fromstring(text):
     tags = [soup]
     while tags:
         tag = tags.pop()
-        tags.extend(tag.findChildren())
+        tags.extend(tag.find_all())
         for key, value in tag.attrs.items():
             if value is None:  # Attribute w/o value, like <foo attr/>
                 tag.attrs[key] = key
