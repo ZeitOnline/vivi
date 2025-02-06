@@ -3,6 +3,16 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.26.0 (2025-02-06)
+-------------------
+
+- WCM-26: Store main author fields in metadata instead of body
+
+- WCM-699: Remove social fields from link form
+
+- WCM-702: Remove unused topicbox automatic_type "preconfigured elastic query"
+
+
 7.25.0 (2025-02-04)
 -------------------
 
