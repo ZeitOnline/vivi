@@ -3,6 +3,11 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.28.0 (2025-02-06)
+-------------------
+
+- failed release due to GAR pypi error
+
 7.27.0 (2025-02-06)
 -------------------
 
