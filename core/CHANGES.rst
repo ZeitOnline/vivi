@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.30.0 (2025-02-06)
+-------------------
+
+- WCM-649: Unregister ZAR package
+
+
 7.29.0 (2025-02-06)
 -------------------
 
