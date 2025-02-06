@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.29.0 (2025-02-06)
+-------------------
+
+FIX:
+- Update prometheus metrics to otel 1.30 API
+
+
 7.28.0 (2025-02-06)
 -------------------
 
