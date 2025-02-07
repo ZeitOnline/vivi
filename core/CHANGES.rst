@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.31.0 (2025-02-07)
+-------------------
+
+- WCM-704: Catch more zodb errors in connector cache
+
+
 7.30.0 (2025-02-06)
 -------------------
 
