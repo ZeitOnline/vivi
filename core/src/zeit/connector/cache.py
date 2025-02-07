@@ -219,9 +219,14 @@ class ResourceCache(AccessTimes, persistent.Persistent):
 
     def __getitem__(self, uniqueid):
         key = get_storage_key(uniqueid)
-        value = self._data.get(key)
-        if value is None:
-            raise KeyError('Object %r is not cached.' % uniqueid)
+        try:
+            value = self._data.get(key)
+            if value is None:
+                raise KeyError('Object %r is not cached.' % uniqueid)
+        except ZODB.POSException.POSKeyError as err:
+            current_span = opentelemetry.trace.get_current_span()
+            current_span.record_exception(err)
+            raise KeyError(key)
         self._update_cache_access(key)
         return value.open()
 
@@ -233,16 +238,26 @@ class ResourceCache(AccessTimes, persistent.Persistent):
 
     def __contains__(self, uniqueid):
         key = get_storage_key(uniqueid)
-        result = key in self._data
-        self._update_cache_access(key)
-        return result
+        try:
+            result = key in self._data
+            self._update_cache_access(key)
+            return result
+        except ZODB.POSException.POSKeyError as err:
+            current_span = opentelemetry.trace.get_current_span()
+            current_span.record_exception(err)
+            return False
 
     def update(self, uniqueid, value):
         key = get_storage_key(uniqueid)
         stored = self._data.get(key)
         if not isinstance(stored, Body):
             self._data[key] = stored = Body()
-        stored.update_data(value)
+        try:
+            stored.update_data(value)
+        except ZODB.POSException.POSKeyError as err:
+            current_span = opentelemetry.trace.get_current_span()
+            current_span.record_exception(err)
+            self._data[key] = stored = Body()
         self._update_cache_access(key)
         return stored.open()
 
@@ -264,10 +279,10 @@ class PersistentCache(AccessTimes, persistent.Persistent):
     def __getitem__(self, key):
         skey = get_storage_key(key)
         try:
-            value = self._storage[skey]
-        except KeyError:
-            raise KeyError(key)
-        try:
+            try:
+                value = self._storage[skey]
+            except KeyError:
+                raise KeyError(key)
             if self._is_deleted(value):
                 log.info('%s not found in %s', key, self)
                 raise KeyError(key)
@@ -275,7 +290,6 @@ class PersistentCache(AccessTimes, persistent.Persistent):
             current_span = opentelemetry.trace.get_current_span()
             current_span.record_exception(err)
             raise KeyError(key)
-
         self._update_cache_access(skey)
         return value
 
