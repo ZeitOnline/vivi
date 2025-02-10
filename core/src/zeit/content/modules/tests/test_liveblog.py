@@ -6,7 +6,7 @@ import zeit.content.modules.embed
 import zeit.content.modules.testing
 
 
-class ConsentInfo(zeit.content.modules.testing.FunctionalTestCase):
+class Liveblog(zeit.content.modules.testing.FunctionalTestCase):
     def setUp(self):
         super().setUp()
         self.context = mock.Mock()
