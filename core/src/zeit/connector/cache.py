@@ -223,12 +223,12 @@ class ResourceCache(AccessTimes, persistent.Persistent):
             value = self._data.get(key)
             if value is None:
                 raise KeyError('Object %r is not cached.' % uniqueid)
+            self._update_cache_access(key)
+            return value.open()
         except ZODB.POSException.POSKeyError as err:
             current_span = opentelemetry.trace.get_current_span()
             current_span.record_exception(err)
             raise KeyError(key)
-        self._update_cache_access(key)
-        return value.open()
 
     def get(self, uniqueid, default=None):
         try:
