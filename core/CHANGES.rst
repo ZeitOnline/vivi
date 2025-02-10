@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.33.0 (2025-02-10)
+-------------------
+
+- WCM-704: Handle 'body is not cached' situation gracefully
+
+
 7.32.0 (2025-02-10)
 -------------------
 
