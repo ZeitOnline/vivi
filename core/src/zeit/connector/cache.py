@@ -258,6 +258,7 @@ class ResourceCache(AccessTimes, persistent.Persistent):
             current_span = opentelemetry.trace.get_current_span()
             current_span.record_exception(err)
             self._data[key] = stored = Body()
+            stored.update_data(value)
         self._update_cache_access(key)
         return stored.open()
 
