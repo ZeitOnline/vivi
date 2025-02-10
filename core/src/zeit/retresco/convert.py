@@ -362,7 +362,7 @@ class Author(Converter):
         if 'hdok_id' in xml:  # BBB, remove after WCM-26/ZO-5655
             xml['honorar_id'] = xml.pop('hdok_id')
         if 'department' in xml:  # BBB, remove after WCM-26
-            xml['status'] = xml.pop('status')
+            xml['status'] = xml.pop('department')
         if '_display_name' in xml:  # BBB, remove after WCM-26
             xml['display_name'] = xml.pop('_display_name')
         return result
