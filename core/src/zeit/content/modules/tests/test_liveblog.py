@@ -28,3 +28,23 @@ class ConsentInfo(zeit.content.modules.testing.FunctionalTestCase):
         assert lxml.etree.tostring(self.module.xml) == (
             b'<container liveblog_id="1234" collapse_highlighted_events="True"/>'
         )
+
+    def test_liveblog_stores_teaser_timeline_events_in_xml(self):
+        event_id = 'some_id'
+        self.module.liveblog_id = '1234'
+        assert (
+            lxml.etree.tostring(self.module.xml, encoding='unicode')
+            == '<container liveblog_id="1234"/>'
+        )
+
+        self.module.teaser_timeline_events = [event_id]
+        assert lxml.etree.tostring(self.module.xml, encoding='unicode') == (
+            '<container liveblog_id="1234">'
+            f'<teaser_timeline><event>{event_id}</event></teaser_timeline>'
+            '</container>'
+        )
+
+        self.module.teaser_timeline_events = []
+        assert lxml.etree.tostring(self.module.xml, encoding='unicode') == (
+            '<container liveblog_id="1234"><teaser_timeline/></container>'
+        )

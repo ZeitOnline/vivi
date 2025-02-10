@@ -1,6 +1,6 @@
 import zope.interface
 
-from zeit.cms.content.property import ObjectPathAttributeProperty
+from zeit.cms.content.property import ObjectPathAttributeProperty, SimpleMultiProperty
 from zeit.content.modules.interfaces import ITickarooLiveblog
 import zeit.edit.block
 
@@ -19,6 +19,8 @@ class TickarooLiveblog(zeit.edit.block.Element):
     collapse_highlighted_events = ObjectPathAttributeProperty(
         '.', 'collapse_highlighted_events', ITickarooLiveblog['collapse_highlighted_events']
     )
+
+    teaser_timeline_events = SimpleMultiProperty('.teaser_timeline.event')
 
     timeline_template = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'timeline_template', ITickarooLiveblog['timeline_template']
