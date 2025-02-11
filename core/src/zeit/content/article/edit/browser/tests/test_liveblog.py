@@ -1,3 +1,5 @@
+import zope
+
 import zeit.content.article.edit.browser.testing
 
 
@@ -37,6 +39,11 @@ class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
         with self.assertRaises(LookupError):
             b.getControl(name='form.teaser_timeline_events.0.')
 
+        api = zope.component.getUtility(zeit.tickaroo.tickaroo.ILiveblogTimeline)
+        api.get_events.return_value = (
+            {'id': 'bloggy-id1', 'title': 'title for bloggy-id1'},
+            {'id': 'bloggy-id2', 'title': 'title for bloggy-id2'},
+        )
         # FIXME translation
         b.getControl(name='form.timeline_template').displayValue = 'Manually selected events'
         b.getControl('Apply').click()

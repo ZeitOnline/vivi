@@ -6,7 +6,7 @@ import zope.app.appsetup.product
 import zope.schema
 
 from zeit.cms.i18n import MessageFactory as _
-from zeit.cms.interfaces import CONFIG_CACHE, FEATURE_CACHE
+from zeit.cms.interfaces import CONFIG_CACHE
 import zeit.cms.content.interfaces
 import zeit.cms.content.sources
 import zeit.content.image.interfaces
@@ -269,13 +269,6 @@ class TimelineTemplateSource(zeit.cms.content.sources.SimpleDictSource):
     }
 
 
-@FEATURE_CACHE.cache_on_arguments()
-def _events_for_liveblog(liveblog_id):
-    tickaroo = zeit.tickaroo.tickaroo.Tickaroo()
-    tickaroo.liveblog_id = liveblog_id
-    return tickaroo.get_events()
-
-
 class LiveblogEventSource(zc.sourcefactory.contextual.BasicContextualSourceFactory):
     def __init__(self):
         self.titles = {}
@@ -286,7 +279,8 @@ class LiveblogEventSource(zc.sourcefactory.contextual.BasicContextualSourceFacto
     def getValues(self, context):
         if not context.liveblog_id:
             return ()
-        events = _events_for_liveblog(context.liveblog_id)
+        timeline = zope.component.getUtility(zeit.tickaroo.tickaroo.ILiveblogTimeline)
+        events = timeline.get_events(context.liveblog_id)
         self.titles = {x['id']: x['title'] for x in events}
         return (x['id'] for x in events)
 

@@ -1,10 +1,11 @@
 from io import StringIO
 import logging
 
-# import bleach
 import lxml.etree
 import requests
+import zope.interface
 
+from zeit.cms.interfaces import FEATURE_CACHE
 import zeit.cms.config
 
 
@@ -28,7 +29,7 @@ def get_tag_text(html, tag):
 
 def get_teaser_title(html, text_length=120):
     # check post title, due to tickaroos wysiwyg editor the title can be
-    # a <div><strong>...</strong></div> or <h2>...</h2>
+    # a <div><strong>...</strong></div>, <h1>...</h1> or <h2>...</h2>
     if html.startswith('<div><strong>'):
         return get_tag_text(html, 'strong')
     elif html.startswith('<h2>'):
@@ -36,8 +37,6 @@ def get_teaser_title(html, text_length=120):
     elif html.startswith('<h1>'):
         return get_tag_text(html, 'h1')
     else:
-        print(html)
-        # text = bleach.clean(html, tags=[], strip=True)
         text = html
         if len(text) <= text_length:
             return text
@@ -70,13 +69,17 @@ def get_events(json):
             }
 
 
-def liveblog_is_healthy(settings):
-    return True
-
-
 UNSET = {}
 
 
+class ILiveblogTimeline(zope.interface.Interface):
+    """Connection to the Tickaroo liveblog API."""
+
+    def get_events(liveblog_id):
+        pass
+
+
+@zope.interface.implementer(ILiveblogTimeline)
 class Tickaroo:
     def settings(self, key=None, default=UNSET):
         if key is None:
@@ -85,12 +88,7 @@ class Tickaroo:
             return zeit.cms.config.required('zeit.tickaroo', key)
         return zeit.cms.config.get('zeit.tickaroo', key, default=default)
 
-    def config(self):
-        return {'id': self.liveblog_id, 'clientId': self.settings('client-id')}
-
     def request_api(self, url, metrics_id, **params):
-        if not liveblog_is_healthy(self.settings()):
-            return None
         params.update(
             {
                 'client_id': self.settings('client-id'),
@@ -98,26 +96,18 @@ class Tickaroo:
             }
         )
         timeout = self.settings('liveblog-timeout', 1)
-        # with zeit.web.core.metrics.http(
-        #    metrics_id,
-        #    {
-        #        'http.url': url,
-        #        'http.query': str(params),
-        #        'http.timeout': timeout,
-        #    },
-        # ) as record:
         response = requests.get(url, params=params, timeout=timeout)
-        #    record(response)
         response.raise_for_status()
         return response
 
-    def get_events(self, **kw):
+    @FEATURE_CACHE.cache_on_arguments()
+    def get_events(self, liveblog_id, **kw):
         kw.setdefault('limit', self.settings('teaser-limit', 20))
         try:
             response = self.request_api(
                 url=self.settings('api-url'),
                 metrics_id='tickaroo.events',
-                id=self.liveblog_id,
+                id=liveblog_id,
                 **kw,
             )
             if response is None:
@@ -128,3 +118,21 @@ class Tickaroo:
         except Exception:
             log.error('Tickaroo Liveblog Events Exception', exc_info=True)
         return []
+
+
+@zope.interface.implementer(ILiveblogTimeline)
+def timeline():
+    # FIXME: Pass in config
+    # config = zeit.cms.config.package('zeit.tickaroo')
+    tickaroo = Tickaroo()
+    return tickaroo
+
+
+@zope.interface.implementer(ILiveblogTimeline)
+def MockTimeline():
+    from unittest import mock  # testing dependency
+
+    timeline = mock.Mock()
+    zope.interface.alsoProvides(timeline, ILiveblogTimeline)
+    timeline.get_events.return_value = ()
+    return timeline
