@@ -34,6 +34,14 @@ class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
         b.getControl('Liveblog status').displayValue = 'Liveblog aktiv'
         b.getControl('Apply').click()
         b.reload()
+        with self.assertRaises(LookupError):
+            b.getControl(name='form.teaser_timeline_events.0.')
+
+        # FIXME translation
+        b.getControl(name='form.timeline_template').displayValue = 'Manually selected events'
+        b.getControl('Apply').click()
+        b.reload()
+
         b.getControl(name='form.teaser_timeline_events.0.').displayValue = 'bloggy-id2'
         b.getControl('Apply').click()
         b.reload()

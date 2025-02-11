@@ -448,7 +448,10 @@ class EditTickarooLiveblog(zeit.edit.browser.form.InlineForm):
         form_fields = zope.formlib.form.FormFields(
             zeit.content.article.edit.interfaces.ITickarooLiveblog
         ).omit(*list(zeit.edit.interfaces.IBlock))
-        form_fields['teaser_timeline_events'].custom_widget = TeaserTimelineEventsWidget
+        if self.context.timeline_template == 'manual':
+            form_fields['teaser_timeline_events'].custom_widget = TeaserTimelineEventsWidget
+        else:
+            form_fields = form_fields.omit('teaser_timeline_events')
         return form_fields
 
     def render(self):
