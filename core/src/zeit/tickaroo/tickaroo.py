@@ -16,9 +16,13 @@ def get_tag_text(html, tag):
     try:
         parser = lxml.etree.HTMLParser()
         tree = lxml.etree.parse(StringIO(html), parser)
-        elements = tree.xpath(f'//{tag}')
+        if tag is None:
+            elem = tree.getroot()
+        else:
+            elements = tree.xpath(f'//{tag}')
+            elem = elements[0]
         # Consider all text including text of child elements
-        return ''.join(elements[0].itertext()).strip()
+        return ''.join(elem.itertext()).strip()
     except IndexError:
         log.error(f'Tickaroo Liveblog: Tag {tag} not found in HTML.')
         return ''
@@ -37,7 +41,7 @@ def get_teaser_title(html, text_length=120):
     elif html.startswith('<h1>'):
         return get_tag_text(html, 'h1')
     else:
-        text = html
+        text = get_tag_text(html, None)
         if len(text) <= text_length:
             return text
         # cut text after full word and add ellipsis
