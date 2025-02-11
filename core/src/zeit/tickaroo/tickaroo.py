@@ -106,7 +106,7 @@ class Tickaroo:
 
     @FEATURE_CACHE.cache_on_arguments()
     def get_events(self, liveblog_id, **kw):
-        kw.setdefault('limit', self.settings('teaser-limit', 20))
+        kw.setdefault('limit', self.settings('teaser-limit', 50))
         try:
             response = self.request_api(
                 url=self.settings('api-url'),
