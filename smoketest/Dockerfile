@@ -1,5 +1,5 @@
 # See https://github.com/ZeitOnline/gh-action-workflows/blob/main/.github/workflows/nightwatch-build.yaml
-FROM python:3.13.1-slim@sha256:026dd417a88d0be8ed5542a05cff5979d17625151be8a1e25a994f85c87962a5 as nightwatch
+FROM python:3.13.2-slim@sha256:ae9f9ac89467077ed1efefb6d9042132d28134ba201b2820227d46c9effd3174 as nightwatch
 WORKDIR /app
 RUN pip --no-cache-dir install pipenv
 COPY Pipfile Pipfile.lock ./
