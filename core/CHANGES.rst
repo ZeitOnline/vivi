@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.37.0 (2025-02-12)
+-------------------
+
+- WCM-26: Fix more TMS field name bw-compat for author objects
+
+
 7.36.0 (2025-02-12)
 -------------------
 
