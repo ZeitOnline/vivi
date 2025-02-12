@@ -89,7 +89,7 @@ class Tickaroo:
         self.timeout = timeout
         self.default_event_limit = default_event_limit
 
-    def request_api(self, url, metrics_id, **params):
+    def request_api(self, url, **params):
         params.update(
             {
                 'client_id': self.client_id,
@@ -104,12 +104,7 @@ class Tickaroo:
     def get_events(self, liveblog_id, **kw):
         kw.setdefault('limit', self.default_event_limit)
         try:
-            response = self.request_api(
-                url=self.api_url,
-                metrics_id='tickaroo.events',
-                id=liveblog_id,
-                **kw,
-            )
+            response = self.request_api(url=self.api_url, id=liveblog_id, **kw)
             if response is None:
                 return []
             return list(get_events(response.json()))
