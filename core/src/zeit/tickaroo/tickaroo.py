@@ -73,9 +73,6 @@ def get_events(json):
             }
 
 
-UNSET = {}
-
-
 class ILiveblogTimeline(zope.interface.Interface):
     """Connection to the Tickaroo liveblog API."""
 
@@ -85,31 +82,30 @@ class ILiveblogTimeline(zope.interface.Interface):
 
 @zope.interface.implementer(ILiveblogTimeline)
 class Tickaroo:
-    def settings(self, key=None, default=UNSET):
-        if key is None:
-            return zeit.cms.config.package('zeit.tickaroo')
-        if default is UNSET:
-            return zeit.cms.config.required('zeit.tickaroo', key)
-        return zeit.cms.config.get('zeit.tickaroo', key, default=default)
+    def __init__(self, api_url, client_id, client_secret, timeout, default_event_limit):
+        self.api_url = api_url
+        self.client_id = client_id
+        self.client_secret = client_secret
+        self.timeout = timeout
+        self.default_event_limit = default_event_limit
 
     def request_api(self, url, metrics_id, **params):
         params.update(
             {
-                'client_id': self.settings('client-id'),
-                'client_secret': self.settings('client-secret'),
+                'client_id': self.client_id,
+                'client_secret': self.client_secret,
             }
         )
-        timeout = self.settings('liveblog-timeout', 1)
-        response = requests.get(url, params=params, timeout=timeout)
+        response = requests.get(url, params=params, timeout=self.timeout)
         response.raise_for_status()
         return response
 
     @FEATURE_CACHE.cache_on_arguments()
     def get_events(self, liveblog_id, **kw):
-        kw.setdefault('limit', self.settings('teaser-limit', 50))
+        kw.setdefault('limit', self.default_event_limit)
         try:
             response = self.request_api(
-                url=self.settings('api-url'),
+                url=self.api_url,
                 metrics_id='tickaroo.events',
                 id=liveblog_id,
                 **kw,
@@ -126,9 +122,14 @@ class Tickaroo:
 
 @zope.interface.implementer(ILiveblogTimeline)
 def timeline():
-    # FIXME: Pass in config
-    # config = zeit.cms.config.package('zeit.tickaroo')
-    tickaroo = Tickaroo()
+    config = zeit.cms.config.package('zeit.tickaroo')
+    tickaroo = Tickaroo(
+        config['api-url'],
+        config['client-id'],
+        config['client-secret'],
+        config.get('timeout', 1),
+        config.get('default-event-limit', 50),
+    )
     return tickaroo
 
 
