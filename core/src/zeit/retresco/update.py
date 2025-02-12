@@ -18,6 +18,7 @@ import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.cms.workingcopy.interfaces
+import zeit.connector.interfaces
 import zeit.content.article.interfaces
 import zeit.content.image.imagegroup
 import zeit.content.image.transform
@@ -279,12 +280,14 @@ def reindex():
         with open(args.ids[0], 'r') as f:
             ids = f.read().splitlines()
 
+    connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
     for i, id in enumerate(ids):
         if args.parallel:
             index_parallel.delay(id, args.enrich, args.publish)
             if i % 10000 == 0:
                 transaction.commit()
         else:
+            connector.invalidate_cache(id)
             index(
                 zeit.cms.interfaces.ICMSContent(id),
                 enrich=args.enrich,
