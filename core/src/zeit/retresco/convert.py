@@ -23,7 +23,6 @@ import zeit.cms.browser.interfaces
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
 import zeit.cms.workflow.interfaces
-import zeit.content.advertisement.interfaces
 import zeit.content.article.interfaces
 import zeit.content.audio.interfaces
 import zeit.content.author.interfaces
@@ -364,25 +363,6 @@ class Author(Converter):
         if 'department' in xml:  # BBB, remove after WCM-26
             xml['status'] = xml.pop('department')
         return result
-
-
-class Advertisement(Converter):
-    interface = zeit.content.advertisement.interfaces.IAdvertisement
-    grok.name(interface.__name__)
-
-    def __call__(self):
-        return {
-            'title': self.context.title,
-            'teaser': self.context.text or self.context.title,
-            'payload': {
-                'xml': get_xml_properties(self.context),
-                'body': {
-                    'supertitle': self.context.supertitle,
-                    'title': self.context.title,
-                    'text': self.context.text,
-                },
-            },
-        }
 
 
 class DynamicFolder(Converter):
