@@ -15,6 +15,7 @@ import pendulum
 import zope.component
 
 import zeit.cms.interfaces
+import zeit.connector.interfaces
 import zeit.vgwort.report
 
 
@@ -39,6 +40,7 @@ def bulk_report():
         parser.print_help()
         raise SystemExit(1)
 
+    connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
     vgwort = zope.component.getUtility(zeit.vgwort.interfaces.IMessageService)
     for i, line in enumerate(open(options.filename)):
         # Safetybelt if the script runs veeery long
@@ -48,6 +50,7 @@ def bulk_report():
 
         id = line.strip()
         try:
+            connector.invalidate_cache(id)
             content = zeit.cms.interfaces.ICMSContent(id)
             zeit.vgwort.report.report(content)
             # XXX vgwort returns 401 after some requests for unknown reasons.
