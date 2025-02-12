@@ -106,13 +106,13 @@ class Tickaroo:
         try:
             response = self.request_api(url=self.api_url, id=liveblog_id, **kw)
             if response is None:
-                return []
-            return list(get_events(response.json()))
+                return ()
+            return tuple(get_events(response.json()))
         except requests.exceptions.RequestException:
             log.error('Tickaroo Liveblog Show API unavailable', exc_info=True)
         except Exception:
             log.error('Tickaroo Liveblog Events Exception', exc_info=True)
-        return []
+        return ()
 
 
 @zope.interface.implementer(ILiveblogTimeline)
