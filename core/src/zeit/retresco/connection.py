@@ -10,6 +10,7 @@ import zope.component
 import zope.interface
 
 from zeit.cms.checkout.helper import checked_out
+from zeit.cms.content.sources import FEATURE_TOGGLES
 import zeit.cms.cli
 import zeit.cms.config
 import zeit.cms.content.interfaces
@@ -286,6 +287,9 @@ class TMS:
         return result
 
     def _request_one(self, tms, request, **kw):
+        if FEATURE_TOGGLES.find('disable_tms'):
+            return {}
+
         verb, path = request.split(' ', 1)
         method = getattr(requests, verb.lower())
         if tms.get('username'):

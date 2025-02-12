@@ -8,6 +8,7 @@ import pytest
 import zope.component
 
 from zeit.cms.checkout.helper import checked_out
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.interfaces import Result
 from zeit.cms.workflow.interfaces import IPublishInfo
 import zeit.cms.tagging.interfaces
@@ -310,6 +311,18 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
         result = tms.get_content_containing_topicpages(article)
         self.assertEqual('Arbeit', result[0].label)
         self.assertEqual('keyword', result[0].entity_type)
+
+    def test_disable_tms(self):
+        FEATURE_TOGGLES.set('disable_tms')
+        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
+        self.layer['request_handler'].response_body = json.dumps(
+            {
+                'rtr_persons': ['Merkel', 'Obama'],
+            }
+        )
+        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
+        result = tms.extract_keywords(self.repository['testcontent'])
+        self.assertEqual([], result)
 
 
 @pytest.mark.integration()
