@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.36.0 (2025-02-12)
+-------------------
+
+- WCM-324: remove unused nextread code
+
+
 7.35.0 (2025-02-12)
 -------------------
 
