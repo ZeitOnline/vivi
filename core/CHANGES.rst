@@ -3,6 +3,16 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.35.0 (2025-02-12)
+-------------------
+
+- WCM-26: Fix TMS field name bw-compat for author objects
+
+
+MAINT:
+- Invalidate connector cache in bulk scripts
+
+
 7.34.0 (2025-02-10)
 -------------------
 
