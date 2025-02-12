@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Wed Feb  5 15:58:51 2025\n"
+"POT-Creation-Date: Wed Feb 12 07:35:18 2025\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -3971,7 +3971,15 @@ msgstr ""
 msgid "Recent events"
 msgstr ""
 
-#: zeit/content/modules/interfaces.py:270
+#: zeit/content/modules/interfaces.py:268
+msgid "Manually selected events"
+msgstr ""
+
+#: zeit/content/modules/interfaces.py:277
+msgid "Unknown event"
+msgstr ""
+
+#: zeit/content/modules/interfaces.py:289
 msgid "Liveblog id"
 msgstr ""
 
