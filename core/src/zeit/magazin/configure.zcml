@@ -46,17 +46,6 @@
     name="zeit-magazin"
     />
 
-  <class class=".article.RelatedLayout">
-    <require
-      interface=".interfaces.IRelatedLayout"
-      permission="zope.View"
-      />
-    <require
-      set_schema=".interfaces.IRelatedLayout"
-      permission="zeit.EditContent"
-      />
-  </class>
-
   <adapter
     factory=".portraitbox.PortraitboxLongtext"
     provides=".interfaces.IPortraitboxLongtext"
