@@ -768,8 +768,6 @@ fieldset .hlink a:active {
 :root {
   --z-ds-space-xs: 0.5em;
   --z-ds-space-m: 1em;
-  --z-ds-lineheight-12: 1.2;
-  --z-ds-fontsize-14: 14px;
   --z-ds-color-text-40: #999;
   --z-ds-color-border-100: #cccccf;
 
@@ -781,7 +779,7 @@ fieldset .hlink a:active {
 
 
 .fieldname-teaser_timeline_events .widget > div {
-  --lh: 14px;
+  --lh: calc(1em + 2px);
   padding-block: 2px;
   position: relative;
 }
@@ -789,14 +787,14 @@ fieldset .hlink a:active {
 .fieldname-teaser_timeline_events .widget > div::before {
   background-color: var(--timeline-line-color);
   content: "";
-  height: 26px;
+  height: calc(2em + var(--timeline-line-width));
   left: calc(-1 * var(--z-ds-space-m) + var(--timeline-dot-size) / 2 - var(--timeline-line-width) / 2);
   position: absolute;
   width: var(--timeline-line-width);
 }
 
 .fieldname-teaser_timeline_events .widget > div:first-child::before {
-  height: calc(100% + var(--z-ds-space-xs) - var(--lh));
+  height: var(--lh);
   top: var(--lh);
 }
 
