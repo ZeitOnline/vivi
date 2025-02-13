@@ -1,7 +1,10 @@
+from opentelemetry.trace import SpanKind
 from zope.interface import implementer
+import zope.component
 
 from zeit.find.interfaces import ICMSSearch
 import zeit.cms.config
+import zeit.cms.interfaces
 import zeit.retresco.search
 
 
@@ -20,7 +23,14 @@ class Elasticsearch(zeit.retresco.search.Elasticsearch):
     def search(self, query, **kw):
         query.setdefault('_source', DEFAULT_FIELDS)
         kw.setdefault('rows', 50)
-        return super().search(query, **kw)
+        tracer = zope.component.getUtility(zeit.cms.interfaces.ITracer)
+        with tracer.start_as_current_span('search', kind=SpanKind.CLIENT) as span:
+            span.set_attributes(
+                {
+                    'db.query.text': str(query),
+                }
+            )
+            return super().search(query, **kw)
 
 
 @implementer(ICMSSearch)
