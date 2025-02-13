@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.38.0 (2025-02-13)
+-------------------
+
+- WCM-649: remove IZARContent and IZARArticle
+
+
 7.37.0 (2025-02-12)
 -------------------
 
