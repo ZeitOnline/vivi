@@ -411,7 +411,7 @@ class TeaserTimelineEventsWidget(zope.formlib.widgets.TupleSequenceWidget):
         return '\n'.join((x() for x in self.widgets()))
 
     def hasInput(self):
-        return True
+        return any(self._getWidget(i).hasInput() for i in range(self.context.max_length))`
 
     def _getRenderedValue(self):
         value = super()._getRenderedValue()
