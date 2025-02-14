@@ -457,7 +457,7 @@ class EditTickarooLiveblog(zeit.edit.browser.form.InlineForm):
     def render(self):
         # I don't really understand why this is necessary, but without it,
         # TeaserTimelineEventsWidget.setRenderedValue is never called,
-        # and the field loses it's values.
+        # and the field loses its values.
         self.form_reset = True
         return super().render()
 
