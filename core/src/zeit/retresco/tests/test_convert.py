@@ -10,7 +10,6 @@ import zeit.cms.content.interfaces
 import zeit.cms.content.sources
 import zeit.cms.interfaces
 import zeit.cms.tagging.tag
-import zeit.content.advertisement.advertisement
 import zeit.content.audio.audio
 import zeit.content.audio.testing
 import zeit.content.author.author
@@ -426,24 +425,6 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
         self.assertEqual('rawxml', data['doc_type'])
         self.assertEqual('mytitle', data['title'])
         self.assertEqual({'title': 'embed'}, data['payload']['body'])
-
-    def test_converts_advertistement(self):
-        adv = zeit.content.advertisement.advertisement.Advertisement()
-        adv.supertitle = 'super title!'
-        adv.title = 'mytitle'
-        adv.text = 'super text...'
-        self.repository['adv'] = adv
-        data = zeit.retresco.interfaces.ITMSRepresentation(self.repository['adv'])()
-        self.assertEqual('advertisement', data['doc_type'])
-        self.assertEqual('mytitle', data['title'])
-        self.assertEqual(
-            {
-                'supertitle': 'super title!',
-                'title': 'mytitle',
-                'text': 'super text...',
-            },
-            data['payload']['body'],
-        )
 
     def test_converts_seo_properties(self):
         content = create_testcontent()

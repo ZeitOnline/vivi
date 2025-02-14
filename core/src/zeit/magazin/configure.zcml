@@ -47,33 +47,6 @@
     />
 
   <adapter
-    factory=".article.NextRead"
-    provides=".interfaces.INextRead"
-    trusted="yes" />
-
-  <class class=".article.NextRead">
-    <require
-      interface=".interfaces.INextRead"
-      permission="zope.View"
-      />
-    <require
-      set_schema=".interfaces.INextRead"
-      permission="zeit.EditContent"
-      />
-  </class>
-
-  <class class=".article.RelatedLayout">
-    <require
-      interface=".interfaces.IRelatedLayout"
-      permission="zope.View"
-      />
-    <require
-      set_schema=".interfaces.IRelatedLayout"
-      permission="zeit.EditContent"
-      />
-  </class>
-
-  <adapter
     factory=".portraitbox.PortraitboxLongtext"
     provides=".interfaces.IPortraitboxLongtext"
     />

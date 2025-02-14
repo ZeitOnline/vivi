@@ -6,6 +6,7 @@ import transaction
 import zope.component
 
 import zeit.cms.cli
+import zeit.connector.interfaces
 
 
 log = logging.getLogger(__name__)
@@ -97,8 +98,11 @@ def publish():
     log.info('Ignoring services %s', options.ignore_services)
     zeit.workflow.publish_3rdparty.PublisherData.ignore = options.ignore_services + IGNORE_SERVICES
 
+    connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+
     for line in open(options.filename):
         id = line.strip()
+        connector.invalidate_cache(id)
         content = zeit.cms.interfaces.ICMSContent(id, None)
         if content is None:
             log.warn('Skipping %s, not found', id)

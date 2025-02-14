@@ -3,6 +3,52 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.38.0 (2025-02-13)
+-------------------
+
+- WCM-649: remove IZARContent and IZARArticle
+
+
+7.37.0 (2025-02-12)
+-------------------
+
+- WCM-26: Fix more TMS field name bw-compat for author objects
+
+
+7.36.0 (2025-02-12)
+-------------------
+
+- WCM-324: remove unused nextread code
+
+
+7.35.0 (2025-02-12)
+-------------------
+
+- WCM-26: Fix TMS field name bw-compat for author objects
+
+
+MAINT:
+- Invalidate connector cache in bulk scripts
+
+
+7.34.0 (2025-02-10)
+-------------------
+
+- WCM-704: Catch even more zodb errors in connector cache
+
+
+7.33.0 (2025-02-10)
+-------------------
+
+- WCM-704: Handle 'body is not cached' situation gracefully
+
+
+7.32.0 (2025-02-10)
+-------------------
+
+- WCM-704: Catch even more zodb errors in connector cache
+
+
 7.31.0 (2025-02-07)
 -------------------
 

@@ -3,27 +3,6 @@
   xmlns:browser="http://namespaces.zope.org/browser"
   i18n_domain="zeit.cms">
 
-  <!-- article -->
-
-  <browser:viewlet
-    for="..interfaces.IZMOArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view="zeit.content.article.edit.browser.form.InternalLinksForms"
-    manager="zeit.edit.interfaces.IContentViewletManager"
-    name="edit.form.nextread"
-    class="zeit.edit.browser.form.FormLoader"
-    permission="zope.View"
-    weight="30"
-    />
-
-  <browser:page
-    for="..interfaces.IZMOArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="edit.form.nextread"
-    class=".article.NextRead"
-    permission="zope.View"
-    />
-
   <!-- portraitbox -->
 
   <browser:page

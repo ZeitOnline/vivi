@@ -386,7 +386,7 @@
             },
             "meta": {
               "type": "article",
-              "provides": "<pickle>\n  <initialized_object>\n    <klass>\n      <global name=\"Provides\" module=\"zope.interface.declarations\"/>\n    </klass>\n    <arguments>\n      <tuple>\n        <global name=\"Article\" module=\"zeit.content.article.article\"/>\n        <global name=\"IZARArticle\" module=\"zeit.arbeit.interfaces\"/>\n        <global name=\"IZARContent\" module=\"zeit.arbeit.interfaces\"/>\n        <global name=\"Interface\" module=\"zope.interface\"/>\n      </tuple>\n    </arguments>\n  </initialized_object>\n</pickle>"
+              "provides": "<pickle>\n  <initialized_object>\n    <klass>\n      <global name=\"Provides\" module=\"zope.interface.declarations\"/>\n    </klass>\n    <arguments>\n      <tuple>\n        <global name=\"Article\" module=\"zeit.content.article.article\"/>\n        <global name=\"Interface\" module=\"zope.interface\"/>\n      </tuple>\n    </arguments>\n  </initialized_object>\n</pickle>"
             },
             "print": {
               "article_id": "online_60295532",

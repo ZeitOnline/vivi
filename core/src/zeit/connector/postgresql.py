@@ -154,6 +154,7 @@ class Connector:
             return content.to_webdav()
 
         if uniqueid in self.property_cache:
+            # No WCM-633 workaround needed, getitem already handles it.
             return self.property_cache[uniqueid]
 
         content = self._get_content(uniqueid)
@@ -176,7 +177,10 @@ class Connector:
             return BytesIO(b'')
 
         if uniqueid in self.body_cache:
-            return self.body_cache[uniqueid]
+            try:  # XXX Work around ZODB data loss bug, see WCM-633
+                return self.body_cache[uniqueid]
+            except KeyError:
+                pass
 
         content = self._get_content(uniqueid, getlock=False)
         return self._update_body_cache(uniqueid, content, load_binary=True)
@@ -221,6 +225,7 @@ class Connector:
         if uniqueid != ID_NAMESPACE and uniqueid not in self:
             raise KeyError(f'The resource {uniqueid} does not exist.')
         if uniqueid not in self.child_name_cache:
+            # No WCM-633 workaround needed, getitem already handles it.
             self._reload_child_name_cache(uniqueid)
         for child in list(self.child_name_cache[uniqueid]):
             yield (self._pathkey(child)[1], child)

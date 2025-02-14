@@ -1,4 +1,3 @@
 <citation-layouts>
   <layout id="default">Default</layout>
-  <layout id="yellow" available="zeit.arbeit.interfaces.IZARContent">ZAR Only</layout>
 </citation-layouts>

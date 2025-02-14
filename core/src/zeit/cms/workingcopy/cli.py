@@ -24,7 +24,7 @@ def dump(filename):
         os.makedirs(base)
 
     root = zope.component.hooks.getSite()
-    for principal, wc in root['workingcopy'].values():
+    for principal, wc in root['workingcopy'].items():
         if not any(zeit.cms.content.interfaces.IXMLContent.providedBy(x) for x in wc.values()):
             log.info('Skip empty %s', principal)
             continue
