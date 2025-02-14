@@ -1,16 +1,13 @@
 from io import StringIO
-import logging
 
 import lxml.etree
+import opentelemetry.trace
 import requests
 import zope.interface
 
 from zeit.cms.interfaces import FEATURE_CACHE
 from zeit.tickaroo.interfaces import ILiveblogTimeline
 import zeit.cms.config
-
-
-log = logging.getLogger(__name__)
 
 
 def get_tag_text(html, tag):
@@ -25,10 +22,16 @@ def get_tag_text(html, tag):
         # Consider all text including text of child elements
         return ''.join(elem.itertext()).strip()
     except IndexError:
-        log.error(f'Tickaroo Liveblog: Tag {tag} not found in HTML.')
+        opentelemetry.trace.get_current_span().add_event(
+            'exception',
+            {
+                'exception.severity': 'warning',
+                'exception.message': f'Tickaroo Liveblog: Tag {tag} not found in HTML.',
+            },
+        )
         return ''
     except Exception as err:
-        log.error(f'Tickaroo Liveblog: error extracting tag text: {err}')
+        opentelemetry.trace.get_current_span().record_exception(err)
         return ''
 
 
@@ -102,10 +105,8 @@ class Tickaroo:
             if response is None:
                 return ()
             return tuple(get_events(response.json()))
-        except requests.exceptions.RequestException:
-            log.error('Tickaroo Liveblog Show API unavailable', exc_info=True)
-        except Exception:
-            log.error('Tickaroo Liveblog Events Exception', exc_info=True)
+        except Exception as exc:
+            opentelemetry.trace.get_current_span().record_exception(exc)
         return ()
 
 
