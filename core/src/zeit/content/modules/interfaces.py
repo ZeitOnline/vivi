@@ -305,6 +305,7 @@ class ITickarooLiveblog(zeit.edit.interfaces.IBlock):
     teaser_timeline_events = zope.schema.Tuple(
         title=_(''),
         unique=True,
+        min_length=3,
         max_length=3,
         missing_value=None,
         default=None,
