@@ -6,6 +6,7 @@ import requests
 import zope.interface
 
 from zeit.cms.interfaces import FEATURE_CACHE
+from zeit.tickaroo.interfaces import ILiveblogTimeline
 import zeit.cms.config
 
 
@@ -71,13 +72,6 @@ def get_events(json):
                 'id': event['local_id'],
                 'title': title,
             }
-
-
-class ILiveblogTimeline(zope.interface.Interface):
-    """Connection to the Tickaroo liveblog API."""
-
-    def get_events(liveblog_id):
-        pass
 
 
 @zope.interface.implementer(ILiveblogTimeline)

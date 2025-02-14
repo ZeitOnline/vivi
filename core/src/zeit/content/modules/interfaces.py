@@ -12,7 +12,7 @@ import zeit.cms.content.sources
 import zeit.content.image.interfaces
 import zeit.content.text.interfaces
 import zeit.edit.interfaces
-import zeit.tickaroo.tickaroo
+import zeit.tickaroo.interfaces
 import zeit.wochenmarkt.ingredients
 
 
@@ -279,7 +279,7 @@ class LiveblogEventSource(zc.sourcefactory.contextual.BasicContextualSourceFacto
     def getValues(self, context):
         if not context.liveblog_id:
             return ()
-        timeline = zope.component.getUtility(zeit.tickaroo.tickaroo.ILiveblogTimeline)
+        timeline = zope.component.getUtility(zeit.tickaroo.interfaces.ILiveblogTimeline)
         events = timeline.get_events(context.liveblog_id)
         self.titles = {x['id']: x['title'] for x in events}
         return (x['id'] for x in events)

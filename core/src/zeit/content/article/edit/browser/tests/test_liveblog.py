@@ -41,7 +41,7 @@ class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
 
     def test_teaser_timeline_event_allows_resetting(self):
         self.get_article(with_block='tickaroo_liveblog')
-        api = zope.component.getUtility(zeit.tickaroo.tickaroo.ILiveblogTimeline)
+        api = zope.component.getUtility(zeit.tickaroo.interfaces.ILiveblogTimeline)
         api.get_events.return_value = (
             {'id': 'bloggy-id1', 'title': 'title for bloggy-id1'},
             {'id': 'bloggy-id2', 'title': 'title for bloggy-id2'},
@@ -61,7 +61,7 @@ class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
 
     def test_liveblog_allows_setting_teaser_timeline_events(self):
         self.get_article(with_block='tickaroo_liveblog')
-        api = zope.component.getUtility(zeit.tickaroo.tickaroo.ILiveblogTimeline)
+        api = zope.component.getUtility(zeit.tickaroo.interfaces.ILiveblogTimeline)
         api.get_events.return_value = (
             {'id': 'bloggy-id1', 'title': 'title for bloggy-id1'},
             {'id': 'bloggy-id2', 'title': 'title for bloggy-id2'},
