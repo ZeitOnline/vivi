@@ -415,11 +415,11 @@ class TeaserTimelineEventsWidget(zope.formlib.widgets.TupleSequenceWidget):
 
     def _getRenderedValue(self):
         value = super()._getRenderedValue()
-        value += (None,) * (3 - len(value))
+        value += (None,) * (self.context.max_length - len(value))
         return value
 
     def _generateSequence(self):
-        count = 3
+        count = self.context.max_length
         sequence = []
 
         for i in range(count):
