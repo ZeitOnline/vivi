@@ -41,16 +41,14 @@ def test_publisher_updates_metadata(vivi, http, config, content):
     timeout = 60
     for _ in range(timeout):
         sleep(1)
-        r = http(
-            config['elasticsearch'],
-            json={
-                'query': {'bool': {'filter': [{'term': {'url': content}}]}},
-                '_source': ['payload.workflow.date_last_published'],
-            },
+        r = vivi._request(
+            'get',
+            f'/public/api/v1/resource{content}',
+            params={'ns': 'workflow', 'name': 'date_last_published'},
+            headers={'accept': 'application/json'},
         )
         try:
-            hit = r.json()['hits']['hits'][0]['_source']
-            current = hit['payload']['workflow']['date_last_published']
+            current = r.json()['workflow']['date_last_published']
             current = datetime.fromisoformat(current)
         except Exception:
             current = datetime.min

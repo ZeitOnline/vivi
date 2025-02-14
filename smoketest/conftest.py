@@ -11,18 +11,16 @@ XMLRPC_AUTH = 'nightwatch:' + os.environ['VIVI_XMLRPC_PASSWORD']
 CONFIG_STAGING = {
     'www_baseurl': 'https://www.staging.zeit.de',
     'vivi_baseurl': 'https://vivi.staging.zeit.de',
-    'storage': 'https://content-storage.staging.zon.zeit.de/internal',
+    'storage': 'https://content-storage.staging.zon.zeit.de',
     'vivi': f'https://{XMLRPC_AUTH}@vivi.staging.zon.zeit.de',
-    'elasticsearch': 'https://tms-es.staging.zon.zeit.de/zeit_content/_search',
 }
 
 
 CONFIG_PRODUCTION = {
     'www_baseurl': 'https://www.zeit.de',
     'vivi_baseurl': 'https://vivi.zeit.de',
-    'storage': 'https://content-storage.prod.zon.zeit.de/internal',
+    'storage': 'https://content-storage.prod.zon.zeit.de',
     'vivi': f'https://{XMLRPC_AUTH}@vivi.prod.zon.zeit.de',
-    'elasticsearch': 'https://tms-es.zon.zeit.de/zeit_content/_search',
 }
 
 
@@ -87,12 +85,12 @@ class StorageClient:
         self.http = requests.Session()
 
     def _request(self, verb, url, **kw):
-        r = self.http.request(verb, self.storage_url + '/api/v1' + url, **kw)
+        r = self.http.request(verb, self.storage_url + url, **kw)
         r.raise_for_status()
         return r
 
     def set_property(self, path, ns, name, value):
-        self._request('put', f'/resource{path}', json={ns: {name: value}})
+        self._request('put', f'/internal/api/v1/resource{path}', json={ns: {name: value}})
 
     def set_body(self, path, body):
         self._request(
@@ -103,7 +101,7 @@ class StorageClient:
         )
 
     def publish(self, path):
-        return self._request('post', f'/publish{path}').json()['job-id']
+        return self._request('post', f'/internal/api/v1/publish{path}').json()['job-id']
 
     def job_status(self, job):
         r = self.http.get(self.vivi_url + '/@@job-status', params={'job': job})
