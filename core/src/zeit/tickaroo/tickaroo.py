@@ -5,7 +5,7 @@ import opentelemetry.trace
 import requests
 import zope.interface
 
-from zeit.cms.interfaces import FEATURE_CACHE
+from zeit.cms.interfaces import SHORT_TERM_CACHE
 from zeit.tickaroo.interfaces import ILiveblogTimeline
 import zeit.cms.config
 
@@ -97,7 +97,7 @@ class Tickaroo:
         response.raise_for_status()
         return response
 
-    @FEATURE_CACHE.cache_on_arguments()
+    @SHORT_TERM_CACHE.cache_on_arguments()
     def get_events(self, liveblog_id, **kw):
         kw.setdefault('limit', self.default_event_limit)
         try:
