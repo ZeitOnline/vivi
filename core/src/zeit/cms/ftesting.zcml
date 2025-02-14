@@ -15,7 +15,6 @@
   <include package="zope.component" file="meta.zcml" />
   <utility factory="zeit.cms.tracing.testing_tracer" />
 
-  <include package="zeit.tickaroo" />
   <include package="zeit.cms" file="ui.zcml" />
   <include package="zeit.cms" />
   <include package="zeit.cms.browser" />
