@@ -44,7 +44,6 @@ class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
             {'id': 'bloggy-id1', 'title': 'title for bloggy-id1'},
             {'id': 'bloggy-id2', 'title': 'title for bloggy-id2'},
         )
-        # FIXME translation
         b.getControl(name='form.timeline_template').displayValue = 'Manually selected events'
         b.getControl('Apply').click()
         b.reload()
