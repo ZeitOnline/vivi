@@ -1,4 +1,4 @@
-import zope
+import zope.component
 
 import zeit.content.article.edit.browser.testing
 
