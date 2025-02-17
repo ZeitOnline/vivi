@@ -35,6 +35,7 @@ class ActionMenuItem(MenuItemBase, z3c.menu.simple.menu.SimpleMenuItem):
     template = zope.app.pagetemplate.ViewPageTemplateFile('action-menu-item.pt')
     click_once = True
     item_id = None
+    item_class = None
     rel = None
 
     def update(self):

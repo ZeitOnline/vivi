@@ -240,6 +240,10 @@ class MenuItem(zeit.cms.browser.menu.ActionMenuItem):
     weight = -10
 
     @property
+    def item_class(self):
+        return self.__class__.__name__
+
+    @property
     def action(self):
         view_name = self.__parent__.__name__
         return '@@%s?came_from=%s' % (self.base_action, view_name)
