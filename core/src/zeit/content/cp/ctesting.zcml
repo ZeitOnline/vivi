@@ -9,6 +9,6 @@
 
   <include package="zeit.content.image" />
   <include package="zeit.content.image.browser" />
-  <include package="zeit.content.modules" />
+  <include package="zeit.content.modules" file="ctesting.zcml" />
 
 </configure>

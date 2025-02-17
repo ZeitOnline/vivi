@@ -4,9 +4,6 @@
 
   <grok:grok package="." exclude="browser" />
 
-  <include package="zeit.cmp" />
-  <include package="zeit.tickaroo" />
-
   <class class=".jobticker.Feed">
     <require
       attributes="id title teaser landing_url feed_url"

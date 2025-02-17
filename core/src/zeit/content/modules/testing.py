@@ -4,7 +4,6 @@ import zeit.cmp.testing
 import zeit.cms.content.add
 import zeit.cms.testing
 import zeit.content.modules
-import zeit.content.text.text
 import zeit.wochenmarkt.ingredients
 import zeit.wochenmarkt.testing
 

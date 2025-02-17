@@ -1,0 +1,14 @@
+<configure
+   xmlns="http://namespaces.zope.org/zope"
+   xmlns:meta="http://namespaces.zope.org/meta"
+   i18n_domain="zope"
+   >
+
+  <include package="zeit.content.modules" />
+  <include package="zeit.content.modules.browser" />
+
+  <include package="zeit.content.text" />
+  <include package="zeit.tickaroo" />
+  <include package="zeit.wochenmarkt" />
+
+</configure>
