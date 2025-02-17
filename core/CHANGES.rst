@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.40.0 (2025-02-17)
+-------------------
+
+- ZO-7096: Allow selecting liveblog events
+
+
 7.39.0 (2025-02-17)
 -------------------
 
