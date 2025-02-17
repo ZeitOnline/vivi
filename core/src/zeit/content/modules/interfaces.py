@@ -1,6 +1,7 @@
 import re
 
 import grokcore.component as grok
+import zc.sourcefactory.contextual
 import zope.app.appsetup.product
 import zope.schema
 
@@ -11,6 +12,7 @@ import zeit.cms.content.sources
 import zeit.content.image.interfaces
 import zeit.content.text.interfaces
 import zeit.edit.interfaces
+import zeit.tickaroo.interfaces
 import zeit.wochenmarkt.ingredients
 
 
@@ -263,7 +265,24 @@ class TimelineTemplateSource(zeit.cms.content.sources.SimpleDictSource):
     values = {
         'highlighted': _('Highlighted events'),
         'recent': _('Recent events'),
+        'manual': _('Manually selected events'),
     }
+
+
+class LiveblogEventSource(zc.sourcefactory.contextual.BasicContextualSourceFactory):
+    def __init__(self):
+        self.titles = {}
+
+    def getTitle(self, context, value):
+        return self.titles.get(value, _('Unknown event'))
+
+    def getValues(self, context):
+        if not context.liveblog_id:
+            return ()
+        timeline = zope.component.getUtility(zeit.tickaroo.interfaces.ILiveblogTimeline)
+        events = timeline.get_events(context.liveblog_id)
+        self.titles = {x['id']: x['title'] for x in events}
+        return (x['id'] for x in events)
 
 
 class ITickarooLiveblog(zeit.edit.interfaces.IBlock):
@@ -281,6 +300,22 @@ class ITickarooLiveblog(zeit.edit.interfaces.IBlock):
         title=_('Timeline Content'),
         required=False,
         source=TimelineTemplateSource(),
+    )
+
+    teaser_timeline_events = zope.schema.Tuple(
+        title=_(''),
+        unique=True,
+        min_length=3,
+        max_length=3,
+        missing_value=None,
+        default=None,
+        required=False,
+        value_type=zope.schema.Choice(
+            title=_(''),
+            source=LiveblogEventSource(),
+            required=False,
+            missing_value='',
+        ),
     )
 
     status = zope.schema.Choice(

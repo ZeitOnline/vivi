@@ -6,6 +6,7 @@ import grokcore.component as grok
 import requests
 import zope.cachedescriptors.property
 import zope.component
+import zope.formlib.interfaces
 import zope.security
 
 from zeit.cms.content.sources import FEATURE_TOGGLES
@@ -394,11 +395,66 @@ class EditPuzzleForm(zeit.edit.browser.form.InlineForm):
         return 'puzzleform.{0}'.format(self.context.__name__)
 
 
+class TeaserTimelineEventsWidget(zope.formlib.widgets.TupleSequenceWidget):
+    def __init__(self, field, request):
+        """Initialize the widget."""
+        super().__init__(
+            field,
+            field,
+            request,
+            subwidget=lambda field, request: zope.formlib.source.SourceDropdownWidget(
+                field, field.vocabulary, request
+            ),
+        )
+
+    def __call__(self):
+        return '\n'.join((x() for x in self.widgets()))
+
+    def hasInput(self):
+        return any(self._getWidget(i).hasInput() for i in range(self.context.max_length))
+
+    def _generateSequence(self):
+        count = self.context.max_length
+        sequence = []
+
+        for i in range(count):
+            widget = self._getWidget(i)
+            widget.explicit_empty_selection = True
+            widget._displayItemForMissingValue = True
+            if widget.hasValidInput():
+                # catch and set sequence widget errors to ``_error`` attribute
+                try:
+                    sequence.append(widget.getInputValue())
+                except zope.formlib.interfaces.WidgetInputError as error:
+                    self._error = error
+                    raise self._error
+
+        return sequence
+
+    def loadValueFromRequest(self):
+        return self._generateSequence()
+
+
 class EditTickarooLiveblog(zeit.edit.browser.form.InlineForm):
     legend = None
-    form_fields = zope.formlib.form.FormFields(
-        zeit.content.modules.interfaces.ITickarooLiveblog
-    ).omit(*list(zeit.edit.interfaces.IBlock))
+
+    @property
+    def form_fields(self):
+        form_fields = zope.formlib.form.FormFields(
+            zeit.content.article.edit.interfaces.ITickarooLiveblog
+        ).omit(*list(zeit.edit.interfaces.IBlock))
+        if self.context.timeline_template == 'manual':
+            form_fields['teaser_timeline_events'].custom_widget = TeaserTimelineEventsWidget
+        else:
+            form_fields = form_fields.omit('teaser_timeline_events')
+        return form_fields
+
+    def render(self):
+        # I don't really understand why this is necessary, but without it,
+        # TeaserTimelineEventsWidget.setRenderedValue is never called,
+        # and the field loses its values.
+        self.form_reset = True
+        return super().render()
 
 
 class EditCardstack(zeit.edit.browser.form.InlineForm):

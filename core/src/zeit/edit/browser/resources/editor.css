@@ -764,3 +764,52 @@ fieldset .hlink a:active {
   width: auto;
   font-size: 12px;
 }
+
+:root {
+  --z-ds-space-xs: 0.5em;
+  --z-ds-space-m: 1em;
+  --z-ds-color-text-40: #999;
+  --z-ds-color-border-100: #cccccf;
+
+  --timeline-dot-size: 0.375rem;
+  --timeline-dot-color: var(--z-ds-color-text-40);
+  --timeline-line-width: 0.125rem;
+  --timeline-line-color: var(--z-ds-color-border-100);
+}
+
+
+.fieldname-teaser_timeline_events .widget > div {
+  --lh: calc(1em + 2px);
+  padding-block: 2px;
+  position: relative;
+}
+
+.fieldname-teaser_timeline_events .widget > div::before {
+  background-color: var(--timeline-line-color);
+  content: "";
+  height: calc(2em + var(--timeline-line-width));
+  left: calc(-1 * var(--z-ds-space-m) + var(--timeline-dot-size) / 2 - var(--timeline-line-width) / 2);
+  position: absolute;
+  width: var(--timeline-line-width);
+}
+
+.fieldname-teaser_timeline_events .widget > div:first-child::before {
+  height: var(--lh);
+  top: var(--lh);
+}
+
+.fieldname-teaser_timeline_events .widget > div:last-child::before {
+  background: linear-gradient(to bottom, var(--timeline-line-color) 75%, transparent);
+}
+
+.fieldname-teaser_timeline_events .widget > div::after {
+  background-color: var(--timeline-dot-color);
+  border-radius: 50%;
+  content: "";
+  display: inline-block;
+  height: var(--timeline-dot-size);
+  left: calc(-1 * var(--z-ds-space-m));
+  position: absolute;
+  top: calc(var(--lh) - var(--timeline-dot-size) / 2);
+  width: var(--timeline-dot-size);
+}
