@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.41.0 (2025-02-17)
+-------------------
+
+- ZO-7097: Do not load zeit.tickaroo by default, only when required for vivi UI
+
+
 7.40.0 (2025-02-17)
 -------------------
 

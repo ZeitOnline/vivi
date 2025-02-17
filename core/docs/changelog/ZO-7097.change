@@ -1,1 +1,0 @@
-ZO-7097: Do not load zeit.tickaroo by default, only when required for vivi UI
