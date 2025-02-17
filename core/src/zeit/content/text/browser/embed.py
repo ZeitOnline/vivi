@@ -21,6 +21,8 @@ class Add(FormBase, zeit.cms.browser.form.AddForm):
 
 
 class CheckoutMenuItem(zeit.cms.checkout.browser.manager.CheckoutMenuItem):
+    item_class = 'checkout-menu-item'
+
     def is_visible(self):
         if not self.request.interaction.checkPermission(
             'zeit.content.text.EditEmbed', self.context

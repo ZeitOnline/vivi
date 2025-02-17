@@ -1,6 +1,7 @@
 <li i18n:domain="zeit.cms">
   <a title="Title"
     tal:attributes="
+    class view/item_class;
     id view/item_id;
     href view/get_url;
     rel view/rel;
