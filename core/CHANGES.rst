@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.39.0 (2025-02-17)
+-------------------
+
+- WCM-669: add feature toggles to disable tms and elasticsearch completely
+
+- WCM-719: trace search query
+
+
 7.38.0 (2025-02-13)
 -------------------
 
