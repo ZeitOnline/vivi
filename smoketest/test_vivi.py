@@ -41,7 +41,7 @@ def test_checkout_content(page):
     expect(checkin_button).not_to_have_class('disabled', timeout=10000)
     # Do the checkin!
     checkin_button.click()
-    page.locator('.CheckoutMenuItem').click()
+    page.locator('.checkout-menu-item').click()
     assert page.locator('.title').first.is_editable()
     # Open settings menu
     page.locator('.secondary-actions').click()
