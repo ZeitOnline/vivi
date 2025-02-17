@@ -7,6 +7,7 @@ import requests.utils
 import zope.dottedname.resolve
 import zope.interface
 
+from zeit.cms.content.sources import FEATURE_TOGGLES
 import zeit.cms.config
 import zeit.cms.interfaces
 import zeit.retresco.interfaces
@@ -55,6 +56,8 @@ class Elasticsearch:
         Hint: A custom `_source` definition is mutually exclusive with the
         `include_payload` flag.
         """
+        if FEATURE_TOGGLES.find('disable_elasticsearch'):
+            return zeit.cms.interfaces.Result()
 
         query = query.copy()
         if '_source' in query:
@@ -84,6 +87,8 @@ class Elasticsearch:
     def aggregate(self, query):
         """Returns aggregated data from payload aggregations. Consult Elastic
         Search - Aggregations documentation for further information."""
+        if FEATURE_TOGGLES.find('disable_elasticsearch'):
+            return {}
 
         __traceback_info__ = (self.index, query)
         response = self.client.search(index=self.index, **query)

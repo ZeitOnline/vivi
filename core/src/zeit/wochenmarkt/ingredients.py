@@ -120,6 +120,8 @@ class IngredientsWhitelist(grok.GlobalUtility, zeit.cms.content.sources.CachedXM
                 'size': 0,
             }
         )
+        if not result:
+            return
         used = set()
         for item in result['ingredients']['buckets']:
             used.add(item['key'])
@@ -137,6 +139,8 @@ class IngredientsWhitelist(grok.GlobalUtility, zeit.cms.content.sources.CachedXM
 def collect_used():
     ingredients = zope.component.getUtility(zeit.wochenmarkt.interfaces.IIngredientsWhitelist)
     used = ingredients.collect_used()
+    if not used:
+        return
 
     for _ in commit_with_retry():
         source = ICMSContent('http://xml.zeit.de/data/ingredients_in_use.xml')

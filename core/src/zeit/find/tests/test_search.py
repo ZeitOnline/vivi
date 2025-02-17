@@ -2,9 +2,11 @@ from unittest import TestCase
 
 from zope.component import getUtility
 
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.testing import FunctionalTestCase
 from zeit.find.interfaces import ICMSSearch
 from zeit.find.testing import LAYER
+import zeit.find.search
 
 
 class TestElasticsearch(TestCase):
@@ -19,8 +21,6 @@ class QueryTest(FunctionalTestCase):
     layer = LAYER
 
     def test_query(self):
-        import zeit.find.search
-
         self.layer.set_result(__package__, 'data/obama.json')
         elastic = getUtility(ICMSSearch)
         q = zeit.find.search.query('Obama')
@@ -31,6 +31,13 @@ class QueryTest(FunctionalTestCase):
         )
         req = self.layer.search.client.search
         self.assertEqual(1, req.call_count)
+
+    def test_disable_elastichsearch(self):
+        FEATURE_TOGGLES.set('disable_elasticsearch')
+        self.layer.set_result(__package__, 'data/obama.json')
+        elastic = getUtility(ICMSSearch)
+        result = elastic.search(zeit.find.search.query('Obama'))
+        self.assertEqual(0, result.hits)
 
     def test_suggest(self):
         NotImplemented
