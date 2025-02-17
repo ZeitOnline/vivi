@@ -4,7 +4,6 @@
 
   <grok:grok package="." exclude="browser" />
 
-  <include package="zeit.cmp" />
   <include package="zeit.tickaroo" />
 
   <class class=".jobticker.Feed">
