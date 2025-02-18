@@ -1,17 +1,22 @@
+from base64 import b64encode
 import uuid
 
 from playwright.sync_api import expect
 
 
-def test_login_to_vivi_with_firefox(page):
-    page.goto('/repository/wirtschaft/2010-01')
+def test_login_to_vivi_with_active_directory(page, config, azure_id_token):
+    page.set_extra_http_headers({'Authorization': f'Bearer {azure_id_token}'})
+    page.goto(config['vivi_ui'] + '/repository/wirtschaft/2010-01')
     page.get_by_role('link', name='Clipboard').click()
 
 
-def test_checkout_content(page):
+def test_checkout_content(page, config):
+    credentials = f'{config["admin_user"]}:{config["admin_password"]}'
+    credentials = b64encode(credentials.encode('utf-8')).decode('ascii')
+    page.set_extra_http_headers({'Authorization': f'Basic {credentials}'})
     base_id = '/repository/test/test-nightwatch'
     random_id = uuid.uuid4()
-    page.goto(base_id)
+    page.goto(config['vivi_admin'] + base_id)
     page.locator('#add_menu').select_option('Article')
     # open forms
     relevant_forms = ['#edit-form-metadata', '#edit-form-filename']

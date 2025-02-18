@@ -70,17 +70,6 @@ def oidc_token(nightwatch_config):
         return r.json()['id_token']
 
 
-@pytest.fixture(scope='session')
-def base_url(nightwatch_config):
-    return nightwatch_config['vivi_ui']
-
-
-@pytest.fixture(scope='session')
-def browser_context_args(browser_context_args, azure_id_token):
-    browser_context_args['extra_http_headers'] = {'Authorization': f'Bearer {azure_id_token}'}
-    return browser_context_args
-
-
 class StorageClient:
     def __init__(self, storage_url, vivi_url, user, password):
         self.storage_url = storage_url
