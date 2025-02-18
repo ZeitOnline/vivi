@@ -5,13 +5,14 @@ import email.utils
 import logging
 import os
 import os.path
+import xml.sax.saxutils
 
 import gocept.cache.property
 import lxml.etree
 import zope.app.file.image
 import zope.interface
 
-from zeit.connector.interfaces import ID_NAMESPACE, CannonicalId
+from zeit.connector.interfaces import ID_NAMESPACE, CannonicalId, DeleteProperty
 import zeit.cms.config
 import zeit.cms.content.dav
 import zeit.connector.converter
@@ -127,8 +128,9 @@ class Connector:
         davtype = ('getcontenttype', 'DAV:')
         return properties.get(davtype, '') == 'httpd/unix-directory'
 
-    def __setitem__(self, id, object):
-        raise NotImplementedError()
+    def __setitem__(self, id, resource):
+        resource.id = id
+        self.add(resource)
 
     def __delitem__(self, id):
         raise NotImplementedError()
@@ -140,8 +142,17 @@ class Connector:
             return False
         return True
 
-    def add(self, object, verify_etag=True):
-        raise NotImplementedError()
+    def add(self, resource, verify_etag=True):
+        self._write_metadata_file(resource.id, resource.properties)
+
+        if resource.is_collection:
+            os.makedirs(self._path(resource.id), exist_ok=True)
+        else:
+            with self._get_file(resource.id, 'wb') as f:
+                while chunk := resource.data.read(self.WRITE_CHUNK_SIZE):
+                    f.write(chunk)
+
+    WRITE_CHUNK_SIZE = 8 * 1024
 
     def copy(self, old_id, new_id):
         raise NotImplementedError()
@@ -150,7 +161,10 @@ class Connector:
         raise NotImplementedError()
 
     def changeProperties(self, id, properties):
-        raise NotImplementedError()
+        resource = self[id]
+        current = dict(resource.properties)
+        current.update(properties)
+        self._write_metadata_file(id, current)
 
     def lock(self, id, principal, until):
         raise NotImplementedError()
@@ -199,21 +213,21 @@ class Connector:
         path = id.replace(ID_NAMESPACE, '', 1).rstrip('/')
         return os.path.join(self.repository_path, path).rstrip('/')
 
-    def _get_file(self, id):
+    def _get_file(self, id, mode='rb'):
         filename = self._path(id)
         __traceback_info__ = (id, filename)
         try:
-            return open(filename, 'rb')
+            return open(filename, mode)
         except IOError:
             if os.path.isdir(filename):
                 raise ValueError('The path %r points to a directory.' % filename)
             raise KeyError("The resource '%s' does not exist." % id)
 
-    def _get_metadata_file(self, id):
+    def _get_metadata_file(self, id, mode='rb'):
         filename = self._path(id) + '.meta'
         __traceback_info__ = (id, filename)
         try:
-            return open(filename, 'rb')
+            return open(filename, mode)
         except IOError:
             if not id.endswith('.meta'):
                 return self._get_file(id)
@@ -283,6 +297,17 @@ class Connector:
     def _get_lastmodified(self, id):
         mtime = self.mtime(id)
         return email.utils.formatdate(mtime, usegmt=True)
+
+    def _write_metadata_file(self, id, properties):
+        with self._get_metadata_file(id, 'w') as f:
+            f.write("<?xml version='1.0' encoding='UTF-8'?>\n")
+            f.write('<head>\n')
+            for (name, ns), value in properties.items():
+                if value is DeleteProperty or value is None:
+                    continue
+                value = xml.sax.saxutils.escape(value)
+                f.write(f'  <attribute ns="{ns}" name="{name}">{value}</attribute>\n')
+            f.write('</head>\n')
 
 
 factory = Connector.factory
