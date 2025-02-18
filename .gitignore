@@ -3,3 +3,4 @@
 .idea/
 *.pyc
 .pipenv.success
+smoketest/msal.json
