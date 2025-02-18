@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.42.0 (2025-02-18)
+-------------------
+
+- ZO-7096: Move dogpile cache to zeit.tickaroo
+
+
 7.41.0 (2025-02-17)
 -------------------
 
