@@ -39,7 +39,8 @@ def test_checkout_content(page):
     page.wait_for_selector('.dirty', state='detached')
     checkin_button = page.locator('#checkin')
     expect(checkin_button).not_to_have_class('disabled', timeout=10000)
-    # Do the checkin!
+    # Wait that all errors disappear
+    page.wait_for_selector('.errors', state='detached')
     checkin_button.click()
     page.get_by_role('link', name='Checkout ^O').click()
     assert page.locator('#article-content-head\\.title').first.is_editable()
