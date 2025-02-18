@@ -95,7 +95,7 @@ class StorageClient:
     def set_body(self, path, body):
         self._request(
             'put',
-            f'/resource{path}',
+            f'/internal/api/v1/resource{path}',
             data=body,
             headers={'content-type': 'application/octet-stream'},
         )
