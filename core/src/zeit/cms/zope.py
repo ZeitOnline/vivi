@@ -29,7 +29,7 @@ def configure_product_config(settings):
     for key, value in settings.items():
         if not key.startswith('vivi_'):
             continue
-        _, package, key = key.split('_')
+        _, package, key = key.split('_', 2)
         config = zeit.cms.config.package(package)
         config[key] = maybe_convert_egg_url(value)
 

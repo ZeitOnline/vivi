@@ -2,12 +2,15 @@ from io import StringIO
 
 import lxml.etree
 import opentelemetry.trace
+import pyramid_dogpile_cache2
 import requests
 import zope.interface
 
-from zeit.cms.interfaces import SHORT_TERM_CACHE
 from zeit.tickaroo.interfaces import ILiveblogTimeline
 import zeit.cms.config
+
+
+SHORT_TERM_CACHE = pyramid_dogpile_cache2.get_region('short_term')
 
 
 def get_tag_text(html, tag):
