@@ -10,7 +10,7 @@ from zeit.tickaroo.interfaces import ILiveblogTimeline
 import zeit.cms.config
 
 
-SHORT_TERM_CACHE = pyramid_dogpile_cache2.get_region('short-term')
+SHORT_TERM_CACHE = pyramid_dogpile_cache2.get_region('short_term')
 
 
 def get_tag_text(html, tag):
