@@ -7,20 +7,23 @@ import zeit.msal
 import zeit.nightwatch
 
 
-XMLRPC_AUTH = 'nightwatch:' + os.environ['VIVI_XMLRPC_PASSWORD']
 CONFIG_STAGING = {
-    'www_baseurl': 'https://www.staging.zeit.de',
-    'vivi_baseurl': 'https://vivi.staging.zeit.de',
+    'www': 'https://www.staging.zeit.de',
+    'vivi_ui': 'https://vivi.staging.zeit.de',
+    'vivi_admin': 'https://vivi.staging.zon.zeit.de',
+    'admin_user': 'nightwatch',
+    'admin_password': os.environ['VIVI_XMLRPC_PASSWORD'],
     'storage': 'https://content-storage.staging.zon.zeit.de',
-    'vivi': f'https://{XMLRPC_AUTH}@vivi.staging.zon.zeit.de',
 }
 
 
 CONFIG_PRODUCTION = {
-    'www_baseurl': 'https://www.zeit.de',
-    'vivi_baseurl': 'https://vivi.zeit.de',
+    'www': 'https://www.zeit.de',
+    'vivi_ui': 'https://vivi.zeit.de',
+    'vivi_admin': 'https://vivi.prod.zon.zeit.de',
+    'admin_user': 'nightwatch',
+    'admin_password': os.environ['VIVI_XMLRPC_PASSWORD'],
     'storage': 'https://content-storage.prod.zon.zeit.de',
-    'vivi': f'https://{XMLRPC_AUTH}@vivi.prod.zon.zeit.de',
 }
 
 
@@ -46,7 +49,7 @@ def pytest_configure(config):
 
 @pytest.fixture
 def http(nightwatch_config, oidc_token):
-    baseurl = nightwatch_config.get('www_baseurl', '')
+    baseurl = nightwatch_config.get('www', '')
     browser = zeit.nightwatch.Browser(baseurl=baseurl)
     if oidc_token:
         browser.session.cookies.set('zeit_oidc_www_staging', oidc_token)
@@ -67,21 +70,10 @@ def oidc_token(nightwatch_config):
         return r.json()['id_token']
 
 
-@pytest.fixture(scope='session')
-def base_url(nightwatch_config):
-    return nightwatch_config['vivi_baseurl']
-
-
-@pytest.fixture(scope='session')
-def browser_context_args(browser_context_args, azure_id_token):
-    browser_context_args['extra_http_headers'] = {'Authorization': f'Bearer {azure_id_token}'}
-    return browser_context_args
-
-
 class StorageClient:
-    def __init__(self, storage_url, vivi_url):
+    def __init__(self, storage_url, vivi_url, user, password):
         self.storage_url = storage_url
-        self.vivi_url = vivi_url
+        self.vivi_url = vivi_url.replace('https://', f'https://{user}:{password}@')
         self.http = requests.Session()
 
     def _request(self, verb, url, **kw):
@@ -95,7 +87,7 @@ class StorageClient:
     def set_body(self, path, body):
         self._request(
             'put',
-            f'/resource{path}',
+            f'/internal/api/v1/resource{path}',
             data=body,
             headers={'content-type': 'application/octet-stream'},
         )
@@ -116,7 +108,9 @@ class StorageClient:
 
 @pytest.fixture(scope='session')
 def vivi(config):
-    return StorageClient(config['storage'], config['vivi'])
+    return StorageClient(
+        config['storage'], config['vivi_admin'], config['admin_user'], config['admin_password']
+    )
 
 
 @pytest.fixture(scope='session')
