@@ -284,8 +284,12 @@ class Content(Base, CommonMetadata, ContentTypes, Timestamps, Miscellaneous):
         for column in sqlalchemy.orm.class_mapper(cls).columns:
             if not column.info.get('namespace'):
                 continue
-            migration = column.info['migration']
-            if mode == 'always' or FEATURE_TOGGLES.find(f'column_{mode}_{migration}'):
+            migration = column.info.get('migration')
+            if (
+                migration is None
+                or mode == 'always'
+                or FEATURE_TOGGLES.find(f'column_{mode}_{migration}')
+            ):
                 result.append(column)
 
         return result
@@ -370,8 +374,8 @@ class Content(Base, CommonMetadata, ContentTypes, Timestamps, Miscellaneous):
                     f'Cannot convert {value!r} to {column.name} with {converter}: {e}'
                 ) from e
 
-            migration = column.info['migration']
-            if FEATURE_TOGGLES.find(f'column_strict_{migration}'):
+            migration = column.info.get('migration')
+            if migration and FEATURE_TOGGLES.find(f'column_strict_{migration}'):
                 props.pop((name, self.NS + namespace), None)
 
         unsorted = collections.defaultdict(dict)
