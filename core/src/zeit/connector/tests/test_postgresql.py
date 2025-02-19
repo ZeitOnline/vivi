@@ -353,6 +353,14 @@ class ContractChecksum(zeit.connector.testing.SQLTest):
 class PropertiesColumnTest(zeit.connector.testing.SQLTest):
     layer = zeit.connector.testing.SQL_CONTENT_LAYER
 
+    def setUp(self):
+        super().setUp()
+        Content.date_created.info['migration'] = 'wcm_430'
+
+    def tearDown(self):
+        Content.date_created.info.pop('migration', None)
+        super().tearDown()
+
     def test_properties_are_written_simultaneously_to_separate_column_and_unsorted(self):
         FEATURE_TOGGLES.set('column_write_wcm_430')
         FEATURE_TOGGLES.set('column_read_wcm_430')
