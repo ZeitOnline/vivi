@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.43.0 (2025-02-20)
+-------------------
+
+- WCM-723: remove obsolete toggles
+
+
 7.42.0 (2025-02-18)
 -------------------
 
