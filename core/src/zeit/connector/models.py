@@ -40,145 +40,86 @@ class Base(sqlalchemy.orm.DeclarativeBase):
 
 
 class CommonMetadata:
-    channels = mapped_column(
-        JSONBTuple,
-        info={'namespace': 'document', 'name': 'channels', 'migration': 'wcm_430'},
-    )
-    access = mapped_column(
-        Unicode, info={'namespace': 'document', 'name': 'access', 'migration': 'wcm_430'}
-    )
-    product = mapped_column(
-        Unicode, info={'namespace': 'workflow', 'name': 'product-id', 'migration': 'wcm_430'}
-    )
-    ressort = mapped_column(
-        Unicode, info={'namespace': 'document', 'name': 'ressort', 'migration': 'wcm_430'}
-    )
-    sub_ressort = mapped_column(
-        Unicode, info={'namespace': 'document', 'name': 'sub_ressort', 'migration': 'wcm_430'}
-    )
-    series = mapped_column(
-        Unicode, info={'namespace': 'document', 'name': 'serie', 'migration': 'wcm_430'}
-    )
+    channels = mapped_column(JSONBTuple, info={'namespace': 'document', 'name': 'channels'})
+    access = mapped_column(Unicode, info={'namespace': 'document', 'name': 'access'})
+    product = mapped_column(Unicode, info={'namespace': 'workflow', 'name': 'product-id'})
+    ressort = mapped_column(Unicode, info={'namespace': 'document', 'name': 'ressort'})
+    sub_ressort = mapped_column(Unicode, info={'namespace': 'document', 'name': 'sub_ressort'})
+    series = mapped_column(Unicode, info={'namespace': 'document', 'name': 'serie'})
 
-    print_ressort = mapped_column(
-        Unicode, info={'namespace': 'print', 'name': 'ressort', 'migration': 'wcm_430'}
-    )
-    volume_year = mapped_column(
-        Integer, info={'namespace': 'document', 'name': 'year', 'migration': 'wcm_430'}
-    )
-    volume_number = mapped_column(
-        Integer, info={'namespace': 'document', 'name': 'volume', 'migration': 'wcm_430'}
-    )
-    print_page = mapped_column(
-        Integer, info={'namespace': 'document', 'name': 'page', 'migration': 'wcm_471'}
-    )
+    print_ressort = mapped_column(Unicode, info={'namespace': 'print', 'name': 'ressort'})
+    volume_year = mapped_column(Integer, info={'namespace': 'document', 'name': 'year'})
+    volume_number = mapped_column(Integer, info={'namespace': 'document', 'name': 'volume'})
+    print_page = mapped_column(Integer, info={'namespace': 'document', 'name': 'page'})
 
     accepted_entitlements = mapped_column(
-        Unicode,
-        info={'namespace': 'document', 'name': 'accepted_entitlements', 'migration': 'wcm_574'},
+        Unicode, info={'namespace': 'document', 'name': 'accepted_entitlements'}
     )
 
 
 class ContentTypes:
-    audio_premium_enabled = mapped_column(
-        Boolean, info={'namespace': 'print', 'name': 'has_audio', 'migration': 'wcm_471'}
-    )
+    audio_premium_enabled = mapped_column(Boolean, info={'namespace': 'print', 'name': 'has_audio'})
     audio_speech_enabled = mapped_column(
-        Boolean, info={'namespace': 'document', 'name': 'audio_speechbert', 'migration': 'wcm_471'}
+        Boolean, info={'namespace': 'document', 'name': 'audio_speechbert'}
     )
 
-    article_genre = mapped_column(
-        Unicode, info={'namespace': 'document', 'name': 'genre', 'migration': 'wcm_430'}
-    )
-    article_header = mapped_column(
-        Unicode, info={'namespace': 'document', 'name': 'header_layout', 'migration': 'wcm_471'}
-    )
+    article_genre = mapped_column(Unicode, info={'namespace': 'document', 'name': 'genre'})
+    article_header = mapped_column(Unicode, info={'namespace': 'document', 'name': 'header_layout'})
 
-    author_firstname = mapped_column(
-        Unicode, info={'namespace': 'author', 'name': 'firstname', 'migration': 'wcm_26'}
-    )
-    author_lastname = mapped_column(
-        Unicode, info={'namespace': 'author', 'name': 'lastname', 'migration': 'wcm_26'}
-    )
+    author_firstname = mapped_column(Unicode, info={'namespace': 'author', 'name': 'firstname'})
+    author_lastname = mapped_column(Unicode, info={'namespace': 'author', 'name': 'lastname'})
     author_displayname = mapped_column(
-        Unicode, info={'namespace': 'author', 'name': 'display_name', 'migration': 'wcm_26'}
+        Unicode, info={'namespace': 'author', 'name': 'display_name'}
     )
-    author_initials = mapped_column(
-        Unicode, info={'namespace': 'author', 'name': 'initials', 'migration': 'wcm_26'}
-    )
-    author_department = mapped_column(
-        Unicode, info={'namespace': 'author', 'name': 'department', 'migration': 'wcm_26'}
-    )
-    author_ssoid = mapped_column(
-        Integer, info={'namespace': 'author', 'name': 'ssoid', 'migration': 'wcm_26'}
-    )
-    author_hdok_id = mapped_column(
-        Integer, info={'namespace': 'author', 'name': 'hdok_id', 'migration': 'wcm_26'}
-    )
-    author_vgwort_id = mapped_column(
-        Integer, info={'namespace': 'author', 'name': 'vgwort_id', 'migration': 'wcm_26'}
-    )
-    author_vgwort_code = mapped_column(
-        Unicode, info={'namespace': 'author', 'name': 'vgwort_code', 'migration': 'wcm_26'}
-    )
+    author_initials = mapped_column(Unicode, info={'namespace': 'author', 'name': 'initials'})
+    author_department = mapped_column(Unicode, info={'namespace': 'author', 'name': 'department'})
+    author_ssoid = mapped_column(Integer, info={'namespace': 'author', 'name': 'ssoid'})
+    author_hdok_id = mapped_column(Integer, info={'namespace': 'author', 'name': 'hdok_id'})
+    author_vgwort_id = mapped_column(Integer, info={'namespace': 'author', 'name': 'vgwort_id'})
+    author_vgwort_code = mapped_column(Unicode, info={'namespace': 'author', 'name': 'vgwort_code'})
 
-    centerpage_type = mapped_column(
-        Unicode, info={'namespace': 'zeit.content.cp', 'name': 'type', 'migration': 'wcm_471'}
-    )
+    centerpage_type = mapped_column(Unicode, info={'namespace': 'zeit.content.cp', 'name': 'type'})
 
     gallery_type = mapped_column(
-        Unicode, info={'namespace': 'zeit.content.gallery', 'name': 'type', 'migration': 'wcm_471'}
+        Unicode, info={'namespace': 'zeit.content.gallery', 'name': 'type'}
     )
-    video_type = mapped_column(
-        Unicode, info={'namespace': 'video', 'name': 'type', 'migration': 'always'}
-    )
+    video_type = mapped_column(Unicode, info={'namespace': 'video', 'name': 'type'})
 
 
 class Timestamps:
     date_last_modified_semantic = mapped_column(
-        TIMESTAMP,
-        info={'namespace': 'document', 'name': 'last-semantic-change', 'migration': 'wcm_430'},
+        TIMESTAMP, info={'namespace': 'document', 'name': 'last-semantic-change'}
     )
 
-    date_created = mapped_column(
-        TIMESTAMP,
-        info={'namespace': 'document', 'name': 'date_created', 'migration': 'wcm_430'},
-    )
+    date_created = mapped_column(TIMESTAMP, info={'namespace': 'document', 'name': 'date_created'})
     date_last_checkout = mapped_column(
-        TIMESTAMP,
-        info={'namespace': 'document', 'name': 'date_last_checkout', 'migration': 'wcm_430'},
+        TIMESTAMP, info={'namespace': 'document', 'name': 'date_last_checkout'}
     )
     date_last_modified = mapped_column(
-        TIMESTAMP,
-        info={'namespace': 'document', 'name': 'date_last_modified', 'migration': 'wcm_430'},
+        TIMESTAMP, info={'namespace': 'document', 'name': 'date_last_modified'}
     )
 
     date_first_released = mapped_column(
-        TIMESTAMP,
-        info={'namespace': 'document', 'name': 'date_first_released', 'migration': 'wcm_430'},
+        TIMESTAMP, info={'namespace': 'document', 'name': 'date_first_released'}
     )
     date_last_published = mapped_column(
-        TIMESTAMP,
-        info={'namespace': 'workflow', 'name': 'date_last_published', 'migration': 'wcm_430'},
+        TIMESTAMP, info={'namespace': 'workflow', 'name': 'date_last_published'}
     )
     date_last_published_semantic = mapped_column(
         TIMESTAMP,
         info={
             'namespace': 'workflow',
             'name': 'date_last_published_semantic',
-            'migration': 'wcm_430',
         },
     )
     date_print_published = mapped_column(
-        TIMESTAMP,
-        info={'namespace': 'document', 'name': 'print-publish', 'migration': 'wcm_430'},
+        TIMESTAMP, info={'namespace': 'document', 'name': 'print-publish'}
     )
 
 
 class Miscellaneous:
     seo_meta_robots = mapped_column(
-        Unicode,
-        info={'namespace': 'document', 'name': 'html-meta-robots', 'migration': 'wcm_471'},
+        Unicode, info={'namespace': 'document', 'name': 'html-meta-robots'}
     )
 
 
@@ -256,7 +197,7 @@ class Content(Base, CommonMetadata, ContentTypes, Timestamps, Miscellaneous):
         Boolean,
         server_default='false',
         nullable=False,
-        info={'namespace': 'workflow', 'name': 'published', 'migration': 'wcm_430'},
+        info={'namespace': 'workflow', 'name': 'published'},
     )
 
     lock = relationship(
@@ -284,8 +225,12 @@ class Content(Base, CommonMetadata, ContentTypes, Timestamps, Miscellaneous):
         for column in sqlalchemy.orm.class_mapper(cls).columns:
             if not column.info.get('namespace'):
                 continue
-            migration = column.info['migration']
-            if mode == 'always' or FEATURE_TOGGLES.find(f'column_{mode}_{migration}'):
+            migration = column.info.get('migration')
+            if (
+                migration is None
+                or mode == 'always'
+                or FEATURE_TOGGLES.find(f'column_{mode}_{migration}')
+            ):
                 result.append(column)
 
         return result
@@ -370,8 +315,8 @@ class Content(Base, CommonMetadata, ContentTypes, Timestamps, Miscellaneous):
                     f'Cannot convert {value!r} to {column.name} with {converter}: {e}'
                 ) from e
 
-            migration = column.info['migration']
-            if FEATURE_TOGGLES.find(f'column_strict_{migration}'):
+            migration = column.info.get('migration')
+            if migration and FEATURE_TOGGLES.find(f'column_strict_{migration}'):
                 props.pop((name, self.NS + namespace), None)
 
         unsorted = collections.defaultdict(dict)
