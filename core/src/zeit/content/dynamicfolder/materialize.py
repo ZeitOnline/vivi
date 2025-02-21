@@ -133,3 +133,11 @@ def publish_content(folder):
     # run inside celery task because very large
     # running publications would block the UI
     _publish_content.delay(folder.uniqueId)
+
+
+@zeit.cms.celery.task(queue='publish_lowprio')  # XXX Convenient queue with high task_time_limit
+def refresh_cache(folder_id):
+    folder = zeit.cms.interfaces.ICMSContent(folder_id)
+    for content in folder.values():
+        zope.event.notify(zeit.connector.interfaces.ResourceInvalidatedEvent(content.uniqueId))
+        zope.event.notify(zeit.cms.repository.interfaces.ObjectReloadedEvent(content))

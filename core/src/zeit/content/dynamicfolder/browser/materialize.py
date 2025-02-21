@@ -58,3 +58,15 @@ class PublishMaterializedContent(zeit.cms.browser.view.Base):
 
 class PublishMenuItem(CloneArmyGuard, zeit.cms.browser.menu.ActionMenuItem):
     title = _('Publish content of dynamic folder')
+
+
+class RefreshContent(zeit.cms.browser.view.Base):
+    def __call__(self):
+        zeit.content.dynamicfolder.materialize.refresh_cache.delay(self.context.uniqueId)
+        self.send_message(_('Prewarming, this might take some time'))
+        self.redirect(self.url(self.context, '@@workflow.html'))
+        return ''
+
+
+class RefreshMenuItem(CloneArmyGuard, zeit.cms.browser.menu.ActionMenuItem):
+    title = _('Refresh content of dynamic folder')

@@ -91,4 +91,23 @@
     permission="zeit.MaterializeContent"
     />
 
+  <browser:viewlet
+    name="RefreshDynamic"
+    for="zeit.content.dynamicfolder.interfaces.IDynamicFolder"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class="zeit.content.dynamicfolder.browser.materialize.RefreshMenuItem"
+    manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
+    permission="zeit.MaterializeContent"
+    action="@@refresh-cache-recursive"
+    icon="/@@/zeit.content.cp/prewarm-cache.png"
+    />
+
+  <browser:page
+    name="refresh-cache-recursive"
+    for="zeit.content.dynamicfolder.interfaces.IDynamicFolder"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class="zeit.content.dynamicfolder.browser.materialize.RefreshContent"
+    permission="zeit.MaterializeContent"
+    />
+
 </configure>
