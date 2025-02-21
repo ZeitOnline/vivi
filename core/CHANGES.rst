@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.44.0 (2025-02-21)
+-------------------
+
+- WCM-742: Add recursive cache refresh action for dynamic folders
+
+
 7.43.0 (2025-02-20)
 -------------------
 
