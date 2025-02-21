@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Wed Feb 12 07:35:18 2025\n"
+"POT-Creation-Date: Fri Feb 21 15:23:56 2025\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -190,7 +190,7 @@ msgid "Edit"
 msgstr "Bearbeiten"
 
 #: zeit/cms/browser/form.py:293 zeit/cms/repository/browser/file.py:89
-#: zeit/content/article/edit/browser/edit.py:336
+#: zeit/content/article/edit/browser/edit.py:337
 #: zeit/content/article/edit/browser/form.py:478
 #: zeit/content/article/edit/browser/push.py:52
 #: zeit/content/article/edit/browser/reference.py:51
@@ -242,7 +242,7 @@ msgstr "Autor"
 #: zeit/content/author/interfaces.py:36 zeit/content/cp/interfaces.py:190
 #: zeit/content/cp/interfaces.py:293 zeit/content/cp/interfaces.py:416
 #: zeit/content/cp/interfaces.py:465 zeit/content/gallery/interfaces.py:91
-#: zeit/content/infobox/interfaces.py:21 zeit/content/modules/interfaces.py:164
+#: zeit/content/infobox/interfaces.py:21 zeit/content/modules/interfaces.py:166
 #: zeit/content/rawxml/interfaces.py:18 zeit/content/text/interfaces.py:65
 #: zeit/content/video/browser/object-details-body.pt:24
 #: zeit/content/volume/browser/form.py:73 zeit/content/volume/interfaces.py:46
@@ -763,7 +763,7 @@ msgstr "Bitte auf Groß- und Kleinschreibung achten."
 
 #: zeit/cms/content/interfaces.py:170
 #: zeit/content/article/edit/interfaces.py:431
-#: zeit/content/modules/interfaces.py:166
+#: zeit/content/modules/interfaces.py:168
 msgid "Subtitle"
 msgstr "Teaser/Vorspann (Unterzeile)"
 
@@ -1661,21 +1661,21 @@ msgstr "zuletzt veröffentlicht am ${date} um ${time} von ${by}"
 msgid "not published"
 msgstr "Nicht veröffentlicht"
 
-#: zeit/content/article/edit/browser/edit.py:105
+#: zeit/content/article/edit/browser/edit.py:106
 #: zeit/content/cp/browser/landing.py:53
 msgid "The object \"${name}\" does not exist."
 msgstr "Das Objekt »${name}« konnte nicht gefunden werden."
 
-#: zeit/content/article/edit/browser/edit.py:113
+#: zeit/content/article/edit/browser/edit.py:114
 msgid "Could not create block for \"${name}\", because I don't know which one."
 msgstr "Kann für \"${name}\" keinen Block anlegen, weil ich nicht weiß welchen"
 
-#: zeit/content/article/edit/browser/edit.py:340
+#: zeit/content/article/edit/browser/edit.py:341
 msgid "generate-video-recommendation"
 msgstr "Videoempfehlung generieren"
 
-#: zeit/content/article/edit/browser/edit.py:378
-#: zeit/content/article/edit/browser/edit.py:383
+#: zeit/content/article/edit/browser/edit.py:379
+#: zeit/content/article/edit/browser/edit.py:384
 #: zeit/content/author/browser/honorar.py:52
 #: zeit/content/volume/browser/form.py:142
 msgid "There were errors"
@@ -2909,6 +2909,7 @@ msgid "Switch visible"
 msgstr "Sichtbarkeit umschalten"
 
 #: zeit/content/cp/browser/prewarm.py:10 zeit/content/cp/browser/prewarm.py:22
+#: zeit/content/dynamicfolder/browser/materialize.py:66
 msgid "Prewarming, this might take some time"
 msgstr "Cache wird aufgewärmt, dieser Vorgang kann bis zu 5 Minuten dauern."
 
@@ -3206,7 +3207,7 @@ msgstr "rechts"
 msgid "Contents"
 msgstr "Inhalt"
 
-#: zeit/content/cp/interfaces.py:658 zeit/content/modules/interfaces.py:136
+#: zeit/content/cp/interfaces.py:658 zeit/content/modules/interfaces.py:138
 msgid "Use Markdown"
 msgstr "verwendet Markdown"
 
@@ -3226,7 +3227,7 @@ msgstr "Hintergrundfarbe"
 msgid "Choose a background color"
 msgstr "Hintergrundfarbe auswählen"
 
-#: zeit/content/cp/interfaces.py:704 zeit/content/modules/interfaces.py:72
+#: zeit/content/cp/interfaces.py:704 zeit/content/modules/interfaces.py:74
 msgid "Jobbox Ticker"
 msgstr "Jobbox Ticker"
 
@@ -3257,6 +3258,10 @@ msgstr "Dynamischen Ordner materialisieren und Inhalte aktualisieren"
 #: zeit/content/dynamicfolder/browser/materialize.py:60
 msgid "Publish content of dynamic folder"
 msgstr "Inhalte des Ordners veröffentlichen"
+
+#: zeit/content/dynamicfolder/browser/materialize.py:72
+msgid "Refresh content of dynamic folder"
+msgstr "Inhalte Cache neu laden"
 
 #: zeit/content/dynamicfolder/folder.py:221
 msgid "Dynamic Folder"
@@ -3761,102 +3766,102 @@ msgstr "Text im Markdown Format hinzufügen"
 msgid "Markup content"
 msgstr "Markup"
 
-#: zeit/content/modules/interfaces.py:19
+#: zeit/content/modules/interfaces.py:21
 msgid "Raw text reference"
 msgstr "Embed-Link"
 
-#: zeit/content/modules/interfaces.py:24
+#: zeit/content/modules/interfaces.py:26
 msgid "Raw text"
 msgstr "Embed-Code (optional)"
 
-#: zeit/content/modules/interfaces.py:58
+#: zeit/content/modules/interfaces.py:60
 msgid "Unsupported embed domain"
 msgstr "Unbekannte Embed-URL"
 
-#: zeit/content/modules/interfaces.py:62
+#: zeit/content/modules/interfaces.py:64
 msgid "Add URL"
 msgstr ""
 "Füge hier eine Tiktok-, Bluesky-, Twitter-, X-, Instagram-, Youtube-, "
 "Datawrapper-, Facebook- oder Vimeo-URL ein."
 
-#: zeit/content/modules/interfaces.py:62
+#: zeit/content/modules/interfaces.py:64
 msgid "Embed URL"
 msgstr "URL"
 
-#: zeit/content/modules/interfaces.py:133
+#: zeit/content/modules/interfaces.py:135
 msgid "Newsletter Signup"
 msgstr "Newsletter"
 
-#: zeit/content/modules/interfaces.py:136
+#: zeit/content/modules/interfaces.py:138
 msgid "Newslettersignup Prefix"
 msgstr "Vorwort"
 
-#: zeit/content/modules/interfaces.py:141
+#: zeit/content/modules/interfaces.py:143
 msgid "Quiz id"
 msgstr "ID"
 
-#: zeit/content/modules/interfaces.py:142
+#: zeit/content/modules/interfaces.py:144
 msgid "Enable adreload"
 msgstr "Adreload aktivieren"
 
-#: zeit/content/modules/interfaces.py:149
+#: zeit/content/modules/interfaces.py:151
 msgid "Email address must contain @."
 msgstr "E-Mail-Adresse muss @ enthalten"
 
-#: zeit/content/modules/interfaces.py:168
+#: zeit/content/modules/interfaces.py:170
 msgid "Recipient"
 msgstr "Empfänger"
 
-#: zeit/content/modules/interfaces.py:170
 #: zeit/content/modules/interfaces.py:172
+#: zeit/content/modules/interfaces.py:174
 msgid "Subject"
 msgstr "Betreff"
 
-#: zeit/content/modules/interfaces.py:174
+#: zeit/content/modules/interfaces.py:176
 msgid "Success message"
 msgstr "Text Erfolgsmeldung"
 
-#: zeit/content/modules/interfaces.py:176
+#: zeit/content/modules/interfaces.py:178
 msgid "Email required?"
 msgstr "Emailadresse als Pflichtfeld?"
 
-#: zeit/content/modules/interfaces.py:211
+#: zeit/content/modules/interfaces.py:213
 msgid "Value must be number or range."
 msgstr "Wert muss Zahl oder Umfang (3-4) sein."
 
-#: zeit/content/modules/interfaces.py:216
+#: zeit/content/modules/interfaces.py:218
 msgid "Merge with previous recipe list module"
 msgstr "Mit vorheriger Rezeptliste zusammenführen"
 
-#: zeit/content/modules/interfaces.py:219
+#: zeit/content/modules/interfaces.py:221
 msgid "Recipe name"
 msgstr "Rezeptname"
 
-#: zeit/content/modules/interfaces.py:221
+#: zeit/content/modules/interfaces.py:223
 msgid "Subheading"
 msgstr "Zwischenüberschrift"
 
-#: zeit/content/modules/interfaces.py:223
+#: zeit/content/modules/interfaces.py:225
 msgid "Appears in recipe search?"
 msgstr "Zwischenüberschrift in Suche anzeigen?"
 
-#: zeit/content/modules/interfaces.py:226
+#: zeit/content/modules/interfaces.py:228
 msgid "Complexity"
 msgstr "Komplexität"
 
-#: zeit/content/modules/interfaces.py:230
+#: zeit/content/modules/interfaces.py:232
 msgid "Time"
 msgstr "Dauer"
 
-#: zeit/content/modules/interfaces.py:234
+#: zeit/content/modules/interfaces.py:236
 msgid "Servings"
 msgstr "Portionen"
 
-#: zeit/content/modules/interfaces.py:238
+#: zeit/content/modules/interfaces.py:240
 msgid "Special ingredient"
 msgstr "Sonderzutat"
 
-#: zeit/content/modules/interfaces.py:239
+#: zeit/content/modules/interfaces.py:241
 msgid ""
 "A non-searchable free text ingredient without a cp (e.g. an extra portion of "
 "love)"
@@ -3864,15 +3869,15 @@ msgstr ""
 "Ein Freitextfeld für nicht durchsuchbare Sonderzutaten ohne Zutaten-CP (z.B. "
 "eine Extraportion Liebe)"
 
-#: zeit/content/modules/interfaces.py:246
+#: zeit/content/modules/interfaces.py:248
 msgid "Ingredients"
 msgstr "Zutaten"
 
-#: zeit/content/modules/interfaces.py:264
+#: zeit/content/modules/interfaces.py:266
 msgid "Highlighted events"
 msgstr "Wichtige Beiträge"
 
-#: zeit/content/modules/interfaces.py:265
+#: zeit/content/modules/interfaces.py:267
 msgid "Recent events"
 msgstr "Neueste Beiträge"
 
@@ -3888,23 +3893,23 @@ msgstr "Unbekannter Beitrag"
 msgid "Liveblog id"
 msgstr "Liveblog-ID"
 
-#: zeit/content/modules/interfaces.py:273
+#: zeit/content/modules/interfaces.py:292
 msgid "Collapse preceding content"
 msgstr "Vorherigen Inhalt einklappen"
 
-#: zeit/content/modules/interfaces.py:277
+#: zeit/content/modules/interfaces.py:296
 msgid "Collapse highlighted events"
 msgstr "Wichtige Beiträge einklappen"
 
-#: zeit/content/modules/interfaces.py:281
+#: zeit/content/modules/interfaces.py:300
 msgid "Timeline Content"
 msgstr "Beiträge in der Timeline"
 
-#: zeit/content/modules/interfaces.py:287
+#: zeit/content/modules/interfaces.py:322
 msgid "Liveblog status"
 msgstr "Liveblog-Status"
 
-#: zeit/content/modules/interfaces.py:291
+#: zeit/content/modules/interfaces.py:326
 msgid "Liveblog theme"
 msgstr "Liveblog-Theme"
 
@@ -4410,11 +4415,7 @@ msgstr "Der Name {name} ist nicht eindeutig in {parent}."
 msgid "Search"
 msgstr "Suche"
 
-#: zeit/magazin/interfaces.py:51
-msgid "Related layout"
-msgstr "Related Layout"
-
-#: zeit/magazin/interfaces.py:58
+#: zeit/magazin/interfaces.py:49
 msgid "long text (ZMO)"
 msgstr "langer Text - ZEITmagazin ONLINE"
 
@@ -4843,6 +4844,9 @@ msgstr "Format"
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:53
 msgid "with info"
 msgstr "mit Info"
+
+#~ msgid "Related layout"
+#~ msgstr "Related Layout"
 
 #~ msgid "Publisher advertisement"
 #~ msgstr "Verlag/Anzeige"
