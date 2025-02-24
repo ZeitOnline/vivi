@@ -140,7 +140,13 @@ class ImageGroupBase:
         tracer = zope.component.getUtility(zeit.cms.interfaces.ITracer)
         with tracer.start_as_current_span(
             'zeit.content.image.imagegroup.create_variant',
-            attributes={'content': str(self), 'variant': variant.name, 'viewport': viewport or ''},
+            attributes={
+                'content': str(self),
+                'variant': variant.name,
+                'viewport': viewport or '',
+                'source_format': source.format,
+                'target_format': format or source.format,
+            },
         ) as span:
             if size is not None:
                 span.set_attributes({'width': size[0], 'height': size[1]})
