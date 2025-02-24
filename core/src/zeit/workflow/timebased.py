@@ -103,10 +103,8 @@ class TimeBasedWorkflow(zeit.workflow.publishinfo.PublishInfo):
         else:
             uniqueId = self.context.uniqueId
 
-        if when > pendulum.now('UTC'):
-            job_id = task.apply_async(([uniqueId],), eta=when, queue=PRIORITY_TIMEBASED).id
-        else:
-            job_id = task.delay([uniqueId]).id
+        eta = when if when > pendulum.now('UTC') else None
+        job_id = task.apply_async(([uniqueId],), eta=eta, queue=PRIORITY_TIMEBASED).id
         return job_id
 
     def cancel_job(self, job_id):
