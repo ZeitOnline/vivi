@@ -442,6 +442,10 @@ class CeleryWorkerLayer(plone.testing.Layer):
 
         celery_longterm_scheduler.get_scheduler(self['celery_app']).backend.__init__(None, None)
 
+    def testTearDown(self):
+        # Ensure no running tasks are still left behind for the next test.
+        wait_for_celery()
+
     def tearDown(self):
         self['celery_worker'].__exit__(None, None, None)
         del self['celery_worker']
