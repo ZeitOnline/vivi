@@ -455,6 +455,15 @@ class CeleryWorkerLayer(plone.testing.Layer):
         del self['celery_app']
 
 
+def wait_for_celery():
+    """For tests on CeleryWorkerLayer: Wait for already enqueued jobs, by
+    running another job; since we only have on worker, this works out fine.
+    Unfortunately we have to mimic the DAV-cache race condition workaround here
+    too and wait an additional 5 seconds, sigh.
+    """
+    celery_ping.apply_async(countdown=5).get()
+
+
 # celery.contrib.testing.worker expects a 'ping' task, so it can check that the
 # worker is running properly.
 @zeit.cms.celery.task(name='celery.ping')
