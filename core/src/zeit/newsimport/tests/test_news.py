@@ -552,7 +552,6 @@ class DPATOTMSTest(zeit.newsimport.testing.FunctionalTestCase):
         entry = self.dpa.get_entries()[0]
         zeit.newsimport.news.process_task(entry)
         transaction.commit()
-        zeit.workflow.testing.run_tasks()
 
         uniqueid = 'http://xml.zeit.de/news/2021-12/15/beispielmeldung-ueberschrift'
 
