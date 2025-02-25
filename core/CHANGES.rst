@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.45.0 (2025-02-25)
+-------------------
+
+- WCM-742: Use materialize celery queue for dynamic folders
+
+- WCM-745: Record image source format for tracing
+
+
 7.44.0 (2025-02-21)
 -------------------
 
