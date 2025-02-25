@@ -8,13 +8,11 @@ Setup:
 >>> zeit.cms.testing.set_site()
 >>> import zope.component
 >>> import zeit.cms.repository.interfaces
+>>> import transaction
 >>> repository = zope.component.getUtility(
 ...     zeit.cms.repository.interfaces.IRepository)
-
->>> import zeit.workflow.testing
->>> import transaction
->>> def run_tasks():
-...     zeit.workflow.testing.run_tasks()
+>>> def wait_for_celery():
+...     zeit.cms.testing.wait_for_celery()
 ...     transaction.abort()
 
 >>> from zeit.cms.webtest import ServerProxy
@@ -47,7 +45,7 @@ False
 Good. Let's publish:
 
 >>> job_id = publish('http://xml.zeit.de/online/2007/01/Somalia')
->>> run_tasks()
+>>> wait_for_celery()
 >>> workflow.published
 True
 
@@ -63,7 +61,7 @@ False
 Retract:
 
 >>> job_id = retract('http://xml.zeit.de/online/2007/01/Somalia')
->>> run_tasks()
+>>> wait_for_celery()
 >>> workflow.published
 False
 

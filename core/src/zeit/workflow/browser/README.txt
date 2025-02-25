@@ -102,8 +102,8 @@ Use the urgent flag to override:
         ...
         <div class="widget"><FORMATTED DATE>  [User]: Publication scheduled<br />
         ...
->>> from zeit.workflow.testing import run_tasks
->>> run_tasks()
+>>> from zeit.cms.testing import wait_for_celery
+>>> wait_for_celery()
 
 
 Automatic workflow properties
@@ -118,7 +118,7 @@ Date first released
 The "date first released" is the date when the object was first published.
 Since publishing is done asynchronously we have to trigger processing:
 
->>> run_tasks()
+>>> wait_for_celery()
 
 Reload the workflow page.
 
@@ -212,7 +212,7 @@ Do a publish/retract cycle to set the property to false:
         <li class="message">http://xml.zeit.de/online/2007/01/Saarland has been scheduled for publishing.</li>
         ...
 
->>> run_tasks()
+>>> wait_for_celery()
 >>> browser.getLink('Workflow').click()
 
 The retract action is protected by javascript (which doesn't matter here):
@@ -236,7 +236,7 @@ The retract action is protected by javascript (which doesn't matter here):
 <?xml ...
         <li class="message">http://xml.zeit.de/online/2007/01/Saarland has been scheduled for retracting.</li>
         ...
->>> run_tasks()
+>>> wait_for_celery()
 
 Check out:
 
@@ -252,7 +252,7 @@ Go back to the repository and publish:
 >>> browser.getControl('publish').click()
 >>> 'There were errors' in browser.contents
 False
->>> run_tasks()
+>>> wait_for_celery()
 >>> browser.getLink('Workflow').click()
 >>> print(browser.contents)
 <?xml ...
@@ -288,7 +288,7 @@ checked out:
 <?xml ...
         <li class="message">http://xml.zeit.de/online/2007/01/Saarland has been scheduled for publishing.</li>
         ...
->>> run_tasks()
+>>> wait_for_celery()
 >>> browser.getLink('Checkout').click()
 >>> checked_out = browser.url
 
@@ -302,7 +302,7 @@ Unpublish now:
 <?xml ...
         <li class="message">http://xml.zeit.de/online/2007/01/Saarland has been scheduled for retracting.</li>
         ...
->>> run_tasks()
+>>> wait_for_celery()
 >>> browser.getLink('Workflow').click()
 >>> print(browser.contents)
 <?xml ...

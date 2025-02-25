@@ -127,15 +127,6 @@ class FakeValidatingWorkflowMixin:
         self.registered_adapters.append(workflow)
 
 
-def run_tasks():
-    """For browser tests: Wait for already enqueued publish job, by running
-    another job; since we only have on worker, this works out fine.
-    Unfortunately we have to mimic the DAV-cache race condition workaround here
-    too and wait an additional 5 seconds, sigh.
-    """
-    zeit.cms.testing.celery_ping.apply_async(countdown=5).get()
-
-
 def publish_json(context, name):
     data_factory = zope.component.getAdapter(
         context, zeit.workflow.interfaces.IPublisherData, name=name
