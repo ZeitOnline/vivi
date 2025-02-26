@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.46.0 (2025-02-26)
+-------------------
+
+FIX:
+- Update zodburi to get rid of pkg_resources
+
+
 7.45.0 (2025-02-25)
 -------------------
 
