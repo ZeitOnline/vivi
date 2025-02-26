@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.47.0 (2025-02-26)
+-------------------
+
+- WCM-750: Update to forked fanstatic version to remove pkg_resources dependency
+
+
 7.46.0 (2025-02-26)
 -------------------
 
