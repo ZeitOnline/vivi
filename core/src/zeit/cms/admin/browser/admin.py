@@ -1,4 +1,5 @@
 import gocept.form.grouped
+import zope.component
 import zope.formlib.form
 
 from zeit.cms.i18n import MessageFactory as _
@@ -30,14 +31,7 @@ class EditFormCI(zeit.cms.browser.form.EditForm):
 
 
 class EditFormCO(zeit.cms.browser.form.EditForm):
-    form_fields = zope.formlib.form.Fields(
-        zeit.cms.content.interfaces.ICachingTime
-    ) + zope.formlib.form.Fields(zeit.cms.content.interfaces.ICommonMetadata).select(
-        'banner',
-        'banner_content',
-        'banner_outer',
-        'hide_adblocker_notification',
-    )
+    form_fields = zope.formlib.form.Fields(zeit.cms.content.interfaces.ICachingTime)
 
     # Without field group it will look weird when context is an Article.
     field_groups = (
@@ -46,6 +40,15 @@ class EditFormCO(zeit.cms.browser.form.EditForm):
 
     def __init__(self, context, request):
         super().__init__(context, request)
+        if zeit.cms.content.interfaces.ICommonMetadata.providedBy(context):
+            self.form_fields += zope.formlib.form.Fields(
+                zeit.cms.content.interfaces.ICommonMetadata
+            ).select(
+                'banner',
+                'banner_content',
+                'banner_outer',
+                'hide_adblocker_notification',
+            )
         for _name, entry in zope.component.getAdapters(
             (context,), zeit.cms.admin.interfaces.IAdditionalFieldsCO
         ):

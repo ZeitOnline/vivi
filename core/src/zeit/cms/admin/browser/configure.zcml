@@ -23,7 +23,7 @@
     />
 
   <browser:page
-    for="zeit.cms.content.interfaces.ICommonMetadata"
+    for="zeit.cms.interfaces.ICMSContent"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="admin-edit.html"
     class=".admin.EditFormCO"
