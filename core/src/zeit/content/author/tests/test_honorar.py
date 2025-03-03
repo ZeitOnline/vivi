@@ -85,11 +85,11 @@ class HonorarIDTest(zeit.content.author.testing.FunctionalTestCase):
         author = zeit.content.author.author.Author()
         author.firstname = 'William'
         author.lastname = 'Shakespeare'
-        author.hdok_id = 'manual-id'
+        author.hdok_id = 1234
         zope.event.notify(zope.lifecycleevent.ObjectCreatedEvent(author))
         api = zope.component.getUtility(zeit.content.author.interfaces.IHonorar)
         self.assertFalse(api.create.called)
-        self.assertEqual('manual-id', author.hdok_id)
+        self.assertEqual(1234, author.hdok_id)
 
     def test_does_not_create_hdok_on_retract(self):
         api = zope.component.getUtility(zeit.content.author.interfaces.IHonorar)
