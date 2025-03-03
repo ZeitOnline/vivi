@@ -2,6 +2,7 @@ import time
 
 from sqlalchemy import select
 import pendulum
+import transaction
 import zope.component
 import zope.interface
 
@@ -50,6 +51,7 @@ class ReportTest(zeit.vgwort.testing.SQLTestCase):
         self.add_resource('testcontent')
         content = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/testing/testcontent')
         zeit.vgwort.report.report(content)
+        transaction.commit()
         self.assertEqual([content], self.vgwort.calls)
         info = zeit.vgwort.interfaces.IReportInfo(content)
         self.assertEqual(None, info.reported_error)
@@ -60,7 +62,7 @@ class ReportTest(zeit.vgwort.testing.SQLTestCase):
         self.add_resource('testcontent')
         content = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/testing/testcontent')
         zeit.vgwort.report.report(content)
-
+        transaction.commit()
         info = zeit.vgwort.interfaces.IReportInfo(content)
         self.assertEqual('Provoked error', info.reported_error)
         self.assertEqual(None, info.reported_on)
@@ -70,7 +72,7 @@ class ReportTest(zeit.vgwort.testing.SQLTestCase):
         self.add_resource('testcontent')
         content = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/testing/testcontent')
         zeit.vgwort.report.report(content)
-
+        transaction.commit()
         info = zeit.vgwort.interfaces.IReportInfo(content)
         self.assertEqual(None, info.reported_error)
         self.assertEqual(None, info.reported_on)
