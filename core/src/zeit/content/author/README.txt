@@ -78,7 +78,7 @@ The field authorships on ICommonMetadata is used to store authors.
 >>> print(zeit.cms.testing.xmltotext(repository['testcontent'].xml))
 <testtype>
   <head>
-    <author href="http://xml.zeit.de/shakespeare" hdok=""/>
+    <author href="http://xml.zeit.de/shakespeare".../>
   </head>
   <body/>
 </testtype>
