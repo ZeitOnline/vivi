@@ -32,6 +32,7 @@ class ReportableContentSource(grok.GlobalUtility):
         age = zeit.cms.config.required('zeit.vgwort', 'days-before-report')
         # larger timeframe -> risk of statement timeouts!
         age_limit = zeit.cms.config.required('zeit.vgwort', 'days-age-limit-report')
+        query_timeout = zeit.cms.config.required('zeit.vgwort', 'query-timeout')
 
         sql_query = (
             "type = 'article'"
@@ -46,7 +47,7 @@ class ReportableContentSource(grok.GlobalUtility):
         query = select(ConnectorModel)
         query = query.where(sql(f'({sql_query})'))
 
-        results = connector.search_sql(query)
+        results = connector.search_sql(query, query_timeout)
         for resource in results:
             yield zeit.cms.interfaces.ICMSContent(resource.id)
 
