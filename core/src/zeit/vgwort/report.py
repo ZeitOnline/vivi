@@ -36,8 +36,8 @@ class ReportableContentSource(grok.GlobalUtility):
 
         sql_query = (
             "type = 'article'"
-            f" AND date_first_released <= CURRENT_DATE - INTERVAL '{age} days'"
-            f" AND date_first_released >= CURRENT_DATE - INTERVAL '{age_limit} days'"
+            ' AND date_first_released <= CURRENT_DATE - INTERVAL :age days'
+            ' AND date_first_released >= CURRENT_DATE - INTERVAL :age_limit days'
             " AND unsorted->'vgwort'->>'private_token' IS NOT NULL"
             " AND unsorted->'vgwort'->>'reported_on' = ''"
             " AND unsorted->'vgwort'->>'reported_error' = ''"
@@ -45,7 +45,7 @@ class ReportableContentSource(grok.GlobalUtility):
 
         connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
         query = select(ConnectorModel)
-        query = query.where(sql(f'({sql_query})'))
+        query = query.where(sql(sql_query).bindparams(age=age, age_limit=age_limit))
 
         results = connector.search_sql(query, query_timeout)
         for resource in results:
