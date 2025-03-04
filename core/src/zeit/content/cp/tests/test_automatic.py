@@ -207,12 +207,10 @@ class AutomaticAreaElasticsearchTest(zeit.content.cp.testing.FunctionalTestCase)
         )
 
     def test_raw_query_should_accept_multiple_orders(self):
-        self.area.elasticsearch_raw_order = 'payload.xml.lastname:asc,payload.xml.firstname:asc'
+        self.area.elasticsearch_raw_order = 'payload.one:asc,payload.two:asc'
         IRenderedArea(self.area).values()
         query = self.elasticsearch.search.call_args[0][0]
-        self.assertEqual(
-            [{'payload.xml.lastname': 'asc'}, {'payload.xml.firstname': 'asc'}], query['sort']
-        )
+        self.assertEqual([{'payload.one': 'asc'}, {'payload.two': 'asc'}], query['sort'])
 
 
 class AutomaticAreaTopicpageTest(zeit.content.cp.testing.FunctionalTestCase):
