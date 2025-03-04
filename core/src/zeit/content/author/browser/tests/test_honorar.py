@@ -1,6 +1,5 @@
 # coding: utf-8
 from unittest import mock
-import json
 
 import pendulum
 import zope.component
@@ -153,19 +152,10 @@ class ReportInvalidGCIDs(zeit.content.author.testing.BrowserTestCase):
 
 class CSVRendering(zeit.retresco.testing.FunctionalTestCase):
     def test_invalid_gcids_api_request_builds_correct_csv_report(self):
-        elastic = mock.Mock()
-        zope.component.getGlobalSiteManager().registerUtility(
-            elastic, zeit.find.interfaces.ICMSSearch
-        )
-        elastic.search.return_value = zeit.cms.interfaces.Result(
-            json.loads(
-                """[{"payload": {"xml": {"honorar_id": "123"}},
-            "url": "/autoren/P/Sophia_Phildius/index"},
-            {"payload": {"xml": {"honorar_id": "10055333"}},
-            "url": "/autoren/M/Yasmine_MBarek/index"}]""",
-                strict=False,
-            )
-        )
+        self.repository.connector.search_result = [
+            ('http://xml.zeit.de/autoren/P/Sophia_Phildius/index', 123),
+            ('http://xml.zeit.de/autoren/M/Yasmine_MBarek/index', 10055333),
+        ]
         api = zope.component.getUtility(zeit.content.author.interfaces.IHonorar)
         api.invalid_gcids.return_value = [
             {
