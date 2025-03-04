@@ -149,6 +149,7 @@ class SSOIdConnectTest(zeit.content.author.testing.FunctionalTestCase):
         with self.acs('hans.müller@zeit.de', id=67890):
             with checked_out(self.repository['author']) as co:
                 co.email = 'hans.müller@zeit.de'
+                zope.event.notify(ObjectModifiedEvent(co, Attributes(ICommonMetadata, 'email')))
         self.assertEqual(67890, self.repository['author'].ssoid)
 
     def test_ssoid_is_deleted_on_disable_sso_connect(self):
@@ -156,6 +157,9 @@ class SSOIdConnectTest(zeit.content.author.testing.FunctionalTestCase):
             self.repository['author'] = self.author
             with checked_out(self.repository['author']) as co:
                 co.sso_connect = False
+                zope.event.notify(
+                    ObjectModifiedEvent(co, Attributes(ICommonMetadata, 'sso_connect'))
+                )
         self.assertIsNone(self.repository['author'].ssoid)
 
     def test_ssoid_is_deleted_on_delete_email(self):
@@ -163,6 +167,7 @@ class SSOIdConnectTest(zeit.content.author.testing.FunctionalTestCase):
             self.repository['author'] = self.author
             with checked_out(self.repository['author']) as co:
                 co.email = None
+                zope.event.notify(ObjectModifiedEvent(co, Attributes(ICommonMetadata, 'email')))
         self.assertIsNone(self.repository['author'].ssoid)
 
     def test_ssoid_is_updated_on_checked_out_item(self):
