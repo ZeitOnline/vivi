@@ -136,6 +136,12 @@ class SSOIdConnectTest(zeit.content.author.testing.FunctionalTestCase):
             self.repository['author'] = self.author
         self.assertEqual(12345, self.author.ssoid)
 
+    def test_ssoid_is_not_updated_if_already_set(self):
+        self.author.ssoid = 67890
+        with self.acs(self.author.email, id=12345):
+            self.repository['author'] = self.author
+        self.assertEqual(67890, self.author.ssoid)
+
     def test_ssoid_is_not_set_when_sso_connect_is_disabled(self):
         with self.acs(self.author.email, id=12345):
             self.author.sso_connect = False

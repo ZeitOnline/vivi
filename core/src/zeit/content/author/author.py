@@ -197,6 +197,8 @@ class AuthorImages(zeit.content.image.imagereference.ImagesAdapter):
 def update_ssoid_on_add(context, event):
     if zeit.cms.checkout.interfaces.ILocalContent.providedBy(context):
         return  # Don't run on every checkin, that's what the on_change handler is for
+    if context.ssoid:
+        return
     _update_ssoid(context)
 
 
