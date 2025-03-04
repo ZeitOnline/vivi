@@ -194,31 +194,30 @@ class AuthorImages(zeit.content.image.imagereference.ImagesAdapter):
 @grok.subscribe(
     zeit.content.author.interfaces.IAuthor, zeit.cms.repository.interfaces.IBeforeObjectAddEvent
 )
-def set_ssoid(obj, event):
-    if obj.email and obj.sso_connect:
-        ssoid = request_acs(obj.email)
-        if ssoid:
-            obj.ssoid = ssoid
-    else:
-        obj.ssoid = None
+def update_ssoid_on_add(context, event):
+    _update_ssoid(context)
 
 
 @grok.subscribe(zeit.content.author.interfaces.IAuthor, zope.lifecycleevent.IObjectModifiedEvent)
-def update_ssoid(context, event):
+def update_ssoid_on_change(context, event):
     for desc in event.descriptions:
         if desc.interface is not zeit.cms.content.interfaces.ICommonMetadata:
             continue
         if 'email' in desc.attributes or 'sso_connect' in desc.attributes:
-            if context.sso_connect and context.email:
-                ssoid = request_acs(context.email)
-                if ssoid:
-                    context.ssoid = ssoid
-            else:
-                context.ssoid = None
+            _update_ssoid(context)
             break
 
 
-def request_acs(email):
+def _update_ssoid(author):
+    if author.email and author.sso_connect:
+        ssoid = _request_acs(author.email)
+        if ssoid:
+            author.ssoid = ssoid
+    else:
+        author.ssoid = None
+
+
+def _request_acs(email):
     config = zeit.cms.config.package('zeit.content.author')
     url = config['sso-api-url'] + '/users/' + urllib.parse.quote(email.encode('utf8'))
     auth = (config['sso-user'], config['sso-password'])
