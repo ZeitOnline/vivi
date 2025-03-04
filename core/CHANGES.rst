@@ -3,6 +3,18 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.48.0 (2025-03-04)
+-------------------
+
+- WCM-16: Implement setitem and changeProperties in FilesystemConnector, to help migrating zeit.web testcontent
+
+- WCM-743: config cache time set to 60s
+
+
+MAINT:
+- MAINT: allow caching time for all content types
+
+
 7.47.0 (2025-02-26)
 -------------------
 
