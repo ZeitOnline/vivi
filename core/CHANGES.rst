@@ -3,6 +3,16 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.49.0 (2025-03-04)
+-------------------
+
+- WCM-758: add vgwort columns
+
+
+MAINT:
+- Staging sync
+
+
 7.48.0 (2025-03-04)
 -------------------
 
