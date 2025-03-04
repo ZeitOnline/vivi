@@ -123,7 +123,22 @@ class Miscellaneous:
     )
 
 
-class Content(Base, CommonMetadata, ContentTypes, Timestamps, Miscellaneous):
+class VGWort:
+    vgwort_reported_on = mapped_column(
+        TIMESTAMP, info={'namespace': 'vgwort', 'name': 'reported_on', 'migration': 'wcm_758'}
+    )
+    vgwort_reported_error = mapped_column(
+        Unicode, info={'namespace': 'vgwort', 'name': 'reported_error', 'migration': 'wcm_758'}
+    )
+    vgwort_public_token = mapped_column(
+        Unicode, info={'namespace': 'vgwort', 'name': 'public_token', 'migration': 'wcm_758'}
+    )
+    vgwort_private_token = mapped_column(
+        Unicode, info={'namespace': 'vgwort', 'name': 'private_token', 'migration': 'wcm_758'}
+    )
+
+
+class Content(Base, CommonMetadata, ContentTypes, Timestamps, Miscellaneous, VGWort):
     __tablename__ = 'properties'
 
     @declared_attr
@@ -174,6 +189,9 @@ class Content(Base, CommonMetadata, ContentTypes, Timestamps, Miscellaneous):
                     'video_type',
                     'volume_number',
                     'volume_year',
+                    'vgwort_private_token',
+                    'vgwort_reported_error',
+                    'vgwort_reported_on',
                 ]
             )
         )
