@@ -206,9 +206,9 @@ def set_ssoid(obj, event):
 @grok.subscribe(zeit.content.author.interfaces.IAuthor, zope.lifecycleevent.IObjectModifiedEvent)
 def update_ssoid(context, event):
     for desc in event.descriptions:
-        if desc.interface is zeit.cms.content.interfaces.ICommonMetadata and (
-            'email' in desc.attributes or 'sso_connect' in desc.attributes
-        ):
+        if desc.interface is not zeit.cms.content.interfaces.ICommonMetadata:
+            continue
+        if 'email' in desc.attributes or 'sso_connect' in desc.attributes:
             if context.sso_connect and context.email:
                 ssoid = request_acs(context.email)
                 if ssoid:
