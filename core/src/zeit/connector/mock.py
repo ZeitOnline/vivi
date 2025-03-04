@@ -300,13 +300,14 @@ class Connector(zeit.connector.filesystem.Connector):
     def search(self, attributes, expression, order=None, limit=None, offset=0):
         log.debug('Searching: %s', expression._render())
         self.search_dav_args.append((attributes, expression, order, limit, offset))
-
-        unique_ids = self.search_result
-
-        metadata = ('pm', '07') + len(attributes) * (None,)
-        metadata = metadata[: len(attributes)]
-
-        return ((unique_id,) + metadata for unique_id in unique_ids)
+        result = []
+        for item in self.search_result:
+            if isinstance(item, str):
+                item = (item,)
+            missing = len(attributes) - len(item) - 1
+            item += (None,) * missing
+            result.append(item)
+        return tuple(result)
 
     def _compile_sql(self, stmt):
         return str(
