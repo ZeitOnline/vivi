@@ -150,10 +150,10 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
             result = list(
                 connector.search(
                     [TYPE, HDOK_ID],
-                    (TYPE == 'author') & (HDOK_ID == hdok_id),
+                    (TYPE == 'author') & (HDOK_ID == str(hdok_id)),
                 )
             )
-            return result[0] if result else None
+            return zeit.cms.interfaces.ICMSContent(result[0][0], None) if result else None
         else:
             elastic = zope.component.getUtility(zeit.find.interfaces.ICMSSearch)
             result = elastic.search(

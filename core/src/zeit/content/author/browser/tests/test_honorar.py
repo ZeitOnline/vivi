@@ -5,6 +5,7 @@ import json
 import pendulum
 import zope.component
 
+from zeit.cms.content.sources import FEATURE_TOGGLES
 import zeit.content.author.author
 import zeit.content.author.browser.honorar as honorar
 import zeit.content.author.interfaces
@@ -113,6 +114,26 @@ class HonorarLookupTest(zeit.content.author.testing.BrowserTestCase):
         self.assertEqual('1234', b.getControl('Honorar ID').value)
 
     def test_checks_for_existing_hdok_id(self):
+        FEATURE_TOGGLES.set('xmlproperty_write_wcm_26', 'xmlproperty_read_wcm_26')
+        exists = zeit.content.author.author.Author()
+        exists.hdok_id = 12345
+        self.repository['exists'] = exists
+        self.repository.connector.search_result = ['http://xml.zeit.de/exists']
+
+        b = self.browser
+        b.open('http://localhost/++skin++vivi/@@zeit.content.author.add_contextfree')
+        b.getControl('Firstname').value = 'William'
+        b.getControl('Lastname').value = 'Shakespeare'
+        b.getControl('VG-Wort ID').value = '12345'
+        b.getControl('Honorar ID').value = '12345'
+        b.getControl('Redaktionszugehörigkeit').displayValue = ['Print']
+        b.getControl(name='form.actions.add').click()
+        self.assertEllipsis(
+            '...Author with honorar ID 12345...redirect_to?unique_id=http://xml.zeit.de/exists...',
+            b.contents,
+        )
+
+    def test_checks_for_existing_hdok_id_bbb_elastic(self):
         b = self.browser
         b.open('http://localhost/++skin++vivi/@@zeit.content.author.add_contextfree')
         b.getControl('Firstname').value = 'William'
