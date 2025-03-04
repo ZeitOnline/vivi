@@ -20,37 +20,21 @@ Authors
 >>> shakespeare.vgwort_id = 12345
 >>> repository['shakespeare'] = shakespeare
 >>> shakespeare = repository['shakespeare']
->>> print(zeit.cms.testing.xmltotext(shakespeare.xml))
-<author...>
-  <title>Sir</title>
-  <firstname>William</firstname>
-  <lastname>Shakespeare</lastname>
-  <vgwortid>12345</vgwortid>
-</author>
 
 The default display name is 'Firstname Lastname', but any user-entered value
 takes precedence:
 
->>> shakespeare.display_name
+>>> co = zeit.cms.checkout.interfaces.ICheckoutManager(shakespeare).checkout()
+>>> co.display_name
 'William Shakespeare'
->>> shakespeare.display_name = 'Flub'
->>> shakespeare.display_name
+>>> co.display_name = 'Flub'
+>>> co.display_name
 'Flub'
 
->>> repository['shakespeare'] = shakespeare
->>> shakespeare = repository['shakespeare']
->>> print(zeit.cms.testing.xmltotext(shakespeare.xml))
-<author...>
-  <title>Sir</title>
-  <firstname>William</firstname>
-  <lastname>Shakespeare</lastname>
-  <vgwortid>12345</vgwortid>
-  <display_name>Flub</display_name>
-</author>
-
->>> shakespeare.display_name = None
->>> shakespeare.display_name
+>>> co.display_name = None
+>>> co.display_name
 'William Shakespeare'
+>>> shakespeare = zeit.cms.checkout.interfaces.ICheckinManager(co).checkin()
 
 The author image group is stored using the IImages interface.
 

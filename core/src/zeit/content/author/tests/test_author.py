@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from unittest import mock
 import urllib.parse
 
 from zope.lifecycleevent import Attributes, ObjectModifiedEvent
@@ -36,29 +35,6 @@ class AuthorTest(zeit.content.author.testing.FunctionalTestCase):
 
         self.repository.connector.search_result = ['http://xml.zeit.de/exists']
         self.assertTrue(Author.exists('William', 'Shakespeare'))
-
-    def test_author_exists_bbb_elastic(self):
-        Author = zeit.content.author.author.Author
-        elastic = zope.component.getUtility(zeit.find.interfaces.ICMSSearch)
-        with mock.patch.object(elastic, 'search') as search:
-            search.return_value = zeit.cms.interfaces.Result([])
-            self.assertFalse(Author.exists('William', 'Shakespeare'))
-            search.assert_called_with(
-                {
-                    'query': {
-                        'bool': {
-                            'filter': [
-                                {'term': {'doc_type': 'author'}},
-                                {'term': {'payload.xml.firstname': 'William'}},
-                                {'term': {'payload.xml.lastname': 'Shakespeare'}},
-                            ]
-                        }
-                    }
-                }
-            )
-
-            search.return_value.hits = NONZERO
-            self.assertTrue(Author.exists('William', 'Shakespeare'))
 
     def test_author_id_is_not_too_big_validation(self):
         # ZO-3671

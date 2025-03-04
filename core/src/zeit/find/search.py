@@ -42,7 +42,7 @@ def from_product_config():
 
 field_map = {
     'authors': 'author',
-    'author_type': 'payload.xml.status',  # only for autocomplete additional_query_conditions
+    'author_type': 'payload.author.department',  # only for autocomplete additional_query_conditions
     'access': 'payload.document.access',
     'product_id': 'payload.workflow.product-id',
     'published': 'payload.vivi.publish_status',

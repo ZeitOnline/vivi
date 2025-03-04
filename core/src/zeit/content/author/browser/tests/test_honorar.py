@@ -133,26 +133,6 @@ class HonorarLookupTest(zeit.content.author.testing.BrowserTestCase):
             b.contents,
         )
 
-    def test_checks_for_existing_hdok_id_bbb_elastic(self):
-        b = self.browser
-        b.open('http://localhost/++skin++vivi/@@zeit.content.author.add_contextfree')
-        b.getControl('Firstname').value = 'William'
-        b.getControl('Lastname').value = 'Shakespeare'
-        b.getControl('VG-Wort ID').value = '12345'
-        b.getControl('Honorar ID').value = '12345'
-        b.getControl('Redaktionszugehörigkeit').displayValue = ['Print']
-        es = zope.component.getUtility(zeit.find.interfaces.ICMSSearch)
-        es.search.return_value = zeit.cms.interfaces.Result(
-            [{'url': '/author/foo', 'payload': {'xml': {'honorar_id': 12345}}}]
-        )
-        es.search.return_value.hits = 1
-        b.getControl(name='form.actions.add').click()
-        self.assertEllipsis(
-            '...Author with honorar ID 12345...'
-            'redirect_to?unique_id=http://xml.zeit.de/author/foo...',
-            b.contents,
-        )
-
 
 class ReportInvalidGCIDs(zeit.content.author.testing.BrowserTestCase):
     def test_report_for_invalid_gcids_is_csv_download(self):
