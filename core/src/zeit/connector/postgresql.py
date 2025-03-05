@@ -635,6 +635,9 @@ class Connector:
     search = _search_dav  # BBB
 
     def search_sql(self, query):
+        if self.support_locking:
+            query = query.options(joinedload(Content.lock))
+
         result = []
         rows = self._execute_suppress_errors(query)
         if rows is None:

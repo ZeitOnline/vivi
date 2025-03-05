@@ -163,6 +163,15 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
         ):
             self.assertEqual(result[0].data.read(), b'mybody')
 
+    def test_search_by_sql_includes_lock_in_cache(self):
+        res = self.add_resource('one', body=b'mybody', type='article')
+        until = pendulum.now('UTC').add(minutes=5)
+        self.connector.lock(res.id, 'someone', until)
+        transaction.commit()  # empty cache
+        query = select(Content).filter_by(type='article')
+        self.connector.search_sql(query)
+        self.assertNotEqual((None, None, False), self.connector.locked(res.id))
+
     def test_search_by_sql_reuses_existing_cache(self):
         prop = ('foo', f'{NS}testing')
         res = self.get_resource('foo', b'mybody', {('foo', f'{NS}testing'): 'foo'}, type='article')
