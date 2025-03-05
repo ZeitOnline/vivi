@@ -312,9 +312,12 @@ class Repository(persistent.Persistent, Container):
         content.__name__ = resource.__name__
         return content
 
-    def makeContent(self, resource):
-        """Currently supports exactly the zeit.contentquery SQLContentQuery
-        usecase, by cobbling together the relevant parts of _getContent() and
+    def search(self, query):
+        connector = self.connector
+        return [self._makeContent(x) for x in connector.search_sql(query)]
+
+    def _makeContent(self, resource):
+        """Cobbles together the relevant parts of _getContent() and
         getCopyOf(). Unclear if this points to a design flaw, and if so, what
         a cleaner API would look like.
         """

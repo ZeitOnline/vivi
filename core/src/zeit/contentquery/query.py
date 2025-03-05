@@ -63,8 +63,6 @@ class SQLContentQuery(ContentQuery):
     grok.name('sql-query')
 
     def __call__(self):
-        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
-        repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
         query = self._build_query()
         tracer = zope.component.getUtility(zeit.cms.interfaces.ITracer)
         with tracer.start_as_current_span('sql_contentquery', kind=SpanKind.CLIENT) as span:
@@ -78,9 +76,10 @@ class SQLContentQuery(ContentQuery):
             )
             if self.rows == 0:
                 return []
-            result = [repository.makeContent(x) for x in connector.search_sql(query)]
+            repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
+            result = repository.search(query)
             span.set_attribute('db.count', len(result))
-        return result
+            return result
 
     @cachedproperty
     def total_hits(self):
