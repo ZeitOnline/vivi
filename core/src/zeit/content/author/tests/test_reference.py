@@ -38,12 +38,12 @@ class RelatedReferenceTest(zeit.content.author.testing.FunctionalTestCase):
 
     def test_hdok_id_is_added(self):
         author = zeit.content.author.author.Author()
-        author.hdok_id = 'honorar-id'
+        author.hdok_id = 1234
         author = self.repository['testauthor'] = author
         result = zope.component.getAdapter(
             author, zeit.cms.content.interfaces.IXMLReference, name='author'
         )
-        self.assertEqual('honorar-id', result.get('hdok'))
+        self.assertEqual('1234', result.get('hdok'))
 
     def test_empty_hdok_id_does_not_break(self):
         # This test is about objects that existed before create_honorar_entry

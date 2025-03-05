@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from unittest import mock
 import urllib.parse
 
 from zope.lifecycleevent import Attributes, ObjectModifiedEvent
@@ -36,29 +35,6 @@ class AuthorTest(zeit.content.author.testing.FunctionalTestCase):
 
         self.repository.connector.search_result = ['http://xml.zeit.de/exists']
         self.assertTrue(Author.exists('William', 'Shakespeare'))
-
-    def test_author_exists_bbb_elastic(self):
-        Author = zeit.content.author.author.Author
-        elastic = zope.component.getUtility(zeit.find.interfaces.ICMSSearch)
-        with mock.patch.object(elastic, 'search') as search:
-            search.return_value = zeit.cms.interfaces.Result([])
-            self.assertFalse(Author.exists('William', 'Shakespeare'))
-            search.assert_called_with(
-                {
-                    'query': {
-                        'bool': {
-                            'filter': [
-                                {'term': {'doc_type': 'author'}},
-                                {'term': {'payload.xml.firstname': 'William'}},
-                                {'term': {'payload.xml.lastname': 'Shakespeare'}},
-                            ]
-                        }
-                    }
-                }
-            )
-
-            search.return_value.hits = NONZERO
-            self.assertTrue(Author.exists('William', 'Shakespeare'))
 
     def test_author_id_is_not_too_big_validation(self):
         # ZO-3671
@@ -136,6 +112,12 @@ class SSOIdConnectTest(zeit.content.author.testing.FunctionalTestCase):
             self.repository['author'] = self.author
         self.assertEqual(12345, self.author.ssoid)
 
+    def test_ssoid_is_not_updated_if_already_set(self):
+        self.author.ssoid = 67890
+        with self.acs(self.author.email, id=12345):
+            self.repository['author'] = self.author
+        self.assertEqual(67890, self.author.ssoid)
+
     def test_ssoid_is_not_set_when_sso_connect_is_disabled(self):
         with self.acs(self.author.email, id=12345):
             self.author.sso_connect = False
@@ -149,6 +131,7 @@ class SSOIdConnectTest(zeit.content.author.testing.FunctionalTestCase):
         with self.acs('hans.müller@zeit.de', id=67890):
             with checked_out(self.repository['author']) as co:
                 co.email = 'hans.müller@zeit.de'
+                zope.event.notify(ObjectModifiedEvent(co, Attributes(ICommonMetadata, 'email')))
         self.assertEqual(67890, self.repository['author'].ssoid)
 
     def test_ssoid_is_deleted_on_disable_sso_connect(self):
@@ -156,6 +139,9 @@ class SSOIdConnectTest(zeit.content.author.testing.FunctionalTestCase):
             self.repository['author'] = self.author
             with checked_out(self.repository['author']) as co:
                 co.sso_connect = False
+                zope.event.notify(
+                    ObjectModifiedEvent(co, Attributes(ICommonMetadata, 'sso_connect'))
+                )
         self.assertIsNone(self.repository['author'].ssoid)
 
     def test_ssoid_is_deleted_on_delete_email(self):
@@ -163,6 +149,7 @@ class SSOIdConnectTest(zeit.content.author.testing.FunctionalTestCase):
             self.repository['author'] = self.author
             with checked_out(self.repository['author']) as co:
                 co.email = None
+                zope.event.notify(ObjectModifiedEvent(co, Attributes(ICommonMetadata, 'email')))
         self.assertIsNone(self.repository['author'].ssoid)
 
     def test_ssoid_is_updated_on_checked_out_item(self):

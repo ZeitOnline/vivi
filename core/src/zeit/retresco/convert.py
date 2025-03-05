@@ -358,10 +358,9 @@ class Author(Converter):
             },
         }
         xml = result['payload']['xml']
-        if 'hdok_id' in xml:  # BBB, remove after WCM-26/ZO-5655
-            xml['honorar_id'] = xml.pop('hdok_id')
-        if 'department' in xml:  # BBB, remove after WCM-26
-            xml['status'] = xml.pop('department')
+        # BBB, remove after WCM-473
+        xml['firstname'] = self.context.firstname
+        xml['lastname'] = self.context.lastname
         return result
 
 

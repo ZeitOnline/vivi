@@ -10,7 +10,6 @@ import zope.lifecycleevent
 import zope.security.proxy
 
 from zeit.cms.content.property import ObjectPathProperty
-from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.interfaces import META_SCHEMA_NS
 from zeit.connector.search import SearchVar
@@ -27,7 +26,6 @@ import zeit.cms.type
 import zeit.cms.workflow.dependency
 import zeit.content.author.interfaces
 import zeit.content.image.imagereference
-import zeit.find.interfaces
 
 
 AUTHOR_NS = 'http://namespaces.zeit.de/CMS/author'
@@ -70,28 +68,20 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
     ]:
         locals()[name] = ObjectPathProperty(f'.{name}', IAuthor[name])
 
-    for name in [
-        'firstname',
-        'lastname',
-        'initials',
-        'ssoid',
-    ]:
-        locals()[name] = ObjectPathProperty(
-            f'.{name}', IAuthor[name], dav_ns=AUTHOR_NS, dav_name=name, dav_toggle='wcm_26'
-        )
-
-    # BBB Diverging xpaths are for existing bodies, remove after WCM-26 is launched.
-    for name, xpath in [
-        ('department', 'status'),
-        ('hdok_id', 'honorar_id'),
-        ('vgwort_id', 'vgwortid'),
-        ('vgwort_code', 'vgwortcode'),
-    ]:
-        locals()[name] = ObjectPathProperty(
-            f'.{xpath}', IAuthor[name], dav_ns=AUTHOR_NS, dav_name=name, dav_toggle='wcm_26'
-        )
-    del locals()['name']
-    del locals()['xpath']
+    zeit.cms.content.dav.mapProperties(
+        IAuthor,
+        AUTHOR_NS,
+        (
+            'firstname',
+            'lastname',
+            'initials',
+            'ssoid',
+            'department',
+            'hdok_id',
+            'vgwort_id',
+            'vgwort_code',
+        ),
+    )
 
     @property
     def display_name(self):
@@ -104,73 +94,33 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
     def display_name(self, value):
         self._display_name = value
 
-    _display_name = ObjectPathProperty(
-        '.display_name',
-        IAuthor['display_name'],
-        dav_ns=AUTHOR_NS,
-        dav_name='display_name',
-        dav_toggle='wcm_26',
+    _display_name = zeit.cms.content.dav.DAVProperty(
+        IAuthor['display_name'], AUTHOR_NS, 'display_name'
     )
 
     favourite_content = zeit.cms.content.reference.MultiResource('.favourites.reference', 'related')
 
     @classmethod
     def exists(cls, firstname, lastname):
-        if FEATURE_TOGGLES.find('xmlproperty_read_wcm_26'):
-            connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
-            result = list(
-                connector.search(
-                    [TYPE, FIRSTNAME, LASTNAME],
-                    (TYPE == 'author') & (FIRSTNAME == firstname) & (LASTNAME == lastname),
-                )
+        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+        result = list(
+            connector.search(
+                [TYPE, FIRSTNAME, LASTNAME],
+                (TYPE == 'author') & (FIRSTNAME == firstname) & (LASTNAME == lastname),
             )
-            return bool(result)
-        else:
-            elastic = zope.component.getUtility(zeit.find.interfaces.ICMSSearch)
-            return bool(
-                elastic.search(
-                    {
-                        'query': {
-                            'bool': {
-                                'filter': [
-                                    {'term': {'doc_type': 'author'}},
-                                    {'term': {'payload.xml.firstname': firstname}},
-                                    {'term': {'payload.xml.lastname': lastname}},
-                                ]
-                            }
-                        }
-                    }
-                ).hits
-            )
+        )
+        return bool(result)
 
     @classmethod
     def find_by_hdok_id(cls, hdok_id):
-        if FEATURE_TOGGLES.find('xmlproperty_read_wcm_26'):
-            connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
-            result = list(
-                connector.search(
-                    [TYPE, HDOK_ID],
-                    (TYPE == 'author') & (HDOK_ID == hdok_id),
-                )
+        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+        result = list(
+            connector.search(
+                [TYPE, HDOK_ID],
+                (TYPE == 'author') & (HDOK_ID == str(hdok_id)),
             )
-            return result[0] if result else None
-        else:
-            elastic = zope.component.getUtility(zeit.find.interfaces.ICMSSearch)
-            result = elastic.search(
-                {
-                    'query': {
-                        'bool': {
-                            'filter': [
-                                {'term': {'doc_type': 'author'}},
-                                # BBB for existing indexed documents.
-                                {'term': {'payload.xml.honorar_id': hdok_id}},
-                            ]
-                        }
-                    },
-                    '_source': ['url', 'payload.xml'],
-                }
-            )
-            return None if not result.hits else result[0]
+        )
+        return zeit.cms.interfaces.ICMSContent(result[0][0], None) if result else None
 
     @property
     def bio_questions(self):
@@ -194,33 +144,36 @@ class AuthorImages(zeit.content.image.imagereference.ImagesAdapter):
 @grok.subscribe(
     zeit.content.author.interfaces.IAuthor, zeit.cms.repository.interfaces.IBeforeObjectAddEvent
 )
-def set_ssoid(obj, event):
-    if obj.email and obj.sso_connect:
-        ssoid = request_acs(obj.email)
-        if ssoid:
-            obj.ssoid = ssoid
-    else:
-        obj.ssoid = None
+def update_ssoid_on_add(context, event):
+    if zeit.cms.checkout.interfaces.ILocalContent.providedBy(context):
+        return  # Don't run on every checkin, that's what the on_change handler is for
+    if zeit.cms.repository.interfaces.IRepositoryContent.providedBy(context):
+        return  # Should only happen in tests
+    if context.ssoid:
+        return
+    _update_ssoid(context)
 
 
 @grok.subscribe(zeit.content.author.interfaces.IAuthor, zope.lifecycleevent.IObjectModifiedEvent)
-def update_ssoid(context, event):
+def update_ssoid_on_change(context, event):
     for desc in event.descriptions:
-        if (
-            desc.interface is zeit.cms.content.interfaces.ICommonMetadata
-            and 'sso_connect'
-            or 'email' in desc.attributes
-        ):
-            if context.sso_connect and context.email:
-                ssoid = request_acs(context.email)
-                if ssoid:
-                    context.ssoid = ssoid
-            else:
-                context.ssoid = None
+        if desc.interface is not zeit.cms.content.interfaces.ICommonMetadata:
+            continue
+        if 'email' in desc.attributes or 'sso_connect' in desc.attributes:
+            _update_ssoid(context)
             break
 
 
-def request_acs(email):
+def _update_ssoid(author):
+    if author.email and author.sso_connect:
+        ssoid = _request_acs(author.email)
+        if ssoid:
+            author.ssoid = ssoid
+    else:
+        author.ssoid = None
+
+
+def _request_acs(email):
     config = zeit.cms.config.package('zeit.content.author')
     url = config['sso-api-url'] + '/users/' + urllib.parse.quote(email.encode('utf8'))
     auth = (config['sso-user'], config['sso-password'])

@@ -1,10 +1,10 @@
 # coding: utf-8
 from unittest import mock
-import json
 
 import pendulum
 import zope.component
 
+from zeit.cms.content.sources import FEATURE_TOGGLES
 import zeit.content.author.author
 import zeit.content.author.browser.honorar as honorar
 import zeit.content.author.interfaces
@@ -113,6 +113,12 @@ class HonorarLookupTest(zeit.content.author.testing.BrowserTestCase):
         self.assertEqual('1234', b.getControl('Honorar ID').value)
 
     def test_checks_for_existing_hdok_id(self):
+        FEATURE_TOGGLES.set('xmlproperty_write_wcm_26', 'xmlproperty_read_wcm_26')
+        exists = zeit.content.author.author.Author()
+        exists.hdok_id = 12345
+        self.repository['exists'] = exists
+        self.repository.connector.search_result = ['http://xml.zeit.de/exists']
+
         b = self.browser
         b.open('http://localhost/++skin++vivi/@@zeit.content.author.add_contextfree')
         b.getControl('Firstname').value = 'William'
@@ -120,15 +126,9 @@ class HonorarLookupTest(zeit.content.author.testing.BrowserTestCase):
         b.getControl('VG-Wort ID').value = '12345'
         b.getControl('Honorar ID').value = '12345'
         b.getControl('Redaktionszugehörigkeit').displayValue = ['Print']
-        es = zope.component.getUtility(zeit.find.interfaces.ICMSSearch)
-        es.search.return_value = zeit.cms.interfaces.Result(
-            [{'url': '/author/foo', 'payload': {'xml': {'honorar_id': 12345}}}]
-        )
-        es.search.return_value.hits = 1
         b.getControl(name='form.actions.add').click()
         self.assertEllipsis(
-            '...Author with honorar ID 12345...'
-            'redirect_to?unique_id=http://xml.zeit.de/author/foo...',
+            '...Author with honorar ID 12345...redirect_to?unique_id=http://xml.zeit.de/exists...',
             b.contents,
         )
 
@@ -152,19 +152,10 @@ class ReportInvalidGCIDs(zeit.content.author.testing.BrowserTestCase):
 
 class CSVRendering(zeit.retresco.testing.FunctionalTestCase):
     def test_invalid_gcids_api_request_builds_correct_csv_report(self):
-        elastic = mock.Mock()
-        zope.component.getGlobalSiteManager().registerUtility(
-            elastic, zeit.find.interfaces.ICMSSearch
-        )
-        elastic.search.return_value = zeit.cms.interfaces.Result(
-            json.loads(
-                """[{"payload": {"xml": {"honorar_id": "123"}},
-            "url": "/autoren/P/Sophia_Phildius/index"},
-            {"payload": {"xml": {"honorar_id": "10055333"}},
-            "url": "/autoren/M/Yasmine_MBarek/index"}]""",
-                strict=False,
-            )
-        )
+        self.repository.connector.search_result = [
+            ('http://xml.zeit.de/autoren/P/Sophia_Phildius/index', 123),
+            ('http://xml.zeit.de/autoren/M/Yasmine_MBarek/index', 10055333),
+        ]
         api = zope.component.getUtility(zeit.content.author.interfaces.IHonorar)
         api.invalid_gcids.return_value = [
             {

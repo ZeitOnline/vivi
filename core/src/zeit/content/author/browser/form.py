@@ -8,6 +8,7 @@ import zope.formlib.interfaces
 import zope.interface
 import zope.schema
 
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.browser.form
 import zeit.cms.config
@@ -165,11 +166,13 @@ class AddContextfree(zeit.cms.browser.form.AddForm):
         exists = author.find_by_hdok_id(author.hdok_id)
         if exists is None:
             return False
-        payload = exists.get('payload', {}).get('xml', {})
-        data = {'uniqueId': zeit.cms.interfaces.ID_NAMESPACE[:-1] + exists['url']}
-        for key in ['firstname', 'lastname', 'honorar_id']:
-            data[key] = payload.get(key)
-        self._duplicate_result = self.duplicate_hdok_id(author=data)
+        if not FEATURE_TOGGLES.find('xmlproperty_read_wcm_26'):
+            payload = exists.get('payload', {}).get('xml', {})
+            exists = {'uniqueId': zeit.cms.interfaces.ID_NAMESPACE[:-1] + exists['url']}
+            exists['firstname'] = payload.get('firstname')
+            exists['lastname'] = payload.get('lastname')
+            exists['hdok_id'] = payload.get('honorar_id')
+        self._duplicate_result = self.duplicate_hdok_id(author=exists)
         return True
 
     def add(self, object):

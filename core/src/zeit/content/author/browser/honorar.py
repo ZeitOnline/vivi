@@ -11,7 +11,8 @@ import zope.formlib.interfaces
 import zope.interface
 
 from zeit.cms.i18n import MessageFactory as _
-from zeit.content.author.author import Author
+from zeit.connector.search import SearchExpr
+from zeit.content.author.author import HDOK_ID, TYPE, Author
 from zeit.content.author.browser.interfaces import DuplicateAuthorWarning
 import zeit.cms.browser.form
 import zeit.cms.browser.menu
@@ -154,44 +155,32 @@ class HonorarReports(zeit.cms.browser.view.Base):
     def report_invalid_gcid(self, days_ago=31):
         hdok = zope.component.getUtility(zeit.content.author.interfaces.IHonorar)
         hdok_authors_deleted = hdok.invalid_gcids(days_ago)
-        es = zope.component.getUtility(zeit.find.interfaces.ICMSSearch)
-        es_authors = es.search(
-            {
-                'query': {
-                    'bool': {
-                        'filter': [
-                            {
-                                'terms': {
-                                    'payload.xml.honorar_id': [
-                                        x['geloeschtGCID'] for x in hdok_authors_deleted
-                                    ]
-                                    + [x['refGCID'] for x in hdok_authors_deleted]
-                                }
-                            }
-                        ]
-                    }
-                },
-                '_source': ['url', 'payload.xml.honorar_id'],
-            },
-            rows=1000,
+        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+        hdok_ids = [(HDOK_ID == str(x['geloeschtGCID'])) for x in hdok_authors_deleted]
+        hdok_ids.extend([(HDOK_ID == str(x['refGCID'])) for x in hdok_authors_deleted])
+        result = list(
+            connector.search(
+                [TYPE, HDOK_ID],
+                (TYPE == 'author') & SearchExpr('or', *hdok_ids),
+            )
         )
-        es_authors = {
-            x['payload']['xml']['honorar_id']: 'https://www.zeit.de' + x['url'] for x in es_authors
+        content_authors = {
+            x[1]: x[0].replace('http://xml.zeit.de', 'https://www.zeit.de', 1) for x in result
         }
 
         csv_rows = io.StringIO()
         for item in hdok_authors_deleted:
-            deleted = str(item['geloeschtGCID'])
-            replaced = str(item['refGCID'])
-            if deleted not in es_authors:
+            deleted = item['geloeschtGCID']
+            replaced = item['refGCID']
+            if deleted not in content_authors:
                 continue
             csv_rows.write(
                 ';'.join(
                     [
-                        deleted,
-                        es_authors[deleted],
-                        replaced,
-                        es_authors.get(replaced, ''),
+                        str(deleted),
+                        content_authors[deleted],
+                        str(replaced),
+                        content_authors.get(replaced, ''),
                     ]
                 )
                 + '\n'
