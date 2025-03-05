@@ -11,6 +11,7 @@ from sqlalchemy import (
     UnicodeText,
     Uuid,
 )
+from sqlalchemy import text as sql
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import declared_attr, mapped_column, relationship
 import pendulum
@@ -37,6 +38,21 @@ class Base(sqlalchemy.orm.DeclarativeBase):
             if ops.startswith('json'):
                 kw['postgresql_using'] = 'gin'
         return Index(name, *args, **kw)
+
+
+CREATE_EXTENSION_UNACCENT = 'CREATE EXTENSION IF NOT EXISTS unaccent;'
+# Support using the unaccent() function in an index expression, see
+# <https://stackoverflow.com/questions/11005036/11007216>.
+# The (faster?) "language C" wrapper function does not work on CloudSQL.
+CREATE_EXTENSION_UNACCENT += """\
+CREATE OR REPLACE FUNCTION iunaccent(text) RETURNS text
+LANGUAGE sql IMMUTABLE PARALLEL SAFE STRICT
+RETURN public.unaccent('public.unaccent', $1);"""
+
+
+@sqlalchemy.event.listens_for(Base.metadata, 'before_create')
+def metadata_create(target, connection, **kw):
+    connection.execute(sql(CREATE_EXTENSION_UNACCENT))
 
 
 class CommonMetadata:
@@ -160,6 +176,12 @@ class Content(Base, CommonMetadata, ContentTypes, Timestamps, Miscellaneous, VGW
                 ),
                 cls.Index('unsorted', ops='jsonb_path_ops'),
                 cls.Index('channels', ops='jsonb_path_ops'),
+                cls.Index(
+                    sqlalchemy.func.iunaccent(cls.author_lastname),
+                    postgresql_where=cls.type == 'author',
+                    ops='varchar_pattern_ops',
+                    name='author_lastname',
+                ),
             )
             + tuple(
                 cls.Index(getattr(cls, column).desc().nulls_last())
