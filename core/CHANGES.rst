@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.50.0 (2025-03-05)
+-------------------
+
+- WCM-26: Remove author properties in XML body, fully switch to DAV
+
+
 7.49.0 (2025-03-04)
 -------------------
 
