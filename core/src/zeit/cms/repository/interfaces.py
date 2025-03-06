@@ -55,14 +55,12 @@ class IRepository(zope.interface.Interface):
     """Access the webdav repository.
 
     This is the general entry point for accessing file and directory listings.
-
     """
 
     def getUniqueId(content):
         """Return unique not-changeable id of given content object.
 
         raises KeyError if no id could be determined.
-
         """
 
     def getContent(unique_id):
@@ -75,7 +73,6 @@ class IRepository(zope.interface.Interface):
         raises ValueError if the unique_id is invalid (i.e. does not start with
             the correct prefix).
         raises KeyError if unique_id is not referencing a valid object.
-
         """
 
     def getCopyOf(unique_id):
@@ -94,7 +91,15 @@ class IRepository(zope.interface.Interface):
 
         An IBeforeObjectAddEvent is sent before the object is added to the
         repository.
+        """
 
+    def search(query):
+        """Search for `query`
+
+        query:
+            `sqlalchemy.select(zeit.connector.models.Content)` object
+
+        returns a list of ICMSContent objects
         """
 
 
