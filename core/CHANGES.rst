@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.51.0 (2025-03-07)
+-------------------
+
+- WCM-657: Promote searching for ICMSContent by SQL to IRepository.search()
+
+
 7.50.0 (2025-03-05)
 -------------------
 
