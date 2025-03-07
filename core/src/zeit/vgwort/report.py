@@ -51,7 +51,7 @@ class ReportableContentSource(grok.GlobalUtility):
         repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
         results = repository.search(query, query_timeout)
         for resource in results:
-            yield zeit.cms.interfaces.ICMSContent(resource.id)
+            yield resource
 
     def mark_done(self, content):
         info = zeit.vgwort.interfaces.IReportInfo(content)

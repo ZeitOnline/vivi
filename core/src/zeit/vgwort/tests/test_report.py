@@ -37,9 +37,10 @@ class ReportTest(zeit.vgwort.testing.SQLTestCase):
                 ('reported_on', 'http://namespaces.zeit.de/CMS/vgwort'): '',
             },
         )
-
         query = select(Content).filter_by(type='article')
-        result = self.connector.search_sql(query)
+        repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
+        result = repository.search(query)
+
         source = zope.component.getUtility(zeit.vgwort.interfaces.IReportableContentSource)
         result = list(source)
         self.assertEqual(len(result), 1)
