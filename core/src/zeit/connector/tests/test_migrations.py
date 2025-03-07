@@ -45,30 +45,52 @@ class DBTestCase(unittest.TestCase):
         c.execute(sql(f'DROP DATABASE {self.dbname}'))
         c.close()
 
-    def dump_schema(self, connection):
-        def _dump(sql, *args, **kw):
-            text = str(sql.compile(dialect=engine.dialect))
-            text = re.sub(r'\n+', '\n', text)
-            result.append(text)
-
-        metadata = sqlalchemy.MetaData()
-        # XXX This does not retrieve index operator classes, see sqlalchemy#8664
-        # for example `USING gin (mycolumn jsonb_path_ops)`
-        metadata.reflect(connection)
-
-        # We don't care about column order here. (sqlalchemy sorts them in
-        # python source declaration order, but migrations sort them in
-        # chronological add order, since postgres can only append columns).
-        for table in metadata.tables.values():
-            table.columns._collection.sort()  # XXX internal API, might break.
-
-        result = []
-        engine = sqlalchemy.create_mock_engine(
-            'postgresql://',
-            executor=_dump,
+    def dump_schema(self):
+        status, result = self.layer['psql_container'].exec_run(
+            f'pg_dump -U postgres --schema-only {self.dbname}'
         )
-        metadata.create_all(engine, checkfirst=False)
-        return sorted(result)
+        result = result.decode('utf-8')
+        assert status == 0, result
+        return self.normalize_dump(result)
+
+    DUMP_STATEMENT = re.compile(r'(-- Name: .*?\n\n--)', re.DOTALL)
+
+    def normalize_dump(self, dump):
+        body = []
+        in_body = False
+        for line in dump.split('\n'):
+            if line.startswith('-- Name: '):
+                in_body = True
+            if in_body:
+                body.append(line)
+        body = body[:-6]
+        body = '\n'.join(body)
+
+        statements = self.DUMP_STATEMENT.findall(body)
+        statements = [self.normalize_statement(x) for x in statements]
+        return '\n'.join(statements)
+
+    CREATE_TABLE = re.compile(r'CREATE TABLE [^(]*\((.*?)\);', re.DOTALL)
+
+    def normalize_statement(self, statement):
+        """We don't care about column order. (sqlalchemy sorts them in
+        python source declaration order, but migrations sort them in
+        chronological add order, since postgres can only append columns)."""
+
+        if 'CREATE TABLE' not in statement:
+            return statement
+
+        def repl(delim):
+            def _(match):
+                # split & order group 1 and replace the original match
+                pattern = r'\s*{}\s*'.format(delim)
+                complete, unordered = match[0], match[1]
+                ordered = delim.join(sorted(re.split(pattern, unordered)))
+                return complete.replace(unordered, ordered)
+
+            return _
+
+        return self.CREATE_TABLE.sub(repl(',?\n'), statement)
 
 
 def alembic_upgrade(connection, name, **kw):
@@ -101,7 +123,8 @@ class MigrationsTest(DBTestCase):
         self.createdb()
         c = self.engine.connect()
         zeit.connector.models.Base.metadata.create_all(c)
-        scratch = self.dump_schema(c)
+        c.commit()
+        scratch = self.dump_schema()
         c.close()
         self.dropdb()
 
@@ -111,11 +134,11 @@ class MigrationsTest(DBTestCase):
         c.close()
         c = self.engine.connect()
         alembic_upgrade(c, 'postdeploy')
-        migrations = self.dump_schema(c)
+        migrations = self.dump_schema()
         c.close()
         self.dropdb()
 
-        diff = unified_diff(scratch, migrations, n=5)
+        diff = unified_diff(scratch.split('\n'), migrations.split('\n'), n=5)
         self.assertEqual(scratch, migrations, '\n'.join(diff))
 
 
