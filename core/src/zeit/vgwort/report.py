@@ -43,13 +43,13 @@ class ReportableContentSource(grok.GlobalUtility):
             " AND unsorted->'vgwort'->>'reported_error' = ''"
         )
 
-        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
         query = select(ConnectorModel)
         query = query.where(
             sql(sql_query).bindparams(age=f'{age} days', age_limit=f'{age_limit} days')
         )
 
-        results = connector.search_sql(query, query_timeout)
+        repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
+        results = repository.search(query, query_timeout)
         for resource in results:
             yield zeit.cms.interfaces.ICMSContent(resource.id)
 
