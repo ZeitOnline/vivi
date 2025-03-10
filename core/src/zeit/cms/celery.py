@@ -157,6 +157,17 @@ else:
             exc_info=kw.get('exception'),
         )
 
+    # Luckily, celery sends the `worker_process_init` signal *after*
+    # `Loader.on_worker_process_init` (see celery.concurrency.prefork.process_initializer),
+    # so the health check only counts workers as ready, if they do have a
+    # working ZODB connection.
+    @celery.signals.worker_init.connect(weak=False)
+    def healthcheck(sender, *args, **kw):
+        if sender.app.conf.get('worker_healthcheck_bind'):
+            import celery_worker_healthcheck  # optional dependency
+
+            celery_worker_healthcheck.start(sender, *args, **kw)
+
     CELERY = celery.Celery(
         __name__,
         task_cls=Task,
