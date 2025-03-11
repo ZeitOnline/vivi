@@ -119,12 +119,14 @@ zeit.wochenmarkt.IngredientsWidget = gocept.Class.extend({
         ingredients.forEach(function(i) {
             if (i.unique_id === id) {
                 const val = event.target.value;
+                const name = event.target.getAttribute('data-id');
                 // amount either needs to be a number or empty.
-                if (event.target.getAttribute('data-id') === 'amount' && (isNaN(Number(val)) && val !== '')) {
+                if (name === 'amount' && (isNaN(Number(val)) && val !== '')) {
                     event.target.style.background = 'linear-gradient(0deg, #FFF, #FDD)';
                     event.target.classList.add('dirty');
                 } else {
-                    i[event.target.getAttribute('data-id')] = val;
+                    i[name] = val;
+                    parent_el.setAttribute('data-' + name, val);
                     event.target.style.background = 'linear-gradient(0deg, #FFF, #CEF)';
                     event.target.classList.add('dirty');
                 }
