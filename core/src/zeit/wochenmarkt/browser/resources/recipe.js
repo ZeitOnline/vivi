@@ -13,7 +13,7 @@ function setup_units() {
     const source = zeit.cms.locked_xhr(
         application_url + '/@@source?name=zeit.content.modules.interfaces.RecipeUnitsSource');
     source.addCallback(function(result) {
-        units = JSON.parse(result.response)
+        units = JSON.parse(result.response);
         return result;
     });
     source.addErrback(function(error) {
@@ -56,7 +56,7 @@ zeit.wochenmarkt.IngredientsWidget = gocept.Class.extend({
                     ui.item.value, ui.item.label,
                     '', /*amount*/
                     '', /*unit*/
-                    '', /*details*/
+                    ''  /*details*/
                 );
                 $(self.autocomplete).val('');
                 return false;
@@ -166,7 +166,7 @@ zeit.wochenmarkt.IngredientsWidget = gocept.Class.extend({
         var item = LI(
             {'class': 'ingredient__item', 'data-id': unique_id, 'data-code': code, 'data-amount': amount, 'data-unit': unit, 'data-details': details, 'data-name': 'ingredient__item'},
             A({'class': 'ingredient__label'}, label),
-            INPUT({'id': self.id + '.ingredient__amount', 'class': 'ingredient__amount', 'data-id': 'amount', 'placeholder': 'Anzahl'}),
+            INPUT({'id': self.id + '.ingredient__amount', 'class': 'ingredient__amount', 'data-id': 'amount', 'placeholder': 'Anzahl'})
         );
 
         // Add unit
@@ -235,9 +235,7 @@ zeit.wochenmarkt.RecipeCategoriesWidget = gocept.Class.extend({
                 return false;
             },
             select: function(event, ui) {
-                self.add(
-                    ui.item.value, ui.item.label,
-                );
+                self.add(ui.item.value, ui.item.label);
                 $(self.autocomplete).val('');
                 return false;
             },
@@ -301,7 +299,7 @@ zeit.wochenmarkt.RecipeCategoriesWidget = gocept.Class.extend({
         var item = LI(
             {'class': 'recipe-category__item', 'cms:uniqueId': code, 'data-name': 'recipe-category__item'},
             SPAN({'class': 'icon delete', 'cms:call': 'delete'}),
-            A({'class': 'recipe-category__label'}, label),
+            A({'class': 'recipe-category__label'}, label)
         );
         $(self.list).append(item);
     },

@@ -2,6 +2,7 @@
 
 import zope.component
 
+import zeit.cms.testing
 import zeit.wochenmarkt.interfaces
 import zeit.wochenmarkt.testing
 
@@ -60,3 +61,7 @@ class TestIngredients(zeit.wochenmarkt.testing.FunctionalTestCase):
             zeit.wochenmarkt.interfaces.IIngredientsWhitelist
         ).search('ei')
         assert ['Ei', 'Eis', 'Basmatireis', 'Brei'] == ([r.name for r in result])
+
+
+class JSLintTest(zeit.cms.testing.JSLintTestCase):
+    include = ('zeit.wochenmarkt.browser:resources',)
