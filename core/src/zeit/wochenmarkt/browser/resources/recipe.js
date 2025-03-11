@@ -38,7 +38,7 @@ zeit.wochenmarkt.IngredientsWidget = gocept.Class.extend({
             id + '.wrapper', 'onclick', self, self.handle_click);
         self._initialize_autocomplete();
         self._initialize_sortable();
-        self.element.addEventListener("change", function() { self.update_entry(self.data) } );
+        self.element.addEventListener("change", function(event) { self.update_entry(event); } );
         self.validate_recipe_title();
     },
 
@@ -112,27 +112,21 @@ zeit.wochenmarkt.IngredientsWidget = gocept.Class.extend({
         return result;
     },
 
-    update_entry: function(data) {
-        const parent_el = event.target.parentElement;
-        const id = parent_el.getAttribute('data-id');
-        let ingredients = JSON.parse(data.value);
-        ingredients.forEach(function(i) {
-            if (i.unique_id === id) {
-                const val = event.target.value;
-                const name = event.target.getAttribute('data-id');
-                // amount either needs to be a number or empty.
-                if (name === 'amount' && (isNaN(Number(val)) && val !== '')) {
-                    event.target.style.background = 'linear-gradient(0deg, #FFF, #FDD)';
-                    event.target.classList.add('dirty');
-                } else {
-                    i[name] = val;
-                    parent_el.setAttribute('data-' + name, val);
-                    event.target.style.background = 'linear-gradient(0deg, #FFF, #CEF)';
-                    event.target.classList.add('dirty');
-                }
-            }
-        });
-        data.value = JSON.stringify(ingredients);
+    update_entry: function(event) {
+        var self = this;
+        const input = event.target;
+        const li = input.parentElement;
+        const name = input.getAttribute('data-id');
+        const value = input.value;
+        input.classList.add('dirty');
+        // amount either needs to be a number or empty.
+        if (name === 'amount' && (isNaN(Number(value)) && value !== '')) {
+            input.style.background = 'linear-gradient(0deg, #FFF, #FDD)';
+        } else {
+            input.style.background = 'linear-gradient(0deg, #FFF, #CEF)';
+            li.setAttribute('data-' + name, value);
+        }
+        self._sync_json_widget_value();
     },
 
     validate_recipe_title: function() {
