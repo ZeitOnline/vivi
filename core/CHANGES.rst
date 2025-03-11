@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.52.0 (2025-03-11)
+-------------------
+
+- WCM-473: Add index to support searching for authors by umlaut-normalized lastname first-letter
+
+- WCM-749: Wire up celery worker healthcheck
+
+
 7.51.0 (2025-03-07)
 -------------------
 
