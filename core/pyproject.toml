@@ -184,6 +184,7 @@ test = [
 deploy = [
     "alembic",
     "celery-redis-prometheus>=1.5.0.dev0",
+    "celery-worker-healthcheck",
     "flower",
     "fluent-logger",
     "grpcio-status",  # warning instead of required by google-api-core
