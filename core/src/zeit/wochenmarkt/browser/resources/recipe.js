@@ -125,7 +125,7 @@ zeit.wochenmarkt.IngredientsWidget = gocept.Class.extend({
                     event.target.classList.add('dirty');
                 } else {
                     i[event.target.getAttribute('data-id')] = val;
-                    event.target.style.background = 'linear-gradient(0deg, #FFF, #CFD)';
+                    event.target.style.background = 'linear-gradient(0deg, #FFF, #CEF)';
                     event.target.classList.add('dirty');
                 }
             }
