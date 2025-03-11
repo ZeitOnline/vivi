@@ -444,6 +444,13 @@ class PropertiesColumnTest(zeit.connector.testing.SQLTest):
             self.add_resource('foo', properties={('date_created', f'{NS}document'): 'not a date'})
         self.assertIn("Cannot convert 'not a date' to date_created", str(e.value))
 
+    def test_convert_supports_nullable_date_columns(self):
+        FEATURE_TOGGLES.set('column_write_wcm_430')
+        FEATURE_TOGGLES.set('column_read_wcm_430')
+        res = self.add_resource('foo', properties={('date_created', f'{NS}document'): ''})
+        content = self.connector._get_content(res.id)
+        self.assertIsNone(content.date_created)
+
 
 class ColumnDeclarationTest(zeit.connector.testing.TestCase):
     layer = zeit.connector.testing.COLUMNS_ZOPE_LAYER
