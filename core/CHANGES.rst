@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.53.0 (2025-03-11)
+-------------------
+
+- WCM-525: support empty dates for nullable date columns
+
+
 7.52.0 (2025-03-11)
 -------------------
 
