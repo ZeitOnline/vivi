@@ -55,29 +55,18 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             IPublish(article).publish(background=True)
             (result,) = response.last_request.json()
             assert 'speechbert' not in result
-            assert 'authordashboard' in result
+            assert 'indexnow' in result
 
             zeit.workflow.publish_3rdparty.PublisherData.ignore = ['speechbert']
-            FEATURE_TOGGLES.set('disable_publisher_authordashboard')
+            FEATURE_TOGGLES.set('disable_publisher_indexnow')
             response = rmock.post('http://localhost:8060/test/publish', status_code=200)
             IPublish(article_2).publish(background=False)
             (result,) = response.last_request.json()
             assert 'speechbert' not in result
-            assert 'authordashboard' not in result
+            assert 'indexnow' not in result
         zeit.workflow.publish_3rdparty.PublisherData.ignore = []  # reset
         self.assertTrue(IPublishInfo(article).published)
         self.assertTrue(IPublishInfo(article_2).published)
-
-    def test_authordashboard_is_notified(self):
-        article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
-        self.assertFalse(IPublishInfo(article).published)
-        with requests_mock.Mocker() as rmock:
-            response = rmock.post('http://localhost:8060/test/publish', status_code=200)
-            IPublish(article).publish(background=False)
-            (result,) = response.last_request.json()
-            result_authordashboard = result['authordashboard']
-            self.assertEqual({}, result_authordashboard)
-        self.assertTrue(IPublishInfo(article).published)
 
     def test_bigquery_is_published(self):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')

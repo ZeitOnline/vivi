@@ -93,20 +93,6 @@ class Airship(grok.Adapter):
         return None
 
 
-@grok.implementer(zeit.workflow.interfaces.IPublisherData)
-class AuthorDashboard(grok.Adapter):
-    grok.context(zeit.cms.content.interfaces.ICommonMetadata)
-    grok.name('authordashboard')
-
-    def publish_json(self):
-        # no payload. uuid and uniqueId are passed in automatically
-        return {}
-
-    def retract_json(self):
-        # on retraction nothing is done
-        return None
-
-
 class LiveUrlMixin:
     @property
     def live_url(self):
