@@ -2084,10 +2084,12 @@
     height: 400px;
 }
 
-/* .type-article .block.type-recipelist .block-inner
-   is excluded intentionally, these contain a lot of dynamic content
+/* intentionally no fixed height, these contain a lot of dynamic content
    which is unwieldy to scroll through.
 */
+.type-article .block.type-recipelist .block-inner {
+    overflow-y: visible;
+}
 
 .type-article .block.type-quiz .block-inner {
     height: 100px;
