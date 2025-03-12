@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.54.0 (2025-03-12)
+-------------------
+
+- WCM-767: Actually save entered ingredients parameters when adding another ingredient
+
+- WCM-767: Remove height restriction on recipelist modules
+
+
 7.53.0 (2025-03-11)
 -------------------
 
