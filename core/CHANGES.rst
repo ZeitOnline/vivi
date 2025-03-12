@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.55.0 (2025-03-12)
+-------------------
+
+- WCM-767: Display ingredients autocomplete list fully instead of cutting of at the module border
+
+
 7.54.0 (2025-03-12)
 -------------------
 
