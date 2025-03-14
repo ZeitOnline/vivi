@@ -24,6 +24,8 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
         'minimum-token-amount': '10',
         'order-token-amount': '1',
         'days-before-report': '7',
+        'days-age-limit-report': '10',
+        'query-timeout': '1000',
         'claim-token-url': 'http://user:userpw@localhost/',
     },
     bases=(zeit.content.author.testing.CONFIG_LAYER,),
