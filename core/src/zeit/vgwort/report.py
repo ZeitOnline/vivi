@@ -34,19 +34,17 @@ class ReportableContentSource(grok.GlobalUtility):
         age_limit = zeit.cms.config.required('zeit.vgwort', 'days-age-limit-report')
         query_timeout = zeit.cms.config.required('zeit.vgwort', 'query-timeout')
 
-        sql_query = (
-            "type = 'article'"
-            ' AND date_first_released <= CURRENT_DATE - INTERVAL :age'
-            ' AND date_first_released >= CURRENT_DATE - INTERVAL :age_limit'
-            ' AND vgwort_private_token IS NOT NULL'
-            ' AND vgwort_reported_on IS NULL'
-            " AND vgwort_reported_error = ''"
-        )
+        sql_query = """
+            type = 'article'
+            AND date_first_released <= CURRENT_DATE - INTERVAL ':age days'
+            AND date_first_released >= CURRENT_DATE - INTERVAL ':age_limit days'
+            AND vgwort_private_token IS NOT NULL
+            AND vgwort_reported_on IS NULL
+            AND vgwort_reported_error = ''
+        """
 
         query = select(ConnectorModel)
-        query = query.where(
-            sql(sql_query).bindparams(age=f'{age} days', age_limit=f'{age_limit} days')
-        )
+        query = query.where(sql(sql_query).bindparams(age=int(age), age_limit=int(age_limit)))
 
         repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
         results = repository.search(query, query_timeout)
