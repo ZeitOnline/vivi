@@ -211,11 +211,14 @@ class IConnector(zope.interface.Interface):
             (unique_id, attributes[0], attributes[1], ...)
         """
 
-    def search_sql(query):
+    def search_sql(query, timeout=None):
         """Search for `query`
 
         query:
             `sqlalchemy.select(Content)` object
+
+        timeout:
+            optional statement timeout in ms
 
         returns a list of IResource objects
         """
