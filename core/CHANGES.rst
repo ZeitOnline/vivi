@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.56.0 (2025-03-14)
+-------------------
+
+- WCM-525: vgwort candidates read from internal database instead of elastic
+
+- WCM-737: Remove authordashboard from publishing
+
+
 7.55.0 (2025-03-12)
 -------------------
 
