@@ -146,7 +146,7 @@ def publish():
         connector.invalidate_cache(id)
         content = zeit.cms.interfaces.ICMSContent(id, None)
         if content is None:
-            log.warn('Skipping %s, not found', id)
+            log.warning('Skipping %s, not found', id)
             continue
 
         info = zeit.cms.workflow.interfaces.IPublishInfo(content)
@@ -196,7 +196,7 @@ def retract():
         id = line.strip()
         content = zeit.cms.interfaces.ICMSContent(id, None)
         if content is None:
-            log.warn('Skipping %s, not found', id)
+            log.warning('Skipping %s, not found', id)
             continue
 
         info = zeit.cms.workflow.interfaces.IPublishInfo(content)

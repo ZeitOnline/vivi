@@ -25,7 +25,7 @@ def delete_content():
         id = line.strip()
         content = zeit.cms.interfaces.ICMSContent(id, None)
         if content is None:
-            log.warn('Skipping %s, not found', id)
+            log.warning('Skipping %s, not found', id)
             continue
 
         info = zeit.cms.workflow.interfaces.IPublishInfo(content)
@@ -36,7 +36,7 @@ def delete_content():
         try:
             folder = content.__parent__
         except Exception:
-            log.warn('Skipping %s, parent not found', id)
+            log.warning('Skipping %s, parent not found', id)
             continue
 
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
