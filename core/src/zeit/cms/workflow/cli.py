@@ -7,10 +7,51 @@ import zope.component
 
 import zeit.cms.cli
 import zeit.connector.interfaces
+import zeit.workflow
+import zeit.workflow.interfaces
+import zeit.workflow.publish
 
 
 log = logging.getLogger(__name__)
 IGNORE_SERVICES = ['airship', 'speechbert', 'summy']
+
+
+@zeit.cms.cli.runner(principal=zeit.cms.cli.principal_from_args)
+def tasks():
+    parser = argparse.ArgumentParser(description='Publish by services')
+    parser.add_argument('--filename', '-f', help='filename with uniqueId per line')
+    parser.add_argument(
+        '--ignore-services',
+        default=[],
+        help='Ignore 3rd party services;',
+        nargs='+',
+    )
+
+    options = parser.parse_args()
+    if not options.filename:
+        parser.print_help()
+        raise SystemExit(1)
+
+    log.info('Ignoring services %s', options.ignore_services)
+
+    tasks = []
+    connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+    for line in open(options.filename):
+        id = line.strip()
+        connector.invalidate_cache(id)
+        content = zeit.cms.interfaces.ICMSContent(id, None)
+        if content is None:
+            log.warning('Skipping %s, not found', id)
+            continue
+
+        publisher_data = zeit.workflow.interfaces.IPublisherData(content)
+        publisher_data.ignore = options.ignore_services
+        payload = publisher_data('publish')
+        payload = {k if k in ('uniqueId', 'uuid') else f'update_{k}': v for k, v in payload.items()}
+        tasks.append(payload)
+
+    publisher = zope.component.getUtility(zeit.cms.workflow.interfaces.IPublisher)
+    publisher.request(tasks, 'tasks')
 
 
 @zeit.cms.cli.runner(principal=zeit.cms.cli.principal_from_args)
