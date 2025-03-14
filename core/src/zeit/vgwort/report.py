@@ -80,7 +80,6 @@ class ReportInfo(zeit.cms.content.dav.DAVPropertiesAdapter):
 
 @zeit.cms.cli.runner(principal=zeit.cms.cli.from_config('zeit.vgwort', 'token-principal'))
 def report_new_documents():
-    log.info('Report start')
     if in_daily_maintenance_window():
         log.info('Skip inside daily VG-Wort API maintenance window')
         return
@@ -101,7 +100,6 @@ def report_new_documents():
         # XXX vgwort returns 401 after some requests for unknown reasons.
         if i % 6 == 0 and 'client' in vgwort.__dict__:
             del vgwort.client
-    log.info('Report end')
 
 
 def report(context):
