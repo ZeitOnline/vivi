@@ -1,10 +1,13 @@
 import argparse
 import logging
 
+from sqlalchemy import select
+from sqlalchemy import text as sql
 import prometheus_client
 import zope.component
 
 from zeit.cms.interfaces import ICMSContent
+from zeit.connector.models import Content as ConnectorModel
 from zeit.content.article.interfaces import IArticle
 import zeit.cms.cli
 import zeit.cms.config
@@ -78,10 +81,13 @@ def _collect_importers():
 
 def _collect_vgwort_report():
     metric = Gauge('vivi_recent_vgwort_reported_total')
-    query = {
-        'query': {'bool': {'filter': [{'range': {'payload.vgwort.reported_on': {'gt': 'now-1h'}}}]}}
-    }
-    metric.labels(environment()).set(elastic('internal').search(query, rows=0).hits)
+    sql_query = (
+        "type = 'article' AND published = true AND vgwort_reported_on > NOW() - INTERVAL '1 hour'"
+    )
+    connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+    query = select(ConnectorModel)
+    query = query.where(sql(sql_query))
+    metric.labels(environment()).set(connector.search_sql_counts(query))
 
 
 def _collect_vgwort_token_count():
