@@ -10,9 +10,9 @@ import zope.interface
 import zeit.cms.content.interfaces
 import zeit.cms.testing
 import zeit.cms.webtest
+import zeit.connector
+import zeit.connector.testing
 import zeit.content.author.testing
-import zeit.retresco.testhelper
-import zeit.retresco.testing
 import zeit.vgwort.interfaces
 
 
@@ -29,15 +29,17 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
     bases=(zeit.content.author.testing.CONFIG_LAYER,),
 )
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer('ftesting-mock.zcml', bases=(CONFIG_LAYER,))
-ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER, zeit.retresco.testhelper.TMS_MOCK_LAYER))
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
 WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(ZOPE_LAYER,))
 
 
-TMS_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    'ftesting-tms.zcml', bases=(CONFIG_LAYER, zeit.retresco.testing.CONFIG_LAYER)
+SQL_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
+    'ftesting-mock.zcml',
+    features=['zeit.connector.sql'],
+    bases=(CONFIG_LAYER, zeit.connector.testing.SQL_CONFIG_LAYER),
 )
-TMS_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(TMS_ZCML_LAYER,))
-TMS_WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(TMS_ZOPE_LAYER,))
+SQL_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(SQL_ZCML_LAYER,))
+SQL_CONNECTOR_LAYER = zeit.connector.testing.SQLDatabaseLayer(bases=(SQL_ZOPE_LAYER,))
 
 
 class XMLRPCLayer(plone.testing.Layer):
@@ -58,6 +60,10 @@ SOAP_LAYER = zeit.cms.testing.ZopeLayer(bases=(SOAP_ZCML_LAYER,))
 
 class TestCase(zeit.cms.testing.FunctionalTestCase):
     layer = ZOPE_LAYER
+
+
+class SQLTestCase(zeit.connector.testing.TestCase):
+    layer = SQL_CONNECTOR_LAYER
 
 
 class BrowserTestCase(zeit.cms.testing.BrowserTestCase):

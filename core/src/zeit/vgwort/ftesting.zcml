@@ -10,6 +10,7 @@
   <include package="zeit.vgwort.browser" />
 
   <include package="zeit.content.author" />
+  <include package="zeit.connector" file="service.zcml" />
 
   <adapter factory=".testing.SearchableText" />
 
