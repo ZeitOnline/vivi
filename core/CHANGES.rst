@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.57.0 (2025-03-17)
+-------------------
+
+FIX:
+- Called wrong method for vgwort metrics
+
+
 7.56.0 (2025-03-14)
 -------------------
 
