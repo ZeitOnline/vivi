@@ -87,7 +87,7 @@ def _collect_vgwort_report():
     connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
     query = select(ConnectorModel)
     query = query.where(sql(sql_query))
-    metric.labels(environment()).set(connector.search_sql_counts(query))
+    metric.labels(environment()).set(connector.search_sql_count(query))
 
 
 def _collect_vgwort_token_count():
