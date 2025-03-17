@@ -55,7 +55,10 @@ def tasks():
             continue
 
         payload = _publisher_payload(content, options.action, options.services)
-        payload = {k if k in ('uniqueId', 'uuid') else f'update_{k}': v for k, v in payload.items()}
+        action = 'update' if options.action == 'publish' else options.action
+        payload = {
+            k if k in ('uniqueId', 'uuid') else f'{action}_{k}': v for k, v in payload.items()
+        }
         tasks.append(payload)
 
     publisher = zope.component.getUtility(zeit.cms.workflow.interfaces.IPublisher)
