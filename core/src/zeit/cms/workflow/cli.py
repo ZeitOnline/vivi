@@ -16,23 +16,33 @@ log = logging.getLogger(__name__)
 IGNORE_SERVICES = ['airship', 'speechbert', 'summy']
 
 
+def _publisher_payload(content, action, services):
+    uuid = zeit.cms.content.interfaces.IUUID(content)
+    result = {'uuid': uuid.shortened, 'uniqueId': content.uniqueId}
+    for name, adapter in zope.component.getAdapters(
+        (content,), zeit.workflow.interfaces.IPublisherData
+    ):
+        if not name or name not in services:
+            continue
+        data = getattr(adapter, f'{action}_json')()
+        if data is not None:
+            result[name] = data
+    return result
+
+
 @zeit.cms.cli.runner(principal=zeit.cms.cli.principal_from_args)
 def tasks():
-    parser = argparse.ArgumentParser(description='Publish by services')
+    parser = argparse.ArgumentParser(description='Publish/Retract by services')
     parser.add_argument('--filename', '-f', help='filename with uniqueId per line')
-    parser.add_argument(
-        '--ignore-services',
-        default=[],
-        help='Ignore 3rd party services;',
-        nargs='+',
-    )
+    parser.add_argument('--action', choices=['publish', 'retract'], default='publish')
+    parser.add_argument('--services', help='Publish services', nargs='+', required=True)
 
     options = parser.parse_args()
     if not options.filename:
         parser.print_help()
         raise SystemExit(1)
 
-    log.info('Ignoring services %s', options.ignore_services)
+    log.info(f'Run {options.action} {", ".join(options.services)} services')
 
     tasks = []
     connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
@@ -44,9 +54,7 @@ def tasks():
             log.warning('Skipping %s, not found', id)
             continue
 
-        publisher_data = zeit.workflow.interfaces.IPublisherData(content)
-        publisher_data.ignore = options.ignore_services
-        payload = publisher_data('publish')
+        payload = _publisher_payload(content, options.action, options.services)
         payload = {k if k in ('uniqueId', 'uuid') else f'update_{k}': v for k, v in payload.items()}
         tasks.append(payload)
 
