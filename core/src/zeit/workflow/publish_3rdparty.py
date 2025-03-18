@@ -19,7 +19,9 @@ import zeit.content.author.interfaces
 import zeit.content.cp.interfaces
 import zeit.content.gallery.interfaces
 import zeit.content.image.interfaces
+import zeit.content.link.interfaces
 import zeit.content.video.interfaces
+import zeit.content.volume.interfaces
 import zeit.objectlog.interfaces
 import zeit.retresco.interfaces
 import zeit.workflow.interfaces
@@ -357,7 +359,7 @@ class Speechbert(grok.Adapter, IgnoreMixin):
 
 @grok.implementer(zeit.workflow.interfaces.IPublisherData)
 class TMS(grok.Adapter):
-    grok.context(zeit.cms.interfaces.ICMSContent)
+    grok.baseclass()
     grok.name('tms')
 
     def ignore(self):
@@ -365,22 +367,49 @@ class TMS(grok.Adapter):
             return True
         return False
 
-    def wait_for_index_update(self):
-        if zeit.content.article.interfaces.IArticle.providedBy(self.context):
-            # TMS supplies article body intext links, therefore publish process
-            # must wait for elastic index update before invalidating fastly cache
-            return True
-        return False
-
     def publish_json(self):
         if self.ignore():
             return None
-        return {'wait': self.wait_for_index_update()}
+        return {'wait': self.wait_for_index_update}
+
+    wait_for_index_update = False
 
     def retract_json(self):
         if self.ignore():
             return None
         return {}
+
+
+class ArticleTMS(TMS):
+    grok.context(zeit.content.article.interfaces.IArticle)
+
+    # TMS supplies article body intext links, therefore publish process
+    # must wait for elastic index update before invalidating fastly cache
+    wait_for_index_update = True
+
+
+class AuthorTMS(TMS):  # BBB for www.zeit.de/suche, remove after WCM-552
+    grok.context(zeit.content.author.interfaces.IAuthor)
+
+
+class CenterPageTMS(TMS):  # BBB for sitemap, remove after WCM-564
+    grok.context(zeit.content.cp.interfaces.ICenterPage)
+
+
+class GalleryTMS(TMS):
+    grok.context(zeit.content.gallery.interfaces.IGallery)
+
+
+class LinkTMS(TMS):  # maybe remove this? see WCM-777
+    grok.context(zeit.content.link.interfaces.ILink)
+
+
+class VideoTMS(TMS):
+    grok.context(zeit.content.video.interfaces.IVideo)
+
+
+class VolumeTMS(TMS):  # BBB remove after WCM-772
+    grok.context(zeit.content.volume.interfaces.IVolume)
 
 
 @grok.implementer(zeit.workflow.interfaces.IPublisherData)
