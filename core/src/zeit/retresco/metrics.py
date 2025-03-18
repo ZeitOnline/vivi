@@ -118,7 +118,7 @@ def _collect_missing_tms_authors():
         for ref in content.authorships:
             id = ref.target_unique_id
             if id and id not in tms:
-                log.warn('%s: author %s not found in TMS', content, id)
+                log.warning('%s: author %s not found in TMS', content, id)
                 metric.labels(environment()).inc()
 
 

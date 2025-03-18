@@ -7,10 +7,62 @@ import zope.component
 
 import zeit.cms.cli
 import zeit.connector.interfaces
+import zeit.workflow
+import zeit.workflow.interfaces
+import zeit.workflow.publish
 
 
 log = logging.getLogger(__name__)
 IGNORE_SERVICES = ['airship', 'speechbert', 'summy']
+
+
+def _publisher_payload(content, action, services):
+    uuid = zeit.cms.content.interfaces.IUUID(content)
+    result = {'uuid': uuid.shortened, 'uniqueId': content.uniqueId}
+    for name, adapter in zope.component.getAdapters(
+        (content,), zeit.workflow.interfaces.IPublisherData
+    ):
+        if not name or name not in services:
+            continue
+        data = getattr(adapter, f'{action}_json')()
+        if data is not None:
+            result[name] = data
+    return result
+
+
+@zeit.cms.cli.runner(principal=zeit.cms.cli.principal_from_args)
+def tasks():
+    parser = argparse.ArgumentParser(description='Publish/Retract by services')
+    parser.add_argument('--filename', '-f', help='filename with uniqueId per line')
+    parser.add_argument('--action', choices=['publish', 'retract'], default='publish')
+    parser.add_argument('--services', help='Publish services', nargs='+', required=True)
+
+    options = parser.parse_args()
+    if not options.filename:
+        parser.print_help()
+        raise SystemExit(1)
+
+    log.info(f'Run {options.action} {", ".join(options.services)} services')
+
+    tasks = []
+    connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+    for line in open(options.filename):
+        id = line.strip()
+        connector.invalidate_cache(id)
+        content = zeit.cms.interfaces.ICMSContent(id, None)
+        if content is None:
+            log.warning('Skipping %s, not found', id)
+            continue
+
+        payload = _publisher_payload(content, options.action, options.services)
+        action = 'update' if options.action == 'publish' else options.action
+        payload = {
+            k if k in ('uniqueId', 'uuid') else f'{action}_{k}': v for k, v in payload.items()
+        }
+        tasks.append(payload)
+
+    publisher = zope.component.getUtility(zeit.cms.workflow.interfaces.IPublisher)
+    publisher.request(tasks, 'tasks')
 
 
 @zeit.cms.cli.runner(principal=zeit.cms.cli.principal_from_args)
@@ -105,7 +157,7 @@ def publish():
         connector.invalidate_cache(id)
         content = zeit.cms.interfaces.ICMSContent(id, None)
         if content is None:
-            log.warn('Skipping %s, not found', id)
+            log.warning('Skipping %s, not found', id)
             continue
 
         info = zeit.cms.workflow.interfaces.IPublishInfo(content)
@@ -155,7 +207,7 @@ def retract():
         id = line.strip()
         content = zeit.cms.interfaces.ICMSContent(id, None)
         if content is None:
-            log.warn('Skipping %s, not found', id)
+            log.warning('Skipping %s, not found', id)
             continue
 
         info = zeit.cms.workflow.interfaces.IPublishInfo(content)
