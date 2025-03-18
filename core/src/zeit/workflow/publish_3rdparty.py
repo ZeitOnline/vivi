@@ -29,6 +29,35 @@ log = logging.getLogger(__name__)
 
 
 @grok.implementer(zeit.workflow.interfaces.IPublisherData)
+class PublisherData(grok.Adapter):
+    grok.context(zeit.cms.interfaces.ICMSContent)
+
+    ignore = ()  # extension point e.g. for bulk publish scripts
+
+    def __call__(self, action):
+        uuid = zeit.cms.content.interfaces.IUUID(self.context)
+        result = {'uuid': uuid.shortened, 'uniqueId': self.context.uniqueId}
+        for name, adapter in zope.component.getAdapters(
+            (self.context,), zeit.workflow.interfaces.IPublisherData
+        ):
+            if not name:  # ourselves
+                continue
+            if self._ignore(name):
+                continue
+            data = getattr(adapter, f'{action}_json')()
+            if data is not None:
+                result[name] = data
+        return result
+
+    def _ignore(self, name):
+        if name in self.ignore:
+            return True
+        if FEATURE_TOGGLES.find(f'disable_publisher_{name}'):
+            return True
+        return False
+
+
+@grok.implementer(zeit.workflow.interfaces.IPublisherData)
 class Airship(grok.Adapter):
     grok.context(zeit.cms.content.interfaces.ICommonMetadata)
     grok.name('airship')
@@ -385,35 +414,6 @@ class Summy(grok.Adapter, IgnoreMixin):
 
     def retract_json(self):
         return {}
-
-
-@grok.implementer(zeit.workflow.interfaces.IPublisherData)
-class PublisherData(grok.Adapter):
-    grok.context(zeit.cms.interfaces.ICMSContent)
-
-    ignore = ()  # extension point e.g. for bulk publish scripts
-
-    def __call__(self, action):
-        uuid = zeit.cms.content.interfaces.IUUID(self.context)
-        result = {'uuid': uuid.shortened, 'uniqueId': self.context.uniqueId}
-        for name, adapter in zope.component.getAdapters(
-            (self.context,), zeit.workflow.interfaces.IPublisherData
-        ):
-            if not name:  # ourselves
-                continue
-            if self._ignore(name):
-                continue
-            data = getattr(adapter, f'{action}_json')()
-            if data is not None:
-                result[name] = data
-        return result
-
-    def _ignore(self, name):
-        if name in self.ignore:
-            return True
-        if FEATURE_TOGGLES.find(f'disable_publisher_{name}'):
-            return True
-        return False
 
 
 class IndexNowMixin(LiveUrlMixin):
