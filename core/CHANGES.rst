@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.59.0 (2025-03-18)
+-------------------
+
+- WCM-786: Explicitly specify the content types we publish in TMS
+
+
 7.58.0 (2025-03-18)
 -------------------
 
