@@ -447,6 +447,7 @@ class TMSPayloadTest(zeit.workflow.testing.FunctionalTestCase):
 
     def test_tms_only_waits_for_articles(self):
         content = self.repository['testcontent']
+        zope.interface.alsoProvides(content, zeit.content.cp.interfaces.ICenterPage)
         data_factory = zope.component.getAdapter(
             content, zeit.workflow.interfaces.IPublisherData, name='tms'
         )
@@ -455,6 +456,7 @@ class TMSPayloadTest(zeit.workflow.testing.FunctionalTestCase):
 
     def test_tms_ignores_content_without_tms_representation(self):
         content = self.repository['testcontent']
+        zope.interface.alsoProvides(content, zeit.content.article.interfaces.IArticle)
         zeit.workflow.testing.MockTMSRepresentation.result = None
         data_factory = zope.component.getAdapter(
             content, zeit.workflow.interfaces.IPublisherData, name='tms'

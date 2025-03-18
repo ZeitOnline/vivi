@@ -19,13 +19,44 @@ import zeit.content.author.interfaces
 import zeit.content.cp.interfaces
 import zeit.content.gallery.interfaces
 import zeit.content.image.interfaces
+import zeit.content.link.interfaces
 import zeit.content.video.interfaces
+import zeit.content.volume.interfaces
 import zeit.objectlog.interfaces
 import zeit.retresco.interfaces
 import zeit.workflow.interfaces
 
 
 log = logging.getLogger(__name__)
+
+
+@grok.implementer(zeit.workflow.interfaces.IPublisherData)
+class PublisherData(grok.Adapter):
+    grok.context(zeit.cms.interfaces.ICMSContent)
+
+    ignore = ()  # extension point e.g. for bulk publish scripts
+
+    def __call__(self, action):
+        uuid = zeit.cms.content.interfaces.IUUID(self.context)
+        result = {'uuid': uuid.shortened, 'uniqueId': self.context.uniqueId}
+        for name, adapter in zope.component.getAdapters(
+            (self.context,), zeit.workflow.interfaces.IPublisherData
+        ):
+            if not name:  # ourselves
+                continue
+            if self._ignore(name):
+                continue
+            data = getattr(adapter, f'{action}_json')()
+            if data is not None:
+                result[name] = data
+        return result
+
+    def _ignore(self, name):
+        if name in self.ignore:
+            return True
+        if FEATURE_TOGGLES.find(f'disable_publisher_{name}'):
+            return True
+        return False
 
 
 @grok.implementer(zeit.workflow.interfaces.IPublisherData)
@@ -112,7 +143,11 @@ class PropertiesMixin(LiveUrlMixin):
         return properties
 
 
-class BigQueryMixin(PropertiesMixin):
+@grok.implementer(zeit.workflow.interfaces.IPublisherData)
+class BigQuery(grok.Adapter, PropertiesMixin):
+    grok.baseclass()
+    grok.name('bigquery')
+
     def publish_json(self):
         if self.properties is None:
             return None
@@ -169,34 +204,24 @@ def badgerfish(node):
     return {lxml.etree.QName(node.tag).localname: result}
 
 
-@grok.implementer(zeit.workflow.interfaces.IPublisherData)
-class ArticleBigQuery(grok.Adapter, BigQueryMixin):
+class ArticleBigQuery(BigQuery):
     grok.context(zeit.content.article.interfaces.IArticle)
-    grok.name('bigquery')
 
 
-@grok.implementer(zeit.workflow.interfaces.IPublisherData)
-class CenterPageBigQuery(grok.Adapter, BigQueryMixin):
+class CenterPageBigQuery(BigQuery):
     grok.context(zeit.content.cp.interfaces.ICenterPage)
-    grok.name('bigquery')
 
 
-@grok.implementer(zeit.workflow.interfaces.IPublisherData)
-class GalleryBigQuery(grok.Adapter, BigQueryMixin):
+class GalleryBigQuery(BigQuery):
     grok.context(zeit.content.gallery.interfaces.IGallery)
-    grok.name('bigquery')
 
 
-@grok.implementer(zeit.workflow.interfaces.IPublisherData)
-class AudioBigQuery(grok.Adapter, BigQueryMixin):
+class AudioBigQuery(BigQuery):
     grok.context(zeit.content.audio.interfaces.IAudio)
-    grok.name('bigquery')
 
 
-@grok.implementer(zeit.workflow.interfaces.IPublisherData)
-class VideoBigQuery(grok.Adapter, BigQueryMixin):
+class VideoBigQuery(BigQuery):
     grok.context(zeit.content.video.interfaces.IVideo)
-    grok.name('bigquery')
 
     @property
     def live_url(self):
@@ -204,7 +229,11 @@ class VideoBigQuery(grok.Adapter, BigQueryMixin):
         return self.context.live_url_base.replace(zeit.cms.interfaces.ID_NAMESPACE, live_prefix)
 
 
-class CommentsMixin:
+@grok.implementer(zeit.workflow.interfaces.IPublisherData)
+class Comments(grok.Adapter):
+    grok.baseclass()
+    grok.name('comments')
+
     def publish_json(self):
         return {
             'comments_allowed': self.context.commentsAllowed,
@@ -218,22 +247,16 @@ class CommentsMixin:
         return None
 
 
-@grok.implementer(zeit.workflow.interfaces.IPublisherData)
-class ArticleComments(grok.Adapter, CommentsMixin):
+class ArticleComments(Comments):
     grok.context(zeit.content.article.interfaces.IArticle)
-    grok.name('comments')
 
 
-@grok.implementer(zeit.workflow.interfaces.IPublisherData)
-class GalleryComments(grok.Adapter, CommentsMixin):
+class GalleryComments(Comments):
     grok.context(zeit.content.gallery.interfaces.IGallery)
-    grok.name('comments')
 
 
-@grok.implementer(zeit.workflow.interfaces.IPublisherData)
-class VideoComments(grok.Adapter, CommentsMixin):
+class VideoComments(Comments):
     grok.context(zeit.content.video.interfaces.IVideo)
-    grok.name('comments')
 
 
 class IgnoreMixin:
@@ -249,8 +272,7 @@ class IgnoreMixin:
 
     @property
     def name(self):
-        """defined with grok.name"""
-        return self.__class__.__dict__['grokcore.component.directive.name']
+        return grok.name.bind().get(self.__class__)
 
     def ignore(self, method):
         if (
@@ -337,7 +359,7 @@ class Speechbert(grok.Adapter, IgnoreMixin):
 
 @grok.implementer(zeit.workflow.interfaces.IPublisherData)
 class TMS(grok.Adapter):
-    grok.context(zeit.cms.interfaces.ICMSContent)
+    grok.baseclass()
     grok.name('tms')
 
     def ignore(self):
@@ -345,22 +367,49 @@ class TMS(grok.Adapter):
             return True
         return False
 
-    def wait_for_index_update(self):
-        if zeit.content.article.interfaces.IArticle.providedBy(self.context):
-            # TMS supplies article body intext links, therefore publish process
-            # must wait for elastic index update before invalidating fastly cache
-            return True
-        return False
-
     def publish_json(self):
         if self.ignore():
             return None
-        return {'wait': self.wait_for_index_update()}
+        return {'wait': self.wait_for_index_update}
+
+    wait_for_index_update = False
 
     def retract_json(self):
         if self.ignore():
             return None
         return {}
+
+
+class ArticleTMS(TMS):
+    grok.context(zeit.content.article.interfaces.IArticle)
+
+    # TMS supplies article body intext links, therefore publish process
+    # must wait for elastic index update before invalidating fastly cache
+    wait_for_index_update = True
+
+
+class AuthorTMS(TMS):  # BBB for www.zeit.de/suche, remove after WCM-552
+    grok.context(zeit.content.author.interfaces.IAuthor)
+
+
+class CenterPageTMS(TMS):  # BBB for sitemap, remove after WCM-564
+    grok.context(zeit.content.cp.interfaces.ICenterPage)
+
+
+class GalleryTMS(TMS):
+    grok.context(zeit.content.gallery.interfaces.IGallery)
+
+
+class LinkTMS(TMS):  # maybe remove this? see WCM-777
+    grok.context(zeit.content.link.interfaces.ILink)
+
+
+class VideoTMS(TMS):
+    grok.context(zeit.content.video.interfaces.IVideo)
+
+
+class VolumeTMS(TMS):  # BBB remove after WCM-772
+    grok.context(zeit.content.volume.interfaces.IVolume)
 
 
 @grok.implementer(zeit.workflow.interfaces.IPublisherData)
@@ -388,35 +437,10 @@ class Summy(grok.Adapter, IgnoreMixin):
 
 
 @grok.implementer(zeit.workflow.interfaces.IPublisherData)
-class PublisherData(grok.Adapter):
-    grok.context(zeit.cms.interfaces.ICMSContent)
+class IndexNow(grok.Adapter, LiveUrlMixin):
+    grok.baseclass()
+    grok.name('indexnow')
 
-    ignore = ()  # extension point e.g. for bulk publish scripts
-
-    def __call__(self, action):
-        uuid = zeit.cms.content.interfaces.IUUID(self.context)
-        result = {'uuid': uuid.shortened, 'uniqueId': self.context.uniqueId}
-        for name, adapter in zope.component.getAdapters(
-            (self.context,), zeit.workflow.interfaces.IPublisherData
-        ):
-            if not name:  # ourselves
-                continue
-            if self._ignore(name):
-                continue
-            data = getattr(adapter, f'{action}_json')()
-            if data is not None:
-                result[name] = data
-        return result
-
-    def _ignore(self, name):
-        if name in self.ignore:
-            return True
-        if FEATURE_TOGGLES.find(f'disable_publisher_{name}'):
-            return True
-        return False
-
-
-class IndexNowMixin(LiveUrlMixin):
     def publish_json(self):
         return {'url': self.live_url}
 
@@ -424,19 +448,19 @@ class IndexNowMixin(LiveUrlMixin):
         return None
 
 
-@grok.implementer(zeit.workflow.interfaces.IPublisherData)
-class ArticleIndexNow(grok.Adapter, IndexNowMixin):
+class ArticleIndexNow(IndexNow):
     grok.context(zeit.content.article.interfaces.IArticle)
-    grok.name('indexnow')
+
+
+class CenterPageIndexNow(IndexNow):
+    grok.context(zeit.content.cp.interfaces.ICenterPage)
 
 
 @grok.implementer(zeit.workflow.interfaces.IPublisherData)
-class CenterPageIndexNow(grok.Adapter, IndexNowMixin):
-    grok.context(zeit.content.cp.interfaces.ICenterPage)
-    grok.name('indexnow')
+class DataScience(grok.Adapter, PropertiesMixin, IgnoreMixin):
+    grok.baseclass()
+    grok.name('datascience')
 
-
-class DataScienceMixin(PropertiesMixin, IgnoreMixin):
     def _json(self):
         if self.properties is None:
             return None
@@ -446,37 +470,25 @@ class DataScienceMixin(PropertiesMixin, IgnoreMixin):
         }
 
 
-@grok.implementer(zeit.workflow.interfaces.IPublisherData)
-class ArticleDataScience(grok.Adapter, DataScienceMixin):
+class ArticleDataScience(DataScience):
     grok.context(zeit.content.article.interfaces.IArticle)
-    grok.name('datascience')
 
 
-@grok.implementer(zeit.workflow.interfaces.IPublisherData)
-class AuthorDataScience(grok.Adapter, DataScienceMixin):
+class AuthorDataScience(DataScience):
     grok.context(zeit.content.author.interfaces.IAuthor)
-    grok.name('datascience')
 
 
-@grok.implementer(zeit.workflow.interfaces.IPublisherData)
-class GalleryDataScience(grok.Adapter, DataScienceMixin):
+class GalleryDataScience(DataScience):
     grok.context(zeit.content.gallery.interfaces.IGallery)
-    grok.name('datascience')
 
 
-@grok.implementer(zeit.workflow.interfaces.IPublisherData)
-class CenterPageDataScience(grok.Adapter, DataScienceMixin):
+class CenterPageDataScience(DataScience):
     grok.context(zeit.content.cp.interfaces.ICenterPage)
-    grok.name('datascience')
 
 
-@grok.implementer(zeit.workflow.interfaces.IPublisherData)
-class AudioDataScience(grok.Adapter, DataScienceMixin):
+class AudioDataScience(DataScience):
     grok.context(zeit.content.audio.interfaces.IAudio)
-    grok.name('datascience')
 
 
-@grok.implementer(zeit.workflow.interfaces.IPublisherData)
-class VideoDataScience(grok.Adapter, DataScienceMixin):
+class VideoDataScience(DataScience):
     grok.context(zeit.content.video.interfaces.IVideo)
-    grok.name('datascience')

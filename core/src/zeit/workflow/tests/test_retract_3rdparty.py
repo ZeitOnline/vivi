@@ -97,6 +97,7 @@ class Retract3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
 
     def test_tms_retract_article(self):
         article = self.repository['testcontent']
+        zope.interface.alsoProvides(article, zeit.content.article.interfaces.IArticle)
         data_factory = zope.component.getAdapter(
             article, zeit.workflow.interfaces.IPublisherData, name='tms'
         )
@@ -105,6 +106,7 @@ class Retract3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
 
     def test_tms_retract_ignores_content_without_tms_representation(self):
         content = self.repository['testcontent']
+        zope.interface.alsoProvides(content, zeit.content.article.interfaces.IArticle)
         zeit.workflow.testing.MockTMSRepresentation.result = None
         data_factory = zope.component.getAdapter(
             content, zeit.workflow.interfaces.IPublisherData, name='tms'
