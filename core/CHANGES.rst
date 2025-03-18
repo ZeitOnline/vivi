@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.58.0 (2025-03-18)
+-------------------
+
+- WCM-753: add cli interface to run individual publish tasks/services
+
+
 7.57.0 (2025-03-17)
 -------------------
 
