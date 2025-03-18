@@ -278,8 +278,7 @@ class IgnoreMixin:
 
     @property
     def name(self):
-        """defined with grok.name"""
-        return self.__class__.__dict__['grokcore.component.directive.name']
+        return grok.name.bind().get(self.__class__)
 
     def ignore(self, method):
         if (
