@@ -46,7 +46,10 @@ def index_before_publish(context, event):
     # speaking that "already happened" on checkin, to support the "checkin
     # and publish immediately" use case -- since there publish likely
     # happens *before* the index_async job created by checkin ran.
-    index_on_checkin(context, enrich=True)
+    try:
+        index_on_checkin(context, enrich=True)
+    except zeit.retresco.interfaces.TechnicalError:
+        index_async.apply_async((context.uniqueId,), countdown=5)
 
 
 @grok.subscribe(zeit.cms.interfaces.ICMSContent, zeit.cms.workflow.interfaces.IRetractedEvent)
