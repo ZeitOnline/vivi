@@ -46,7 +46,15 @@ def index_before_publish(context, event):
     # speaking that "already happened" on checkin, to support the "checkin
     # and publish immediately" use case -- since there publish likely
     # happens *before* the index_async job created by checkin ran.
-    index_on_checkin(context, enrich=True)
+    try:
+        index_on_checkin(context, enrich=True)
+    except zeit.retresco.interfaces.TechnicalError:
+        # Retry (with TMS-publish!) asynchronously. Note that this is only a
+        # "partial publish", and especially the frontend caches are not
+        # invalidated (again), so even if the retry succeeds quickly, it still
+        # takes the normal cache TTL (default 10min) until changes are visible
+        # (e.g. a new article will not show intextlinks in that period).
+        index_async.apply_async((context.uniqueId,), {'publish': True}, countdown=5)
 
 
 @grok.subscribe(zeit.cms.interfaces.ICMSContent, zeit.cms.workflow.interfaces.IRetractedEvent)
@@ -118,23 +126,24 @@ def index_workflow_properties(context, event):
 
 
 @zeit.cms.celery.task(bind=True, queue='search')
-def index_async(self, uniqueId, enrich=True):
+def index_async(self, uniqueId, enrich=True, publish=False):
     context = zeit.cms.interfaces.ICMSContent(uniqueId, None)
     if context is None:
         log.warning('Could not index %s because it does not exist any longer.', uniqueId)
         return
     try:
-        index_on_checkin(context, enrich=enrich)
+        index_on_checkin(context, enrich=enrich, publish=publish)
     except zeit.retresco.interfaces.TechnicalError:
-        self.retry()
+        delay = int(zeit.cms.config.get('zeit.retresco', 'retry-delay-seconds', 60))
+        self.retry(countdown=delay)
 
 
-def index_on_checkin(context, enrich=True):
+def index_on_checkin(context, enrich=True, publish=False):
     if not FEATURE_TOGGLES.find('tms_enrich_on_checkin'):
         enrich = False
     meta = zeit.cms.content.interfaces.ICommonMetadata(context, None)
     has_keywords = meta is not None and meta.keywords
-    index(context, enrich=enrich, update_keywords=enrich and not has_keywords)
+    index(context, enrich=enrich, update_keywords=enrich and not has_keywords, publish=publish)
 
 
 # Preserve previously stored fields during re-index.
@@ -207,7 +216,8 @@ def unindex_async(self, uuid):
     try:
         conn.delete_id(uuid)
     except zeit.retresco.interfaces.TechnicalError:
-        self.retry()
+        delay = int(zeit.cms.config.get('zeit.retresco', 'retry-delay-seconds', 60))
+        self.retry(countdown=delay)
 
 
 # Mostly relevant for bulk reindex, since zeit.content.quiz is not used anymore
