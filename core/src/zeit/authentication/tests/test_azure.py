@@ -75,16 +75,15 @@ class ADIntegrationTest(zeit.authentication.testing.FunctionalTestCase):
         gsm.unregisterUtility(self.ad, zeit.authentication.azure.IActiveDirectory)
         super().tearDown()
 
-    def test_getPrincipal_sends_query_via_microsoft_graph_api(self):
+    def test_getPrincipal_only_responds_for_ids_looking_like_email_address(self):
         auth = zeit.authentication.oidc.AzureADAuthenticator()
-        email = os.environ['ZEIT_AD_TESTUSER']
+        email = 'user@example.com'
         p = auth.principalInfo(email)
         self.assertEqual(p.id, email)
-
-    def test_getPrincipal_returns_none_when_not_found(self):
-        auth = zeit.authentication.oidc.AzureADAuthenticator()
-        p = auth.principalInfo('nonexistent@zeit.de')
-        self.assertEqual(None, p)
+        self.assertEqual(p.login, email)
+        self.assertEqual(p.title, email)
+        self.assertEqual(p.description, email)
+        self.assertEqual(None, auth.principalInfo('zope.manager'))
 
     def test_search_returns_list_of_ids(self):
         auth = zeit.authentication.oidc.AzureADAuthenticator()

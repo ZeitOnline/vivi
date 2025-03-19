@@ -13,7 +13,6 @@ import zeit.cms.config
 @zope.interface.implementer(zope.pluggableauth.interfaces.ICredentialsPlugin)
 class OIDCHeaderCredentials:
     email_header = 'X-OIDC-Email'
-    name_header = 'X-OIDC-User'
     logout_url = '/oauth2/sign_in'  # clears oidc cookies and prompts to login
 
     def extractCredentials(self, request):
@@ -25,11 +24,6 @@ class OIDCHeaderCredentials:
             'oidc': True,  # Use a marker interface instead?
             'login': request.headers[self.email_header],
             'password': '',  # Implicit zope.pluggableauth protocol
-            'name': request.headers.get(  # PEP-3333 is weird
-                self.name_header, ''
-            )
-            .encode('latin-1')
-            .decode('utf-8'),
         }
 
     def challenge(self, request):
@@ -48,7 +42,6 @@ def from_product_config():
     plugin = OIDCHeaderCredentials()
     settings = {
         'email_header': 'oidc-header-email',
-        'name_header': 'oidc-header-name',
         'logout_url': 'oidc-logout-url',
     }
     for prop, key in settings.items():
@@ -73,17 +66,18 @@ class AzureADAuthenticator:
         if 'oidc' not in credentials:  # See OIDCHeaderCredentials
             return None
         email = credentials['login'].lower()
-        return PrincipalInfo(email, email, credentials['name'], email)
+        return PrincipalInfo(email, email, email, email)
 
     @CONFIG_CACHE.cache_on_arguments()
     def principalInfo(self, id):
-        # `id` is the email address
-        id = id.lower()
-        ad = zope.component.getUtility(zeit.authentication.azure.IActiveDirectory)
-        user = ad.get_user(id)
-        if not user:
+        # We differentiate multiple AuthenticatorPlugins by their ID syntax.
+        # AD users use the email address from the oidc ID token
+        # (see also https://docs.zeit.de/ops/k8s/cluster-infra/oidc/#funote-externe-accounts)
+        # while ZCML users use IDs like `zope.name` or `system.name`.
+        if '@' not in id:
             return None
-        return PrincipalInfo(id, id, user['displayName'], id)
+        id = id.lower()
+        return PrincipalInfo(id, id, id, id)
 
     schema = IAzureSearchSchema
 
