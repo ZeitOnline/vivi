@@ -126,7 +126,8 @@ def index_async(self, uniqueId, enrich=True):
     try:
         index_on_checkin(context, enrich=enrich)
     except zeit.retresco.interfaces.TechnicalError:
-        self.retry()
+        delay = int(zeit.cms.config.get('zeit.retresco', 'retry-delay-seconds', 60))
+        self.retry(countdown=delay)
 
 
 def index_on_checkin(context, enrich=True):
@@ -207,7 +208,8 @@ def unindex_async(self, uuid):
     try:
         conn.delete_id(uuid)
     except zeit.retresco.interfaces.TechnicalError:
-        self.retry()
+        delay = int(zeit.cms.config.get('zeit.retresco', 'retry-delay-seconds', 60))
+        self.retry(countdown=delay)
 
 
 # Mostly relevant for bulk reindex, since zeit.content.quiz is not used anymore
