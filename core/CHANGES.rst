@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.60.0 (2025-03-19)
+-------------------
+
+- WCM-789: Continue publish if TMS fails, retry it asynchronously
+
+
 7.59.0 (2025-03-18)
 -------------------
 
