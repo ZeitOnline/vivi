@@ -131,6 +131,12 @@ class Timestamps:
     date_print_published = mapped_column(
         TIMESTAMP, info={'namespace': 'document', 'name': 'print-publish'}
     )
+    date_scheduled_publish = mapped_column(
+        TIMESTAMP, info={'namespace': 'workflow', 'name': 'released_from', 'migration': 'wcm_694'}
+    )
+    date_scheduled_retract = mapped_column(
+        TIMESTAMP, info={'namespace': 'workflow', 'name': 'released_to', 'migration': 'wcm_694'}
+    )
 
 
 class Miscellaneous:
@@ -190,6 +196,8 @@ class Content(Base, CommonMetadata, ContentTypes, Timestamps, Miscellaneous, VGW
                     'date_last_published',
                     'date_last_published_semantic',
                     'date_first_released',
+                    'date_scheduled_publish',
+                    'date_scheduled_retract',
                 ]
             )
             + tuple(
