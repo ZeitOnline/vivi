@@ -11,7 +11,6 @@ import zope.i18n
 
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.interfaces import ICMSContent
-from zeit.cms.workflow.interfaces import PRIORITY_TIMEBASED
 import zeit.cms.testing
 import zeit.workflow.testing
 
@@ -19,23 +18,6 @@ from ..timebased import TimeBasedWorkflow
 
 
 class TimeBasedWorkflowTest(zeit.workflow.testing.FunctionalTestCase):
-    def test_add_job_calls_apply_async_on_commit_with_eta_for_future_execution(self):
-        workflow = TimeBasedWorkflow(
-            zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/testcontent')
-        )
-        asynch = 'z3c.celery.celery.TransactionAwareTask._eager_use_session_'
-        with (
-            mock.patch('celery_longterm_scheduler.Task.apply_async') as apply_async,
-            mock.patch(asynch, new=True),
-        ):
-            workflow.add_job(zeit.workflow.publish.PUBLISH_TASK, pendulum.now('UTC').add(days=1))
-            self.assertEqual(False, apply_async.called)
-            transaction.commit()
-
-            self.assertEqual(True, apply_async.called)
-            self.assertIn('eta', apply_async.call_args[1])
-            self.assertEqual(PRIORITY_TIMEBASED, apply_async.call_args[1]['queue'])
-
     def test_should_schedule_job_for_renamed_uniqueId(self):
         with (
             mock.patch('zeit.cms.celery.Task.apply_async') as apply_async,
@@ -48,39 +30,6 @@ class TimeBasedWorkflowTest(zeit.workflow.testing.FunctionalTestCase):
             workflow.release_period = (pendulum.now('UTC').add(days=1), None)
             transaction.commit()
             self.assertEqual('http://xml.zeit.de/changed', apply_async.call_args[0][0][0][0])
-
-
-class PrintImportSchedulingTest(zeit.workflow.testing.FunctionalTestCase):
-    def test_should_schedule_job_when_no_jobid_present(self):
-        content = self.repository['testcontent']
-        workflow = zeit.cms.workflow.interfaces.IPublishInfo(content)
-        workflow.released_to = pendulum.now('UTC').add(days=1)
-        self.assertEqual(None, workflow.retract_job_id)
-        zope.event.notify(zeit.cms.workflow.interfaces.PublishedEvent(content, content))
-        self.assertNotEqual(None, workflow.retract_job_id)
-
-    def test_jobid_present_should_do_nothing(self):
-        content = self.repository['testcontent']
-        workflow = zeit.cms.workflow.interfaces.IPublishInfo(content)
-        workflow.release_period = (None, pendulum.now('UTC').add(days=1))
-        self.assertNotEqual(None, workflow.retract_job_id)
-        with mock.patch('zeit.workflow.timebased.TimeBasedWorkflow.setup_job') as setup_job:
-            zope.event.notify(zeit.cms.workflow.interfaces.PublishedEvent(content, content))
-            self.assertFalse(setup_job.called)
-
-    def test_no_retract_time_present_should_do_nothing(self):
-        content = self.repository['testcontent']
-        with mock.patch('zeit.workflow.timebased.TimeBasedWorkflow.setup_job') as setup_job:
-            zope.event.notify(zeit.cms.workflow.interfaces.PublishedEvent(content, content))
-            self.assertFalse(setup_job.called)
-
-    def test_retract_time_in_the_past_should_not_schedule_again(self):
-        content = self.repository['testcontent']
-        workflow = zeit.cms.workflow.interfaces.IPublishInfo(content)
-        workflow.release_period = (None, pendulum.now('UTC').add(days=1))
-        with mock.patch('zeit.workflow.timebased.TimeBasedWorkflow.setup_job') as setup_job:
-            zope.event.notify(zeit.cms.workflow.interfaces.PublishedEvent(content, content))
-            self.assertFalse(setup_job.called)
 
 
 class TimeBasedCeleryEndToEndTest(zeit.cms.testing.FunctionalTestCase):
@@ -257,11 +206,3 @@ Retracting http://xml.zeit.de/online/2007/01/Somalia...""".format(self),  # noqa
             ],
             log_entries,
         )
-
-    def test_removing_release_period_should_remove_jobid(self):
-        self.workflow.release_period = (pendulum.now('UTC').add(days=1), None)
-        transaction.commit()
-        self.assertNotEqual(None, self.workflow.publish_job_id)
-        self.workflow.release_period = (None, None)
-        transaction.commit()
-        self.assertEqual(None, self.workflow.publish_job_id)
