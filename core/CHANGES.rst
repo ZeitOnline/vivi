@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.61.0 (2025-03-20)
+-------------------
+
+- WCM-694: add scheduled publish/retract columns
+
+
 7.60.0 (2025-03-19)
 -------------------
 
