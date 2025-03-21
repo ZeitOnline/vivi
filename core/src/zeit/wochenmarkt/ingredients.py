@@ -1,5 +1,3 @@
-import logging
-
 import grokcore.component as grok
 import lxml.etree
 import zope.component
@@ -11,9 +9,6 @@ from zeit.cms.workflow.interfaces import PRIORITY_LOW, IPublish
 import zeit.cms.cli
 import zeit.retresco.interfaces
 import zeit.wochenmarkt.interfaces
-
-
-log = logging.getLogger(__name__)
 
 
 def xpath_lowercase(context, x):
@@ -107,7 +102,6 @@ class IngredientsWhitelist(grok.GlobalUtility, zeit.cms.content.sources.CachedXM
             except AttributeError:
                 continue
             ingredients[ingredient_node.get('id')] = ingredient
-        log.info('Ingredients loaded.')
         return ingredients
 
     def collect_used(self):

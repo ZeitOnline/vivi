@@ -1,5 +1,3 @@
-import logging
-
 from lxml.builder import E
 import grokcore.component as grok
 import lxml.etree
@@ -8,9 +6,6 @@ import zope.interface
 from zeit.cms.interfaces import CONFIG_CACHE
 import zeit.cms.content.sources
 import zeit.wochenmarkt.interfaces
-
-
-log = logging.getLogger(__name__)
 
 
 def xpath_lowercase(context, x):
@@ -105,5 +100,4 @@ class RecipeCategoriesWhitelist(grok.GlobalUtility, zeit.cms.content.sources.Cac
         for category_node in xml.xpath('//category'):
             category = RecipeCategory(category_node.get('id'), category_node.get('name'))
             categories[category_node.get('id')] = category
-        log.info('categories loaded.')
         return categories
