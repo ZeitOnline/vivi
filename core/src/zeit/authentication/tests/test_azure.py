@@ -80,6 +80,9 @@ class ADIntegrationTest(zeit.authentication.testing.FunctionalTestCase):
         email = os.environ['ZEIT_AD_TESTUSER']
         p = auth.principalInfo(email)
         self.assertEqual(p.id, email)
+        self.assertEqual(p.login, email)
+        self.assertEqual(p.title, email)
+        self.assertEqual(p.description, email)
 
     def test_getPrincipal_returns_none_when_not_found(self):
         auth = zeit.authentication.oidc.AzureADAuthenticator()

@@ -1,5 +1,4 @@
 import logging
-import urllib.parse
 
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import msal
@@ -66,21 +65,6 @@ class AzureAD:
         if 'error' in token:
             raise RuntimeError(str(token))
         return token['access_token']
-
-    def get_user(self, upn):
-        """Look up user by userPrincipalName, for which ZEIT AD uses the
-        (pseudo-) email address. Returns a dict with keys `displayName` and
-        `userPrincipalName`.
-        """
-        try:
-            return self._request(
-                'GET /users/%s' % urllib.parse.quote(upn),
-                params={'$select': 'displayName,userPrincipalName'},
-            )
-        except requests.exceptions.RequestException as e:
-            if getattr(e.response, 'status_code', 599) != 404:
-                log.warning('AD get_user(%r) failed', upn, exc_info=True)
-            return None
 
     def search_users(self, query):
         """Search for users by substring of their displayName.
