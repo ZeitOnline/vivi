@@ -68,8 +68,6 @@ False
 
 Helper for timebased jobs:
 
->>> bool(workflow.retract_job_id)
-False
 >>> server.setup_timebased_jobs('http://xml.zeit.de/online/2007/01/Somalia')
 False
 
@@ -79,6 +77,4 @@ False
 >>> zope.security.management.endInteraction()
 
 >>> server.setup_timebased_jobs('http://xml.zeit.de/online/2007/01/Somalia')
-True
->>> bool(workflow.retract_job_id)
 True
