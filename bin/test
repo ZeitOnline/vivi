@@ -21,6 +21,7 @@ case $COMMAND in
         docker buildx build --output type=docker --quiet --tag $image .
         docker run --rm -it \
             -e VIVI_XMLRPC_PASSWORD=$(vault read -field password zon/v1/vivi/$environment/nightwatch) \
+            -e TMS_PASSWORD=$(vault read -field password zon/v1/retresco/$environment/tms) \
             -e OIDC_CLIENT_ID=edge-www \
             -e OIDC_CLIENT_SECRET=$(vault read -field client_secret zon/v1/keycloak/production/zeit-online/edge-www) \
             -e AD_CLIENT_ID=$(vault read -field client_id zon/v1/azure/activedirectory/oidc/$environment/vivi) \
@@ -55,6 +56,7 @@ case $COMMAND in
             export $envName=$(vault read -field $vaultName $vaultPath);
         done < <(yq -re '.spec.data[] | [.secretKey, .remoteRef.property, .remoteRef.key] | @tsv' k8s/base/secrets.yaml)
         export VIVI_XMLRPC_PASSWORD=$(vault read -field password zon/v1/vivi/$environment/nightwatch)
+        export TMS_PASSWORD=$(vault read -field password zon/v1/retresco/$environment/tms)
         export OIDC_CLIENT_SECRET=$(vault read -field client_secret zon/v1/keycloak/production/zeit-online/edge-www)
         export OIDC_CLIENT_ID=edge-www
 

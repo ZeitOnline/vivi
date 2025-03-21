@@ -26,6 +26,10 @@ jobs:
           {"op": "add", "path": "/spec/serviceAccount", "value": "baseproject"},
           {"op": "add", "path": "/spec/containers/0/envFrom", "value": [{"secretRef": {"name": "nightwatch-secrets"}}]},
           {"op": "add", "path": "/spec/containers/0/env", "value": [
+            {"name": "TMS_PASSWORD", "valueFrom": {"secretKeyRef": {
+              "name": "tms",
+              "key": "vivi_zeit.retresco_primary-password"
+            }}},
             {"name": "VIVI_XMLRPC_PASSWORD", "valueFrom": {"secretKeyRef": {
               "name": "principals",
               "key": "vivi_zeit.cms.principals_system.nightwatch"
