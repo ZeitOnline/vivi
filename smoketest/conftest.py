@@ -14,6 +14,7 @@ CONFIG_STAGING = {
     'admin_user': 'nightwatch',
     'admin_password': os.environ['VIVI_XMLRPC_PASSWORD'],
     'storage': 'https://content-storage.staging.zon.zeit.de',
+    'tms': f'https://zeit:{os.environ["TMS_PASSWORD"]}@zeit-online-tms-stage.rtrsupport.de/api',
 }
 
 
@@ -24,6 +25,7 @@ CONFIG_PRODUCTION = {
     'admin_user': 'nightwatch',
     'admin_password': os.environ['VIVI_XMLRPC_PASSWORD'],
     'storage': 'https://content-storage.prod.zon.zeit.de',
+    'tms': f'https://zeit:{os.environ["TMS_PASSWORD"]}@zeit-online-varnish.rtrsupport.de/api',
 }
 
 
@@ -92,8 +94,19 @@ class StorageClient:
             headers={'content-type': 'application/octet-stream'},
         )
 
+    def get_uuid(self, path):
+        return self._request(
+            'get',
+            f'/internal/api/v1/resource{path}',
+            headers={'accept': 'text/plain'},
+            params={'ns': 'document', 'name': 'uuid'},
+        ).text
+
     def publish(self, path):
         return self._request('post', f'/internal/api/v1/publish{path}').json()['job-id']
+
+    def retract(self, path):
+        return self._request('post', f'/internal/api/v1/retract{path}').json()['job-id']
 
     def job_status(self, job):
         r = self.http.get(self.vivi_url + '/@@job-status', params={'job': job})
@@ -111,6 +124,11 @@ def vivi(config):
     return StorageClient(
         config['storage'], config['vivi_admin'], config['admin_user'], config['admin_password']
     )
+
+
+@pytest.fixture
+def tms(config):
+    return zeit.nightwatch.Browser(config['tms'])
 
 
 @pytest.fixture(scope='session')

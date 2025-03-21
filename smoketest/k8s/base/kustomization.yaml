@@ -22,6 +22,11 @@ patches:
             secretKeyRef:
               name: principals
               key: vivi_zeit.cms.principals_system.nightwatch
+        - name: TMS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: tms
+              key: vivi_zeit.retresco_primary-password
 
 # See https://github.com/ZeitOnline/gh-action-workflows/blob/main/.github/workflows/nightwatch-build.yaml
 images:
