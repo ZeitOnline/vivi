@@ -17,9 +17,8 @@ def _handle_scheduled_content(action, sql_query):
     query = select(ConnectorModel)
     query = query.where(sql(sql_query))
     repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
-    unretracted = repository.search(query)
-
-    for content in unretracted:
+    results = repository.search(query)
+    for content in results:
         publish = zeit.cms.workflow.interfaces.IPublish(content)
         for _ in commit_with_retry():
             try:
@@ -34,19 +33,27 @@ def _handle_scheduled_content(action, sql_query):
                 raise
 
 
-@runner(principal=from_config('zeit.workflow', 'retract-timebased-principal'))
-def retract_scheduled_content():
+def _retract_scheduled_content():
     sql_query = """
         published = true
-        AND date_scheduled_retract <= NOW() - INTERVAL '15 minutes'
+        AND date_scheduled_retract <= NOW()
     """
     _handle_scheduled_content('retract', sql_query)
 
 
-@runner(principal=from_config('zeit.workflow', 'retract-timebased-principal'))
-def publish_scheduled_content():
+def _publish_scheduled_content():
     sql_query = """
         published = false
-        AND date_scheduled_publish <= NOW()'
+        AND date_scheduled_publish <= NOW()
     """
     _handle_scheduled_content('publish', sql_query)
+
+
+@runner(principal=from_config('zeit.workflow', 'retract-timebased-principal'))
+def retract_scheduled_content():
+    _retract_scheduled_content()
+
+
+@runner(principal=from_config('zeit.workflow', 'retract-timebased-principal'))
+def publish_scheduled_content():
+    _publish_scheduled_content()
