@@ -10,7 +10,9 @@ import zeit.cms.testing
 class SlowAdapter(requests.adapters.BaseAdapter):
     def send(self, request, **kwargs):
         time.sleep(float(request.headers.get('X-Sleep', '0')))
-        return requests.Response()
+        r = requests.Response()
+        r.status_code = 200
+        return r
 
     def close(self):
         pass
