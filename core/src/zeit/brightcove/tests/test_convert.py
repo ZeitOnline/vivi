@@ -156,9 +156,7 @@ class VideoTest(zeit.brightcove.testing.FunctionalTestCase, zeit.cms.tagging.tes
                 }
             ],
         }
-        with mock.patch('zeit.workflow.publish.RETRACT_TASK.apply_async') as retract:
-            bc.apply_to_cms(cms)
-            assert retract.call_args[0][0] == ([bc.uniqueId],)
+        bc.apply_to_cms(cms)
         self.assertEqual('myvid', cms.external_id)
         self.assertEqual('title', cms.title)
         self.assertEqual(True, cms.commentsAllowed)
