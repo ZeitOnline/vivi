@@ -7,6 +7,7 @@ from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR, CAN_PUBLISH_WARNING
 import zeit.cms.testcontenttype.interfaces
 import zeit.cms.testing
 import zeit.cms.workflow.interfaces
+import zeit.connector.testing
 import zeit.content.article.testing
 import zeit.push.testing
 import zeit.workflow.publishinfo
@@ -31,6 +32,13 @@ HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(name='HTTPLayer', bases=(WSGI_LAYE
 WD_LAYER = zeit.cms.testing.WebdriverLayer(name='WebdriverLayer', bases=(HTTP_LAYER,))
 WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(name='SeleniumLayer', bases=(WD_LAYER,))
 
+SQL_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
+    features=['zeit.connector.sql'],
+    bases=(CONFIG_LAYER, zeit.connector.testing.SQL_CONFIG_LAYER),
+)
+SQL_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(SQL_ZCML_LAYER,))
+SQL_CONNECTOR_LAYER = zeit.connector.testing.SQLDatabaseLayer(bases=(SQL_ZOPE_LAYER,))
+
 ARTICLE_LAYER = zeit.cms.testing.AdditionalZCMLLayer(
     'zeit.content.article',
     'ctesting.zcml',
@@ -48,6 +56,10 @@ class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
 
 class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
     layer = WEBDRIVER_LAYER
+
+
+class SQLTestCase(zeit.connector.testing.TestCase):
+    layer = SQL_CONNECTOR_LAYER
 
 
 @zope.component.adapter(zeit.cms.interfaces.ICMSContent)
