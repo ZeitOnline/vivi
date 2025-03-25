@@ -1,1 +1,0 @@
-WCM-636: Use email instead of userDisplayName to avoid requesting it from AD every time

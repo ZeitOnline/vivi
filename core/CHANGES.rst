@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.62.0 (2025-03-25)
+-------------------
+
+- WCM-133, WCM-200: Activate preview.zeit.de for production
+
+- WCM-636: Use email instead of userDisplayName to avoid requesting it from AD every time
+
+
 7.61.0 (2025-03-20)
 -------------------
 
