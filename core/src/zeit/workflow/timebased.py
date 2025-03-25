@@ -79,7 +79,7 @@ class TimeBasedWorkflow(zeit.workflow.publishinfo.PublishInfo):
         return formatter.format(dt)
 
 
-# Declare the messageids we dynamically construct in setup_job(), so
+# Declare the messageids we dynamically construct in log(), so
 # i18nextract can find them.
 _('timebased-publish-add')
 _('timebased-retract-add')

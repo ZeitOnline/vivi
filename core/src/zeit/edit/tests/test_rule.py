@@ -170,7 +170,7 @@ error_unless(is_published(context))
         import zeit.workflow.workflow
 
         class Timebased(zeit.workflow.timebased.TimeBasedWorkflow):
-            def setup_job(self, *args, **kw):
+            def log(self, *args, **kw):
                 pass
 
         zope.component.getSiteManager().registerAdapter(
