@@ -32,8 +32,8 @@ class Publish(zope.app.publisher.xmlrpc.XMLRPCView):
         if not any(info.release_period):
             return False
         released_from, released_to = info.release_period
-        info.setup_job('publish', released_from)
-        info.setup_job('retract', released_to)
+        info.log('publish', released_from)
+        info.log('retract', released_to)
         return True
 
     @zope.cachedescriptors.property.Lazy

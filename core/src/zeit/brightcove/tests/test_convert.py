@@ -8,6 +8,7 @@ import zeit.brightcove.testing
 import zeit.cms.repository.interfaces
 import zeit.cms.tagging.tag
 import zeit.cms.tagging.testing
+import zeit.cms.workflow.interfaces
 
 
 class VideoTest(zeit.brightcove.testing.FunctionalTestCase, zeit.cms.tagging.testing.TaggingHelper):
@@ -156,9 +157,12 @@ class VideoTest(zeit.brightcove.testing.FunctionalTestCase, zeit.cms.tagging.tes
                 }
             ],
         }
-        with mock.patch('zeit.workflow.publish.RETRACT_TASK.apply_async') as retract:
-            bc.apply_to_cms(cms)
-            assert retract.call_args[0][0] == ([bc.uniqueId],)
+        bc.apply_to_cms(cms)
+        self.assertEqual(
+            (None, pendulum.parse(f'{next_year}-03-13T23:00:00.000Z')),
+            zeit.cms.workflow.interfaces.IPublishInfo(cms).release_period,
+        )
+
         self.assertEqual('myvid', cms.external_id)
         self.assertEqual('title', cms.title)
         self.assertEqual(True, cms.commentsAllowed)
