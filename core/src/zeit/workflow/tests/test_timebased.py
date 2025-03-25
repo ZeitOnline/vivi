@@ -41,29 +41,26 @@ class TimeBasedCeleryEndToEndTest(zeit.workflow.testing.SQLTestCase):
 
     def test_scheduled_publish(self):
         info = zeit.workflow.interfaces.ITimeBasedPublishing(self.content)
-        info.released_from = pendulum.now('UTC').add(seconds=-1)
-        transaction.commit()
-
-        _publish_scheduled_content()
-        self.assertTrue(zeit.cms.workflow.interfaces.IPublishInfo(self.content).published)
-        self.assertEllipsis(f'...Publishing {self.content.uniqueId}...', self.log.getvalue())
-
-    def test_scheduled_publish_in_future_is_not_yet_published(self):
-        info = zeit.workflow.interfaces.ITimeBasedPublishing(self.content)
         info.released_from = pendulum.now('UTC').add(seconds=100)
-        transaction.commit()
-
         _publish_scheduled_content()
         self.assertFalse(zeit.cms.workflow.interfaces.IPublishInfo(self.content).published)
         self.assertNotEllipsis(f'...Publishing {self.content.uniqueId}...', self.log.getvalue())
 
+        info.released_from = pendulum.now('UTC').add(seconds=-1)
+        _publish_scheduled_content()
+        self.assertTrue(zeit.cms.workflow.interfaces.IPublishInfo(self.content).published)
+        self.assertEllipsis(f'...Publishing {self.content.uniqueId}...', self.log.getvalue())
+
     def test_scheduled_retract(self):
         info = zeit.workflow.interfaces.ITimeBasedPublishing(self.content)
-        info.released_to = pendulum.now('UTC').add(seconds=-1)
+        info.released_to = pendulum.now('UTC').add(hours=1)
         info = zeit.cms.workflow.interfaces.IPublishInfo(self.content)
         info.published = True
-        transaction.commit()
+        _retract_scheduled_content()
+        self.assertTrue(zeit.cms.workflow.interfaces.IPublishInfo(self.content).published)
+        self.assertNotEllipsis(f'...Retracting {self.content.uniqueId}...', self.log.getvalue())
 
+        info.released_to = pendulum.now('UTC').add(seconds=-1)
         _retract_scheduled_content()
         self.assertFalse(zeit.cms.workflow.interfaces.IPublishInfo(self.content).published)
         self.assertEllipsis(f'...Retracting {self.content.uniqueId}...', self.log.getvalue())
@@ -80,14 +77,3 @@ class TimeBasedCeleryEndToEndTest(zeit.workflow.testing.SQLTestCase):
         _retract_scheduled_content()
         self.assertTrue(zeit.cms.workflow.interfaces.IPublishInfo(self.content).published)
         self.assertEllipsis(f'...Skip ... {self.content.uniqueId}...', self.log.getvalue())
-
-    def test_scheduled_retract_in_future_is_not_yet_retracted(self):
-        info = zeit.workflow.interfaces.ITimeBasedPublishing(self.content)
-        info.released_to = pendulum.now('UTC').add(hours=1)
-        info = zeit.cms.workflow.interfaces.IPublishInfo(self.content)
-        info.published = True
-        transaction.commit()
-
-        _retract_scheduled_content()
-        self.assertTrue(zeit.cms.workflow.interfaces.IPublishInfo(self.content).published)
-        self.assertNotEllipsis(f'...Retracting {self.content.uniqueId}...', self.log.getvalue())
