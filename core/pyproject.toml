@@ -87,7 +87,6 @@ dependencies = [
 [project.optional-dependencies]
 ui = [
     "celery >= 4.0",
-    "celery_longterm_scheduler",
     "celery_redis_sync",
     "cssutils",
     "docutils",
