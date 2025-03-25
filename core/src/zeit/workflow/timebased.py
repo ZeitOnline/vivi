@@ -50,12 +50,12 @@ class TimeBasedWorkflow(zeit.workflow.publishinfo.PublishInfo):
             value = None, None
         released_from, released_to = value
         if self.released_from != released_from:
-            self.setup_job('publish', released_from)
+            self.log('publish', released_from)
         if self.released_to != released_to:
-            self.setup_job('retract', released_to)
+            self.log('retract', released_to)
         self.released_from, self.released_to = value
 
-    def setup_job(self, task, timestamp):
+    def log(self, task, timestamp):
         log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
         _msg = _  # Avoid i18nextract picking up constructed messageids.
         if timestamp is not None:
@@ -82,6 +82,4 @@ class TimeBasedWorkflow(zeit.workflow.publishinfo.PublishInfo):
 # Declare the messageids we dynamically construct in setup_job(), so
 # i18nextract can find them.
 _('timebased-publish-add')
-_('timebased-publish-cancel')
 _('timebased-retract-add')
-_('timebased-retract-cancel')

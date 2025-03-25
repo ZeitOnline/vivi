@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Fri Feb 21 15:23:56 2025\n"
+"POT-Creation-Date: Tue Mar 25 08:12:17 2025\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -90,8 +90,8 @@ msgstr ""
 msgid "yes"
 msgstr ""
 
-#: zeit/cms/admin/browser/admin.py:20
-#: zeit/cms/admin/browser/admin.py:44
+#: zeit/cms/admin/browser/admin.py:21
+#: zeit/cms/admin/browser/admin.py:38
 msgid "admin-field-group"
 msgstr ""
 
@@ -227,7 +227,7 @@ msgstr ""
 #: zeit/cms/repository/browser/folder.zcml:17
 #: zeit/cms/repository/browser/unknown.zcml:34
 #: zeit/content/article/browser/menu.py:17
-#: zeit/content/author/browser/form.py:109
+#: zeit/content/author/browser/form.py:110
 #: zeit/content/image/browser/configure.zcml:30
 #: zeit/content/rawxml/browser/configure.zcml:32
 #: zeit/content/text/browser/configure.zcml:25
@@ -251,8 +251,8 @@ msgstr ""
 #: zeit/cms/browser/listing.py:261
 #: zeit/content/article/edit/interfaces.py:287
 #: zeit/content/article/interfaces.py:188
-#: zeit/content/author/author.py:184
-#: zeit/content/author/browser/form.py:220
+#: zeit/content/author/author.py:134
+#: zeit/content/author/browser/form.py:223
 msgid "Author"
 msgstr ""
 
@@ -606,7 +606,7 @@ msgstr ""
 #: zeit/cms/content/browser/form.py:50
 #: zeit/content/article/browser/form.py:32
 #: zeit/content/article/edit/browser/recension.py:68
-#: zeit/content/author/browser/form.py:51
+#: zeit/content/author/browser/form.py:52
 #: zeit/content/gallery/browser/form.py:46
 msgid "misc."
 msgstr ""
@@ -1313,7 +1313,7 @@ msgid "\"${name}\" not found."
 msgstr ""
 
 #: zeit/cms/repository/browser/move.py:34
-#: zeit/cms/repository/interfaces.py:183
+#: zeit/cms/repository/interfaces.py:191
 msgid "\"${name}\" already exists."
 msgstr ""
 
@@ -1348,7 +1348,7 @@ msgid "Only unpublished objects can be renamed."
 msgstr ""
 
 #: zeit/cms/repository/browser/rename.py:19
-#: zeit/cms/repository/interfaces.py:203
+#: zeit/cms/repository/interfaces.py:211
 msgid "New file name"
 msgstr ""
 
@@ -1360,7 +1360,7 @@ msgstr ""
 msgid "\"${name}\" is now shown in the navigation tree."
 msgstr ""
 
-#: zeit/cms/repository/interfaces.py:223
+#: zeit/cms/repository/interfaces.py:231
 msgid "previous uniqueIds of this ICMSContent"
 msgstr ""
 
@@ -1715,7 +1715,7 @@ msgstr ""
 
 #: zeit/content/article/edit/browser/edit.py:379
 #: zeit/content/article/edit/browser/edit.py:384
-#: zeit/content/author/browser/honorar.py:52
+#: zeit/content/author/browser/honorar.py:53
 #: zeit/content/volume/browser/form.py:142
 msgid "There were errors"
 msgstr ""
@@ -2587,30 +2587,30 @@ msgstr ""
 msgid "Could not retract ${name}. Podcast Episode is published by Provider"
 msgstr ""
 
-#: zeit/content/author/browser/form.py:30
+#: zeit/content/author/browser/form.py:31
 msgid "Contact"
 msgstr ""
 
-#: zeit/content/author/browser/form.py:53
+#: zeit/content/author/browser/form.py:54
 msgid "Author Favourites"
 msgstr ""
 
-#: zeit/content/author/browser/form.py:80
+#: zeit/content/author/browser/form.py:81
 #: zeit/content/author/interfaces.py:183
 msgid "Biography"
 msgstr ""
 
-#: zeit/content/author/browser/form.py:94
-#: zeit/content/author/browser/form.py:125
+#: zeit/content/author/browser/form.py:95
+#: zeit/content/author/browser/form.py:126
 msgid "Add author"
 msgstr ""
 
-#: zeit/content/author/browser/form.py:99
+#: zeit/content/author/browser/form.py:100
 msgid "Edit author"
 msgstr ""
 
-#: zeit/content/author/browser/form.py:114
-#: zeit/content/author/browser/honorar.py:25
+#: zeit/content/author/browser/form.py:115
+#: zeit/content/author/browser/honorar.py:26
 msgid "Add duplicate author"
 msgstr ""
 
@@ -2623,7 +2623,7 @@ msgid "Author with honorar ID ${honorar_id} already exists:"
 msgstr ""
 
 #: zeit/content/author/browser/honorar-result.pt:3
-#: zeit/content/author/browser/honorar.py:30
+#: zeit/content/author/browser/honorar.py:31
 msgid "Create author"
 msgstr ""
 
@@ -2639,21 +2639,21 @@ msgstr ""
 msgid "Create new author"
 msgstr ""
 
-#: zeit/content/author/browser/honorar.py:23
+#: zeit/content/author/browser/honorar.py:24
 #: zeit/content/author/interfaces.py:37
 msgid "Firstname"
 msgstr ""
 
-#: zeit/content/author/browser/honorar.py:24
+#: zeit/content/author/browser/honorar.py:25
 #: zeit/content/author/interfaces.py:38
 msgid "Lastname"
 msgstr ""
 
-#: zeit/content/author/browser/honorar.py:34
+#: zeit/content/author/browser/honorar.py:35
 msgid "Look up author"
 msgstr ""
 
-#: zeit/content/author/browser/honorar.py:209
+#: zeit/content/author/browser/honorar.py:198
 msgid "Honorar Reports"
 msgstr ""
 
@@ -3628,7 +3628,7 @@ msgstr ""
 msgid "The action you were trying to do could not be finished because the resource has no valid content."
 msgstr ""
 
-#: zeit/content/image/imagegroup.py:383
+#: zeit/content/image/imagegroup.py:389
 msgid "Image Group"
 msgstr ""
 
@@ -4536,7 +4536,7 @@ msgid "Payload Template"
 msgstr ""
 
 #: zeit/push/message.py:90
-#: zeit/workflow/publish_3rdparty.py:62
+#: zeit/workflow/publish_3rdparty.py:93
 msgid "Push notification for \"${name}\" sent. (Message: \"${message}\", Details: ${details})"
 msgstr ""
 
@@ -4807,20 +4807,12 @@ msgstr ""
 msgid "not necessary"
 msgstr ""
 
-#: zeit/workflow/timebased.py:136
+#: zeit/workflow/timebased.py:84
 msgid "timebased-publish-add"
 msgstr ""
 
-#: zeit/workflow/timebased.py:137
-msgid "timebased-publish-cancel"
-msgstr ""
-
-#: zeit/workflow/timebased.py:138
+#: zeit/workflow/timebased.py:85
 msgid "timebased-retract-add"
-msgstr ""
-
-#: zeit/workflow/timebased.py:139
-msgid "timebased-retract-cancel"
 msgstr ""
 
 #: zeit/workflow/workflow.py:45

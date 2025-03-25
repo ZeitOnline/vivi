@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Fri Feb 21 15:23:56 2025\n"
+"POT-Creation-Date: Tue Mar 25 08:12:17 2025\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -22,7 +22,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.5\n"
+"X-Generator: Poedit 3.4.4\n"
 
 #: zeit/addcentral/sidebar.pt:10 zeit/addcentral/sidebar.py:39
 #: zeit/cms/browser/form.py:220 zeit/cms/menu.zcml:17 zeit/cms/menu.zcml:24
@@ -83,7 +83,7 @@ msgstr "nein"
 msgid "yes"
 msgstr "ja"
 
-#: zeit/cms/admin/browser/admin.py:20 zeit/cms/admin/browser/admin.py:44
+#: zeit/cms/admin/browser/admin.py:21 zeit/cms/admin/browser/admin.py:38
 msgid "admin-field-group"
 msgstr "Admin"
 
@@ -204,7 +204,7 @@ msgstr "Speichern"
 #: zeit/cms/repository/browser/folder.zcml:17
 #: zeit/cms/repository/browser/unknown.zcml:34
 #: zeit/content/article/browser/menu.py:17
-#: zeit/content/author/browser/form.py:109
+#: zeit/content/author/browser/form.py:110
 #: zeit/content/image/browser/configure.zcml:30
 #: zeit/content/rawxml/browser/configure.zcml:32
 #: zeit/content/text/browser/configure.zcml:25
@@ -226,8 +226,8 @@ msgid "There are no objects in this folder."
 msgstr "Es gibt keine Objekte in diesem Ordner."
 
 #: zeit/cms/browser/listing.py:261 zeit/content/article/edit/interfaces.py:287
-#: zeit/content/article/interfaces.py:188 zeit/content/author/author.py:184
-#: zeit/content/author/browser/form.py:220
+#: zeit/content/article/interfaces.py:188 zeit/content/author/author.py:134
+#: zeit/content/author/browser/form.py:223
 msgid "Author"
 msgstr "Autor"
 
@@ -571,7 +571,7 @@ msgstr "Automatisch platzieren"
 
 #: zeit/cms/content/browser/form.py:50 zeit/content/article/browser/form.py:32
 #: zeit/content/article/edit/browser/recension.py:68
-#: zeit/content/author/browser/form.py:51
+#: zeit/content/author/browser/form.py:52
 #: zeit/content/gallery/browser/form.py:46
 msgid "misc."
 msgstr "Sonstiges"
@@ -1280,7 +1280,7 @@ msgstr "Der Ordner kann nicht umbenannt werden, da er bereits Inhalte enthält."
 msgid "\"${name}\" not found."
 msgstr "»${name}« nicht gefunden."
 
-#: zeit/cms/repository/browser/move.py:34 zeit/cms/repository/interfaces.py:183
+#: zeit/cms/repository/browser/move.py:34 zeit/cms/repository/interfaces.py:191
 msgid "\"${name}\" already exists."
 msgstr "\"${name}\" ist bereits vorhanden."
 
@@ -1315,7 +1315,7 @@ msgid "Only unpublished objects can be renamed."
 msgstr "Nur unveröffentlichte Inhalte können umbenannt werden."
 
 #: zeit/cms/repository/browser/rename.py:19
-#: zeit/cms/repository/interfaces.py:203
+#: zeit/cms/repository/interfaces.py:211
 msgid "New file name"
 msgstr "Dateiname"
 
@@ -1327,7 +1327,7 @@ msgstr "»${name}« wird jetzt nicht mehr im Navigationsbaum angezeigt."
 msgid "\"${name}\" is now shown in the navigation tree."
 msgstr "»${name}« wird jetzt im Navigationsbaum angezeigt."
 
-#: zeit/cms/repository/interfaces.py:223
+#: zeit/cms/repository/interfaces.py:231
 msgid "previous uniqueIds of this ICMSContent"
 msgstr "Vorherige IDs"
 
@@ -1676,7 +1676,7 @@ msgstr "Videoempfehlung generieren"
 
 #: zeit/content/article/edit/browser/edit.py:379
 #: zeit/content/article/edit/browser/edit.py:384
-#: zeit/content/author/browser/honorar.py:52
+#: zeit/content/author/browser/honorar.py:53
 #: zeit/content/volume/browser/form.py:142
 msgid "There were errors"
 msgstr "Fehler aufgetreten"
@@ -2527,29 +2527,29 @@ msgstr ""
 "Podcastfolge ${name} kann nicht zurückgezogen werden, da die Folge "
 "veröffentlicht beim Podcast-Hoster ist"
 
-#: zeit/content/author/browser/form.py:30
+#: zeit/content/author/browser/form.py:31
 msgid "Contact"
 msgstr "Kontakt"
 
-#: zeit/content/author/browser/form.py:53
+#: zeit/content/author/browser/form.py:54
 msgid "Author Favourites"
 msgstr "Schwerpunkte"
 
-#: zeit/content/author/browser/form.py:80 zeit/content/author/interfaces.py:183
+#: zeit/content/author/browser/form.py:81 zeit/content/author/interfaces.py:183
 msgid "Biography"
 msgstr "Kurzbio"
 
-#: zeit/content/author/browser/form.py:94
-#: zeit/content/author/browser/form.py:125
+#: zeit/content/author/browser/form.py:95
+#: zeit/content/author/browser/form.py:126
 msgid "Add author"
 msgstr "Autor hinzufügen"
 
-#: zeit/content/author/browser/form.py:99
+#: zeit/content/author/browser/form.py:100
 msgid "Edit author"
 msgstr "Autor bearbeiten"
 
-#: zeit/content/author/browser/form.py:114
-#: zeit/content/author/browser/honorar.py:25
+#: zeit/content/author/browser/form.py:115
+#: zeit/content/author/browser/honorar.py:26
 msgid "Add duplicate author"
 msgstr "Zweiten Autor dieses Namens hinzufügen"
 
@@ -2562,7 +2562,7 @@ msgid "Author with honorar ID ${honorar_id} already exists:"
 msgstr "Ein Autor mit HDok-ID ${honorar_id} existiert bereits:"
 
 #: zeit/content/author/browser/honorar-result.pt:3
-#: zeit/content/author/browser/honorar.py:30
+#: zeit/content/author/browser/honorar.py:31
 msgid "Create author"
 msgstr "Autor hinzufügen"
 
@@ -2580,21 +2580,21 @@ msgstr "Autor übernehmen"
 msgid "Create new author"
 msgstr "Neuen Autor anlegen"
 
-#: zeit/content/author/browser/honorar.py:23
+#: zeit/content/author/browser/honorar.py:24
 #: zeit/content/author/interfaces.py:37
 msgid "Firstname"
 msgstr "Vorname"
 
-#: zeit/content/author/browser/honorar.py:24
+#: zeit/content/author/browser/honorar.py:25
 #: zeit/content/author/interfaces.py:38
 msgid "Lastname"
 msgstr "Nachname"
 
-#: zeit/content/author/browser/honorar.py:34
+#: zeit/content/author/browser/honorar.py:35
 msgid "Look up author"
 msgstr "weiter"
 
-#: zeit/content/author/browser/honorar.py:209
+#: zeit/content/author/browser/honorar.py:198
 msgid "Honorar Reports"
 msgstr "HDok Dublettenreport"
 
@@ -3568,7 +3568,7 @@ msgstr ""
 "Die Aktion, die Sie ausführen wollten, konnte nicht beendet werden, weil die "
 "Resource keinen gültigen Inhalt hat."
 
-#: zeit/content/image/imagegroup.py:383
+#: zeit/content/image/imagegroup.py:389
 msgid "Image Group"
 msgstr "Bildergruppe"
 
@@ -4471,7 +4471,7 @@ msgstr "Push mit Buttons"
 msgid "Payload Template"
 msgstr "Empfänger"
 
-#: zeit/push/message.py:90 zeit/workflow/publish_3rdparty.py:62
+#: zeit/push/message.py:90 zeit/workflow/publish_3rdparty.py:93
 msgid ""
 "Push notification for \"${name}\" sent. (Message: \"${message}\", Details: "
 "${details})"
@@ -4754,21 +4754,13 @@ msgstr "${name}: ${new_value}"
 msgid "not necessary"
 msgstr "nicht nötig"
 
-#: zeit/workflow/timebased.py:136
+#: zeit/workflow/timebased.py:84
 msgid "timebased-publish-add"
 msgstr "Automatisch veröffentlichen am ${date} (job #${job})"
 
-#: zeit/workflow/timebased.py:137
-msgid "timebased-publish-cancel"
-msgstr "Abgebrochen: automatisches Veröffentlichen (job #${job})"
-
-#: zeit/workflow/timebased.py:138
+#: zeit/workflow/timebased.py:85
 msgid "timebased-retract-add"
 msgstr "Automatisch zurückziehen am ${date} (job #${job})"
-
-#: zeit/workflow/timebased.py:139
-msgid "timebased-retract-cancel"
-msgstr "Abgebrochen: automatisches Zurückziehen (job #${job})"
 
 #: zeit/workflow/workflow.py:45
 msgid "publish-preconditions-urgent"
@@ -4844,6 +4836,12 @@ msgstr "Format"
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:53
 msgid "with info"
 msgstr "mit Info"
+
+#~ msgid "timebased-publish-cancel"
+#~ msgstr "Abgebrochen: automatisches Veröffentlichen (job #${job})"
+
+#~ msgid "timebased-retract-cancel"
+#~ msgstr "Abgebrochen: automatisches Zurückziehen (job #${job})"
 
 #~ msgid "Related layout"
 #~ msgstr "Related Layout"
