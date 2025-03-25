@@ -22,10 +22,8 @@ def _handle_scheduled_content(action, sql_query):
         publish = zeit.cms.workflow.interfaces.IPublish(content)
         for _ in commit_with_retry():
             try:
-                if action == 'publish':
-                    publish.publish(background=False)
-                else:
-                    publish.retract(background=False)
+                func = getattr(publish, action)
+                func(background=False)
             except z3c.celery.celery.HandleAfterAbort as e:
                 if 'LockingError' in e.message:  # kludgy
                     log.warning('Skip %s due to %s', content, e.message)
@@ -49,11 +47,11 @@ def _publish_scheduled_content():
     _handle_scheduled_content('publish', sql_query)
 
 
-@runner(principal=from_config('zeit.workflow', 'retract-timebased-principal'))
+@runner(principal=from_config('zeit.workflow', 'schedule-principal'))
 def retract_scheduled_content():
     _retract_scheduled_content()
 
 
-@runner(principal=from_config('zeit.workflow', 'retract-timebased-principal'))
+@runner(principal=from_config('zeit.workflow', 'schedule-principal'))
 def publish_scheduled_content():
     _publish_scheduled_content()
