@@ -369,7 +369,7 @@ class Connector:
         parent = uniqueid.replace(ID_NAMESPACE, '', 1)
         query = (
             select(Content)
-            .where(Content.parent_path.startswith(parent))
+            .where((Content.parent_path == parent) | (Content.parent_path.startswith(parent + '/')))
             .order_by(Content.parent_path)
             .options(joinedload(Content.lock))
         )
