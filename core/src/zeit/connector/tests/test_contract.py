@@ -146,11 +146,14 @@ class ContractReadWrite:
         self.connector['http://xml.zeit.de/testing/folder/subfolder'] = collection_2
         self.add_resource('folder/file')
         self.add_resource('folder/subfolder/file')
+        self.add_resource('folder-suffix/file')
         del self.connector[collection.id + '/']  # XXX trailing slash DAV-ism
         transaction.commit()
         for resource in ['folder', 'folder/file', 'folder/subfolder', 'folder/subfolder/file']:
             with self.assertRaises(KeyError):
                 self.connector['http://xml.zeit.de/testing/' + resource]
+        with self.assertNothingRaised():
+            self.connector['http://xml.zeit.de/testing/folder-suffix/file']
 
     def test_changeProperties_updates_properties(self):
         self.add_resource(
