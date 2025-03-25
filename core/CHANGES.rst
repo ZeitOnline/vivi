@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.62.1 (2025-03-25)
+-------------------
+
+- WCM-801: Recursive deletion of folders must only delete content in that folder
+
+
 7.62.0 (2025-03-25)
 -------------------
 
