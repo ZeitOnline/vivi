@@ -14,5 +14,6 @@
   <include package="zeit.content.gallery" />
   <include package="zeit.content.video" />
   <include package="zeit.seo" />
+  <include package="zeit.vgwort" />
 
 </configure>
