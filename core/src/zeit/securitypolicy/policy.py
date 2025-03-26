@@ -11,10 +11,29 @@ from zope.securitypolicy.zopepolicy import (
     globalRolesForPermission,
     globalRolesForPrincipal,
 )
+import zope.component
 import zope.securitypolicy.zopepolicy
+
+from zeit.cms.repository.interfaces import IRepository, IRepositoryContent
 
 
 class SecurityPolicy(zope.securitypolicy.zopepolicy.ZopeSecurityPolicy):
+    def _get_parent(self, parent):
+        """Patched to skip walking up the parent chain for IRepositoryContent;
+        this saves us having to needlessly resolve every intermedediate folder.
+
+        (Unfortunately, just using specialized IPrincipalPermissionMap etc.
+        adapters is not enough to actually skip resolving __parent__, since the
+        default value in most cases is `None`, which means "keep walking".)
+
+        This could be an adapter instead of a plain function, but since
+        we currently only need the single different usecase, it's not worth it.
+        """
+        if IRepositoryContent.providedBy(parent) and not IRepository.providedBy(parent):
+            return zope.component.getUtility(IRepository)
+        else:
+            return getattr(parent, '__parent__', None)
+
     def cached_prinper(self, parent, principal, groups, permission):
         # Compute the permission, if any, for the principal.
         cache = self.cache(parent)
@@ -46,7 +65,7 @@ class SecurityPolicy(zope.securitypolicy.zopepolicy.ZopeSecurityPolicy):
                 cache_prin_per[permission] = prinper
                 return prinper
 
-        parent = removeSecurityProxy(getattr(parent, '__parent__', None))
+        parent = removeSecurityProxy(self._get_parent(parent))
         prinper = self.cached_prinper(parent, principal, groups, permission)
         cache_prin_per[permission] = prinper
         return prinper
@@ -71,9 +90,7 @@ class SecurityPolicy(zope.securitypolicy.zopepolicy.ZopeSecurityPolicy):
             cache_roles[permission] = roles
             return roles
 
-        roles = self.cached_roles(
-            removeSecurityProxy(getattr(parent, '__parent__', None)), permission
-        )
+        roles = self.cached_roles(removeSecurityProxy(self._get_parent(parent)), permission)
         roleper = IRolePermissionMap(parent, None)
         if roleper:
             roles = roles.copy()
@@ -107,7 +124,7 @@ class SecurityPolicy(zope.securitypolicy.zopepolicy.ZopeSecurityPolicy):
             return roles
 
         roles = self.cached_principal_roles(
-            removeSecurityProxy(getattr(parent, '__parent__', None)), principal
+            removeSecurityProxy(self._get_parent(parent)), principal
         )
 
         prinrole = IPrincipalRoleMap(parent, None)
