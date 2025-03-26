@@ -4,8 +4,7 @@
   i18n_domain="zeit.cms">
 
   <include package="zope.securitypolicy" />
-  <securityPolicy
-    component="zope.securitypolicy.zopepolicy.ZopeSecurityPolicy" />
+  <securityPolicy component=".policy.SecurityPolicy" />
 
   <!-- Roles -->
   <role id="zope.Anonymous" title="Everybody"
