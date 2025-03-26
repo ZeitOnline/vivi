@@ -8,8 +8,7 @@
   <include package="zope.principalregistry" />
 
   <include package="zope.securitypolicy" />
-  <securityPolicy
-    component="zope.securitypolicy.zopepolicy.ZopeSecurityPolicy" />
+  <securityPolicy component="zeit.securitypolicy.policy.SecurityPolicy" />
 
   <include package="zeit.cms" file="permissions.zcml" />
 
