@@ -33,7 +33,7 @@ repository and checkout a document:
 
 Checkout the Somalia Article:
 
->>> browser.open('http://localhost/++skin++cms/repository/online/2007/01/Somalia/checkout')
+>>> browser.open('http://localhost/++skin++cms/repository/online/2007/01/Somalia/@@checkout')
 
 Checking out redirected us to the document *in* the working copy:
 
@@ -97,7 +97,7 @@ Let's open the delete form:
     <span>Somalia</span>
     (<span>http://xml.zeit.de/online/2007/01/Somalia</span>)
   </p>
-  <form action="http://localhost/++skin++cms/workingcopy/zope.user/Somalia/delete.html"...
+  <form action="http://localhost/++skin++cms/workingcopy/zope.user/Somalia/@@delete.html"...
     <p>
       <input type="submit" value="Confirm delete" name="form.actions.delete" />
     </p>
@@ -144,7 +144,7 @@ We need some setup:
 ...     'http://localhost/++skin++cms/workingcopy/zope.user/Querdax/@@delete.html')
 >>> browser.getControl('Confirm delete').click()
 >>> print(browser.url)
-http://localhost/++skin++cms/workingcopy/zope.user/Querdax/delete.html?form.actions.delete=Confirm+delete
+http://localhost/++skin++cms/workingcopy/zope.user/Querdax/@@delete.html?form.actions.delete=Confirm+delete
 >>> print(browser.contents)
 <span class="nextURL">http://localhost/++skin++cms/repository/online/2007/01</span>
 

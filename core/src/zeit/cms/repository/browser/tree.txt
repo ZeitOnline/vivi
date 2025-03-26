@@ -101,7 +101,7 @@ Now we expand online/2007. This is done via an ajax request. Thus the returned
 "page" only conatains the tree, not the full html page:
 
 >>> view_url = 'http://localhost/++skin++cms/repository'
->>> browser.open('http://localhost/++skin++cms/repository/tree.html/'
+>>> browser.open('http://localhost/++skin++cms/repository/@@tree.html/'
 ...              '@@expandTree?uniqueId=http://xml.zeit.de/online/'
 ...              '&view_url=%s' % urllib.parse.quote(view_url))
 >>> print(zeit.cms.testing.xmltotext(browser.document))

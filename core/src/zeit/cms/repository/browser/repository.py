@@ -4,6 +4,7 @@ import grokcore.component as grok
 import zope.cachedescriptors.property
 import zope.component
 import zope.i18n
+import zope.publisher.interfaces
 import zope.viewlet.viewlet
 
 from zeit.cms.i18n import MessageFactory as _
@@ -24,6 +25,35 @@ class Repository:
 @grok.implementer(zeit.cms.browser.interfaces.IAdditionalLayer)
 def layer_for_repository(context):
     return zeit.cms.browser.interfaces.IRepositoryLayer
+
+
+@grok.adapter(
+    zeit.cms.repository.interfaces.IRepository, zope.publisher.interfaces.IPublisherRequest
+)
+@grok.implementer(zope.publisher.interfaces.IPublishTraverse)
+class Traverser(grok.MultiAdapter):
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    def publishTraverse(self, request, name):
+        """Do not traverse into individual folders, instead resolve the desired
+        content object in a single operation."""
+        stack = request._traversal_stack
+        path = [name]
+        i = len(stack) - 1
+        while i >= 0:
+            item = stack[i]
+            if item[:1] in '@+':  # see zope.app.publication.ZopePublication:traverseName
+                break
+            path.append(item)
+            request._traversed_names.append(item)
+            stack.pop(i)
+            i -= 1
+        try:
+            return self.context.getContent('http://xml.zeit.de/' + '/'.join(path))
+        except KeyError:
+            raise zope.publisher.interfaces.NotFound(self.context, name)
 
 
 class HTMLTree(zope.viewlet.viewlet.ViewletBase, zeit.cms.browser.view.Base):
@@ -160,7 +190,7 @@ class HiddenCollections(zeit.cms.browser.view.Base):
 
 
 class RedirectToObjectWithUniqueId(zeit.cms.browser.view.Base):
-    def __call__(self, unique_id, view=''):
+    def __call__(self, unique_id, view=None):
         obj = zeit.cms.interfaces.ICMSContent(unique_id, None)
         if obj is None:
             msg = _("The object '${id}' could not be found.", mapping={'id': unique_id})

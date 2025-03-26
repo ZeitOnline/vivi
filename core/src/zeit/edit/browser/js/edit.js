@@ -63,7 +63,7 @@ zeit.edit.Editor = gocept.Class.extend({
 
     load_editor: function(){
         var self = this;
-        return self.reload('cp-content-inner', context_url + '/contents');
+        return self.reload('cp-content-inner', context_url + '/@@contents');
     },
 
     reload: function(element_id, url) {

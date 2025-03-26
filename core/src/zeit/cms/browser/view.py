@@ -31,7 +31,9 @@ class Base:
         url = zope.component.getMultiAdapter((obj, self.request), name='absolute_url')()
         if name is None:
             return url
-        return '%s/%s' % (url, name)
+        if name and not name.startswith('@@'):
+            name = f'@@{name}'
+        return f'{url}/{name}'
 
     def redirect(self, url, status=None, trusted=False):
         assert status is None or isinstance(status, int)
@@ -79,3 +81,16 @@ def resource_url(request, library, filename):
             filename,
         ]
     )
+
+
+def absolute_url_with_atat(self):
+    url = self._old___str__()
+    # We'd love to register a more specific adapter, but the class hierarchies
+    # are not consistent enough to do that, e.g. zope.browserresource:IResource
+    # wants its own AbsoluteURL, but is completely parallel to IBrowserView.
+    if not zope.publisher.interfaces.browser.IBrowserView.providedBy(self.context):
+        return url
+    path, name = url.rsplit('/', 1)
+    if not name.startswith('@@'):
+        name = f'@@{name}'
+    return f'{path}/{name}'

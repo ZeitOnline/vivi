@@ -17,7 +17,7 @@ repository and look at its `metadata_preview` page. We do have a checkout link
 but no checkin link:
 
 >>> browser.open('http://localhost/++skin++cms/repository/online/'
-...     '2007/01/rauchen-verbessert-die-welt/metadata_preview')
+...     '2007/01/rauchen-verbessert-die-welt/@@metadata_preview')
 >>> checkout = browser.getLink('Checkout')
 >>> checkout
 <Link text='Checkout...>

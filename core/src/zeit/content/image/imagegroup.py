@@ -535,7 +535,7 @@ class ThumbnailTraverser:
 class Thumbnails(grok.Adapter):
     grok.context(zeit.content.image.interfaces.IRepositoryImageGroup)
 
-    NAME = 'thumbnails'
+    NAME = '+thumbnails'
     SOURCE_IMAGE_PREFIX = 'thumbnail-source'
     THUMBNAIL_WIDTH = 1000
 

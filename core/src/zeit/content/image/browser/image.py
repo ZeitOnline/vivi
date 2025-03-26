@@ -111,7 +111,9 @@ class Scaled:
         return self.scaled()
 
     def tag(self):
-        return get_img_tag(self.scaled.context, self.request)
+        width, height = self.scaled.context.getImageSize()
+        url = zope.component.getMultiAdapter((self, self.request), name='absolute_url')
+        return f'<img src="{url}" alt="" height="{height}" width="{width}" border="0" />'
 
     @cachedproperty
     def scaled(self):

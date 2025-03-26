@@ -106,7 +106,7 @@ class ImageGroupBrowserTest(zeit.content.image.testing.BrowserTestCase, ImageGro
     def test_traversing_thumbnail_yields_images(self):
         create_image_group_with_master_image()
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/group/thumbnails/square/@@raw')
+        b.open('http://localhost/++skin++vivi/repository/group/+thumbnails/square/@@raw')
         self.assertEqual('image/jpeg', b.headers['Content-Type'])
 
     def test_primary_master_image_is_marked_for_desktop_viewport(self):
@@ -285,7 +285,7 @@ class ThumbnailBrowserTest(zeit.content.image.testing.BrowserTestCase, ImageGrou
         self.upload_primary_image('http://xml.zeit.de/2006/DSC00109_2.JPG')
         self.save_imagegroup()
         b = self.browser
-        b.open('http://localhost/++skin++cms/repository/imagegroup/view.html')
+        b.open('http://localhost/++skin++cms/repository/imagegroup/@@view.html')
         self.assertEqual(
             ['dsc00109-2.jpg', 'thumbnail-source-dsc00109-2.jpg'],
             [x.__name__ for x in self.repository['imagegroup'].values()],

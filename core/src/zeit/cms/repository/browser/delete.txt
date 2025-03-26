@@ -13,7 +13,7 @@ confirms deleting the content.
 True
 >>> article_view_url = (
 ...     'http://localhost/++skin++cms/repository/2007/01/'
-...     'LS-Personalvertretung/delete.html')
+...     'LS-Personalvertretung/@@delete.html')
 >>> browser.open(article_view_url)
 >>> print(browser.contents)
 <div class="topcontent deleteScreen">
@@ -30,7 +30,7 @@ True
     <span>LS-Personalvertretung</span>
     (<span>http://xml.zeit.de/2007/01/LS-Personalvertretung</span>)
   </p>
-  <form action="http://localhost/++skin++cms/repository/2007/01/LS-Personalvertretung/delete.html"
+  <form action="http://localhost/++skin++cms/repository/2007/01/LS-Personalvertretung/@@delete.html"
         id="lightbox.form">
     <p>
       <input type="submit" value="Delete" name="form.actions.delete" />
@@ -65,9 +65,7 @@ Deleting folders
 It is also possible to delete entire foldes. But this requires another
 permission, so normal users are not allowed to delete folders:
 
->>> folder_view_url = (
-...     'http://localhost/++skin++cms/repository/2007/01/'
-...     'delete.html')
+>>> folder_view_url = 'http://localhost/++skin++cms/repository/2007/01/@@delete.html'
 >>> browser.open(folder_view_url)
 Traceback (most recent call last):
     ...
@@ -100,7 +98,7 @@ There is an extra warning about deleting the folder:
   <p class="warning">
       You're about to delete a folder with content!
   </p>
-  <form action="http://localhost/++skin++cms/repository/2007/01/delete.html"
+  <form action="http://localhost/++skin++cms/repository/2007/01/@@delete.html"
         id="lightbox.form">
     <p>
       <input type="submit" value="Delete" name="form.actions.delete" />

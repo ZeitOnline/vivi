@@ -645,7 +645,7 @@ Let's open the lightbox. It shows the clipboard tree:
    ...
   <script type="text/javascript">
     zeit.cms._lightbox_clipboard = new zeit.cms.Clipboard(
-      'http://localhost/++skin++vivi/workingcopy/zope.user/zeit.cms.clipboard.clipboard.Clipboard', 'http://localhost/++skin++vivi/workingcopy/zope.user/zeit.cms.clipboard.clipboard.Clipboard/tree.html', 'LightboxClipboard');
+      'http://localhost/++skin++vivi/workingcopy/zope.user/zeit.cms.clipboard.clipboard.Clipboard', 'http://localhost/++skin++vivi/workingcopy/zope.user/zeit.cms.clipboard.clipboard.Clipboard/@@tree.html', 'LightboxClipboard');
     zeit.cms._lightbox_clipboard_copy = new zeit.cms.CopyFromClipboard(
       zeit.cms._lightbox_clipboard, 'http://localhost/++skin++vivi/repository/online/@@copy');
     </script>...
