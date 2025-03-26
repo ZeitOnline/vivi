@@ -10,11 +10,11 @@
   <class class=".repository.Repository">
     <require
       permission="zope.View"
-      interface="zope.container.interfaces.IReadContainer"
+      interface=".interfaces.IReadRepository"
       />
     <require
       permission="zeit.ChangeRepository"
-      interface="zope.container.interfaces.IWriteContainer"
+      interface=".interfaces.IWriteRepository"
       />
     <require
       interface="zeit.cms.interfaces.ICMSContent"

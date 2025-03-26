@@ -51,12 +51,7 @@ class ConflictError(Exception):
         self.args = args
 
 
-class IRepository(zope.interface.Interface):
-    """Access the webdav repository.
-
-    This is the general entry point for accessing file and directory listings.
-    """
-
+class IReadRepository(zope.container.interfaces.IReadContainer):
     def getUniqueId(content):
         """Return unique not-changeable id of given content object.
 
@@ -78,6 +73,20 @@ class IRepository(zope.interface.Interface):
     def getCopyOf(unique_id):
         """Return a copy of the object identified by `unique_id`."""
 
+    def search(query, timeout=None):
+        """Search for `query`
+
+        query:
+            `sqlalchemy.select(zeit.connector.models.Content)` object
+        timeout:
+            If given maximum amount of time this query is allowed to take
+            else configured application timeout is used
+
+        returns a list of ICMSContent objects
+        """
+
+
+class IWriteRepository(zope.container.interfaces.IWriteContainer):
     def addContent(object, ignore_conflicts=False):
         """Add content to the repository.
 
@@ -93,17 +102,12 @@ class IRepository(zope.interface.Interface):
         repository.
         """
 
-    def search(query, timeout=None):
-        """Search for `query`
 
-        query:
-            `sqlalchemy.select(zeit.connector.models.Content)` object
-        timeout:
-            If given maximum amount of time this query is allowed to take
-            else configured application timeout is used
+class IRepository(IReadRepository, IWriteRepository):
+    """Access the webdav repository.
 
-        returns a list of ICMSContent objects
-        """
+    This is the general entry point for accessing file and directory listings.
+    """
 
 
 class IRepositoryContent(zope.interface.Interface):
