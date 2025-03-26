@@ -147,7 +147,6 @@ ui = [
 
 test = [
     "celery >= 5.0",
-    "celery_longterm_scheduler",
     "cssselect",
     "docker",
     "gcp-storage-emulator",
