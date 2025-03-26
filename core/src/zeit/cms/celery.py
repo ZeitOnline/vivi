@@ -15,8 +15,6 @@ try:
     import celery
     import celery.loaders.app
     import celery.signals
-    import celery_longterm_scheduler
-    import celery_longterm_scheduler.backend
     import z3c.celery.celery
 except ImportError:
     # Provide fake @task decorator, so zeit.web can avoid importing the whole
@@ -130,16 +128,12 @@ else:
 
             return conf
 
-    class Task(z3c.celery.celery.TransactionAwareTask, celery_longterm_scheduler.Task):
+    class Task(z3c.celery.celery.TransactionAwareTask):
         """Combines transactions and proper scheduling.
 
         Note: the order is important so that scheduling jobs also only happens
         on transaction commit.
         """
-
-        def _assert_json_serializable(self, *args, **kw):
-            celery_longterm_scheduler.backend.serialize(args)
-            celery_longterm_scheduler.backend.serialize(kw)
 
         @contextmanager
         def transaction(self, principal_id):

@@ -17,7 +17,6 @@ import xml.sax.saxutils
 
 import celery.contrib.testing.app
 import celery.contrib.testing.worker
-import celery_longterm_scheduler
 import gocept.httpserverlayer.custom
 import gocept.jslint
 import gocept.selenium
@@ -439,8 +438,6 @@ class CeleryWorkerLayer(plone.testing.Layer):
         # Switch database to the currently active DemoStorage,
         # see zeit.cms.testing.WSGILayer.testSetUp().
         self['celery_app'].conf['ZODB'] = self['zodbDB']
-
-        celery_longterm_scheduler.get_scheduler(self['celery_app']).backend.__init__(None, None)
 
     def testTearDown(self):
         # Ensure no running tasks are still left behind for the next test.
