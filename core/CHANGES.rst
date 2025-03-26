@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.64.0 (2025-03-26)
+-------------------
+
+- WCM-547: Add article_template column
+
+
 7.63.0 (2025-03-26)
 -------------------
 
