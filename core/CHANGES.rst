@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.65.0 (2025-03-27)
+-------------------
+
+- WCM-694: only publish if retract is in the future
+
+
 7.64.0 (2025-03-26)
 -------------------
 
