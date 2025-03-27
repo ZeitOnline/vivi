@@ -43,6 +43,7 @@ def _publish_scheduled_content():
     sql_query = """
         published = false
         AND date_scheduled_publish <= NOW()
+        AND (date_scheduled_retract IS NULL OR date_scheduled_retract > NOW())
     """
     _handle_scheduled_content('publish', sql_query)
 
