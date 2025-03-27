@@ -43,12 +43,38 @@ def upgrade() -> None:
         sa.Column('until', sa.TIMESTAMP(timezone=True), nullable=False),
     )
 
-    op.create_index(op.f('ix_paths_id'), 'paths', ['id'], unique=False)
-    op.create_index(op.f('ix_paths_parent_path'), 'paths', ['parent_path'], unique=False)
+    with op.get_context().autocommit_block():
+        op.create_index(
+            op.f('ix_paths_id'),
+            'paths',
+            ['id'],
+            unique=False,
+            postgresql_concurrently=True,
+            if_not_exists=True,
+        )
+        op.create_index(
+            op.f('ix_paths_parent_path'),
+            'paths',
+            ['parent_path'],
+            unique=False,
+            postgresql_concurrently=True,
+            if_not_exists=True,
+        )
 
 
 def downgrade() -> None:
-    op.drop_index(op.f('ix_paths_parent_path'), table_name='paths')
-    op.drop_index(op.f('ix_paths_id'), table_name='paths')
+    with op.get_context().autocommit_block():
+        op.drop_index(
+            op.f('ix_paths_parent_path'),
+            table_name='paths',
+            postgresql_concurrently=True,
+            if_exists=True,
+        )
+        op.drop_index(
+            op.f('ix_paths_id'),
+            table_name='paths',
+            postgresql_concurrently=True,
+            if_exists=True,
+        )
     op.drop_table('locks')
     op.drop_table('paths')
