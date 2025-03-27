@@ -147,10 +147,15 @@ class MigrationsLint(unittest.TestCase):
         buffer = io.StringIO()
         for name in ['predeploy', 'postdeploy']:
             alembic_upgrade(None, name, output_buffer=buffer)
-        sql = [x.strip() for x in buffer.getvalue().split(';')]
-        # squawk ignores any statements that refer to a newly created table
+        sql = buffer.getvalue()
+        sql = [x.strip() for x in sql.split('\n')]
+        sql = [x for x in sql if x and not x.startswith('--')]
+        sql = '\n'.join(sql)
+        sql = sql.split(';\n')
         sql = [x for x in sql if not x.startswith('CREATE TABLE')]
         sql = ';\n'.join(sql)
+        # squawk ignores any statements that refer to a newly created table
+        self.assertNotIn('CREATE TABLE', sql)
 
         squawk = os.environ['SQUAWK_COMMAND']
         proc = subprocess.Popen(
