@@ -37,28 +37,56 @@ def upgrade() -> None:
         sa.PrimaryKeyConstraint('id'),
     )
 
-    op.create_index(
-        op.f('ix_properties_last_updated'), 'properties', ['last_updated'], unique=False
-    )
-    op.create_index(op.f('ix_properties_type'), 'properties', ['type'], unique=False)
-    op.create_index(
-        'ix_properties_unsorted',
-        'properties',
-        ['unsorted'],
-        unique=False,
-        postgresql_using='gin',
-        postgresql_ops={'unsorted': 'jsonb_path_ops'},
-    )
+    with op.get_context().autocommit_block():
+        op.create_index(
+            op.f('ix_properties_last_updated'),
+            'properties',
+            ['last_updated'],
+            unique=False,
+            postgresql_concurrently=True,
+            if_not_exists=True,
+        )
+        op.create_index(
+            op.f('ix_properties_type'),
+            'properties',
+            ['type'],
+            unique=False,
+            postgresql_concurrently=True,
+            if_not_exists=True,
+        )
+        op.create_index(
+            'ix_properties_unsorted',
+            'properties',
+            ['unsorted'],
+            unique=False,
+            postgresql_using='gin',
+            postgresql_ops={'unsorted': 'jsonb_path_ops'},
+            postgresql_concurrently=True,
+            if_not_exists=True,
+        )
 
 
 def downgrade() -> None:
-    op.drop_index(
-        'ix_properties_unsorted',
-        table_name='properties',
-        postgresql_using='gin',
-        postgresql_ops={'unsorted': 'jsonb_path_ops'},
-    )
-    op.drop_index(op.f('ix_properties_type'), table_name='properties')
-    op.drop_index(op.f('ix_properties_last_updated'), table_name='properties')
+    with op.get_context().autocommit_block():
+        op.drop_index(
+            'ix_properties_unsorted',
+            table_name='properties',
+            postgresql_using='gin',
+            postgresql_ops={'unsorted': 'jsonb_path_ops'},
+            postgresql_concurrently=True,
+            if_exists=True,
+        )
+        op.drop_index(
+            op.f('ix_properties_type'),
+            table_name='properties',
+            postgresql_concurrently=True,
+            if_exists=True,
+        )
+        op.drop_index(
+            op.f('ix_properties_last_updated'),
+            table_name='properties',
+            postgresql_concurrently=True,
+            if_exists=True,
+        )
 
     op.drop_table('properties')
