@@ -27,16 +27,12 @@ log = logging.getLogger(__name__)
 
 @zope.interface.implementer(zeit.retresco.interfaces.ITMS)
 class TMS:
-    def __init__(self, primary, secondary=None):
-        self.primary = dict(primary)
-        self.secondary = dict(secondary or {})
-        for conn in self.primary, self.secondary:
-            url = conn.get('url') or ''
-            if url.endswith('/'):
-                conn['url'] = url.rstrip('/')
-
-        # Keep internal API stable for zeit.web
-        self.url = self.primary['url']
+    def __init__(self, url, username=None, password=None):
+        if url.endswith('/'):
+            url = url.rstrip('/')
+        self.url = url
+        self.username = username
+        self.password = password
 
     def extract_keywords(self, content):
         __traceback_info__ = (content.uniqueId,)
@@ -280,22 +276,15 @@ class TMS:
                 raise
 
     def _request(self, request, **kw):
-        result = self._request_one(tms=self.primary, request=request, **kw)
-        verb, _, _ = request.partition(' ')
-        if verb in {'POST', 'PUT', 'DELETE'} and self.secondary.get('url'):
-            self._request_one(tms=self.secondary, request=request, **kw)
-        return result
-
-    def _request_one(self, tms, request, **kw):
         if FEATURE_TOGGLES.find('disable_tms'):
             return {}
 
         verb, path = request.split(' ', 1)
         method = getattr(requests, verb.lower())
-        if tms.get('username'):
-            kw['auth'] = (tms['username'], tms['password'])
+        if self.username:
+            kw['auth'] = (self.username, self.password)
         try:
-            url = tms['url'] + path
+            url = self.url + path
             if 'in-text-linked' in kw.get('params', {}).keys():
                 url = url + '?in-text-linked'
                 kw.pop('params')
@@ -321,19 +310,7 @@ class TMS:
 @zope.interface.implementer(zeit.retresco.interfaces.ITMS)
 def from_product_config():
     config = zeit.cms.config.package('zeit.retresco')
-    prefix = 'primary-' if 'primary-base-url' in config else ''
-    return TMS(
-        primary={
-            'url': config.get(f'{prefix}base-url'),
-            'username': config.get(f'{prefix}username'),
-            'password': config.get(f'{prefix}password'),
-        },
-        secondary={
-            'url': config.get('secondary-base-url'),
-            'username': config.get('secondary-username'),
-            'password': config.get('secondary-password'),
-        },
-    )
+    return TMS(config['base-url'], config.get('username'), config.get('password'))
 
 
 @zeit.cms.cli.runner(principal=zeit.cms.cli.from_config('zeit.retresco', 'topiclist-principal'))

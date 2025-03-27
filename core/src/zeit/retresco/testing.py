@@ -37,8 +37,7 @@ class ProductConfigLayer(zeit.cms.testing.ProductConfigLayer):
 HERE = importlib.resources.files(__package__)
 CONFIG_LAYER = ProductConfigLayer(
     {
-        'primary-base-url': 'http://localhost:{port}',
-        'secondary-base-url': 'http://localhost:{port}/another-tms',
+        'base-url': 'http://localhost:{port}',
         'elasticsearch-url': 'http://tms-backend.staging.zeit.de:80/elasticsearch',
         'elasticsearch-index': 'zeit_pool',
         'elasticsearch-connection-class': 'zeit.retresco.search.Connection',
