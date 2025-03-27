@@ -48,3 +48,23 @@ class FolderDependencies(zeit.cms.workflow.dependency.DependencyBase):
 
     def get_dependencies(self):
         return self.context.values()
+
+
+@grok.subscribe(
+    zeit.cms.repository.interfaces.IFolder,
+    zeit.cms.repository.interfaces.IAfterTraverse,
+)
+def preload_cache(context, event):
+    import logging
+
+    from sqlalchemy import select
+
+    from zeit.connector.models import Content
+
+    connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+    if context.uniqueId in connector.child_name_cache:
+        return
+    logging.info('Preload %s', context)
+    path = context.uniqueId.replace('http://xml.zeit.de', '', 1)
+    result = connector.search_sql(select(Content).where((Content.parent_path == path)))
+    connector.child_name_cache[context.uniqueId] = set(x.id for x in result)

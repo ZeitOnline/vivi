@@ -48,6 +48,7 @@ class OverridableURLConfiguration:
 
     @property
     def url(self):
+        __traceback_info__ = (self.product_configuration, self.config_url)
         try:
             return zeit.cms.config.required(self.product_configuration, self.config_url)
         except KeyError:
@@ -258,7 +259,9 @@ class FolderItemSource(zc.sourcefactory.basic.BasicSourceFactory):
     @property
     def folder(self):
         id = zeit.cms.config.required(self.product_configuration, self.config_url)
-        return zeit.cms.interfaces.ICMSContent(id)
+        result = zeit.cms.interfaces.ICMSContent(id)
+        zope.event.notify(zeit.cms.repository.interfaces.AfterTraverse(result))
+        return result
 
     def getValues(self):
         values = self.folder.values()

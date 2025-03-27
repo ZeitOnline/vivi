@@ -396,6 +396,7 @@ class Connector:
         return responses
 
     def _get_content(self, uniqueid, getlock=True):
+        log.info('load %s', uniqueid)
         parent, name = self._pathkey(uniqueid)
         query = select(Content).filter_by(parent_path=parent, name=name)
         if getlock and self.support_locking:
