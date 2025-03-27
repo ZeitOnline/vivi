@@ -12,7 +12,7 @@ import zeit.workflow.testing
 from ..cli import _publish_scheduled_content, _retract_scheduled_content
 
 
-class TimeBasedCeleryEndToEndTest(zeit.workflow.testing.SQLTestCase):
+class TimeBasedEndToEndTest(zeit.workflow.testing.SQLTestCase):
     def setUp(self):
         super().setUp()
         FEATURE_TOGGLES.set('column_write_wcm_694')
@@ -56,6 +56,7 @@ class TimeBasedCeleryEndToEndTest(zeit.workflow.testing.SQLTestCase):
         info.released_to = pendulum.now('UTC').add(hours=1)
         info = zeit.cms.workflow.interfaces.IPublishInfo(self.content)
         info.published = True
+        info.date_last_published = pendulum.now('UTC').add(hours=-1)
         _retract_scheduled_content()
         self.assertTrue(zeit.cms.workflow.interfaces.IPublishInfo(self.content).published)
         self.assertNotEllipsis(f'...Retracting {self.content.uniqueId}...', self.log.getvalue())
@@ -70,6 +71,7 @@ class TimeBasedCeleryEndToEndTest(zeit.workflow.testing.SQLTestCase):
         info.released_to = pendulum.now('UTC').add(seconds=-1)
         info = zeit.cms.workflow.interfaces.IPublishInfo(self.content)
         info.published = True
+        info.date_last_published = pendulum.now('UTC').add(hours=-1)
         transaction.commit()
 
         until = pendulum.now('UTC').add(minutes=1)
@@ -88,10 +90,19 @@ class TimeBasedCeleryEndToEndTest(zeit.workflow.testing.SQLTestCase):
         self.assertTrue(zeit.cms.workflow.interfaces.IPublishInfo(self.content).published)
         self.assertEllipsis(f'...Publishing {self.content.uniqueId}...', self.log.getvalue())
 
+        info = zeit.cms.workflow.interfaces.IPublishInfo(self.content)
         info.released_to = pendulum.now('UTC').add(seconds=-1)
+        # to match the retract condition set it into the past
+        info.date_last_published = pendulum.now('UTC').add(hours=-1)
         _retract_scheduled_content()
         self.assertFalse(zeit.cms.workflow.interfaces.IPublishInfo(self.content).published)
         self.assertEllipsis(f'...Retracting {self.content.uniqueId}...', self.log.getvalue())
 
+        # reduce the acceptable timeframe to basically none
+        zeit.cms.config.set('zeit.workflow', 'scheduled-publish-query-restrict-minutes', '0')
         _publish_scheduled_content()
         self.assertFalse(zeit.cms.workflow.interfaces.IPublishInfo(self.content).published)
+        # accept anything not older than a minute, therefore run publish
+        zeit.cms.config.set('zeit.workflow', 'scheduled-publish-query-restrict-minutes', '1')
+        _publish_scheduled_content()
+        self.assertTrue(zeit.cms.workflow.interfaces.IPublishInfo(self.content).published)
