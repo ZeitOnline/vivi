@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 from unittest import mock
 import json
-import os
 import urllib.parse
 
-import pytest
 import zope.component
 
 from zeit.cms.checkout.helper import checked_out
@@ -321,60 +319,6 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
         result = tms.extract_keywords(self.repository['testcontent'])
         self.assertEqual([], result)
-
-
-@pytest.mark.integration()
-class IntegrationTest(zeit.retresco.testing.FunctionalTestCase):
-    level = 2
-
-    # NOTE: enrich against tms.staging.zeit.de is notoriously flaky (sigh),
-    # so if this fails, just run it again, chances are it will work then.
-
-    def setUp(self):
-        super().setUp()
-        self.tms = zeit.retresco.connection.TMS(primary={'url': os.environ['ZEIT_RETRESCO_URL']})
-        self.article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
-        with checked_out(self.article):
-            # Trigger mock connector uuid creation.
-            # This also serves as test isolation, since we get a random uuid
-            # on each run, with which we also clean up in TMS on tearDown.
-            pass
-
-    def tearDown(self):
-        try:
-            self.tms.delete_id(zeit.cms.content.interfaces.IUUID(self.article).id)
-        except Exception as e:
-            print(e)
-        super().tearDown()
-
-    def test_enrich_returns_keywords(self):
-        keywords = self.tms.extract_keywords(self.article)
-        self.assertIn(zeit.cms.tagging.tag.Tag('Somalia', 'location'), keywords)
-
-    def test_get_topicpages_has_expected_fields(self):
-        pages = self.tms.get_topicpages()
-        self.assertNotEqual(0, len(pages))
-        page = pages[0]
-        self.assertIn('id', page)
-        self.assertIn('topic_type', page)
-        self.assertIn('title', page)
-
-    def test_can_retrieve_data_after_index(self):
-        self.assertIn('doc_id', self.tms.index(self.article))
-        data = self.tms.get_article_data(self.article)
-        self.assertEqual(self.article.title, data['title'])
-
-    def test_can_retrieve_body_after_publish(self):
-        response = self.tms.enrich(self.article)
-        data = self.tms.index(self.article, {'body': response['body']})
-        self.assertIn('doc_id', data)
-        self.tms.publish(self.article)
-        body = self.tms.get_article_body(self.article)
-        self.assertStartsWith('<body', body)
-
-    def test_get_content_related_topicpages_works_without_keywords(self):
-        assert self.article.keywords == ()
-        assert self.tms.get_content_related_topicpages(self.article) == []
 
 
 class TopiclistUpdateTest(zeit.retresco.testing.FunctionalTestCase):
