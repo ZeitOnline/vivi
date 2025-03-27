@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Tue Mar 25 08:12:17 2025\n"
+"POT-Creation-Date: Thu Mar 27 09:26:10 2025\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -4501,39 +4501,39 @@ msgstr "TMS-GUI benutzen"
 msgid "TMS reindex"
 msgstr "Reindiziert/Veröffentlicht"
 
-#: zeit/securitypolicy/security.zcml:11
+#: zeit/securitypolicy/security.zcml:10
 msgid "All users have this role implicitly"
 msgstr "All users have this role implicitly"
 
-#: zeit/securitypolicy/security.zcml:11
+#: zeit/securitypolicy/security.zcml:10
 msgid "Everybody"
 msgstr "Everybody"
 
-#: zeit/securitypolicy/security.zcml:13
+#: zeit/securitypolicy/security.zcml:12
 msgid "Site Manager"
 msgstr "Site Manager"
 
-#: zeit/securitypolicy/security.zcml:14
+#: zeit/securitypolicy/security.zcml:13
 msgid "Site Member"
 msgstr "Site Member"
 
-#: zeit/securitypolicy/security.zcml:16
+#: zeit/securitypolicy/security.zcml:15
 msgid "Editor"
 msgstr "Redakteur"
 
-#: zeit/securitypolicy/security.zcml:17
+#: zeit/securitypolicy/security.zcml:16
 msgid "Producer"
 msgstr "Producer"
 
-#: zeit/securitypolicy/security.zcml:18
+#: zeit/securitypolicy/security.zcml:17
 msgid "Chef vom Dienst"
 msgstr "Chef vom Dienst"
 
-#: zeit/securitypolicy/security.zcml:19
+#: zeit/securitypolicy/security.zcml:18
 msgid "Search engine optimiser"
 msgstr "Search engine optimiser"
 
-#: zeit/securitypolicy/security.zcml:20
+#: zeit/securitypolicy/security.zcml:19
 msgid "Beta tester"
 msgstr "Beta tester"
 
@@ -4756,11 +4756,11 @@ msgstr "nicht nötig"
 
 #: zeit/workflow/timebased.py:84
 msgid "timebased-publish-add"
-msgstr "Automatisch veröffentlichen am ${date} (job #${job})"
+msgstr "Automatisch veröffentlichen am ${date}"
 
 #: zeit/workflow/timebased.py:85
 msgid "timebased-retract-add"
-msgstr "Automatisch zurückziehen am ${date} (job #${job})"
+msgstr "Automatisch zurückziehen am ${date}"
 
 #: zeit/workflow/workflow.py:45
 msgid "publish-preconditions-urgent"

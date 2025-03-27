@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Tue Mar 25 08:12:17 2025\n"
+"POT-Creation-Date: Thu Mar 27 09:26:10 2025\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -4560,39 +4560,39 @@ msgstr ""
 msgid "TMS reindex"
 msgstr ""
 
-#: zeit/securitypolicy/security.zcml:11
+#: zeit/securitypolicy/security.zcml:10
 msgid "All users have this role implicitly"
 msgstr ""
 
-#: zeit/securitypolicy/security.zcml:11
+#: zeit/securitypolicy/security.zcml:10
 msgid "Everybody"
 msgstr ""
 
-#: zeit/securitypolicy/security.zcml:13
+#: zeit/securitypolicy/security.zcml:12
 msgid "Site Manager"
 msgstr ""
 
-#: zeit/securitypolicy/security.zcml:14
+#: zeit/securitypolicy/security.zcml:13
 msgid "Site Member"
 msgstr ""
 
-#: zeit/securitypolicy/security.zcml:16
+#: zeit/securitypolicy/security.zcml:15
 msgid "Editor"
 msgstr ""
 
-#: zeit/securitypolicy/security.zcml:17
+#: zeit/securitypolicy/security.zcml:16
 msgid "Producer"
 msgstr ""
 
-#: zeit/securitypolicy/security.zcml:18
+#: zeit/securitypolicy/security.zcml:17
 msgid "Chef vom Dienst"
 msgstr ""
 
-#: zeit/securitypolicy/security.zcml:19
+#: zeit/securitypolicy/security.zcml:18
 msgid "Search engine optimiser"
 msgstr ""
 
-#: zeit/securitypolicy/security.zcml:20
+#: zeit/securitypolicy/security.zcml:19
 msgid "Beta tester"
 msgstr ""
 
