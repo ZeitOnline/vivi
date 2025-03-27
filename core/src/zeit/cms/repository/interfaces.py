@@ -43,6 +43,15 @@ class BeforeObjectRemovedEvent(zope.lifecycleevent.ObjectRemovedEvent):
     """An event sent after an ICMSContent is removed from a resource."""
 
 
+class IAfterTraverse(zope.interface.interfaces.IObjectEvent):
+    pass
+
+
+@zope.interface.implementer(IAfterTraverse)
+class AfterTraverse(zope.interface.interfaces.ObjectEvent):
+    pass
+
+
 class ConflictError(Exception):
     """Raised when adding to the repository yields a conflict."""
 

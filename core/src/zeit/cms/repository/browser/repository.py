@@ -26,6 +26,16 @@ def layer_for_repository(context):
     return zeit.cms.browser.interfaces.IRepositoryLayer
 
 
+@grok.subscribe(
+    zope.publisher.interfaces.browser.IBrowserView,
+    zope.traversing.interfaces.IBeforeTraverseEvent,
+)
+def preload_cache(view, event):
+    context = zope.security.proxy.getObject(view).context
+    if zeit.cms.repository.interfaces.IRepositoryContent.providedBy(context):
+        zope.event.notify(zeit.cms.repository.interfaces.AfterTraverse(context))
+
+
 class HTMLTree(zope.viewlet.viewlet.ViewletBase, zeit.cms.browser.view.Base):
     """view class for navtree"""
 
