@@ -275,9 +275,7 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
             [
                 'GET /content/{}'.format(uuid),
                 'POST /enrich?in-text-linked',
-                'POST /another-tms/enrich?in-text-linked',
                 'PUT /content/{}'.format(uuid),
-                'PUT /another-tms/content/{}'.format(uuid),
                 'GET /in-text-linked-documents/{}'.format(uuid),
             ],
         )
