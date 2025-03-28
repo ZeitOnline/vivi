@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.67.0 (2025-03-28)
+-------------------
+
+- WCM-694: improve query for scheduled publish/retract
+
+- WCM-736: Adjust keyword widget to separate TMS API and UI URLs
+
+
 7.66.0 (2025-03-28)
 -------------------
 
