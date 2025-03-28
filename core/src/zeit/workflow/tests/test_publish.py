@@ -559,6 +559,6 @@ class NewPublisherTest(zeit.workflow.testing.FunctionalTestCase):
             self.assertIn('uuid', result)
         self.assertFalse(IPublishInfo(article).published)
         self.assertEqual(
-            IPublishInfo(article).date_last_retracted.to_date_string(),
-            pendulum.now('UTC').to_date_string(),
+            IPublishInfo(article).date_last_retracted.date(),
+            pendulum.now('UTC').date(),
         )
