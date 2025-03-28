@@ -80,33 +80,6 @@ class TimeBasedEndToEndTest(zeit.workflow.testing.SQLTestCase):
         self.assertTrue(zeit.cms.workflow.interfaces.IPublishInfo(self.content).published)
         self.assertEllipsis(f'...Skip ... {self.content.uniqueId}...', self.log.getvalue())
 
-    def test_scheduled_publish_and_retract_does_not_republish_again(self):
-        info = zeit.workflow.interfaces.ITimeBasedPublishing(self.content)
-        info.released_from = pendulum.now('UTC').add(seconds=-1)
-        info.released_to = pendulum.now('UTC').add(hours=1)
-        info = zeit.cms.workflow.interfaces.IPublishInfo(self.content)
-        info.published = False
-        _publish_scheduled_content()
-        self.assertTrue(zeit.cms.workflow.interfaces.IPublishInfo(self.content).published)
-        self.assertEllipsis(f'...Publishing {self.content.uniqueId}...', self.log.getvalue())
-
-        info = zeit.cms.workflow.interfaces.IPublishInfo(self.content)
-        info.released_to = pendulum.now('UTC').add(seconds=-1)
-        # to match the retract condition set it into the past
-        info.date_last_published = pendulum.now('UTC').add(hours=-1)
-        _retract_scheduled_content()
-        self.assertFalse(zeit.cms.workflow.interfaces.IPublishInfo(self.content).published)
-        self.assertEllipsis(f'...Retracting {self.content.uniqueId}...', self.log.getvalue())
-
-        # reduce the acceptable timeframe to basically none
-        zeit.cms.config.set('zeit.workflow', 'scheduled-publish-query-restrict-minutes', '0')
-        _publish_scheduled_content()
-        self.assertFalse(zeit.cms.workflow.interfaces.IPublishInfo(self.content).published)
-        # accept anything not older than a minute, therefore run publish
-        zeit.cms.config.set('zeit.workflow', 'scheduled-publish-query-restrict-minutes', '1')
-        _publish_scheduled_content()
-        self.assertTrue(zeit.cms.workflow.interfaces.IPublishInfo(self.content).published)
-
     def test_scheduled_publish_consider_manual_retract(self):
         info = zeit.workflow.interfaces.ITimeBasedPublishing(self.content)
         info.released_from = pendulum.now('UTC').add(minutes=-2)
@@ -114,7 +87,7 @@ class TimeBasedEndToEndTest(zeit.workflow.testing.SQLTestCase):
         info.published = False
         # the last retract is more recent than the scheduled publish date
         # therefore we do not publish!
-        info.date_last_retracted = pendulum.now('UTC').add(minutes=-1)
+        info.date_last_retracted = pendulum.now('UTC').add(minutes=2)
         _publish_scheduled_content()
         self.assertFalse(zeit.cms.workflow.interfaces.IPublishInfo(self.content).published)
         self.assertNotEllipsis(f'...Publishing {self.content.uniqueId}...', self.log.getvalue())

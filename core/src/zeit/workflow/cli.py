@@ -14,14 +14,11 @@ import zeit.cms.workflow.interfaces
 log = logging.getLogger(__name__)
 
 
-def _handle_scheduled_content(action, sql_query, **params):
-    bind_params = {key: value for key, value in params.items()}
-    bind_params['age'] = int(
-        zeit.cms.config.get('zeit.workflow', 'scheduled-query-restrict-days', 60)
-    )
+def _handle_scheduled_content(action, sql_query):
+    age = int(zeit.cms.config.get('zeit.workflow', 'scheduled-query-restrict-days', 60))
     sql_query += """ AND last_updated >= CURRENT_DATE - INTERVAL ':age days'"""
     query = select(ConnectorModel)
-    query = query.where(sql(sql_query).bindparams(**bind_params))
+    query = query.where(sql(sql_query).bindparams(age=age))
     repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
     results = repository.search(query)
     for content in results:
@@ -51,16 +48,12 @@ def _publish_scheduled_content():
     """We must ensure that we do not republish manually retracted content.
     Therefore check that the scheduled publish date is not older than n-minutes.
     """
-    restrict_publish_days = int(
-        zeit.cms.config.get('zeit.workflow', 'scheduled-publish-query-restrict-minutes', 60)
-    )
     sql_query = """
         published = false
         AND date_scheduled_publish <= NOW()
-        AND date_last_retracted <= date_scheduled_publish
-        AND date_scheduled_publish > NOW() - INTERVAL ':publish minutes'
+        AND (date_last_retracted IS NULL OR date_last_retracted < date_scheduled_publish)
     """
-    _handle_scheduled_content('publish', sql_query, publish=restrict_publish_days)
+    _handle_scheduled_content('publish', sql_query)
 
 
 @runner(principal=from_config('zeit.workflow', 'schedule-principal'))
