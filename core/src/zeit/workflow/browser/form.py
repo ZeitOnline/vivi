@@ -98,6 +98,7 @@ class WorkflowForm(zeit.cms.browser.form.EditForm, WorkflowActions):
         'date_last_published',
         'last_published_by',
         'date_last_published_semantic',
+        'date_last_retracted',
         'date_first_released',
     )
 

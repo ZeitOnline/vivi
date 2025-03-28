@@ -55,6 +55,10 @@ class IPublishInfo(zope.interface.Interface):
         title=_('Last published with semantic change'), required=False, default=None, readonly=True
     )
 
+    date_last_retracted = zope.schema.Datetime(
+        title=_('Date last retracted'), required=False, default=None, readonly=True
+    )
+
     date_first_released = zope.schema.Datetime(
         title=_('Date first released'), required=False, readonly=True
     )

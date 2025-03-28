@@ -124,6 +124,9 @@ class Timestamps:
     date_last_published = mapped_column(
         TIMESTAMP, info={'namespace': 'workflow', 'name': 'date_last_published'}
     )
+    date_last_retracted = mapped_column(
+        TIMESTAMP, info={'namespace': 'workflow', 'name': 'date_last_retracted'}
+    )
     date_last_published_semantic = mapped_column(
         TIMESTAMP,
         info={
