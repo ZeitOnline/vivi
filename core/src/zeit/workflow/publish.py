@@ -582,6 +582,7 @@ class RetractTask(PublishRetractTask):
         zope.event.notify(zeit.cms.workflow.interfaces.BeforeRetractEvent(obj, master))
         info = zeit.cms.workflow.interfaces.IPublishInfo(obj)
         info.published = False
+        info.date_last_retracted = pendulum.now('UTC')
         self.log(obj, _('Retracted'))
 
     def after_retract(self, obj, master):

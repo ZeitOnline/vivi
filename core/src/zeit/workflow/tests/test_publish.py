@@ -549,6 +549,7 @@ class NewPublisherTest(zeit.workflow.testing.FunctionalTestCase):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         IPublishInfo(article).urgent = True
         IPublishInfo(article).published = True
+        self.assertIsNone(IPublishInfo(article).date_last_retracted)
         self.assertTrue(IPublishInfo(article).published)
         with requests_mock.Mocker() as rmock:
             response = rmock.post('http://localhost:8060/test/retract', status_code=200)
@@ -557,3 +558,7 @@ class NewPublisherTest(zeit.workflow.testing.FunctionalTestCase):
             self.assertEqual('http://xml.zeit.de/online/2007/01/Somalia', result['uniqueId'])
             self.assertIn('uuid', result)
         self.assertFalse(IPublishInfo(article).published)
+        self.assertEqual(
+            IPublishInfo(article).date_last_retracted.to_date_string(),
+            pendulum.now('UTC').to_date_string(),
+        )
