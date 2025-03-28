@@ -80,11 +80,18 @@ class TimeBasedEndToEndTest(zeit.workflow.testing.SQLTestCase):
         self.assertTrue(zeit.cms.workflow.interfaces.IPublishInfo(self.content).published)
         self.assertEllipsis(f'...Skip ... {self.content.uniqueId}...', self.log.getvalue())
 
+    def test_scheduled_publish_respect_margin_to_retract(self):
+        info = zeit.workflow.interfaces.ITimeBasedPublishing(self.content)
+        info.released_from = pendulum.now('UTC').add(minutes=-2)
+        info.released_to = pendulum.now('UTC').add(minutes=5)
+        _publish_scheduled_content()
+        self.assertFalse(zeit.cms.workflow.interfaces.IPublishInfo(self.content).published)
+        self.assertNotEllipsis(f'...Publishing {self.content.uniqueId}...', self.log.getvalue())
+
     def test_scheduled_publish_consider_manual_retract(self):
         info = zeit.workflow.interfaces.ITimeBasedPublishing(self.content)
         info.released_from = pendulum.now('UTC').add(minutes=-2)
         info = zeit.cms.workflow.interfaces.IPublishInfo(self.content)
-        info.published = False
         # the last retract is more recent than the scheduled publish date
         # therefore we do not publish!
         info.date_last_retracted = pendulum.now('UTC').add(minutes=2)
