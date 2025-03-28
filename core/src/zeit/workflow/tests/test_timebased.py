@@ -12,7 +12,7 @@ import zeit.workflow.testing
 from ..cli import _publish_scheduled_content, _retract_scheduled_content
 
 
-class TimeBasedCeleryEndToEndTest(zeit.workflow.testing.SQLTestCase):
+class TimeBasedEndToEndTest(zeit.workflow.testing.SQLTestCase):
     def setUp(self):
         super().setUp()
         FEATURE_TOGGLES.set('column_write_wcm_694')
@@ -56,6 +56,7 @@ class TimeBasedCeleryEndToEndTest(zeit.workflow.testing.SQLTestCase):
         info.released_to = pendulum.now('UTC').add(hours=1)
         info = zeit.cms.workflow.interfaces.IPublishInfo(self.content)
         info.published = True
+        info.date_last_published = pendulum.now('UTC').add(hours=-1)
         _retract_scheduled_content()
         self.assertTrue(zeit.cms.workflow.interfaces.IPublishInfo(self.content).published)
         self.assertNotEllipsis(f'...Retracting {self.content.uniqueId}...', self.log.getvalue())
@@ -70,6 +71,7 @@ class TimeBasedCeleryEndToEndTest(zeit.workflow.testing.SQLTestCase):
         info.released_to = pendulum.now('UTC').add(seconds=-1)
         info = zeit.cms.workflow.interfaces.IPublishInfo(self.content)
         info.published = True
+        info.date_last_published = pendulum.now('UTC').add(hours=-1)
         transaction.commit()
 
         until = pendulum.now('UTC').add(minutes=1)
@@ -78,20 +80,21 @@ class TimeBasedCeleryEndToEndTest(zeit.workflow.testing.SQLTestCase):
         self.assertTrue(zeit.cms.workflow.interfaces.IPublishInfo(self.content).published)
         self.assertEllipsis(f'...Skip ... {self.content.uniqueId}...', self.log.getvalue())
 
-    def test_scheduled_publish_and_retract_does_not_republish_again(self):
+    def test_scheduled_publish_respect_margin_to_retract(self):
         info = zeit.workflow.interfaces.ITimeBasedPublishing(self.content)
-        info.released_from = pendulum.now('UTC').add(seconds=-1)
-        info.released_to = pendulum.now('UTC').add(hours=1)
+        info.released_from = pendulum.now('UTC').add(minutes=-2)
+        info.released_to = pendulum.now('UTC').add(minutes=5)
+        _publish_scheduled_content()
+        self.assertFalse(zeit.cms.workflow.interfaces.IPublishInfo(self.content).published)
+        self.assertNotEllipsis(f'...Publishing {self.content.uniqueId}...', self.log.getvalue())
+
+    def test_scheduled_publish_consider_manual_retract(self):
+        info = zeit.workflow.interfaces.ITimeBasedPublishing(self.content)
+        info.released_from = pendulum.now('UTC').add(minutes=-2)
         info = zeit.cms.workflow.interfaces.IPublishInfo(self.content)
-        info.published = False
-        _publish_scheduled_content()
-        self.assertTrue(zeit.cms.workflow.interfaces.IPublishInfo(self.content).published)
-        self.assertEllipsis(f'...Publishing {self.content.uniqueId}...', self.log.getvalue())
-
-        info.released_to = pendulum.now('UTC').add(seconds=-1)
-        _retract_scheduled_content()
-        self.assertFalse(zeit.cms.workflow.interfaces.IPublishInfo(self.content).published)
-        self.assertEllipsis(f'...Retracting {self.content.uniqueId}...', self.log.getvalue())
-
+        # the last retract is more recent than the scheduled publish date
+        # therefore we do not publish!
+        info.date_last_retracted = pendulum.now('UTC').add(minutes=2)
         _publish_scheduled_content()
         self.assertFalse(zeit.cms.workflow.interfaces.IPublishInfo(self.content).published)
+        self.assertNotEllipsis(f'...Publishing {self.content.uniqueId}...', self.log.getvalue())
