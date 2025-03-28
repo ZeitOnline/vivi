@@ -26,7 +26,7 @@ patches:
           valueFrom:
             secretKeyRef:
               name: tms
-              key: vivi_zeit.retresco_primary-password
+              key: vivi_zeit.retresco_password
 
 # See https://github.com/ZeitOnline/gh-action-workflows/blob/main/.github/workflows/nightwatch-build.yaml
 images:

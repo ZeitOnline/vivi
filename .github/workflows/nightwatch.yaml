@@ -28,7 +28,7 @@ jobs:
           {"op": "add", "path": "/spec/containers/0/env", "value": [
             {"name": "TMS_PASSWORD", "valueFrom": {"secretKeyRef": {
               "name": "tms",
-              "key": "vivi_zeit.retresco_primary-password"
+              "key": "vivi_zeit.retresco_password"
             }}},
             {"name": "VIVI_XMLRPC_PASSWORD", "valueFrom": {"secretKeyRef": {
               "name": "principals",
