@@ -28,6 +28,7 @@ class PublishInfo:
             'published',
             'date_last_published',
             'date_last_published_semantic',
+            'date_last_retracted',
             'locked',
             'lock_reason',
         ),

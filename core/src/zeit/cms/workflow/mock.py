@@ -64,6 +64,7 @@ class MockPublish:
         print('Retracting: %s' % self.context.uniqueId)
         info = zeit.cms.workflow.interfaces.IPublishInfo(self.context)
         info.published = False
+        info.date_last_retracted = pendulum.now('UTC')
         for element in zeit.cms.workflow.interfaces.IPublicationDependencies(
             self.context
         ).get_retract_dependencies():
@@ -123,6 +124,14 @@ class MockPublishInfo:
         _publish_times_semantic[self.context.uniqueId] = value
 
     @property
+    def date_last_retracted(self):
+        return _retract_times.get(self.context.uniqueId)
+
+    @date_last_retracted.setter
+    def date_last_retracted(self, value):
+        _retract_times[self.context.uniqueId] = value
+
+    @property
     def date_first_released(self):
         return _publish_times_first.get(self.context.uniqueId)
 
@@ -159,6 +168,7 @@ _published = {}
 _publish_times = {}
 _publish_times_semantic = {}
 _publish_times_first = {}
+_retract_times = {}
 _publish_count = Counter()
 
 
@@ -168,6 +178,7 @@ def reset():
     _publish_times.clear()
     _publish_times_semantic.clear()
     _publish_times_first.clear()
+    _retract_times.clear()
     _publish_count.clear()
 
 

@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Thu Mar 27 09:26:10 2025\n"
+"POT-Creation-Date: Fri Mar 28 11:34:54 2025\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -1437,7 +1437,7 @@ msgstr ""
 #: zeit/cms/workflow/browser/indicator.py:12
 #: zeit/cms/workflow/interfaces.py:48
 #: zeit/workflow/publish.py:504
-#: zeit/workflow/publishinfo.py:61
+#: zeit/workflow/publishinfo.py:62
 msgid "Published"
 msgstr ""
 
@@ -1474,32 +1474,36 @@ msgid "Last published with semantic change"
 msgstr ""
 
 #: zeit/cms/workflow/interfaces.py:59
-msgid "Date first released"
+msgid "Date last retracted"
 msgstr ""
 
 #: zeit/cms/workflow/interfaces.py:63
-msgid "Date of print publication"
+msgid "Date first released"
 msgstr ""
 
 #: zeit/cms/workflow/interfaces.py:67
-msgid "Last published by"
+msgid "Date of print publication"
 msgstr ""
 
 #: zeit/cms/workflow/interfaces.py:71
-#: zeit/workflow/browser/form.py:142
-#: zeit/workflow/browser/form.py:168
+msgid "Last published by"
+msgstr ""
+
+#: zeit/cms/workflow/interfaces.py:75
+#: zeit/workflow/browser/form.py:143
+#: zeit/workflow/browser/form.py:169
 msgid "Publish lock?"
 msgstr ""
 
-#: zeit/cms/workflow/interfaces.py:72
+#: zeit/cms/workflow/interfaces.py:76
 msgid "Please retract first"
 msgstr ""
 
-#: zeit/cms/workflow/interfaces.py:77
+#: zeit/cms/workflow/interfaces.py:81
 msgid "Publish lock reason"
 msgstr ""
 
-#: zeit/cms/workflow/interfaces.py:102
+#: zeit/cms/workflow/interfaces.py:106
 msgid "Publication state"
 msgstr ""
 
@@ -1738,9 +1742,9 @@ msgstr ""
 
 #: zeit/content/article/edit/browser/form.py:160
 #: zeit/content/cp/browser/workflow.py:29
-#: zeit/workflow/browser/form.py:136
-#: zeit/workflow/browser/form.py:164
-#: zeit/workflow/browser/form.py:191
+#: zeit/workflow/browser/form.py:137
+#: zeit/workflow/browser/form.py:165
+#: zeit/workflow/browser/form.py:192
 msgid "Status"
 msgstr ""
 
@@ -2987,35 +2991,35 @@ msgstr ""
 
 #: zeit/content/cp/browser/workflow.py:33
 #: zeit/content/image/browser/imagegroup.py:66
-#: zeit/workflow/browser/form.py:140
-#: zeit/workflow/browser/form.py:166
+#: zeit/workflow/browser/form.py:141
+#: zeit/workflow/browser/form.py:167
 msgid "Settings"
 msgstr ""
 
 #: zeit/content/cp/browser/workflow.py:34
-#: zeit/workflow/browser/form.py:149
-#: zeit/workflow/browser/form.py:175
-#: zeit/workflow/browser/form.py:193
+#: zeit/workflow/browser/form.py:150
+#: zeit/workflow/browser/form.py:176
+#: zeit/workflow/browser/form.py:194
 msgid "Log"
 msgstr ""
 
 #: zeit/content/cp/browser/workflow.py:44
-#: zeit/workflow/browser/form.py:106
+#: zeit/workflow/browser/form.py:107
 msgid "Save state only"
 msgstr ""
 
 #: zeit/content/cp/browser/workflow.py:49
-#: zeit/workflow/browser/form.py:110
+#: zeit/workflow/browser/form.py:111
 msgid "Save state and publish now"
 msgstr ""
 
 #: zeit/content/cp/browser/workflow.py:55
-#: zeit/workflow/browser/form.py:116
+#: zeit/workflow/browser/form.py:117
 msgid "Save state and retract now"
 msgstr ""
 
 #: zeit/content/cp/browser/workflow.py:57
-#: zeit/workflow/browser/form.py:118
+#: zeit/workflow/browser/form.py:119
 msgid "Really retract? This will remove the object from all channels it is syndicated in and make it unavailable to the public!"
 msgstr ""
 
@@ -4710,7 +4714,7 @@ msgid "scheduled-for-immediate-retracting"
 msgstr ""
 
 #: zeit/workflow/browser/form.py:61
-#: zeit/workflow/publishinfo.py:107
+#: zeit/workflow/publishinfo.py:108
 msgid "publish-preconditions-not-met"
 msgstr ""
 
@@ -4786,19 +4790,19 @@ msgstr ""
 msgid "Retracted"
 msgstr ""
 
-#: zeit/workflow/publishinfo.py:69
+#: zeit/workflow/publishinfo.py:70
 msgid "publish-preconditions-blacklist"
 msgstr ""
 
-#: zeit/workflow/publishinfo.py:77
+#: zeit/workflow/publishinfo.py:78
 msgid "publish-preconditions-locked-published"
 msgstr ""
 
-#: zeit/workflow/publishinfo.py:79
+#: zeit/workflow/publishinfo.py:80
 msgid "publish-preconditions-locked"
 msgstr ""
 
-#: zeit/workflow/publishinfo.py:135
+#: zeit/workflow/publishinfo.py:136
 #: zeit/workflow/workflow.py:61
 msgid "${name}: ${new_value}"
 msgstr ""
