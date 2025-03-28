@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.66.0 (2025-03-28)
+-------------------
+
+- WCM-694: add new column date_last_retracted
+
+- WCM-736: Remove secondary TMS, migration is now complete
+
+
 7.65.0 (2025-03-27)
 -------------------
 
