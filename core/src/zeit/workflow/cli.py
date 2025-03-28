@@ -57,6 +57,7 @@ def _publish_scheduled_content():
     sql_query = """
         published = false
         AND date_scheduled_publish <= NOW()
+        AND date_last_retracted <= date_scheduled_publish
         AND date_scheduled_publish > NOW() - INTERVAL ':publish minutes'
     """
     _handle_scheduled_content('publish', sql_query, publish=restrict_publish_days)
