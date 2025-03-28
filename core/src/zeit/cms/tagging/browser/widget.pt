@@ -31,7 +31,7 @@
 <div tal:condition="view/display_tms_link">
   <a i18n:translate=""
      target="_blank"
-     tal:attributes="href string:http://${view/tms_host}/documents/show/${view/uuid}">Show in TMS</a>
+     tal:attributes="href string:${view/tms_ui_url}/documents/show/${view/uuid}">Show in TMS</a>
 </div>
 
 </div>

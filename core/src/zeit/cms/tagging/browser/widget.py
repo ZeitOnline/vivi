@@ -76,21 +76,13 @@ class Widget(grok.MultiAdapter, zope.formlib.widget.SimpleInputWidget, zeit.cms.
         return tuple(result)
 
     def display_tms_link(self):
-        return self.tms_host and self.request.interaction.checkPermission(
+        return self.tms_ui_url and self.request.interaction.checkPermission(
             'zeit.cms.tagging.ViewInTMS', self.context
         )
 
     @property
-    def tms_host(self):
-        try:
-            # XXX This dependency is the wrong way around, but creating
-            # an abstraction instead doesn't really seem worthwile either.
-            import zeit.retresco.interfaces
-
-            tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
-            return urllib.parse.urlparse(tms.primary['url']).netloc
-        except (ImportError, LookupError):
-            return None
+    def tms_ui_url(self):
+        return zeit.cms.config.get('zeit.retresco', 'ui-url')
 
     @property
     def uuid(self):
