@@ -143,9 +143,7 @@ def publish():
         assert registry.unregisterHandler(zeit.cms.checkout.webhook.notify_after_publish)
 
     if not options.wait_tms:
-        mock.patch(
-            'zeit.workflow.publish_3rdparty.TMS.wait_for_index_update', return_value=False
-        ).start()
+        mock.patch('zeit.workflow.publish_3rdparty.TMS.wait_for_index_update', new=False).start()
 
     log.info('Ignoring services %s', options.ignore_services)
     zeit.workflow.publish_3rdparty.PublisherData.ignore = options.ignore_services + IGNORE_SERVICES
