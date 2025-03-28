@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Thu Mar 27 09:26:10 2025\n"
+"POT-Creation-Date: Fri Mar 28 11:34:54 2025\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -1403,7 +1403,7 @@ msgid "Keywords"
 msgstr "Schlagworte"
 
 #: zeit/cms/workflow/browser/indicator.py:12 zeit/cms/workflow/interfaces.py:48
-#: zeit/workflow/publish.py:504 zeit/workflow/publishinfo.py:61
+#: zeit/workflow/publish.py:504 zeit/workflow/publishinfo.py:62
 msgid "Published"
 msgstr "Veröffentlicht"
 
@@ -1440,31 +1440,35 @@ msgid "Last published with semantic change"
 msgstr "Letzte Veröffentlichung mit inhaltlicher Änderung"
 
 #: zeit/cms/workflow/interfaces.py:59
+msgid "Date last retracted"
+msgstr "Zuletzt depubliziert am"
+
+#: zeit/cms/workflow/interfaces.py:63
 msgid "Date first released"
 msgstr "Zuerst veröffentlicht am"
 
-#: zeit/cms/workflow/interfaces.py:63
+#: zeit/cms/workflow/interfaces.py:67
 msgid "Date of print publication"
 msgstr "Veröffentlicht (Print)"
 
-#: zeit/cms/workflow/interfaces.py:67
+#: zeit/cms/workflow/interfaces.py:71
 msgid "Last published by"
 msgstr "Letzte Veröffentlichnung von"
 
-#: zeit/cms/workflow/interfaces.py:71 zeit/workflow/browser/form.py:142
-#: zeit/workflow/browser/form.py:168
+#: zeit/cms/workflow/interfaces.py:75 zeit/workflow/browser/form.py:143
+#: zeit/workflow/browser/form.py:169
 msgid "Publish lock?"
 msgstr "Sperrvermerk"
 
-#: zeit/cms/workflow/interfaces.py:72
+#: zeit/cms/workflow/interfaces.py:76
 msgid "Please retract first"
 msgstr "Achtung: Bitte erst depublizieren!"
 
-#: zeit/cms/workflow/interfaces.py:77
+#: zeit/cms/workflow/interfaces.py:81
 msgid "Publish lock reason"
 msgstr "Sperrvermerk-Notizen"
 
-#: zeit/cms/workflow/interfaces.py:102
+#: zeit/cms/workflow/interfaces.py:106
 msgid "Publication state"
 msgstr "Veröffentlichungszustand"
 
@@ -1698,8 +1702,8 @@ msgid "Internal links"
 msgstr "Mehr zum Thema (Relateds)"
 
 #: zeit/content/article/edit/browser/form.py:160
-#: zeit/content/cp/browser/workflow.py:29 zeit/workflow/browser/form.py:136
-#: zeit/workflow/browser/form.py:164 zeit/workflow/browser/form.py:191
+#: zeit/content/cp/browser/workflow.py:29 zeit/workflow/browser/form.py:137
+#: zeit/workflow/browser/form.py:165 zeit/workflow/browser/form.py:192
 msgid "Status"
 msgstr "Status"
 
@@ -2923,28 +2927,28 @@ msgstr "Auschecken"
 
 #: zeit/content/cp/browser/workflow.py:33
 #: zeit/content/image/browser/imagegroup.py:66
-#: zeit/workflow/browser/form.py:140 zeit/workflow/browser/form.py:166
+#: zeit/workflow/browser/form.py:141 zeit/workflow/browser/form.py:167
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: zeit/content/cp/browser/workflow.py:34 zeit/workflow/browser/form.py:149
-#: zeit/workflow/browser/form.py:175 zeit/workflow/browser/form.py:193
+#: zeit/content/cp/browser/workflow.py:34 zeit/workflow/browser/form.py:150
+#: zeit/workflow/browser/form.py:176 zeit/workflow/browser/form.py:194
 msgid "Log"
 msgstr "Log"
 
-#: zeit/content/cp/browser/workflow.py:44 zeit/workflow/browser/form.py:106
+#: zeit/content/cp/browser/workflow.py:44 zeit/workflow/browser/form.py:107
 msgid "Save state only"
 msgstr "Nur Status speichern"
 
-#: zeit/content/cp/browser/workflow.py:49 zeit/workflow/browser/form.py:110
+#: zeit/content/cp/browser/workflow.py:49 zeit/workflow/browser/form.py:111
 msgid "Save state and publish now"
 msgstr "Status speichern und sofort veröffentlichen"
 
-#: zeit/content/cp/browser/workflow.py:55 zeit/workflow/browser/form.py:116
+#: zeit/content/cp/browser/workflow.py:55 zeit/workflow/browser/form.py:117
 msgid "Save state and retract now"
 msgstr "Status speichern und sofort zurückziehen"
 
-#: zeit/content/cp/browser/workflow.py:57 zeit/workflow/browser/form.py:118
+#: zeit/content/cp/browser/workflow.py:57 zeit/workflow/browser/form.py:119
 msgid ""
 "Really retract? This will remove the object from all channels it is "
 "syndicated in and make it unavailable to the public!"
@@ -4647,7 +4651,7 @@ msgstr "»${id}« wird veröffentlicht."
 msgid "scheduled-for-immediate-retracting"
 msgstr "»${id}« wird zurückgezogen."
 
-#: zeit/workflow/browser/form.py:61 zeit/workflow/publishinfo.py:107
+#: zeit/workflow/browser/form.py:61 zeit/workflow/publishinfo.py:108
 msgid "publish-preconditions-not-met"
 msgstr ""
 "»${name}« konnte nicht veröffentlicht werden. Die Bedingungen für die "
@@ -4734,19 +4738,19 @@ msgstr "Das Objekt »${name}« ist bereits von »${user}« gesperrt."
 msgid "Retracted"
 msgstr "Zurückgezogen"
 
-#: zeit/workflow/publishinfo.py:69
+#: zeit/workflow/publishinfo.py:70
 msgid "publish-preconditions-blacklist"
 msgstr "Der Inhalt befindet sich in einem Testordner."
 
-#: zeit/workflow/publishinfo.py:77
+#: zeit/workflow/publishinfo.py:78
 msgid "publish-preconditions-locked-published"
 msgstr "Bitte erst depublizieren, dann Sperrvermerk setzen."
 
-#: zeit/workflow/publishinfo.py:79
+#: zeit/workflow/publishinfo.py:80
 msgid "publish-preconditions-locked"
 msgstr "Sperrvermerk »${reason}«"
 
-#: zeit/workflow/publishinfo.py:135 zeit/workflow/workflow.py:61
+#: zeit/workflow/publishinfo.py:136 zeit/workflow/workflow.py:61
 msgid "${name}: ${new_value}"
 msgstr "${name}: ${new_value}"
 
