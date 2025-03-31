@@ -49,16 +49,22 @@ def _publish_scheduled_content():
     publish_retract_margin = int(
         zeit.cms.config.get('zeit.workflow', 'scheduled-query-publish-margin-minutes', 10)
     )
+    publish_restrict_days = int(
+        zeit.cms.config.get('zeit.workflow', 'scheduled-query-publish-restrict-days', 30)
+    )
     sql_query = """
         published = false
         AND date_scheduled_publish <= NOW()
+        AND date_scheduled_publish >= CURRENT_DATE - INTERVAL ':restrict days'
         AND (date_last_retracted IS NULL OR date_last_retracted < date_scheduled_publish)
         AND (
           date_scheduled_retract IS NULL
           OR date_scheduled_retract > date_scheduled_publish + INTERVAL ':margin minutes'
         )
     """
-    _handle_scheduled_content('publish', sql_query, margin=publish_retract_margin)
+    _handle_scheduled_content(
+        'publish', sql_query, margin=publish_retract_margin, restrict=publish_restrict_days
+    )
 
 
 @runner(principal=from_config('zeit.workflow', 'schedule-principal'))
