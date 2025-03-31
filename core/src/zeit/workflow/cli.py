@@ -3,7 +3,6 @@ import logging
 from sqlalchemy import select
 from sqlalchemy import text as sql
 import opentelemetry.trace
-import z3c.celery.celery
 import zope.component
 
 from zeit.cms.cli import commit_with_retry, from_config, runner
@@ -29,9 +28,8 @@ def _handle_scheduled_content(action, sql_query, **params):
             try:
                 func = getattr(publish, action)
                 func(background=False)
-            except z3c.celery.celery.HandleAfterAbort as e:
-                if 'LockingError' in e.message:  # kludgy
-                    log.warning('Skip %s due to %s', content, e.message)
+            except Exception as e:
+                log.warning('Skip %s due to %s', content, e)
                 current_span = opentelemetry.trace.get_current_span()
                 current_span.record_exception(e)
 
