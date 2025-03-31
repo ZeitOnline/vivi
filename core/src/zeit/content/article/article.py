@@ -542,3 +542,58 @@ class AudioDependency(zeit.cms.workflow.dependency.DependencyBase):
         if audio_refs:
             return audio_refs.items
         return ()
+
+
+@grok.subscribe(
+    zeit.content.article.interfaces.IArticle,
+    zeit.cms.repository.interfaces.IAfterTraverse,
+)
+def preload_cache(context, event):
+    import logging
+
+    from sqlalchemy import or_ as sql_or
+    from sqlalchemy import select
+
+    from zeit.connector.models import Content
+
+    context = zope.security.proxy.getObject(context)
+
+    connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+    logging.info('Preload %s', context)
+    to_load = []
+
+    references = [
+        (context, 'authorships'),
+        (context, 'agencies'),
+        (zeit.content.audio.interfaces.IAudioReferences(context), 'items'),
+        (zeit.content.image.interfaces.IImages(context), '_image'),
+        (context.main_image_block, 'references'),
+    ]
+    for obj, name in references:
+        prop = getattr(type(obj), name)
+        for node in prop._reference_nodes(obj):
+            ref = zope.component.queryMultiAdapter(
+                (obj, node),
+                zeit.cms.content.interfaces.IReference,
+                name=prop.xml_reference_name,
+            )
+            to_load.append(ref.target_unique_id)
+
+    for module in context.body.values():
+        if zeit.content.article.edit.interfaces.IReference.providedBy(module):
+            to_load.append(module.xml.get('href'))
+        if zeit.content.article.edit.interfaces.ITopicbox.providedBy(module):
+            if module.automatic_type == 'manual':
+                for x in ['first_reference', 'second_reference', 'third_reference']:
+                    node = module.xml.find(x)
+                    if node is not None:
+                        to_load.append(node.get('href'))
+
+    paths = []
+    for x in to_load:
+        if not x:
+            continue
+        parent, name = connector._pathkey(x)
+        paths.append((Content.parent_path == parent) & (Content.name == name))
+    query = select(Content).where(sql_or(*paths))
+    connector.search_sql(query)

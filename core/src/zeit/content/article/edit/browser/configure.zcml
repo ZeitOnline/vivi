@@ -32,6 +32,7 @@
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="contents"
+    class=".edit.Editor"
     template="editor-content.pt"
     permission="zope.View"
     />

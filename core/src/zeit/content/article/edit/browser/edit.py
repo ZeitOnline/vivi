@@ -31,6 +31,12 @@ import zeit.edit.browser.view
 log = logging.getLogger(__name__)
 
 
+class Editor:
+    def __call__(self):
+        zope.event.notify(zeit.cms.repository.interfaces.AfterTraverse(self.context))
+        return super().__call__()
+
+
 class Empty:
     def render(self):
         return ''
