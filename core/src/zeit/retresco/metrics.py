@@ -94,38 +94,6 @@ def _collect_vgwort_token_count():
     metric.labels(environment()).set(len(tokens))
 
 
-def _collect_highest_kpi_value():
-    KPI_FIELDS = zeit.retresco.interfaces.KPIFieldSource()
-
-    def query(kpi):
-        return {
-            'query': {
-                'bool': {
-                    'filter': [
-                        {'term': {'doc_type': 'article'}},
-                        {'range': {'payload.document.date_first_released': {'gt': 'now-1d'}}},
-                    ]
-                }
-            },
-            '_source': list(KPI_FIELDS.values()),
-            'sort': [{kpi: 'desc'}],
-        }
-
-    metric = Gauge(
-        'tms_highest_kpi_value',
-        labelnames=['field'],
-    )
-
-    for name, tms in KPI_FIELDS.items():
-        result = elastic('external').search(query(tms), rows=1)
-        try:
-            row = result[0]
-        except IndexError:
-            pass
-        else:
-            metric.labels(environment(), name).set(row.get(tms, 0))
-
-
 @zeit.cms.cli.runner()
 def collect():
     """Collects all app-specific metrics that we have. Mostly these are based
