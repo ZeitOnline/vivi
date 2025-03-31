@@ -1,12 +1,10 @@
-import os
-import unittest
-
 import plone.testing
 import pytest
 import zope.component
 import zope.index.text.interfaces
 import zope.interface
 
+from zeit.cms.testing import vault_read
 import zeit.cms.content.interfaces
 import zeit.cms.testing
 import zeit.cms.webtest
@@ -19,8 +17,6 @@ import zeit.vgwort.interfaces
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
     {
         'vgwort-url': 'https://tom-test.vgwort.de/',
-        'username': os.environ.get('ZEIT_VGWORT_USERNAME', ''),
-        'password': os.environ.get('ZEIT_VGWORT_PASSWORD', ''),
         'minimum-token-amount': '10',
         'order-token-amount': '1',
         'days-before-report': '7',
@@ -56,7 +52,19 @@ class XMLRPCLayer(plone.testing.Layer):
 
 XMLRPC_LAYER = XMLRPCLayer()
 
-SOAP_ZCML_LAYER = zeit.cms.testing.ZCMLLayer('ftesting-soap.zcml', bases=(CONFIG_LAYER,))
+
+class IntegrationConfigLayer(zeit.cms.testing.ProductConfigLayer):
+    defaultBases = (zeit.content.author.testing.CONFIG_LAYER,)
+
+    def setUp(self):
+        credentials = vault_read('zon/v1/vgwort/production/vivi')
+        self.config['username'] = credentials['username']
+        self.config['password'] = credentials['password']
+        super().setUp()
+
+
+SOAP_CONFIG_LAYER = IntegrationConfigLayer(CONFIG_LAYER.config)
+SOAP_ZCML_LAYER = zeit.cms.testing.ZCMLLayer('ftesting-soap.zcml', bases=(SOAP_CONFIG_LAYER,))
 SOAP_LAYER = zeit.cms.testing.ZopeLayer(bases=(SOAP_ZCML_LAYER,))
 
 
@@ -73,7 +81,7 @@ class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
 
 
 @pytest.mark.integration()
-class EndToEndTestCase(zeit.cms.testing.FunctionalTestCase, unittest.TestCase):
+class EndToEndTestCase(zeit.cms.testing.FunctionalTestCase):
     layer = SOAP_LAYER
     level = 2
 
