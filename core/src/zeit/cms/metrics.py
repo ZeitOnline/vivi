@@ -6,12 +6,11 @@ from sqlalchemy import text as sql
 import prometheus_client
 import zope.component
 
-from zeit.connector.models import Content as ConnectorModel
+from zeit.connector.models import Content
 import zeit.cms.cli
 import zeit.cms.config
-import zeit.find.interfaces
-import zeit.push.interfaces
-import zeit.retresco.interfaces
+import zeit.connector.interfaces
+import zeit.vgwort.interfaces
 
 
 REGISTRY = prometheus_client.CollectorRegistry()
@@ -46,45 +45,26 @@ def environment():
     return zeit.cms.config.required('zeit.cms', 'environment')
 
 
-def elastic(kind):
-    if kind == 'external':
-        return zope.component.getUtility(zeit.retresco.interfaces.IElasticsearch)
-    elif kind == 'internal':
-        return zope.component.getUtility(zeit.find.interfaces.ICMSSearch)
-
-
 def _collect_importers():
     metric = Gauge('vivi_recent_content_published_total', labelnames=['content'])
+    connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
     queries = {
-        'podcast': [
-            {'term': {'doc_type': 'audio'}},
-            {'term': {'payload.audio.audio_type': 'podcast'}},
-        ],
-        'news': [{'term': {'payload.workflow.product-id': 'News'}}],
-        'video': [{'term': {'doc_type': 'video'}}],
+        'podcast': "type='audio' AND audio_type='podcast'",
+        'news': "product='News'",
+        'video': "type='video'",
     }
     for name, query in queries.items():
-        query = {
-            'query': {
-                'bool': {
-                    'filter': [
-                        {'range': {'payload.workflow.date_last_published': {'gt': 'now-1h'}}}
-                    ]
-                    + query
-                }
-            }
-        }
-        metric.labels(environment(), name).set(elastic('external').search(query, rows=0).hits)
+        query += " AND published=true AND date_last_published > NOW() - interval '1 hour'"
+        query = select(Content).where(sql(query))
+        metric.labels(environment(), name).set(connector.search_sql_count(query))
 
 
 def _collect_vgwort_report():
     metric = Gauge('vivi_recent_vgwort_reported_total')
-    sql_query = (
-        "type = 'article' AND published = true AND vgwort_reported_on > NOW() - INTERVAL '1 hour'"
-    )
     connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
-    query = select(ConnectorModel)
-    query = query.where(sql(sql_query))
+    query = """type = 'article' AND published = true
+    AND vgwort_reported_on > NOW() - INTERVAL '1 hour'"""
+    query = select(Content).where(sql(query))
     metric.labels(environment()).set(connector.search_sql_count(query))
 
 
