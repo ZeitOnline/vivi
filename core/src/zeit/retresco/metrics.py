@@ -6,9 +6,7 @@ from sqlalchemy import text as sql
 import prometheus_client
 import zope.component
 
-from zeit.cms.interfaces import ICMSContent
 from zeit.connector.models import Content as ConnectorModel
-from zeit.content.article.interfaces import IArticle
 import zeit.cms.cli
 import zeit.cms.config
 import zeit.find.interfaces
@@ -94,32 +92,6 @@ def _collect_vgwort_token_count():
     metric = Gauge('vivi_available_vgwort_tokens_total')
     tokens = zope.component.getUtility(zeit.vgwort.interfaces.ITokens)
     metric.labels(environment()).set(len(tokens))
-
-
-def _collect_missing_tms_authors():
-    metric = Counter('vivi_articles_with_missing_tms_authors')
-    query = {
-        'query': {
-            'bool': {
-                'filter': [
-                    {'term': {'doc_type': 'article'}},
-                    {'range': {'payload.document.date_first_released': {'gt': 'now-30m'}}},
-                ]
-            }
-        },
-        '_source': ['url', 'payload.head.authors'],
-    }
-    for row in elastic('external').search(query, rows=100):
-        content = ICMSContent('http://xml.zeit.de' + row['url'], None)
-        if not IArticle.providedBy(content):
-            log.info('Skip %s, not found', row['url'])
-            continue
-        tms = row.get('payload', {}).get('head', {}).get('authors', [])
-        for ref in content.authorships:
-            id = ref.target_unique_id
-            if id and id not in tms:
-                log.warning('%s: author %s not found in TMS', content, id)
-                metric.labels(environment()).inc()
 
 
 def _collect_highest_kpi_value():
