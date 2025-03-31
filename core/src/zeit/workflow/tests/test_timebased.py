@@ -80,6 +80,14 @@ class TimeBasedEndToEndTest(zeit.workflow.testing.SQLTestCase):
         self.assertTrue(zeit.cms.workflow.interfaces.IPublishInfo(self.content).published)
         self.assertEllipsis(f'...Skip ... {self.content.uniqueId}...', self.log.getvalue())
 
+    def test_scheduled_publish_skip_if_publish_error(self):
+        info = zeit.workflow.interfaces.ITimeBasedPublishing(self.content)
+        info.urgent = False
+        info.released_from = pendulum.now('UTC').add(seconds=-1)
+        _publish_scheduled_content()
+        self.assertFalse(zeit.cms.workflow.interfaces.IPublishInfo(self.content).published)
+        self.assertEllipsis(f'...Skip ... {self.content.uniqueId}...', self.log.getvalue())
+
     def test_scheduled_publish_respect_margin_to_retract(self):
         info = zeit.workflow.interfaces.ITimeBasedPublishing(self.content)
         info.released_from = pendulum.now('UTC').add(minutes=-2)

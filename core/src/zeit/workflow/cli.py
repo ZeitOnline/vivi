@@ -3,7 +3,6 @@ import logging
 from sqlalchemy import select
 from sqlalchemy import text as sql
 import opentelemetry.trace
-import z3c.celery.celery
 import zope.component
 
 from zeit.cms.cli import commit_with_retry, from_config, runner
@@ -29,9 +28,8 @@ def _handle_scheduled_content(action, sql_query, **params):
             try:
                 func = getattr(publish, action)
                 func(background=False)
-            except z3c.celery.celery.HandleAfterAbort as e:
-                if 'LockingError' in e.message:  # kludgy
-                    log.warning('Skip %s due to %s', content, e.message)
+            except Exception as e:
+                log.warning('Skip %s due to %s', content, e)
                 current_span = opentelemetry.trace.get_current_span()
                 current_span.record_exception(e)
 
@@ -51,16 +49,22 @@ def _publish_scheduled_content():
     publish_retract_margin = int(
         zeit.cms.config.get('zeit.workflow', 'scheduled-query-publish-margin-minutes', 10)
     )
+    publish_restrict_days = int(
+        zeit.cms.config.get('zeit.workflow', 'scheduled-query-publish-restrict-days', 30)
+    )
     sql_query = """
         published = false
         AND date_scheduled_publish <= NOW()
+        AND date_scheduled_publish >= CURRENT_DATE - INTERVAL ':restrict days'
         AND (date_last_retracted IS NULL OR date_last_retracted < date_scheduled_publish)
         AND (
           date_scheduled_retract IS NULL
           OR date_scheduled_retract > date_scheduled_publish + INTERVAL ':margin minutes'
         )
     """
-    _handle_scheduled_content('publish', sql_query, margin=publish_retract_margin)
+    _handle_scheduled_content(
+        'publish', sql_query, margin=publish_retract_margin, restrict=publish_restrict_days
+    )
 
 
 @runner(principal=from_config('zeit.workflow', 'schedule-principal'))

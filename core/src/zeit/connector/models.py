@@ -204,6 +204,7 @@ class Content(Base, CommonMetadata, ContentTypes, Timestamps, Miscellaneous, VGW
                     'date_first_released',
                     'date_scheduled_publish',
                     'date_scheduled_retract',
+                    'date_last_retracted',
                 ]
             )
             + tuple(
