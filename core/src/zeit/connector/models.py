@@ -78,6 +78,9 @@ class ContentTypes:
     audio_speech_enabled = mapped_column(
         Boolean, info={'namespace': 'document', 'name': 'audio_speechbert'}
     )
+    audio_type = mapped_column(
+        Unicode, info={'namespace': 'audio', 'name': 'audio_type', 'migration': 'wcm_695'}
+    )
 
     article_genre = mapped_column(Unicode, info={'namespace': 'document', 'name': 'genre'})
     article_header = mapped_column(Unicode, info={'namespace': 'document', 'name': 'header_layout'})
@@ -215,6 +218,7 @@ class Content(Base, CommonMetadata, ContentTypes, Timestamps, Miscellaneous, VGW
                     'article_header',
                     'article_template',
                     'audio_premium_enabled',
+                    'audio_type',
                     'author_hdok_id',
                     'author_ssoid',
                     'centerpage_type',
