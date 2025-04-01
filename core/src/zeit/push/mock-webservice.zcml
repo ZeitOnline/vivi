@@ -3,6 +3,5 @@
   <include package="zope.component" file="meta.zcml" />
 
   <utility factory=".testing.PushNotifier" name="homepage" />
-  <utility factory=".testing.PushNotifier" name="grafana" />
 
 </configure>

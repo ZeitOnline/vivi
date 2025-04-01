@@ -3,6 +3,5 @@
   <include package="zope.component" file="meta.zcml" />
 
   <utility factory=".banner.Push" name="homepage" />
-  <utility factory=".grafana.from_product_config" name="grafana" />
 
 </configure>
