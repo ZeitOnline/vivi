@@ -6,6 +6,7 @@ import pytest
 import transaction
 import zope.component
 
+from zeit.cms.testing import vault_read
 import zeit.authentication.azure
 import zeit.authentication.oidc
 import zeit.authentication.testing
@@ -62,11 +63,11 @@ class ADIntegrationTest(zeit.authentication.testing.FunctionalTestCase):
     def setUp(self):
         super().setUp()
         gsm = zope.component.getGlobalSiteManager()
-        env = os.environ
+        credentials = vault_read('zon/v1/azure/activedirectory/oidc/staging/vivi')
         self.ad = zeit.authentication.azure.AzureAD(
-            env['ZEIT_AD_TENANT'],
-            env['ZEIT_AD_CLIENT_ID'],
-            env['ZEIT_AD_CLIENT_SECRET'],
+            os.environ['ZEIT_AD_TENANT'],
+            credentials['client_id'],
+            credentials['client_secret'],
         )
         gsm.registerUtility(self.ad)
 

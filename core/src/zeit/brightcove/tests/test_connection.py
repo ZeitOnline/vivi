@@ -1,10 +1,10 @@
 from unittest import mock
-import os
 import unittest
 
 import pytest
 import requests.exceptions
 
+from zeit.cms.testing import vault_read
 import zeit.brightcove.connection
 
 
@@ -13,11 +13,12 @@ class APIIntegration(unittest.TestCase):
     level = 2
 
     def test_invalid_accesstoken_refreshes_and_retries_request(self):
+        credentials = vault_read('zon/v1/brightcove/production/readonly')
         api = zeit.brightcove.connection.CMSAPI(
             'https://cms.api.brightcove.com/v1/accounts/18140073001',
             'https://oauth.brightcove.com/v4',
-            os.environ.get('ZEIT_BRIGHTCOVE_CLIENT_ID'),
-            os.environ.get('ZEIT_BRIGHTCOVE_CLIENT_SECRET'),
+            credentials['client_id'],
+            credentials['client_secret'],
             timeout=2,
         )
         try:
@@ -29,7 +30,7 @@ class APIIntegration(unittest.TestCase):
     def test_playback_api_authenticates_with_policy_key(self):
         api = zeit.brightcove.connection.PlaybackAPI(
             'https://edge.api.brightcove.com/playback/v1/accounts/18140073001',
-            os.environ.get('ZEIT_BRIGHTCOVE_POLICY_KEY'),
+            vault_read('zon/v1/brightcove/production/readonly', 'policy_key'),
             timeout=2,
         )
         try:
