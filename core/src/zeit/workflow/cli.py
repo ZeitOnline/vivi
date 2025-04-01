@@ -15,9 +15,6 @@ log = logging.getLogger(__name__)
 
 def _handle_scheduled_content(action, sql_query, **params):
     bind_params = {key: value for key, value in params.items()}
-    age = int(zeit.cms.config.get('zeit.workflow', 'scheduled-query-restrict-days', 60))
-    bind_params['age'] = age
-    sql_query += """ AND last_updated >= CURRENT_DATE - INTERVAL ':age days'"""
     query = select(ConnectorModel)
     query = query.where(sql(sql_query).bindparams(**bind_params))
     repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
