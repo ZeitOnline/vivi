@@ -682,6 +682,8 @@ class Connector:
         op = expr.operator
         if op == 'and':
             return sqlalchemy.and_(*(self._build_filter(e) for e in expr.operands))
+        elif op == 'or':
+            return sqlalchemy.or_(*(self._build_filter(e) for e in expr.operands))
         elif op == 'eq':
             (var, value) = expr.operands
             name = var.name
