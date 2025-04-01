@@ -236,10 +236,10 @@ class Comments(grok.Adapter):
 
     def publish_json(self):
         return {
-            'comments_allowed': self.context.commentsAllowed,
-            'pre_moderated': self.context.commentsPremoderate,
+            'comments_allowed': bool(self.context.commentsAllowed),
+            'pre_moderated': bool(self.context.commentsPremoderate),
             'type': 'commentsection',
-            'visible': self.context.commentSectionEnable,
+            'visible': bool(self.context.commentSectionEnable),
         }
 
     def retract_json(self):
@@ -420,7 +420,7 @@ class Summy(grok.Adapter, IgnoreMixin):
     def _json(self):
         return {
             'text': self.context.get_body(),
-            'avoid_create_summary': self.context.avoid_create_summary,
+            'avoid_create_summary': bool(self.context.avoid_create_summary),
         }
 
     def publish_json(self):
