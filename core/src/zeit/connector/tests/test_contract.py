@@ -509,6 +509,19 @@ class ContractSearch:
         result = list(self.connector.search([foo, ham], (foo == 'bar') & (ham == 'egg')))
         assert result == [('http://xml.zeit.de/testing/bar', 'bar', 'egg')]
 
+    def test_search_or_operator(self):
+        self.add_resource('foo', body='mybody', properties={('foo', self.NS): 'foo'})
+        self.add_resource(
+            'bar', body='mybody', properties={('foo', self.NS): 'bar', ('ham', self.NS): 'egg'}
+        )
+        foo = SearchVar('foo', self.NS)
+        ham = SearchVar('ham', self.NS)
+        result = list(self.connector.search([foo], (foo == 'foo') | (ham == 'egg')))
+        assert result == [
+            ('http://xml.zeit.de/testing/foo', 'foo'),
+            ('http://xml.zeit.de/testing/bar', 'bar'),
+        ]
+
     def test_search_order_limit_offset(self):
         self.add_resource('c1', body='mybody', properties={('foo', self.NS): 'foo'})
         self.add_resource('c2', body='mybody', properties={('foo', self.NS): 'foo'})
