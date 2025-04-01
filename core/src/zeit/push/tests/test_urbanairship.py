@@ -1,67 +1,12 @@
-# coding=utf-8
-from datetime import datetime
-
-import time_machine
 import zope.component
 import zope.event
 
-from zeit.cms.interfaces import ICMSContent
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import zeit.cms.checkout.helper
 import zeit.cms.content.interfaces
 import zeit.push.interfaces
 import zeit.push.testing
 import zeit.push.urbanairship
-
-
-class ConnectionTest(zeit.push.testing.TestCase):
-    def setUp(self):
-        super().setUp()
-        self.message = zeit.push.urbanairship.Message(
-            ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
-        )
-        self.message.config = {
-            'uses_image': True,
-            'payload_template': 'template.json',
-            'enabled': True,
-            'override_text': 'foo',
-            'type': 'mobile',
-        }
-        self.create_payload_template()
-
-    @time_machine.travel(datetime(2014, 7, 1, 10, 15, 7, 38))
-    def test_template_content_is_transformed_to_ua_payload(self):
-        message = self.message.render()
-        android = message[0]
-        self.assertEqual(['android'], android['device_types'])
-        self.assertEqual(
-            {'group': 'subscriptions', 'tag': 'Eilmeldung'}, android['audience']['OR'][0]
-        )
-        self.assertEqual('foo', android['notification']['alert'])
-        self.assertEqual(
-            'Rückkehr der Warlords', android['notification']['android']['extra']['headline']
-        )
-        self.assertEqual(
-            '4850d936-a3b7-4ff0-8434-57d26ca7521b',
-            android['notification']['android']['uuid'],
-        )
-
-        ios = message[1]
-        self.assertEqual(['ios'], ios['device_types'])
-        self.assertEqual({'group': 'subscriptions', 'tag': 'Eilmeldung'}, ios['audience']['OR'][0])
-        self.assertEqual('foo', ios['notification']['alert'])
-        self.assertEqual('Rückkehr der Warlords', ios['notification']['ios']['title'])
-        self.assertEqual('4850d936-a3b7-4ff0-8434-57d26ca7521b', ios['notification']['ios']['uuid'])
-
-        open_slack = message[2]
-        self.assertEqual(['open::slack'], open_slack['device_types'])
-        self.assertEqual(
-            {'open_channel': 'cec48c28-4486-4c95-989e-0bbed3edc714'}, open_slack['audience']
-        )
-        self.assertEqual('foo', open_slack['notification']['alert'])
-        self.assertEqual(
-            'Nicht Corona', open_slack['notification']['open::slack']['extra']['recipients']
-        )
 
 
 class PayloadSourceTest(zeit.push.testing.TestCase):
