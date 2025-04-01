@@ -3,6 +3,18 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.69.0 (2025-04-01)
+-------------------
+
+- WCM-694: remove option to restrict time range in scheduled query because it does not improve performance
+
+- WCM-807: Implement OR operator in DAV-style connector search
+
+- WCM-808: Transmit None as False to publisher for comments bool fields
+
+- ZO-5382: Remove unused grafana connection, has moved to publisher
+
+
 7.68.0 (2025-03-31)
 -------------------
 
