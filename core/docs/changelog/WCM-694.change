@@ -1,0 +1,1 @@
+WCM-694: remove option to restrict time range in scheduled query because it does not improve performance
