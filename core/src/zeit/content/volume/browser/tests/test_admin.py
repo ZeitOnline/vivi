@@ -80,16 +80,16 @@ class VolumeAdminBrowserTest(zeit.content.volume.testing.BrowserTestCase):
         b.open('http://localhost/++skin++vivi/repository/2015/01/ausgabe/@@publish-all')
 
     def test_publish_button_publishes_volume_content(self):
-        self.elastic.search.return_value = zeit.cms.interfaces.Result([{'url': '/testcontent'}])
+        connector = zope.component.getUtility(zeit.cms.interfaces.IConnector)
+        connector.search_result = ['http://xml.zeit.de/testcontent']
         self.publish_content()
         self.assertTrue(IPublishInfo(self.repository['testcontent']).published)
         self.assertTrue(IPublishInfo(self.repository['2015']['01']['ausgabe']).published)
 
     def test_referenced_boxes_of_articles_are_published_as_well(self):
         self.create_article_with_references()
-        self.elastic.search.return_value = zeit.cms.interfaces.Result(
-            [{'url': '/article_with_ref'}]
-        )
+        connector = zope.component.getUtility(zeit.cms.interfaces.IConnector)
+        connector.search_result = ['http://xml.zeit.de/article_with_ref']
         self.publish_content()
         self.assertTrue(
             zeit.cms.workflow.interfaces.IPublishInfo(self.repository['portraitbox']).published
@@ -100,9 +100,8 @@ class VolumeAdminBrowserTest(zeit.content.volume.testing.BrowserTestCase):
 
     def test_referenced_image_is_not_published(self):
         self.create_article_with_references()
-        self.elastic.search.return_value = zeit.cms.interfaces.Result(
-            [{'url': '/article_with_ref'}]
-        )
+        connector = zope.component.getUtility(zeit.cms.interfaces.IConnector)
+        connector.search_result = ['http://xml.zeit.de/article_with_ref']
         self.publish_content()
         self.assertFalse(
             zeit.cms.workflow.interfaces.IPublishInfo(self.repository['image']).published

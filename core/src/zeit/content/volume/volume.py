@@ -3,11 +3,12 @@ import datetime
 import itertools
 import logging
 
-from sqlalchemy import select
+from sqlalchemy import bindparam, select
 from sqlalchemy import text as sql
 import grokcore.component as grok
 import lxml.builder
 import requests
+import zope.component
 import zope.interface
 import zope.lifecycleevent
 import zope.schema
@@ -21,6 +22,7 @@ import zeit.cms.config
 import zeit.cms.content.dav
 import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces
+import zeit.cms.repository.interfaces
 import zeit.cms.type
 import zeit.cms.workflow.dependency
 import zeit.content.cp.interfaces
@@ -259,6 +261,30 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         product_ids = [prod.id for prod in self._all_products]
         return cover_id in cover_ids and product_id in product_ids
 
+    def all_content_via_storage(self, additional_constraints=None):
+        """
+        Get all content for this volume via storage
+        If u pass a list of additional query clauses, they will be added as
+        an AND-operand to the query.
+        """
+        products = [x.id for x in self._all_products]
+        query = """
+        volume_year = :year
+        AND volume_number = :volume
+        AND product IN :products
+        NOT channels @> '[["zeit-magazin", "wochenmarkt"]]'
+        """
+        query = select(ConnectorModel).where(
+            sql(query).bindparams(
+                bindparam('products', products, expanding=True), year=self.year, volume=self.volume
+            )
+        )
+        if additional_constraints:
+            query = query.where(sql(additional_constraints))
+
+        repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
+        return repository.search(query)
+
     def all_content_via_search(self, additional_query_constraints=None):
         """
         Get all content for this volume via ES.
@@ -344,13 +370,14 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         return cnts
 
     def content_with_references_for_publishing(self):
-        additional_constraints = [
-            {'term': {'doc_type': zeit.content.article.article.ArticleType.type}},
-            {'term': {'payload.workflow.published': False}},
-            {'term': {'payload.workflow.urgent': True}},
-        ]
-        articles_to_publish = self.all_content_via_search(
-            additional_query_constraints=additional_constraints
+        additional_constraints = """
+        type='article'
+        AND published=false
+        AND unsorted @@ '$.workflow.urgent == "yes"'
+        """
+
+        articles_to_publish = self.all_content_via_storage(
+            additional_constraints=additional_constraints
         )
         # Flatten the list of lists and remove duplicates
         articles_with_references = list(
