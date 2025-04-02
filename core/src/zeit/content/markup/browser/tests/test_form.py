@@ -19,3 +19,22 @@ class MarkupTest(zeit.content.markup.testing.BrowserTestCase):
 
         self.assertEllipsis('...goodbye...', b.contents)
         self.assertEllipsis('...<h1>sad noises</h1>...', b.contents)
+
+    smoke = [
+        ('one\n\ntwo\n\n', '<p>one</p>\n<p>two</p>'),
+        (
+            '* one\n* [two](https://example.com/)\n',
+            '<ul>\n<li>one</li>\n<li><a href="https://example.com/">two</a></li>\n</ul>',
+        ),
+    ]
+
+    def test_markdown_content_smoke(self):
+        self.test_add_markup()
+        b = self.browser
+        for md, html in self.smoke:
+            b.open('http://localhost/repository/online/2007/01/test-markdown/@@checkout')
+            b.getControl('Markdown content').value = md
+            b.getControl('Apply').click()
+            self.assertNotIn('There were errors', b.contents)
+            b.getLink('Checkin').click()
+            self.assertEllipsis(f'...{html}...', b.contents)
