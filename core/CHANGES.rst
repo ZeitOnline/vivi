@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.72.0 (2025-04-02)
+-------------------
+
+- WCM-694: allow scheduled publish to republish content
+
+
 7.71.0 (2025-04-02)
 -------------------
 
