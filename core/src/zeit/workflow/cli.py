@@ -14,11 +14,12 @@ log = logging.getLogger(__name__)
 
 
 def _handle_scheduled_content(action, sql_query, **params):
+    query_timeout = int(zeit.cms.config.get('zeit.workflow', 'scheduled-query-timeouts-ms', 10000))
     bind_params = {key: value for key, value in params.items()}
     query = select(ConnectorModel)
     query = query.where(sql(sql_query).bindparams(**bind_params))
     repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
-    results = repository.search(query)
+    results = repository.search(query, query_timeout)
     for content in results:
         publish = zeit.cms.workflow.interfaces.IPublish(content)
         for _ in commit_with_retry():
