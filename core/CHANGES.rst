@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.70.0 (2025-04-02)
+-------------------
+
+- WCM-694: add timeout setting for scheduled publish/retract query
+
+
 7.69.0 (2025-04-01)
 -------------------
 
