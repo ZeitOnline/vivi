@@ -51,6 +51,17 @@ class TimeBasedEndToEndTest(zeit.workflow.testing.SQLTestCase):
         self.assertTrue(zeit.cms.workflow.interfaces.IPublishInfo(self.content).published)
         self.assertEllipsis(f'...Publishing {self.content.uniqueId}...', self.log.getvalue())
 
+    def test_scheduled_republish(self):
+        info = zeit.workflow.interfaces.ITimeBasedPublishing(self.content)
+        info.released_to = pendulum.now('UTC').add(hours=1)
+        info = zeit.cms.workflow.interfaces.IPublishInfo(self.content)
+        info.published = True
+        info.date_last_published = pendulum.now('UTC').add(hours=-1)
+        info.released_from = pendulum.now('UTC').add(seconds=-1)
+        _publish_scheduled_content()
+        self.assertTrue(zeit.cms.workflow.interfaces.IPublishInfo(self.content).published)
+        self.assertEllipsis(f'...Publishing {self.content.uniqueId}...', self.log.getvalue())
+
     def test_scheduled_retract(self):
         info = zeit.workflow.interfaces.ITimeBasedPublishing(self.content)
         info.released_to = pendulum.now('UTC').add(hours=1)
