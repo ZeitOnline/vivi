@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.71.0 (2025-04-02)
+-------------------
+
+- WCM-694: restrict days also for retract timeframe
+
+
 7.70.0 (2025-04-02)
 -------------------
 
