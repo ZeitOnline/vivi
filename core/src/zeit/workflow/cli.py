@@ -34,12 +34,16 @@ def _handle_scheduled_content(action, sql_query, **params):
 
 def _retract_scheduled_content():
     """Only retract content that has been published before scheduled retract"""
+    retract_restrict_days = int(
+        zeit.cms.config.get('zeit.workflow', 'scheduled-query-retract-restrict-days', 30)
+    )
     sql_query = """
         published = true
+        AND date_scheduled_retract >= CURRENT_DATE - INTERVAL ':restrict days'
         AND date_last_published <= date_scheduled_retract
         AND date_scheduled_retract <= NOW()
     """
-    _handle_scheduled_content('retract', sql_query)
+    _handle_scheduled_content('retract', sql_query, restrict=retract_restrict_days)
 
 
 def _publish_scheduled_content():
