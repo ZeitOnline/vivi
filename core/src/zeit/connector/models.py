@@ -82,9 +82,7 @@ class ContentTypes:
 
     article_genre = mapped_column(Unicode, info={'namespace': 'document', 'name': 'genre'})
     article_header = mapped_column(Unicode, info={'namespace': 'document', 'name': 'header_layout'})
-    article_template = mapped_column(
-        Unicode, info={'namespace': 'document', 'name': 'template', 'migration': 'wcm_547'}
-    )
+    article_template = mapped_column(Unicode, info={'namespace': 'document', 'name': 'template'})
 
     author_firstname = mapped_column(Unicode, info={'namespace': 'author', 'name': 'firstname'})
     author_lastname = mapped_column(Unicode, info={'namespace': 'author', 'name': 'lastname'})
