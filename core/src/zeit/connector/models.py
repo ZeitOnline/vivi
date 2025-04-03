@@ -101,7 +101,9 @@ class ContentTypes:
     author_vgwort_code = mapped_column(Unicode, info={'namespace': 'author', 'name': 'vgwort_code'})
 
     centerpage_type = mapped_column(Unicode, info={'namespace': 'zeit.content.cp', 'name': 'type'})
-
+    image_separately_purchased = mapped_column(
+        Boolean, info={'namespace': 'image', 'name': 'single_purchase', 'migration': 'wcm_695'}
+    )
     gallery_type = mapped_column(
         Unicode, info={'namespace': 'zeit.content.gallery', 'name': 'type'}
     )
@@ -222,6 +224,7 @@ class Content(Base, CommonMetadata, ContentTypes, Timestamps, Miscellaneous, VGW
                     'author_hdok_id',
                     'author_ssoid',
                     'centerpage_type',
+                    'image_separately_purchased',
                     'print_ressort',
                     'product',
                     'published',

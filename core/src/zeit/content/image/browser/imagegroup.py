@@ -2,16 +2,20 @@ import csv
 import io
 import re
 
+from sqlalchemy import select
+from sqlalchemy import text as sql
 from zope.formlib.widget import CustomWidgetFactory
 import gocept.form.grouped
 import grokcore.component as grok
 import pendulum
 import zc.table.column
+import zope.component
 import zope.formlib.form
 import zope.publisher.interfaces
 
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import IPublishInfo
+from zeit.connector.models import Content
 from zeit.content.image.browser.interfaces import IMasterImageUploadSchema, IPurchaseReport
 from zeit.content.image.browser.mdb import MDBImportWidget
 from zeit.content.image.interfaces import INFOGRAPHIC_DISPLAY_TYPE
@@ -20,13 +24,12 @@ import zeit.cms.browser.listing
 import zeit.cms.browser.menu
 import zeit.cms.browser.view
 import zeit.cms.config
+import zeit.cms.repository.interfaces
 import zeit.content.image.browser.form
 import zeit.content.image.image
 import zeit.content.image.imagegroup
 import zeit.content.image.interfaces
-import zeit.find.interfaces
 import zeit.ghost.ghost
-import zeit.retresco.interfaces
 import zeit.workflow.interfaces
 
 
@@ -360,31 +363,13 @@ class CopyrightCompanyPurchaseReport(zeit.cms.browser.form.EditForm):
                 yield ['ERROR', str(e), imgr_content.uniqueId]
                 continue
 
-    def find_imagegroups(self, date_start, date_end):
-        es = zope.component.getUtility(zeit.find.interfaces.ICMSSearch)
-        query = {
-            'query': {
-                'bool': {
-                    'filter': [
-                        {
-                            'range': {
-                                'payload.document.date_first_released': {
-                                    'gte': date_start.isoformat(),
-                                    'lte': date_end.isoformat(),
-                                }
-                            }
-                        },
-                        {'term': {'doc_type': 'image-group'}},
-                        {'term': {'payload.image.single_purchase': True}},
-                    ]
-                }
-            }
-        }
-        results = es.search(query, rows=10000)
-        imgroups = []
-        for result in results:
-            imgroups.append(zeit.retresco.interfaces.ITMSContent(result))
-        return imgroups
+    def find_imagegroups(self, start, end):
+        repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
+        query = """type='image-group' AND image_separately_purchased=true
+        AND date_first_released between :start and :end
+        """
+        query = select(Content).where(sql(query).bindparams(start=start, end=end))
+        return repository.search(query)
 
 
 class MenuItem(zeit.cms.browser.menu.GlobalMenuItem):
