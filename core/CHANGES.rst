@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.75.0 (2025-04-03)
+-------------------
+
+- WCM-692, WCM-694, WCM-695, WCM-758: Remove migration toggles
+
+
 7.74.0 (2025-04-03)
 -------------------
 
