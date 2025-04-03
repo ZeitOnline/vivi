@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.77.0 (2025-04-03)
+-------------------
+
+MAINT:
+- Be precise about evaluating toggle xml config file: ignore empty root node
+
+
 7.76.0 (2025-04-03)
 -------------------
 
