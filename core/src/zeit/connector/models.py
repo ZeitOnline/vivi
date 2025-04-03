@@ -141,10 +141,10 @@ class Timestamps:
         TIMESTAMP, info={'namespace': 'document', 'name': 'print-publish'}
     )
     date_scheduled_publish = mapped_column(
-        TIMESTAMP, info={'namespace': 'workflow', 'name': 'released_from', 'migration': 'wcm_694'}
+        TIMESTAMP, info={'namespace': 'workflow', 'name': 'released_from'}
     )
     date_scheduled_retract = mapped_column(
-        TIMESTAMP, info={'namespace': 'workflow', 'name': 'released_to', 'migration': 'wcm_694'}
+        TIMESTAMP, info={'namespace': 'workflow', 'name': 'released_to'}
     )
 
 
@@ -156,16 +156,16 @@ class Miscellaneous:
 
 class VGWort:
     vgwort_reported_on = mapped_column(
-        TIMESTAMP, info={'namespace': 'vgwort', 'name': 'reported_on', 'migration': 'wcm_758'}
+        TIMESTAMP, info={'namespace': 'vgwort', 'name': 'reported_on'}
     )
     vgwort_reported_error = mapped_column(
-        Unicode, info={'namespace': 'vgwort', 'name': 'reported_error', 'migration': 'wcm_758'}
+        Unicode, info={'namespace': 'vgwort', 'name': 'reported_error'}
     )
     vgwort_public_token = mapped_column(
-        Unicode, info={'namespace': 'vgwort', 'name': 'public_token', 'migration': 'wcm_758'}
+        Unicode, info={'namespace': 'vgwort', 'name': 'public_token'}
     )
     vgwort_private_token = mapped_column(
-        Unicode, info={'namespace': 'vgwort', 'name': 'private_token', 'migration': 'wcm_758'}
+        Unicode, info={'namespace': 'vgwort', 'name': 'private_token'}
     )
 
 
