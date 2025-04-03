@@ -4,7 +4,6 @@ from unittest import mock
 import pendulum
 import zope.component
 
-from zeit.cms.content.sources import FEATURE_TOGGLES
 import zeit.content.author.author
 import zeit.content.author.browser.honorar as honorar
 import zeit.content.author.interfaces
@@ -113,7 +112,6 @@ class HonorarLookupTest(zeit.content.author.testing.BrowserTestCase):
         self.assertEqual('1234', b.getControl('Honorar ID').value)
 
     def test_checks_for_existing_hdok_id(self):
-        FEATURE_TOGGLES.set('xmlproperty_write_wcm_26', 'xmlproperty_read_wcm_26')
         exists = zeit.content.author.author.Author()
         exists.hdok_id = 12345
         self.repository['exists'] = exists

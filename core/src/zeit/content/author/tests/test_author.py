@@ -7,7 +7,6 @@ import zope.event
 
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.content.interfaces import ICommonMetadata
-from zeit.cms.content.sources import FEATURE_TOGGLES
 import zeit.cms.config
 import zeit.cms.interfaces
 import zeit.content.author.author
@@ -21,7 +20,6 @@ NONZERO = 3
 
 class AuthorTest(zeit.content.author.testing.FunctionalTestCase):
     def test_author_exists(self):
-        FEATURE_TOGGLES.set('xmlproperty_read_wcm_26')
         Author = zeit.content.author.author.Author
         self.assertFalse(Author.exists('William', 'Shakespeare'))
         ((_, query, *_),) = self.repository.connector.search_dav_args
