@@ -364,15 +364,15 @@ class PropertiesColumnTest(zeit.connector.testing.SQLTest):
 
     def setUp(self):
         super().setUp()
-        Content.date_created.info['migration'] = 'wcm_430'
+        Content.date_created.info['migration'] = 'test'
 
     def tearDown(self):
         Content.date_created.info.pop('migration', None)
         super().tearDown()
 
     def test_properties_are_written_simultaneously_to_separate_column_and_unsorted(self):
-        FEATURE_TOGGLES.set('column_write_wcm_430')
-        FEATURE_TOGGLES.set('column_read_wcm_430')
+        FEATURE_TOGGLES.set('column_write_test')
+        FEATURE_TOGGLES.set('column_read_test')
         timestamp = pendulum.datetime(1980, 1, 1)
         isoformat = timestamp.isoformat()
         res = self.add_resource('foo', properties={('date_created', f'{NS}document'): isoformat})
@@ -382,9 +382,9 @@ class PropertiesColumnTest(zeit.connector.testing.SQLTest):
         self.assertEqual(timestamp, content.date_created)
 
     def test_properties_can_be_stored_in_separate_columns(self):
-        FEATURE_TOGGLES.set('column_write_wcm_430')
-        FEATURE_TOGGLES.set('column_read_wcm_430')
-        FEATURE_TOGGLES.set('column_strict_wcm_430')
+        FEATURE_TOGGLES.set('column_write_test')
+        FEATURE_TOGGLES.set('column_read_test')
+        FEATURE_TOGGLES.set('column_strict_test')
         timestamp = pendulum.datetime(1980, 1, 1)
         isoformat = timestamp.isoformat()
         res = self.add_resource('foo', properties={('date_created', f'{NS}document'): isoformat})
@@ -394,12 +394,12 @@ class PropertiesColumnTest(zeit.connector.testing.SQLTest):
         self.assertEqual(timestamp, content.date_created)
 
     def test_search_looks_in_columns_or_unsorted_depending_on_toggle(self):
-        FEATURE_TOGGLES.set('column_write_wcm_430')
+        FEATURE_TOGGLES.set('column_write_test')
 
         res = self.add_resource('foo', properties={('ressort', f'{NS}document'): 'Wissen'})
         var = SearchVar('ressort', f'{NS}document')
         for toggle in [False, True]:  # XXX parametrize would be nice
-            FEATURE_TOGGLES.factory.override(toggle, 'column_read_wcm_430')
+            FEATURE_TOGGLES.factory.override(toggle, 'column_read_test')
             if toggle:
                 self.connector._get_content(res.id).unsorted = {}
                 transaction.commit()
@@ -408,16 +408,16 @@ class PropertiesColumnTest(zeit.connector.testing.SQLTest):
             self.assertEqual(res.id, unique_id)
 
     def test_revoke_write_toggle_must_not_break_checkin(self):
-        FEATURE_TOGGLES.set('column_write_wcm_430')
+        FEATURE_TOGGLES.set('column_write_test')
         self.repository['testcontent'] = ExampleContentType()
         example_date = pendulum.datetime(2024, 10, 1)
         with checked_out(self.repository['testcontent']) as co:
             IModified(co).date_created = example_date
-            FEATURE_TOGGLES.unset('column_write_wcm_430')
+            FEATURE_TOGGLES.unset('column_write_test')
 
     def test_delete_property_from_column(self):
-        FEATURE_TOGGLES.set('column_write_wcm_430')
-        FEATURE_TOGGLES.set('column_read_wcm_430')
+        FEATURE_TOGGLES.set('column_write_test')
+        FEATURE_TOGGLES.set('column_read_test')
         id = 'http://xml.zeit.de/testcontent'
         self.repository['testcontent'] = ExampleContentType()
         example_date = pendulum.datetime(2024, 1, 1).isoformat()
@@ -438,15 +438,15 @@ class PropertiesColumnTest(zeit.connector.testing.SQLTest):
             self.add_resource('bar', properties={('date_created', f'{NS}document'): date})
 
     def test_convert_exception_includes_column_name(self):
-        FEATURE_TOGGLES.set('column_write_wcm_430')
-        FEATURE_TOGGLES.set('column_read_wcm_430')
+        FEATURE_TOGGLES.set('column_write_test')
+        FEATURE_TOGGLES.set('column_read_test')
         with raises(ValueError) as e:
             self.add_resource('foo', properties={('date_created', f'{NS}document'): 'not a date'})
         self.assertIn("Cannot convert 'not a date' to date_created", str(e.value))
 
     def test_convert_supports_nullable_date_columns(self):
-        FEATURE_TOGGLES.set('column_write_wcm_430')
-        FEATURE_TOGGLES.set('column_read_wcm_430')
+        FEATURE_TOGGLES.set('column_write_test')
+        FEATURE_TOGGLES.set('column_read_test')
         res = self.add_resource('foo', properties={('date_created', f'{NS}document'): ''})
         content = self.connector._get_content(res.id)
         self.assertIsNone(content.date_created)
