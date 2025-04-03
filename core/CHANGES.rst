@@ -3,6 +3,16 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.73.0 (2025-04-03)
+-------------------
+
+- MAINT: more verbose logging, no csv input in delete-from-tms-index-script
+
+- WCM-692: Switch image purchase report from elasticsearch to content-storage
+
+- WCM-695: Switch imported content metrics from elasticsearch to content-storage
+
+
 7.72.0 (2025-04-02)
 -------------------
 
