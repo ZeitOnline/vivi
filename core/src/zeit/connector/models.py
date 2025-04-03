@@ -78,9 +78,7 @@ class ContentTypes:
     audio_speech_enabled = mapped_column(
         Boolean, info={'namespace': 'document', 'name': 'audio_speechbert'}
     )
-    audio_type = mapped_column(
-        Unicode, info={'namespace': 'audio', 'name': 'audio_type', 'migration': 'wcm_695'}
-    )
+    audio_type = mapped_column(Unicode, info={'namespace': 'audio', 'name': 'audio_type'})
 
     article_genre = mapped_column(Unicode, info={'namespace': 'document', 'name': 'genre'})
     article_header = mapped_column(Unicode, info={'namespace': 'document', 'name': 'header_layout'})
@@ -102,7 +100,7 @@ class ContentTypes:
 
     centerpage_type = mapped_column(Unicode, info={'namespace': 'zeit.content.cp', 'name': 'type'})
     image_separately_purchased = mapped_column(
-        Boolean, info={'namespace': 'image', 'name': 'single_purchase', 'migration': 'wcm_695'}
+        Boolean, info={'namespace': 'image', 'name': 'single_purchase'}
     )
     gallery_type = mapped_column(
         Unicode, info={'namespace': 'zeit.content.gallery', 'name': 'type'}

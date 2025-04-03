@@ -6,12 +6,10 @@ from sqlalchemy import text as sql
 import prometheus_client
 import zope.component
 
-from zeit.cms.content.source import FEATURE_TOGGLES
 from zeit.connector.models import Content
 import zeit.cms.cli
 import zeit.cms.config
 import zeit.connector.interfaces
-import zeit.retresco.interfaces
 import zeit.vgwort.interfaces
 
 
@@ -48,8 +46,6 @@ def environment():
 
 
 def _collect_importers():
-    if not FEATURE_TOGGLES.find('column_read_wcm_695'):
-        return
     metric = Gauge('vivi_recent_content_published_total', labelnames=['content'])
     connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
     queries = {
@@ -61,34 +57,6 @@ def _collect_importers():
         query += " AND published=true AND date_last_published > NOW() - interval '1 hour'"
         query = select(Content).where(sql(query))
         metric.labels(environment(), name).set(connector.search_sql_count(query))
-
-
-def _collect_bbb_importers_elastic():
-    if FEATURE_TOGGLES.find('column_read_wcm_695'):
-        return
-
-    metric = Gauge('vivi_recent_content_published_total', labelnames=['content'])
-    elastic = zope.component.getUtility(zeit.retresco.interfaces.IElasticsearch)
-    queries = {
-        'podcast': [
-            {'term': {'doc_type': 'audio'}},
-            {'term': {'payload.audio.audio_type': 'podcast'}},
-        ],
-        'news': [{'term': {'payload.workflow.product-id': 'News'}}],
-        'video': [{'term': {'doc_type': 'video'}}],
-    }
-    for name, query in queries.items():
-        query = {
-            'query': {
-                'bool': {
-                    'filter': [
-                        {'range': {'payload.workflow.date_last_published': {'gt': 'now-1h'}}}
-                    ]
-                    + query
-                }
-            }
-        }
-        metric.labels(environment(), name).set(elastic.search(query, rows=0).hits)
 
 
 def _collect_vgwort_report():
