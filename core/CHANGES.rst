@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.74.0 (2025-04-03)
+-------------------
+
+- WCM-695: Add toggle for metrics between elastic/sql
+
+
 7.73.0 (2025-04-03)
 -------------------
 
