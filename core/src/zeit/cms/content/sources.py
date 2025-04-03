@@ -480,7 +480,11 @@ class FeatureToggleSource(ShortCachedXMLBase, XMLSource):
     @FEATURE_CACHE.cache_on_arguments()
     def _values(self):
         tree = self._get_tree()
-        result = {node.tag: bool(node) for node in tree.xpath('//*') if not node.getchildren()}
+        result = {
+            node.tag: bool(node)
+            for node in tree.xpath('//*')
+            if isinstance(node, lxml.objectify.BoolElement)
+        }
         return result
 
 
