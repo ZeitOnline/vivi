@@ -4,7 +4,6 @@ import logging
 import pendulum
 import transaction
 
-from zeit.cms.content.sources import FEATURE_TOGGLES
 import zeit.cms.testing
 import zeit.cms.workflow
 import zeit.workflow.testing
@@ -15,8 +14,6 @@ from ..cli import _publish_scheduled_content, _retract_scheduled_content
 class TimeBasedEndToEndTest(zeit.workflow.testing.SQLTestCase):
     def setUp(self):
         super().setUp()
-        FEATURE_TOGGLES.set('column_write_wcm_694')
-        FEATURE_TOGGLES.set('column_read_wcm_694')
 
         self.add_resource('testcontent')
         self.content = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/testing/testcontent')
