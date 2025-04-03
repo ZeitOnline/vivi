@@ -78,9 +78,7 @@ class ContentTypes:
     audio_speech_enabled = mapped_column(
         Boolean, info={'namespace': 'document', 'name': 'audio_speechbert'}
     )
-    audio_type = mapped_column(
-        Unicode, info={'namespace': 'audio', 'name': 'audio_type', 'migration': 'wcm_695'}
-    )
+    audio_type = mapped_column(Unicode, info={'namespace': 'audio', 'name': 'audio_type'})
 
     article_genre = mapped_column(Unicode, info={'namespace': 'document', 'name': 'genre'})
     article_header = mapped_column(Unicode, info={'namespace': 'document', 'name': 'header_layout'})
@@ -102,7 +100,7 @@ class ContentTypes:
 
     centerpage_type = mapped_column(Unicode, info={'namespace': 'zeit.content.cp', 'name': 'type'})
     image_separately_purchased = mapped_column(
-        Boolean, info={'namespace': 'image', 'name': 'single_purchase', 'migration': 'wcm_695'}
+        Boolean, info={'namespace': 'image', 'name': 'single_purchase'}
     )
     gallery_type = mapped_column(
         Unicode, info={'namespace': 'zeit.content.gallery', 'name': 'type'}
@@ -143,10 +141,10 @@ class Timestamps:
         TIMESTAMP, info={'namespace': 'document', 'name': 'print-publish'}
     )
     date_scheduled_publish = mapped_column(
-        TIMESTAMP, info={'namespace': 'workflow', 'name': 'released_from', 'migration': 'wcm_694'}
+        TIMESTAMP, info={'namespace': 'workflow', 'name': 'released_from'}
     )
     date_scheduled_retract = mapped_column(
-        TIMESTAMP, info={'namespace': 'workflow', 'name': 'released_to', 'migration': 'wcm_694'}
+        TIMESTAMP, info={'namespace': 'workflow', 'name': 'released_to'}
     )
 
 
@@ -158,16 +156,16 @@ class Miscellaneous:
 
 class VGWort:
     vgwort_reported_on = mapped_column(
-        TIMESTAMP, info={'namespace': 'vgwort', 'name': 'reported_on', 'migration': 'wcm_758'}
+        TIMESTAMP, info={'namespace': 'vgwort', 'name': 'reported_on'}
     )
     vgwort_reported_error = mapped_column(
-        Unicode, info={'namespace': 'vgwort', 'name': 'reported_error', 'migration': 'wcm_758'}
+        Unicode, info={'namespace': 'vgwort', 'name': 'reported_error'}
     )
     vgwort_public_token = mapped_column(
-        Unicode, info={'namespace': 'vgwort', 'name': 'public_token', 'migration': 'wcm_758'}
+        Unicode, info={'namespace': 'vgwort', 'name': 'public_token'}
     )
     vgwort_private_token = mapped_column(
-        Unicode, info={'namespace': 'vgwort', 'name': 'private_token', 'migration': 'wcm_758'}
+        Unicode, info={'namespace': 'vgwort', 'name': 'private_token'}
     )
 
 
