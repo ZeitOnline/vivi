@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.78.0 (2025-04-08)
+-------------------
+
+- WCM-791: Improve security for docker containers
+
+
 7.77.0 (2025-04-03)
 -------------------
 
