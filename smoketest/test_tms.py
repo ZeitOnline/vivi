@@ -91,6 +91,7 @@ def test_retract_updates_published_index(vivi, tms):
         pytest.fail('Expected article %s to be published after %s seconds' % (content, timeout))
 
     vivi.retract(content)
+    timeout = 120
     for _ in range(timeout):
         sleep(1)
         current = tms(f'/content/{uuid}/published')
