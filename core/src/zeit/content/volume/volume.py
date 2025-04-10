@@ -289,26 +289,27 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         exclude_performing_articles=True,
         dry_run=False,
     ):
-        query = """
+        constraints = """
         access = :access_from
         AND NOT channels @> '[["zeit-magazin", "wochenmarkt"]]'
         AND NOT name = 'ausgabe'
         """
+        kwargs = {'access_from': access_from}
         if published:
-            query = f'{query} AND published = true'
-        query = sql(query).bindparams(access_from=access_from)
+            constraints = f'{constraints} AND published = true'
+        query = sql(constraints).bindparams(**kwargs)
 
         if exclude_performing_articles:
-            constraints = []
             try:
-                to_filter = _find_performing_articles_via_webtrekk(self)
+                content_to_filter = _find_performing_articles_via_webtrekk(self)
             except Exception:
                 log.error('Error while retrieving data from webtrekk api', exc_info=True)
                 return []
-
-            log.info('Not changing access for %s ' % to_filter)
-            filter_constraint = {'bool': {'must_not': {'terms': {'url': to_filter}}}}
-            constraints.append(filter_constraint)
+            if content_to_filter:
+                log.info('Not changing access for %s ' % content_to_filter)
+                query = f'{constraints} AND (parent_path, name) NOT IN :content'
+                query = sql(query).bindparams(
+                    bindparam('content', content_to_filter, expanding=True), **kwargs)
 
         cnts = self.all_content_via_storage(query)
         if dry_run:
