@@ -98,6 +98,13 @@ class IVolume(zeit.cms.content.interfaces.IXMLContent):
         :param title: str - title of the product
         """
 
+    def all_content_via_storage(additional_constraints):
+        """
+        Get all content for this volume via storage
+        If u pass a list of additional query clauses, they will be added as
+        an AND-operand to the query.
+        """
+
     def all_content_via_search(additional_query_contstraints):
         """
         Get all Content for this volume with a Elasticsearch-Lookup.
