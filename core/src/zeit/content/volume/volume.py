@@ -7,6 +7,7 @@ from sqlalchemy import bindparam, select
 from sqlalchemy import text as sql
 import grokcore.component as grok
 import lxml.builder
+import pendulum
 import requests
 import zope.component
 import zope.interface
@@ -175,26 +176,22 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
 
     @staticmethod
     def published_days_ago(days_ago):
-        query = {
-            'query': {
-                'bool': {
-                    'filter': [
-                        {'term': {'doc_type': VolumeType.type}},
-                        {'term': {'payload.workflow.published': True}},
-                        {
-                            'range': {
-                                'payload.document.date_digital_published': {
-                                    'gte': 'now-%dd/d' % (days_ago + 1),
-                                    'lt': 'now-%dd/d' % days_ago,
-                                }
-                            }
-                        },
-                    ]
-                }
-            },
-            'sort': [{'payload.workflow.date_last_published': 'desc'}],
-        }
-        return Volume._find_via_elastic(query)
+        query = """
+        type=:type
+        AND published=true
+        AND volume_date_digital_published >= :start_time
+        AND volume_date_digital_published <= :end_time
+        ORDER BY date_last_published DESC
+        """
+
+        query = sql(query).bindparams(
+            type=Volume.type,
+            start_time=pendulum.now().subtract(days=(days_ago + 1)),
+            end_time=pendulum.now().subtract(days=days_ago),
+        )
+
+        repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
+        return repository.search(query)
 
     @staticmethod
     def _find_via_elastic(query):
