@@ -83,6 +83,14 @@ class StorageClient:
         r.raise_for_status()
         return r
 
+    def get_property(self, path, ns, name):
+        return self._request(
+            'get',
+            f'/internal/api/v1/resource{path}',
+            params={'ns': ns, 'name': name},
+            headers={'accept': 'text/plain'},
+        ).text
+
     def set_property(self, path, ns, name, value):
         self._request('put', f'/internal/api/v1/resource{path}', json={ns: {name: value}})
 
@@ -100,7 +108,7 @@ class StorageClient:
             f'/internal/api/v1/resource{path}',
             headers={'accept': 'text/plain'},
             params={'ns': 'document', 'name': 'uuid'},
-        ).text
+        ).text.strip()
 
     def publish(self, path):
         return self._request('post', f'/internal/api/v1/publish{path}').json()['job-id']
