@@ -6,7 +6,6 @@ import transaction
 import zope.component
 import zope.interface
 
-from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.interfaces import DOCUMENT_SCHEMA_NS
 from zeit.connector.models import Content
 import zeit.cms.testcontenttype.testcontenttype
@@ -27,8 +26,6 @@ class ReportTest(zeit.vgwort.testing.SQLTestCase):
         super().tearDown()
 
     def test_source_queries_storage(self):
-        FEATURE_TOGGLES.set('column_write_wcm_758')
-        FEATURE_TOGGLES.set('column_read_wcm_758')
         release_date = pendulum.now('UTC').subtract(days=8).isoformat()
         res = self.add_resource(
             'testcontent',
