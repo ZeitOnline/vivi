@@ -529,7 +529,8 @@ def _find_performing_articles_via_webtrekk(volume):
             float(cr) >= access_control_config.min_cr
             or int(order) >= access_control_config.min_orders
         ):
-            urls.add('/' + url)
+            (parent_path, sep, name) = f'/{url}'.rpartition('/')
+            urls.add((parent_path, name))
     return list(urls)
 
 
