@@ -294,6 +294,8 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         AND NOT channels @> '[["zeit-magazin", "wochenmarkt"]]'
         AND NOT name = 'ausgabe'
         """
+        if published:
+            query = f'{query} AND published = true'
         query = sql(query).bindparams(access_from=access_from)
 
         if exclude_performing_articles:
@@ -307,8 +309,6 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
             log.info('Not changing access for %s ' % to_filter)
             filter_constraint = {'bool': {'must_not': {'terms': {'url': to_filter}}}}
             constraints.append(filter_constraint)
-        if published:
-            constraints.append({'term': {'payload.workflow.published': True}})
 
         cnts = self.all_content_via_storage(query)
         if dry_run:
