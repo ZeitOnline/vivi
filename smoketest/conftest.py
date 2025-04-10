@@ -41,11 +41,6 @@ def config(nightwatch_config):  # shorter spelling for our tests
 
 
 def pytest_configure(config):
-    config.option.prometheus_job_name = 'vivi-%s' % config.option.nightwatch_environment
-    if config.option.prometheus_extra_labels is None:
-        config.option.prometheus_extra_labels = []
-    config.option.prometheus_extra_labels.append('project=vivi')
-
     config.option.browser = ['firefox']
 
 
