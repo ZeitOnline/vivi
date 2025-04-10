@@ -272,7 +272,6 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         volume_year = :year
         AND volume_number = :volume
         AND product IN :products
-        NOT channels @> '[["zeit-magazin", "wochenmarkt"]]'
         """
         query = select(ConnectorModel).where(
             sql(query).bindparams(
