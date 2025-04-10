@@ -258,7 +258,7 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         product_ids = [prod.id for prod in self._all_products]
         return cover_id in cover_ids and product_id in product_ids
 
-    def all_content_via_storage(self, additional_constraints=None):
+    def all_content_via_storage(self, additional_query=None):
         """
         Get all content for this volume via storage
         If u pass a list of additional query clauses, they will be added as
@@ -275,57 +275,11 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
                 bindparam('products', products, expanding=True), year=self.year, volume=self.volume
             )
         )
-        if additional_constraints:
-            query = query.where(sql(additional_constraints))
+        if additional_query is not None:
+            query = query.where(additional_query)
 
         repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
         return repository.search(query)
-
-    def all_content_via_search(self, additional_query_constraints=None):
-        """
-        Get all content for this volume via ES.
-        If u pass a list of additional query clauses, they will be added as
-        an AND-operand to the query.
-        """
-        if not additional_query_constraints:
-            additional_query_constraints = []
-        elastic = zope.component.getUtility(zeit.find.interfaces.ICMSSearch)
-        query = [
-            {'term': {'payload.document.year': self.year}},
-            {'term': {'payload.document.volume': self.volume}},
-            {
-                'bool': {
-                    'should': [
-                        {'term': {'payload.workflow.product-id': x.id}} for x in self._all_products
-                    ]
-                }
-            },
-            {
-                'bool': {
-                    'must_not': {'term': {'payload.document.channels': 'zeit-magazin wochenmarkt'}}
-                }
-            },
-        ]
-
-        result = elastic.search(
-            {
-                'query': {
-                    'bool': {
-                        'filter': query + additional_query_constraints,
-                        'must_not': [{'term': {'url': self.uniqueId.replace(UNIQUEID_PREFIX, '')}}],
-                    }
-                }
-            },
-            rows=1000,
-        )
-        # We assume a maximum content amount per usual production print volume
-        assert result.hits < 250
-        content = []
-        for item in result:
-            item = zeit.cms.interfaces.ICMSContent(UNIQUEID_PREFIX + item['url'], None)
-            if item is not None:
-                content.append(item)
-        return content
 
     def change_contents_access(
         self,
@@ -335,8 +289,15 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         exclude_performing_articles=True,
         dry_run=False,
     ):
-        constraints = [{'term': {'payload.document.access': access_from}}]
+        query = """
+        access = :access_from
+        AND NOT channels @> '[["zeit-magazin", "wochenmarkt"]]'
+        AND NOT name = 'ausgabe'
+        """
+        query = sql(query).bindparams(access_from=access_from)
+
         if exclude_performing_articles:
+            constraints = []
             try:
                 to_filter = _find_performing_articles_via_webtrekk(self)
             except Exception:
@@ -348,7 +309,8 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
             constraints.append(filter_constraint)
         if published:
             constraints.append({'term': {'payload.workflow.published': True}})
-        cnts = self.all_content_via_search(constraints)
+
+        cnts = self.all_content_via_storage(query)
         if dry_run:
             return cnts
         for cnt in cnts:
@@ -366,15 +328,13 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         return cnts
 
     def content_with_references_for_publishing(self):
-        additional_constraints = """
+        constraints = """
         type='article'
         AND published=false
         AND unsorted @@ '$.workflow.urgent == "yes"'
         """
-
-        articles_to_publish = self.all_content_via_storage(
-            additional_constraints=additional_constraints
-        )
+        query = sql(constraints)
+        articles_to_publish = self.all_content_via_storage(additional_query=query)
         # Flatten the list of lists and remove duplicates
         articles_with_references = list(
             set(
