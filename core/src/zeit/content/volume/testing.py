@@ -55,8 +55,9 @@ WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(
 )
 
 SQL_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
+    'ftesting-workflow.zcml',
     features=['zeit.connector.sql'],
-    bases=(CONFIG_LAYER, zeit.connector.testing.SQL_CONFIG_LAYER),
+    bases=(CONFIG_LAYER, zeit.connector.testing.SQL_CONFIG_LAYER, ARTICLE_CONFIG_LAYER),
 )
 SQL_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(SQL_ZCML_LAYER,))
 SQL_CONNECTOR_LAYER = zeit.connector.testing.SQLDatabaseLayer(bases=(SQL_ZOPE_LAYER,))
