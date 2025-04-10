@@ -4,6 +4,7 @@ import importlib.resources
 import gocept.selenium
 
 import zeit.cms.testing
+import zeit.connector.testing
 import zeit.content.cp.testing
 import zeit.content.image.testing
 import zeit.push.testing
@@ -53,6 +54,13 @@ WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(
     name='WebdriverSeleneseLayer', bases=(WD_LAYER,)
 )
 
+SQL_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
+    features=['zeit.connector.sql'],
+    bases=(CONFIG_LAYER, zeit.connector.testing.SQL_CONFIG_LAYER),
+)
+SQL_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(SQL_ZCML_LAYER,))
+SQL_CONNECTOR_LAYER = zeit.connector.testing.SQLDatabaseLayer(bases=(SQL_ZOPE_LAYER,))
+
 
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
     layer = ZOPE_LAYER
@@ -64,3 +72,7 @@ class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
 
 class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
     layer = WEBDRIVER_LAYER
+
+
+class SQLTestCase(zeit.connector.testing.TestCase):
+    layer = SQL_CONNECTOR_LAYER

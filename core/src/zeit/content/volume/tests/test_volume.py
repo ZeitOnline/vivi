@@ -8,6 +8,7 @@ import pytest
 import requests_mock
 import zope.component
 
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.repository.folder import Folder
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.cms.workflow.interfaces import IPublicationDependencies
@@ -195,7 +196,7 @@ class TestVolume(zeit.content.volume.testing.FunctionalTestCase):
         )
 
 
-class TestVolumeQueries(zeit.content.volume.testing.FunctionalTestCase):
+class TestVolumeQueriesBBB(zeit.content.volume.testing.FunctionalTestCase):
     def setUp(self):
         super().setUp()
         self.create_volume(2015, 1)
@@ -332,7 +333,7 @@ def test_background_color_is_hex_validation(color, raised_exception):
         field.validate(color)
 
 
-class TestWebtrekkQuery(TestVolumeQueries):
+class TestWebtrekkQuery(TestVolumeQueriesBBB):
     def setUp(self):
         super().setUp()
         volume = Volume()
@@ -371,3 +372,46 @@ class TestWebtrekkQuery(TestVolumeQueries):
         with self.webtrekk(webtrekk_data):
             res = zeit.content.volume.volume._find_performing_articles_via_webtrekk(self.volume)
             self.assertEqual({'/2019/01/foo', '/magazin/2019/01/bar'}, set(res))
+
+
+class TestVolumeQueries(zeit.content.volume.testing.SQLTestCase):
+    def setUp(self):
+        super().setUp()
+        FEATURE_TOGGLES.set('volume_order_wcm_785')
+        FEATURE_TOGGLES.set('column_write_wcm_785')
+        FEATURE_TOGGLES.set('column_read_wcm_785')
+
+    def create_volume(self, year, name, product='ZEI', published=True):
+        volume = Volume()
+        volume.year = year
+        volume.volume = name
+        volume.product = zeit.cms.content.sources.Product(product)
+        if published:
+            volume.date_digital_published = datetime(year, name, 1)
+        year = str(year)
+        name = '%02d' % name
+        self.repository[year] = Folder()
+        self.repository[year][name] = Folder()
+        self.repository[year][name]['ausgabe'] = volume
+        return self.repository[year][name]['ausgabe']
+
+    def test_next_and_previous(self):
+        vol1 = self.create_volume(2025, 1)
+        magazin = self.create_volume(2025, 2, product='Dev')
+        vol2 = self.create_volume(2025, 3)
+        self.assertEqual(vol2, vol1.next)
+        self.assertEqual(vol1, vol2.previous)
+        self.assertEqual(None, magazin.next)
+        self.assertEqual(None, magazin.previous)
+
+    def test_no_results_if_no_other_volume_exist(self):
+        vol1 = self.create_volume(2025, 1)
+        self.assertEqual(None, vol1.next)
+        self.assertEqual(None, vol1.previous)
+
+    def test_unpublished_volumes_are_not_considered(self):
+        vol1 = self.create_volume(2025, 1)
+        self.create_volume(2025, 2, published=False)
+        vol3 = self.create_volume(2025, 3)
+        self.assertEqual(vol3, vol1.next)
+        self.assertEqual(vol1, vol3.previous)

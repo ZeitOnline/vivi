@@ -73,6 +73,16 @@ class CommonMetadata:
     )
 
 
+class Volume:
+    volume_date_digital_published = mapped_column(
+        TIMESTAMP,
+        info={'namespace': 'document', 'name': 'date_digital_published', 'migration': 'wcm_785'},
+    )
+    volume_note = mapped_column(
+        Unicode, info={'namespace': 'document', 'name': 'volume_note', 'migration': 'wcm_785'}
+    )
+
+
 class ContentTypes:
     audio_premium_enabled = mapped_column(Boolean, info={'namespace': 'print', 'name': 'has_audio'})
     audio_speech_enabled = mapped_column(
@@ -167,7 +177,7 @@ class VGWort:
     )
 
 
-class Content(Base, CommonMetadata, ContentTypes, Timestamps, Miscellaneous, VGWort):
+class Content(Base, CommonMetadata, ContentTypes, Timestamps, Miscellaneous, VGWort, Volume):
     __tablename__ = 'properties'
 
     @declared_attr
@@ -206,6 +216,7 @@ class Content(Base, CommonMetadata, ContentTypes, Timestamps, Miscellaneous, VGW
                     'date_scheduled_publish',
                     'date_scheduled_retract',
                     'date_last_retracted',
+                    'volume_date_digital_published',
                 ]
             )
             + tuple(
