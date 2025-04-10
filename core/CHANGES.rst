@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.80.0 (2025-04-10)
+-------------------
+
+- WCM-611: Switch publish volume content from elasticsearch to content-storage
+
+- WCM-785: storage query for previous/next for volume
+
+
 7.79.1 (2025-04-10)
 -------------------
 
