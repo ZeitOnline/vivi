@@ -10,9 +10,8 @@ patches:
     name: nightwatch
   patch: |-
     - op: replace
-      path: /spec/template/spec/containers/0/args
-      value:
-        - "--nightwatch-environment=production"
+      path: /spec/template/spec/containers/0/env/0/value
+      value: production
 - target:
     kind: ExternalSecret
     name: nightwatch-secrets
