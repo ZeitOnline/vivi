@@ -392,7 +392,7 @@
 
 .objectsequencewidget li a[rel="remove"],
 .drop-object-widget .object-reference a[rel="remove"] {
-  background: url("./icons/icons_sprites.png") no-repeat scroll 68px -417px;
+  background: url("./icons/icons_sprites.png") no-repeat scroll 58px -417px;
   background-color: rgba(0,0,0,0.6);
   border-radius: 2px 2px 2px 2px;
   border: 1px solid #000000;
@@ -401,13 +401,10 @@
   display: none;
   font-size: 14px;
   height: 18px;
-  margin-right: 16px;
-  margin-top: 48px;
-  padding-left: 1em;
-  padding-right: 2.2em;
-  padding-top: 2px;
+  margin: 10px;
+  padding: 2px 20px 2px 4px;
   position: absolute;
-  right: 20px;
+  right: 0px;
   top: 0;
 }
 
@@ -433,7 +430,7 @@
 .object-reference a[rel="remove"]:hover,
 .objectsequencewidget li a[rel="remove"]:hover,
 .drop-object-widget .object-reference a[rel="remove"].button:hover {
-  border: 1px solid #fff;
+  background-color: #444;
 }
 
 .object-widget.droppable-active  a[rel="remove"] {

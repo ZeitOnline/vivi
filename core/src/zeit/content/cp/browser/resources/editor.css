@@ -235,9 +235,9 @@
   width: 75%;
 }
 
-
 .teaser-block-properties-form .object-reference {
-  width: 80%
+  position: relative;
+  width: 80%;
 }
 
 /* Teaser visualisations */
