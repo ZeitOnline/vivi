@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.79.0 (2025-04-10)
+-------------------
+
+- failed release
+
+
 7.78.0 (2025-04-08)
 -------------------
 
