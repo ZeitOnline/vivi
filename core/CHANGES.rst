@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.79.1 (2025-04-10)
+-------------------
+
+- WCM-179: Move delete button so it can be reached
+
+
 7.79.0 (2025-04-10)
 -------------------
 
