@@ -3,6 +3,8 @@ import datetime
 import itertools
 import logging
 
+from sqlalchemy import select
+from sqlalchemy import text as sql
 import grokcore.component as grok
 import lxml.builder
 import requests
@@ -10,8 +12,10 @@ import zope.interface
 import zope.lifecycleevent
 import zope.schema
 
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import IPublish
+from zeit.connector.models import Content as ConnectorModel
 import zeit.cms.cli
 import zeit.cms.config
 import zeit.cms.content.dav
@@ -108,13 +112,40 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
 
     @property
     def previous(self):
-        return self._find_in_order(None, self.date_digital_published, 'desc')
+        if FEATURE_TOGGLES.find('volume_order_wcm_785'):
+            return self.find_in_order('DESC')
+        else:
+            return self._find_in_order_bbb(None, self.date_digital_published, 'desc')
 
     @property
     def next(self):
-        return self._find_in_order(self.date_digital_published, None, 'asc')
+        if FEATURE_TOGGLES.find('volume_order_wcm_785'):
+            return self.find_in_order('ASC')
+        else:
+            return self._find_in_order_bbb(self.date_digital_published, None, 'asc')
 
-    def _find_in_order(self, start, end, sort):
+    def find_in_order(self, order):
+        cmp_op = '>' if order == 'ASC' else '<'
+        sql_query = f"""
+        type = 'volume'
+        AND product = :product
+        AND volume_date_digital_published {cmp_op} :date_digital_published
+        ORDER BY volume_date_digital_published {order}
+        LIMIT 1
+        """
+
+        query = select(ConnectorModel)
+        query = query.where(
+            sql(sql_query).bindparams(
+                product=self.product.id,
+                date_digital_published=self.date_digital_published,
+            )
+        )
+        repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
+        results = repository.search(query)
+        return results[0] if results else None
+
+    def _find_in_order_bbb(self, start, end, sort):
         if len([x for x in [start, end] if x]) != 1:
             return None
         # Since `sort` is passed in accordingly, and we exclude ourselves,
