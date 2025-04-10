@@ -17,16 +17,19 @@ patches:
     - op: add
       path: /spec/template/spec/containers/0/env/-
       value:
-        - name: VIVI_XMLRPC_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: principals
-              key: vivi_zeit.cms.principals_system.nightwatch
-        - name: TMS_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: tms
-              key: vivi_zeit.retresco_password
+        name: VIVI_XMLRPC_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: principals
+            key: vivi_zeit.cms.principals_system.nightwatch
+    - op: add
+      path: /spec/template/spec/containers/0/env/-
+      value:
+        name: TMS_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: tms
+            key: vivi_zeit.retresco_password
 
 # See https://github.com/ZeitOnline/gh-action-workflows/blob/main/.github/workflows/nightwatch-build.yaml
 images:
