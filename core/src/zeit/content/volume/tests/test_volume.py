@@ -263,27 +263,6 @@ class TestVolumeQueriesBBB(zeit.content.volume.testing.FunctionalTestCase):
             volume.all_content_via_search(additional_query_constraints=[{'term': {'foo': 'bar'}}]),
         )
 
-    @mock.patch(
-        'zeit.content.volume.volume._find_performing_articles_via_webtrekk', return_value='[]'
-    )
-    def test_volume_contents_access_dry_run_does_not_change_accces(self, mock):
-        volume = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2015/01/ausgabe')
-        repo = self.repository['2015']['01']
-        content01 = ExampleContentType()
-        repo['article01'] = content01
-
-        self.elastic.search.return_value = zeit.cms.interfaces.Result(
-            [
-                {'url': '/2015/01/article01'},
-            ]
-        )
-
-        cnt = volume.change_contents_access('free', 'abo', dry_run=True)
-
-        self.assertEqual([content01], cnt)
-        for c in cnt:
-            self.assertEqual('free', c.access)
-
 
 @pytest.mark.parametrize(
     'color, raised_exception',
@@ -352,20 +331,6 @@ class TestVolumeQueries(zeit.content.volume.testing.SQLTestCase):
         FEATURE_TOGGLES.set('column_write_wcm_785')
         FEATURE_TOGGLES.set('column_read_wcm_785')
 
-    def create_volume(self, year, name, product='ZEI', published=True):
-        volume = Volume()
-        volume.year = year
-        volume.volume = name
-        volume.product = zeit.cms.content.sources.Product(product)
-        if published:
-            volume.date_digital_published = datetime(year, name, 1)
-        year = str(year)
-        name = '%02d' % name
-        self.repository[year] = Folder()
-        self.repository[year][name] = Folder()
-        self.repository[year][name]['ausgabe'] = volume
-        return self.repository[year][name]['ausgabe']
-
     def test_next_and_previous(self):
         vol1 = self.create_volume(2025, 1)
         magazin = self.create_volume(2025, 2, product='Dev')
@@ -386,6 +351,13 @@ class TestVolumeQueries(zeit.content.volume.testing.SQLTestCase):
         vol3 = self.create_volume(2025, 3)
         self.assertEqual(vol3, vol1.next)
         self.assertEqual(vol1, vol3.previous)
+
+
+class TestVolumeAccessQueries(zeit.content.volume.testing.SQLTestCase):
+    def setUp(self):
+        super().setUp()
+        self.create_volume(2025, 1)
+        self.create_volume_content('2025', '01', 'article01')
 
     def create_volume_content(self, volume_year, volume_number, name, product='ZEI'):
         from zeit.content.article.interfaces import IArticle
@@ -408,9 +380,7 @@ class TestVolumeQueries(zeit.content.volume.testing.SQLTestCase):
         'zeit.content.volume.volume._find_performing_articles_via_webtrekk', return_value=[]
     )
     def test_all_volume_contents_should_change_access_value(self, mock):
-        self.create_volume(2025, 1)
         volume = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2025/01/ausgabe')
-        self.create_volume_content('2025', '01', 'article01')
         self.create_volume_content('2025', '01', 'article02')
         self.create_volume_content('2025', '01', 'article03')
 
@@ -423,3 +393,15 @@ class TestVolumeQueries(zeit.content.volume.testing.SQLTestCase):
         for c in cnt:
             if c.uniqueId != volume.uniqueId:
                 self.assertEqual('abo', c.access)
+
+    @mock.patch(
+        'zeit.content.volume.volume._find_performing_articles_via_webtrekk', return_value=[]
+    )
+    def test_volume_contents_access_dry_run_does_not_change_accces(self, mock):
+        volume = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2025/01/ausgabe')
+        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2025/01/article01')
+
+        cnt = volume.change_contents_access('free', 'abo', dry_run=True)
+        self.assertEqual([article], cnt)
+        for c in cnt:
+            self.assertEqual('free', c.access)

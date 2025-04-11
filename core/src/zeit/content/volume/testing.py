@@ -1,8 +1,12 @@
 # coding: utf-8
 import importlib.resources
 
+from pendulum import datetime
 import gocept.selenium
 
+from zeit.cms.repository.folder import Folder
+from zeit.content.volume.volume import Volume
+import zeit.cms.content.sources
 import zeit.cms.testing
 import zeit.connector.testing
 import zeit.content.cp.testing
@@ -77,3 +81,17 @@ class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
 
 class SQLTestCase(zeit.connector.testing.TestCase):
     layer = SQL_CONNECTOR_LAYER
+
+    def create_volume(self, year, name, product='ZEI', published=True):
+        volume = Volume()
+        volume.year = year
+        volume.volume = name
+        volume.product = zeit.cms.content.sources.Product(product)
+        if published:
+            volume.date_digital_published = datetime(year, name, 1)
+        year = str(year)
+        name = '%02d' % name
+        self.repository[year] = Folder()
+        self.repository[year][name] = Folder()
+        self.repository[year][name]['ausgabe'] = volume
+        return self.repository[year][name]['ausgabe']
