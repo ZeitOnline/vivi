@@ -246,14 +246,6 @@ class TestVolumeQueriesBBB(zeit.content.volume.testing.FunctionalTestCase):
         self.assertEqual(None, volume.next)
         self.assertEqual(None, volume.previous)
 
-    def test_all_content_via_search_returns_empty_list_if_no_content(self):
-        volume = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2015/01/ausgabe')
-        self.elastic.search.return_value = zeit.cms.interfaces.Result()
-        self.assertEqual(
-            [],
-            volume.all_content_via_search(additional_query_constraints=[{'term': {'foo': 'bar'}}]),
-        )
-
 
 @pytest.mark.parametrize(
     'color, raised_exception',
@@ -371,6 +363,13 @@ class TestVolumeAccessQueries(zeit.content.volume.testing.SQLTestCase):
         volume = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2025/01/ausgabe')
         self.assertListEqual(
             [volume, zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2025/01/article01')],
+            volume.all_content_via_storage(additional_query=sql('')),
+        )
+
+    def test_all_content_via_storage_returns_only_volume(self):
+        volume = self.create_volume(2025, 2)
+        self.assertEqual(
+            [volume],
             volume.all_content_via_storage(additional_query=sql('')),
         )
 
