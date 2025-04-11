@@ -266,7 +266,7 @@ def test_background_color_is_hex_validation(color, raised_exception):
         field.validate(color)
 
 
-class TestWebtrekkQuery(TestVolumeQueriesBBB):
+class TestWebtrekkQueryBBB(TestVolumeQueriesBBB):
     def setUp(self):
         super().setUp()
         volume = Volume()
@@ -402,3 +402,42 @@ class TestVolumeAccessQueries(zeit.content.volume.testing.SQLTestCase):
         self.assertEqual([article], cnt)
         for c in cnt:
             self.assertEqual('free', c.access)
+
+
+class TestWebtrekkQuery(TestVolumeAccessQueries):
+    def setUp(self):
+        super().setUp()
+        volume = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2025/01/ausgabe')
+        info = zeit.cms.workflow.interfaces.IPublishInfo(volume)
+        info.date_first_released = datetime(2025, 1, 1)
+        self.volume = volume
+
+    def webtrekk(self, resp):
+        webtrekk_url = zeit.cms.config.required(
+            'zeit.content.volume', 'access-control-webtrekk-url'
+        )
+        response = {'result': {'analysisData': resp}}
+        m = requests_mock.Mocker()
+        m.post(webtrekk_url, status_code=200, json=response)
+        return m
+
+    def test_urls_are_filtered_according_to_config(self):
+        webtrekk_data = [
+            ['web..trekk|www.zeit.de/2025/01/foo', 1, 0.2],  # high cr
+            ['web..trekk|www.zeit.de/2025/01/bar', 5, 0.01],  # high order
+            ['web..trekk|www.zeit.de/2025/01/foobar', 5, 0.1],  # both
+            ['web..trekk|www.zeit.de/2025/01/baz', 1, 0.01],  # None of above
+        ]
+        with self.webtrekk(webtrekk_data):
+            res = zeit.content.volume.volume._find_performing_articles_via_webtrekk(self.volume)
+            self.assertEqual({'/2025/01/foo', '/2025/01/bar', '/2025/01/foobar'}, set(res))
+
+    def test_only_articles_of_given_volume_are_considered(self):
+        webtrekk_data = [
+            ['web..trekk|www.zeit.de/2025/01/foo', 10, 0.2],
+            ['web..trekk|www.zeit.de/magazin/2025/01/bar', 10, 0.2],
+            ['web..trekk|www.zeit.de/2025/02/bar', 10, 0.2],
+        ]
+        with self.webtrekk(webtrekk_data):
+            res = zeit.content.volume.volume._find_performing_articles_via_webtrekk(self.volume)
+            self.assertEqual({'/2025/01/foo', '/magazin/2025/01/bar'}, set(res))
