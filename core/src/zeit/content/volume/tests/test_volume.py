@@ -2,6 +2,7 @@
 from unittest import mock
 
 from pendulum import datetime
+from sqlalchemy import text as sql
 import lxml.builder
 import lxml.etree
 import pytest
@@ -253,16 +254,6 @@ class TestVolumeQueriesBBB(zeit.content.volume.testing.FunctionalTestCase):
             volume.all_content_via_search(additional_query_constraints=[{'term': {'foo': 'bar'}}]),
         )
 
-    def test_all_content_via_search_returns_ICMS_content(self):
-        volume = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2015/01/ausgabe')
-        content = ExampleContentType()
-        self.repository['2015']['01']['article'] = content
-        self.elastic.search.return_value = zeit.cms.interfaces.Result([{'url': '/2015/01/article'}])
-        self.assertListEqual(
-            [content],
-            volume.all_content_via_search(additional_query_constraints=[{'term': {'foo': 'bar'}}]),
-        )
-
 
 @pytest.mark.parametrize(
     'color, raised_exception',
@@ -375,6 +366,13 @@ class TestVolumeAccessQueries(zeit.content.volume.testing.SQLTestCase):
         info.published = True
         self.repository[volume_year][volume_number][name] = article
         return self.repository[volume_year][volume_number][name]
+
+    def test_all_content_via_storage_returns_ICMS_content(self):
+        volume = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2025/01/ausgabe')
+        self.assertListEqual(
+            [volume, zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2025/01/article01')],
+            volume.all_content_via_storage(additional_query=sql('')),
+        )
 
     @mock.patch(
         'zeit.content.volume.volume._find_performing_articles_via_webtrekk', return_value=[]
