@@ -76,11 +76,9 @@ class CommonMetadata:
 class Volume:
     volume_date_digital_published = mapped_column(
         TIMESTAMP,
-        info={'namespace': 'document', 'name': 'date_digital_published', 'migration': 'wcm_785'},
+        info={'namespace': 'document', 'name': 'date_digital_published'},
     )
-    volume_note = mapped_column(
-        Unicode, info={'namespace': 'document', 'name': 'volume_note', 'migration': 'wcm_785'}
-    )
+    volume_note = mapped_column(Unicode, info={'namespace': 'document', 'name': 'volume_note'})
 
 
 class ContentTypes:

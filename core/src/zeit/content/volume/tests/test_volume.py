@@ -8,7 +8,6 @@ import pytest
 import requests_mock
 import zope.component
 
-from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.repository.folder import Folder
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.cms.workflow.interfaces import IPublicationDependencies
@@ -221,29 +220,6 @@ class TestVolumeQueriesBBB(zeit.content.volume.testing.FunctionalTestCase):
         self.repository[year][name] = Folder()
         self.repository[year][name]['ausgabe'] = volume
 
-    def test_resolves_result(self):
-        self.elastic.search.return_value = zeit.cms.interfaces.Result([{'url': '/2015/02/ausgabe'}])
-        vol1 = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2015/01/ausgabe')
-        vol2 = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2015/02/ausgabe')
-        self.assertEqual(vol2, vol1.next)
-
-    def test_no_result_returns_None(self):
-        self.elastic.search.return_value = zeit.cms.interfaces.Result()
-        vol1 = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2015/01/ausgabe')
-        self.assertEqual(None, vol1.next)
-        self.assertEqual(None, vol1.previous)
-
-    def test_no_publish_date_returns_None(self):
-        volume = Volume()
-        year = 2015
-        name = 1
-        volume.year = year
-        volume.volume = name
-        volume.product = zeit.cms.content.sources.Product('ZEI')
-        self.elastic.search.return_value = [{'url': '/2015/02/ausgabe'}]
-        self.assertEqual(None, volume.next)
-        self.assertEqual(None, volume.previous)
-
     def test_all_content_via_search_returns_empty_list_if_no_content(self):
         volume = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2015/01/ausgabe')
         self.elastic.search.return_value = zeit.cms.interfaces.Result()
@@ -375,12 +351,6 @@ class TestWebtrekkQuery(TestVolumeQueriesBBB):
 
 
 class TestVolumeQueries(zeit.content.volume.testing.SQLTestCase):
-    def setUp(self):
-        super().setUp()
-        FEATURE_TOGGLES.set('volume_order_wcm_785')
-        FEATURE_TOGGLES.set('column_write_wcm_785')
-        FEATURE_TOGGLES.set('column_read_wcm_785')
-
     def create_volume(self, year, name, product='ZEI', published=True):
         volume = Volume()
         volume.year = year

@@ -13,7 +13,6 @@ import zope.interface
 import zope.lifecycleevent
 import zope.schema
 
-from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import IPublish
 from zeit.connector.models import Content as ConnectorModel
@@ -114,17 +113,11 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
 
     @property
     def previous(self):
-        if FEATURE_TOGGLES.find('volume_order_wcm_785'):
-            return self.find_in_order('DESC')
-        else:
-            return self._find_in_order_bbb(None, self.date_digital_published, 'desc')
+        return self.find_in_order('DESC')
 
     @property
     def next(self):
-        if FEATURE_TOGGLES.find('volume_order_wcm_785'):
-            return self.find_in_order('ASC')
-        else:
-            return self._find_in_order_bbb(self.date_digital_published, None, 'asc')
+        return self.find_in_order('ASC')
 
     def find_in_order(self, order):
         cmp_op = '>' if order == 'ASC' else '<'
@@ -146,32 +139,6 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
         results = repository.search(query)
         return results[0] if results else None
-
-    def _find_in_order_bbb(self, start, end, sort):
-        if len([x for x in [start, end] if x]) != 1:
-            return None
-        # Since `sort` is passed in accordingly, and we exclude ourselves,
-        # the first result (if any) is always the one we want.
-        query = {
-            'query': {
-                'bool': {
-                    'filter': [
-                        {'term': {'doc_type': VolumeType.type}},
-                        {'term': {'payload.workflow.product-id': self.product.id}},
-                        {
-                            'range': {
-                                'payload.document.date_digital_published': zeit.retresco.search.date_range(  # noqa: E501
-                                    start, end
-                                )
-                            }
-                        },
-                    ],
-                    'must_not': [{'term': {'url': self.uniqueId.replace(UNIQUEID_PREFIX, '')}}],
-                }
-            },
-            'sort': [{'payload.document.date_digital_published': sort}],
-        }
-        return Volume._find_via_elastic(query)
 
     @staticmethod
     def published_days_ago(days_ago):
