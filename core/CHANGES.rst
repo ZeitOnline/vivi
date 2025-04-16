@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.81.0 (2025-04-16)
+-------------------
+
+MAINT:
+- docker image security updates
+
+
 7.80.0 (2025-04-10)
 -------------------
 
