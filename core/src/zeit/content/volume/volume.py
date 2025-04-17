@@ -7,6 +7,7 @@ from sqlalchemy import bindparam, select
 from sqlalchemy import text as sql
 import grokcore.component as grok
 import lxml.builder
+import pendulum
 import requests
 import zope.component
 import zope.interface
@@ -142,34 +143,27 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
 
     @staticmethod
     def published_days_ago(days_ago):
-        query = {
-            'query': {
-                'bool': {
-                    'filter': [
-                        {'term': {'doc_type': VolumeType.type}},
-                        {'term': {'payload.workflow.published': True}},
-                        {
-                            'range': {
-                                'payload.document.date_digital_published': {
-                                    'gte': 'now-%dd/d' % (days_ago + 1),
-                                    'lt': 'now-%dd/d' % days_ago,
-                                }
-                            }
-                        },
-                    ]
-                }
-            },
-            'sort': [{'payload.workflow.date_last_published': 'desc'}],
-        }
-        return Volume._find_via_elastic(query)
+        query = """
+        type=:volume
+        AND published = true
+        AND volume_date_digital_published >= :start_time
+        AND volume_date_digital_published <= :end_time
+        ORDER BY date_last_published DESC
+        """
 
-    @staticmethod
-    def _find_via_elastic(query):
-        es = zope.component.getUtility(zeit.retresco.interfaces.IElasticsearch)
-        result = es.search(query, rows=1)
-        if not result:
-            return None
-        return zeit.cms.interfaces.ICMSContent(UNIQUEID_PREFIX + next(iter(result))['url'], None)
+        start_time = pendulum.now().subtract(days=(days_ago + 1)).to_date_string()
+        end_time = pendulum.now().subtract(days=days_ago).to_date_string()
+        query = select(ConnectorModel).where(
+            sql(query).bindparams(
+                volume=VolumeType.type,
+                start_time=start_time,
+                end_time=end_time,
+            )
+        )
+
+        repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
+        result = repository.search(query)
+        return result[0] if result else None
 
     def get_cover(self, cover_id, product_id=None, use_fallback=True):
         if product_id is None and use_fallback:
