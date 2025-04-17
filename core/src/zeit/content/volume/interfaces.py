@@ -98,23 +98,7 @@ class IVolume(zeit.cms.content.interfaces.IXMLContent):
         :param title: str - title of the product
         """
 
-    def all_content_via_storage(additional_constraints):
-        """
-        Get all content for this volume via storage
-        If u pass a list of additional query clauses, they will be added as
-        an AND-operand to the query.
-        """
-
-    def all_content_via_search(additional_query_contstraints):
-        """
-        Get all Content for this volume with a Elasticsearch-Lookup.
-        :param additional_query_contstraints: [str] Additional query clauses
-        :return: [ICMSContent]
-        """
-
-    def change_contents_access(
-        access_from, access_to, published, exclude_performing_articles, dry_run
-    ):
+    def change_contents_access(access_from, access_to, published, exclude_performing_articles):
         """
         Change the access value, from access_from to access_to, for all
         content of this volume and returns the content. The changed content
@@ -125,7 +109,6 @@ class IVolume(zeit.cms.content.interfaces.IXMLContent):
                changed
         :param exclude_performing_articles: exclude performing articles from
                change
-        :param dry_run: don't actually change the access value
         :return: [CMSContent, ...]
         """
 

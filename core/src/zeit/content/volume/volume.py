@@ -1,11 +1,11 @@
 import argparse
 import datetime
-import logging
 
 from sqlalchemy import bindparam, select
 from sqlalchemy import text as sql
 import grokcore.component as grok
 import lxml.builder
+import opentelemetry.trace
 import pendulum
 import requests
 import zope.component
@@ -33,7 +33,6 @@ import zeit.retresco.interfaces
 import zeit.retresco.search
 
 
-log = logging.getLogger()
 UNIQUEID_PREFIX = zeit.cms.interfaces.ID_NAMESPACE[:-1]
 
 
@@ -62,6 +61,10 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         zeit.content.portraitbox.interfaces.IPortraitbox,
         zeit.content.infobox.interfaces.IInfobox,
     ]
+
+    @property
+    def repository(self):
+        return zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
 
     @property
     def product(self):
@@ -136,8 +139,7 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
                 date_digital_published=self.date_digital_published,
             )
         )
-        repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
-        results = repository.search(query)
+        results = self.repository.search(query)
         return results[0] if results else None
 
     @staticmethod
@@ -168,7 +170,9 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         if product_id is None and use_fallback:
             product_id = self.product.id
         if product_id and product_id not in [prod.id for prod in self._all_products]:
-            log.warning('%s is not a valid product id for %s' % (product_id, self))
+            err = ValueError(f'{product_id} is not a valid product id for {self}')
+            current_span = opentelemetry.trace.get_current_span()
+            current_span.record_exception(err)
             return None
         path = '//covers/cover[@id="{}" and @product_id="{}"]'.format(cover_id, product_id)
         node = self.xml.xpath(path)
@@ -238,27 +242,35 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         access_to,
         published=True,
         exclude_performing_articles=True,
-        dry_run=False,
     ):
-        constraints = [{'term': {'payload.document.access': access_from}}]
+        conditions = """
+        access = :access_from
+        AND NOT channels @> '[["zeit-magazin", "wochenmarkt"]]'
+        AND name <> 'ausgabe'
+        """
+        query = self._query_content_for_current_volume().where(
+            sql(conditions).bindparams(access_from=access_from)
+        )
+        if published:
+            query = query.where(sql('published = true'))
+
         if exclude_performing_articles:
             try:
-                to_filter = _find_performing_articles_via_webtrekk(self)
-            except Exception:
-                log.error('Error while retrieving data from webtrekk api', exc_info=True)
-                return []
+                content_to_filter = _find_performing_articles_via_webtrekk(self)
+                if content_to_filter:
+                    query = query.where(
+                        sql('(parent_path, name) NOT IN :content').bindparams(
+                            bindparam('content', content_to_filter, expanding=True)
+                        )
+                    )
+            except Exception as err:
+                current_span = opentelemetry.trace.get_current_span()
+                current_span.record_exception(err)
 
-            log.info('Not changing access for %s ' % to_filter)
-            filter_constraint = {'bool': {'must_not': {'terms': {'url': to_filter}}}}
-            constraints.append(filter_constraint)
-        if published:
-            constraints.append({'term': {'payload.workflow.published': True}})
-        cnts = self.all_content_via_search(constraints)
-        if dry_run:
-            return cnts
-        for cnt in cnts:
+        contents = self.repository.search(query)
+        for content in contents:
             try:
-                with zeit.cms.checkout.helper.checked_out(cnt) as co:
+                with zeit.cms.checkout.helper.checked_out(content) as co:
                     co.access = access_to
                     zope.lifecycleevent.modified(
                         co,
@@ -266,9 +278,10 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
                             zeit.cms.content.interfaces.ICommonMetadata, 'access'
                         ),
                     )
-            except Exception:
-                log.error("Couldn't change access for {}. Skipping it.".format(cnt.uniqueId))
-        return cnts
+            except Exception as err:
+                current_span = opentelemetry.trace.get_current_span()
+                current_span.record_exception(err)
+        return contents
 
     def articles_with_references_for_publishing(self):
         conditions = """
@@ -477,30 +490,22 @@ def change_access():
     parser = argparse.ArgumentParser()
     parser.add_argument('--days-ago', type=int, help='Select volume that was published x days ago.')
     parser.add_argument('--uniqueid', help='Select volume by uniqueId.')
-    parser.add_argument(
-        '--dry-run', help="Don't actually perform access change", action='store_true'
-    )
     options = parser.parse_args()
 
     if bool(options.days_ago) == bool(options.uniqueid):
         parser.error('You have to specify either uniqueid or days-ago')
 
-    if not options.uniqueid:
-        try:
-            options.uniqueid = Volume.published_days_ago(options.days_ago)
-        except Exception:
-            log.error('Error while searching for volume', exc_info=True)
-
-    if not options.uniqueid:
-        log.info("Didn't find any volumes which need changes.")
+    volume = None
+    try:
+        if options.uniqueid:
+            volume = zeit.cms.interfaces.ICMSContent(options.uniqueid)
+        else:
+            volume = Volume.published_days_ago(options.days_ago)
+    except Exception as err:
+        current_span = opentelemetry.trace.get_current_span()
+        current_span.record_exception(err)
+    if not volume:
         return
-    volume = zeit.cms.interfaces.ICMSContent(options.uniqueid)
-    log.info('Processing %s', volume.uniqueId)
-    content = volume.change_contents_access('abo', 'registration', dry_run=options.dry_run)
-    content.extend(
-        volume.change_contents_access('dynamic', 'registration', dry_run=options.dry_run)
-    )
-    if options.dry_run:
-        log.info('Access would be changed for %s' % content)
-        return
+    content = volume.change_contents_access('abo', 'registration')
+    content.extend(volume.change_contents_access('dynamic', 'registration'))
     IPublish(volume).publish_multiple(content, background=False)
