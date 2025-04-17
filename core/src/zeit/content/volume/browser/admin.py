@@ -50,7 +50,7 @@ def render_publish_action(action):
 class PublishAll:
     # See zeit.workflow.json.publish.Publish.publish()
     def __call__(self):
-        all_content_to_publish = self.context.content_with_references_for_publishing()
+        all_content_to_publish = self.context.articles_with_references_for_publishing()
         IPublish(self.context).publish_multiple(
             all_content_to_publish,
             priority=zeit.cms.workflow.interfaces.IPublishPriority(self.context),

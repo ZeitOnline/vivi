@@ -1,6 +1,5 @@
 import argparse
 import datetime
-import itertools
 import logging
 
 from sqlalchemy import bindparam, select
@@ -222,74 +221,16 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         product_ids = [prod.id for prod in self._all_products]
         return cover_id in cover_ids and product_id in product_ids
 
-    def all_content_via_storage(self, additional_constraints=None):
-        """
-        Get all content for this volume via storage
-        If u pass a list of additional query clauses, they will be added as
-        an AND-operand to the query.
-        """
-        products = [x.id for x in self._all_products]
+    def _query_content_for_current_volume(self):
         query = """
         volume_year = :year
         AND volume_number = :volume
         AND product IN :products
         """
-        query = select(ConnectorModel).where(
-            sql(query).bindparams(
-                bindparam('products', products, expanding=True), year=self.year, volume=self.volume
-            )
+        bind_params = [bindparam('products', [x.id for x in self._all_products], expanding=True)]
+        return select(ConnectorModel).where(
+            sql(query).bindparams(*bind_params, year=self.year, volume=self.volume)
         )
-        if additional_constraints:
-            query = query.where(sql(additional_constraints))
-
-        repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
-        return repository.search(query)
-
-    def all_content_via_search(self, additional_query_constraints=None):
-        """
-        Get all content for this volume via ES.
-        If u pass a list of additional query clauses, they will be added as
-        an AND-operand to the query.
-        """
-        if not additional_query_constraints:
-            additional_query_constraints = []
-        elastic = zope.component.getUtility(zeit.find.interfaces.ICMSSearch)
-        query = [
-            {'term': {'payload.document.year': self.year}},
-            {'term': {'payload.document.volume': self.volume}},
-            {
-                'bool': {
-                    'should': [
-                        {'term': {'payload.workflow.product-id': x.id}} for x in self._all_products
-                    ]
-                }
-            },
-            {
-                'bool': {
-                    'must_not': {'term': {'payload.document.channels': 'zeit-magazin wochenmarkt'}}
-                }
-            },
-        ]
-
-        result = elastic.search(
-            {
-                'query': {
-                    'bool': {
-                        'filter': query + additional_query_constraints,
-                        'must_not': [{'term': {'url': self.uniqueId.replace(UNIQUEID_PREFIX, '')}}],
-                    }
-                }
-            },
-            rows=1000,
-        )
-        # We assume a maximum content amount per usual production print volume
-        assert result.hits < 250
-        content = []
-        for item in result:
-            item = zeit.cms.interfaces.ICMSContent(UNIQUEID_PREFIX + item['url'], None)
-            if item is not None:
-                content.append(item)
-        return content
 
     def change_contents_access(
         self,
@@ -329,32 +270,23 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
                 log.error("Couldn't change access for {}. Skipping it.".format(cnt.uniqueId))
         return cnts
 
-    def content_with_references_for_publishing(self):
-        additional_constraints = """
+    def articles_with_references_for_publishing(self):
+        conditions = """
         type='article'
         AND published=false
         AND unsorted @@ '$.workflow.urgent == "yes"'
         """
+        query = self._query_content_for_current_volume().where(sql(conditions))
+        articles_to_publish = self.repository.search(query)
 
-        articles_to_publish = self.all_content_via_storage(
-            additional_constraints=additional_constraints
-        )
-        # Flatten the list of lists and remove duplicates
-        articles_with_references = list(
-            set(
-                itertools.chain.from_iterable(
-                    [self._with_references(article) for article in articles_to_publish]
-                )
-            )
-        )
-        articles_with_references.append(self)
-        return articles_with_references
+        publishable_content = set()
+        for article in articles_to_publish:
+            publishable_content.update(self._with_publishable_references(article))
 
-    def _with_references(self, article):
-        """
-        :param content: CMSContent
-        :return: [referenced_content1, ..., content]
-        """
+        publishable_content.add(self)
+        return list(publishable_content)
+
+    def _with_publishable_references(self, article):
         with_dependencies = [
             content
             for content in zeit.edit.interfaces.IElementReferences(article, [])
@@ -533,7 +465,8 @@ def _find_performing_articles_via_webtrekk(volume):
             float(cr) >= access_control_config.min_cr
             or int(order) >= access_control_config.min_orders
         ):
-            urls.add('/' + url)
+            (parent_path, sep, name) = f'/{url}'.rpartition('/')
+            urls.add((parent_path, name))
     return list(urls)
 
 
