@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Fri Mar 28 11:34:54 2025\n"
+"POT-Creation-Date: Thu Apr 17 09:32:53 2025\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -215,7 +215,7 @@ msgstr ""
 #: zeit/content/article/edit/browser/reference.py:51
 #: zeit/content/cp/browser/view.py:11
 #: zeit/content/image/browser/form.py:98
-#: zeit/content/image/browser/imagegroup.py:324
+#: zeit/content/image/browser/imagegroup.py:327
 #: zeit/edit/browser/form.py:65
 #: zeit/edit/browser/view.py:103
 #: zeit/seo/browser/form.py:31
@@ -227,7 +227,7 @@ msgstr ""
 #: zeit/cms/repository/browser/folder.zcml:17
 #: zeit/cms/repository/browser/unknown.zcml:34
 #: zeit/content/article/browser/menu.py:17
-#: zeit/content/author/browser/form.py:110
+#: zeit/content/author/browser/form.py:109
 #: zeit/content/image/browser/configure.zcml:30
 #: zeit/content/rawxml/browser/configure.zcml:32
 #: zeit/content/text/browser/configure.zcml:25
@@ -252,7 +252,7 @@ msgstr ""
 #: zeit/content/article/edit/interfaces.py:287
 #: zeit/content/article/interfaces.py:188
 #: zeit/content/author/author.py:134
-#: zeit/content/author/browser/form.py:223
+#: zeit/content/author/browser/form.py:216
 msgid "Author"
 msgstr ""
 
@@ -288,7 +288,7 @@ msgstr ""
 #: zeit/cms/repository/browser/file.py:30
 #: zeit/cms/repository/browser/file_details.pt:2
 #: zeit/content/dynamicfolder/browser/folder.py:25
-#: zeit/content/image/browser/imagegroup.py:212
+#: zeit/content/image/browser/imagegroup.py:215
 #: zeit/content/image/browser/interfaces.py:32
 msgid "File name"
 msgstr ""
@@ -559,7 +559,7 @@ msgstr ""
 #: zeit/content/audio/browser/form.py:96
 #: zeit/content/cp/browser/form.py:76
 #: zeit/content/markup/browser/form.py:29
-#: zeit/content/video/browser/video.py:64
+#: zeit/content/video/browser/video.py:65
 msgid "Navigation"
 msgstr ""
 
@@ -577,8 +577,8 @@ msgstr ""
 #: zeit/content/image/browser/form.py:23
 #: zeit/content/infobox/browser/form.py:25
 #: zeit/content/infobox/browser/form.py:87
-#: zeit/content/video/browser/video.py:59
-#: zeit/content/video/browser/video.py:90
+#: zeit/content/video/browser/video.py:60
+#: zeit/content/video/browser/video.py:92
 msgid "Texts"
 msgstr ""
 
@@ -587,7 +587,7 @@ msgstr ""
 #: zeit/content/article/edit/browser/form.py:389
 #: zeit/content/cp/browser/form.py:59
 #: zeit/content/link/browser/form.py:39
-#: zeit/content/video/browser/video.py:69
+#: zeit/content/video/browser/video.py:70
 msgid "Options"
 msgstr ""
 
@@ -606,7 +606,7 @@ msgstr ""
 #: zeit/cms/content/browser/form.py:50
 #: zeit/content/article/browser/form.py:32
 #: zeit/content/article/edit/browser/recension.py:68
-#: zeit/content/author/browser/form.py:52
+#: zeit/content/author/browser/form.py:51
 #: zeit/content/gallery/browser/form.py:46
 msgid "misc."
 msgstr ""
@@ -727,7 +727,7 @@ msgstr ""
 #: zeit/cms/content/interfaces.py:82
 #: zeit/content/article/edit/interfaces.py:296
 #: zeit/content/volume/browser/form.py:38
-#: zeit/content/volume/volume.py:359
+#: zeit/content/volume/volume.py:383
 msgid "Volume"
 msgstr ""
 
@@ -1564,7 +1564,7 @@ msgstr ""
 #: zeit/content/gallery/browser/configure.zcml:50
 #: zeit/content/link/browser/configure.zcml:32
 #: zeit/content/markup/browser/configure.zcml:33
-#: zeit/content/volume/browser/configure.zcml:70
+#: zeit/content/volume/browser/configure.zcml:61
 msgid "View metadata"
 msgstr ""
 
@@ -1958,7 +1958,7 @@ msgstr ""
 #: zeit/content/cp/interfaces.py:302
 #: zeit/content/cp/interfaces.py:641
 #: zeit/content/image/browser/configure.zcml:265
-#: zeit/content/image/browser/imagegroup.py:222
+#: zeit/content/image/browser/imagegroup.py:225
 #: zeit/content/image/image.py:126
 #: zeit/content/portraitbox/interfaces.py:16
 #: zeit/wysiwyg/browser/resources/reference/image.pt:17
@@ -2591,29 +2591,29 @@ msgstr ""
 msgid "Could not retract ${name}. Podcast Episode is published by Provider"
 msgstr ""
 
-#: zeit/content/author/browser/form.py:31
+#: zeit/content/author/browser/form.py:30
 msgid "Contact"
 msgstr ""
 
-#: zeit/content/author/browser/form.py:54
+#: zeit/content/author/browser/form.py:53
 msgid "Author Favourites"
 msgstr ""
 
-#: zeit/content/author/browser/form.py:81
+#: zeit/content/author/browser/form.py:80
 #: zeit/content/author/interfaces.py:183
 msgid "Biography"
 msgstr ""
 
-#: zeit/content/author/browser/form.py:95
-#: zeit/content/author/browser/form.py:126
+#: zeit/content/author/browser/form.py:94
+#: zeit/content/author/browser/form.py:125
 msgid "Add author"
 msgstr ""
 
-#: zeit/content/author/browser/form.py:100
+#: zeit/content/author/browser/form.py:99
 msgid "Edit author"
 msgstr ""
 
-#: zeit/content/author/browser/form.py:115
+#: zeit/content/author/browser/form.py:114
 #: zeit/content/author/browser/honorar.py:26
 msgid "Add duplicate author"
 msgstr ""
@@ -2990,7 +2990,7 @@ msgid "Checking out"
 msgstr ""
 
 #: zeit/content/cp/browser/workflow.py:33
-#: zeit/content/image/browser/imagegroup.py:66
+#: zeit/content/image/browser/imagegroup.py:69
 #: zeit/workflow/browser/form.py:141
 #: zeit/workflow/browser/form.py:167
 msgid "Settings"
@@ -3476,7 +3476,7 @@ msgid "Image (single)"
 msgstr ""
 
 #: zeit/content/image/browser/configure.zcml:208
-#: zeit/content/image/browser/imagegroup.py:206
+#: zeit/content/image/browser/imagegroup.py:209
 #: zeit/content/image/interfaces.py:400
 msgid "Image group"
 msgstr ""
@@ -3502,7 +3502,7 @@ msgid "Copyright changed for: ${changes}"
 msgstr ""
 
 #: zeit/content/image/browser/form.py:18
-#: zeit/content/image/browser/imagegroup.py:237
+#: zeit/content/image/browser/imagegroup.py:240
 msgid "Image data"
 msgstr ""
 
@@ -3523,7 +3523,7 @@ msgid "View image"
 msgstr ""
 
 #: zeit/content/image/browser/image_view.pt:10
-#: zeit/content/image/browser/imagegroup.py:218
+#: zeit/content/image/browser/imagegroup.py:221
 msgid "Dimensions"
 msgstr ""
 
@@ -3543,47 +3543,47 @@ msgstr ""
 msgid "Links to: ${link} rel=\"nofollow\""
 msgstr ""
 
-#: zeit/content/image/browser/imagegroup.py:48
+#: zeit/content/image/browser/imagegroup.py:51
 msgid "Add image group"
 msgstr ""
 
-#: zeit/content/image/browser/imagegroup.py:166
+#: zeit/content/image/browser/imagegroup.py:169
 msgid "Add motif"
 msgstr ""
 
-#: zeit/content/image/browser/imagegroup.py:174
+#: zeit/content/image/browser/imagegroup.py:177
 msgid "Edit image group"
 msgstr ""
 
-#: zeit/content/image/browser/imagegroup.py:179
+#: zeit/content/image/browser/imagegroup.py:182
 msgid "Add viewport to master image mapping"
 msgstr ""
 
-#: zeit/content/image/browser/imagegroup.py:184
+#: zeit/content/image/browser/imagegroup.py:187
 msgid "Image group metadata"
 msgstr ""
 
-#: zeit/content/image/browser/imagegroup.py:200
+#: zeit/content/image/browser/imagegroup.py:203
 msgid "Master image"
 msgstr ""
 
-#: zeit/content/image/browser/imagegroup.py:344
+#: zeit/content/image/browser/imagegroup.py:347
 msgid "copyright infos"
 msgstr ""
 
-#: zeit/content/image/browser/imagegroup.py:344
+#: zeit/content/image/browser/imagegroup.py:347
 msgid "image_number"
 msgstr ""
 
-#: zeit/content/image/browser/imagegroup.py:344
+#: zeit/content/image/browser/imagegroup.py:347
 msgid "internal link"
 msgstr ""
 
-#: zeit/content/image/browser/imagegroup.py:344
+#: zeit/content/image/browser/imagegroup.py:347
 msgid "publish_date"
 msgstr ""
 
-#: zeit/content/image/browser/imagegroup.py:391
+#: zeit/content/image/browser/imagegroup.py:376
 msgid "CopyrightPurchaseReport"
 msgstr ""
 
@@ -4116,19 +4116,19 @@ msgstr ""
 msgid "Python script"
 msgstr ""
 
-#: zeit/content/video/browser/video.py:87
+#: zeit/content/video/browser/video.py:89
 msgid "Video-Thumbnail"
 msgstr ""
 
-#: zeit/content/video/browser/video.py:99
+#: zeit/content/video/browser/video.py:101
 msgid "Add Video"
 msgstr ""
 
-#: zeit/content/video/browser/video.py:104
+#: zeit/content/video/browser/video.py:106
 msgid "Edit Video"
 msgstr ""
 
-#: zeit/content/video/browser/video.py:108
+#: zeit/content/video/browser/video.py:110
 msgid "View Video"
 msgstr ""
 
@@ -4187,9 +4187,7 @@ msgstr ""
 msgid "Publish content of this volume"
 msgstr ""
 
-#: zeit/content/volume/browser/configure.zcml:61
-#: zeit/content/volume/browser/configure.zcml:116
-#: zeit/content/volume/browser/toc.py:42
+#: zeit/content/volume/browser/configure.zcml:107
 msgid "Table of Content"
 msgstr ""
 
@@ -4786,7 +4784,7 @@ msgstr ""
 msgid "The object ${name} is locked by ${user}."
 msgstr ""
 
-#: zeit/workflow/publish.py:585
+#: zeit/workflow/publish.py:586
 msgid "Retracted"
 msgstr ""
 
