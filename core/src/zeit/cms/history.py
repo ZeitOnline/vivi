@@ -73,7 +73,10 @@ def main():
         cmd('git config user.email zon-ops@zeit.de')
         cmd('git config user.name zon-ops')
         cmd('git remote add origin git+ssh://git@github.com/ZeitOnline/vivi-config-history')
-        cmd(f'git config core.sshCommand "ssh -o UserKnownHostsFile=/dev/null -i {options.sshkey}"')
+        cmd(
+            'git config core.sshCommand '
+            f'"-o sshStrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i {options.sshkey}"'
+        )
 
     cmd('git fetch --depth=1')
     if create_repo:
