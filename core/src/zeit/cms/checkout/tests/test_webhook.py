@@ -129,6 +129,22 @@ class WebhookExcludeTest(zeit.cms.testing.ZeitCmsTestCase):
             co.product = Product('ZEDE')
         self.assertTrue(hook.should_exclude(self.repository['testcontent']))
 
+    def test_match_print_ressort(self):
+        hook = zeit.cms.checkout.webhook.Hook('checkin', None)
+        hook.add_exclude('print_ressort', 'Wissen')
+        self.assertFalse(hook.should_exclude(self.repository['testcontent']))
+        with checked_out(self.repository['testcontent']) as co:
+            co.print_ressort = 'Wissen'
+        self.assertTrue(hook.should_exclude(self.repository['testcontent']))
+
+    def test_match_has_print_ressort(self):
+        hook = zeit.cms.checkout.webhook.Hook('checkin', None)
+        hook.add_exclude('print_ressort', '*')
+        self.assertFalse(hook.should_exclude(self.repository['testcontent']))
+        with checked_out(self.repository['testcontent']) as co:
+            co.print_ressort = 'Wissen'
+        self.assertTrue(hook.should_exclude(self.repository['testcontent']))
+
     def test_skip_auto_renameable(self):
         hook = zeit.cms.checkout.webhook.Hook(None, None)
         self.assertFalse(hook.should_exclude(self.repository['testcontent']))

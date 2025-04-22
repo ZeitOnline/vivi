@@ -147,6 +147,13 @@ class Hook:
             return False
         return content.product and content.product.counter == value
 
+    def _match_print_ressort(self, content, value):
+        if not ICommonMetadata.providedBy(content):
+            return False
+        if value == '*':
+            return content.print_ressort is not None
+        return content.print_ressort == value
+
     def _match_path_prefix(self, content, value):
         path = content.uniqueId.replace(zeit.cms.interfaces.ID_NAMESPACE, '/')
         return path.startswith(value)
