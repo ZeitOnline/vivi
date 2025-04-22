@@ -1,12 +1,12 @@
 import argparse
 import datetime
-import itertools
-import logging
 
 from sqlalchemy import bindparam, select
 from sqlalchemy import text as sql
 import grokcore.component as grok
 import lxml.builder
+import opentelemetry.trace
+import pendulum
 import requests
 import zope.component
 import zope.interface
@@ -33,7 +33,6 @@ import zeit.retresco.interfaces
 import zeit.retresco.search
 
 
-log = logging.getLogger()
 UNIQUEID_PREFIX = zeit.cms.interfaces.ID_NAMESPACE[:-1]
 
 
@@ -62,6 +61,10 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         zeit.content.portraitbox.interfaces.IPortraitbox,
         zeit.content.infobox.interfaces.IInfobox,
     ]
+
+    @property
+    def repository(self):
+        return zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
 
     @property
     def product(self):
@@ -136,46 +139,40 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
                 date_digital_published=self.date_digital_published,
             )
         )
-        repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
-        results = repository.search(query)
+        results = self.repository.search(query)
         return results[0] if results else None
 
     @staticmethod
     def published_days_ago(days_ago):
-        query = {
-            'query': {
-                'bool': {
-                    'filter': [
-                        {'term': {'doc_type': VolumeType.type}},
-                        {'term': {'payload.workflow.published': True}},
-                        {
-                            'range': {
-                                'payload.document.date_digital_published': {
-                                    'gte': 'now-%dd/d' % (days_ago + 1),
-                                    'lt': 'now-%dd/d' % days_ago,
-                                }
-                            }
-                        },
-                    ]
-                }
-            },
-            'sort': [{'payload.workflow.date_last_published': 'desc'}],
-        }
-        return Volume._find_via_elastic(query)
+        query = """
+        type=:volume
+        AND published = true
+        AND volume_date_digital_published >= :start_time
+        AND volume_date_digital_published <= :end_time
+        ORDER BY date_last_published DESC
+        """
 
-    @staticmethod
-    def _find_via_elastic(query):
-        es = zope.component.getUtility(zeit.retresco.interfaces.IElasticsearch)
-        result = es.search(query, rows=1)
-        if not result:
-            return None
-        return zeit.cms.interfaces.ICMSContent(UNIQUEID_PREFIX + next(iter(result))['url'], None)
+        start_time = pendulum.now().subtract(days=(days_ago + 1)).to_date_string()
+        end_time = pendulum.now().subtract(days=days_ago).to_date_string()
+        query = select(ConnectorModel).where(
+            sql(query).bindparams(
+                volume=VolumeType.type,
+                start_time=start_time,
+                end_time=end_time,
+            )
+        )
+
+        repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
+        result = repository.search(query)
+        return result[0] if result else None
 
     def get_cover(self, cover_id, product_id=None, use_fallback=True):
         if product_id is None and use_fallback:
             product_id = self.product.id
         if product_id and product_id not in [prod.id for prod in self._all_products]:
-            log.warning('%s is not a valid product id for %s' % (product_id, self))
+            err = ValueError(f'{product_id} is not a valid product id for {self}')
+            current_span = opentelemetry.trace.get_current_span()
+            current_span.record_exception(err)
             return None
         path = '//covers/cover[@id="{}" and @product_id="{}"]'.format(cover_id, product_id)
         node = self.xml.xpath(path)
@@ -228,74 +225,16 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         product_ids = [prod.id for prod in self._all_products]
         return cover_id in cover_ids and product_id in product_ids
 
-    def all_content_via_storage(self, additional_constraints=None):
-        """
-        Get all content for this volume via storage
-        If u pass a list of additional query clauses, they will be added as
-        an AND-operand to the query.
-        """
-        products = [x.id for x in self._all_products]
+    def _query_content_for_current_volume(self):
         query = """
         volume_year = :year
         AND volume_number = :volume
         AND product IN :products
         """
-        query = select(ConnectorModel).where(
-            sql(query).bindparams(
-                bindparam('products', products, expanding=True), year=self.year, volume=self.volume
-            )
+        bind_params = [bindparam('products', [x.id for x in self._all_products], expanding=True)]
+        return select(ConnectorModel).where(
+            sql(query).bindparams(*bind_params, year=self.year, volume=self.volume)
         )
-        if additional_constraints:
-            query = query.where(sql(additional_constraints))
-
-        repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
-        return repository.search(query)
-
-    def all_content_via_search(self, additional_query_constraints=None):
-        """
-        Get all content for this volume via ES.
-        If u pass a list of additional query clauses, they will be added as
-        an AND-operand to the query.
-        """
-        if not additional_query_constraints:
-            additional_query_constraints = []
-        elastic = zope.component.getUtility(zeit.find.interfaces.ICMSSearch)
-        query = [
-            {'term': {'payload.document.year': self.year}},
-            {'term': {'payload.document.volume': self.volume}},
-            {
-                'bool': {
-                    'should': [
-                        {'term': {'payload.workflow.product-id': x.id}} for x in self._all_products
-                    ]
-                }
-            },
-            {
-                'bool': {
-                    'must_not': {'term': {'payload.document.channels': 'zeit-magazin wochenmarkt'}}
-                }
-            },
-        ]
-
-        result = elastic.search(
-            {
-                'query': {
-                    'bool': {
-                        'filter': query + additional_query_constraints,
-                        'must_not': [{'term': {'url': self.uniqueId.replace(UNIQUEID_PREFIX, '')}}],
-                    }
-                }
-            },
-            rows=1000,
-        )
-        # We assume a maximum content amount per usual production print volume
-        assert result.hits < 250
-        content = []
-        for item in result:
-            item = zeit.cms.interfaces.ICMSContent(UNIQUEID_PREFIX + item['url'], None)
-            if item is not None:
-                content.append(item)
-        return content
 
     def change_contents_access(
         self,
@@ -303,27 +242,35 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         access_to,
         published=True,
         exclude_performing_articles=True,
-        dry_run=False,
     ):
-        constraints = [{'term': {'payload.document.access': access_from}}]
+        conditions = """
+        access = :access_from
+        AND NOT channels @> '[["zeit-magazin", "wochenmarkt"]]'
+        AND name <> 'ausgabe'
+        """
+        query = self._query_content_for_current_volume().where(
+            sql(conditions).bindparams(access_from=access_from)
+        )
+        if published:
+            query = query.where(sql('published = true'))
+
         if exclude_performing_articles:
             try:
-                to_filter = _find_performing_articles_via_webtrekk(self)
-            except Exception:
-                log.error('Error while retrieving data from webtrekk api', exc_info=True)
-                return []
+                content_to_filter = _find_performing_articles_via_webtrekk(self)
+                if content_to_filter:
+                    query = query.where(
+                        sql('(parent_path, name) NOT IN :content').bindparams(
+                            bindparam('content', content_to_filter, expanding=True)
+                        )
+                    )
+            except Exception as err:
+                current_span = opentelemetry.trace.get_current_span()
+                current_span.record_exception(err)
 
-            log.info('Not changing access for %s ' % to_filter)
-            filter_constraint = {'bool': {'must_not': {'terms': {'url': to_filter}}}}
-            constraints.append(filter_constraint)
-        if published:
-            constraints.append({'term': {'payload.workflow.published': True}})
-        cnts = self.all_content_via_search(constraints)
-        if dry_run:
-            return cnts
-        for cnt in cnts:
+        contents = self.repository.search(query)
+        for content in contents:
             try:
-                with zeit.cms.checkout.helper.checked_out(cnt) as co:
+                with zeit.cms.checkout.helper.checked_out(content) as co:
                     co.access = access_to
                     zope.lifecycleevent.modified(
                         co,
@@ -331,36 +278,28 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
                             zeit.cms.content.interfaces.ICommonMetadata, 'access'
                         ),
                     )
-            except Exception:
-                log.error("Couldn't change access for {}. Skipping it.".format(cnt.uniqueId))
-        return cnts
+            except Exception as err:
+                current_span = opentelemetry.trace.get_current_span()
+                current_span.record_exception(err)
+        return contents
 
-    def content_with_references_for_publishing(self):
-        additional_constraints = """
+    def articles_with_references_for_publishing(self):
+        conditions = """
         type='article'
         AND published=false
         AND unsorted @@ '$.workflow.urgent == "yes"'
         """
+        query = self._query_content_for_current_volume().where(sql(conditions))
+        articles_to_publish = self.repository.search(query)
 
-        articles_to_publish = self.all_content_via_storage(
-            additional_constraints=additional_constraints
-        )
-        # Flatten the list of lists and remove duplicates
-        articles_with_references = list(
-            set(
-                itertools.chain.from_iterable(
-                    [self._with_references(article) for article in articles_to_publish]
-                )
-            )
-        )
-        articles_with_references.append(self)
-        return articles_with_references
+        publishable_content = set()
+        for article in articles_to_publish:
+            publishable_content.update(self._with_publishable_references(article))
 
-    def _with_references(self, article):
-        """
-        :param content: CMSContent
-        :return: [referenced_content1, ..., content]
-        """
+        publishable_content.add(self)
+        return list(publishable_content)
+
+    def _with_publishable_references(self, article):
         with_dependencies = [
             content
             for content in zeit.edit.interfaces.IElementReferences(article, [])
@@ -539,7 +478,8 @@ def _find_performing_articles_via_webtrekk(volume):
             float(cr) >= access_control_config.min_cr
             or int(order) >= access_control_config.min_orders
         ):
-            urls.add('/' + url)
+            (parent_path, sep, name) = f'/{url}'.rpartition('/')
+            urls.add((parent_path, name))
     return list(urls)
 
 
@@ -550,30 +490,22 @@ def change_access():
     parser = argparse.ArgumentParser()
     parser.add_argument('--days-ago', type=int, help='Select volume that was published x days ago.')
     parser.add_argument('--uniqueid', help='Select volume by uniqueId.')
-    parser.add_argument(
-        '--dry-run', help="Don't actually perform access change", action='store_true'
-    )
     options = parser.parse_args()
 
     if bool(options.days_ago) == bool(options.uniqueid):
         parser.error('You have to specify either uniqueid or days-ago')
 
-    if not options.uniqueid:
-        try:
-            options.uniqueid = Volume.published_days_ago(options.days_ago)
-        except Exception:
-            log.error('Error while searching for volume', exc_info=True)
-
-    if not options.uniqueid:
-        log.info("Didn't find any volumes which need changes.")
+    volume = None
+    try:
+        if options.uniqueid:
+            volume = zeit.cms.interfaces.ICMSContent(options.uniqueid)
+        else:
+            volume = Volume.published_days_ago(options.days_ago)
+    except Exception as err:
+        current_span = opentelemetry.trace.get_current_span()
+        current_span.record_exception(err)
+    if not volume:
         return
-    volume = zeit.cms.interfaces.ICMSContent(options.uniqueid)
-    log.info('Processing %s', volume.uniqueId)
-    content = volume.change_contents_access('abo', 'registration', dry_run=options.dry_run)
-    content.extend(
-        volume.change_contents_access('dynamic', 'registration', dry_run=options.dry_run)
-    )
-    if options.dry_run:
-        log.info('Access would be changed for %s' % content)
-        return
+    content = volume.change_contents_access('abo', 'registration')
+    content.extend(volume.change_contents_access('dynamic', 'registration'))
     IPublish(volume).publish_multiple(content, background=False)
