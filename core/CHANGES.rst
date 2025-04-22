@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.82.0 (2025-04-22)
+-------------------
+
+- WCM-785: remove feature toggle WCM-785
+
+- WCM-823: remove toc.csv from volumes
+
+
 7.81.0 (2025-04-16)
 -------------------
 
