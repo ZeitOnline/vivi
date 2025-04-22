@@ -508,4 +508,5 @@ def change_access():
         return
     content = volume.change_contents_access('abo', 'registration')
     content.extend(volume.change_contents_access('dynamic', 'registration'))
-    IPublish(volume).publish_multiple(content, background=False)
+    for item in content:
+        IPublish(item).publish(background=False)
