@@ -48,6 +48,11 @@ def main():
     parser.add_argument('--sshkey', help='path to ssh private key for git')
     parser.add_argument('--uniqueid', help='content to export', default='http://xml.zeit.de/data')
     parser.add_argument('--verbose', '-v', help='Increase verbosity', action='store_true')
+    parser.add_argument(
+        '--ssh-options',
+        help='Can be used to give additional ssh command line options',
+        default='',
+    )
     options = parser.parse_args()
     for required in ['output', 'sshkey']:
         if not getattr(options, required):
@@ -73,7 +78,7 @@ def main():
         cmd('git config user.email zon-ops@zeit.de')
         cmd('git config user.name zon-ops')
         cmd('git remote add origin git+ssh://git@github.com/ZeitOnline/vivi-config-history')
-        cmd(f'git config core.sshCommand "ssh -i {options.sshkey}"')
+        cmd(f'git config core.sshCommand "ssh -i {options.sshkey} {options.ssh_options}"')
 
     cmd('git fetch --depth=1')
     if create_repo:
