@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.83.0 (2025-04-22)
+-------------------
+
+- WCM-693: Update volume content access using storage
+
+- WCM-830: make confighistory work with non-root user account
+
+
 7.82.0 (2025-04-22)
 -------------------
 
