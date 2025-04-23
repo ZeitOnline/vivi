@@ -3,6 +3,16 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.84.0 (2025-04-23)
+-------------------
+
+- WCM-831: add filter for print ressort in webhooks
+
+
+FIX:
+- WCM-693: Fix publish volume articles after access change
+
+
 7.83.0 (2025-04-22)
 -------------------
 
