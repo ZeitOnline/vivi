@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.85.0 (2025-04-23)
+-------------------
+
+FIX:
+- Broken git ssh call
+
+
 7.84.0 (2025-04-23)
 -------------------
 
