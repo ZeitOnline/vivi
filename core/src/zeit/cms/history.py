@@ -75,7 +75,7 @@ def main():
         cmd('git remote add origin git+ssh://git@github.com/ZeitOnline/vivi-config-history')
         cmd(
             'git config core.sshCommand '
-            f'"-o sshStrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i {options.sshkey}"'
+            f'"ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i {options.sshkey}"'
         )
 
     cmd('git fetch --depth=1')
