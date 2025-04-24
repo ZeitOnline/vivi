@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.86.0 (2025-04-24)
+-------------------
+
+- WCM-836: Ignore empty hdok ids in deleted authors report
+
+
 7.85.0 (2025-04-23)
 -------------------
 
