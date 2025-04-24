@@ -156,8 +156,13 @@ class HonorarReports(zeit.cms.browser.view.Base):
         hdok = zope.component.getUtility(zeit.content.author.interfaces.IHonorar)
         hdok_authors_deleted = hdok.invalid_gcids(days_ago)
         connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
-        hdok_ids = [(HDOK_ID == str(x['geloeschtGCID'])) for x in hdok_authors_deleted]
-        hdok_ids.extend([(HDOK_ID == str(x['refGCID'])) for x in hdok_authors_deleted])
+        hdok_ids = []
+        for item in hdok_authors_deleted:
+            for name in ['geloeschtGCID', 'refGCID']:
+                id = item[name]
+                if id:
+                    hdok_ids.append(id)
+        hdok_ids = [(HDOK_ID == str(x)) for x in hdok_ids]
         result = list(
             connector.search(
                 [TYPE, HDOK_ID],
