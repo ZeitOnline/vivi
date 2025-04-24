@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Thu Apr 17 09:32:53 2025\n"
+"POT-Creation-Date: Thu Apr 24 11:42:20 2025\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -34,34 +34,6 @@ msgstr "Inhalte hinzufügen"
 #: zeit/brightcove/configure.zcml:9
 msgid "Edit brightcove videos"
 msgstr "Edit brightcove videos"
-
-#: zeit/campus/article.py:49
-msgid "Study Course block"
-msgstr "Studiengang-Orientierungsangebot"
-
-#: zeit/campus/browser/infobox.py:23 zeit/content/infobox/browser/form.py:80
-msgid "Add infobox"
-msgstr "Infobox hinzufügen"
-
-#: zeit/campus/browser/infobox.py:27 zeit/content/infobox/browser/form.py:84
-msgid "Edit infobox"
-msgstr "Infobox bearbeiten"
-
-#: zeit/campus/browser/infobox.py:32 zeit/content/infobox/browser/form.py:98
-msgid "View infobox"
-msgstr "Infobox anzeigen"
-
-#: zeit/campus/interfaces.py:59
-msgid "Topic page"
-msgstr "Link zur Themenseite"
-
-#: zeit/campus/interfaces.py:62
-msgid "Topic label"
-msgstr "Linktext (Themenseite)"
-
-#: zeit/campus/interfaces.py:106
-msgid "Study course"
-msgstr "Studiengang"
 
 #: zeit/cmp/interfaces.py:37
 msgid "Contains thirdparty code"
@@ -692,7 +664,7 @@ msgstr "Jahr"
 
 #: zeit/cms/content/interfaces.py:82
 #: zeit/content/article/edit/interfaces.py:296
-#: zeit/content/volume/browser/form.py:38 zeit/content/volume/volume.py:383
+#: zeit/content/volume/browser/form.py:38 zeit/content/volume/volume.py:322
 msgid "Volume"
 msgstr "Ausgabe"
 
@@ -2598,7 +2570,7 @@ msgstr "Nachname"
 msgid "Look up author"
 msgstr "weiter"
 
-#: zeit/content/author/browser/honorar.py:198
+#: zeit/content/author/browser/honorar.py:203
 msgid "Honorar Reports"
 msgstr "HDok Dublettenreport"
 
@@ -3684,6 +3656,18 @@ msgstr "Typ"
 #: zeit/content/image/interfaces.py:389
 msgid "Alpha channel fill color"
 msgstr "Hintergrundfarbe"
+
+#: zeit/content/infobox/browser/form.py:80
+msgid "Add infobox"
+msgstr "Infobox hinzufügen"
+
+#: zeit/content/infobox/browser/form.py:84
+msgid "Edit infobox"
+msgstr "Infobox bearbeiten"
+
+#: zeit/content/infobox/browser/form.py:98
+msgid "View infobox"
+msgstr "Infobox anzeigen"
 
 #: zeit/content/infobox/interfaces.py:44
 msgid "Debate action URL"
@@ -4838,6 +4822,18 @@ msgstr "Format"
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:53
 msgid "with info"
 msgstr "mit Info"
+
+#~ msgid "Study Course block"
+#~ msgstr "Studiengang-Orientierungsangebot"
+
+#~ msgid "Topic page"
+#~ msgstr "Link zur Themenseite"
+
+#~ msgid "Topic label"
+#~ msgstr "Linktext (Themenseite)"
+
+#~ msgid "Study course"
+#~ msgstr "Studiengang"
 
 #~ msgid "timebased-publish-cancel"
 #~ msgstr "Abgebrochen: automatisches Veröffentlichen (job #${job})"
