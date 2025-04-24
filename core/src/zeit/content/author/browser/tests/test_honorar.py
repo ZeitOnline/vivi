@@ -176,6 +176,16 @@ class CSVRendering(zeit.retresco.testing.FunctionalTestCase):
                 'refUUID': '6C3DB770-20DE-BD48-A990-5B0FD1D93F26',
                 'ts': '03/03/2023 17:35:56',
             },
+            {
+                'geloeschtGCID': 456,
+                'geloeschtName': 'Dritter Imbunde',
+                'geloeschtUUID': 'A88EC3B5-9E31-1E48-848B-BE5F4EEE1F31',
+                'konto': 'ext_klippert',
+                'refGCID': '',
+                'refName': 'Dritter Imbunde',
+                'refUUID': '6C3DB770-20DE-BD48-A990-5B0FD1D93F26',
+                'ts': '03/03/2023 17:35:56',
+            },
         ]
         csv = honorar.HonorarReports.report_invalid_gcid(self)
         expected = (
@@ -184,3 +194,4 @@ class CSVRendering(zeit.retresco.testing.FunctionalTestCase):
             'https://www.zeit.de/autoren/P/Sophia_Phildius/index;321;\n'
         )
         self.assertEqual(csv, expected)
+        self.assertNotIn('"hdok_id" ""', self.repository.connector.search_dav_args[0][1]._render())
