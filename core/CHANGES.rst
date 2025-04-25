@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.87.0 (2025-04-25)
+-------------------
+
+- WCM-832: unregister zeit.campus package
+
+
 7.86.0 (2025-04-24)
 -------------------
 
