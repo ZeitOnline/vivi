@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.91.0 (2025-04-28)
+-------------------
+
+- OPS-2829: Fix ssl monkeypatch mechanics
+
+
 7.90.0 (2025-04-28)
 -------------------
 
