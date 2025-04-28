@@ -1,6 +1,7 @@
 import zope.component
 import zope.interface
 
+import zeit.cms.content.sources
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.connector.resource
@@ -19,8 +20,10 @@ class INamedCMSContentSource(ICMSContentSource):
         """Return a sequence of cms type identifiers which are included."""
 
 
-class IAutocompleteSource(INamedCMSContentSource):
-    """Marker that this source supports autocomplete."""
+class IAutocompleteCMSContentSource(
+    INamedCMSContentSource, zeit.cms.content.sources.IAutocompleteSource
+):
+    """An autocomplete source that uses zeit.find to look up ICMSContent objects."""
 
     # Coupling us to zeit.find here is not great, but I don't see a helpful way
     # to handle this in a more abstract manner.

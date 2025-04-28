@@ -699,3 +699,12 @@ class PrintRessortSource(XMLSource):
 
 
 PRINT_RESSORT_SOURCE = PrintRessortSource()
+
+
+class IAutocompleteSource(zope.interface.Interface):
+    """Marker that this source supports autocomplete.
+
+    Current implementation see zeit.cms.browser:js/autocomplete.js
+    which uses a jQuery UI autocomplete widget and configures its URL endpoint
+    by looking up zeit.cms.browser.interfaces.ISourceQueryURL(source, request)
+    """

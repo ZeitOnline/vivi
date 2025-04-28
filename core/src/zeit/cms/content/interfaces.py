@@ -11,7 +11,6 @@ import zope.schema.interfaces
 # XXX There is too much, too unordered in here, clean this up.
 # prevent circular import
 from zeit.cms.content.contentsource import (
-    IAutocompleteSource,  # noqa
     ICMSContentSource,  # noqa
     INamedCMSContentSource,  # noqa
 )
@@ -27,7 +26,7 @@ class IAuthorType(zeit.cms.interfaces.ICMSContentType):
     """Interface type for authors."""
 
 
-@zope.interface.implementer(zeit.cms.content.contentsource.IAutocompleteSource)
+@zope.interface.implementer(zeit.cms.content.contentsource.IAutocompleteCMSContentSource)
 class AuthorSource(zeit.cms.content.contentsource.CMSContentSource):
     check_interfaces = IAuthorType
     name = 'authors'

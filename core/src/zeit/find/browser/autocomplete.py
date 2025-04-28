@@ -7,7 +7,7 @@ import zope.traversing.browser
 
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
-import zeit.cms.content.interfaces
+import zeit.cms.content.sources
 import zeit.find.interfaces
 import zeit.find.search
 
@@ -29,9 +29,7 @@ class SimpleFind(zeit.cms.browser.view.JSON):
         ]
 
 
-@grok.adapter(
-    zeit.cms.content.interfaces.IAutocompleteSource, zeit.cms.browser.interfaces.ICMSLayer
-)
+@grok.adapter(zeit.cms.content.sources.IAutocompleteSource, zeit.cms.browser.interfaces.ICMSLayer)
 @grok.implementer(zeit.cms.browser.interfaces.ISourceQueryURL)
 def SimpleFindURL(context, request):
     base = zope.traversing.browser.absoluteURL(zope.component.hooks.getSite(), request)

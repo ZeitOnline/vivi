@@ -23,6 +23,7 @@ import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
 import zeit.cms.content.interfaces
 import zeit.cms.content.reference
+import zeit.cms.content.sources
 import zeit.cms.interfaces
 import zeit.cms.testing
 
@@ -1056,7 +1057,7 @@ class MarkdownWidgetTest(zeit.cms.testing.ZeitCmsTestCase):
 class TestSourceQueryViewIntegration(zeit.cms.testing.ZeitCmsTestCase):
     def test_query_view_should_be_registered(self):
         source = mock.Mock()
-        zope.interface.alsoProvides(source, zeit.cms.content.interfaces.IAutocompleteSource)
+        zope.interface.alsoProvides(source, zeit.cms.content.sources.IAutocompleteSource)
         request = mock.Mock()
         zope.interface.alsoProvides(request, zeit.cms.browser.interfaces.ICMSSkin)
         with self.assertNothingRaised():

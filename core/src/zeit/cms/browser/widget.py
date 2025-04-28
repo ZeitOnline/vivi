@@ -31,6 +31,7 @@ import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
 import zeit.cms.content.add
 import zeit.cms.content.interfaces
+import zeit.cms.content.sources
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 
@@ -595,9 +596,7 @@ class AutocompleteDisplayWidget(zope.formlib.widgets.DisplayWidget):
 
 
 class AutocompleteSourceQuery(grok.MultiAdapter, zeit.cms.browser.view.Base):
-    grok.adapts(
-        zeit.cms.content.interfaces.IAutocompleteSource, zeit.cms.browser.interfaces.ICMSLayer
-    )
+    grok.adapts(zeit.cms.content.sources.IAutocompleteSource, zeit.cms.browser.interfaces.ICMSLayer)
     grok.provides(zope.formlib.interfaces.ISourceQueryView)
 
     def __init__(self, source, request):
