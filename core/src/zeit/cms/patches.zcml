@@ -36,6 +36,7 @@
     description="Work around python 3.13 python/cpython#107361 not validating GCP redis self-signed certs anymore."
     module="ssl"
     original="create_default_context"
+    preserveOriginal="true"
     replacement=".redis_patch.create_context_without_strict" />
 
 </configure>
