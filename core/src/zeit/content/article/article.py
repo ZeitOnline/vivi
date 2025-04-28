@@ -97,12 +97,6 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
         use_default=True,
     )
 
-    avoid_create_summary = zeit.cms.content.dav.DAVProperty(
-        zeit.content.article.interfaces.IArticle['avoid_create_summary'],
-        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
-        'avoid_create_summary',
-    )
-
     recipe_categories = zeit.wochenmarkt.categories.RecipeCategories()
 
     @property
