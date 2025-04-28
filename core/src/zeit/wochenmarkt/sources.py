@@ -18,10 +18,10 @@ class RecipeCategoriesSource(zc.sourcefactory.contextual.BasicContextualSourceFa
             return True
 
     def search(self, term):
-        from zeit.wochenmarkt.interfaces import IRecipeCategoriesWhitelist
-
-        categories = zope.component.getUtility(IRecipeCategoriesWhitelist)
-        return categories.search(term)
+        whitelist = zope.component.getUtility(
+            zeit.wochenmarkt.interfaces.IRecipeCategoriesWhitelist
+        )
+        return whitelist.search(term)
 
     def getTitle(self, context, value):
         return value.name
@@ -44,10 +44,8 @@ class IngredientsSource(zc.sourcefactory.contextual.BasicContextualSourceFactory
             return True
 
     def search(self, term):
-        from zeit.wochenmarkt.interfaces import IIngredientsWhitelist
-
-        ingredients = zope.component.getUtility(IIngredientsWhitelist)
-        return ingredients.search(term)
+        whitelist = zope.component.getUtility(zeit.wochenmarkt.interfaces.IIngredientsWhitelist)
+        return whitelist.search(term)
 
 
 ingredientsSource = IngredientsSource()
