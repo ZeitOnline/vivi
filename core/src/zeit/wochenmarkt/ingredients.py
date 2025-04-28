@@ -32,7 +32,6 @@ class Ingredient:
         self.singular = kwargs.get('singular')
         self.plural = kwargs.get('plural')
         self.diet = kwargs.get('diet')
-        self.__name__ = self.code
 
 
 @grok.implementer(zeit.wochenmarkt.interfaces.IIngredientsWhitelist)

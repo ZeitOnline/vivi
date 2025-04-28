@@ -21,7 +21,6 @@ class RecipeCategory:
     def __init__(self, code, name):
         self.code = code
         self.name = name
-        self.__name__ = self.code
 
     @classmethod
     def from_xml(cls, node):
