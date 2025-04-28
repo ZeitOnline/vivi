@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.90.0 (2025-04-28)
+-------------------
+
+- OPS-2829: Work around changed python 3.13 ssl verify defaults that clash with GCP redis certs
+
+
 7.89.0 (2025-04-28)
 -------------------
 
