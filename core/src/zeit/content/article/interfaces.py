@@ -8,6 +8,7 @@ import zeit.cms.interfaces
 import zeit.cms.section.interfaces
 import zeit.content.article.source
 import zeit.content.image.interfaces
+import zeit.wochenmarkt.sources
 
 
 ARTICLE_NS = 'http://namespaces.zeit.de/CMS/Article'
@@ -31,10 +32,6 @@ class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
     # bind(None) amounts to "clone".
     keywords = zeit.cms.content.interfaces.ICommonMetadata['keywords'].bind(object())
     keywords.setTaggedValue('zeit.cms.tagging.updateable', True)
-
-    recipe_categories = zeit.cms.content.interfaces.ICommonMetadata['recipe_categories'].bind(
-        object()
-    )
 
     body = zope.interface.Attribute('Convenience access to IEditableBody')
     header = zope.interface.Attribute('Convenience access to IHeaderArea')
@@ -118,6 +115,13 @@ class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
 
     avoid_create_summary = zope.schema.Bool(
         title=_('Avoid create summary'), required=False, default=False
+    )
+
+    recipe_categories = zope.schema.Tuple(
+        title=_('Recipe Categories'),
+        value_type=zope.schema.Choice(source=zeit.wochenmarkt.sources.RecipeCategoriesSource()),
+        default=(),
+        required=False,
     )
 
 

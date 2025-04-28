@@ -34,6 +34,7 @@ import zeit.content.infobox.interfaces
 import zeit.content.portraitbox.interfaces
 import zeit.edit.interfaces
 import zeit.edit.rule
+import zeit.wochenmarkt.categories
 import zeit.workflow.interfaces
 import zeit.workflow.workflow
 
@@ -101,6 +102,8 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
         'avoid_create_summary',
     )
+
+    recipe_categories = zeit.wochenmarkt.categories.RecipeCategories()
 
     @property
     def body(self):
