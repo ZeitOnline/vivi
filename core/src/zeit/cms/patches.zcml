@@ -32,4 +32,10 @@
     original="__reduce__"
     replacement=".pendulum_patch.reduce_without_nocache" />
 
+  <monkey:patch
+    description="Work around python 3.13 python/cpython#107361 not validating GCP redis self-signed certs anymore."
+    module="ssl"
+    original="create_default_context"
+    replacement=".redis_patch.create_context_without_strict" />
+
 </configure>
