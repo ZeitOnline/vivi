@@ -451,6 +451,18 @@ class PropertiesColumnTest(zeit.connector.testing.SQLTest):
         content = self.connector._get_content(res.id)
         self.assertIsNone(content.date_created)
 
+    def test_convert_channels(self):
+        res = self.add_resource(
+            'foo', properties={('channels', f'{NS}document'): 'main1 sub1;main2'}
+        )
+        content = self.connector._get_content(res.id)
+        self.assertEqual((('main1', 'sub1'), ('main2', None)), content.channels)
+
+    def test_convert_recipe_categories(self):
+        res = self.add_resource('foo', properties={('categories', f'{NS}recipe'): 'foo;bar'})
+        content = self.connector._get_content(res.id)
+        self.assertEqual(('foo', 'bar'), content.recipe_categories)
+
 
 class ColumnDeclarationTest(zeit.connector.testing.TestCase):
     layer = zeit.connector.testing.COLUMNS_ZOPE_LAYER
