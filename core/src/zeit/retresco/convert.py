@@ -499,7 +499,7 @@ class Article(Converter):
         for code in categories:
             category = whitelist.get(code)
             if category is not None:
-                search_list.append(category.name.strip() + ':category')
+                search_list.append(f'{category.name}:category')
 
         ingredients = body.xpath('//recipelist/ingredient/@code')
         if not (categories or ingredients):
@@ -509,22 +509,19 @@ class Article(Converter):
             ingredient = whitelist.get(code)
             if ingredient is None:
                 continue
-            search_list += [x.strip() + ':ingredient' for x in ingredient.qwords or ()]
-            search_list += [x.strip() + ':ingredient' for x in ingredient.qwords_category or ()]
+            search_list += [f'{x}:ingredient' for x in ingredient.qwords]
+            search_list += [f'{x}:ingredient' for x in ingredient.qwords_category]
 
         titles = body.xpath('//recipelist/title/text()')
-        search_list += [x.strip() + ':recipe_title' for x in titles]
+        search_list += [f'{x}:recipe_title' for x in titles]
 
         subheadings = body.xpath('//recipelist/subheading[@searchable="True"]/text()')
-        search_list += [x.strip() + ':subheading' for x in subheadings]
+        search_list += [f'{x}:subheading' for x in subheadings]
+        search_list.append(f'{self.context.title}:title')
 
         complexities = body.xpath('//recipelist/complexity/text()')
         servings = body.xpath('//recipelist/servings/text()')
         times = body.xpath('//recipelist/time/text()')
-
-        doctitles = body.xpath('title/text()')
-        if len(doctitles) == 1 and doctitles[0] != '':
-            search_list.append(doctitles[0].strip() + ':title')
 
         return {
             'categories': list(set(categories)),

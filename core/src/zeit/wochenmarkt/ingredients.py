@@ -25,9 +25,13 @@ class Ingredient:
         self.code = code
         self.name = kwargs.get('name')
         self.category = kwargs.get('category')
-        self.qwords = kwargs.get('qwords').split(',') if kwargs.get('qwords') else None
+        self.qwords = (
+            [x.strip() for x in kwargs.get('qwords').split(',')] if kwargs.get('qwords') else []
+        )
         self.qwords_category = (
-            kwargs.get('qwords_category').split(',') if kwargs.get('qwords_category') else None
+            [x.strip() for x in kwargs.get('qwords_category').split(',')]
+            if kwargs.get('qwords_category')
+            else []
         )
         self.singular = kwargs.get('singular')
         self.plural = kwargs.get('plural')

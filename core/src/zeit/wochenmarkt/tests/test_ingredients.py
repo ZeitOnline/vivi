@@ -18,7 +18,7 @@ class TestIngredients(zeit.wochenmarkt.testing.FunctionalTestCase):
         assert 'Basmatireis' == basmati.name
         assert 'other' == basmati.category
         assert ['Reis', 'Basmati'] == basmati.qwords
-        assert basmati.qwords_category is None
+        assert not basmati.qwords_category
         assert 'Basmatireis' == basmati.singular
         assert 'Basmatireis' == basmati.plural
         assert 'vegan' == basmati.diet
@@ -30,7 +30,7 @@ class TestIngredients(zeit.wochenmarkt.testing.FunctionalTestCase):
         assert 'Calamari' == calamari.name
         assert 'fish' == calamari.category
         assert ['Tintenfisch', 'Kalamar'] == calamari.qwords
-        assert ['Fisch', ' Meeresfrüchte'] == calamari.qwords_category
+        assert ['Fisch', 'Meeresfrüchte'] == calamari.qwords_category
         assert 'omnivore' == calamari.diet
 
     def test_ingredients_should_be_found_by_category(self):
