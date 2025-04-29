@@ -314,7 +314,6 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
                 'brathaehnchen',
                 'bratwurst',
                 'chicken-nuggets',
-                'gries',
                 'gurke',
                 'tomate',
             ],
