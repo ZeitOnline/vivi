@@ -1,6 +1,7 @@
 <configure
   xmlns="http://namespaces.zope.org/zope"
-  xmlns:grok="http://namespaces.zope.org/grok">
+  xmlns:grok="http://namespaces.zope.org/grok"
+  xmlns:zcml="http://namespaces.zope.org/zcml">
 
   <grok:grok package="." exclude="browser" />
 
@@ -204,5 +205,6 @@
       permission="zeit.EditContent" />
   </class>
 
-  <utility factory=".mdb.from_product_config"/>
+  <utility factory=".mdb.from_product_config"  zcml:condition="not-have zeit.cms.testing" />
+  <utility factory=".mdb.MockMDB"  zcml:condition="have zeit.cms.testing" />
 </configure>
