@@ -7,15 +7,26 @@ import zeit.cms.content.sources
 import zeit.wochenmarkt.interfaces
 
 
-class RecipeCategoriesSource(zc.sourcefactory.contextual.BasicContextualSourceFactory):
+class RecipeCategoriesSource(
+    zeit.cms.content.sources.ObjectSource, zc.sourcefactory.contextual.BasicContextualSourceFactory
+):
     @zope.interface.implementer(
         zeit.wochenmarkt.interfaces.IRecipeCategoriesSource,
         zeit.cms.content.sources.IAutocompleteSource,
     )
-    class source_class(zc.sourcefactory.source.FactoredContextualSource):
+    class source_class(zeit.cms.content.sources.FactoredObjectSource):
         def __contains__(self, value):
             # We do not want to ask the whitelist again.
             return True
+
+    def _values(self):
+        whitelist = zope.component.getUtility(
+            zeit.wochenmarkt.interfaces.IRecipeCategoriesWhitelist
+        )
+        return whitelist._load()
+
+    def isAvailable(self, value, context):
+        return True
 
     def search(self, term):
         whitelist = zope.component.getUtility(
@@ -23,11 +34,11 @@ class RecipeCategoriesSource(zc.sourcefactory.contextual.BasicContextualSourceFa
         )
         return whitelist.search(term)
 
-    def getTitle(self, context, value):
-        return value.name
-
-    def getToken(self, context, value):
-        return value.code
+    def find(self, context, id):
+        whitelist = zope.component.getUtility(
+            zeit.wochenmarkt.interfaces.IRecipeCategoriesWhitelist
+        )
+        return whitelist.get(id)
 
 
 recipeCategoriesSource = RecipeCategoriesSource()

@@ -52,14 +52,6 @@ class TestRecipeCategories(
         result = content.categories
         self.assertEqual(['summer', 'pizza'], [x.code for x in result])
 
-    def test_set_should_add_duplicate_values_only_once(self):
-        categories = self.setup_categories('summer')
-        summer = categories['summer']
-        content = self.get_content()
-        content.categories = [summer, summer]
-        result = content.categories
-        self.assertEqual(['summer'], [x.code for x in result])
-
     def test_set_should_write_categories_to_xml_head(self):
         categories = self.setup_categories('summer')
         summer = categories['summer']

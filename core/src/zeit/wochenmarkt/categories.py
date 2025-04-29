@@ -19,6 +19,13 @@ xpath_functions['lower'] = xpath_lowercase
 @grok.implementer(zeit.wochenmarkt.interfaces.IRecipeCategory)
 class RecipeCategory:
     def __init__(self, code, name):
+        # Conform to zeit.cms.content.sources.ObjectSource
+        self.id = code
+        self.title = name
+        # BBB present an API a bit like zeit.cms.tagging.interfaces.ITag, even
+        # though using an object here probably always has been superfluous, and
+        # this could have instead been implemented with strings and the standard
+        # Source value+title mechanics.
         self.code = code
         self.name = name
 
@@ -36,10 +43,16 @@ class RecipeCategory:
             return None
         return cls(code, name)
 
+    def __eq__(self, other):
+        if not zeit.wochenmarkt.interfaces.IRecipeCategory.providedBy(other):
+            return False
+        return self.code == other.code
+
+    def __hash__(self):
+        return hash(self.code)
+
 
 class RecipeCategories:
-    """Property which stores recipe categories in DAV."""
-
     def __get__(self, instance, class_):
         if instance is not None:
             categories = [
@@ -53,19 +66,11 @@ class RecipeCategories:
         recipe_categories = instance.xml.xpath('./head/recipe_categories')
         if len(recipe_categories) != 0:
             instance.xml.find('head').remove(recipe_categories[0])
-        value = self._remove_duplicates(value)
         if len(value) > 0:
             el = E.recipe_categories()
             for item in value:
                 el.append(E.category(code=item.code))
             instance.xml.find('head').append(el)
-
-    def _remove_duplicates(self, categories):
-        result = {}
-        for category in categories:
-            if category.code not in result:
-                result[category.code] = category
-        return result.values()
 
 
 @grok.implementer(zeit.wochenmarkt.interfaces.IRecipeCategoriesWhitelist)

@@ -97,8 +97,6 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
         use_default=True,
     )
 
-    recipe_categories = zeit.wochenmarkt.categories.RecipeCategories()
-
     @property
     def body(self):
         return zeit.content.article.edit.interfaces.IEditableBody(self)
@@ -127,6 +125,29 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
             self,
             zope.lifecycleevent.Attributes(zeit.cms.content.interfaces.ICommonMetadata, *modified),
         )
+
+    @property
+    def recipe_categories(self):
+        if FEATURE_TOGGLES.find('xmlproperty_read_wcm_837'):
+            return self._recipe_categories
+        else:
+            return self._recipe_categories_body
+
+    @recipe_categories.setter
+    def recipe_categories(self, value):
+        value = list(dict.fromkeys(value))  # ordered set()
+        self._recipe_categories = value
+        if not FEATURE_TOGGLES.find('xmlproperty_strict_wcm_837'):
+            self._recipe_categories_body = value
+
+    _recipe_categories = zeit.cms.content.dav.DAVProperty(
+        zeit.content.article.interfaces.IArticle['recipe_categories'],
+        'http://namespaces.zeit.de/CMS/recipe',
+        'categories',
+        use_default=True,
+    )
+
+    _recipe_categories_body = zeit.wochenmarkt.categories.RecipeCategories()
 
     @property
     def main_image_block(self):

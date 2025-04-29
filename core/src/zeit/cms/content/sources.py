@@ -187,14 +187,17 @@ class IObjectSource(zope.schema.interfaces.IIterableSource):
     pass
 
 
-class ObjectSource(zc.sourcefactory.factories.ContextualSourceFactory):
-    @zope.interface.implementer(IObjectSource)
-    class source_class(zc.sourcefactory.source.FactoredContextualSource):
-        def find(self, id):
-            return self.factory.find(self.context, id)
+@zope.interface.implementer(IObjectSource)
+class FactoredObjectSource(zc.sourcefactory.source.FactoredContextualSource):
+    def find(self, id):
+        return self.factory.find(self.context, id)
 
-        def find_by_property(self, property_name, value):
-            return self.factory.find_by_property(self.context, property_name, value)
+    def find_by_property(self, property_name, value):
+        return self.factory.find_by_property(self.context, property_name, value)
+
+
+class ObjectSource(zc.sourcefactory.factories.ContextualSourceFactory):
+    source_class = FactoredObjectSource
 
     def _values(self):
         raise NotImplementedError()
