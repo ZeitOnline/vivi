@@ -13,7 +13,7 @@ import sqlalchemy
 import zope.interface
 
 from zeit.connector.interfaces import IConverter
-from zeit.connector.types import JSONBTuple
+from zeit.connector.types import JSONBChannels, JSONBTuple
 import zeit.cms.content.dav
 
 
@@ -64,10 +64,24 @@ class DatetimeConverter(DefaultConverter):
         return zeit.cms.content.dav.DatetimeProperty._fromProperty(value)
 
 
+class JSONBTupleConverter(DefaultConverter):
+    grok.context(JSONBTuple)
+
+    def serialize(self, value: Iterable) -> str:
+        if value is None:
+            return None
+        return ';'.join(x for x in value)
+
+    def deserialize(self, value: str) -> tuple:
+        if not value:
+            return ()
+        return tuple(value.split(';'))
+
+
 class ChannelsConverter(DefaultConverter):
     """Converts list of channels seperated by semicolon and subchannels by space."""
 
-    grok.context(JSONBTuple)
+    grok.context(JSONBChannels)
 
     def serialize(self, value: Iterable) -> str:
         if value is None:

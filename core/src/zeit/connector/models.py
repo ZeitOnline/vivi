@@ -20,7 +20,7 @@ import sqlalchemy
 from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.connector.interfaces import INTERNAL_PROPERTY, DeleteProperty, LockStatus
 from zeit.connector.lock import lock_is_foreign
-from zeit.connector.types import TIMESTAMP, JSONBTuple
+from zeit.connector.types import TIMESTAMP, JSONBChannels, JSONBTuple
 import zeit.connector.interfaces
 
 
@@ -56,7 +56,7 @@ def metadata_create(target, connection, **kw):
 
 
 class CommonMetadata:
-    channels = mapped_column(JSONBTuple, info={'namespace': 'document', 'name': 'channels'})
+    channels = mapped_column(JSONBChannels, info={'namespace': 'document', 'name': 'channels'})
     access = mapped_column(Unicode, info={'namespace': 'document', 'name': 'access'})
     product = mapped_column(Unicode, info={'namespace': 'workflow', 'name': 'product-id'})
     ressort = mapped_column(Unicode, info={'namespace': 'document', 'name': 'ressort'})
@@ -154,6 +154,12 @@ class Timestamps:
     )
 
 
+class Recipe:
+    recipe_categories = mapped_column(
+        JSONBTuple, info={'namespace': 'recipe', 'name': 'categories'}
+    )
+
+
 class Miscellaneous:
     seo_meta_robots = mapped_column(
         Unicode, info={'namespace': 'document', 'name': 'html-meta-robots'}
@@ -175,7 +181,9 @@ class VGWort:
     )
 
 
-class Content(Base, CommonMetadata, ContentTypes, Timestamps, Miscellaneous, VGWort, Volume):
+class Content(
+    Base, CommonMetadata, ContentTypes, Timestamps, Recipe, Miscellaneous, VGWort, Volume
+):
     __tablename__ = 'properties'
 
     @declared_attr
@@ -203,6 +211,7 @@ class Content(Base, CommonMetadata, ContentTypes, Timestamps, Miscellaneous, VGW
                     ops='varchar_pattern_ops',
                     name='author_lastname',
                 ),
+                cls.Index('recipe_categories', ops='jsonb_path_ops'),
             )
             + tuple(
                 cls.Index(getattr(cls, column).desc().nulls_last())
