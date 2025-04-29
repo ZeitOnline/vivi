@@ -319,7 +319,7 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
                 'tomate',
             ],
         }
-        self.assertEqual(payload, data['payload']['recipe'])
+        self.assertEqual(payload, {k: sorted(v) for k, v in data['payload']['recipe'].items()})
 
     def test_converts_imagegroup(self):
         group = zeit.content.image.testing.create_image_group()

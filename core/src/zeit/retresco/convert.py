@@ -501,7 +501,7 @@ class Article(Converter):
             if category is not None:
                 search_list.append(category.name.strip() + ':category')
 
-        ingredients = sorted(body.xpath('//recipelist/ingredient/@code'))
+        ingredients = body.xpath('//recipelist/ingredient/@code')
         if not (categories or ingredients):
             return None
         whitelist = zope.component.getUtility(zeit.wochenmarkt.interfaces.IIngredientsWhitelist)
@@ -512,29 +512,29 @@ class Article(Converter):
             search_list += [x.strip() + ':ingredient' for x in ingredient.qwords or ()]
             search_list += [x.strip() + ':ingredient' for x in ingredient.qwords_category or ()]
 
-        titles = sorted(body.xpath('//recipelist/title/text()'))
+        titles = body.xpath('//recipelist/title/text()')
         search_list += [x.strip() + ':recipe_title' for x in titles]
 
-        subheadings = sorted(body.xpath('//recipelist/subheading[@searchable="True"]/text()'))
+        subheadings = body.xpath('//recipelist/subheading[@searchable="True"]/text()')
         search_list += [x.strip() + ':subheading' for x in subheadings]
 
-        complexities = sorted(body.xpath('//recipelist/complexity/text()'))
-        servings = sorted(body.xpath('//recipelist/servings/text()'))
-        times = sorted(body.xpath('//recipelist/time/text()'))
+        complexities = body.xpath('//recipelist/complexity/text()')
+        servings = body.xpath('//recipelist/servings/text()')
+        times = body.xpath('//recipelist/time/text()')
 
         doctitles = body.xpath('title/text()')
         if len(doctitles) == 1 and doctitles[0] != '':
             search_list.append(doctitles[0].strip() + ':title')
 
         return {
-            'categories': list(dict.fromkeys(sorted(categories))),
-            'search': list(dict.fromkeys(sorted(search_list))),
-            'ingredients': list(dict.fromkeys(ingredients)),
-            'titles': list(dict.fromkeys(titles)),
-            'subheadings': list(dict.fromkeys(subheadings)),
-            'complexities': list(dict.fromkeys(complexities)),
-            'servings': list(dict.fromkeys(servings)),
-            'times': list(dict.fromkeys(times)),
+            'categories': list(set(categories)),
+            'search': list(set(search_list)),
+            'ingredients': list(set(ingredients)),
+            'titles': list(set(titles)),
+            'subheadings': list(set(subheadings)),
+            'complexities': list(set(complexities)),
+            'servings': list(set(servings)),
+            'times': list(set(times)),
         }
 
 
