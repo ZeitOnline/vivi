@@ -1,3 +1,4 @@
+import itertools
 import logging
 import os.path
 import re
@@ -16,10 +17,10 @@ from zeit.cms.interfaces import ITypeDeclaration
 from zeit.cms.workflow.interfaces import IPublicationStatus
 from zeit.connector.interfaces import DeleteProperty
 from zeit.connector.resource import PropertyKey
+from zeit.content.article.edit.interfaces import IRecipeList
 from zeit.content.audio.interfaces import IAudioReferences
 from zeit.content.image.interfaces import IImageMetadata
 from zeit.retresco.interfaces import DAV_NAMESPACE_BASE
-from zeit.wochenmarkt.interfaces import IRecipeCategoriesWhitelist
 import zeit.cms.browser.interfaces
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
@@ -491,47 +492,33 @@ class Article(Converter):
         return result
 
     def _convert_recipe(self):
-        body = self.context.xml.find('body')
+        recipes = list(self.context.body.filter_values(IRecipeList))
+        ingredients = list(itertools.chain(*[x.ingredients for x in recipes]))
+        if not (self.context.recipe_categories or ingredients):
+            return None
         search_list = []
 
-        categories = body.xpath('//recipe_categories/category/@code')
-        whitelist = zope.component.getUtility(IRecipeCategoriesWhitelist)
-        for code in categories:
-            category = whitelist.get(code)
-            if category is not None:
-                search_list.append(f'{category.name}:category')
-
-        ingredients = body.xpath('//recipelist/ingredient/@code')
-        if not (categories or ingredients):
-            return None
+        search_list += [f'{x.name}:category' for x in self.context.recipe_categories]
         whitelist = zope.component.getUtility(zeit.wochenmarkt.interfaces.IIngredientsWhitelist)
-        for code in ingredients:
-            ingredient = whitelist.get(code)
-            if ingredient is None:
-                continue
-            search_list += [f'{x}:ingredient' for x in ingredient.qwords]
-            search_list += [f'{x}:ingredient' for x in ingredient.qwords_category]
+        for ingredient in ingredients:
+            i = whitelist.get(ingredient.code)
+            search_list += [f'{x}:ingredient' for x in i.qwords + i.qwords_category]
 
-        titles = body.xpath('//recipelist/title/text()')
+        titles = [x.title for x in recipes]
         search_list += [f'{x}:recipe_title' for x in titles]
-
-        subheadings = body.xpath('//recipelist/subheading[@searchable="True"]/text()')
+        subheadings = [x.subheading for x in recipes if x.searchable_subheading]
         search_list += [f'{x}:subheading' for x in subheadings]
         search_list.append(f'{self.context.title}:title')
 
-        complexities = body.xpath('//recipelist/complexity/text()')
-        servings = body.xpath('//recipelist/servings/text()')
-        times = body.xpath('//recipelist/time/text()')
-
         return {
-            'categories': list(set(categories)),
+            'categories': [x.code for x in self.context.recipe_categories],
             'search': list(set(search_list)),
-            'ingredients': list(set(ingredients)),
+            'ingredients': list(set([x.code for x in ingredients])),
             'titles': list(set(titles)),
             'subheadings': list(set(subheadings)),
-            'complexities': list(set(complexities)),
-            'servings': list(set(servings)),
-            'times': list(set(times)),
+            'complexities': list(set([x.complexity for x in recipes])),
+            'servings': list(set([x.servings for x in recipes])),
+            'times': list(set([x.time for x in recipes])),
         }
 
 
