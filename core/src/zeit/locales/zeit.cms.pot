@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Thu Apr 24 11:42:20 2025\n"
+"POT-Creation-Date: Wed Apr 30 15:38:47 2025\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -35,6 +35,14 @@ msgstr ""
 
 #: zeit/brightcove/configure.zcml:9
 msgid "Edit brightcove videos"
+msgstr ""
+
+#: zeit/campus/article.py:36
+msgid "Study Course block"
+msgstr ""
+
+#: zeit/campus/interfaces.py:50
+msgid "Study course"
 msgstr ""
 
 #: zeit/cmp/interfaces.py:37

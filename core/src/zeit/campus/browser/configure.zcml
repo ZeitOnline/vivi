@@ -1,0 +1,30 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  i18n_domain="zeit.cms">
+
+  <!-- article -->
+  <browser:viewlet
+    for="..interfaces.IStudyCourse"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit-studycourse"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="10"
+    />
+
+  <browser:page
+    for="..interfaces.IStudyCourse"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-studycourse"
+    class=".article.StudyCourse"
+    permission="zope.View"
+    />
+
+  <class class="..article.StudyCourse">
+    <implements interface="zeit.edit.interfaces.IFoldable" />
+  </class>
+
+</configure>

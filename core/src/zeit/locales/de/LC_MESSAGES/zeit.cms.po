@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Thu Apr 24 11:42:20 2025\n"
+"POT-Creation-Date: Wed Apr 30 15:38:47 2025\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -34,6 +34,14 @@ msgstr "Inhalte hinzufügen"
 #: zeit/brightcove/configure.zcml:9
 msgid "Edit brightcove videos"
 msgstr "Edit brightcove videos"
+
+#: zeit/campus/article.py:36
+msgid "Study Course block"
+msgstr "Studiengang-Orientierungsangebot"
+
+#: zeit/campus/interfaces.py:50
+msgid "Study course"
+msgstr "Studiengang"
 
 #: zeit/cmp/interfaces.py:37
 msgid "Contains thirdparty code"
@@ -4823,17 +4831,11 @@ msgstr "Format"
 msgid "with info"
 msgstr "mit Info"
 
-#~ msgid "Study Course block"
-#~ msgstr "Studiengang-Orientierungsangebot"
-
 #~ msgid "Topic page"
 #~ msgstr "Link zur Themenseite"
 
 #~ msgid "Topic label"
 #~ msgstr "Linktext (Themenseite)"
-
-#~ msgid "Study course"
-#~ msgstr "Studiengang"
 
 #~ msgid "timebased-publish-cancel"
 #~ msgstr "Abgebrochen: automatisches Veröffentlichen (job #${job})"
