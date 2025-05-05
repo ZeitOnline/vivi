@@ -6,9 +6,9 @@
 
   <grok:grok package="." exclude="browser" />
 
-  <class class=".categories.RecipeCategory">
+  <class class=".sources.RecipeCategory">
     <require
-      attributes="code name"
+      interface=".interfaces.IRecipeCategory"
       permission="zope.View"
       />
   </class>

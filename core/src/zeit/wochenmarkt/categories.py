@@ -1,46 +1,6 @@
 from lxml.builder import E
-import grokcore.component as grok
-import zope.interface
 
-from zeit.cms.interfaces import CONFIG_CACHE
-import zeit.cms.content.sources
-import zeit.wochenmarkt.interfaces
-
-
-@grok.implementer(zeit.wochenmarkt.interfaces.IRecipeCategory)
-class RecipeCategory:
-    def __init__(self, code, name):
-        # Conform to zeit.cms.content.sources.ObjectSource
-        self.id = code
-        self.title = name
-        # BBB present an API a bit like zeit.cms.tagging.interfaces.ITag, even
-        # though using an object here probably always has been superfluous, and
-        # this could have instead been implemented with strings and the standard
-        # Source value+title mechanics.
-        self.code = code
-        self.name = name
-
-    @classmethod
-    def from_xml(cls, node):
-        code = node.get('code')
-        try:
-            name = (
-                zope.component.getUtility(zeit.wochenmarkt.interfaces.IRecipeCategoriesWhitelist)
-                .get(code)
-                .name
-            )
-        except AttributeError:
-            # Take care of insufficient whitelist data e.g. missing entries.
-            return None
-        return cls(code, name)
-
-    def __eq__(self, other):
-        if not zeit.wochenmarkt.interfaces.IRecipeCategory.providedBy(other):
-            return False
-        return self.code == other.code
-
-    def __hash__(self):
-        return hash(self.code)
+from zeit.wochenmarkt.sources import RecipeCategory
 
 
 class RecipeCategories:
@@ -62,34 +22,3 @@ class RecipeCategories:
             for item in value:
                 el.append(E.category(code=item.code))
             instance.xml.find('head').append(el)
-
-
-@grok.implementer(zeit.wochenmarkt.interfaces.IRecipeCategoriesWhitelist)
-class RecipeCategoriesWhitelist(grok.GlobalUtility, zeit.cms.content.sources.CachedXMLBase):
-    """Search for categories in categories source"""
-
-    product_configuration = 'zeit.wochenmarkt'
-    config_url = 'categories-url'
-    default_filename = 'categories.xml'
-
-    @property
-    def data(self):
-        return self._load()
-
-    def search(self, term):
-        term = term.lower()
-        titles = {x.name.lower(): x for x in self.data.values()}
-        return [value for key, value in titles.items() if term in key]
-
-    def get(self, code):
-        result = self.data.get(code)
-        return result if result else None
-
-    @CONFIG_CACHE.cache_on_arguments()
-    def _load(self):
-        xml = self._get_tree()
-        categories = {}
-        for category_node in xml.xpath('//category'):
-            category = RecipeCategory(category_node.get('id'), category_node.get('name'))
-            categories[category_node.get('id')] = category
-        return categories
