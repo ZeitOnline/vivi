@@ -1,5 +1,4 @@
 import grokcore.component as grok
-import lxml.etree
 import zope.component
 
 from zeit.cms.checkout.helper import checked_out
@@ -9,14 +8,6 @@ from zeit.cms.workflow.interfaces import PRIORITY_LOW, IPublish
 import zeit.cms.cli
 import zeit.retresco.interfaces
 import zeit.wochenmarkt.interfaces
-
-
-def xpath_lowercase(context, x):
-    return x[0].lower()
-
-
-xpath_functions = lxml.etree.FunctionNamespace('zeit.ingredients')
-xpath_functions['lower'] = xpath_lowercase
 
 
 @grok.implementer(zeit.wochenmarkt.interfaces.IIngredient)
@@ -51,30 +42,19 @@ class IngredientsWhitelist(grok.GlobalUtility, zeit.cms.content.sources.CachedXM
         return self._load()
 
     def search(self, term):
-        xml = self._get_tree()
-        # Get ingredients that start with the term, e.g. ei -> ei, eigelb and
-        # sort alphabethically
-        exact_matches = xml.xpath(
-            ('//ingredient[starts-with(zeit:lower(@singular), "{0}")]').format(term.lower()),
-            namespaces={'zeit': 'zeit.ingredients'},
-        )
-        exact_matches = sorted(exact_matches, key=lambda x: x.get('singular').lower())
+        term = term.lower()
+        singular = {x.name.lower(): x for x in self.data.values()}
 
-        # Get ingredients that contain the search term as part of a an
-        # ingredient, e.g. ei -> brei, eis and sort alphabetically
-        fuzzy_matches = xml.xpath(
-            (
-                '//ingredient[contains(zeit:lower(@singular), "{0}")'
-                'and not(starts-with(zeit:lower(@singular), "{0}"))]'
-            ).format(term.lower()),
-            namespaces={'zeit': 'zeit.ingredients'},
-        )
-        fuzzy_matches = sorted(fuzzy_matches, key=lambda x: x.get('singular').lower())
+        # Ingredients that start with the term, e.g. ei -> ei, eigelb
+        prefix = [value for key, value in singular.items() if key.startswith(term)]
+        prefix = sorted(prefix, key=lambda x: x.name.lower())
 
-        # Put exact matches to the top of the resultset.
-        matches = exact_matches + fuzzy_matches
+        # Ingredients that contain the term anywhere, e.g. ei -> brei, eis
+        substring = [value for key, value in singular.items() if term in key]
+        substring = sorted(substring, key=lambda x: x.name.lower())
 
-        return [self.get(x.get('id')) for x in matches]
+        # Put prefix matches to the top of the resultset.
+        return list(dict.fromkeys(prefix + substring))
 
     def category(self, category, term=''):
         return [

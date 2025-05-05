@@ -1,19 +1,10 @@
 from lxml.builder import E
 import grokcore.component as grok
-import lxml.etree
 import zope.interface
 
 from zeit.cms.interfaces import CONFIG_CACHE
 import zeit.cms.content.sources
 import zeit.wochenmarkt.interfaces
-
-
-def xpath_lowercase(context, x):
-    return x[0].lower()
-
-
-xpath_functions = lxml.etree.FunctionNamespace('zeit.categories')
-xpath_functions['lower'] = xpath_lowercase
 
 
 @grok.implementer(zeit.wochenmarkt.interfaces.IRecipeCategory)
@@ -86,12 +77,9 @@ class RecipeCategoriesWhitelist(grok.GlobalUtility, zeit.cms.content.sources.Cac
         return self._load()
 
     def search(self, term):
-        xml = self._get_tree()
-        nodes = xml.xpath(
-            '//category[contains(zeit:lower(@name), "%s")]' % term.lower(),
-            namespaces={'zeit': 'zeit.categories'},
-        )
-        return [self.get(x.get('id')) for x in nodes]
+        term = term.lower()
+        titles = {x.name.lower(): x for x in self.data.values()}
+        return [value for key, value in titles.items() if term in key]
 
     def get(self, code):
         result = self.data.get(code)
