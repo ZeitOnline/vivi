@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.93.0 (2025-05-05)
+-------------------
+
+- WCM-832: move campus study course into content modules
+
+
 7.92.0 (2025-04-29)
 -------------------
 
