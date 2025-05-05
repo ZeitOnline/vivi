@@ -29,7 +29,7 @@
       />
   </class>
 
-  <class class=".article.StudyCourse">
+  <class class=".studycourse.StudyCourse">
     <require
       interface=".interfaces.IStudyCourse"
       permission="zope.View"

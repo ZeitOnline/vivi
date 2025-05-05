@@ -5,7 +5,7 @@
   i18n_domain="zeit.cms">
   <grok:grok package="." />
 
-  <!-- article -->
+  <!-- studycourse -->
   <browser:viewlet
     for="..interfaces.IStudyCourse"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
@@ -21,11 +21,11 @@
     for="..interfaces.IStudyCourse"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="edit-studycourse"
-    class=".article.StudyCourse"
+    class=".studycourse.StudyCourse"
     permission="zope.View"
     />
 
-  <class class="..article.StudyCourse">
+  <class class="..studycourse.StudyCourse">
     <implements interface="zeit.edit.interfaces.IFoldable" />
   </class>
 

@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Mon May  5 11:23:34 2025\n"
+"POT-Creation-Date: Mon May  5 14:31:32 2025\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -3754,10 +3754,6 @@ msgstr "Text im Markdown Format hinzufügen"
 msgid "Markup content"
 msgstr "Markup"
 
-#: zeit/content/modules/article.py:36
-msgid "Study Course block"
-msgstr "Studiengang-Orientierungsangebot"
-
 #: zeit/content/modules/interfaces.py:21
 msgid "Raw text reference"
 msgstr "Embed-Link"
@@ -3908,6 +3904,10 @@ msgstr "Liveblog-Theme"
 #: zeit/content/modules/interfaces.py:374
 msgid "Study course"
 msgstr "Studiengang"
+
+#: zeit/content/modules/studycourse.py:36
+msgid "Study Course block"
+msgstr "Studiengang-Orientierungsangebot"
 
 #: zeit/content/portraitbox/browser/form.py:20
 #: zeit/magazin/browser/portraitbox.py:26
