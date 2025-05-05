@@ -1,6 +1,6 @@
 from zeit.cms.browser.resources import Library, Resource
 
 
-lib = Library('zeit.campus', 'resources')
+lib = Library('zeit.content.modules', 'resources')
 
 Resource('editor.css')
