@@ -343,7 +343,7 @@ class StudyCourse(zeit.cms.content.sources.AllowedBase):
 
 
 class StudyCourseSource(zeit.cms.content.sources.ObjectSource, zeit.cms.content.sources.XMLSource):
-    product_configuration = 'zeit.campus'
+    product_configuration = 'zeit.content.modules'
     config_url = 'article-stoa-source'
     default_filename = 'article-stoa.xml'
     attribute = 'id'
