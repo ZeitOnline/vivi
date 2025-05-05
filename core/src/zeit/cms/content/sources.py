@@ -189,6 +189,12 @@ class IObjectSource(zope.schema.interfaces.IIterableSource):
 
 @zope.interface.implementer(IObjectSource)
 class FactoredObjectSource(zc.sourcefactory.source.FactoredContextualSource):
+    def __contains__(self, value):
+        id = getattr(value, 'id', None)
+        if id is None:
+            return False
+        return self.find(id) is not None
+
     def find(self, id):
         return self.factory.find(self.context, id)
 
@@ -653,6 +659,12 @@ PRODUCT_SOURCE = ProductSource()
 
 
 class CMSContentTypeSource(ObjectSource, zc.sourcefactory.contextual.BasicContextualSourceFactory):
+    class source_class(FactoredObjectSource):
+        def __contains__(self, value):
+            # Skip immediate superclass to get default behaviour of comparing
+            # against every available value.
+            return super(FactoredObjectSource, self).__contains__(value)
+
     def _values(self):
         return dict(zope.component.getUtilitiesFor(zeit.cms.interfaces.ICMSContentType))
 
