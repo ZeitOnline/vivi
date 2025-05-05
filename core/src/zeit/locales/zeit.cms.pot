@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Wed Apr 30 15:38:47 2025\n"
+"POT-Creation-Date: Mon May  5 11:23:34 2025\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -35,14 +35,6 @@ msgstr ""
 
 #: zeit/brightcove/configure.zcml:9
 msgid "Edit brightcove videos"
-msgstr ""
-
-#: zeit/campus/article.py:36
-msgid "Study Course block"
-msgstr ""
-
-#: zeit/campus/interfaces.py:50
-msgid "Study course"
 msgstr ""
 
 #: zeit/cmp/interfaces.py:37
@@ -3821,6 +3813,10 @@ msgstr ""
 msgid "Markup content"
 msgstr ""
 
+#: zeit/content/modules/article.py:36
+msgid "Study Course block"
+msgstr ""
+
 #: zeit/content/modules/interfaces.py:21
 msgid "Raw text reference"
 msgstr ""
@@ -3960,6 +3956,10 @@ msgstr ""
 
 #: zeit/content/modules/interfaces.py:326
 msgid "Liveblog theme"
+msgstr ""
+
+#: zeit/content/modules/interfaces.py:374
+msgid "Study course"
 msgstr ""
 
 #: zeit/content/portraitbox/browser/form.py:20
