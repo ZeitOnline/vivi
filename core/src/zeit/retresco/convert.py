@@ -41,6 +41,7 @@ import zeit.push.interfaces
 import zeit.retresco.content
 import zeit.retresco.interfaces
 import zeit.seo.interfaces
+import zeit.wochenmarkt.sources
 
 
 log = logging.getLogger(__name__)
@@ -499,9 +500,9 @@ class Article(Converter):
         search_list = []
 
         search_list += [f'{x.name}:category' for x in self.context.recipe_categories]
-        whitelist = zope.component.getUtility(zeit.wochenmarkt.interfaces.IIngredientsWhitelist)
+        source = zeit.wochenmarkt.sources.ingredientsSource(None)
         for ingredient in ingredients:
-            i = whitelist.get(ingredient.code)
+            i = source.find(ingredient.code)
             search_list += [f'{x}:ingredient' for x in i.qwords]
 
         titles = [x.title for x in recipes]
