@@ -15,14 +15,8 @@ class Ingredient:
     def __init__(self, code, **kwargs):
         self.code = code
         self.name = kwargs.get('name')
-        self.category = kwargs.get('category')
         self.qwords = (
             [x.strip() for x in kwargs.get('qwords').split(',')] if kwargs.get('qwords') else []
-        )
-        self.qwords_category = (
-            [x.strip() for x in kwargs.get('qwords_category').split(',')]
-            if kwargs.get('qwords_category')
-            else []
         )
         self.singular = kwargs.get('singular')
         self.plural = kwargs.get('plural')
@@ -56,13 +50,6 @@ class IngredientsWhitelist(grok.GlobalUtility, zeit.cms.content.sources.CachedXM
         # Put prefix matches to the top of the resultset.
         return list(dict.fromkeys(prefix + substring))
 
-    def category(self, category, term=''):
-        return [
-            ingredient
-            for ingredient in self.search(term)
-            if getattr(ingredient, 'category', None) == category
-        ]
-
     def get(self, code):
         return self.data.get(code)
 
@@ -75,9 +62,7 @@ class IngredientsWhitelist(grok.GlobalUtility, zeit.cms.content.sources.CachedXM
                 ingredient = Ingredient(
                     ingredient_node.get('id'),
                     name=str(ingredient_node.get('singular')).strip(),
-                    category=ingredient_node.getparent().tag,
                     qwords=ingredient_node.get('q'),
-                    qwords_category=ingredient_node.getparent().get('q'),
                     singular=ingredient_node.get('singular'),
                     plural=ingredient_node.get('plural').strip(),
                     diet=ingredient_node.get('diet'),

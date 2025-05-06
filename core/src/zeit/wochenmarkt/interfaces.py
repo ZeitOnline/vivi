@@ -24,14 +24,8 @@ class IIngredientsWhitelist(zope.interface.Interface):
     def search(term):
         """Return a list of ingredients whose names contain the given term."""
 
-    def category(category, term):
-        """Return a list of ingredients from a category contain given term."""
-
     def qwords(id):
         """Returns a list of query words for an ingredient id."""
-
-    def qwords_category(id):
-        """Returns a list of query words for an ingredients category."""
 
     def singular(id):
         """Returns the singular for an ingredient id."""
@@ -58,5 +52,3 @@ class IIngredient(zope.interface.Interface):
     code = zope.schema.TextLine(title='Internal ingredient id')
 
     name = zope.schema.TextLine(title='User visible name of ingredient')
-
-    category = zope.schema.TextLine(title='The kind of category this ingredient belongs to')

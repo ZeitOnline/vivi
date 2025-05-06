@@ -502,7 +502,7 @@ class Article(Converter):
         whitelist = zope.component.getUtility(zeit.wochenmarkt.interfaces.IIngredientsWhitelist)
         for ingredient in ingredients:
             i = whitelist.get(ingredient.code)
-            search_list += [f'{x}:ingredient' for x in i.qwords + i.qwords_category]
+            search_list += [f'{x}:ingredient' for x in i.qwords]
 
         titles = [x.title for x in recipes]
         search_list += [f'{x}:recipe_title' for x in titles]
