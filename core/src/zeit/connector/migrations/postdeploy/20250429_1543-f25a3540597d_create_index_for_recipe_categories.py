@@ -1,4 +1,4 @@
-"""create index for recipe_categories
+"""create index for recipe_categories and recipe_ingredients
 
 Revision ID: f25a3540597d
 Revises: 86f631fabdca
@@ -17,27 +17,31 @@ down_revision: Union[str, None] = '86f631fabdca'
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
+COLUMNS = ['categories', 'ingredients']
+
 
 def upgrade() -> None:
     with op.get_context().autocommit_block():
-        op.create_index(
-            'ix_properties_recipe_categories',
-            'properties',
-            ['recipe_categories'],
-            unique=False,
-            postgresql_using='gin',
-            postgresql_ops={'recipe_categories': 'jsonb_path_ops'},
-            postgresql_concurrently=True,
-            if_not_exists=True,
-        )
+        for column in COLUMNS:
+            op.create_index(
+                f'ix_properties_recipe_{column}',
+                'properties',
+                [f'recipe_{column}'],
+                unique=False,
+                postgresql_using='gin',
+                postgresql_ops={f'recipe_{column}': 'jsonb_path_ops'},
+                postgresql_concurrently=True,
+                if_not_exists=True,
+            )
 
 
 def downgrade() -> None:
     with op.get_context().autocommit_block():
-        op.drop_index(
-            op.f('ix_properties_recipe_categories'),
-            'properties',
-            ['recipe_categories'],
-            postgresql_concurrently=True,
-            if_exists=True,
-        )
+        for column in COLUMNS:
+            op.drop_index(
+                op.f(f'ix_properties_recipe_{column}'),
+                'properties',
+                [f'recipe_{column}'],
+                postgresql_concurrently=True,
+                if_exists=True,
+            )

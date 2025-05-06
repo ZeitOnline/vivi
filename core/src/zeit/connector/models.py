@@ -158,6 +158,9 @@ class Recipe:
     recipe_categories = mapped_column(
         JSONBTuple, info={'namespace': 'recipe', 'name': 'categories'}
     )
+    recipe_ingredients = mapped_column(
+        JSONBTuple, info={'namespace': 'recipe', 'name': 'ingredients'}
+    )
 
 
 class Miscellaneous:
@@ -212,6 +215,7 @@ class Content(
                     name='author_lastname',
                 ),
                 cls.Index('recipe_categories', ops='jsonb_path_ops'),
+                cls.Index('recipe_ingredients', ops='jsonb_path_ops'),
             )
             + tuple(
                 cls.Index(getattr(cls, column).desc().nulls_last())
