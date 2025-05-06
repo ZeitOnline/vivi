@@ -1,4 +1,4 @@
-"""add recipe_categories column
+"""add recipe_categories and recipe_ingredients column
 
 Revision ID: 3a9f29f55c53
 Revises: 7befcb5fd162
@@ -22,7 +22,9 @@ depends_on: Union[str, Sequence[str], None] = None
 
 def upgrade() -> None:
     op.add_column('properties', sa.Column('recipe_categories', JSONB(), nullable=True))
+    op.add_column('properties', sa.Column('recipe_ingredients', JSONB(), nullable=True))
 
 
 def downgrade() -> None:
     op.drop_column('properties', 'recipe_categories')
+    op.drop_column('properties', 'recipe_ingredients')
