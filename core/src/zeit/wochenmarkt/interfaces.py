@@ -24,15 +24,6 @@ class IIngredientsWhitelist(zope.interface.Interface):
     def search(term):
         """Return a list of ingredients whose names contain the given term."""
 
-    def qwords(id):
-        """Returns a list of query words for an ingredient id."""
-
-    def singular(id):
-        """Returns the singular for an ingredient id."""
-
-    def plural(id):
-        """Returns the plural for an ingredient id."""
-
     def get(id):
         """Return the ingredient for the given id."""
 
