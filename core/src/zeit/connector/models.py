@@ -12,7 +12,7 @@ from sqlalchemy import (
     Uuid,
 )
 from sqlalchemy import text as sql
-from sqlalchemy.dialects.postgresql import JSONB
+from sqlalchemy.dialects.postgresql import ARRAY, JSONB
 from sqlalchemy.orm import declared_attr, mapped_column, relationship
 import pendulum
 import sqlalchemy
@@ -160,6 +160,10 @@ class Recipe:
     )
     recipe_ingredients = mapped_column(
         JSONBTuple, info={'namespace': 'recipe', 'name': 'ingredients'}
+    )
+    # optimizes the performance overall if dimensions is given
+    recipe_titles = mapped_column(
+        ARRAY(Unicode, dimensions=1), info={'namespace': 'recipe', 'name': 'titles'}
     )
 
 
