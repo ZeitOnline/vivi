@@ -20,7 +20,6 @@ class Ingredient:
         )
         self.singular = kwargs.get('singular')
         self.plural = kwargs.get('plural')
-        self.diet = kwargs.get('diet')
 
 
 @grok.implementer(zeit.wochenmarkt.interfaces.IIngredientsWhitelist)
@@ -65,7 +64,6 @@ class IngredientsWhitelist(grok.GlobalUtility, zeit.cms.content.sources.CachedXM
                     qwords=ingredient_node.get('q'),
                     singular=ingredient_node.get('singular'),
                     plural=ingredient_node.get('plural').strip(),
-                    diet=ingredient_node.get('diet'),
                 )
             except AttributeError:
                 continue
