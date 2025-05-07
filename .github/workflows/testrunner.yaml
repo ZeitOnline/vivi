@@ -154,7 +154,7 @@ jobs:
           output: |
               {"summary": "[Download](${{env.build_url}}/artifacts/${{steps.coverage.outputs.artifact-id}})"}
 
-      - uses: slackapi/slack-github-action@485a9d42d3a73031f12ec201c457e2162c45d02d # v2.0.0
+      - uses: slackapi/slack-github-action@b0fa283ad8fea605de13dc3f449259339835fc52 # v2.1.0
         if: failure() && github.ref_name == 'main' && github.event_name != 'schedule'
         with:
           method: chat.postMessage
