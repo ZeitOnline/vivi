@@ -44,11 +44,6 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
         'box-layout-source': f'file://{HERE}/edit/tests/box-layouts.xml',
         'puzzleforms-source': f'file://{HERE}/edit/tests/puzzleforms.xml',
         'topicpage-filter-source': f'file://{HERE}/tests/topicpage-esqueries.json',
-        'tagesschau-api-url-post': 'https://ard-tagesschau/post',
-        'tagesschau-api-url-post-sync': 'https://ard-tagesschau/post/sync',
-        'tagesschau-api-url-get': 'https://ard-tagesschau/get',
-        'tagesschau-sig-uri': 'XYZ',
-        'tagesschau-api-key': '1a2b3c4d5e',
         'bluesky-api-timeout': 10,
     },
     bases=(

@@ -1,7 +1,6 @@
 import datetime
 import logging
 
-import pendulum
 import zc.sourcefactory.contextual
 import zope.schema
 import zope.security.proxy
@@ -136,48 +135,6 @@ class IVideo(IBlock, ILayoutable):
     is_empty = zope.schema.Bool(
         title=_('true if this block has no reference; benefits XSLT'), required=False, default=True
     )
-
-
-class IVideoTagesschauSource(zope.schema.interfaces.IIterableSource):
-    pass
-
-
-class VideoTagesschauSelection(zc.sourcefactory.contextual.BasicContextualSourceFactory):
-    @zope.interface.implementer(IVideoTagesschauSource)
-    class source_class(zc.sourcefactory.source.FactoredContextualSource):
-        pass
-
-    def getValues(self, context):
-        return context.tagesschauvideos.values()
-
-    def getTitle(self, context, value):
-        date_published = pendulum.parse(value.date_published).to_datetime_string()
-        label = '<strong>%s</strong> - %s (%s)<br /><a href="%s" target="_blank">%s</a>' % (
-            value.title,
-            date_published,
-            value.type,
-            value.video_url_hd,
-            _('open video'),
-        )
-        return label
-
-    def getToken(self, context, value):
-        return value.id
-
-
-class IVideoTagesschau(IBlock):
-    """Block for placing 'Tagesschau' Video in article"""
-
-    tagesschauvideo = zope.schema.Choice(
-        title=_('Select video'), source=VideoTagesschauSelection(), required=False
-    )
-
-    tagesschauvideos = zope.interface.Attribute('List of available videos')
-
-
-class IVideoTagesschauAPI(zope.interface.Interface):
-    def request_videos(self):
-        """call Tagesschau API"""
 
 
 class IReference(IBlock):
