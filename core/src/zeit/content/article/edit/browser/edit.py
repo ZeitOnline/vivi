@@ -11,8 +11,6 @@ import zope.security
 
 from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
-from zeit.content.article.edit.browser.interfaces import VideoTagesschauNoResultError
-from zeit.content.article.edit.videotagesschau import Video
 import zeit.cms.browser.manual
 import zeit.cms.browser.widget
 import zeit.cms.config
@@ -322,66 +320,6 @@ class EditCitationComment(zeit.edit.browser.form.InlineForm):
     @property
     def prefix(self):
         return 'citationcomment.{0}'.format(self.context.__name__)
-
-
-class VideoTagesschau(zeit.edit.browser.form.InlineForm):
-    legend = None
-    video = zeit.content.article.edit.interfaces.IVideoTagesschau
-    form_fields = zope.formlib.form.FormFields(video).select('tagesschauvideo')
-
-    @property
-    def prefix(self):
-        return 'videotagesschau.{0}'.format(self.context.__name__)
-
-    # Have to copy, since when adding one @action, we lose any inherited ones.
-    @zope.formlib.form.action(_('Apply'), failure='success_handler')
-    def handle_edit_action(self, action, data):
-        return self.success_handler(action, data)
-
-    @zope.formlib.form.action(_('generate-video-recommendation'))
-    def handle_update(self, action, data):
-        article = zope.security.proxy.getObject(
-            zeit.content.article.interfaces.IArticle(self.context)
-        )
-        try:
-            api = zope.component.getUtility(
-                zeit.content.article.edit.interfaces.IVideoTagesschauAPI
-            )
-            recommendations = []
-            for recom in api.request_videos(article)['recommendations']:
-                recommendations.append(
-                    Video(
-                        **{
-                            'id': recom.get('program_id'),
-                            'title': recom.get('main_title'),
-                            'date_published': recom.get('published_start_time'),
-                            'video_url_hd': recom['video_uris'].get('hd'),
-                            # these values are nice to have but processing should
-                            # not fail if they do not exist or have `None` values:
-                            'type': (recom.get('search_strategy', '<unknown>') or '<unknown>'),
-                            'synopsis': recom.get('short_synopsis', '') or '',
-                            'video_url_hls_stream': (
-                                recom['video_uris'].get('hlsStream', '') or ''
-                            ),
-                            'video_url_hq': recom['video_uris'].get('hq', '') or '',
-                            'video_url_ln': recom['video_uris'].get('ln', '') or '',
-                            'thumbnail_url_large': (recom['thumbnail_uris'].get('large', '') or ''),
-                            'thumbnail_url_fullhd': (
-                                recom['thumbnail_uris'].get('fullhd', '') or ''
-                            ),
-                            'thumbnail_url_small': (recom['thumbnail_uris'].get('small', '') or ''),
-                            'date_available': (recom.get('start_of_availability', '') or ''),
-                        }
-                    )
-                )
-            if recommendations == []:
-                self.errors = (VideoTagesschauNoResultError('empty'),)
-                self.status = _('There were errors')
-            self.context.tagesschauvideos = recommendations
-        except Exception as exc:
-            log.error(f'ARD-API: {exc}', exc_info=True)
-            self.errors = (VideoTagesschauNoResultError('technical'),)
-            self.status = _('There were errors')
 
 
 class EditPuzzleForm(zeit.edit.browser.form.InlineForm):
