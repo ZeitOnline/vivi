@@ -15,14 +15,15 @@ class Ingredient:
         self.unit = kwargs.get('unit')
         self.details = kwargs.get('details')
         self.plural = kwargs.get('plural')
+        # Conform to zeit.cms.content.sources.ObjectSource
+        self.id = self.code
+        self.title = self.label
 
     @classmethod
     def from_xml(cls, node):
         code = node.get('code')
         try:
-            ingredient = zope.component.getUtility(
-                zeit.wochenmarkt.interfaces.IIngredientsWhitelist
-            ).get(code)
+            ingredient = zeit.wochenmarkt.sources.ingredientsSource(None).find(code)
             # These attributes have to be available:
             name = ingredient.name  # This also represents the singular.
             plural = ingredient.plural

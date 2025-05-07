@@ -1,6 +1,4 @@
 import grokcore.component as grok
-import zc.sourcefactory.contextual
-import zc.sourcefactory.source
 import zope.interface
 import zope.schema.interfaces
 
@@ -73,19 +71,73 @@ class RecipeCategoriesSource(
 recipeCategoriesSource = RecipeCategoriesSource()
 
 
-class IngredientsSource(zc.sourcefactory.contextual.BasicContextualSourceFactory):
+@grok.implementer(zeit.wochenmarkt.interfaces.IIngredient)
+class Ingredient:
+    def __init__(self, code, **kwargs):
+        self.code = code
+        self.name = kwargs.get('name')
+        self.qwords = (
+            [x.strip() for x in kwargs.get('qwords').split(',')] if kwargs.get('qwords') else []
+        )
+        self.singular = kwargs.get('singular')
+        self.plural = kwargs.get('plural')
+        # Conform to zeit.cms.content.sources.ObjectSource
+        self.id = self.code
+        self.title = self.name
+
+
+class IngredientsSource(
+    zeit.cms.content.sources.ObjectSource, zeit.cms.content.sources.SimpleContextualXMLSource
+):
+    product_configuration = 'zeit.wochenmarkt'
+    config_url = 'ingredients-url'
+    default_filename = 'ingredients.xml'
+
     @zope.interface.implementer(
         zeit.wochenmarkt.interfaces.IIngredientsSource,
         zeit.cms.content.sources.IAutocompleteSource,
     )
-    class source_class(zc.sourcefactory.source.FactoredContextualSource):
-        def __contains__(self, value):
-            # We do not want to ask the whitelist again.
-            return True
+    class source_class(zeit.cms.content.sources.FactoredObjectSource):
+        pass
+
+    @CONFIG_CACHE.cache_on_arguments()
+    def _values(self):
+        xml = self._get_tree()
+        ingredients = {}
+        for ingredient_node in xml.xpath('//ingredient'):
+            try:
+                ingredient = Ingredient(
+                    ingredient_node.get('id'),
+                    name=str(ingredient_node.get('singular')).strip(),
+                    qwords=ingredient_node.get('q'),
+                    singular=ingredient_node.get('singular'),
+                    plural=ingredient_node.get('plural').strip(),
+                )
+            except AttributeError:
+                continue
+            ingredients[ingredient_node.get('id')] = ingredient
+        return ingredients
+
+    def isAvailable(self, value, context):
+        return True
 
     def search(self, term):
-        whitelist = zope.component.getUtility(zeit.wochenmarkt.interfaces.IIngredientsWhitelist)
-        return whitelist.search(term)
+        term = term.lower()
+        singular = {x.name.lower(): x for x in self._values().values()}
+
+        # Ingredients that start with the term, e.g. ei -> ei, eigelb
+        prefix = [value for key, value in singular.items() if key.startswith(term)]
+        prefix = sorted(prefix, key=lambda x: x.name.lower())
+
+        # Ingredients that contain the term anywhere, e.g. ei -> brei, eis
+        substring = [value for key, value in singular.items() if term in key]
+        substring = sorted(substring, key=lambda x: x.name.lower())
+
+        # Put prefix matches to the top of the resultset.
+        return list(dict.fromkeys(prefix + substring))
+
+    def find(self, context, id):
+        return self._values().get(id)
 
 
 ingredientsSource = IngredientsSource()

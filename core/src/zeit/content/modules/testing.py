@@ -1,10 +1,8 @@
 import importlib.resources
 
 import zeit.cmp.testing
-import zeit.cms.content.add
 import zeit.cms.testing
 import zeit.content.modules
-import zeit.wochenmarkt.ingredients
 import zeit.wochenmarkt.testing
 
 
