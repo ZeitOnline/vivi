@@ -151,7 +151,7 @@
   <adapter
     for="
     zope.schema.interfaces.ITuple
-    zeit.cms.content.interfaces.IAutocompleteSource
+    zeit.cms.content.sources.IAutocompleteSource
     .interfaces.ICMSLayer"
     provides="zope.app.form.interfaces.IInputWidget"
     factory=".widget.ObjectSequenceWidget"
@@ -243,7 +243,7 @@
 
   <adapter
     for="zope.schema.interfaces.IChoice
-         zeit.cms.content.interfaces.IAutocompleteSource
+         zeit.cms.content.sources.IAutocompleteSource
          zeit.cms.browser.interfaces.ICMSLayer"
     provides="zope.formlib.interfaces.ISimpleInputWidget"
     factory=".widget.AutocompleteWidget"
@@ -252,7 +252,7 @@
 
   <adapter
     for="zope.schema.interfaces.IChoice
-         zeit.cms.content.interfaces.IAutocompleteSource
+         zeit.cms.content.sources.IAutocompleteSource
          zeit.cms.browser.interfaces.ICMSLayer"
     provides="zope.formlib.interfaces.IDisplayWidget"
     factory=".widget.AutocompleteDisplayWidget"

@@ -9,7 +9,6 @@ import zeit.cms.content.property
 import zeit.cms.content.reference
 import zeit.cms.content.xmlsupport
 import zeit.cms.tagging.tag
-import zeit.wochenmarkt.categories
 
 
 @zope.interface.implementer(ICommonMetadata)
@@ -67,7 +66,6 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
     del locals()['name']
 
     keywords = zeit.cms.tagging.tag.Tags()
-    recipe_categories = zeit.wochenmarkt.categories.RecipeCategories()
 
     authorships = zeit.cms.content.reference.ReferenceProperty(
         '.head.author', xml_reference_name='author'

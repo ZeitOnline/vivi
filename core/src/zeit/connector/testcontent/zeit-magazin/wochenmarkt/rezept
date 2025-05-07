@@ -134,7 +134,6 @@ pürieren.</p>
         <complexity>einfach</complexity>
         <time>unter 30 Minuten</time>
         <servings>2</servings>
-        <ingredient amount="500" code="gries" unit="g"/>
         <ingredient amount="200" code="tomate" unit="g"/>
         <ingredient amount="200" code="gurke" unit="g"/>
       </recipelist>

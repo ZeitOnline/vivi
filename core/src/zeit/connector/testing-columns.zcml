@@ -12,6 +12,7 @@
   <include package="zeit.content.author" />
   <include package="zeit.content.cp"  />
   <include package="zeit.content.gallery" />
+  <include package="zeit.content.image" />
   <include package="zeit.content.video" />
   <include package="zeit.seo" />
   <include package="zeit.vgwort" />

@@ -3,7 +3,6 @@ import zc.sourcefactory.source
 import zope.interface
 import zope.schema.interfaces
 
-import zeit.cms.content.contentsource
 import zeit.cms.content.sources
 
 
@@ -17,14 +16,8 @@ class WhitelistSource(zc.sourcefactory.contextual.BasicContextualSourceFactory):
 
     # this is only contextual so we can customize the source_class
 
-    @zope.interface.implementer(
-        IWhitelistSource, zeit.cms.content.contentsource.IAutocompleteSource
-    )
+    @zope.interface.implementer(IWhitelistSource, zeit.cms.content.sources.IAutocompleteSource)
     class source_class(zc.sourcefactory.source.FactoredContextualSource):
-        def get_check_types(self):
-            """IAutocompleteSource"""
-            return ['tag']
-
         def __contains__(self, value):
             # XXX stopgap until we find out about #12609
             return True
@@ -47,12 +40,8 @@ class ILocationSource(zope.schema.interfaces.IIterableSource):
 
 
 class LocationSource(zc.sourcefactory.contextual.BasicContextualSourceFactory):
-    @zope.interface.implementer(ILocationSource, zeit.cms.content.contentsource.IAutocompleteSource)
+    @zope.interface.implementer(ILocationSource, zeit.cms.content.sources.IAutocompleteSource)
     class source_class(zc.sourcefactory.source.FactoredContextualSource):
-        def get_check_types(self):
-            """IAutocompleteSource, but not applicable for us"""
-            return []
-
         def __contains__(self, value):
             # We do not want to ask the whitelist again.
             return True

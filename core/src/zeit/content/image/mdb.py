@@ -104,6 +104,11 @@ class FakeMDB(MDB):
 
 
 @zope.interface.implementer(zeit.content.image.interfaces.IMDB)
+class MockMDB:
+    pass
+
+
+@zope.interface.implementer(zeit.content.image.interfaces.IMDB)
 def from_product_config():
     config = zeit.cms.config.package('zeit.content.image')
     return MDB(config['mdb-api-url'], config['mdb-api-username'], config['mdb-api-password'])

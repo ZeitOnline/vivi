@@ -32,6 +32,10 @@ class JSONBTuple(types.TypeDecorator):
         return self.impl.coerce_compared_value(op, value)
 
 
+class JSONBChannels(JSONBTuple):
+    """Subclass so we can register a specific DAV converter for it."""
+
+
 class TIMESTAMP(TIMESTAMP):
     def __init__(self):
         super().__init__(timezone=True)

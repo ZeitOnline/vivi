@@ -11,7 +11,6 @@ import zope.schema.interfaces
 # XXX There is too much, too unordered in here, clean this up.
 # prevent circular import
 from zeit.cms.content.contentsource import (
-    IAutocompleteSource,  # noqa
     ICMSContentSource,  # noqa
     INamedCMSContentSource,  # noqa
 )
@@ -21,14 +20,13 @@ import zeit.cms.content.sources
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.tagging.interfaces
-import zeit.wochenmarkt.sources
 
 
 class IAuthorType(zeit.cms.interfaces.ICMSContentType):
     """Interface type for authors."""
 
 
-@zope.interface.implementer(zeit.cms.content.contentsource.IAutocompleteSource)
+@zope.interface.implementer(zeit.cms.content.contentsource.IAutocompleteCMSContentSource)
 class AuthorSource(zeit.cms.content.contentsource.CMSContentSource):
     check_interfaces = IAuthorType
     name = 'authors'
@@ -140,13 +138,6 @@ class ICommonMetadata(zope.interface.Interface):
     )
 
     keywords = zeit.cms.tagging.interfaces.Keywords(required=False, default=())
-
-    recipe_categories = zope.schema.Tuple(
-        title=_('Recipe Categories'),
-        value_type=zope.schema.Choice(source=zeit.wochenmarkt.sources.RecipeCategoriesSource()),
-        default=(),
-        required=False,
-    )
 
     serie = zope.schema.Choice(
         title=_('Serie'), source=zeit.cms.content.sources.SerieSource(), required=False

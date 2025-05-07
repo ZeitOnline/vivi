@@ -187,14 +187,23 @@ class IObjectSource(zope.schema.interfaces.IIterableSource):
     pass
 
 
-class ObjectSource(zc.sourcefactory.factories.ContextualSourceFactory):
-    @zope.interface.implementer(IObjectSource)
-    class source_class(zc.sourcefactory.source.FactoredContextualSource):
-        def find(self, id):
-            return self.factory.find(self.context, id)
+@zope.interface.implementer(IObjectSource)
+class FactoredObjectSource(zc.sourcefactory.source.FactoredContextualSource):
+    def __contains__(self, value):
+        id = getattr(value, 'id', None)
+        if id is None:
+            return False
+        return self.find(id) is not None
 
-        def find_by_property(self, property_name, value):
-            return self.factory.find_by_property(self.context, property_name, value)
+    def find(self, id):
+        return self.factory.find(self.context, id)
+
+    def find_by_property(self, property_name, value):
+        return self.factory.find_by_property(self.context, property_name, value)
+
+
+class ObjectSource(zc.sourcefactory.factories.ContextualSourceFactory):
+    source_class = FactoredObjectSource
 
     def _values(self):
         raise NotImplementedError()
@@ -650,6 +659,12 @@ PRODUCT_SOURCE = ProductSource()
 
 
 class CMSContentTypeSource(ObjectSource, zc.sourcefactory.contextual.BasicContextualSourceFactory):
+    class source_class(FactoredObjectSource):
+        def __contains__(self, value):
+            # Skip immediate superclass to get default behaviour of comparing
+            # against every available value.
+            return super(FactoredObjectSource, self).__contains__(value)
+
     def _values(self):
         return dict(zope.component.getUtilitiesFor(zeit.cms.interfaces.ICMSContentType))
 
@@ -699,3 +714,12 @@ class PrintRessortSource(XMLSource):
 
 
 PRINT_RESSORT_SOURCE = PrintRessortSource()
+
+
+class IAutocompleteSource(zope.interface.Interface):
+    """Marker that this source supports autocomplete.
+
+    Current implementation see zeit.cms.browser:js/autocomplete.js
+    which uses a jQuery UI autocomplete widget and configures its URL endpoint
+    by looking up zeit.cms.browser.interfaces.ISourceQueryURL(source, request)
+    """

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from zeit.cms.content.sources import FEATURE_TOGGLES
 import zeit.content.article.edit.browser.testing
 
 
@@ -62,6 +63,8 @@ class RecipeCategoriesTest(zeit.content.article.edit.browser.testing.BrowserTest
 
 class FormLoader(zeit.content.article.edit.browser.testing.EditorTestCase):
     def test_recipe_categories_should_be_organizable(self):
+        FEATURE_TOGGLES.set('xmlproperty_read_wcm_837')
+
         s = self.selenium
         self.add_article()
         s.click('id=edit-form-metadata')

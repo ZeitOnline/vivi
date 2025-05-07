@@ -2,18 +2,6 @@ import zope.interface
 import zope.schema
 
 
-class IRecipeCategoriesWhitelist(zope.interface.Interface):
-    """The whitelist contains all selectable recipe categories providing
-    `IRecipeCategory`.
-    """
-
-    def search(term):
-        """Return a list of categories whose names contain the given term."""
-
-    def get(id):
-        """Return the category for the given id."""
-
-
 class IRecipeCategory(zope.interface.Interface):
     """A recipe category item in a list of IRecipeCategories as part of
     IRecipeCategorySource.

@@ -37,7 +37,7 @@ def run_migrations_online(params) -> None:
     if not dsn:
         dsn = os.environ.get(os.environ.get('alembic_dsn_variable', 'missing'))
     if not dsn:
-        raise KeyError('Must set env alembic_dsn or alembic_dsn_variable, or pass `-x service=`')
+        raise KeyError('Must set env alembic_dsn or alembic_dsn_variable')
     query = dict(parse_qsl(urlparse(dsn).query))
     pgservice = query['service']
 
