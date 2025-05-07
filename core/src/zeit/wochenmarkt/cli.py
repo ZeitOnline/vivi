@@ -7,7 +7,6 @@ from zeit.cms.workflow.interfaces import PRIORITY_LOW, IPublish
 from zeit.wochenmarkt.sources import ingredientsSource
 import zeit.cms.cli
 import zeit.retresco.interfaces
-import zeit.wochenmarkt.interfaces
 
 
 @zeit.cms.cli.runner(

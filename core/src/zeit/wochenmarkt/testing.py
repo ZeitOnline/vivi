@@ -2,7 +2,6 @@ import importlib.resources
 
 import zeit.cms.testing
 import zeit.wochenmarkt.categories
-import zeit.wochenmarkt.ingredients
 
 
 HERE = importlib.resources.files(__package__)

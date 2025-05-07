@@ -2,7 +2,6 @@
 import lxml.etree
 
 from zeit.wochenmarkt.categories import RecipeCategories
-import zeit.content.article.article
 import zeit.wochenmarkt.sources
 import zeit.wochenmarkt.testing
 
