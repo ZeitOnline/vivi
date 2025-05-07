@@ -292,7 +292,6 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
             'search': [
                 'Die leckere Fleisch-Kombi:subheading',
                 'Grillwurst:ingredient',
-                'Hahn:ingredient',
                 'Hähnchen:ingredient',
                 'Hühnchen:ingredient',
                 'Pastagerichte:category',
