@@ -3,6 +3,18 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.94.0 (2025-05-07)
+-------------------
+
+- WCM-837: Store recipe categories in property (and db column) instead of XML body
+
+- WCM-838: add column for recipe ingredients
+
+- WCM-839: add column for recipe titles
+
+- WCM-853: Remove `videotagesschau` article module
+
+
 7.93.0 (2025-05-05)
 -------------------
 
