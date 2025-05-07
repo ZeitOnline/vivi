@@ -17,7 +17,7 @@ import zeit.cms.interfaces
 log = logging.getLogger(__name__)
 
 
-def dump(filename):
+def dump(filename, users):
     E = lxml.builder.ElementMaker()
     base = filename.rstrip('/')
     if not os.path.isdir(base):
@@ -27,6 +27,9 @@ def dump(filename):
     for principal, wc in root['workingcopy'].items():
         if not any(zeit.cms.content.interfaces.IXMLContent.providedBy(x) for x in wc.values()):
             log.info('Skip empty %s', principal)
+            continue
+
+        if users and principal not in users:
             continue
 
         log.info('Exporting %s', principal)
@@ -52,11 +55,13 @@ def dump(filename):
                 meta.write(lxml.etree.tostring(xml, encoding=str, pretty_print=True))
 
 
-def load(filename):
+def load(filename, users):
     base = filename.rstrip('/')
     connector = zeit.connector.filesystem.Connector(base)
 
     for principal, folder in connector.listCollection('http://xml.zeit.de/'):
+        if users and principal not in users:
+            continue
         log.info('Importing %s', principal)
         wc = zeit.cms.workingcopy.interfaces.IWorkingcopy(
             zope.security.testing.Principal(principal)
@@ -86,10 +91,17 @@ def load(filename):
 def export_import():
     parser = argparse.ArgumentParser(description='Load or dump workingcopy')
     parser.add_argument('action', choices=['load', 'dump'])
+    parser.add_argument(
+        '--include-user',
+        action='append',
+        default=[],
+        help='Specify users to include in the load or dump operation. '
+        'If omitted, all users are processed.',
+    )
     parser.add_argument('filename')
     options = parser.parse_args()
 
     if options.action == 'dump':
-        dump(options.filename)
+        dump(options.filename, options.include_user)
     elif options.action == 'load':
         load(options.filename)
