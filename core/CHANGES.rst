@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.97.0 (2025-05-08)
+-------------------
+
+FIX:
+- Call the ingredients source with factory
+
+
 7.96.0 (2025-05-08)
 -------------------
 
