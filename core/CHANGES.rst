@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.96.0 (2025-05-08)
+-------------------
+
+FIX:
+- Use proper widget for cms autocomplete
+
+
 7.95.0 (2025-05-08)
 -------------------
 
