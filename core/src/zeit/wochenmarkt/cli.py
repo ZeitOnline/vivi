@@ -29,7 +29,7 @@ def collect_used():
     for item in result['ingredients']['buckets']:
         used.add(item['key'])
 
-    xml = ingredientsSource._get_tree()
+    xml = ingredientsSource(None).factory._get_tree()
     for item in xml.xpath('//ingredient'):
         if item.get('id') not in used:
             item.getparent().remove(item)
