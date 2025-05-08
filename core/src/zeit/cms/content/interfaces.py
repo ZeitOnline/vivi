@@ -35,6 +35,7 @@ class AuthorSource(zeit.cms.content.contentsource.CMSContentSource):
 authorSource = AuthorSource()
 
 
+@zope.interface.implementer(zeit.cms.content.contentsource.IAutocompleteCMSContentSource)
 class AgencySource(AuthorSource):
     name = 'agencies'
     additional_query_conditions = {'author_type': 'Agentur'}
