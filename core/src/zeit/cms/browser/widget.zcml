@@ -151,7 +151,7 @@
   <adapter
     for="
     zope.schema.interfaces.ITuple
-    zeit.cms.content.sources.IAutocompleteSource
+    zeit.cms.content.contentsource.IAutocompleteCMSContentSource
     .interfaces.ICMSLayer"
     provides="zope.app.form.interfaces.IInputWidget"
     factory=".widget.ObjectSequenceWidget"
