@@ -3,6 +3,17 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.95.0 (2025-05-08)
+-------------------
+
+FIX:
+- reactivate agencies autocomplete
+
+
+MAINT:
+- Add --include-user argument for export-import-workingcopy
+
+
 7.94.0 (2025-05-07)
 -------------------
 
