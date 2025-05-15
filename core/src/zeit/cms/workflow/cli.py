@@ -176,6 +176,7 @@ def publish():
             zeit.cms.workflow.interfaces.IPublish(content).publish(background=False)
             transaction.commit()
         except Exception:
+            log.warning('Skipping %s, an error occurred', exc_info=True)
             transaction.abort()
 
 
@@ -217,4 +218,5 @@ def retract():
             zeit.cms.workflow.interfaces.IPublish(content).retract(background=False)
             transaction.commit()
         except Exception:
+            log.warning('Skipping %s, an error occurred', exc_info=True)
             transaction.abort()
