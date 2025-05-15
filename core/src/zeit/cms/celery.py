@@ -110,6 +110,11 @@ else:
                 if zcml is None or not zcml.hasFeature('zeit.cms.testing'):
                     zeit.cms.cli.configure(settings)
 
+                # Kludge for celery subcommands like flower that don't load ZCML
+                # We're lucky that all of them "accidentally" access `app.conf`
+                # (which calls this code) at an early enough time.
+                self._patch_redis_ssl()
+
             conf = celery.utils.collections.AttributeDict()
             for key, value in settings.items():
                 if not key.startswith('celery.'):
@@ -127,6 +132,17 @@ else:
                 conf['task_queues'] = tuple(queues)
 
             return conf
+
+        def _patch_redis_ssl(self):
+            """Duplicated from patches.zcml. Luckily monkey:patch is
+            re-entrant, so this works for all situations, with and without ZCML.
+            """
+            import ssl
+
+            from zeit.cms.redis_patch import create_context_without_strict
+
+            ssl._old_create_default_context = ssl.create_default_context
+            ssl.create_default_context = create_context_without_strict
 
     class Task(z3c.celery.celery.TransactionAwareTask):
         """Combines transactions and proper scheduling.
