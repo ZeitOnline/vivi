@@ -298,8 +298,12 @@ def reindex():
                 transaction.commit()
         else:
             connector.invalidate_cache(id)
+            content = zeit.cms.interfaces.ICMSContent(id, None)
+            if content is None:
+                log.warning('Skipping %s, not found', id)
+                continue
             index(
-                zeit.cms.interfaces.ICMSContent(id),
+                content,
                 enrich=args.enrich,
                 update_keywords=args.enrich,
                 publish=args.publish,
