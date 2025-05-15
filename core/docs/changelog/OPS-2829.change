@@ -1,1 +1,0 @@
-OPS-2829: Apply ssl monkeypatch for celery commands that do not load ZCML (metrics, flower)

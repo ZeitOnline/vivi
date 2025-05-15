@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.98.0 (2025-05-15)
+-------------------
+
+- OPS-2829: Apply ssl monkeypatch for celery commands that do not load ZCML (metrics, flower)
+
+
 7.97.0 (2025-05-08)
 -------------------
 
