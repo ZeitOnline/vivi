@@ -7,6 +7,7 @@ import zeit.wochenmarkt.categories
 HERE = importlib.resources.files(__package__)
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
     {
+        'recipe-genres': 'rezept,rezept-vorstellung',
         'categories-url': f'file://{HERE}/tests/fixtures/categories.xml',
         'ingredients-url': f'file://{HERE}/tests/fixtures/ingredients.xml',
     },
