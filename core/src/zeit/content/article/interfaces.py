@@ -124,6 +124,20 @@ class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
         required=False,
     )
 
+    recipe_titles = zope.schema.Tuple(
+        title=_('Recipe Titles'),
+        value_type=zope.schema.TextLine(),
+        default=(),
+        required=False,
+    )
+
+    recipe_ingredients = zope.schema.Tuple(
+        title=_('Recipe Ingredients'),
+        value_type=zope.schema.TextLine(),
+        default=(),
+        required=False,
+    )
+
 
 class IArticle(IArticleMetadata, zeit.cms.content.interfaces.IXMLContent):
     """Article is the main content type in the Zeit CMS."""

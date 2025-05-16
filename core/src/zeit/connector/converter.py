@@ -10,7 +10,9 @@ from collections.abc import Iterable
 
 import grokcore.component as grok
 import sqlalchemy
+import sqlalchemy.dialects.postgresql
 import zope.interface
+import zope.schema
 
 from zeit.connector.interfaces import IConverter
 from zeit.connector.types import JSONBChannels, JSONBTuple
@@ -67,15 +69,15 @@ class DatetimeConverter(DefaultConverter):
 class JSONBTupleConverter(DefaultConverter):
     grok.context(JSONBTuple)
 
-    def serialize(self, value: Iterable) -> str:
-        if value is None:
-            return None
-        return ';'.join(x for x in value)
+    def serialize(self, value):
+        return zeit.cms.content.dav.CollectionTextLineProperty._toProperty(
+            value, zeit.cms.content.dav.UnicodeProperty(None, None, None)
+        )
 
-    def deserialize(self, value: str) -> tuple:
-        if not value:
-            return ()
-        return tuple(value.split(';'))
+    def deserialize(self, value) -> tuple:
+        return zeit.cms.content.dav.CollectionTextLineProperty._fromProperty(
+            value, zeit.cms.content.dav.UnicodeProperty(zope.schema.Text(), None, None), tuple
+        )
 
 
 class ChannelsConverter(DefaultConverter):
@@ -99,3 +101,17 @@ class ChannelsConverter(DefaultConverter):
             else:
                 result.append((subchannels[0], None))
         return tuple(result)
+
+
+class ArrayConverter(DefaultConverter):
+    grok.context(sqlalchemy.dialects.postgresql.ARRAY)
+
+    def serialize(self, value):
+        return zeit.cms.content.dav.CollectionTextLineProperty._toProperty(
+            value, zeit.cms.content.dav.UnicodeProperty(None, None, None)
+        )
+
+    def deserialize(self, value):
+        return zeit.cms.content.dav.CollectionTextLineProperty._fromProperty(
+            value, zeit.cms.content.dav.UnicodeProperty(zope.schema.Text(), None, None), list
+        )

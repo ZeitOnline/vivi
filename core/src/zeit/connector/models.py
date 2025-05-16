@@ -159,11 +159,12 @@ class Recipe:
         JSONBTuple, info={'namespace': 'recipe', 'name': 'categories'}
     )
     recipe_ingredients = mapped_column(
-        JSONBTuple,  # info={'namespace': 'recipe', 'name': 'ingredients'}
+        JSONBTuple, info={'namespace': 'recipe', 'name': 'ingredients'}
     )
     # optimizes the performance overall if dimensions is given
     recipe_titles = mapped_column(
-        ARRAY(Unicode, dimensions=1),  # info={'namespace': 'recipe', 'name': 'titles'}
+        ARRAY(Unicode, dimensions=1),
+        info={'namespace': 'recipe', 'name': 'titles'},
     )
 
 

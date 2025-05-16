@@ -384,6 +384,10 @@ class CollectionTextLineProperty:
             (self.value_type, self.properties, self.propertykey),
             zeit.cms.content.interfaces.IDAVPropertyConverter,
         )
+        return self._fromProperty(value, typ, self._type)
+
+    @staticmethod
+    def _fromProperty(value, value_type, collection_type=list):
         result = []
         start = 0
         while value:
@@ -398,19 +402,23 @@ class CollectionTextLineProperty:
                 item = value
                 value = ''
             item = item.replace('\\;', ';').replace('\\\\', '\\')
-            item = typ.fromProperty(item)
+            item = value_type.fromProperty(item)
             result.append(item)
 
-        return self._type(result)
+        return collection_type(result)
 
     def toProperty(self, value):
         typ = zope.component.getMultiAdapter(
             (self.value_type, self.properties, self.propertykey),
             zeit.cms.content.interfaces.IDAVPropertyConverter,
         )
+        return self._toProperty(value, typ)
+
+    @staticmethod
+    def _toProperty(value, value_type):
         result = []
         for item in value:
-            item = typ.toProperty(item)
+            item = value_type.toProperty(item)
             result.append(item.replace('\\', '\\\\').replace(';', '\\;'))
         return ';'.join(result)
 
