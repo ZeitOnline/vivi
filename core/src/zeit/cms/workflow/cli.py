@@ -75,6 +75,11 @@ def publish():
     parser.add_argument(
         '--force-changed', action='store_true', help='Publish even if with semantic change'
     )
+    parser.add_argument(
+        '--force-conditions',
+        action='store_true',
+        help='Publish even if can_publish is not satisfied',
+    )
     parser.add_argument('--skip-deps', action='store_true', help='Ignore publication dependencies')
 
     parser.add_argument(
@@ -171,6 +176,8 @@ def publish():
         ):
             log.info('Skipping %s, has semantic change and no --force-changed', id)
             continue
+        if options.force_conditions:
+            mock.patch.object(type(info), 'can_publish', return_value=True).start()
 
         try:
             zeit.cms.workflow.interfaces.IPublish(content).publish(background=False)
@@ -186,6 +193,11 @@ def retract():
     parser.add_argument('--filename', help='filename with uniqueId per line')
     parser.add_argument(
         '--force', '-f', action='store_true', help='Retract even if currently unpublished'
+    )
+    parser.add_argument(
+        '--force-conditions',
+        action='store_true',
+        help='Publish even if can_retract is not satisfied',
     )
     parser.add_argument(
         '--ignore-services',
@@ -213,6 +225,8 @@ def retract():
         if not (info.published or options.force):
             log.info('Skipping %s, not published and no --force', id)
             continue
+        if options.force_conditions:
+            mock.patch.object(type(info), 'can_retract', return_value=True).start()
 
         try:
             zeit.cms.workflow.interfaces.IPublish(content).retract(background=False)
