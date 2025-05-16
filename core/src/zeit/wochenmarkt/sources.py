@@ -143,6 +143,15 @@ class IngredientsSource(
         # Put prefix matches to the top of the resultset.
         return list(dict.fromkeys(prefix + substring))
 
+    def search_qwords(self, term):
+        term = term.lower()
+        result = []
+        for value in self._values().values():
+            for q in value.qwords:
+                if q.lower().startswith(term):
+                    result.append(value)
+        return result
+
     def find(self, context, id):
         return self._values().get(id)
 
