@@ -74,6 +74,16 @@ class RecipeCategoriesSource(
                 categories.append(category)
         return categories
 
+    def prefix_match(self, term, count=None):
+        term = term.lower()
+        result = []
+        for value in self._values().values():
+            if value.flag != 'no-search' and value.name.lower().startswith(term):
+                result.append(value)
+                if count and len(result) >= count:
+                    break
+        return result
+
     def find(self, context, id):
         return self._values().get(id)
 
@@ -159,6 +169,25 @@ class IngredientsSource(
 
         # Put prefix matches to the top of the resultset.
         return list(dict.fromkeys(prefix + substring))
+
+    def prefix_match(self, term, count=None):
+        term = term.lower()
+        result = []
+        for value in self._values().values():
+            if value.name.lower().startswith(term):
+                result.append(value)
+                if count and len(result) >= count:
+                    break
+        return result
+
+    def search_qwords(self, term):
+        term = term.lower()
+        result = []
+        for value in self._values().values():
+            for q in value.qwords:
+                if q.lower().startswith(term):
+                    result.append(value)
+        return result
 
     def find(self, context, id):
         return self._values().get(id)
