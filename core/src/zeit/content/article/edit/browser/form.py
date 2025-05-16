@@ -440,10 +440,11 @@ class RecipeCategories(zeit.edit.browser.form.InlineForm):
     prefix = 'recipe-categories'
     css_class = 'recipe-categories'
     form_fields = FormFields(IArticle).select('recipe_categories')
-    recipe_genres = ['rezept', 'rezept-vorstellung']
 
     def render(self):
-        if IArticle(self.context).genre in RecipeCategories.recipe_genres:
+        if IArticle(self.context).genre in zeit.cms.config.get(
+            'zeit.wochenmarkt', 'recipe-genres', ''
+        ).split(','):
             return super().render()
         # Need to preserve the id for js to still be able to perform
         # reload-inline-form after it has been cleared once.
