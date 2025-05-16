@@ -143,14 +143,18 @@ class IngredientsSource(
 
     def search(self, term):
         term = term.lower()
-        singular = {x.name.lower(): x for x in self._values().values()}
 
         # Ingredients that start with the term, e.g. ei -> ei, eigelb
-        prefix = [value for key, value in singular.items() if key.startswith(term)]
-        prefix = sorted(prefix, key=lambda x: x.name.lower())
-
+        prefix = []
         # Ingredients that contain the term anywhere, e.g. ei -> brei, eis
-        substring = [value for key, value in singular.items() if term in key]
+        substring = []
+        for value in self._values().values():
+            name = value.name.lower()
+            if name.startswith(term):
+                prefix.append(value)
+            elif term in name:
+                substring.append(value)
+        prefix = sorted(prefix, key=lambda x: x.name.lower())
         substring = sorted(substring, key=lambda x: x.name.lower())
 
         # Put prefix matches to the top of the resultset.
