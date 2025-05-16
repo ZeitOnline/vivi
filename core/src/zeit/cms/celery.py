@@ -202,7 +202,10 @@ else:
         @celery.signals.task_postrun.connect(weak=False)
         def remove_samplerate(*args, **kw):
             task = otel_celery.retrieve_task(kw)
-            _, _, token = otel_celery.retrieve_context(task, 'zeit.cms.tracing')
+            data = otel_celery.retrieve_context(task, 'zeit.cms.tracing')
+            if data is None:
+                return
+            _, _, token = data
             opentelemetry.context.detach(token)
             otel_celery.detach_context(task, 'zeit.cms.tracing')
 
