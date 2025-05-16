@@ -61,8 +61,11 @@ class RecipeCategoriesSource(
 
     def search(self, term):
         term = term.lower()
-        titles = {x.name.lower(): x for x in self._values().values()}
-        return [value for key, value in titles.items() if term in key]
+        result = []
+        for value in self._values().values():
+            if term in value.name.lower():
+                result.append(value)
+        return result
 
     def find(self, context, id):
         return self._values().get(id)
@@ -123,14 +126,18 @@ class IngredientsSource(
 
     def search(self, term):
         term = term.lower()
-        singular = {x.name.lower(): x for x in self._values().values()}
 
         # Ingredients that start with the term, e.g. ei -> ei, eigelb
-        prefix = [value for key, value in singular.items() if key.startswith(term)]
-        prefix = sorted(prefix, key=lambda x: x.name.lower())
-
+        prefix = []
         # Ingredients that contain the term anywhere, e.g. ei -> brei, eis
-        substring = [value for key, value in singular.items() if term in key]
+        substring = []
+        for value in self._values().values():
+            name = value.name.lower()
+            if name.startswith(term):
+                prefix.append(value)
+            elif term in name:
+                substring.append(value)
+        prefix = sorted(prefix, key=lambda x: x.name.lower())
         substring = sorted(substring, key=lambda x: x.name.lower())
 
         # Put prefix matches to the top of the resultset.
