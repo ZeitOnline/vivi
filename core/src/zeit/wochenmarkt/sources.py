@@ -3,6 +3,7 @@ import zope.interface
 import zope.schema.interfaces
 
 from zeit.cms.interfaces import CONFIG_CACHE
+import zeit.cms.config
 import zeit.cms.content.sources
 import zeit.wochenmarkt.interfaces
 
@@ -58,6 +59,10 @@ class RecipeCategoriesSource(
 
     def isAvailable(self, value, context):
         return True
+
+    @property
+    def genres(self):
+        return zeit.cms.config.get('zeit.wochenmarkt', 'recipe-genres', '').split(',')
 
     def search(self, term):
         term = term.lower()
