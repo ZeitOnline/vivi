@@ -24,7 +24,7 @@
 
   <class class=".recipelist.Ingredient">
     <require
-      attributes="code label amount unit details"
+      interface=".interfaces.IIngredient"
       permission="zope.View"
       />
   </class>

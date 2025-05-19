@@ -212,6 +212,14 @@ def validate_servings(value):
     raise zeit.cms.interfaces.ValidationError(_('Value must be number or range.'))
 
 
+class IIngredient(zeit.wochenmarkt.interfaces.IIngredient):
+    amount = zope.schema.Int(required=False)
+    unit = zope.schema.Choice(source=RecipeUnitsSource(), required=False)
+    details = zope.schema.TextLine(required=False)
+    # XXX Figure out which of these APIs we actually want.
+    label = zeit.wochenmarkt.interfaces.IIngredient['title']
+
+
 class IRecipeList(zeit.edit.interfaces.IBlock):
     merge_with_previous = zope.schema.Bool(
         title=_('Merge with previous recipe list module'), default=False

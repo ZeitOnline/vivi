@@ -13,4 +13,11 @@
       />
   </class>
 
+  <class class=".sources.Ingredient">
+    <require
+      interface=".interfaces.IIngredient"
+      permission="zope.View"
+      />
+  </class>
+
 </configure>

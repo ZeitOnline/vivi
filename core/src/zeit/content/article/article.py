@@ -30,8 +30,8 @@ import zeit.content.article.edit.audio
 import zeit.content.article.edit.interfaces
 import zeit.content.article.interfaces
 import zeit.content.audio.interfaces
-import zeit.content.infobox.interfaces
-import zeit.content.portraitbox.interfaces
+import zeit.content.modules
+import zeit.content.modules.interfaces
 import zeit.edit.interfaces
 import zeit.edit.rule
 import zeit.wochenmarkt.categories
@@ -144,6 +144,18 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
         zeit.content.article.interfaces.IArticle['recipe_categories'],
         'http://namespaces.zeit.de/CMS/recipe',
         'categories',
+        use_default=True,
+    )
+    recipe_ingredients = zeit.cms.content.dav.DAVProperty(
+        zeit.content.article.interfaces.IArticle['recipe_ingredients'],
+        zeit.cms.interfaces.RECIPE_SCHEMA_NS,
+        'ingredients',
+        use_default=True,
+    )
+    recipe_titles = zeit.cms.content.dav.DAVProperty(
+        zeit.content.article.interfaces.IArticle['recipe_titles'],
+        zeit.cms.interfaces.RECIPE_SCHEMA_NS,
+        'titles',
         use_default=True,
     )
 
@@ -560,3 +572,21 @@ class AudioDependency(zeit.cms.workflow.dependency.DependencyBase):
         if audio_refs:
             return audio_refs.items
         return ()
+
+
+@grok.subscribe(
+    zeit.content.article.interfaces.IArticle, zeit.cms.checkout.interfaces.IBeforeCheckinEvent
+)
+def update_recipes_of_article(context, event):
+    if not FEATURE_TOGGLES.find('wcm_19_store_recipes_in_storage'):
+        return
+    if context.genre not in zeit.cms.config.get('zeit.wochenmarkt', 'recipe-genres', '').split(','):
+        return
+    recipes = context.body.filter_values(zeit.content.modules.interfaces.IRecipeList)
+    titles = []
+    ingredients = []
+    for recipe in recipes:
+        titles.append(recipe.title)
+        ingredients.extend(x.id for x in recipe.ingredients)
+    context.recipe_titles = titles
+    context.recipe_ingredients = ingredients

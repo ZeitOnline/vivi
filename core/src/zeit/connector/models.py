@@ -12,7 +12,7 @@ from sqlalchemy import (
     Uuid,
 )
 from sqlalchemy import text as sql
-from sqlalchemy.dialects.postgresql import ARRAY, JSONB
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import declared_attr, mapped_column, relationship
 import pendulum
 import sqlalchemy
@@ -20,7 +20,7 @@ import sqlalchemy
 from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.connector.interfaces import INTERNAL_PROPERTY, DeleteProperty, LockStatus
 from zeit.connector.lock import lock_is_foreign
-from zeit.connector.types import TIMESTAMP, JSONBChannels, JSONBTuple
+from zeit.connector.types import TIMESTAMP, ArrayTuple, JSONBChannels, JSONBTuple
 import zeit.connector.interfaces
 
 
@@ -159,11 +159,12 @@ class Recipe:
         JSONBTuple, info={'namespace': 'recipe', 'name': 'categories'}
     )
     recipe_ingredients = mapped_column(
-        JSONBTuple,  # info={'namespace': 'recipe', 'name': 'ingredients'}
+        JSONBTuple, info={'namespace': 'recipe', 'name': 'ingredients'}
     )
     # optimizes the performance overall if dimensions is given
     recipe_titles = mapped_column(
-        ARRAY(Unicode, dimensions=1),  # info={'namespace': 'recipe', 'name': 'titles'}
+        ArrayTuple(Unicode, dimensions=1),
+        info={'namespace': 'recipe', 'name': 'titles'},
     )
 
 

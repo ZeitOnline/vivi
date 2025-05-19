@@ -519,3 +519,18 @@ class ArticleSearchableText(zeit.content.article.testing.FunctionalTestCase):
         article.body.create_item('p').text = 'Normaler Absatz'
         adapter = zope.index.text.interfaces.ISearchableText(article)
         assert adapter.getSearchableText() == ['Link', 'und mehr Text', 'Normaler Absatz']
+
+
+class WochenmarktArticles(zeit.content.article.testing.FunctionalTestCase):
+    def test_recipe_properties_are_stored(self):
+        FEATURE_TOGGLES.set('wcm_19_store_recipes_in_storage')
+        uid = 'http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept'
+        article = self.repository['article'] = zeit.cms.interfaces.ICMSContent(uid)
+        with checked_out(article):
+            pass
+        article = self.repository['article']
+        self.assertEqual(('Wurst-Hähnchen', 'Tomaten-Grieß'), article.recipe_titles)
+        self.assertEqual(
+            ['brathaehnchen', 'bratwurst', 'chicken-nuggets', 'gurke', 'tomate'],
+            sorted(article.recipe_ingredients),
+        )
