@@ -113,5 +113,5 @@ class ArrayConverter(DefaultConverter):
 
     def deserialize(self, value):
         return zeit.cms.content.dav.CollectionTextLineProperty._fromProperty(
-            value, zeit.cms.content.dav.UnicodeProperty(zope.schema.Text(), None, None), list
+            value, zeit.cms.content.dav.UnicodeProperty(zope.schema.Text(), None, None), tuple
         )

@@ -458,10 +458,19 @@ class PropertiesColumnTest(zeit.connector.testing.SQLTest):
         content = self.connector._get_content(res.id)
         self.assertEqual((('main1', 'sub1'), ('main2', None)), content.channels)
 
-    def test_convert_recipe_categories(self):
-        res = self.add_resource('foo', properties={('categories', f'{NS}recipe'): 'foo;bar'})
+    def test_convert_recipe_fields(self):
+        res = self.add_resource(
+            'foo',
+            properties={
+                ('categories', f'{NS}recipe'): 'c1;c2',
+                ('ingredients', f'{NS}recipe'): 'i1;i2',
+                ('titles', f'{NS}recipe'): 't1;t2',
+            },
+        )
         content = self.connector._get_content(res.id)
-        self.assertEqual(('foo', 'bar'), content.recipe_categories)
+        self.assertEqual(('c1', 'c2'), content.recipe_categories)
+        self.assertEqual(('i1', 'i2'), content.recipe_ingredients)
+        self.assertEqual(('t1', 't2'), content.recipe_titles)
 
 
 class ColumnDeclarationTest(zeit.connector.testing.TestCase):
