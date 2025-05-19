@@ -531,6 +531,6 @@ class WochenmarktArticles(zeit.content.article.testing.FunctionalTestCase):
         article = self.repository['article']
         self.assertEqual(('Wurst-Hähnchen', 'Tomaten-Grieß'), article.recipe_titles)
         self.assertEqual(
-            ['Brathähnchen', 'Bratwurst', 'Chicken Nugget', 'Gurke', 'Tomate'],
+            ['brathaehnchen', 'bratwurst', 'chicken-nuggets', 'gurke', 'tomate'],
             sorted(article.recipe_ingredients),
         )

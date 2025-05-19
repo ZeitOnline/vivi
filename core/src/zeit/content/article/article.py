@@ -587,6 +587,6 @@ def update_recipes_of_article(context, event):
     ingredients = []
     for recipe in recipes:
         titles.append(recipe.title)
-        ingredients.extend(x.label for x in recipe.ingredients)
+        ingredients.extend(x.id for x in recipe.ingredients)
     context.recipe_titles = titles
     context.recipe_ingredients = ingredients
