@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.99.0 (2025-05-19)
+-------------------
+
+- WCM-406: Add --force-conditions flag to publish-content script to override can_publish
+
+- WCM-867: publisher ignores completely set by config instead of hardcoded conditions
+
+
 7.98.0 (2025-05-15)
 -------------------
 
