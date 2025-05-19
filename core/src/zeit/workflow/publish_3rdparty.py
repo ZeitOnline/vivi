@@ -275,12 +275,6 @@ class IgnoreMixin:
         return grok.name.bind().get(self.__class__)
 
     def ignore(self, method):
-        if (
-            zeit.cms.content.interfaces.ICommonMetadata.providedBy(self.context)
-            and self.context.product
-            and self.context.product.is_news
-        ):
-            return True
         if method == 'publish':
             for attribute, setting in self.attr_setting_mapping.items():
                 if self.is_on_ignorelist(attribute, *setting):
