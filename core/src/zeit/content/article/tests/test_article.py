@@ -534,3 +534,15 @@ class WochenmarktArticles(zeit.content.article.testing.FunctionalTestCase):
             ['brathaehnchen', 'bratwurst', 'chicken-nuggets', 'gurke', 'tomate'],
             sorted(article.recipe_ingredients),
         )
+        categories = [category.id for category in article.recipe_categories]
+        self.assertEqual(
+            [
+                'complexity-easy',
+                'complexity-hard',
+                'pastagerichte',
+                'time-30',
+                'time-long',
+                'wurstiges',
+            ],
+            sorted(categories),
+        )

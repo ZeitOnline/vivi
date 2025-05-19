@@ -585,8 +585,18 @@ def update_recipes_of_article(context, event):
     recipes = context.body.filter_values(zeit.content.modules.interfaces.IRecipeList)
     titles = []
     ingredients = []
+
+    categories = set(context.recipe_categories)
+    source = zeit.wochenmarkt.sources.recipeCategoriesSource
+
     for recipe in recipes:
         titles.append(recipe.title)
         ingredients.extend(x.id for x in recipe.ingredients)
+        if recipe.complexity:
+            categories.add(source.factory.search(recipe.complexity)[0])
+        if recipe.time:
+            categories.add(source.factory.search(recipe.time)[0])
+
     context.recipe_titles = titles
     context.recipe_ingredients = ingredients
+    context.recipe_categories = categories
