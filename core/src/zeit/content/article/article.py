@@ -588,14 +588,17 @@ def update_recipes_of_article(context, event):
 
     categories = set(context.recipe_categories)
     source = zeit.wochenmarkt.sources.recipeCategoriesSource
-
     for recipe in recipes:
         titles.append(recipe.title)
         ingredients.extend(x.id for x in recipe.ingredients)
         if recipe.complexity:
-            categories.add(source.factory.search(recipe.complexity)[0])
+            complexity = source.factory.search(recipe.complexity, flag=None)
+            if complexity:
+                categories.add(complexity[0])
         if recipe.time:
-            categories.add(source.factory.search(recipe.time)[0])
+            time = source.factory.search(recipe.time, flag=None)
+            if time:
+                categories.add(time[0])
 
     context.recipe_titles = titles
     context.recipe_ingredients = ingredients
