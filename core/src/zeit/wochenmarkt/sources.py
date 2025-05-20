@@ -81,6 +81,7 @@ class Ingredient:
         )
         self.singular = kwargs.get('singular')
         self.plural = kwargs.get('plural')
+        self.diet = kwargs.get('diet')
         # Conform to zeit.cms.content.sources.ObjectSource
         self.id = self.code
         self.title = self.name
@@ -112,6 +113,7 @@ class IngredientsSource(
                     qwords=ingredient_node.get('q'),
                     singular=ingredient_node.get('singular'),
                     plural=ingredient_node.get('plural').strip(),
+                    diet=ingredient_node.get('diet').strip(),
                 )
             except AttributeError:
                 continue
