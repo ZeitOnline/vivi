@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.102.0 (2025-05-20)
+--------------------
+
+MAINT:
+- Update python package tornado to fix vulnerability with priority high
+
+
 7.101.0 (2025-05-20)
 --------------------
 
