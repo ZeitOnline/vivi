@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.100.0 (2025-05-20)
+--------------------
+
+- WCM-838: Implement recipe ingredients column
+
+- WCM-389: Implement recipe title column
+
+
 7.99.0 (2025-05-19)
 -------------------
 
