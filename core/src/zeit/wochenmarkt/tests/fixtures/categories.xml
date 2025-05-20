@@ -8,4 +8,6 @@
     <category id="bowl" name="Bowl"/>
     <category id="pastagerichte" name="Pastagerichte"/>
     <category id="wurstiges" name="Wurstiges"/>
+    <category id="vegane-rezepte" name="vegane Rezepte"/>
+    <category id="vegan-kochen-fuer-kinder" name="Vegan kochen für Kinder"/>
 </categories>

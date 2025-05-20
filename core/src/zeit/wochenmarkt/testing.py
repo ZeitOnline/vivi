@@ -10,6 +10,7 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
         'recipe-genres': 'rezept,rezept-vorstellung',
         'categories-url': f'file://{HERE}/tests/fixtures/categories.xml',
         'ingredients-url': f'file://{HERE}/tests/fixtures/ingredients.xml',
+        'diet-category-vegan': 'vegane-rezepte',
     },
     bases=(zeit.cms.testing.CONFIG_LAYER,),
 )

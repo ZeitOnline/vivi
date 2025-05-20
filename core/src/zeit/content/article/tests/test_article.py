@@ -529,8 +529,32 @@ class WochenmarktArticles(zeit.content.article.testing.FunctionalTestCase):
         with checked_out(article):
             pass
         article = self.repository['article']
+        self.assertEqual(2, len(article.recipe_categories))
         self.assertEqual(('Wurst-Hähnchen', 'Tomaten-Grieß'), article.recipe_titles)
         self.assertEqual(
             ['brathaehnchen', 'bratwurst', 'chicken-nuggets', 'gurke', 'tomate'],
+            sorted(article.recipe_ingredients),
+        )
+
+    def test_recipe_category_is_added_on_checkin(self):
+        FEATURE_TOGGLES.set('wcm_19_store_recipes_in_storage')
+        uid = 'http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept'
+        ingredients = zeit.wochenmarkt.sources.ingredientsSource(None).factory
+        article = self.repository['article'] = zeit.cms.interfaces.ICMSContent(uid)
+        with checked_out(article) as co:
+            recipelist = co.body.filter_values(zeit.content.modules.interfaces.IRecipeList)
+            for recipe in recipelist:
+                recipe.ingredients = [
+                    i
+                    for i in recipe.ingredients
+                    if ingredients.find(None, i.id) and ingredients.find(None, i.id).diet == 'vegan'
+                ]
+
+        article = self.repository['article']
+        self.assertEqual(3, len(article.recipe_categories))
+        self.assertEqual('vegane Rezepte', article.recipe_categories[2].name)
+        self.assertEqual(('Wurst-Hähnchen', 'Tomaten-Grieß'), article.recipe_titles)
+        self.assertEqual(
+            ['gurke', 'tomate'],
             sorted(article.recipe_ingredients),
         )
