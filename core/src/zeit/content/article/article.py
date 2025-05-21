@@ -586,7 +586,9 @@ def update_recipes_of_article(context, event):
     titles = []
     ingredients = []
 
-    categories = set(context.recipe_categories)
+    categories = {
+        category for category in context.recipe_categories if category.flag != 'no-search'
+    }
     source = zeit.wochenmarkt.sources.recipeCategoriesSource
     for recipe in recipes:
         titles.append(recipe.title)

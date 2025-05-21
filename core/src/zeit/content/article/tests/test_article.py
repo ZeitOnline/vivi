@@ -546,3 +546,17 @@ class WochenmarktArticles(zeit.content.article.testing.FunctionalTestCase):
             ],
             sorted(categories),
         )
+
+    def test_recipe_special_categories_are_updated(self):
+        FEATURE_TOGGLES.set('wcm_19_store_recipes_in_storage')
+        uid = 'http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept'
+        article = self.repository['article'] = zeit.cms.interfaces.ICMSContent(uid)
+        with checked_out(article) as co:
+            recipelist = co.body.filter_values(zeit.content.modules.interfaces.IRecipeList)
+            for recipe in recipelist:
+                recipe.complexity = 'ambitioniert'
+
+        article = self.repository['article']
+        categories = [category.id for category in article.recipe_categories]
+        self.assertIn('complexity-hard', categories)
+        self.assertNotIn('complexity-easy', categories)
