@@ -522,11 +522,14 @@ class ArticleSearchableText(zeit.content.article.testing.FunctionalTestCase):
 
 
 class WochenmarktArticles(zeit.content.article.testing.FunctionalTestCase):
-    def test_recipe_properties_are_stored(self):
+    def setUp(self):
+        super().setUp()
         FEATURE_TOGGLES.set('wcm_19_store_recipes_in_storage')
         uid = 'http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept'
-        article = self.repository['article'] = zeit.cms.interfaces.ICMSContent(uid)
-        with checked_out(article):
+        self.repository['article'] = zeit.cms.interfaces.ICMSContent(uid)
+
+    def test_recipe_properties_are_stored(self):
+        with checked_out(self.repository['article']):
             pass
         article = self.repository['article']
         self.assertEqual(2, len(article.recipe_categories))
@@ -537,11 +540,8 @@ class WochenmarktArticles(zeit.content.article.testing.FunctionalTestCase):
         )
 
     def test_recipe_category_is_added_on_checkin(self):
-        FEATURE_TOGGLES.set('wcm_19_store_recipes_in_storage')
-        uid = 'http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept'
         ingredients = zeit.wochenmarkt.sources.ingredientsSource(None).factory
-        article = self.repository['article'] = zeit.cms.interfaces.ICMSContent(uid)
-        with checked_out(article) as co:
+        with checked_out(self.repository['article']) as co:
             recipelist = co.body.filter_values(zeit.content.modules.interfaces.IRecipeList)
             for recipe in recipelist:
                 recipe.ingredients = [
@@ -552,9 +552,29 @@ class WochenmarktArticles(zeit.content.article.testing.FunctionalTestCase):
 
         article = self.repository['article']
         self.assertEqual(3, len(article.recipe_categories))
-        self.assertEqual('vegane Rezepte', article.recipe_categories[2].name)
+        self.assertEqual('vegane-rezepte', article.recipe_categories[2].id)
         self.assertEqual(('Wurst-Hähnchen', 'Tomaten-Grieß'), article.recipe_titles)
         self.assertEqual(
             ['gurke', 'tomate'],
+            sorted(article.recipe_ingredients),
+        )
+
+    def test_recipe_category_is_added_on_checkin_with_multiple_diets(self):
+        ingredients = zeit.wochenmarkt.sources.ingredientsSource(None).factory
+        with checked_out(self.repository['article']) as co:
+            recipelist = co.body.filter_values(zeit.content.modules.interfaces.IRecipeList)
+            for recipe in recipelist:
+                recipe.ingredients = [
+                    i
+                    for i in recipe.ingredients
+                    if ingredients.find(None, i.id)
+                    and ingredients.find(None, i.id).diet in ('vegan', 'vegetarian')
+                ] + [ingredients.find(None, 'ei')]
+        article = self.repository['article']
+        self.assertEqual(3, len(article.recipe_categories))
+        self.assertEqual('huelsenfruechte', article.recipe_categories[2].id)
+        self.assertEqual(('Wurst-Hähnchen', 'Tomaten-Grieß'), article.recipe_titles)
+        self.assertEqual(
+            ['ei', 'gurke', 'tomate'],
             sorted(article.recipe_ingredients),
         )

@@ -575,15 +575,10 @@ class AudioDependency(zeit.cms.workflow.dependency.DependencyBase):
 
 
 def _categorize_by_ingredients_diet(ingredients):
-    diets = {
-        zeit.wochenmarkt.sources.ingredientsSource(None).factory.find(None, i).diet
-        for i in ingredients
-    }
-    if len(diets) == 1 and (diet := diets.pop()) in {'vegan', 'vegetarian'}:
-        if category_id := zeit.cms.config.get('zeit.wochenmarkt', f'diet-category-{diet}'):
-            category_source = zeit.wochenmarkt.sources.recipeCategoriesSource(None).factory
-            return category_source.find(None, category_id)
-    return None
+    source = zeit.wochenmarkt.sources.ingredientsSource(None)
+    diets = {source.find(i).diet for i in ingredients}
+    category_source = zeit.wochenmarkt.sources.recipeCategoriesSource(None)
+    return category_source.factory.for_diets(diets)
 
 
 @grok.subscribe(
@@ -600,9 +595,10 @@ def update_recipes_of_article(context, event):
     for recipe in recipes:
         titles.append(recipe.title)
         ingredients.extend(x.id for x in recipe.ingredients)
+
     if (
         category := _categorize_by_ingredients_diet(ingredients)
     ) and category not in context.recipe_categories:
         context.recipe_categories += (category,)
     context.recipe_titles = titles
-    context.recipe_ingredients = ingredients
+    context.recipe_ingredients = tuple(set(ingredients))

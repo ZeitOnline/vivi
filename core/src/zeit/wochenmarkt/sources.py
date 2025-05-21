@@ -9,7 +9,7 @@ import zeit.wochenmarkt.interfaces
 
 @grok.implementer(zeit.wochenmarkt.interfaces.IRecipeCategory)
 class RecipeCategory:
-    def __init__(self, code, name):
+    def __init__(self, code, name, diets):
         # Conform to zeit.cms.content.sources.ObjectSource
         self.id = code
         self.title = name
@@ -19,6 +19,7 @@ class RecipeCategory:
         # Source value+title mechanics.
         self.code = code
         self.name = name
+        self.diets = set(diets.split(',')) if diets else {}
 
     @classmethod
     def from_xml(cls, node):
@@ -52,7 +53,11 @@ class RecipeCategoriesSource(
         xml = self._get_tree()
         categories = {}
         for category_node in xml.xpath('//category'):
-            category = RecipeCategory(category_node.get('id').lower(), category_node.get('name'))
+            category = RecipeCategory(
+                category_node.get('id').lower(),
+                category_node.get('name'),
+                category_node.get('diets'),
+            )
             categories[category_node.get('id')] = category
         return categories
 
@@ -66,6 +71,12 @@ class RecipeCategoriesSource(
 
     def find(self, context, id):
         return self._values().get(id)
+
+    def for_diets(self, diets):
+        for category in self._values().values():
+            if category.diets == diets:
+                return category
+        return None
 
 
 recipeCategoriesSource = RecipeCategoriesSource()
