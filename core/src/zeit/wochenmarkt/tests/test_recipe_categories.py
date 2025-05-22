@@ -24,6 +24,10 @@ class TestRecipeCategoriesWhitelist(zeit.wochenmarkt.testing.FunctionalTestCase)
 class TestRecipeCategories(
     zeit.wochenmarkt.testing.FunctionalTestCase, zeit.wochenmarkt.testing.RecipeCategoriesHelper
 ):
+    def setUp(self):
+        super().setUp()
+        self.categories_source = zeit.wochenmarkt.sources.recipeCategoriesSource(None).factory
+
     def get_content(self):
         class Content:
             categories = RecipeCategories()
@@ -67,3 +71,33 @@ class TestRecipeCategories(
         content.categories = [servomotoren, pizza]
         result = content.categories
         self.assertEqual(['pizza'], [x.code for x in result])
+
+    def test_for_diets_vegetarian(self):
+        diets = {'vegetarian'}
+        category = self.categories_source.for_diets(diets)
+        assert category.id == 'vegetarische-rezepte'
+
+    def test_for_diets_vegetarian_and_vegan(self):
+        diets = {'vegetarian', 'vegan'}
+        category = self.categories_source.for_diets(diets)
+        assert category.id == 'vegetarische-rezepte'
+
+    def test_for_diets_vegan_only(self):
+        diets = {'vegan'}
+        category = self.categories_source.for_diets(diets)
+        assert category.id == 'vegane-rezepte'
+
+    def test_for_diets_no_match(self):
+        diets = {'omnivore'}
+        category = self.categories_source.for_diets(diets)
+        assert category is None
+
+    def test_for_diets_conflicting_diets(self):
+        diets = {'omnivore', 'vegan'}
+        category = self.categories_source.for_diets(diets)
+        assert category is None
+
+    def test_for_diets_nothing_given(self):
+        diets = {}
+        category = self.categories_source.for_diets(diets)
+        assert category is None

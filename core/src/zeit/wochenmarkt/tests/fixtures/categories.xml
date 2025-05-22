@@ -1,13 +1,15 @@
 <?xml version="1.0" ?>
 <categories>
-    <category id="huelsenfruechte" name="Hülsenfrüchte" diets="vegetarian,vegan"/>
+    <category id="huelsenfruechte" name="Hülsenfrüchte"/>
     <category id="pizza" name="Pizza"/>
     <category id="summer" name="Sommer"/>
     <category id="barbecue" name="Barbecue"/>
-    <category id="salat" name="Salat" diets="vegetarian"/>
+    <category id="salat" name="Salat"/>
     <category id="bowl" name="Bowl"/>
     <category id="pastagerichte" name="Pastagerichte"/>
     <category id="wurstiges" name="Wurstiges"/>
-    <category id="vegane-rezepte" name="vegane Rezepte" diets="vegan"/>
-    <category id="vegan-kochen-fuer-kinder" name="Vegan kochen für Kinder"/>
+    <category id="vegane-rezepte" name="vegane Rezepte" diets="vegan" conflicting-diets="omnivore"/>
+    <category id="vegan-kochen-fuer-kinder" name="Vegan kochen für Kinder" diets="vegan,clean-eating" conflicting-diets="omnivore"/>
+    <category id="vegetarische-rezepte" name="vegetarische Rezepte" diets="vegan,vegetarian" conflicting-diets="omnivore"/>
+    <category id="frutarian" name="Frutarismus" diets="vegetarian,vegan,frutarian" conflicting-diets="omnivore"/>
 </categories>

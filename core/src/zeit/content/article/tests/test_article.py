@@ -572,7 +572,7 @@ class WochenmarktArticles(zeit.content.article.testing.FunctionalTestCase):
                 ] + [ingredients.find(None, 'ei')]
         article = self.repository['article']
         self.assertEqual(3, len(article.recipe_categories))
-        self.assertEqual('huelsenfruechte', article.recipe_categories[2].id)
+        self.assertEqual('vegetarische-rezepte', article.recipe_categories[2].id)
         self.assertEqual(('Wurst-Hähnchen', 'Tomaten-Grieß'), article.recipe_titles)
         self.assertEqual(
             ['ei', 'gurke', 'tomate'],

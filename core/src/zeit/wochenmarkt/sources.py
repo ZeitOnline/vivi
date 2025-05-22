@@ -9,7 +9,7 @@ import zeit.wochenmarkt.interfaces
 
 @grok.implementer(zeit.wochenmarkt.interfaces.IRecipeCategory)
 class RecipeCategory:
-    def __init__(self, code, name, diets):
+    def __init__(self, code, name, diets=None, conflicting_diets=None):
         # Conform to zeit.cms.content.sources.ObjectSource
         self.id = code
         self.title = name
@@ -19,7 +19,8 @@ class RecipeCategory:
         # Source value+title mechanics.
         self.code = code
         self.name = name
-        self.diets = set(diets.split(',')) if diets else {}
+        self.diets = set(diets.split(',')) if diets else set()
+        self.conflicting_diets = set(conflicting_diets.split(',')) if conflicting_diets else set()
 
     @classmethod
     def from_xml(cls, node):
@@ -57,6 +58,7 @@ class RecipeCategoriesSource(
                 category_node.get('id').lower(),
                 category_node.get('name'),
                 category_node.get('diets'),
+                category_node.get('conflicting-diets'),
             )
             categories[category_node.get('id')] = category
         return categories
@@ -73,10 +75,33 @@ class RecipeCategoriesSource(
         return self._values().get(id)
 
     def for_diets(self, diets):
+        """Find the best matching category based on given diets."""
+        possible_categories = []
+        # special handling for vegetarian only, because we cannot define a diet hierachy (yet)
+        # if we plan to add more, we need to setup a diet configuration
+        if diets == {'vegetarian'}:
+            vegetarian_only = [c for c in self._values().values() if 'vegetarian' in c.diets]
+            if vegetarian_only:
+                return min(
+                    vegetarian_only, key=lambda category: abs(len(category.diets) - len(diets))
+                )
+
         for category in self._values().values():
-            if category.diets == diets:
-                return category
-        return None
+            if (
+                # diets are given
+                category.diets
+                # given diets are at least part of category diets
+                and category.diets.issubset(diets)
+                # diets do not contain conflicting diets (omivore vs. vegan)
+                and not category.conflicting_diets.intersection(diets)
+            ):
+                possible_categories.append(category)
+
+        if not possible_categories:
+            return None
+
+        # We select the category with diet count closest to the input diets count
+        return min(possible_categories, key=lambda category: abs(len(category.diets) - len(diets)))
 
 
 recipeCategoriesSource = RecipeCategoriesSource()
