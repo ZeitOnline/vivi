@@ -33,7 +33,6 @@ class ReportTest(zeit.vgwort.testing.SQLTestCase):
             properties={
                 ('date_first_released', f'{DOCUMENT_SCHEMA_NS}'): release_date,
                 ('private_token', 'http://namespaces.zeit.de/CMS/vgwort'): 'token',
-                ('reported_error', 'http://namespaces.zeit.de/CMS/vgwort'): '',
                 ('reported_on', 'http://namespaces.zeit.de/CMS/vgwort'): '',
             },
         )
