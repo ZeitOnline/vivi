@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.103.0 (2025-05-22)
+--------------------
+
+FIX:
+- Update vgwort report query - errors should be null not empty string
+
+
 7.102.0 (2025-05-20)
 --------------------
 
