@@ -12,6 +12,7 @@ class IRecipeCategory(zope.interface.Interface):
     # XXX Figure out which of these APIs we actually want.
     id = code
     title = name
+    flag = zope.schema.TextLine(title='Flag of recipe category, to identify special categories')
 
 
 class IRecipeCategoriesSource(zope.schema.interfaces.IIterableSource):

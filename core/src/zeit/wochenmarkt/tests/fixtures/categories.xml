@@ -8,4 +8,10 @@
     <category id="bowl" name="Bowl"/>
     <category id="pastagerichte" name="Pastagerichte"/>
     <category id="wurstiges" name="Wurstiges"/>
+    <category id="complexity-easy" name="einfach" flag="no-search" />
+    <category id="complexity-medium" name="etwas komplizierter" flag="no-search" />
+    <category id="complexity-hard" name="ambitioniert" flag="no-search" />
+    <category id="time-30" name="unter 30 Minuten" flag="no-search" />
+    <category id="time-60" name="30-60 Minuten" flag="no-search" />
+    <category id="time-long" name="über 60 Minuten" flag="no-search" />
 </categories>
