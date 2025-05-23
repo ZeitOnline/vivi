@@ -101,3 +101,17 @@ class TestRecipeCategories(
         diets = {}
         category = self.categories_source.for_diets(diets)
         assert category is None
+
+    def test_for_diets_precedence_prioritizes(self):
+        diets = {
+            'frutarian': 'frutarian',
+            'vegan,frutarian': 'vegane-rezepte',
+            'vegetarian,frutarian': 'vegetarische-rezepte',
+            'frutarian,vegetarian,vegan': 'vegetarische-rezepte',
+        }
+        for diet, expected_category in diets.items():
+            category = self.categories_source.for_diets(set(diet.split(',')))
+            assert category, f'Should be {expected_category} with diets {diet}'
+            assert category.id == expected_category, (
+                f'Should be {expected_category} with diets {diet}'
+            )
