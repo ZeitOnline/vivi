@@ -12,6 +12,10 @@ class IRecipeCategory(zope.interface.Interface):
     # XXX Figure out which of these APIs we actually want.
     id = code
     title = name
+    # which diets based on ingredient diet match this category
+    diets = zope.schema.Set(title='Diets')
+    conflicting_diets = zope.schema.Set(title='Diets that conflict with given diets')
+    precedence = zope.schema.Int(title='Define order for categories')
 
 
 class IRecipeCategoriesSource(zope.schema.interfaces.IIterableSource):

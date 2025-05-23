@@ -574,6 +574,13 @@ class AudioDependency(zeit.cms.workflow.dependency.DependencyBase):
         return ()
 
 
+def _categorize_by_ingredients_diet(ingredients):
+    source = zeit.wochenmarkt.sources.ingredientsSource(None)
+    diets = {source.find(i).diet for i in ingredients}
+    category_source = zeit.wochenmarkt.sources.recipeCategoriesSource(None)
+    return category_source.factory.for_diets(diets)
+
+
 @grok.subscribe(
     zeit.content.article.interfaces.IArticle, zeit.cms.checkout.interfaces.IBeforeCheckinEvent
 )
@@ -588,5 +595,10 @@ def update_recipes_of_article(context, event):
     for recipe in recipes:
         titles.append(recipe.title)
         ingredients.extend(x.id for x in recipe.ingredients)
+
+    if (
+        category := _categorize_by_ingredients_diet(ingredients)
+    ) and category not in context.recipe_categories:
+        context.recipe_categories += (category,)
     context.recipe_titles = titles
-    context.recipe_ingredients = ingredients
+    context.recipe_ingredients = tuple(set(ingredients))
