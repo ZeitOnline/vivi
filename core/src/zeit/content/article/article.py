@@ -577,8 +577,8 @@ class AudioDependency(zeit.cms.workflow.dependency.DependencyBase):
 def _categorize_by_ingredients_diet(ingredients):
     source = zeit.wochenmarkt.sources.ingredientsSource(None)
     diets = {source.find(i).diet for i in ingredients}
-    category_source = zeit.wochenmarkt.sources.recipeCategoriesSource(None)
-    return category_source.factory.for_diets(diets)
+    categories_source = zeit.wochenmarkt.sources.recipeCategoriesSource(None)
+    return categories_source.factory.for_diets(diets)
 
 
 @grok.subscribe(
@@ -591,14 +591,29 @@ def update_recipes_of_article(context, event):
         return
     recipes = context.body.filter_values(zeit.content.modules.interfaces.IRecipeList)
     titles = []
-    ingredients = []
+    ingredients = set()
+
+    categories = {
+        category for category in context.recipe_categories if category.flag != 'no-search'
+    }
+    categories_source = zeit.wochenmarkt.sources.recipeCategoriesSource
     for recipe in recipes:
         titles.append(recipe.title)
-        ingredients.extend(x.id for x in recipe.ingredients)
+        ingredients = ingredients | {x.id for x in recipe.ingredients}
 
+        if recipe.complexity:
+            complexity = categories_source.factory.search(recipe.complexity, flag=None)
+            if complexity:
+                categories.add(complexity[0])
+        if recipe.time:
+            time = categories_source.factory.search(recipe.time, flag=None)
+            if time:
+                categories.add(time[0])
     if (
         category := _categorize_by_ingredients_diet(ingredients)
     ) and category not in context.recipe_categories:
-        context.recipe_categories += (category,)
+        categories.add(category)
+
     context.recipe_titles = titles
-    context.recipe_ingredients = tuple(set(ingredients))
+    context.recipe_ingredients = ingredients
+    context.recipe_categories = categories

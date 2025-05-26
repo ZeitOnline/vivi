@@ -29,6 +29,8 @@ import zeit.content.image.imagegroup
 import zeit.edit.interfaces
 import zeit.edit.rule
 import zeit.magazin.interfaces
+import zeit.wochenmarkt
+import zeit.wochenmarkt.sources
 
 
 class WorkflowTest(zeit.content.article.testing.FunctionalTestCase):
@@ -527,17 +529,41 @@ class WochenmarktArticles(zeit.content.article.testing.FunctionalTestCase):
         FEATURE_TOGGLES.set('wcm_19_store_recipes_in_storage')
         uid = 'http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept'
         self.repository['article'] = zeit.cms.interfaces.ICMSContent(uid)
+        self.categories_source = zeit.wochenmarkt.sources.recipeCategoriesSource(None).factory
 
     def test_recipe_properties_are_stored(self):
         with checked_out(self.repository['article']):
             pass
         article = self.repository['article']
-        self.assertEqual(2, len(article.recipe_categories))
         self.assertEqual(('Wurst-Hähnchen', 'Tomaten-Grieß'), article.recipe_titles)
         self.assertEqual(
             ['brathaehnchen', 'bratwurst', 'chicken-nuggets', 'gurke', 'tomate'],
             sorted(article.recipe_ingredients),
         )
+        categories = [category.id for category in article.recipe_categories]
+        self.assertEqual(
+            [
+                'complexity-easy',
+                'complexity-hard',
+                'pastagerichte',
+                'time-30',
+                'time-long',
+                'wurstiges',
+            ],
+            sorted(categories),
+        )
+
+    def test_recipe_special_categories_are_updated(self):
+        FEATURE_TOGGLES.set('wcm_19_store_recipes_in_storage')
+        with checked_out(self.repository['article']) as co:
+            recipelist = co.body.filter_values(zeit.content.modules.interfaces.IRecipeList)
+            for recipe in recipelist:
+                recipe.complexity = 'ambitioniert'
+
+        article = self.repository['article']
+        categories = [category.id for category in article.recipe_categories]
+        self.assertIn('complexity-hard', categories)
+        self.assertNotIn('complexity-easy', categories)
 
     def test_recipe_category_is_added_on_checkin(self):
         ingredients = zeit.wochenmarkt.sources.ingredientsSource(None).factory
@@ -551,8 +577,10 @@ class WochenmarktArticles(zeit.content.article.testing.FunctionalTestCase):
                 ]
 
         article = self.repository['article']
-        self.assertEqual(3, len(article.recipe_categories))
-        self.assertEqual('vegane-rezepte', article.recipe_categories[2].id)
+        self.assertEqual(7, len(article.recipe_categories))
+        self.assertIn(
+            self.categories_source.find(None, 'vegane-rezepte'), article.recipe_categories
+        )
         self.assertEqual(('Wurst-Hähnchen', 'Tomaten-Grieß'), article.recipe_titles)
         self.assertEqual(
             ['gurke', 'tomate'],
@@ -571,8 +599,10 @@ class WochenmarktArticles(zeit.content.article.testing.FunctionalTestCase):
                     and ingredients.find(None, i.id).diet in ('vegan', 'vegetarian')
                 ] + [ingredients.find(None, 'ei')]
         article = self.repository['article']
-        self.assertEqual(3, len(article.recipe_categories))
-        self.assertEqual('vegetarische-rezepte', article.recipe_categories[2].id)
+        self.assertEqual(7, len(article.recipe_categories))
+        self.assertIn(
+            self.categories_source.find(None, 'vegetarische-rezepte'), article.recipe_categories
+        )
         self.assertEqual(('Wurst-Hähnchen', 'Tomaten-Grieß'), article.recipe_titles)
         self.assertEqual(
             ['ei', 'gurke', 'tomate'],

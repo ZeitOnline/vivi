@@ -16,6 +16,7 @@ class IRecipeCategory(zope.interface.Interface):
     diets = zope.schema.Set(title='Diets')
     conflicting_diets = zope.schema.Set(title='Diets that conflict with given diets')
     precedence = zope.schema.Int(title='Define order for categories')
+    flag = zope.schema.TextLine(title='Flag of recipe category, to identify special categories')
 
 
 class IRecipeCategoriesSource(zope.schema.interfaces.IIterableSource):

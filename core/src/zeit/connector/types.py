@@ -15,7 +15,7 @@ class TupleTypeDecorator(types.TypeDecorator):
     """
 
     impl = NotImplemented
-    cache_ok = True
+    # cache_ok = True  # Does not work on base class, sigh.
 
     def process_bind_param(self, value, dialect):
         return self._convert_sequence(value, tuple, list)
@@ -35,14 +35,18 @@ class TupleTypeDecorator(types.TypeDecorator):
 
 class JSONBTuple(TupleTypeDecorator):
     impl = JSONB
+    cache_ok = True
 
 
 class JSONBChannels(JSONBTuple):
     """Subclass so we can register a specific DAV converter for it."""
 
+    cache_ok = True
+
 
 class ArrayTuple(TupleTypeDecorator):
     impl = ARRAY
+    cache_ok = True
 
 
 class TIMESTAMP(TIMESTAMP):

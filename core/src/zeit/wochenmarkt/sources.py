@@ -9,10 +9,11 @@ import zeit.wochenmarkt.interfaces
 
 @grok.implementer(zeit.wochenmarkt.interfaces.IRecipeCategory)
 class RecipeCategory:
-    def __init__(self, code, name, diets=None, conflicting_diets=None, precedence=0):
+    def __init__(self, code, name, flag=None, diets=None, conflicting_diets=None, precedence=0):
         # Conform to zeit.cms.content.sources.ObjectSource
         self.id = code
         self.title = name
+        self.flag = flag
         # BBB present an API a bit like zeit.cms.tagging.interfaces.ITag, even
         # though using an object here probably always has been superfluous, and
         # this could have instead been implemented with strings and the standard
@@ -58,6 +59,7 @@ class RecipeCategoriesSource(
             category = RecipeCategory(
                 category_node.get('id').lower(),
                 category_node.get('name'),
+                category_node.get('flag'),
                 category_node.get('diets'),
                 category_node.get('conflicting-diets'),
                 category_node.get('precedence'),
@@ -68,10 +70,15 @@ class RecipeCategoriesSource(
     def isAvailable(self, value, context):
         return True
 
-    def search(self, term):
+    def search(self, term, flag='no-search'):
         term = term.lower()
-        titles = {x.name.lower(): x for x in self._values().values()}
-        return [value for key, value in titles.items() if term in key]
+        categories = []
+        for category in self._values().values():
+            if flag is not None and category.flag == flag:
+                continue
+            if term in category.name.lower():
+                categories.append(category)
+        return categories
 
     def find(self, context, id):
         return self._values().get(id)

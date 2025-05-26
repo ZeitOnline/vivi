@@ -11,7 +11,7 @@ class TestRecipeCategoriesWhitelist(zeit.wochenmarkt.testing.FunctionalTestCase)
         categories = zeit.wochenmarkt.sources.recipeCategoriesSource(None).factory._values()
         assert 'Pizza' == categories.get('pizza').name
 
-    def test_autocomplete_should_be_available_for_categrories(self):
+    def test_autocomplete_should_be_available_for_categories(self):
         source = zeit.wochenmarkt.sources.recipeCategoriesSource(None).factory
         result = source.search('B')
         assert 2 == len(result)
@@ -115,3 +115,18 @@ class TestRecipeCategories(
             assert category.id == expected_category, (
                 f'Should be {expected_category} with diets {diet}'
             )
+
+    def test_flagged_categories_are_not_found(self):
+        categories = zeit.wochenmarkt.sources.recipeCategoriesSource.factory.search('T')
+        self.assertEqual(
+            [
+                'frutarian',
+                'huelsenfruechte',
+                'pastagerichte',
+                'salat',
+                'vegane-rezepte',
+                'vegetarische-rezepte',
+                'wurstiges',
+            ],
+            sorted([x.id for x in categories]),
+        )

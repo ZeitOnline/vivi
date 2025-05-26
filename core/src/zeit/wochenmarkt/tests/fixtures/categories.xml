@@ -12,4 +12,10 @@
     <category id="vegan-kochen-fuer-kinder" name="Vegan kochen für Kinder" diets="vegan,clean-eating" conflicting-diets="omnivore" precedence="4"/>
     <category id="vegetarische-rezepte" name="vegetarische Rezepte" diets="vegetarian" conflicting-diets="omnivore" precedence="0"/>
     <category id="frutarian" name="Frutarismus" diets="frutarian" conflicting-diets="omnivore" precedence="3"/>
+    <category id="complexity-easy" name="einfach" flag="no-search" />
+    <category id="complexity-medium" name="etwas komplizierter" flag="no-search" />
+    <category id="complexity-hard" name="ambitioniert" flag="no-search" />
+    <category id="time-30" name="unter 30 Minuten" flag="no-search" />
+    <category id="time-60" name="30-60 Minuten" flag="no-search" />
+    <category id="time-long" name="über 60 Minuten" flag="no-search" />
 </categories>
