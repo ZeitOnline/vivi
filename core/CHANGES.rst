@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.104.0 (2025-05-27)
+--------------------
+
+- WCM-840: Save special categories in recipe_categories
+
+- WCM-856: add category based on recipe ingredient diet
+
+
 7.103.0 (2025-05-22)
 --------------------
 
