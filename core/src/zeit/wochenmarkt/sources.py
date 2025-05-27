@@ -92,12 +92,16 @@ class RecipeCategoriesSource(
     def find(self, context, id):
         return self._values().get(id)
 
+    DIETS = {  # We require these IDs to exist in categories.xml
+        'vegan': 'vegane-rezepte',
+        'vegetarian': 'vegetarische-rezepte',
+    }
+
     def for_diets(self, diets):
         if diets == {'vegan'}:
-            return self.find(None, 'vegane-rezepte')
+            return self.find(None, self.DIETS['vegan'])
         elif diets == {'vegan', 'vegetarian'} or diets == {'vegetarian'}:
-            return self.find(None, 'vegetarische-rezepte')
-
+            return self.find(None, self.DIETS['vegetarian'])
         return None
 
 
