@@ -77,6 +77,14 @@ class RecipeCategoriesSource(
     def find(self, context, id):
         return self._values().get(id)
 
+    def for_diets(self, diets):
+        if diets == {'vegan'}:
+            return self.find(None, 'vegane-rezepte')
+        elif diets == {'vegan', 'vegetarian'} or diets == {'vegetarian'}:
+            return self.find(None, 'vegetarische-rezepte')
+
+        return None
+
 
 recipeCategoriesSource = RecipeCategoriesSource()
 
@@ -91,6 +99,7 @@ class Ingredient:
         )
         self.singular = kwargs.get('singular')
         self.plural = kwargs.get('plural')
+        self.diet = kwargs.get('diet')
         # Conform to zeit.cms.content.sources.ObjectSource
         self.id = self.code
         self.title = self.name
@@ -122,6 +131,7 @@ class IngredientsSource(
                     qwords=ingredient_node.get('q'),
                     singular=ingredient_node.get('singular'),
                     plural=ingredient_node.get('plural').strip(),
+                    diet=ingredient_node.get('diet').strip(),
                 )
             except AttributeError:
                 continue

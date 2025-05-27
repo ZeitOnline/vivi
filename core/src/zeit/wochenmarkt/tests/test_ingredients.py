@@ -15,12 +15,14 @@ class TestIngredients(zeit.wochenmarkt.testing.FunctionalTestCase):
         assert ['Reis', 'Basmati'] == basmati.qwords
         assert 'Basmatireis' == basmati.singular
         assert 'Basmatireis' == basmati.plural
+        assert 'vegan' == basmati.diet
 
     def test_ingredient_should_be_found_by_id(self):
         source = zeit.wochenmarkt.sources.ingredientsSource(None)
         calamari = source.find('calamari')
         assert 'Calamari' == calamari.name
         assert ['Tintenfisch', 'Kalamar'] == calamari.qwords
+        assert 'omnivore' == calamari.diet
 
     def test_autocomplete_should_be_available_for_ingredients(self):
         result = zeit.wochenmarkt.sources.ingredientsSource(None).factory.search('B')

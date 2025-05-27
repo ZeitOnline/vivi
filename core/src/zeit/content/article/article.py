@@ -140,13 +140,21 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
         if not FEATURE_TOGGLES.find('xmlproperty_strict_wcm_837'):
             self._recipe_categories_body = value
 
+    @property
+    def recipe_ingredients(self):
+        return self._recipe_ingredients
+
+    @recipe_ingredients.setter
+    def recipe_ingredients(self, value):
+        self._recipe_ingredients = sorted(value)
+
     _recipe_categories = zeit.cms.content.dav.DAVProperty(
         zeit.content.article.interfaces.IArticle['recipe_categories'],
         'http://namespaces.zeit.de/CMS/recipe',
         'categories',
         use_default=True,
     )
-    recipe_ingredients = zeit.cms.content.dav.DAVProperty(
+    _recipe_ingredients = zeit.cms.content.dav.DAVProperty(
         zeit.content.article.interfaces.IArticle['recipe_ingredients'],
         zeit.cms.interfaces.RECIPE_SCHEMA_NS,
         'ingredients',
@@ -574,6 +582,13 @@ class AudioDependency(zeit.cms.workflow.dependency.DependencyBase):
         return ()
 
 
+def _categorize_by_ingredients_diet(ingredients):
+    source = zeit.wochenmarkt.sources.ingredientsSource(None)
+    diets = {source.find(i).diet for i in ingredients}
+    categories_source = zeit.wochenmarkt.sources.recipeCategoriesSource(None)
+    return categories_source.factory.for_diets(diets)
+
+
 @grok.subscribe(
     zeit.content.article.interfaces.IArticle, zeit.cms.checkout.interfaces.IBeforeCheckinEvent
 )
@@ -584,23 +599,26 @@ def update_recipes_of_article(context, event):
         return
     recipes = context.body.filter_values(zeit.content.modules.interfaces.IRecipeList)
     titles = []
-    ingredients = []
+    ingredients = set()
 
     categories = {
         category for category in context.recipe_categories if category.flag != 'no-search'
     }
-    source = zeit.wochenmarkt.sources.recipeCategoriesSource
+    categories_source = zeit.wochenmarkt.sources.recipeCategoriesSource
     for recipe in recipes:
         titles.append(recipe.title)
-        ingredients.extend(x.id for x in recipe.ingredients)
+        ingredients = ingredients | {x.id for x in recipe.ingredients}
+
         if recipe.complexity:
-            complexity = source.factory.search(recipe.complexity, flag=None)
+            complexity = categories_source.factory.search(recipe.complexity, flag=None)
             if complexity:
                 categories.add(complexity[0])
         if recipe.time:
-            time = source.factory.search(recipe.time, flag=None)
+            time = categories_source.factory.search(recipe.time, flag=None)
             if time:
                 categories.add(time[0])
+    if category := _categorize_by_ingredients_diet(ingredients):
+        categories.add(category)
 
     context.recipe_titles = titles
     context.recipe_ingredients = ingredients
