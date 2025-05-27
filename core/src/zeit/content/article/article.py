@@ -140,13 +140,21 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
         if not FEATURE_TOGGLES.find('xmlproperty_strict_wcm_837'):
             self._recipe_categories_body = value
 
+    @property
+    def recipe_ingredients(self):
+        return self._recipe_ingredients
+
+    @recipe_ingredients.setter
+    def recipe_ingredients(self, value):
+        self._recipe_ingredients = sorted(value)
+
     _recipe_categories = zeit.cms.content.dav.DAVProperty(
         zeit.content.article.interfaces.IArticle['recipe_categories'],
         'http://namespaces.zeit.de/CMS/recipe',
         'categories',
         use_default=True,
     )
-    recipe_ingredients = zeit.cms.content.dav.DAVProperty(
+    _recipe_ingredients = zeit.cms.content.dav.DAVProperty(
         zeit.content.article.interfaces.IArticle['recipe_ingredients'],
         zeit.cms.interfaces.RECIPE_SCHEMA_NS,
         'ingredients',
@@ -609,9 +617,7 @@ def update_recipes_of_article(context, event):
             time = categories_source.factory.search(recipe.time, flag=None)
             if time:
                 categories.add(time[0])
-    if (
-        category := _categorize_by_ingredients_diet(ingredients)
-    ) and category not in context.recipe_categories:
+    if category := _categorize_by_ingredients_diet(ingredients):
         categories.add(category)
 
     context.recipe_titles = titles

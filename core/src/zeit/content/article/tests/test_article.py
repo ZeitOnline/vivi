@@ -537,8 +537,8 @@ class WochenmarktArticles(zeit.content.article.testing.FunctionalTestCase):
         article = self.repository['article']
         self.assertEqual(('Wurst-Hähnchen', 'Tomaten-Grieß'), article.recipe_titles)
         self.assertEqual(
-            ['brathaehnchen', 'bratwurst', 'chicken-nuggets', 'gurke', 'tomate'],
-            sorted(article.recipe_ingredients),
+            ('brathaehnchen', 'bratwurst', 'chicken-nuggets', 'gurke', 'tomate'),
+            article.recipe_ingredients,
         )
         categories = [category.id for category in article.recipe_categories]
         self.assertEqual(
@@ -583,8 +583,8 @@ class WochenmarktArticles(zeit.content.article.testing.FunctionalTestCase):
         )
         self.assertEqual(('Wurst-Hähnchen', 'Tomaten-Grieß'), article.recipe_titles)
         self.assertEqual(
-            ['gurke', 'tomate'],
-            sorted(article.recipe_ingredients),
+            ('gurke', 'tomate'),
+            article.recipe_ingredients,
         )
 
     def test_recipe_category_is_added_on_checkin_with_multiple_diets(self):
@@ -605,6 +605,6 @@ class WochenmarktArticles(zeit.content.article.testing.FunctionalTestCase):
         )
         self.assertEqual(('Wurst-Hähnchen', 'Tomaten-Grieß'), article.recipe_titles)
         self.assertEqual(
-            ['ei', 'gurke', 'tomate'],
-            sorted(article.recipe_ingredients),
+            ('ei', 'gurke', 'tomate'),
+            article.recipe_ingredients,
         )
