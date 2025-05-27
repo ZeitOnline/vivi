@@ -9,7 +9,7 @@ import zeit.wochenmarkt.interfaces
 
 @grok.implementer(zeit.wochenmarkt.interfaces.IRecipeCategory)
 class RecipeCategory:
-    def __init__(self, code, name, flag=None, diets=None, conflicting_diets=None, precedence=0):
+    def __init__(self, code, name, flag=None):
         # Conform to zeit.cms.content.sources.ObjectSource
         self.id = code
         self.title = name
@@ -20,9 +20,6 @@ class RecipeCategory:
         # Source value+title mechanics.
         self.code = code
         self.name = name
-        self.diets = set(diets.split(',')) if diets else set()
-        self.conflicting_diets = set(conflicting_diets.split(',')) if conflicting_diets else set()
-        self.precedence = precedence
 
     @classmethod
     def from_xml(cls, node):
@@ -60,9 +57,6 @@ class RecipeCategoriesSource(
                 category_node.get('id').lower(),
                 category_node.get('name'),
                 category_node.get('flag'),
-                category_node.get('diets'),
-                category_node.get('conflicting-diets'),
-                category_node.get('precedence'),
             )
             categories[category_node.get('id')] = category
         return categories
@@ -84,29 +78,12 @@ class RecipeCategoriesSource(
         return self._values().get(id)
 
     def for_diets(self, diets):
-        """Find the best matching category based on given diets."""
-        possible_categories = []
+        if diets == {'vegan'}:
+            return self.find(None, 'vegane-rezepte')
+        elif diets == {'vegan', 'vegetarian'} or diets == {'vegetarian'}:
+            return self.find(None, 'vegetarische-rezepte')
 
-        for category in self._values().values():
-            if (
-                # diets are given
-                category.diets
-                # given diets are at least part of category diets
-                and category.diets.issubset(diets)
-                # diets do not contain conflicting diets (omivore vs. vegan)
-                and not category.conflicting_diets.intersection(diets)
-            ):
-                possible_categories.append(category)
-
-        if not possible_categories:
-            return None
-
-        # Sort by diet count (lower is better) and then by precedence (smaller is better)
-        # diet count is which category has most diets intersect with given diets
-        return min(
-            possible_categories,
-            key=lambda category: (abs(len(category.diets) - len(diets)), category.precedence),
-        )
+        return None
 
 
 recipeCategoriesSource = RecipeCategoriesSource()
