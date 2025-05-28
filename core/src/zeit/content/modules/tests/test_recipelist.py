@@ -120,3 +120,19 @@ class RecipeListTest(
         ingredient = Ingredient(None, None).from_xml(node)
         assert ingredient.code == 'banana'
         assert ingredient.details == ''  # not provided as xml attribute
+
+
+class RecipeMetadataTest(zeit.content.modules.testing.FunctionalTestCase):
+    def test_complexity_source_should_find_id(self):
+        complexity_source = zeit.content.modules.interfaces.RecipeComplexitySource()
+        assert 'complexity-easy' == complexity_source.factory.findId('complexity-easy')
+        assert complexity_source.factory.findId('einfach') is None
+        assert 'complexity-easy' in complexity_source.factory.findIdsbyTitle('einfach')
+        assert complexity_source.factory.findIdsbyTitle('complexity-easy') is None
+
+    def test_time_source_should_find_id(self):
+        time_source = zeit.content.modules.interfaces.RecipeTimeSource()
+        assert 'time-60min' == time_source.factory.findId('time-60min')
+        assert time_source.factory.findId('30-60 Minuten') is None
+        assert 'time-60min' in time_source.factory.findIdsbyTitle('30-60 Minuten')
+        assert time_source.factory.findIdsbyTitle('time-60min') is None

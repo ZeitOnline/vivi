@@ -610,13 +610,17 @@ def update_recipes_of_article(context, event):
         ingredients = ingredients | {x.id for x in recipe.ingredients}
 
         if recipe.complexity:
-            complexity = categories_source.factory.search(recipe.complexity, flag=None)
+            complexity = categories_source.factory.find(None, recipe.complexity)
             if complexity:
-                categories.add(complexity[0])
+                categories.add(complexity)
+                if FEATURE_TOGGLES.find('wcm_889_store_special_category_ids'):
+                    recipe.complexity = complexity.id
         if recipe.time:
-            time = categories_source.factory.search(recipe.time, flag=None)
+            time = categories_source.factory.find(None, recipe.time)
             if time:
-                categories.add(time[0])
+                categories.add(time)
+                if FEATURE_TOGGLES.find('wcm_889_store_special_category_ids'):
+                    recipe.time = time.id
     if category := _categorize_by_ingredients_diet(ingredients):
         categories.add(category)
 
