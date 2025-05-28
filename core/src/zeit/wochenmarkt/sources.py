@@ -3,6 +3,7 @@ import zope.interface
 import zope.schema.interfaces
 
 from zeit.cms.interfaces import CONFIG_CACHE
+import zeit.cms.config
 import zeit.cms.content.sources
 import zeit.wochenmarkt.interfaces
 
@@ -64,6 +65,10 @@ class RecipeCategoriesSource(
     def isAvailable(self, value, context):
         return True
 
+    @property
+    def genres(self):
+        return zeit.cms.config.get('zeit.wochenmarkt', 'recipe-genres', '').split(',')
+
     def search(self, term, flag='no-search'):
         term = term.lower()
         categories = []
@@ -74,15 +79,29 @@ class RecipeCategoriesSource(
                 categories.append(category)
         return categories
 
+    def prefix_match(self, term, count=None):
+        term = term.lower()
+        result = []
+        for value in self._values().values():
+            if value.flag != 'no-search' and value.name.lower().startswith(term):
+                result.append(value)
+                if count and len(result) >= count:
+                    break
+        return result
+
     def find(self, context, id):
         return self._values().get(id)
 
+    DIETS = {  # We require these IDs to exist in categories.xml
+        'vegan': 'vegane-rezepte',
+        'vegetarian': 'vegetarische-rezepte',
+    }
+
     def for_diets(self, diets):
         if diets == {'vegan'}:
-            return self.find(None, 'vegane-rezepte')
+            return self.find(None, self.DIETS['vegan'])
         elif diets == {'vegan', 'vegetarian'} or diets == {'vegetarian'}:
-            return self.find(None, 'vegetarische-rezepte')
-
+            return self.find(None, self.DIETS['vegetarian'])
         return None
 
 
@@ -143,18 +162,41 @@ class IngredientsSource(
 
     def search(self, term):
         term = term.lower()
-        singular = {x.name.lower(): x for x in self._values().values()}
 
         # Ingredients that start with the term, e.g. ei -> ei, eigelb
-        prefix = [value for key, value in singular.items() if key.startswith(term)]
-        prefix = sorted(prefix, key=lambda x: x.name.lower())
-
+        prefix = []
         # Ingredients that contain the term anywhere, e.g. ei -> brei, eis
-        substring = [value for key, value in singular.items() if term in key]
+        substring = []
+        for value in self._values().values():
+            name = value.name.lower()
+            if name.startswith(term):
+                prefix.append(value)
+            elif term in name:
+                substring.append(value)
+        prefix = sorted(prefix, key=lambda x: x.name.lower())
         substring = sorted(substring, key=lambda x: x.name.lower())
 
         # Put prefix matches to the top of the resultset.
         return list(dict.fromkeys(prefix + substring))
+
+    def prefix_match(self, term, count=None):
+        term = term.lower()
+        result = []
+        for value in self._values().values():
+            if value.name.lower().startswith(term):
+                result.append(value)
+                if count and len(result) >= count:
+                    break
+        return result
+
+    def search_qwords(self, term):
+        term = term.lower()
+        result = []
+        for value in self._values().values():
+            for q in value.qwords:
+                if q.lower().startswith(term):
+                    result.append(value)
+        return result
 
     def find(self, context, id):
         return self._values().get(id)
