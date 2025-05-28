@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.105.0 (2025-05-28)
+--------------------
+
+- WCM-598: Implement various search functions for categories and ingredients
+
+
 7.104.0 (2025-05-27)
 --------------------
 
