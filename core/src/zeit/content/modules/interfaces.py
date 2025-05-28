@@ -181,19 +181,66 @@ class IMail(zeit.edit.interfaces.IBlock):
     body = zope.interface.Attribute('Email body')
 
 
-class RecipeMetadataSource(zeit.cms.content.sources.SearchableXMLSource):
+class RecipeMetadataSource(zeit.cms.content.sources.XMLSource):
     product_configuration = 'zeit.content.modules'
     config_url = 'recipe-metadata-source'
     default_filename = 'recipe-metadata.xml'
 
-    def getNodes(self):
+    attribute = NotImplemented
+    title_xpath = NotImplemented
+
+    def findId(self, id):
+        if self.attribute is NotImplemented:
+            return None
         tree = self._get_tree()
-        return tree.xpath(self.xpath)
+        for node in tree.xpath(self.title_xpath):
+            if id == str(node.get(self.attribute)):
+                return str(node.get(self.attribute))
+        return None
+
+    def findIdsbyTitle(self, title):
+        result = []
+        tree = self._get_tree()
+        for node in tree.xpath(self.title_xpath):
+            if node == title:
+                result.append(str(node.get(self.attribute)))
+        if not result:
+            return None
+        return result
+
+    def getValues(self, context):
+        tree = self._get_tree()
+        if not zeit.cms.content.sources.FEATURE_TOGGLES.find('wcm_889_store_special_category_ids'):
+            return [
+                node.text
+                for node in tree.xpath(self.title_xpath)
+                if self.isAvailable(node, context)
+            ]
+        return [
+            str(node.get(self.attribute))
+            for node in tree.xpath(self.title_xpath)
+            if self.isAvailable(node, context)
+        ]
+
+
+class RecipeComplexitySource(RecipeMetadataSource):
+    attribute = 'id'
+    title_xpath = '/recipe-metadata/complexities/complexity'
+
+
+class RecipeTimeSource(RecipeMetadataSource):
+    attribute = 'id'
+    title_xpath = '/recipe-metadata/times/time'
 
 
 class RecipeUnitsSource(RecipeMetadataSource):
-    def __init__(self):
-        super().__init__('//unit')
+    title_xpath = '/recipe-metadata/units/unit'
+
+    def getValues(self, context):
+        tree = self._get_tree()
+        return [
+            node.text for node in tree.xpath(self.title_xpath) if self.isAvailable(node, context)
+        ]
 
 
 # Servings are valid if all of these are satisfied:
@@ -234,12 +281,10 @@ class IRecipeList(zeit.edit.interfaces.IBlock):
     searchable_subheading = zope.schema.Bool(title=_('Appears in recipe search?'), default=False)
 
     complexity = zope.schema.Choice(
-        title=_('Complexity'), source=RecipeMetadataSource('*//complexity'), required=False
+        title=_('Complexity'), source=RecipeComplexitySource(), required=False
     )
 
-    time = zope.schema.Choice(
-        title=_('Time'), source=RecipeMetadataSource('*//time'), required=False
-    )
+    time = zope.schema.Choice(title=_('Time'), source=RecipeTimeSource(), required=False)
 
     servings = zope.schema.TextLine(
         title=_('Servings'), required=False, constraint=validate_servings

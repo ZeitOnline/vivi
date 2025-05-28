@@ -1,6 +1,7 @@
 from lxml.builder import E
 import zope.interface
 
+from zeit.cms.content.sources import FEATURE_TOGGLES
 import zeit.cms.content.property
 import zeit.content.modules.interfaces
 import zeit.edit.block
@@ -60,11 +61,11 @@ class RecipeList(zeit.edit.block.Element):
         zeit.content.modules.interfaces.IRecipeList['searchable_subheading'],
     )
 
-    complexity = zeit.cms.content.property.ObjectPathProperty(
+    _complexity = zeit.cms.content.property.ObjectPathProperty(
         '.complexity', zeit.content.modules.interfaces.IRecipeList['complexity']
     )
 
-    time = zeit.cms.content.property.ObjectPathProperty(
+    _time = zeit.cms.content.property.ObjectPathProperty(
         '.time', zeit.content.modules.interfaces.IRecipeList['time']
     )
 
@@ -75,6 +76,42 @@ class RecipeList(zeit.edit.block.Element):
     special_ingredient = zeit.cms.content.property.ObjectPathProperty(
         '.special_ingredient', zeit.content.modules.interfaces.IRecipeList['special_ingredient']
     )
+
+    @property
+    def complexity(self):
+        if self._complexity is None:
+            return self._complexity
+        if FEATURE_TOGGLES.find('wcm_889_store_special_category_ids'):
+            complexity_source = zeit.content.modules.interfaces.RecipeComplexitySource()
+            if complexity_source.factory.findId(self._complexity):
+                return self._complexity
+            elif complexity_source.factory.getTitle(None, self._complexity):
+                id = complexity_source.factory.findIdsbyTitle(self._complexity)
+                if id:
+                    return id[0]
+        return self._complexity
+
+    @complexity.setter
+    def complexity(self, value):
+        self._complexity = value
+
+    @property
+    def time(self):
+        if self._time is None:
+            return self._time
+        if FEATURE_TOGGLES.find('wcm_889_store_special_category_ids'):
+            time_source = zeit.content.modules.interfaces.RecipeTimeSource()
+            if time_source.factory.findId(self._time):
+                return self._time
+            elif time_source.factory.getTitle(None, self._time):
+                id = time_source.factory.findIdsbyTitle(self._time)
+                if id:
+                    return id[0]
+        return self._time
+
+    @time.setter
+    def time(self, value):
+        self._time = value
 
     @property
     def ingredients(self):
