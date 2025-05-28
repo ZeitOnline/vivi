@@ -8,10 +8,10 @@ from zeit.cms.admin.interfaces import IAdjustSemanticPublish
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.content.interfaces import ICommonMetadata
 from zeit.cms.i18n import MessageFactory as _
-from zeit.cms.repository.interfaces import IRenameInfo
 from zeit.cms.workflow.interfaces import IPublishInfo
 from zeit.content.image.interfaces import IImages
 from zeit.content.link.link import Link
+from zeit.cms.repository.copypastemove import previous_uniqueid
 import zeit.cms.browser.menu
 import zeit.cms.config
 
@@ -28,13 +28,7 @@ class Redirect(zeit.cms.browser.lightbox.Form):
     template = zope.app.pagetemplate.viewpagetemplatefile.ViewPageTemplateFile('redirect.pt')
 
     def get_data(self):
-        target = self.context.uniqueId
-        for id in reversed(IRenameInfo(self.context).previous_uniqueIds):
-            # XXX IAutomaticallyRenameable doesn't really define this; see
-            # z.c.article.browser.form.AddAndCheckout
-            if not id.endswith('.tmp'):
-                target = id
-                break
+        target = previous_uniqueid(self.context) or self.context.uniqueId
         return {'target': urlparse(target).path}
 
     @zope.formlib.form.action(_('Create redirect'))
