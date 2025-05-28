@@ -39,8 +39,6 @@
     permission="zeit.cms.admin.View"
     />
 
-   <adapter factory=".admin.render_publish_action" name="render" />
-
    <browser:page
     for="..interfaces.IVolume"
     layer="zeit.cms.browser.interfaces.ICMSLayer"

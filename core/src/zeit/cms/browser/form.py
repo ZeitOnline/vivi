@@ -1,4 +1,7 @@
+import html
+
 import gocept.form.grouped
+import grokcore.component as grok
 import zope.app.pagetemplate
 import zope.container.interfaces
 import zope.event
@@ -300,3 +303,25 @@ class DisplayForm(FormBase, gocept.form.grouped.DisplayForm):
     """Display form."""
 
     title = _('View')
+
+
+@grok.implementer(zope.browserpage.namedtemplate.INamedTemplate)
+class RenderLightboxAction(grok.Adapter):
+    grok.baseclass()
+    grok.name('render')
+
+    target = NotImplemented
+
+    def __call__(self):
+        if not self.context.available():
+            return ''
+        form = self.context.form
+        label = self.context.label
+        if isinstance(label, zope.i18nmessageid.Message):
+            label = zope.i18n.translate(label, context=form.request)
+        label = html.escape(label, quote=True)
+        url = zope.traversing.browser.absoluteURL(form.context, form.request)
+        return f"""\
+            <button id="{self.context.__name__}" type="button" class="button"
+            onclick="zeit.cms.lightbox_form('{url}/@@{self.target}')"
+            >{label}</button>'"""
