@@ -41,16 +41,21 @@ zeit.workflow.publish.Publisher = gocept.Class.extend({
             });
     },
 
-    checkin: function(context, params) {
+    goto: function(context, action) {
         var self = this;
-        if (isUndefinedOrNull(params)) {
-            params = '';
-        }
         if (isUndefinedOrNull(context)) {
             context = window.context_url;
         }
-        return self._redirect_step(
-            context + '/@@checkin?redirect=False' + params);
+        var d = MochiKit.Async.doSimpleXMLHttpRequest(context + '/@@' + action);
+        d.addCallbacks(
+            function(result) {
+                return result.responseText;
+            },
+            function(err) {
+                zeit.cms.log_error(err);
+                return err;
+            });
+        return d;
     },
 
     start_job: function(context, action, objectlog) {
@@ -112,15 +117,6 @@ zeit.workflow.publish.Publisher = gocept.Class.extend({
         return d;
     },
 
-    checkout: function(context) {
-        var self = this;
-        var d = self._redirect_step(context + '/@@checkout?redirect=False');
-        d.addCallback(function(result) {
-            return result + '/@@edit.html';
-        });
-        return d;
-    },
-
     reload: function(context) {
         var self = this;
         if (isUndefinedOrNull(context)) {
@@ -130,20 +126,6 @@ zeit.workflow.publish.Publisher = gocept.Class.extend({
         // return a deferred which is never fired. This keeps the entry busy
         // until the page is reloaded.
         return new MochiKit.Async.Deferred();
-    },
-
-    _redirect_step: function(url) {
-        var self = this;
-        var d = MochiKit.Async.doSimpleXMLHttpRequest(url);
-        d.addCallbacks(
-            function(result) {
-                return result.responseText;
-            },
-            function(err) {
-                zeit.cms.log_error(err);
-                return err;
-            });
-        return d;
     },
 
     busy: function(element) {
