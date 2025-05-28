@@ -21,9 +21,7 @@ class VolumeAdminForm(zeit.cms.admin.browser.admin.EditFormCI):
     """
 
     extra_actions = zope.formlib.form.Actions()
-    extra_actions.append(
-        PublishAction(_('Publish content of this volume'), lambda *args: None, name='publish-all')
-    )
+    extra_actions.append(PublishAction(_('Publish content of this volume'), name='publish-all'))
 
     @property
     def actions(self):
