@@ -1,19 +1,13 @@
 from urllib.parse import urlparse
-import os.path
 
 import zope.interface
 import zope.schema
 
-from zeit.cms.admin.interfaces import IAdjustSemanticPublish
-from zeit.cms.checkout.helper import checked_out
-from zeit.cms.content.interfaces import ICommonMetadata
 from zeit.cms.i18n import MessageFactory as _
-from zeit.cms.workflow.interfaces import IPublishInfo
-from zeit.content.image.interfaces import IImages
-from zeit.content.link.link import Link
 from zeit.cms.repository.copypastemove import previous_uniqueid
 import zeit.cms.browser.menu
 import zeit.cms.config
+import zeit.content.link.redirect
 
 
 class ISchema(zope.interface.Interface):
@@ -33,39 +27,9 @@ class Redirect(zeit.cms.browser.lightbox.Form):
 
     @zope.formlib.form.action(_('Create redirect'))
     def link(self, action, data):
-        path = os.path.dirname(data['target'])
-        name = os.path.basename(data['target'])
-        container = zeit.cms.interfaces.ICMSContent(zeit.cms.interfaces.ID_NAMESPACE + path[1:])
-        container[name] = Link()
-        link = container[name]
-
-        with checked_out(link, temporary=False) as target:
-            self.copy_values(self.context, target)
-            target.url = self.context.uniqueId.replace(
-                zeit.cms.interfaces.ID_NAMESPACE,
-                zeit.cms.config.required('zeit.cms', 'live-prefix'),
-            )
-        self.adjust_workflow(self.context, link)
+        target = zeit.cms.interfaces.ID_NAMESPACE + data['target'][1:]
+        link = zeit.content.link.redirect.create(self.context, target)
         self.context = link  # also sets nextURL
-
-    def copy_values(self, source, target):
-        for iface in [ICommonMetadata, IImages]:
-            src = iface(source)
-            tgt = iface(target)
-            for field in zope.schema.getFields(iface).values():
-                __traceback_info__ = (field,)
-                if field.readonly:
-                    continue
-                value = field.get(src)
-                if value != field.missing_value and value != field.default:
-                    field.set(tgt, value)
-
-    def adjust_workflow(self, source, target):
-        source_pub = IPublishInfo(source)
-        target_pub = IAdjustSemanticPublish(target)
-        target_pub.adjust_first_released = source_pub.date_first_released
-        target_pub.adjust_semantic_publish = source_pub.date_last_published_semantic
-        IPublishInfo(target).urgent = True
 
 
 class MenuItem(zeit.cms.browser.menu.LightboxActionMenuItem):
