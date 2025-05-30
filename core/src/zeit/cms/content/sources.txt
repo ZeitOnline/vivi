@@ -13,7 +13,7 @@ The serie source returns the possible "serie" values:
 >>> import zeit.cms.content.sources
 >>> serie = zeit.cms.content.sources.SerieSource()
 >>> serie = serie(content)
->>> attr = ('serienname', 'title', 'url', 'encoded', 'column', 'video')
+>>> attr = ('serienname', 'title', 'url', 'column', 'video')
 >>> pprint(sorted([[getattr(x, a) for a in attr] for x in serie],
 ...               key=lambda x: x[0]))
 [['-', '-', '-', None, False, False],
@@ -21,7 +21,6 @@ The serie source returns the possible "serie" values:
  ['Bachelor Tagebuch',
   'Bachelor Tagebuch',
   'bachelor-tagebuch',
-  'Bachelor%20Tagebuch',
   False,
   False],
  ['Cat Jokes', 'Cat Jokes', 'cat-jokes-pawdcast', 'Cat Jokes', False, False],
