@@ -267,6 +267,8 @@ class IgnoreMixin:
         'genre': ('genres', zeit.content.article.interfaces.IArticleMetadata),
         'template': ('templates', zeit.content.article.interfaces.IArticleMetadata),
         'ressort': ('ressorts', zeit.cms.content.interfaces.ICommonMetadata),
+        # TODO: This returns an object, not a string. We would need to check product.id!
+        'product': ('products', zeit.cms.content.interfaces.ICommonMetadata),
         'uniqueId': ('uniqueids', zeit.cms.interfaces.ICMSContent),
     }
 
