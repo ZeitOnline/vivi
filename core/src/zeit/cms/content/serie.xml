@@ -3,23 +3,23 @@
 <allseries>
   <series title="-" serienname="-" url="-"/>
   <series title="Autotest" serienname="Autotest" url="zeitmagazin-autotest"/>
-  <series title="Bachelor Tagebuch" serienname="Bachelor Tagebuch" url="bachelor-tagebuch" encoded="Bachelor%20Tagebuch"/>
+  <series title="Bachelor Tagebuch" serienname="Bachelor Tagebuch" url="bachelor-tagebuch"/>
   <series title="Chefsache" serienname="Chefsache" url="chefsache" format-label="Kolumne"/>
-  <series title="City Guide" serienname="City Guide" url="city-guide" encoded="City%20Guide"/>
-  <series title="Das Prinzip 50/50" serienname="Das Prinzip 50/50" url="das-prinzip-50-50" encoded="Das%20Prinzip%2050%2F50"/>
-  <series title="E-Mail aus Davos" serienname="E-Mail aus Davos" url="email-aus-davos" encoded="E-Mail%20aus%20Davos"/>
+  <series title="City Guide" serienname="City Guide" url="city-guide"/>
+  <series title="Das Prinzip 50/50" serienname="Das Prinzip 50/50" url="das-prinzip-50-50"/>
+  <series title="E-Mail aus Davos" serienname="E-Mail aus Davos" url="email-aus-davos"/>
   <series title="Faktomat" serienname="Faktomat" url="faktomat"/>
   <series title="Geschafft!" serienname="Geschafft!" url="geschafft"/>
-  <series title="Hör-Reise" serienname="Hör-Reise" url="hoer-reise" encoded="H%C3%B6r-Reise"/>
-  <series title="Zeitläufte" serienname="Zeitläufte" url="zeitlaeufte" encoded="Zeitl%C3%A4ufte"/>
-  <series title="Podcast" serienname="Podcast" url="podcast" encoded="Podcast" fallback_image="yes"
+  <series title="Hör-Reise" serienname="Hör-Reise" url="hoer-reise"/>
+  <series title="Zeitläufte" serienname="Zeitläufte" url="zeitlaeufte"/>
+  <series title="Podcast" serienname="Podcast" url="podcast" fallback_image="yes"
           available="zeit.cms.section.interfaces.IZONContent" />
-  <series title="Notcast" serienname="Notcast" url="notcast" encoded="Notcast"
+  <series title="Notcast" serienname="Notcast" url="notcast"
           available="zeit.web.core.interfaces.IInternalUse" />
-  <series title="Cat Jokes" serienname="Cat Jokes" url="cat-jokes-pawdcast" encoded="Cat Jokes" type="Podcast"/>
+  <series title="Cat Jokes" serienname="Cat Jokes" url="cat-jokes-pawdcast" type="Podcast"/>
   <videoseries>
-    <series title="BR" serienname="BR" url="br" encoded="BR" video="yes"/>
-    <series title="Filmtipp" serienname="Filmtipp" url="filmtipp" encoded="Filmtipp" video="yes"/>
-    <series title="Utopien" serienname="Utopien" url="utopien" encoded="Utopien" video="yes"/>
+    <series title="BR" serienname="BR" url="br" video="yes"/>
+    <series title="Filmtipp" serienname="Filmtipp" url="filmtipp" video="yes"/>
+    <series title="Utopien" serienname="Utopien" url="utopien" video="yes"/>
   </videoseries>
 </allseries>
