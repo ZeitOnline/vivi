@@ -510,7 +510,6 @@ class Serie(AllowedBase):
         serienname=None,
         title=None,
         url=None,
-        encoded=None,
         column=False,
         kind=None,
         video=False,
@@ -524,7 +523,6 @@ class Serie(AllowedBase):
         self.serienname = serienname
         self.title = title
         self.url = url
-        self.encoded = encoded
         self.column = column
         self.kind = kind
         self.video = video
@@ -555,7 +553,6 @@ class SerieSource(ObjectSource, SimpleContextualXMLSource):
                 serienname,
                 unicode_or_none(node.get('title')),
                 unicode_or_none(node.get('url')),
-                unicode_or_none(node.get('encoded')),
                 node.get('format-label') == 'Kolumne',
                 unicode_or_none(node.get('kind')),
                 node.get('video') == 'yes',
