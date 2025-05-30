@@ -264,6 +264,17 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         payload = zeit.workflow.testing.publish_json(article, 'summy')
         assert payload == {}
 
+    def test_summy_ignore_products_list(self):
+        article = ICMSContent('http://xml.zeit.de/online/2022/08/trockenheit')
+
+        payload = zeit.workflow.testing.publish_json(article, 'summy')
+        assert payload is not None
+        assert len(payload['text']) > 1
+
+        zeit.cms.config.set('zeit.workflow', 'summy-ignore-products', 'dpaSN')
+        payload = zeit.workflow.testing.publish_json(article, 'summy')
+        assert payload == {}
+
     def test_summy_payload(self):
         article = ICMSContent('http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept')
         zeit.cms.config.set('zeit.workflow', 'summy-ignore-ressorts', 'valid_ressort')
