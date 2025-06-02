@@ -68,6 +68,7 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="do-enable-crawler"
     template="enable-crawler.pt"
+    class=".crawler.Lightbox"
     permission="zeit.seo.EnableCrawler"
     />
 

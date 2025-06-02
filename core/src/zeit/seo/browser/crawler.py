@@ -2,9 +2,23 @@ import json
 
 import zope.copypastemove.interfaces
 
+from zeit.cms.i18n import MessageFactory as _
+from zeit.cms.workflow.interfaces import IPublishInfo
 from zeit.seo.interfaces import ISEO
 import zeit.cms.browser.view
 import zeit.content.link.redirect
+
+
+class Lightbox(zeit.cms.browser.view.Base):
+    @property
+    def error_messages(self):
+        errors = []
+        if ISEO(self.context).crawler_enabled:
+            errors.append(_('Crawler already enabled'))
+        # Because the flow publishes the content automatically.
+        if not IPublishInfo(self.context).published:
+            errors.append(_('Content must be published to enable crawler'))
+        return errors
 
 
 class EnableCrawler(zeit.cms.browser.view.Base):
