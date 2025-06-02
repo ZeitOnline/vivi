@@ -9,11 +9,11 @@
   <include package="zeit.seo.browser" />
 
   <grant
-    principal="zope.Authenticated"
+    principal="zope.seo"
     permission="zeit.seo.View"
     />
   <grant
-    principal="zope.Authenticated"
+    principal="zope.seo"
     permission="zeit.seo.Edit"
     />
 

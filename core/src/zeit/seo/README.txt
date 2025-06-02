@@ -10,7 +10,7 @@ Browser Tests
 
 >>> import zeit.cms.testing
 >>> browser = zeit.cms.testing.Browser(layer['wsgi_app'])
->>> browser.login('user', 'userpw')
+>>> browser.login('seo', 'seopw')
 
 Open the test content and go to the SEO page:
 
@@ -51,7 +51,7 @@ on
 >>> print(browser.getControl('Disable enrich').value)
 on
 
->>> content = getRootFolder()['workingcopy']['zope.user']['testcontent']
+>>> content = getRootFolder()['workingcopy']['zope.seo']['testcontent']
 >>> import zeit.retresco.interfaces
 >>> zeit.retresco.interfaces.ISkipEnrich.providedBy(content)
 True
