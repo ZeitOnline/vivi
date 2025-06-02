@@ -1,10 +1,14 @@
 """
 One way to create the required inputfile (ZON-5837):
 
-cat articles_without_vgwort_payload.js | \
-    http https://tms-es.zon.zeit.de/zeit_pool_content/_search | \
-        jq -r '@text "http://xml.zeit.de" + .hits.hits[]._source.url' \
-            > vgwort-nachzuegler-production
+    psql service=vivi-internal-production -c "\
+        SELECT * FROM properties \
+        WHERE type = 'article' \
+        AND date_first_released >= CURRENT_DATE - INTERVAL '100 days' \
+        AND vgwort_private_token IS NOT NULL \
+        AND vgwort_reported_on IS NULL \
+        AND vgwort_reported_error IS NULL;" \
+        > vgwort-nachzuegler-production
 """
 
 import argparse
@@ -30,7 +34,6 @@ def in_maintenance_hours():
     return three <= now <= six
 
 
-# No transaction commit, as we don't care about the cache.
 @zeit.cms.cli.runner(principal=zeit.cms.cli.from_config('zeit.vgwort', 'token-principal'))
 def bulk_report():
     parser = argparse.ArgumentParser(description='VG Wort bulk report')
@@ -52,7 +55,8 @@ def bulk_report():
         try:
             connector.invalidate_cache(id)
             content = zeit.cms.interfaces.ICMSContent(id)
-            zeit.vgwort.report.report(content)
+            for _ in zeit.cms.cli.commit_with_retry():
+                zeit.vgwort.report.report(content)
             # XXX vgwort returns 401 after some requests for unknown reasons.
             if i % 6 == 0 and hasattr(vgwort, 'client'):
                 del vgwort.client
