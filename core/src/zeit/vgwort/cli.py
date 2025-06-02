@@ -30,7 +30,6 @@ def in_maintenance_hours():
     return three <= now <= six
 
 
-# No transaction commit, as we don't care about the cache.
 @zeit.cms.cli.runner(principal=zeit.cms.cli.from_config('zeit.vgwort', 'token-principal'))
 def bulk_report():
     parser = argparse.ArgumentParser(description='VG Wort bulk report')
@@ -52,7 +51,8 @@ def bulk_report():
         try:
             connector.invalidate_cache(id)
             content = zeit.cms.interfaces.ICMSContent(id)
-            zeit.vgwort.report.report(content)
+            for _ in zeit.cms.cli.commit_with_retry():
+                zeit.vgwort.report.report(content)
             # XXX vgwort returns 401 after some requests for unknown reasons.
             if i % 6 == 0 and hasattr(vgwort, 'client'):
                 del vgwort.client
