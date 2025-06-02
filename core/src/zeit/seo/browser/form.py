@@ -1,4 +1,5 @@
 import gocept.form.grouped
+import grokcore.component as grok
 import zope.formlib.form
 
 from zeit.cms.i18n import MessageFactory as _
@@ -40,8 +41,29 @@ class SEOEdit(SEOBaseForm, zeit.cms.browser.form.EditForm):
         return super().handle_edit_action.success(data)
 
 
+class EnableCrawlerAction(zope.formlib.form.Action):
+    def __init__(self):
+        super().__init__(_('Enable Crawler'), name='enable-crawler', condition=self.has_permission)
+
+    @staticmethod
+    def has_permission(form, action):
+        return form.request.interaction.checkPermission('zeit.seo.EnableCrawler', form.context)
+
+
+class RenderEnableCrawlerAction(zeit.cms.browser.form.RenderLightboxAction):
+    grok.context(EnableCrawlerAction)
+    target = 'do-enable-crawler'
+
+
 class SEODisplay(SEOBaseForm, zeit.cms.browser.form.DisplayForm):
     title = _('View SEO data')
+
+    extra_actions = zope.formlib.form.Actions()
+    extra_actions.append(EnableCrawlerAction())
+
+    @property
+    def actions(self):
+        return list(super().actions) + list(self.extra_actions)
 
 
 @zope.component.adapter(zeit.cms.interfaces.ICMSContent)

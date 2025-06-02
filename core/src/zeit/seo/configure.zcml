@@ -11,6 +11,10 @@
     id="zeit.seo.Edit"
     title="Edit SEO data"
     />
+  <permission
+    id="zeit.seo.EnableCrawler"
+    title="Enable AI Crawler"
+    />
 
   <adapter factory=".seo.SEO" />
   <class class=".seo.SEO">
