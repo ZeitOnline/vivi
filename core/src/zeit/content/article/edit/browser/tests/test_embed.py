@@ -1,6 +1,7 @@
 import re
 import urllib
 
+import pytest
 import requests_mock
 
 import zeit.content.article.edit.browser.testing
@@ -15,20 +16,6 @@ class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
         b.getControl('Apply').click()
         b.reload()
         self.assertEqual('https://twitter.com/foo/status/123', b.getControl('Embed URL').value)
-
-    def test_embed_resolves_bluesky_urls(self):
-        self.get_article(with_block='embed')
-        b = self.browser
-        b.open('editable-body/blockname/@@edit-embed?show_form=1')
-        b.getControl(
-            'Embed URL'
-        ).value = 'https://bsky.app/profile/denniskberlin.bsky.social/post/3lbcovlxajs2x'
-        b.getControl('Apply').click()
-        b.reload()
-        self.assertEqual(
-            'https://bsky.app/profile/did:plc:2d4i6jgzxpxuwsttkark575m/post/3lbcovlxajs2x',
-            b.getControl('Embed URL').value,
-        )
 
     @requests_mock.Mocker()
     def test_embed_resolve_bsky_url_fails(self, m):
@@ -66,3 +53,20 @@ class FormLoader(zeit.content.article.edit.browser.testing.EditorTestCase):
         self.add_article()
         self.create_block('embed')
         s.assertElementPresent('css=.block.type-embed .inline-form .field.fieldname-url')
+
+
+@pytest.mark.integration()
+class FormBlueSkye(zeit.content.article.edit.browser.testing.BrowserTestCase):
+    def test_embed_resolves_bluesky_urls(self):
+        self.get_article(with_block='embed')
+        b = self.browser
+        b.open('editable-body/blockname/@@edit-embed?show_form=1')
+        b.getControl(
+            'Embed URL'
+        ).value = 'https://bsky.app/profile/denniskberlin.bsky.social/post/3lbcovlxajs2x'
+        b.getControl('Apply').click()
+        b.reload()
+        self.assertEqual(
+            'https://bsky.app/profile/did:plc:2d4i6jgzxpxuwsttkark575m/post/3lbcovlxajs2x',
+            b.getControl('Embed URL').value,
+        )
