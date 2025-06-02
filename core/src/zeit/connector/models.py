@@ -172,6 +172,9 @@ class Miscellaneous:
     seo_meta_robots = mapped_column(
         Unicode, info={'namespace': 'document', 'name': 'html-meta-robots'}
     )
+    seo_crawler_enabled = mapped_column(
+        Boolean, info={'namespace': 'seo', 'name': 'crawler_enabled'}
+    )
 
 
 class VGWort:
@@ -252,6 +255,7 @@ class Content(
                     'product',
                     'published',
                     'ressort',
+                    'seo_crawler_enabled',
                     'series',
                     'sub_ressort',
                     'video_type',
