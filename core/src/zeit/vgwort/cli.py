@@ -1,10 +1,14 @@
 """
 One way to create the required inputfile (ZON-5837):
 
-cat articles_without_vgwort_payload.js | \
-    http https://tms-es.zon.zeit.de/zeit_pool_content/_search | \
-        jq -r '@text "http://xml.zeit.de" + .hits.hits[]._source.url' \
-            > vgwort-nachzuegler-production
+    psql service=vivi-internal-production -c "\
+        SELECT * FROM properties \
+        WHERE type = 'article' \
+        AND date_first_released >= CURRENT_DATE - INTERVAL '100 days' \
+        AND vgwort_private_token IS NOT NULL \
+        AND vgwort_reported_on IS NULL \
+        AND vgwort_reported_error IS NULL;" \
+        > vgwort-nachzuegler-production
 """
 
 import argparse
