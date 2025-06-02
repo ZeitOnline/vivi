@@ -2,6 +2,7 @@ import json
 
 import zope.copypastemove.interfaces
 
+from zeit.seo.interfaces import ISEO
 import zeit.cms.browser.view
 import zeit.content.link.redirect
 
@@ -14,7 +15,9 @@ class EnableCrawler(zeit.cms.browser.view.Base):
         renamer = zope.copypastemove.interfaces.IContainerItemRenamer(container)
         target = f'{self.context.__name__}{self.SUFFIX}'
         renamer.renameItem(self.context.__name__, target)
-        return self.url(container[target])
+        context = container[target]
+        ISEO(context).crawler_enabled = True
+        return self.url(context)
 
 
 class CreateRedirect(zeit.cms.browser.view.Base):

@@ -21,7 +21,11 @@ class EntityTypeSource(zc.sourcefactory.basic.BasicSourceFactory):
         return self.values[value]
 
 
-class ISEO(zope.interface.Interface):
+class IWriteSEO(zope.interface.Interface):
+    crawler_enabled = zope.schema.Bool(title=_('Crawler enabled'), required=False)
+
+
+class IReadSEO(zope.interface.Interface):
     html_title = zope.schema.TextLine(title=_('HTML title'), required=False)
 
     html_description = zope.schema.Text(title=_('HTML description'), required=False)
@@ -37,3 +41,7 @@ class ISEO(zope.interface.Interface):
     keyword_entity_type = zope.schema.Choice(
         title=_('Keyword entity type'), source=EntityTypeSource(), required=False
     )
+
+
+class ISEO(IReadSEO, IWriteSEO):
+    pass

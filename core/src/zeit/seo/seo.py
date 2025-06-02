@@ -1,5 +1,6 @@
 import grokcore.component as grok
 
+from zeit.cms.content.interfaces import WRITEABLE_LIVE
 from zeit.retresco.interfaces import ISkipEnrich
 import zeit.cms.content.dav
 import zeit.cms.interfaces
@@ -45,6 +46,13 @@ class SEO(zeit.cms.content.dav.DAVPropertiesAdapter):
         zeit.seo.interfaces.ISEO['keyword_entity_type'],
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
         'seo-keyword-entity-type',
+    )
+
+    crawler_enabled = zeit.cms.content.dav.DAVProperty(
+        zeit.seo.interfaces.ISEO['keyword_entity_type'],
+        'http://namespaces.zeit.de/CMS/seo',
+        'crawler_enabled',
+        writeable=WRITEABLE_LIVE,
     )
 
     def __init__(self, context):

@@ -10,8 +10,8 @@ import zeit.seo.interfaces
 
 
 class SEOBaseForm:
-    form_fields = zope.formlib.form.FormFields(
-        zeit.seo.interfaces.ISEO
+    form_fields = zope.formlib.form.FormFields(zeit.seo.interfaces.ISEO).omit(
+        'crawler_enabled'
     ) + zope.formlib.form.FormFields(zeit.cms.content.interfaces.ICommonMetadata).select(
         'keywords', 'ressort', 'sub_ressort', 'serie'
     )
@@ -58,6 +58,10 @@ class RenderEnableCrawlerAction(zeit.cms.browser.form.RenderLightboxAction):
 class SEODisplay(SEOBaseForm, zeit.cms.browser.form.DisplayForm):
     title = _('View SEO data')
 
+    form_fields = SEOBaseForm.form_fields + zope.formlib.form.FormFields(
+        zeit.seo.interfaces.ISEO
+    ).select('crawler_enabled')
+
     extra_actions = zope.formlib.form.Actions()
     extra_actions.append(EnableCrawlerAction())
 
@@ -79,7 +83,7 @@ def display_view_name(context):
 
 
 class OnlySEOBaseForm:
-    form_fields = zope.formlib.form.FormFields(zeit.seo.interfaces.ISEO)
+    form_fields = zope.formlib.form.FormFields(zeit.seo.interfaces.ISEO).omit('crawler_enabled')
 
     field_groups = (gocept.form.grouped.RemainingFields(_('SEO data'), 'column-left wide-widgets'),)
 

@@ -4,6 +4,7 @@ from zeit.cms.interfaces import ICMSContent
 from zeit.cms.testcontenttype.interfaces import IExampleContentType
 from zeit.cms.workflow.interfaces import IPublishInfo
 from zeit.content.link.interfaces import ILink
+from zeit.seo.interfaces import ISEO
 import zeit.seo.testing
 
 
@@ -29,3 +30,4 @@ class EnableCrawler(zeit.seo.testing.SeleniumTestCase):
         article = ICMSContent('http://xml.zeit.de/testcontent-gxe')
         self.assertTrue(IExampleContentType.providedBy(article))
         self.assertTrue(IPublishInfo(article).published)
+        self.assertTrue(ISEO(article).crawler_enabled)
