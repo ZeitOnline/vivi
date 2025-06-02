@@ -124,15 +124,15 @@ class RecipeListTest(
 
 class RecipeMetadataTest(zeit.content.modules.testing.FunctionalTestCase):
     def test_complexity_source_should_find_id(self):
-        complexity_source = zeit.content.modules.interfaces.RecipeComplexitySource()
-        assert 'complexity-easy' in complexity_source.factory
-        assert 'einfach' not in complexity_source.factory
-        assert 'complexity-easy' == complexity_source.factory.get_id_by_title('einfach')
-        assert complexity_source.factory.get_id_by_title('complexity-easy') is None
+        complexity_source = zeit.content.modules.interfaces.RecipeComplexitySource().factory
+        assert 'complexity-easy' in complexity_source
+        assert 'einfach' not in complexity_source
+        assert 'complexity-easy' == complexity_source.get_id_by_title('einfach')
+        assert complexity_source.get_id_by_title('complexity-easy') is None
 
     def test_time_source_should_find_id(self):
-        time_source = zeit.content.modules.interfaces.RecipeTimeSource()
-        assert 'time-60min' in time_source.factory
-        assert '30-60 Minuten' not in time_source.factory
-        assert 'time-60min' == time_source.factory.get_id_by_title('30-60 Minuten')
-        assert time_source.factory.get_id_by_title('time-60min') is None
+        time_source = zeit.content.modules.interfaces.RecipeTimeSource().factory
+        assert 'time-60min' in time_source
+        assert '30-60 Minuten' not in time_source
+        assert 'time-60min' == time_source.get_id_by_title('30-60 Minuten')
+        assert time_source.get_id_by_title('time-60min') is None

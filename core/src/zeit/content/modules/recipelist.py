@@ -80,11 +80,12 @@ class RecipeList(zeit.edit.block.Element):
     def complexity(self):
         if self._complexity is None:
             return self._complexity
-        complexity_source = zeit.content.modules.interfaces.RecipeComplexitySource()
-        if self._complexity in complexity_source.factory:
-            return self._complexity
-        elif complexity_source.factory.getTitle(None, self._complexity):
-            if id := complexity_source.factory.get_id_by_title(self._complexity):
+        complexity_source = zeit.content.modules.interfaces.RecipeComplexitySource().factory
+        # automatically convert old title values into ids
+        if self._complexity not in complexity_source and complexity_source.getTitle(
+            None, self._complexity
+        ):
+            if id := complexity_source.get_id_by_title(self._complexity):
                 self._complexity = id
         return self._complexity
 
@@ -96,11 +97,10 @@ class RecipeList(zeit.edit.block.Element):
     def time(self):
         if self._time is None:
             return self._time
-        time_source = zeit.content.modules.interfaces.RecipeTimeSource()
-        if self._time in time_source.factory:
-            return self._time
-        elif time_source.factory.getTitle(None, self._time):
-            if id := time_source.factory.get_id_by_title(self._time):
+        time_source = zeit.content.modules.interfaces.RecipeTimeSource().factory
+        # automatically convert old title values into ids
+        if self._time not in time_source and time_source.getTitle(None, self._time):
+            if id := time_source.get_id_by_title(self._time):
                 self._time = id
         return self._time
 
