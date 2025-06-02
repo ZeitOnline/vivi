@@ -546,8 +546,8 @@ class WochenmarktArticles(zeit.content.article.testing.FunctionalTestCase):
                 'complexity-easy',
                 'complexity-hard',
                 'pastagerichte',
-                'time-30',
-                'time-long',
+                'time-30min',
+                'time-90min',
                 'wurstiges',
             ],
             sorted(categories),
@@ -614,23 +614,8 @@ class WochenmarktArticles(zeit.content.article.testing.FunctionalTestCase):
             pass
         article = self.repository['article']
         recipelists = list(article.body.filter_values(zeit.content.modules.interfaces.IRecipeList))
-        self.assertEqual('ambitioniert', recipelists[0].complexity)
-        self.assertEqual('über 60 Minuten', recipelists[0].time)
-        self.assertEqual(article.body.xml.xpath('.//recipelist/complexity')[0].text, 'ambitioniert')
-        self.assertEqual(article.body.xml.xpath('.//recipelist/time')[0].text, 'über 60 Minuten')
-        self.assertEqual(article.body.xml.xpath('.//recipelist/complexity')[1].text, 'einfach')
-        self.assertEqual(article.body.xml.xpath('.//recipelist/time')[1].text, 'unter 30 Minuten')
-
-        FEATURE_TOGGLES.set('wcm_889_store_special_category_ids')
-        with checked_out(article):
-            pass
-        article = self.repository['article']
-        recipelists = list(article.body.filter_values(zeit.content.modules.interfaces.IRecipeList))
-        # this only calls the property getter, but no value was changed,
-        # therefore it only "looks" right
         self.assertEqual('complexity-hard', recipelists[0].complexity)
         self.assertEqual('time-90min', recipelists[0].time)
-
         self.assertEqual(
             article.body.xml.xpath('.//recipelist/complexity')[0].text, 'complexity-hard'
         )

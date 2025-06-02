@@ -189,33 +189,31 @@ class RecipeMetadataSource(zeit.cms.content.sources.XMLSource):
     attribute = NotImplemented
     title_xpath = NotImplemented
 
-    def findId(self, id):
+    def __contains__(self, id):
         if self.attribute is NotImplemented:
             return None
+        return self.get_title_by_id(id) is not None
+
+    def get_title_by_id(self, id):
+        item_title = None
         tree = self._get_tree()
         for node in tree.xpath(self.title_xpath):
-            if id == str(node.get(self.attribute)):
-                return str(node.get(self.attribute))
-        return None
+            if id == node.get(self.attribute):
+                item_title = node
+                break
+        return item_title
 
-    def findIdsbyTitle(self, title):
-        result = []
+    def get_id_by_title(self, title):
+        item_id = None
         tree = self._get_tree()
         for node in tree.xpath(self.title_xpath):
             if node == title:
-                result.append(str(node.get(self.attribute)))
-        if not result:
-            return None
-        return result
+                item_id = node.get(self.attribute)
+                break
+        return item_id
 
     def getValues(self, context):
         tree = self._get_tree()
-        if not zeit.cms.content.sources.FEATURE_TOGGLES.find('wcm_889_store_special_category_ids'):
-            return [
-                node.text
-                for node in tree.xpath(self.title_xpath)
-                if self.isAvailable(node, context)
-            ]
         return [
             str(node.get(self.attribute))
             for node in tree.xpath(self.title_xpath)

@@ -510,6 +510,18 @@ class Article(Converter):
         subheadings = [x.subheading for x in recipes if x.searchable_subheading]
         search_list += [f'{x}:subheading' for x in subheadings]
         search_list.append(f'{self.context.title}:title')
+        complexity_source = zeit.content.modules.interfaces.RecipeComplexitySource().factory
+        time_source = zeit.content.modules.interfaces.RecipeTimeSource().factory
+        complexities = set()
+        servings = set()
+        times = set()
+
+        for recipe in recipes:
+            if complexity := complexity_source.get_title_by_id(recipe.complexity):
+                complexities.add(complexity)
+            if time := time_source.get_title_by_id(recipe.time):
+                times.add(time)
+            servings.add(recipe.servings)
 
         return {
             'categories': [x.code for x in self.context.recipe_categories],
@@ -517,9 +529,9 @@ class Article(Converter):
             'ingredients': list(set([x.code for x in ingredients])),
             'titles': list(set(titles)),
             'subheadings': list(set(subheadings)),
-            'complexities': list(set([x.complexity for x in recipes])),
-            'servings': list(set([x.servings for x in recipes])),
-            'times': list(set([x.time for x in recipes])),
+            'complexities': list(complexities),
+            'servings': list(servings),
+            'times': list(times),
         }
 
 
