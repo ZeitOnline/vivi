@@ -1,4 +1,5 @@
 import gocept.form.grouped
+import grokcore.component as grok
 import zope.formlib.form
 
 from zeit.cms.i18n import MessageFactory as _
@@ -9,8 +10,8 @@ import zeit.seo.interfaces
 
 
 class SEOBaseForm:
-    form_fields = zope.formlib.form.FormFields(
-        zeit.seo.interfaces.ISEO
+    form_fields = zope.formlib.form.FormFields(zeit.seo.interfaces.ISEO).omit(
+        'crawler_enabled'
     ) + zope.formlib.form.FormFields(zeit.cms.content.interfaces.ICommonMetadata).select(
         'keywords', 'ressort', 'sub_ressort', 'serie'
     )
@@ -40,8 +41,33 @@ class SEOEdit(SEOBaseForm, zeit.cms.browser.form.EditForm):
         return super().handle_edit_action.success(data)
 
 
+class EnableCrawlerAction(zope.formlib.form.Action):
+    def __init__(self):
+        super().__init__(_('Enable Crawler'), name='enable-crawler', condition=self.has_permission)
+
+    @staticmethod
+    def has_permission(form, action):
+        return form.request.interaction.checkPermission('zeit.seo.EnableCrawler', form.context)
+
+
+class RenderEnableCrawlerAction(zeit.cms.browser.form.RenderLightboxAction):
+    grok.context(EnableCrawlerAction)
+    target = 'do-enable-crawler'
+
+
 class SEODisplay(SEOBaseForm, zeit.cms.browser.form.DisplayForm):
     title = _('View SEO data')
+
+    form_fields = SEOBaseForm.form_fields + zope.formlib.form.FormFields(
+        zeit.seo.interfaces.ISEO
+    ).select('crawler_enabled')
+
+    extra_actions = zope.formlib.form.Actions()
+    extra_actions.append(EnableCrawlerAction())
+
+    @property
+    def actions(self):
+        return list(super().actions) + list(self.extra_actions)
 
 
 @zope.component.adapter(zeit.cms.interfaces.ICMSContent)
@@ -57,7 +83,7 @@ def display_view_name(context):
 
 
 class OnlySEOBaseForm:
-    form_fields = zope.formlib.form.FormFields(zeit.seo.interfaces.ISEO)
+    form_fields = zope.formlib.form.FormFields(zeit.seo.interfaces.ISEO).omit('crawler_enabled')
 
     field_groups = (gocept.form.grouped.RemainingFields(_('SEO data'), 'column-left wide-widgets'),)
 

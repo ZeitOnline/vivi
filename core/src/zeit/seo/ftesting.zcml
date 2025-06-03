@@ -9,12 +9,20 @@
   <include package="zeit.seo.browser" />
 
   <grant
-    principal="zope.Authenticated"
+    principal="zope.seo"
     permission="zeit.seo.View"
     />
   <grant
-    principal="zope.Authenticated"
+    principal="zope.seo"
     permission="zeit.seo.Edit"
     />
+  <grant
+    principal="zope.seo"
+    permission="zeit.seo.EnableCrawler"
+    />
+
+  <!-- Needed to test the "enable crawler" UI functionality -->
+  <includeOverrides package="zeit.workflow" file="ftesting.zcml" />
+  <include package="zeit.content.link" file="ctesting.zcml" />
 
 </configure>

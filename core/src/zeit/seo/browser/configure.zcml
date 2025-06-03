@@ -1,8 +1,10 @@
 <configure
   xmlns="http://namespaces.zope.org/zope"
   xmlns:browser="http://namespaces.zope.org/browser"
-  xmlns:zeit="http://namespaces.zeit.de/CMS/zcml"
+  xmlns:grok="http://namespaces.zope.org/grok"
   i18n_domain="zeit.cms">
+
+  <grok:grok package="." />
 
   <browser:page
     for="zeit.cms.content.interfaces.ICommonMetadata"
@@ -59,6 +61,31 @@
     class=".form.OnlySEOEdit"
     permission="zeit.seo.Edit"
     menu="zeit-context-views" title="Edit SEO"
+    />
+
+   <browser:page
+    for="zeit.cms.content.interfaces.ICommonMetadata"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="do-enable-crawler"
+    template="enable-crawler.pt"
+    class=".crawler.Lightbox"
+    permission="zeit.seo.EnableCrawler"
+    />
+
+   <browser:page
+    for="zeit.cms.content.interfaces.ICommonMetadata"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="enable-crawler"
+    class=".crawler.EnableCrawler"
+    permission="zeit.seo.EnableCrawler"
+    />
+
+   <browser:page
+    for="zeit.cms.content.interfaces.ICommonMetadata"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="create-redirect"
+    class=".crawler.CreateRedirect"
+    permission="zeit.seo.EnableCrawler"
     />
 
 </configure>

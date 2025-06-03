@@ -140,6 +140,10 @@
     />
   <grant
     role="zeit.Producer"
+    permission="zeit.seo.EnableCrawler"
+    />
+  <grant
+    role="zeit.Producer"
     permission="zeit.ManageLocks"
     />
   <grant
@@ -266,6 +270,10 @@
   <grant
     role="zeit.SEO"
     permission="zeit.seo.Edit"
+    />
+  <grant
+    role="zeit.SEO"
+    permission="zeit.seo.EnableCrawler"
     />
   <grant
     role="zeit.SEO"

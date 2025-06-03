@@ -87,3 +87,12 @@ def store_rename_info(context, event):
         return
     old_id = os.path.join(event.oldParent.uniqueId, event.oldName)
     zeit.cms.repository.interfaces.IRenameInfo(context).previous_uniqueIds += (old_id,)
+
+
+def previous_uniqueid(content):
+    for id in reversed(zeit.cms.repository.interfaces.IRenameInfo(content).previous_uniqueIds):
+        # XXX IAutomaticallyRenameable doesn't really define this; see
+        # z.c.article.browser.form.AddAndCheckout
+        if not id.endswith('.tmp'):
+            return id
+    return None

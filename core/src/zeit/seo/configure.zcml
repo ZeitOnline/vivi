@@ -11,6 +11,10 @@
     id="zeit.seo.Edit"
     title="Edit SEO data"
     />
+  <permission
+    id="zeit.seo.EnableCrawler"
+    title="Enable AI Crawler"
+    />
 
   <adapter factory=".seo.SEO" />
   <class class=".seo.SEO">
@@ -20,7 +24,11 @@
       />
     <require
       permission="zeit.EditContent"
-      set_schema=".interfaces.ISEO"
+      set_schema=".interfaces.IReadSEO"
+      />
+    <require
+      permission="zeit.seo.EnableCrawler"
+      set_schema=".interfaces.IWriteSEO"
       />
   </class>
 </configure>
