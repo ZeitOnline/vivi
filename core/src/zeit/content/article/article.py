@@ -601,9 +601,7 @@ def update_recipes_of_article(context, event):
     titles = [context.title]
     ingredients = set()
 
-    categories = {
-        category for category in context.recipe_categories if category.flag != 'no-search'
-    }
+    categories = list(context.recipe_categories)
     categories_source = zeit.wochenmarkt.sources.recipeCategoriesSource
     for recipe in recipes:
         titles.append(recipe.title)
@@ -612,13 +610,13 @@ def update_recipes_of_article(context, event):
         if recipe.complexity:
             complexity = categories_source.factory.search(recipe.complexity, flag=None)
             if complexity:
-                categories.add(complexity[0])
+                categories.append(complexity[0])
         if recipe.time:
             time = categories_source.factory.search(recipe.time, flag=None)
             if time:
-                categories.add(time[0])
+                categories.append(time[0])
     if category := _categorize_by_ingredients_diet(ingredients):
-        categories.add(category)
+        categories.append(category)
 
     context.recipe_titles = titles
     context.recipe_ingredients = ingredients
