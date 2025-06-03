@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.106.0 (2025-06-03)
+--------------------
+
+- WCM-874: Implement "enable crawler" button on SEO tab
+
+- WCM-888: commit transaction for vgwort report
+
+
 7.105.0 (2025-05-28)
 --------------------
 
