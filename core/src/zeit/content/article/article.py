@@ -598,7 +598,7 @@ def update_recipes_of_article(context, event):
     if context.genre not in zeit.wochenmarkt.sources.recipeCategoriesSource.factory.genres:
         return
     recipes = context.body.filter_values(zeit.content.modules.interfaces.IRecipeList)
-    titles = []
+    titles = [context.title]
     ingredients = set()
 
     categories = {

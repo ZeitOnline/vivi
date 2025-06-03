@@ -535,7 +535,10 @@ class WochenmarktArticles(zeit.content.article.testing.FunctionalTestCase):
         with checked_out(self.repository['article']):
             pass
         article = self.repository['article']
-        self.assertEqual(('Wurst-Hähnchen', 'Tomaten-Grieß'), article.recipe_titles)
+        self.assertEqual(
+            ('Vier Rezepte für eine Herdplatte', 'Wurst-Hähnchen', 'Tomaten-Grieß'),
+            article.recipe_titles,
+        )
         self.assertEqual(
             ('brathaehnchen', 'bratwurst', 'chicken-nuggets', 'gurke', 'tomate'),
             article.recipe_ingredients,
@@ -581,7 +584,10 @@ class WochenmarktArticles(zeit.content.article.testing.FunctionalTestCase):
         self.assertIn(
             self.categories_source.find(None, 'vegane-rezepte'), article.recipe_categories
         )
-        self.assertEqual(('Wurst-Hähnchen', 'Tomaten-Grieß'), article.recipe_titles)
+        self.assertEqual(
+            ('Vier Rezepte für eine Herdplatte', 'Wurst-Hähnchen', 'Tomaten-Grieß'),
+            article.recipe_titles,
+        )
         self.assertEqual(
             ('gurke', 'tomate'),
             article.recipe_ingredients,
@@ -603,7 +609,10 @@ class WochenmarktArticles(zeit.content.article.testing.FunctionalTestCase):
         self.assertIn(
             self.categories_source.find(None, 'vegetarische-rezepte'), article.recipe_categories
         )
-        self.assertEqual(('Wurst-Hähnchen', 'Tomaten-Grieß'), article.recipe_titles)
+        self.assertEqual(
+            ('Vier Rezepte für eine Herdplatte', 'Wurst-Hähnchen', 'Tomaten-Grieß'),
+            article.recipe_titles,
+        )
         self.assertEqual(
             ('ei', 'gurke', 'tomate'),
             article.recipe_ingredients,
