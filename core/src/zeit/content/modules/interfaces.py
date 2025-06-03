@@ -184,10 +184,6 @@ class RecipeMetadataSource(zeit.cms.content.sources.SearchableXMLSource):
     config_url = 'recipe-metadata-source'
     default_filename = 'recipe-metadata.xml'
 
-    def getNodes(self):
-        tree = self._get_tree()
-        return tree.xpath(self.xpath)
-
 
 class RecipeUnitsSource(RecipeMetadataSource):
     def __init__(self):
