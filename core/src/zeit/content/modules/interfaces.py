@@ -13,6 +13,8 @@ import zeit.content.image.interfaces
 import zeit.content.text.interfaces
 import zeit.edit.interfaces
 import zeit.tickaroo.interfaces
+import zeit.wochenmarkt.interfaces
+import zeit.wochenmarkt.sources
 
 
 class IRawText(zeit.edit.interfaces.IBlock):
