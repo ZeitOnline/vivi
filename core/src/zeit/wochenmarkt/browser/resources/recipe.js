@@ -11,7 +11,7 @@ setup_units();
 
 function setup_units() {
     const source = zeit.cms.locked_xhr(
-        application_url + '/@@source?name=zeit.content.modules.interfaces.RecipeUnitsSource');
+        application_url + '/@@source?name=zeit.content.modules.interfaces.RecipeUnitSource');
     source.addCallback(function(result) {
         units = JSON.parse(result.response);
         return result;
