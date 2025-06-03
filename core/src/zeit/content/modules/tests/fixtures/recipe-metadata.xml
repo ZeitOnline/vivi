@@ -1,14 +1,14 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <recipe-metadata>
   <complexities>
-    <complexity>einfach</complexity>
-    <complexity>etwas komplizierter</complexity>
-    <complexity>ambitioniert</complexity>
+    <complexity id="easy">einfach</complexity>
+    <complexity id="medium">etwas komplizierter</complexity>
+    <complexity id="hard">ambitioniert</complexity>
   </complexities>
   <times>
-    <time>unter 30 Minuten</time>
-    <time>30-60 Minuten</time>
-    <time>über 60 Minuten</time>
+    <time id="30min">unter 30 Minuten</time>
+    <time id="60min">30-60 Minuten</time>
+    <time id="90min">über 60 Minuten</time>
   </times>
   <units>
       <!--

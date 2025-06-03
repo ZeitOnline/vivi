@@ -186,23 +186,23 @@ class RecipeMetadataSource(zeit.cms.content.sources.XMLSource):
     config_url = 'recipe-metadata-source'
     default_filename = 'recipe-metadata.xml'
 
+    def by_title(self, title):  # BBB, remove after WCM-893 migrates content to store IDs
+        tree = self._get_tree()
+        for node in tree.xpath(self.xpath):
+            if self._get_title_for(node) == title:
+                return node.get(self.attribute)
+
 
 class RecipeTimeSource(RecipeMetadataSource):
     xpath = '//time'
     title_xpath = xpath
-
-    def getValues(self, context):
-        tree = self._get_tree()
-        return [node.text for node in tree.xpath(self.xpath) if self.isAvailable(node, context)]
+    attribute = 'id'
 
 
 class RecipeComplexitySource(RecipeMetadataSource):
     xpath = '//complexity'
     title_xpath = xpath
-
-    def getValues(self, context):
-        tree = self._get_tree()
-        return [node.text for node in tree.xpath(self.xpath) if self.isAvailable(node, context)]
+    attribute = 'id'
 
 
 class RecipeUnitSource(RecipeMetadataSource):

@@ -60,13 +60,37 @@ class RecipeList(zeit.edit.block.Element):
         zeit.content.modules.interfaces.IRecipeList['searchable_subheading'],
     )
 
-    complexity = zeit.cms.content.property.ObjectPathProperty(
+    _complexity = zeit.cms.content.property.ObjectPathProperty(
         '.complexity', zeit.content.modules.interfaces.IRecipeList['complexity']
     )
 
-    time = zeit.cms.content.property.ObjectPathProperty(
+    @property
+    def complexity(self):  # BBB, remove after WCM-893 migrates content to store IDs
+        value = self._complexity
+        source = zeit.content.modules.interfaces.IRecipeList['complexity'].source(None)
+        if value in source:
+            return value
+        return source.factory.by_title(value)
+
+    @complexity.setter
+    def complexity(self, value):
+        self._complexity = value
+
+    _time = zeit.cms.content.property.ObjectPathProperty(
         '.time', zeit.content.modules.interfaces.IRecipeList['time']
     )
+
+    @property
+    def time(self):  # BBB, remove after WCM-893 migrates content to store IDs
+        value = self._time
+        source = zeit.content.modules.interfaces.IRecipeList['time'].source(None)
+        if value in source:
+            return value
+        return source.factory.by_title(value)
+
+    @time.setter
+    def time(self, value):
+        self._time = value
 
     servings = zeit.cms.content.property.ObjectPathProperty(
         '.servings', zeit.content.modules.interfaces.IRecipeList['servings']
