@@ -20,7 +20,7 @@ class EnableCrawler(zeit.seo.testing.SeleniumTestCase):
         s = self.selenium
         self.open('/repository/testcontent', self.login_as)
         s.click('link=View SEO')
-        s.click('id=form.actions.enable-crawler')
+        s.click('id=form.enable_crawler')
 
         s.waitForElementPresent('css=ol#worklist')
         s.waitForElementPresent('css=li.busy[action=start_job]')

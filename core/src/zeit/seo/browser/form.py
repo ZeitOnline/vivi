@@ -1,5 +1,4 @@
 import gocept.form.grouped
-import grokcore.component as grok
 import zope.formlib.form
 
 from zeit.cms.i18n import MessageFactory as _
@@ -41,18 +40,31 @@ class SEOEdit(SEOBaseForm, zeit.cms.browser.form.EditForm):
         return super().handle_edit_action.success(data)
 
 
-class EnableCrawlerAction(zope.formlib.form.Action):
-    def __init__(self):
-        super().__init__(_('Enable Crawler'), name='enable-crawler', condition=self.has_permission)
-
-    @staticmethod
-    def has_permission(form, action):
-        return form.request.interaction.checkPermission('zeit.seo.EnableCrawler', form.context)
-
-
-class RenderEnableCrawlerAction(zeit.cms.browser.form.RenderLightboxAction):
-    grok.context(EnableCrawlerAction)
+class EnableCrawlerWidget(zope.formlib.widget.BrowserWidget):
+    name = 'form.enable_crawler'
+    button_label = _('Enable Crawler')
     target = 'do-enable-crawler'
+
+    field_css_class = 'field fieldname-enable_crawler'
+    reversed = True
+
+    label = None
+    hint = None
+    required = False
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    def __call__(self):
+        if not self.request.interaction.checkPermission('zeit.seo.EnableCrawler', self.context):
+            return ''
+        label = self._translate(self.button_label)
+        url = zope.traversing.browser.absoluteURL(self.context, self.request)
+        return f"""\
+            <button id="{self.name}" type="button" class="button"
+            onclick="zeit.cms.lightbox_form('{url}/@@{self.target}')"
+            >{label}</button>"""
 
 
 class SEODisplay(SEOBaseForm, zeit.cms.browser.form.DisplayForm):
@@ -62,12 +74,12 @@ class SEODisplay(SEOBaseForm, zeit.cms.browser.form.DisplayForm):
         zeit.seo.interfaces.ISEO
     ).select('crawler_enabled')
 
-    extra_actions = zope.formlib.form.Actions()
-    extra_actions.append(EnableCrawlerAction())
-
-    @property
-    def actions(self):
-        return list(super().actions) + list(self.extra_actions)
+    def setUpWidgets(self, *args, **kw):
+        super().setUpWidgets(*args, **kw)
+        items = list(self.widget_groups[0]['widgets'].__Widgets_widgets_items__)
+        button = EnableCrawlerWidget(self.context, self.request)
+        items.append((None, button))
+        self.widget_groups[0]['widgets'] = zope.formlib.form.Widgets(items, prefix=self.prefix)
 
 
 @zope.component.adapter(zeit.cms.interfaces.ICMSContent)
