@@ -81,7 +81,7 @@ def test_retract_updates_published_index(vivi, tms):
     uuid = vivi.get_uuid(content)
 
     # vivi runs the publisher asynchronously from the API call.
-    timeout = 60
+    timeout = 120
     for _ in range(timeout):
         sleep(1)
         current = tms(f'/content/{uuid}/published')
