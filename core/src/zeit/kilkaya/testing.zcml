@@ -1,0 +1,12 @@
+<configure
+   xmlns="http://namespaces.zope.org/zope"
+   package="zeit.kilkaya"
+   i18n_domain="zope">
+
+  <include package="zeit.cms" file="ftesting.zcml" />
+
+  <include package="zeit.kilkaya" />
+
+  <include package="zeit.content.text" />
+
+</configure>

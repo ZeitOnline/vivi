@@ -1,0 +1,5 @@
+<configure xmlns="http://namespaces.zope.org/zope">
+  <utility
+    name="teaser_splittests"
+    factory=".connection.teaser_splittests_from_product_config" />
+</configure>
