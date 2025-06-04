@@ -120,16 +120,9 @@ def add_token(context, event):
     tokens = zope.component.getUtility(zeit.vgwort.interfaces.ITokens)
     token.public_token, token.private_token = tokens.claim_immediately()
 
-    class Dummy:
-        tzinfo = 'none'
-
-        def isoformat(self):
-            return ''
-
-    never = Dummy()
     reginfo = zeit.vgwort.interfaces.IReportInfo(context)
-    reginfo.reported_on = never
-    reginfo.reported_error = ''
+    reginfo.reported_on = None
+    reginfo.reported_error = None
 
 
 @grok.subscribe(zeit.cms.interfaces.ICMSContent, zope.lifecycleevent.IObjectCopiedEvent)
