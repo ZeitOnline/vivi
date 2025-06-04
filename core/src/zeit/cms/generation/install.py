@@ -3,8 +3,6 @@ import zope.error.interfaces
 
 import zeit.authentication.azure
 import zeit.cms.browser.error
-import zeit.cms.content.interfaces
-import zeit.cms.content.template
 import zeit.cms.generation
 import zeit.cms.repository.interfaces
 import zeit.cms.repository.repository
@@ -42,12 +40,6 @@ def install(root):
         zeit.cms.workingcopy.workingcopy.WorkingcopyLocation,
         'workingcopy',
         zeit.cms.workingcopy.interfaces.IWorkingcopyLocation,
-    )
-    installLocalUtility(
-        root,
-        zeit.cms.content.template.TemplateManagerContainer,
-        'templates',
-        zeit.cms.content.interfaces.ITemplateManagerContainer,
     )
     root['retractlog'] = zeit.cms.retractlog.retractlog.RetractLog()
     installLocalUtility(
