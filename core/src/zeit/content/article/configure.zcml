@@ -100,16 +100,6 @@
 
   <subscriber handler=".recension.set_has_recension" />
 
-  <!-- generation -->
-
-  <utility
-    name="zeit.content.article"
-    provides="zope.generations.interfaces.ISchemaManager"
-    component=".generation.manager"
-    />
-
-
-
   <!-- traversing -->
 
   <adapter
