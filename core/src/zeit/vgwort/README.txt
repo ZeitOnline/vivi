@@ -104,8 +104,8 @@ non-existence of properties, we initialize them with empty values:
 >>> info = zeit.vgwort.interfaces.IReportInfo(content)
 >>> print(info.reported_on)
 None
->>> info.reported_error
-''
+>>> print(info.reported_error)
+None
 >>> info.reported_error = 'foo'
 
 
