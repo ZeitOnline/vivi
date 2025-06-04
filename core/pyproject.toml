@@ -159,7 +159,7 @@ test = [
     "opentelemetry-sdk",
     "packaging",
     "plone.testing[zca,zodb]",
-    "pytest",
+    "pytest < 8.4.0",
     "pytest-cov",
     "pytest-remove-stale-bytecode",
     "pytest-rerunfailures",
