@@ -2,4 +2,7 @@
   <utility
     name="addefend"
     factory=".connection.addefend_from_product_config" />
+  <utility
+    name="kilkaya-teaser-splittests"
+    factory=".connection.kilkaya_teaser_splittests_from_product_config" />
 </configure>

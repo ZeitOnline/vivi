@@ -17,6 +17,11 @@ def addefend_from_product_config():
     return zeit.sourcepoint.javascript.JavaScript.from_product_config('addefend')
 
 
+@grok.implementer(zeit.sourcepoint.interfaces.IJavaScript)
+def kilkaya_teaser_splittests_from_product_config():
+    return zeit.sourcepoint.javascript.JavaScript.from_product_config('kilkaya-teaser-splittests')
+
+
 @zeit.cms.cli.runner(principal=zeit.cms.cli.from_config('zeit.sourcepoint', 'update-principal'))
 def update():
     parser = argparse.ArgumentParser()
