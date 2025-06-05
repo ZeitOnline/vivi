@@ -59,12 +59,30 @@ def _collect_importers():
         metric.labels(environment(), name).set(connector.search_sql_count(query))
 
 
-def _collect_vgwort_report():
+def _collect_vgwort_report_success():
     metric = Gauge('vivi_recent_vgwort_reported_total')
     connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
     query = """type = 'article' AND published = true
     AND vgwort_reported_on > NOW() - INTERVAL '1 hour'"""
     query = select(Content).where(sql(query))
+    metric.labels(environment()).set(connector.search_sql_count(query))
+
+
+def _collect_vgwort_report_missing():
+    metric = Gauge('vivi_vgwort_unreported_total')
+    connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+    # Similar to the conditions used in zeit.vgwort.report to find reportable
+    # content, but with an earlier time window, i.e. this should never return
+    # anything because all that could match should already have been reported.
+    query = """type = 'article' AND published = true
+    AND vgwort_private_token IS NOT NULL
+    AND vgwort_reported_on IS NULL
+    AND vgwort_reported_error IS NULL
+    AND date_first_released <= CURRENT_DATE - INTERVAL ':cutoff days'
+    AND date_first_released >= CURRENT_DATE - INTERVAL ':age_limit days'
+    """
+    cutoff = int(zeit.cms.config.required('zeit.vgwort', 'days-age-limit-report'))
+    query = select(Content).where(sql(query).bindparams(cutoff=cutoff, age_limit=2 * cutoff))
     metric.labels(environment()).set(connector.search_sql_count(query))
 
 
