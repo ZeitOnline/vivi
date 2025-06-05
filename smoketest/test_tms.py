@@ -75,33 +75,34 @@ def test_publisher_updates_published_index(vivi, tms):
 
 
 def test_retract_updates_published_index(vivi, tms):
+    timeout = 60
+
     # contentobject created manually
     content = '/wirtschaft/2010-01/nightwatch-publish-tms'
-    vivi.publish(content)
+
+    job = vivi.publish(content)
+    for _ in range(timeout):
+        sleep(1)
+        if vivi.job_status(job) == 'SUCCESS':
+            break
+    else:
+        pytest.fail('Expected article %s to be published after %s seconds' % (content, timeout))
+
+    job = vivi.retract(content)
+    for _ in range(timeout):
+        sleep(1)
+        if vivi.job_status(job) == 'SUCCESS':
+            break
+    else:
+        pytest.fail('Expected article %s to be retracted after %s seconds' % (content, timeout))
+
     uuid = vivi.get_uuid(content)
-
-    # vivi runs the publisher asynchronously from the API call.
-    timeout = 120
-    for _ in range(timeout):
-        sleep(1)
-        current = tms(f'/content/{uuid}/published')
-        if current.status_code == 200:
-            break
-    else:
-        pytest.fail('Expected article %s to be published after %s seconds' % (content, timeout))
-
-    for _ in range(timeout):
-        sleep(1)
-        if vivi.get_property(content, 'workflow', 'published') == 'yes':
-            break
-    else:
-        pytest.fail('Expected article %s to be published after %s seconds' % (content, timeout))
-
-    vivi.retract(content)
     for _ in range(timeout):
         sleep(1)
         current = tms(f'/content/{uuid}/published')
         if current.status_code == 404:
             break
     else:
-        pytest.fail('Expected article %s to be retracted after %s seconds' % (content, timeout))
+        pytest.fail(
+            'Expected article %s to be removed from TMS after %s seconds' % (content, timeout)
+        )
