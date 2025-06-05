@@ -40,7 +40,7 @@ class ReportableContentSource(grok.GlobalUtility):
             AND date_first_released >= CURRENT_DATE - INTERVAL ':age_limit days'
             AND vgwort_private_token IS NOT NULL
             AND vgwort_reported_on IS NULL
-            AND vgwort_reported_error IS NULL
+            AND (vgwort_reported_error IS NULL or vgwort_reported_error = '')
         """
 
         query = select(ConnectorModel)
