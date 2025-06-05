@@ -3,6 +3,20 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.107.0 (2025-06-05)
+--------------------
+
+- WCM-874: Move button next to the checkbox
+
+- WCM-875: Add article title to recipe_titles for searching
+
+- WCM-907: Initialize vgwort status fields to None
+
+
+MAINT:
+- Remove long-obsolete content template functionality
+
+
 7.106.0 (2025-06-03)
 --------------------
 
