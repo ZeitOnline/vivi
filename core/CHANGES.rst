@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.109.0 (2025-06-06)
+--------------------
+
+- Download kilkaya teaser splittests config
+
+
 7.108.0 (2025-06-06)
 --------------------
 
