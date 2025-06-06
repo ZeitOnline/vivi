@@ -10,6 +10,9 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
         'addefend-url': 'http://example.com',
         'addefend-javascript-folder': 'http://xml.zeit.de/addefend/',
         'addefend-filename': 'adf',
+        'kilkaya-teaser-splittests-url': 'http://example.com',
+        'kilkaya-teaser-splittests-javascript-folder': 'http://xml.zeit.de/kilkaya/',
+        'kilkaya-teaser-splittests-filename': 'kil',
     },
     bases=(zeit.cms.testing.CONFIG_LAYER,),
 )
