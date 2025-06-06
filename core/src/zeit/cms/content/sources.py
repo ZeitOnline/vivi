@@ -512,7 +512,6 @@ class Serie(AllowedBase):
         url=None,
         column=False,
         kind=None,
-        video=False,
         fallback_image=False,
         zonaudioapp_id=None,
         color=None,
@@ -525,7 +524,6 @@ class Serie(AllowedBase):
         self.url = url
         self.column = column
         self.kind = kind
-        self.video = video
         self.fallback_image = fallback_image
         self.zonaudioapp_id = zonaudioapp_id
         self.color = color
@@ -555,7 +553,6 @@ class SerieSource(ObjectSource, SimpleContextualXMLSource):
                 unicode_or_none(node.get('url')),
                 node.get('format-label') == 'Kolumne',
                 unicode_or_none(node.get('kind')),
-                node.get('video') == 'yes',
                 node.get('fallback_image') == 'yes',
                 unicode_or_none(node.get('zonaudioapp-id')),
                 unicode_or_none(node.get('color')),
