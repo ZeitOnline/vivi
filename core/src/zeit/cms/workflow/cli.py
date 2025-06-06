@@ -183,7 +183,7 @@ def publish():
             zeit.cms.workflow.interfaces.IPublish(content).publish(background=False)
             transaction.commit()
         except Exception:
-            log.warning('Skipping %s, an error occurred', exc_info=True)
+            log.warning('Skipping %s, an error occurred', id, exc_info=True)
             transaction.abort()
 
 
