@@ -90,13 +90,14 @@ class XMLSource(SimpleXMLSourceBase, zc.sourcefactory.contextual.BasicContextual
     # using the source even while there is no product config.
 
     attribute = NotImplemented
+    xpath = './*'
     title_xpath = '//*'
 
     def getValues(self, context):
         tree = self._get_tree()
         return [
             str(node.get(self.attribute))
-            for node in tree.iterchildren('*')
+            for node in tree.xpath(self.xpath)
             if self.isAvailable(node, context)
         ]
 
@@ -122,24 +123,6 @@ class XMLSource(SimpleXMLSourceBase, zc.sourcefactory.contextual.BasicContextual
 
     def _get_title_for(self, node):
         return str(node.text).strip()
-
-
-class SearchableXMLSource(XMLSource):
-    def __init__(self, xpath):
-        super().__init__()
-        self.xpath = xpath
-
-    def getValues(self, context):
-        tree = self._get_tree()
-        if self.attribute is NotImplemented:
-            # Return text value of nodes
-            return [node.text for node in tree.xpath(self.xpath) if self.isAvailable(node, context)]
-        # Return value of provided attribute for nodes
-        return [
-            str(node.get(self.attribute))
-            for node in tree.xpath(self.xpath)
-            if self.isAvailable(node, context)
-        ]
 
 
 def parse_available_interface_list(text):

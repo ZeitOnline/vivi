@@ -13,6 +13,8 @@ import zeit.content.image.interfaces
 import zeit.content.text.interfaces
 import zeit.edit.interfaces
 import zeit.tickaroo.interfaces
+import zeit.wochenmarkt.interfaces
+import zeit.wochenmarkt.sources
 
 
 class IRawText(zeit.edit.interfaces.IBlock):
@@ -179,19 +181,37 @@ class IMail(zeit.edit.interfaces.IBlock):
     body = zope.interface.Attribute('Email body')
 
 
-class RecipeMetadataSource(zeit.cms.content.sources.SearchableXMLSource):
+class RecipeMetadataSource(zeit.cms.content.sources.XMLSource):
     product_configuration = 'zeit.content.modules'
     config_url = 'recipe-metadata-source'
     default_filename = 'recipe-metadata.xml'
 
-    def getNodes(self):
+    def by_title(self, title):  # BBB, remove after WCM-893 migrates content to store IDs
         tree = self._get_tree()
-        return tree.xpath(self.xpath)
+        for node in tree.xpath(self.xpath):
+            if self._get_title_for(node) == title:
+                return node.get(self.attribute)
 
 
-class RecipeUnitsSource(RecipeMetadataSource):
-    def __init__(self):
-        super().__init__('//unit')
+class RecipeTimeSource(RecipeMetadataSource):
+    xpath = '//time'
+    title_xpath = xpath
+    attribute = 'id'
+
+
+class RecipeComplexitySource(RecipeMetadataSource):
+    xpath = '//complexity'
+    title_xpath = xpath
+    attribute = 'id'
+
+
+class RecipeUnitSource(RecipeMetadataSource):
+    xpath = '//unit'
+    title_xpath = xpath
+    attribute = 'code'
+
+    def _get_title_for(self, node):
+        return node.get('singular')
 
 
 # Servings are valid if all of these are satisfied:
@@ -214,7 +234,7 @@ def validate_servings(value):
 
 class IIngredient(zeit.wochenmarkt.interfaces.IIngredient):
     amount = zope.schema.Int(required=False)
-    unit = zope.schema.Choice(source=RecipeUnitsSource(), required=False)
+    unit = zope.schema.Choice(source=RecipeUnitSource(), required=False)
     details = zope.schema.TextLine(required=False)
     # XXX Figure out which of these APIs we actually want.
     label = zeit.wochenmarkt.interfaces.IIngredient['title']
@@ -232,12 +252,10 @@ class IRecipeList(zeit.edit.interfaces.IBlock):
     searchable_subheading = zope.schema.Bool(title=_('Appears in recipe search?'), default=False)
 
     complexity = zope.schema.Choice(
-        title=_('Complexity'), source=RecipeMetadataSource('*//complexity'), required=False
+        title=_('Complexity'), source=RecipeComplexitySource(), required=False
     )
 
-    time = zope.schema.Choice(
-        title=_('Time'), source=RecipeMetadataSource('*//time'), required=False
-    )
+    time = zope.schema.Choice(title=_('Time'), source=RecipeTimeSource(), required=False)
 
     servings = zope.schema.TextLine(
         title=_('Servings'), required=False, constraint=validate_servings
@@ -259,13 +277,13 @@ class IRecipeList(zeit.edit.interfaces.IBlock):
     )
 
 
-class LiveblogSource(zeit.cms.content.sources.SearchableXMLSource):
-    """A source for all liveblog config."""
-
+class LiveblogSource(zeit.cms.content.sources.XMLSource):
     attribute = 'id'
-    default_filename = 'liveblog.xml'
-    config_url = 'liveblog-source'
     product_configuration = 'zeit.content.modules'
+    config_url = 'liveblog-source'
+    default_filename = 'liveblog.xml'
+    xpath = '//status'
+    title_xpath = xpath
 
 
 class TimelineTemplateSource(zeit.cms.content.sources.SimpleDictSource):
@@ -325,9 +343,7 @@ class ITickarooLiveblog(zeit.edit.interfaces.IBlock):
         ),
     )
 
-    status = zope.schema.Choice(
-        title=_('Liveblog status'), source=LiveblogSource('*//status'), required=True
-    )
+    status = zope.schema.Choice(title=_('Liveblog status'), source=LiveblogSource(), required=True)
 
     theme = zope.schema.Choice(
         title=_('Liveblog theme'),

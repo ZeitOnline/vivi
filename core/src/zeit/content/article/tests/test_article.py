@@ -549,8 +549,8 @@ class WochenmarktArticles(zeit.content.article.testing.FunctionalTestCase):
                 'complexity-easy',
                 'complexity-hard',
                 'pastagerichte',
-                'time-30',
-                'time-long',
+                'time-30min',
+                'time-90min',
                 'wurstiges',
             ],
             sorted(categories),
@@ -561,7 +561,7 @@ class WochenmarktArticles(zeit.content.article.testing.FunctionalTestCase):
         with checked_out(self.repository['article']) as co:
             recipelist = co.body.filter_values(zeit.content.modules.interfaces.IRecipeList)
             for recipe in recipelist:
-                recipe.complexity = 'ambitioniert'
+                recipe.complexity = 'hard'
 
         article = self.repository['article']
         categories = [category.id for category in article.recipe_categories]

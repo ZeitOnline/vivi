@@ -69,15 +69,13 @@ class RecipeCategoriesSource(
     def genres(self):
         return zeit.cms.config.get('zeit.wochenmarkt', 'recipe-genres', '').split(',')
 
-    def search(self, term, flag='no-search'):
+    def search(self, term):
         term = term.lower()
-        categories = []
-        for category in self._values().values():
-            if flag is not None and category.flag == flag:
-                continue
-            if term in category.name.lower():
-                categories.append(category)
-        return categories
+        result = []
+        for value in self._values().values():
+            if value.flag != 'no-search' and term in value.name.lower():
+                result.append(value)
+        return result
 
     def prefix_match(self, term, count=None):
         term = term.lower()
