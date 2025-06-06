@@ -271,7 +271,7 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         assert payload is not None
         assert len(payload['text']) > 1
 
-        zeit.cms.config.set('zeit.workflow', 'summy-ignore-products', 'dpaSN')
+        zeit.cms.config.set('zeit.workflow', 'summy-ignore-products', 'dpaBY')
         payload = zeit.workflow.testing.publish_json(article, 'summy')
         assert payload == {}
 
