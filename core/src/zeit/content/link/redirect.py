@@ -21,6 +21,7 @@ def create(content, uniqueId):
 
     with checked_out(link, temporary=False) as co:
         _copy_values(content, co)
+        co.ressort = 'Administratives'
         co.url = content.uniqueId.replace(
             zeit.cms.interfaces.ID_NAMESPACE,
             zeit.cms.config.required('zeit.cms', 'live-prefix'),
@@ -33,13 +34,18 @@ def _copy_values(source, target):
     for iface in [ICommonMetadata, IImages]:
         src = iface(source)
         tgt = iface(target)
-        for field in zope.schema.getFields(iface).values():
+        for name, field in zope.schema.getFields(iface).items():
             __traceback_info__ = (field,)
+            if name in SKIP_FIELDS:
+                continue
             if field.readonly:
                 continue
             value = field.get(src)
             if value != field.missing_value and value != field.default:
                 field.set(tgt, value)
+
+
+SKIP_FIELDS = {'channels', 'keywords', 'series', 'ressort', 'sub_ressort'}
 
 
 def _adjust_workflow(source, target):
