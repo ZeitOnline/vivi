@@ -3,6 +3,16 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.108.0 (2025-06-06)
+--------------------
+
+- WCM-874: Skip some fields when copying metadata to link object
+
+- WCM-888: Add metric to count unreported but reportable vgwort content
+
+- WCM-889: Store recipe metadata as IDs instead of titles
+
+
 7.107.0 (2025-06-05)
 --------------------
 
