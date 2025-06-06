@@ -18,10 +18,20 @@ The serie source returns the possible "serie" values:
 ...               key=lambda x: x[0]))
 [['-', '-', '-', False],
  ['Autotest', 'Autotest', 'zeitmagazin-autotest', False],
+ ['BR', 'BR', 'br', False],
  ['Bachelor Tagebuch', 'Bachelor Tagebuch', 'bachelor-tagebuch', False],
  ['Cat Jokes', 'Cat Jokes', 'cat-jokes-pawdcast', False],
  ['Chefsache', 'Chefsache', 'chefsache', True],
- ...]
+ ['City Guide', 'City Guide', 'city-guide', False],
+ ['Das Prinzip 50/50', 'Das Prinzip 50/50', 'das-prinzip-50-50', False],
+ ['E-Mail aus Davos', 'E-Mail aus Davos', 'email-aus-davos', False],
+ ['Faktomat', 'Faktomat', 'faktomat', False],
+ ['Filmtipp', 'Filmtipp', 'filmtipp', False],
+ ['Geschafft!', 'Geschafft!', 'geschafft', False],
+ ['Hör-Reise', 'Hör-Reise', 'hoer-reise', False],
+ ['Utopien', 'Utopien', 'utopien', False],
+ ['Zeitläufte', 'Zeitläufte', 'zeitlaeufte', False]]
+
 
 Ressort
 ++++++++++
