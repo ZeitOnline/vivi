@@ -17,9 +17,7 @@
   <series title="Notcast" serienname="Notcast" url="notcast"
           available="zeit.web.core.interfaces.IInternalUse" />
   <series title="Cat Jokes" serienname="Cat Jokes" url="cat-jokes-pawdcast" type="Podcast"/>
-  <videoseries>
-    <series title="BR" serienname="BR" url="br" video="yes"/>
-    <series title="Filmtipp" serienname="Filmtipp" url="filmtipp" video="yes"/>
-    <series title="Utopien" serienname="Utopien" url="utopien" video="yes"/>
-  </videoseries>
+  <series title="BR" serienname="BR" url="br"/>
+  <series title="Filmtipp" serienname="Filmtipp" url="filmtipp"/>
+  <series title="Utopien" serienname="Utopien" url="utopien"/>
 </allseries>
