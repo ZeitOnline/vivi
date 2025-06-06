@@ -262,13 +262,20 @@ class VideoComments(Comments):
 class IgnoreMixin:
     """Ignore publish/retract based on settings."""
 
-    #: map article attributes to settings
-    attr_setting_mapping = {
-        'genre': ('genres', zeit.content.article.interfaces.IArticleMetadata),
-        'template': ('templates', zeit.content.article.interfaces.IArticleMetadata),
-        'ressort': ('ressorts', zeit.cms.content.interfaces.ICommonMetadata),
-        'uniqueId': ('uniqueids', zeit.cms.interfaces.ICMSContent),
-    }
+    CHECKS = [
+        {'iface': zeit.content.article.interfaces.IArticle, 'field': 'genre'},
+        {
+            'iface': zeit.content.article.interfaces.IArticle,
+            'field': 'template',
+        },
+        {'iface': zeit.cms.content.interfaces.ICommonMetadata, 'field': 'ressort'},
+        {
+            'iface': zeit.cms.content.interfaces.ICommonMetadata,
+            'field': 'product',
+            'getter': lambda x: getattr(x.product, 'id', None),
+        },
+        {'iface': zeit.cms.interfaces.ICMSContent, 'field': 'uniqueId'},
+    ]
 
     @property
     def name(self):
@@ -276,20 +283,26 @@ class IgnoreMixin:
 
     def ignore(self, method):
         if method == 'publish':
-            for attribute, setting in self.attr_setting_mapping.items():
-                if self.is_on_ignorelist(attribute, *setting):
+            for check in self.CHECKS:
+                if self.is_on_ignorelist(**check):
                     return True
         return False
 
-    def is_on_ignorelist(self, attribute, setting, interface):
-        if not interface.providedBy(self.context):
+    def is_on_ignorelist(self, iface=None, field=None, getter=None):
+        if not iface.providedBy(self.context):
             return False
         ignore_list = (
-            zeit.cms.config.get('zeit.workflow', f'{self.name}-ignore-{setting}', '')
+            zeit.cms.config.get(
+                'zeit.workflow',
+                f'{self.name}-ignore-{field.lower()}s',
+                '',
+            )
             .lower()
             .split()
         )
-        value = getattr(self.context, attribute)
+        if getter is None:
+            getter = lambda x: getattr(x, field)
+        value = getter(self.context)
         return value and value.lower() in ignore_list
 
     def publish_json(self):

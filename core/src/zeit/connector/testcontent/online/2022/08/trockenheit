@@ -35,7 +35,7 @@
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="last_modified_by">zope.dpa</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="overscrolling">yes</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="prevent_ligatus_indexing">no</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="product-id">dpaSN</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="product-id">dpaBY</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/vgwort" name="public_token">65d4f9fedc7b49faacb9fe738f375a36</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="published">yes</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/dpa" name="pubstatus">usable</attribute>
