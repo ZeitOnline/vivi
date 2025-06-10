@@ -604,7 +604,8 @@ def update_recipes_of_article(context, event):
     categories = list(context.recipe_categories)
     source = zeit.wochenmarkt.sources.recipeCategoriesSource(context)
     for recipe in recipes:
-        titles.append(recipe.title)
+        if recipe.title:
+            titles.append(recipe.title)
         ingredients = ingredients | {x.id for x in recipe.ingredients}
 
         if complexity := source.find(f'complexity-{recipe.complexity}'):

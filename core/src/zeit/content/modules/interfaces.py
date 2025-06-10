@@ -245,7 +245,7 @@ class IRecipeList(zeit.edit.interfaces.IBlock):
         title=_('Merge with previous recipe list module'), default=False
     )
 
-    title = zope.schema.TextLine(title=_('Recipe name'), required=False)
+    title = zope.schema.TextLine(title=_('Recipe name'))
 
     subheading = zope.schema.TextLine(title=_('Subheading'), required=False)
 
