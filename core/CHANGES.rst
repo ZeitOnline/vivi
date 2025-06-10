@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.111.0 (2025-06-10)
+--------------------
+
+- WCM-875: Mark recipe module title as required
+
+
 7.110.0 (2025-06-10)
 --------------------
 
