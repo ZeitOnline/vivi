@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.110.0 (2025-06-10)
+--------------------
+
+- ES-145: Ignore product IDs during publish, based on setting
+
+
 7.109.0 (2025-06-06)
 --------------------
 
