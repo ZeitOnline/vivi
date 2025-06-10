@@ -113,6 +113,7 @@ class RecipeListHelper:
         self.add_article()
         self.create_block('recipelist')
         s.waitForElementPresent('//input[@name="add_ingredient"]')
+        s.type('css=form[action$="edit-recipelist"] .fieldname-title input', 'Mein Rezept')
 
         # Add ingredient
         s.type('//input[@name="add_ingredient"]', 'Brath')

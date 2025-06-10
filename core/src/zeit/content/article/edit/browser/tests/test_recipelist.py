@@ -9,6 +9,7 @@ class RecipeListTest(zeit.content.article.edit.browser.testing.BrowserTestCase):
         self.get_article(with_block='recipelist')
         b = self.browser
         b.open('editable-body/blockname/@@edit-recipelist?show_form=1')
+        b.getControl('Recipe name').value = 'Mein Rezept'
 
         # Should accept a number
         b.getControl('Servings').value = 4
