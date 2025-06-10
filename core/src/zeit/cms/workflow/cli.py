@@ -183,6 +183,8 @@ def publish():
             zeit.cms.workflow.interfaces.IPublish(content).publish(background=False)
             transaction.commit()
         except Exception:
+            # sed -ne '/HandleAfterAbort/s+^.*Error during publish/retract: :
+            # ..<zeit.content.article.article.Article \([^>]*\)>.*$+\1+p' publish.log
             log.warning('Skipping %s, an error occurred', id, exc_info=True)
             transaction.abort()
 
