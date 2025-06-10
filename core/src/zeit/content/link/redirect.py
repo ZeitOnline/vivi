@@ -45,7 +45,7 @@ def _copy_values(source, target):
                 field.set(tgt, value)
 
 
-SKIP_FIELDS = {'channels', 'keywords', 'series', 'ressort', 'sub_ressort'}
+SKIP_FIELDS = {'channels', 'keywords', 'serie', 'ressort', 'sub_ressort'}
 
 
 def _adjust_workflow(source, target):
