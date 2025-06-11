@@ -639,11 +639,11 @@ class Connector:
             query = query.options(joinedload(Content.lock))
 
         result = []
-        rows = self._execute_suppress_errors(query, timeout)
+        rows = self.execute_sql(query, timeout)
         if rows is None:
             return result
 
-        for content in rows:
+        for content in rows.scalars():
             uniqueid = content.uniqueid
             properties = self.property_cache.get(uniqueid)
             if properties is None:
@@ -656,7 +656,7 @@ class Connector:
         return result
 
     def search_sql_count(self, query):
-        rows = self._execute_suppress_errors(
+        rows = self.execute_sql(
             query.with_only_columns(
                 sqlalchemy.func.count(),
                 maintain_column_froms=True,
@@ -664,13 +664,11 @@ class Connector:
         )
         if rows is None:
             return 0
-        return rows.one()
+        return rows.scalar_one()
 
-    def _execute_suppress_errors(self, query, timeout=None):
+    def execute_sql(self, query, timeout=None):
         try:
-            return self.session.execute(
-                query, execution_options={'statement_timeout': timeout}
-            ).scalars()
+            return self.session.execute(query, execution_options={'statement_timeout': timeout})
         except Exception as e:
             log.warning('Error during search_sql, suppressed', exc_info=True)
             span = opentelemetry.trace.get_current_span()

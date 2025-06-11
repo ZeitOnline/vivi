@@ -321,6 +321,10 @@ class Connector(zeit.connector.filesystem.Connector):
     def search_sql_count(self, query):
         return len(self.search_sql(query))
 
+    def execute_sql(self, query, timeout=None):
+        self.search_args.append(self._compile_sql(query))
+        return self.search_result
+
     # internal helpers
 
     def _get_cannonical_id(self, id):
