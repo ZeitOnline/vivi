@@ -97,9 +97,3 @@ class ImageReference(zeit.cms.content.reference.Reference):
             self.xml.set('base-id', self.target.uniqueId)
         elif self.xml.get('src'):
             self.xml.set('src', self.target.uniqueId)
-
-
-@zope.component.adapter(zeit.cms.content.interfaces.ITemplate)
-@zope.interface.implementer(zeit.content.image.interfaces.IImages)
-def images_from_template(context):
-    return ImagesAdapter(context)

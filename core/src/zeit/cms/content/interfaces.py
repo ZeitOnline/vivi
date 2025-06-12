@@ -427,20 +427,6 @@ class IXMLContent(zeit.cms.repository.interfaces.IDAVContent, IXMLRepresentation
     """Content with an XML representation."""
 
 
-class ITemplateManagerContainer(zope.container.interfaces.IReadContainer):
-    """Container which holds all template managers."""
-
-
-class ITemplateManager(zope.container.interfaces.IReadContainer):
-    """Manages templates for a content type."""
-
-
-class ITemplate(IXMLRepresentation):
-    """A template for xml content types."""
-
-    title = zope.schema.TextLine(title=_('Title'))
-
-
 class IContentSortKey(zope.interface.Interface):
     """Content objects can be adapted to this interface to get a sort key.
 

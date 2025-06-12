@@ -31,7 +31,6 @@
   <subscriber handler=".liveproperty.remove_live_properties" />
   <adapter factory=".liveproperty.live_to_cmscontent" />
 
-
   <adapter factory=".keyreference.CMSContentKeyReference" />
 
   <!-- uuid -->
@@ -39,56 +38,6 @@
   <adapter factory=".contentuuid.properties" />
   <adapter factory=".contentuuid.SimpleUUID" />
   <adapter factory=".contentuuid.uuid_to_content" />
-
-
-  <!-- Templates -->
-  <class class=".template.TemplateManagerContainer">
-    <require
-      interface=".interfaces.ITemplateManagerContainer"
-      permission="zope.View"
-      />
-    <require
-      interface="zope.container.interfaces.IWriteContainer"
-      permission="zeit.EditTemplates"
-      />
-  </class>
-
-  <class class=".template.TemplateManager">
-    <require
-      interface=".interfaces.ITemplateManager"
-      permission="zope.View"
-      />
-    <require
-      interface="zope.container.interfaces.IWriteContainer"
-      permission="zeit.EditTemplates"
-      />
-  </class>
-
-  <class class=".template.Template">
-    <implements
-      interface="zope.annotation.interfaces.IAttributeAnnotatable" />
-    <require
-      interface=".interfaces.ITemplate"
-      permission="zope.View"
-      />
-    <require
-      set_schema=".interfaces.ITemplate"
-      permission="zeit.EditTemplates"
-      />
-  </class>
-  <adapter factory=".template.webDAVPropertiesFactory"
-    for=".interfaces.ITemplate"
-    trusted="yes"
-    />
-  <class class=".template.TemplateWebDAVProperties">
-    <require
-      interface="zeit.connector.interfaces.IWebDAVReadProperties"
-      permission="zope.View" />
-    <require
-      interface="zeit.connector.interfaces.IWebDAVWriteProperties"
-      permission="zeit.EditTemplates" />
-  </class>
-
 
   <!-- content source -->
   <utility
