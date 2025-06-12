@@ -2,6 +2,7 @@ from pprint import pformat
 import importlib.resources
 import io
 
+import PIL.ExifTags
 import PIL.Image
 import PIL.ImageDraw
 
@@ -25,9 +26,13 @@ class CreateVariantImageTest(zeit.content.image.testing.FunctionalTestCase):
         )
 
     def create_image(self, pil_image):
+        exif = PIL.Image.Exif()
+        exif[PIL.ExifTags.Base.Make] = 'Make'
+        exif[PIL.ExifTags.Base.Model] = 'Model'
+
         image = zeit.content.image.image.LocalImage()
         with image.open('w') as f:
-            pil_image.save(f, 'PNG')
+            pil_image.save(f, 'PNG', exif=exif.tobytes())
         return image
 
     ascii_to_color = {
@@ -194,8 +199,6 @@ class CreateVariantImageTest(zeit.content.image.testing.FunctionalTestCase):
     def test_all_image_enhancements_are_applied_to_variant_image(self):
         from unittest.mock import patch
 
-        import PIL.Image
-
         variant = Variant(
             id='square',
             focus_x=0.5,
@@ -277,3 +280,13 @@ class CreateVariantImageTest(zeit.content.image.testing.FunctionalTestCase):
         configured = transform.thumbnail(200, 200)
 
         self.assertLess(len(configured.open().read()), len(highquality.read()))
+
+    def test_resize_keeps_exif_metadata(self):
+        resized_image = self.transform.resize(width=2, height=2)
+
+        with resized_image.open('r') as img:
+            resized_pil_image = PIL.Image.open(img)
+            resized_exif = resized_pil_image.getexif()
+
+        self.assertEqual(resized_exif[PIL.ExifTags.Base.Make], 'Make')
+        self.assertEqual(resized_exif[PIL.ExifTags.Base.Model], 'Model')
