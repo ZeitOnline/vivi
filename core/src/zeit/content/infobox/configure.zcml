@@ -21,10 +21,6 @@
     component=".interfaces.infoboxSource"
     name="zeit.content.infobox"
     />
-  <adapter
-    factory=".reference.InfoboxReference"
-    for="zeit.cms.content.interfaces.ITemplate"
-    />
   <class class=".reference.InfoboxReference">
     <require
       interface=".interfaces.IInfoboxReference"
