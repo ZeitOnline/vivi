@@ -10,6 +10,8 @@
   <include package=".edit" />
   <include package="zeit.contentquery" />
 
+  <adapter factory=".article.articleFromTemplate" />
+
   <class class=".article.Article">
     <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
     <require

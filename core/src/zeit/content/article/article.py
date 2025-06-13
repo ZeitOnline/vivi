@@ -1,3 +1,4 @@
+from io import StringIO
 import hashlib
 import json
 import re
@@ -252,6 +253,17 @@ class ArticleType(zeit.cms.type.XMLContentTypeDeclaration):
     interface = zeit.content.article.interfaces.IArticle
     type = 'article'
     title = _('Article')
+
+
+@zope.interface.implementer(zeit.content.article.interfaces.IArticle)
+@zope.component.adapter(zeit.cms.content.interfaces.ITemplate)
+def articleFromTemplate(context):
+    source = StringIO(zeit.cms.content.interfaces.IXMLSource(context))
+    article = Article(xml_source=source)
+    zeit.cms.interfaces.IWebDAVWriteProperties(article).update(
+        zeit.cms.interfaces.IWebDAVReadProperties(context)
+    )
+    return article
 
 
 @zope.component.adapter(

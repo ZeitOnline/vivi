@@ -4,6 +4,7 @@
     provides=".interfaces.IRelatedContent"
     trusted="yes" />
 
+  <adapter factory=".related.related_from_template" />
   <adapter factory=".related.BasicReference" name="related" />
   <adapter
     factory=".related.create_related_reference_suppress_errors"
