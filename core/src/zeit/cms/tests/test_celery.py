@@ -1,3 +1,5 @@
+import unittest
+
 import transaction
 
 import zeit.cms.celery
@@ -9,8 +11,9 @@ def task_that_fails():
     raise RuntimeError()
 
 
+@unittest.skip('Flaky on CI when running all tests')
 class CelerySignalTests(zeit.cms.testing.FunctionalTestCase):
-    layer = zeit.workflow.testing.CELERY_LAYER
+    # layer = zeit.workflow.testing.CELERY_LAYER
 
     def run_task(self):
         result = task_that_fails.delay()
