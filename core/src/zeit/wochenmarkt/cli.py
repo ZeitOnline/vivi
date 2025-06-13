@@ -29,18 +29,18 @@ def find_ingredients():
         )
         .distinct()
     )
-    return connector.execute_sql(query)
+    return connector.execute_sql(query).scalars()
 
 
 @zeit.cms.cli.runner(
     principal=zeit.cms.cli.from_config('zeit.wochenmarkt', 'used-ingredients-principal')
 )
 def collect_used():
-    result = find_ingredients()
-    if not result:
+    ingredients = find_ingredients()
+    used = set(ingredients)
+    if not used:
         return
 
-    used = set(result.scalars())
     xml = ingredientsSource(None).factory._get_tree()
     for item in xml.xpath('//ingredient'):
         if item.get('id') not in used:

@@ -640,8 +640,6 @@ class Connector:
 
         result = []
         rows = self.execute_sql(query, timeout)
-        if rows is None:
-            return result
 
         for content in rows.scalars():
             uniqueid = content.uniqueid
@@ -662,9 +660,7 @@ class Connector:
                 maintain_column_froms=True,
             )
         )
-        if rows is None:
-            return 0
-        return rows.scalar_one()
+        return rows.scalar_one_or_none() or 0
 
     def execute_sql(self, query, timeout=None):
         try:
@@ -674,7 +670,7 @@ class Connector:
             span = opentelemetry.trace.get_current_span()
             span.set_status(Status(StatusCode.ERROR, str(e)))
             self.session.rollback()
-            return None
+            return EmptyResult()
 
     def _build_filter(self, expr):
         op = expr.operator
@@ -805,3 +801,23 @@ def _unlock_overdue_locks():
 @zeit.cms.cli.runner()
 def unlock_overdue_locks():
     _unlock_overdue_locks()
+
+
+class EmptyResult(sqlalchemy.engine.result.Result):
+    def __init__(self):
+        super().__init__(sqlalchemy.engine.result.SimpleResultMetaData({0: None}))
+
+    def _fetchiter_impl(self, *args, **kw):
+        return iter(())
+
+    def _fetchone_impl(self, *args, **kw):
+        return None
+
+    def _fetchmany_impl(self, *args, **kw):
+        return []
+
+    def _fetchall_impl(self, *args, **kw):
+        return []
+
+    def _soft_close(self, *args, **kw):
+        pass
