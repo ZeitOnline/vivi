@@ -232,6 +232,19 @@ class IConnector(zope.interface.Interface):
         returns integer
         """
 
+    def execute_sql(query, timeout=None):
+        """
+        Execute `query` and suppress errors.
+
+        query:
+            `sqlalchemy.select(Content)` object
+
+        timeout:
+            optional statement timeout in ms
+
+        returns a sqlalchemy result object
+        """
+
 
 class ICachingConnector(IConnector):
     """A connector that caches."""
