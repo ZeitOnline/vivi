@@ -38,6 +38,8 @@ class ImageTransform:
             raise TypeError('Need at least one of width and height.')
 
         orig_width, orig_height = self.image.size
+        # keep image metadata
+        orig_exif = self.image.getexif()
 
         # width and height need to be int rather than float,
         # so we use // instead of / as division operator.
@@ -47,7 +49,7 @@ class ImageTransform:
             height = orig_height * width // orig_width
 
         image = self.image.resize((int(width), int(height)), filter)
-        return self._construct_image(image)
+        return self._construct_image(image, exif=orig_exif)
 
     def create_variant_image(self, variant, size=None, fill_color=None, format=None):
         """Create variant image from source image.
@@ -172,7 +174,7 @@ class ImageTransform:
             pil_image = pil_image.convert(self._color_mode)
         return pil_image
 
-    def _construct_image(self, pil_image, format=None):
+    def _construct_image(self, pil_image, format=None, **params):
         image = zeit.content.image.image.TemporaryImage()
         if not format:
             format = self.context.format
@@ -180,7 +182,7 @@ class ImageTransform:
         options = zeit.content.image.interfaces.ENCODER_PARAMETERS.find(format)
 
         with image.open('w') as f:
-            pil_image.save(f, format, **options)
+            pil_image.save(f, format, **options, **params)
         image.__parent__ = self.context
         image_times = zeit.cms.workflow.interfaces.IModified(self.context, None)
         if image_times and image_times.date_last_modified:
