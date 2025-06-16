@@ -639,11 +639,9 @@ class Connector:
             query = query.options(joinedload(Content.lock))
 
         result = []
-        rows = self._execute_suppress_errors(query, timeout)
-        if rows is None:
-            return result
+        rows = self.execute_sql(query, timeout)
 
-        for content in rows:
+        for content in rows.scalars():
             uniqueid = content.uniqueid
             properties = self.property_cache.get(uniqueid)
             if properties is None:
@@ -656,27 +654,23 @@ class Connector:
         return result
 
     def search_sql_count(self, query):
-        rows = self._execute_suppress_errors(
+        rows = self.execute_sql(
             query.with_only_columns(
                 sqlalchemy.func.count(),
                 maintain_column_froms=True,
             )
         )
-        if rows is None:
-            return 0
-        return rows.one()
+        return rows.scalar_one_or_none() or 0
 
-    def _execute_suppress_errors(self, query, timeout=None):
+    def execute_sql(self, query, timeout=None):
         try:
-            return self.session.execute(
-                query, execution_options={'statement_timeout': timeout}
-            ).scalars()
+            return self.session.execute(query, execution_options={'statement_timeout': timeout})
         except Exception as e:
             log.warning('Error during search_sql, suppressed', exc_info=True)
             span = opentelemetry.trace.get_current_span()
             span.set_status(Status(StatusCode.ERROR, str(e)))
             self.session.rollback()
-            return None
+            return EmptyResult()
 
     def _build_filter(self, expr):
         op = expr.operator
@@ -807,3 +801,23 @@ def _unlock_overdue_locks():
 @zeit.cms.cli.runner()
 def unlock_overdue_locks():
     _unlock_overdue_locks()
+
+
+class EmptyResult(sqlalchemy.engine.result.Result):
+    def __init__(self):
+        super().__init__(sqlalchemy.engine.result.SimpleResultMetaData({0: None}))
+
+    def _fetchiter_impl(self, *args, **kw):
+        return iter(())
+
+    def _fetchone_impl(self, *args, **kw):
+        return None
+
+    def _fetchmany_impl(self, *args, **kw):
+        return []
+
+    def _fetchall_impl(self, *args, **kw):
+        return []
+
+    def _soft_close(self, *args, **kw):
+        pass

@@ -208,8 +208,7 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
 
     def test_search_sql_supports_separate_timeout(self):
         query = select(Content).add_columns(sql('pg_sleep(1)'))
-        result = self.connector._execute_suppress_errors(query, timeout=1)
-        self.assertEqual(None, result)
+        assert self.connector.execute_sql(query, timeout=1)
 
     def test_search_returns_uuid(self):
         res = self.get_resource(
