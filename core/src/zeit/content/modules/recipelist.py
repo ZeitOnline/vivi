@@ -5,6 +5,7 @@ import zeit.cms.content.property
 import zeit.content.modules.interfaces
 import zeit.edit.block
 import zeit.wochenmarkt.interfaces
+import zeit.wochenmarkt.sources
 
 
 class Ingredient:
