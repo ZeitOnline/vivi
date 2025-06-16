@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.112.0 (2025-06-16)
+--------------------
+
+- WCM-901: keep image exif metadata when resizing it
+
+
 7.111.0 (2025-06-10)
 --------------------
 
