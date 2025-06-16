@@ -585,8 +585,6 @@ def _categorize_by_ingredients_diet(ingredients):
     zeit.content.article.interfaces.IArticle, zeit.cms.checkout.interfaces.IBeforeCheckinEvent
 )
 def update_recipes_of_article(context, event):
-    if not FEATURE_TOGGLES.find('wcm_19_store_recipes_in_storage'):
-        return
     if context.genre not in zeit.wochenmarkt.sources.recipeCategoriesSource.factory.genres:
         return
     recipes = context.body.filter_values(zeit.content.modules.interfaces.IRecipeList)

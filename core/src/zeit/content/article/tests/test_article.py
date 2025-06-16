@@ -526,7 +526,6 @@ class ArticleSearchableText(zeit.content.article.testing.FunctionalTestCase):
 class WochenmarktArticles(zeit.content.article.testing.FunctionalTestCase):
     def setUp(self):
         super().setUp()
-        FEATURE_TOGGLES.set('wcm_19_store_recipes_in_storage')
         uid = 'http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept'
         self.repository['article'] = zeit.cms.interfaces.ICMSContent(uid)
         self.categories_source = zeit.wochenmarkt.sources.recipeCategoriesSource(None).factory
@@ -557,7 +556,6 @@ class WochenmarktArticles(zeit.content.article.testing.FunctionalTestCase):
         )
 
     def test_recipe_special_categories_are_updated(self):
-        FEATURE_TOGGLES.set('wcm_19_store_recipes_in_storage')
         with checked_out(self.repository['article']) as co:
             recipelist = co.body.filter_values(zeit.content.modules.interfaces.IRecipeList)
             for recipe in recipelist:
