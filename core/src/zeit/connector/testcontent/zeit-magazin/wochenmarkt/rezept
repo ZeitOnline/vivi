@@ -46,8 +46,8 @@ pürieren.</p>
       <recipelist>
         <title>Wurst-Hähnchen</title>
         <subheading searchable="True">Die leckere Fleisch-Kombi</subheading>
-        <complexity>ambitioniert</complexity>
-        <time>über 60 Minuten</time>
+        <complexity>hard</complexity>
+        <time>90min</time>
         <servings>6</servings>
         <ingredient amount="500" code="bratwurst" unit="g"/>
         <ingredient amount="200" code="brathaehnchen" unit="g"/>
@@ -56,8 +56,8 @@ pürieren.</p>
       <recipelist>
         <title>Tomaten-Grieß</title>
         <subheading searchable="False">Für die Soße</subheading>
-        <complexity>einfach</complexity>
-        <time>unter 30 Minuten</time>
+        <complexity>easy</complexity>
+        <time>30min</time>
         <servings>2</servings>
         <ingredient amount="200" code="tomate" unit="g"/>
         <ingredient amount="200" code="gurke" unit="g"/>

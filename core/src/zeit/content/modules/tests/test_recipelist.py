@@ -120,10 +120,3 @@ class RecipeListTest(
         ingredient = Ingredient(None, None).from_xml(node)
         assert ingredient.code == 'banana'
         assert ingredient.details == ''  # not provided as xml attribute
-
-    def test_time_and_complexity_read_stored_title_as_id(self):
-        content = self.get_content()
-        content.complexity = 'einfach'
-        content.time = 'unter 30 Minuten'
-        self.assertEqual('easy', content.complexity)
-        self.assertEqual('30min', content.time)
