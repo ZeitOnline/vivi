@@ -539,8 +539,8 @@ class WochenmarktArticles(zeit.content.article.testing.FunctionalTestCase):
             article.recipe_titles,
         )
         self.assertEqual(
-            ('brathaehnchen', 'bratwurst', 'chicken-nuggets', 'gurke', 'tomate'),
-            article.recipe_ingredients,
+            ['brathaehnchen', 'bratwurst', 'chicken-nuggets', 'gurke', 'tomate'],
+            sorted(article.recipe_ingredients),
         )
         categories = [category.id for category in article.recipe_categories]
         self.assertEqual(
@@ -586,10 +586,7 @@ class WochenmarktArticles(zeit.content.article.testing.FunctionalTestCase):
             ('Vier Rezepte für eine Herdplatte', 'Wurst-Hähnchen', 'Tomaten-Grieß'),
             article.recipe_titles,
         )
-        self.assertEqual(
-            ('gurke', 'tomate'),
-            article.recipe_ingredients,
-        )
+        self.assertEqual(['gurke', 'tomate'], sorted(article.recipe_ingredients))
         # remove category manually, it should not be re-added
         with checked_out(self.repository['article']) as co:
             co.recipe_categories = (i for i in co.recipe_categories if i.id != 'vegane-rezepte')
@@ -618,7 +615,4 @@ class WochenmarktArticles(zeit.content.article.testing.FunctionalTestCase):
             ('Vier Rezepte für eine Herdplatte', 'Wurst-Hähnchen', 'Tomaten-Grieß'),
             article.recipe_titles,
         )
-        self.assertEqual(
-            ('ei', 'gurke', 'tomate'),
-            article.recipe_ingredients,
-        )
+        self.assertEqual(['ei', 'gurke', 'tomate'], sorted(article.recipe_ingredients))

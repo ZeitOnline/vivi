@@ -134,21 +134,13 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
         value = list(dict.fromkeys(value))  # ordered set()
         self._recipe_categories = value
 
-    @property
-    def recipe_ingredients(self):
-        return self._recipe_ingredients
-
-    @recipe_ingredients.setter
-    def recipe_ingredients(self, value):
-        self._recipe_ingredients = sorted(value)
-
     _recipe_categories = zeit.cms.content.dav.DAVProperty(
         zeit.content.article.interfaces.IArticle['recipe_categories'],
         'http://namespaces.zeit.de/CMS/recipe',
         'categories',
         use_default=True,
     )
-    _recipe_ingredients = zeit.cms.content.dav.DAVProperty(
+    recipe_ingredients = zeit.cms.content.dav.DAVProperty(
         zeit.content.article.interfaces.IArticle['recipe_ingredients'],
         zeit.cms.interfaces.RECIPE_SCHEMA_NS,
         'ingredients',
