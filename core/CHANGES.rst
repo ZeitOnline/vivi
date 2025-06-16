@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.113.0 (2025-06-16)
+--------------------
+
+- WCM-841: Extract ingredients in used from content-storage instead of elasticsearch
+
+
 7.112.0 (2025-06-16)
 --------------------
 
