@@ -12,7 +12,7 @@ import zope.lifecycleevent
 import zope.schema.interfaces
 
 from zeit.content.modules.recipelist import Ingredient
-from zeit.wochenmarkt.categories import RecipeCategory
+from zeit.wochenmarkt.sources import RecipeCategory
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
 import zeit.cms.interfaces

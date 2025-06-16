@@ -34,7 +34,6 @@ import zeit.content.modules
 import zeit.content.modules.interfaces
 import zeit.edit.interfaces
 import zeit.edit.rule
-import zeit.wochenmarkt.categories
 import zeit.workflow.interfaces
 import zeit.workflow.workflow
 
@@ -128,17 +127,12 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
 
     @property
     def recipe_categories(self):
-        if FEATURE_TOGGLES.find('xmlproperty_read_wcm_837'):
-            return self._recipe_categories
-        else:
-            return self._recipe_categories_body
+        return self._recipe_categories
 
     @recipe_categories.setter
     def recipe_categories(self, value):
         value = list(dict.fromkeys(value))  # ordered set()
         self._recipe_categories = value
-        if not FEATURE_TOGGLES.find('xmlproperty_strict_wcm_837'):
-            self._recipe_categories_body = value
 
     @property
     def recipe_ingredients(self):
@@ -166,8 +160,6 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
         'titles',
         use_default=True,
     )
-
-    _recipe_categories_body = zeit.wochenmarkt.categories.RecipeCategories()
 
     @property
     def main_image_block(self):
