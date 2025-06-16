@@ -5,4 +5,6 @@
   <include package="zeit.cms" file="ftesting.zcml" />
   <include package="zeit.wochenmarkt" />
 
+  <include package="zeit.content.article" file="ctesting.zcml" />
+
 </configure>

@@ -20,4 +20,15 @@
       />
   </class>
 
+  <class class=".recipe.RecipeArticle">
+    <require
+      interface=".recipe.IRecipeArticle"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".recipe.IRecipeArticle"
+      permission="zeit.EditContent"
+      />
+  </class>
+
 </configure>
