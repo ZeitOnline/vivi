@@ -85,9 +85,9 @@ def update_recipes_of_article(context, event):
     if not info.titles and (category := _categorize_by_ingredients_diet(ingredients)):
         categories.append(category)
 
-    info.titles = titles
-    info.ingredients = ingredients
-    info.categories = categories
+    info.titles = titles or None
+    info.ingredients = ingredients or None
+    info.categories = categories or None
 
 
 def _categorize_by_ingredients_diet(ingredients):

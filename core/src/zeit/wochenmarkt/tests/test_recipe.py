@@ -37,6 +37,15 @@ class RecipeArticle(zeit.wochenmarkt.testing.FunctionalTestCase):
             sorted(categories),
         )
 
+    def test_empty_property_is_removed(self):
+        with checked_out(self.repository['article']) as co:
+            for module in co.body.filter_values(zeit.content.modules.interfaces.IRecipeList):
+                del co.body[module.__name__]
+        self.assertNotIn(
+            ('ingredients', 'http://namespaces.zeit.de/CMS/recipe'),
+            zeit.connector.interfaces.IWebDAVProperties(self.repository['article']),
+        )
+
     def test_recipe_special_categories_are_updated(self):
         with checked_out(self.repository['article']) as co:
             recipelist = co.body.filter_values(zeit.content.modules.interfaces.IRecipeList)
