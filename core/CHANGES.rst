@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.114.0 (2025-06-17)
+--------------------
+
+- WCM-874: Support "enable crawler" workflow also for unpublished content
+
+- WCM-928: only add automated categories within the first checkin
+
+
 7.113.0 (2025-06-16)
 --------------------
 
