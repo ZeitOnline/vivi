@@ -15,10 +15,11 @@ class Lightbox(zeit.cms.browser.view.Base):
         errors = []
         if ISEO(self.context).crawler_enabled:
             errors.append(_('Crawler already enabled'))
-        # Because the flow publishes the content automatically.
-        if not IPublishInfo(self.context).published:
-            errors.append(_('Content must be published to enable crawler'))
         return errors
+
+    @property
+    def published(self):
+        return IPublishInfo(self.context).published
 
 
 class EnableCrawler(zeit.cms.browser.view.Base):

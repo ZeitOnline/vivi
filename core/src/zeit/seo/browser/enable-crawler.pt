@@ -4,8 +4,8 @@
 <tal:block condition="not: view/error_messages">
 <ol id="worklist">
   <li action="goto" cms:param="enable-crawler" i18n:translate="">Enabling Crawler</li>
-  <li action="start_job" cms:param="publish" i18n:translate="">Publishing</li>
-  <li action="start_job" cms:param="create-redirect" i18n:translate="">Creating redirect</li>
+  <li tal:condition="view/published" action="start_job" cms:param="publish" i18n:translate="">Publishing</li>
+  <li tal:condition="view/published" action="start_job" cms:param="create-redirect" i18n:translate="">Creating redirect</li>
   <li action="reload" i18n:translate="">Reloading</li>
 </ol>
 
