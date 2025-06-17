@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.115.0 (2025-06-17)
+--------------------
+
+- WCM-901: keep XMP metadata of image when resizing it
+
+
 7.114.0 (2025-06-17)
 --------------------
 
