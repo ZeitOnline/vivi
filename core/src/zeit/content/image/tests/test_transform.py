@@ -26,13 +26,9 @@ class CreateVariantImageTest(zeit.content.image.testing.FunctionalTestCase):
         )
 
     def create_image(self, pil_image):
-        exif = PIL.Image.Exif()
-        exif[PIL.ExifTags.Base.Make] = 'Make'
-        exif[PIL.ExifTags.Base.Model] = 'Model'
-
         image = zeit.content.image.image.LocalImage()
         with image.open('w') as f:
-            pil_image.save(f, 'jpeg', exif=exif.tobytes(), xmp=b'xmp-sample')
+            pil_image.save(f, 'PNG')
         return image
 
     ascii_to_color = {
@@ -48,7 +44,7 @@ class CreateVariantImageTest(zeit.content.image.testing.FunctionalTestCase):
     def draw_image(self, pixels):
         width = len(pixels[0])
         height = len(pixels)
-        image = PIL.Image.new('RGB', (width, height), (255, 255, 255))
+        image = PIL.Image.new('RGBA', (width, height), (255, 255, 255, 255))
         draw = PIL.ImageDraw.ImageDraw(image)
         for x in range(width):
             for y in range(height):
@@ -282,7 +278,18 @@ class CreateVariantImageTest(zeit.content.image.testing.FunctionalTestCase):
         self.assertLess(len(configured.open().read()), len(highquality.read()))
 
     def test_resize_keeps_exif_metadata(self):
-        resized_image = self.transform.resize(width=2, height=2)
+        pil_image = PIL.Image.new('RGB', (10, 10))
+
+        exif = PIL.Image.Exif()
+        exif[PIL.ExifTags.Base.Make] = 'Make'
+        exif[PIL.ExifTags.Base.Model] = 'Model'
+
+        image = zeit.content.image.image.LocalImage()
+        with image.open('w') as f:
+            pil_image.save(f, 'jpeg', exif=exif.tobytes(), xmp=b'xmp-sample')
+
+        transform = zeit.content.image.interfaces.ITransform(image)
+        resized_image = transform.resize(width=2, height=2)
 
         with resized_image.open('r') as img:
             resized_pil_image = PIL.Image.open(img)
