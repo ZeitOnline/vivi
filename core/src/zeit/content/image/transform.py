@@ -40,7 +40,7 @@ class ImageTransform:
         orig_width, orig_height = self.image.size
         # keep image metadata
         orig_exif = self.image.getexif()
-
+        orig_xmp = self.image.info.get('xmp')
         # width and height need to be int rather than float,
         # so we use // instead of / as division operator.
         if width is None:
@@ -49,7 +49,7 @@ class ImageTransform:
             height = orig_height * width // orig_width
 
         image = self.image.resize((int(width), int(height)), filter)
-        return self._construct_image(image, exif=orig_exif)
+        return self._construct_image(image, exif=orig_exif, xmp=orig_xmp)
 
     def create_variant_image(self, variant, size=None, fill_color=None, format=None):
         """Create variant image from source image.

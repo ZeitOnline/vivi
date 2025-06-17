@@ -32,7 +32,7 @@ class CreateVariantImageTest(zeit.content.image.testing.FunctionalTestCase):
 
         image = zeit.content.image.image.LocalImage()
         with image.open('w') as f:
-            pil_image.save(f, 'PNG', exif=exif.tobytes())
+            pil_image.save(f, 'jpeg', exif=exif.tobytes(), xmp=b'xmp-sample')
         return image
 
     ascii_to_color = {
@@ -48,7 +48,7 @@ class CreateVariantImageTest(zeit.content.image.testing.FunctionalTestCase):
     def draw_image(self, pixels):
         width = len(pixels[0])
         height = len(pixels)
-        image = PIL.Image.new('RGBA', (width, height), (255, 255, 255, 255))
+        image = PIL.Image.new('RGB', (width, height), (255, 255, 255))
         draw = PIL.ImageDraw.ImageDraw(image)
         for x in range(width):
             for y in range(height):
@@ -288,5 +288,6 @@ class CreateVariantImageTest(zeit.content.image.testing.FunctionalTestCase):
             resized_pil_image = PIL.Image.open(img)
             resized_exif = resized_pil_image.getexif()
 
+        self.assertEqual(resized_pil_image.info['xmp'], b'xmp-sample')
         self.assertEqual(resized_exif[PIL.ExifTags.Base.Make], 'Make')
         self.assertEqual(resized_exif[PIL.ExifTags.Base.Model], 'Model')
