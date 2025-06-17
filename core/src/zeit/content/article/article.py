@@ -612,7 +612,8 @@ def update_recipes_of_article(context, event):
             categories.append(complexity)
         if time := source.find(f'time-{recipe.time}'):
             categories.append(time)
-    if category := _categorize_by_ingredients_diet(ingredients):
+    # Only guess diet categories once, so the user can remove them.
+    if not context.recipe_titles and (category := _categorize_by_ingredients_diet(ingredients)):
         categories.append(category)
 
     context.recipe_titles = titles

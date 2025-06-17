@@ -592,6 +592,13 @@ class WochenmarktArticles(zeit.content.article.testing.FunctionalTestCase):
             ('gurke', 'tomate'),
             article.recipe_ingredients,
         )
+        # remove category manually, it should not be re-added
+        with checked_out(self.repository['article']) as co:
+            co.recipe_categories = (i for i in co.recipe_categories if i.id != 'vegane-rezepte')
+        article = self.repository['article']
+        categories = [category.id for category in article.recipe_categories]
+        self.assertNotIn('vegane-rezepte', categories)
+        self.assertEqual(6, len(article.recipe_categories))
 
     def test_recipe_category_is_added_on_checkin_with_multiple_diets(self):
         ingredients = zeit.wochenmarkt.sources.ingredientsSource(None).factory
