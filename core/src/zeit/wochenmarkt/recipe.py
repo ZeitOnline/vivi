@@ -48,8 +48,11 @@ class RecipeArticle(zeit.cms.content.dav.DAVPropertiesAdapter):
 
     @categories.setter
     def categories(self, value):
-        value = list(dict.fromkeys(value))  # ordered set()
-        self._categories = value
+        if not value:  # XXX kludgy, revisit with WCM-601
+            self._categories = None
+        else:
+            value = list(dict.fromkeys(value))  # ordered set()
+            self._categories = value
 
     _categories = zeit.cms.content.dav.DAVProperty(
         IRecipeArticle['categories'],
@@ -85,9 +88,9 @@ def update_recipes_of_article(context, event):
     if not info.titles and (category := _categorize_by_ingredients_diet(ingredients)):
         categories.append(category)
 
-    info.titles = titles or None
+    info.titles = titles or None  # XXX kludgy, revisit with WCM-601
     info.ingredients = ingredients or None
-    info.categories = categories or None
+    info.categories = categories
 
 
 def _categorize_by_ingredients_diet(ingredients):

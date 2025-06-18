@@ -1,0 +1,1 @@
+WCM-862: Store empty properties as null instead of empty list
