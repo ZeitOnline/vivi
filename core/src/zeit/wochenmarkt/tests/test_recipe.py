@@ -45,6 +45,12 @@ class RecipeArticle(zeit.wochenmarkt.testing.FunctionalTestCase):
             ('ingredients', 'http://namespaces.zeit.de/CMS/recipe'),
             zeit.connector.interfaces.IWebDAVProperties(self.repository['article']),
         )
+        with checked_out(self.repository['article']) as co:
+            IRecipeArticle(co).categories = ()
+        self.assertNotIn(
+            ('categories', 'http://namespaces.zeit.de/CMS/recipe'),
+            zeit.connector.interfaces.IWebDAVProperties(self.repository['article']),
+        )
 
     def test_recipe_special_categories_are_updated(self):
         with checked_out(self.repository['article']) as co:
