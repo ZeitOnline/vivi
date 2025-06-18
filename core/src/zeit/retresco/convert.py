@@ -506,8 +506,16 @@ class Recipe(Converter):
             return None
         search_list = []
 
-        search_list += [f'{x.name}:category' for x in self.context.categories]
-        source = zeit.wochenmarkt.sources.ingredientsSource(None)
+        categories = []
+        source = zeit.wochenmarkt.sources.recipeCategoriesSource(self.content)
+        for category in self.context.categories:
+            meta = source.find(category.id)
+            if meta and meta.flag == 'no-search':
+                continue
+            categories.append(category)
+
+        search_list += [f'{x.name}:category' for x in categories]
+        source = zeit.wochenmarkt.sources.ingredientsSource(self.content)
         for ingredient in ingredients:
             i = source.find(ingredient.code)
             search_list += [f'{x}:ingredient' for x in i.qwords]
@@ -524,7 +532,7 @@ class Recipe(Converter):
         times = [source.getTitle(None, x.time) for x in recipes if x.time]
 
         return {
-            'categories': [x.code for x in self.context.categories],
+            'categories': [x.code for x in categories],
             'search': list(set(search_list)),
             'ingredients': list(set([x.code for x in ingredients])),
             'titles': list(set(titles)),
