@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.116.0 (2025-06-18)
+--------------------
+
+- WCM-862: Remove recipe toggles that are active in production
+
+- WCM-870: Extract recipe fields to IRecipeArticle adapter
+
+
 7.115.0 (2025-06-17)
 --------------------
 
