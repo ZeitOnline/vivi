@@ -512,11 +512,11 @@ class Followings(grok.Adapter, PropertiesMixin, IgnoreMixin):
         ):
             return None
         article = zeit.content.article.interfaces.IArticle(self.context)
+        if article.serie is None:
+            return None
         # Check if the Article has a podcast
-        podcast_refs = zeit.content.audio.interfaces.IAudioReferences(article).get_by_type(
-            'podcast'
-        )
-        if len(podcast_refs) == 0 or article.serie is None:
+        audio_refs = zeit.content.audio.interfaces.IAudioReferences(article, None)
+        if audio_refs is None or len(audio_refs.get_by_type('podcast')) == 0:
             return None
         content_object = zeit.cms.interfaces.ICMSContent(
             f'{zeit.cms.interfaces.ID_NAMESPACE}serie/{article.serie.url}'
