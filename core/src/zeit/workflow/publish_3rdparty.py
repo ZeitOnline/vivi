@@ -504,3 +504,23 @@ class AudioDataScience(DataScience):
 
 class VideoDataScience(DataScience):
     grok.context(zeit.content.video.interfaces.IVideo)
+
+
+@grok.implementer(zeit.workflow.interfaces.IPublisherData)
+class Followings(grok.Adapter, IgnoreMixin):
+    grok.context(zeit.content.article.interfaces.IArticle)
+    grok.name('followings')
+
+    def _json(self):
+        article = self.context
+        if article.serie is None:
+            return None
+        # Check if the Article has a podcast
+        audio_refs = zeit.content.audio.interfaces.IAudioReferences(article, None)
+        if audio_refs is None or not bool(audio_refs.get_by_type('podcast')):
+            return None
+        series_content = zeit.cms.interfaces.ICMSContent(
+            f'{zeit.cms.interfaces.ID_NAMESPACE}serie/{article.serie.url}'
+        )
+        series = zeit.cms.content.interfaces.IUUID(series_content).shortened
+        return {'parent_id': series}
