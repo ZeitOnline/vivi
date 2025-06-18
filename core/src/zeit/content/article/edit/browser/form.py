@@ -10,6 +10,7 @@ from zeit.cms.repository.interfaces import IAutomaticallyRenameable
 from zeit.content.article.interfaces import IArticle
 from zeit.content.author.interfaces import IAuthor
 from zeit.content.image.interfaces import IImageGroup
+from zeit.wochenmarkt.recipe import IRecipeArticle
 from zeit.workflow.publishinfo import id_to_principal
 import zeit.cms.browser.interfaces
 import zeit.cms.config
@@ -439,7 +440,7 @@ class RecipeCategories(zeit.edit.browser.form.InlineForm):
     legend = _('')
     prefix = 'recipe-categories'
     css_class = 'recipe-categories'
-    form_fields = FormFields(IArticle).select('recipe_categories')
+    form_fields = FormFields(IRecipeArticle).select('categories')
 
     def render(self):
         if (

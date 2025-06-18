@@ -41,6 +41,7 @@ import zeit.push.interfaces
 import zeit.retresco.content
 import zeit.retresco.interfaces
 import zeit.seo.interfaces
+import zeit.wochenmarkt.recipe
 import zeit.wochenmarkt.sources
 
 
@@ -481,26 +482,40 @@ class Article(Converter):
     grok.name(interface.__name__)
 
     def __call__(self):
-        result = {'payload': {}}
-        result['payload']['head'] = {
-            'audio_references': [x.uniqueId for x in IAudioReferences(self.context).items]
+        return {
+            'payload': {
+                'head': {
+                    'audio_references': [x.uniqueId for x in IAudioReferences(self.context).items]
+                }
+            }
         }
 
-        recipe = self._convert_recipe()
-        if recipe:
-            result['payload']['recipe'] = recipe
 
-        return result
+class Recipe(Converter):
+    interface = zeit.wochenmarkt.recipe.IRecipeArticle
+    grok.name(interface.__name__)
+
+    def __call__(self):
+        recipe = self._convert_recipe()
+        return {'payload': {'recipe': recipe}} if recipe else {}
 
     def _convert_recipe(self):
-        recipes = list(self.context.body.filter_values(IRecipeList))
+        recipes = list(self.content.body.filter_values(IRecipeList))
         ingredients = list(itertools.chain(*[x.ingredients for x in recipes]))
-        if not (self.context.recipe_categories or ingredients):
+        if not (self.context.categories or ingredients):
             return None
         search_list = []
 
-        search_list += [f'{x.name}:category' for x in self.context.recipe_categories]
-        source = zeit.wochenmarkt.sources.ingredientsSource(None)
+        categories = []
+        source = zeit.wochenmarkt.sources.recipeCategoriesSource(self.content)
+        for category in self.context.categories:
+            meta = source.find(category.id)
+            if meta and meta.flag == 'no-search':
+                continue
+            categories.append(category)
+
+        search_list += [f'{x.name}:category' for x in categories]
+        source = zeit.wochenmarkt.sources.ingredientsSource(self.content)
         for ingredient in ingredients:
             i = source.find(ingredient.code)
             search_list += [f'{x}:ingredient' for x in i.qwords]
@@ -509,7 +524,7 @@ class Article(Converter):
         search_list += [f'{x}:recipe_title' for x in titles]
         subheadings = [x.subheading for x in recipes if x.searchable_subheading]
         search_list += [f'{x}:subheading' for x in subheadings]
-        search_list.append(f'{self.context.title}:title')
+        search_list.append(f'{self.content.title}:title')
 
         source = zeit.content.modules.interfaces.RecipeComplexitySource(None).factory
         complexities = [source.getTitle(None, x.complexity) for x in recipes if x.complexity]
@@ -517,7 +532,7 @@ class Article(Converter):
         times = [source.getTitle(None, x.time) for x in recipes if x.time]
 
         return {
-            'categories': [x.code for x in self.context.recipe_categories],
+            'categories': [x.code for x in categories],
             'search': list(set(search_list)),
             'ingredients': list(set([x.code for x in ingredients])),
             'titles': list(set(titles)),

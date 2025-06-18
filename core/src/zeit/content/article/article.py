@@ -34,7 +34,6 @@ import zeit.content.modules
 import zeit.content.modules.interfaces
 import zeit.edit.interfaces
 import zeit.edit.rule
-import zeit.wochenmarkt.categories
 import zeit.workflow.interfaces
 import zeit.workflow.workflow
 
@@ -125,49 +124,6 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
             self,
             zope.lifecycleevent.Attributes(zeit.cms.content.interfaces.ICommonMetadata, *modified),
         )
-
-    @property
-    def recipe_categories(self):
-        if FEATURE_TOGGLES.find('xmlproperty_read_wcm_837'):
-            return self._recipe_categories
-        else:
-            return self._recipe_categories_body
-
-    @recipe_categories.setter
-    def recipe_categories(self, value):
-        value = list(dict.fromkeys(value))  # ordered set()
-        self._recipe_categories = value
-        if not FEATURE_TOGGLES.find('xmlproperty_strict_wcm_837'):
-            self._recipe_categories_body = value
-
-    @property
-    def recipe_ingredients(self):
-        return self._recipe_ingredients
-
-    @recipe_ingredients.setter
-    def recipe_ingredients(self, value):
-        self._recipe_ingredients = sorted(value)
-
-    _recipe_categories = zeit.cms.content.dav.DAVProperty(
-        zeit.content.article.interfaces.IArticle['recipe_categories'],
-        'http://namespaces.zeit.de/CMS/recipe',
-        'categories',
-        use_default=True,
-    )
-    _recipe_ingredients = zeit.cms.content.dav.DAVProperty(
-        zeit.content.article.interfaces.IArticle['recipe_ingredients'],
-        zeit.cms.interfaces.RECIPE_SCHEMA_NS,
-        'ingredients',
-        use_default=True,
-    )
-    recipe_titles = zeit.cms.content.dav.DAVProperty(
-        zeit.content.article.interfaces.IArticle['recipe_titles'],
-        zeit.cms.interfaces.RECIPE_SCHEMA_NS,
-        'titles',
-        use_default=True,
-    )
-
-    _recipe_categories_body = zeit.wochenmarkt.categories.RecipeCategories()
 
     @property
     def main_image_block(self):
@@ -580,42 +536,3 @@ class AudioDependency(zeit.cms.workflow.dependency.DependencyBase):
         if audio_refs:
             return audio_refs.items
         return ()
-
-
-def _categorize_by_ingredients_diet(ingredients):
-    source = zeit.wochenmarkt.sources.ingredientsSource(None)
-    diets = {source.find(i).diet for i in ingredients}
-    categories_source = zeit.wochenmarkt.sources.recipeCategoriesSource(None)
-    return categories_source.factory.for_diets(diets)
-
-
-@grok.subscribe(
-    zeit.content.article.interfaces.IArticle, zeit.cms.checkout.interfaces.IBeforeCheckinEvent
-)
-def update_recipes_of_article(context, event):
-    if not FEATURE_TOGGLES.find('wcm_19_store_recipes_in_storage'):
-        return
-    if context.genre not in zeit.wochenmarkt.sources.recipeCategoriesSource.factory.genres:
-        return
-    recipes = context.body.filter_values(zeit.content.modules.interfaces.IRecipeList)
-    titles = [context.title]
-    ingredients = set()
-
-    categories = list(context.recipe_categories)
-    source = zeit.wochenmarkt.sources.recipeCategoriesSource(context)
-    for recipe in recipes:
-        if recipe.title:
-            titles.append(recipe.title)
-        ingredients = ingredients | {x.id for x in recipe.ingredients}
-
-        if complexity := source.find(f'complexity-{recipe.complexity}'):
-            categories.append(complexity)
-        if time := source.find(f'time-{recipe.time}'):
-            categories.append(time)
-    # Only guess diet categories once, so the user can remove them.
-    if not context.recipe_titles and (category := _categorize_by_ingredients_diet(ingredients)):
-        categories.append(category)
-
-    context.recipe_titles = titles
-    context.recipe_ingredients = ingredients
-    context.recipe_categories = categories
