@@ -136,3 +136,14 @@ class Retract3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         )
         data = data_factory.retract_json()
         assert data is None
+
+    def test_followings_retract(self):
+        article = ICMSContent('http://xml.zeit.de/online/2022/08/kaenguru-comics-folge-448')
+        zope.interface.alsoProvides(article, zeit.content.cp.interfaces.ICenterPage)
+        zope.interface.alsoProvides(article, zeit.content.audio.interfaces.IAudioReferences)
+
+        data_factory = zope.component.getAdapter(
+            article, zeit.workflow.interfaces.IPublisherData, name='followings'
+        )
+        data = data_factory.retract_json()
+        assert data == {}
