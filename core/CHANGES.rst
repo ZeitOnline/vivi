@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.117.0 (2025-06-18)
+--------------------
+
+- WCM-862: Store empty properties as null instead of empty list
+
+
 7.116.0 (2025-06-18)
 --------------------
 
