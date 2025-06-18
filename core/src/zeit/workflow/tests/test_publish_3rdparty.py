@@ -636,3 +636,21 @@ class DatasciencePayloadTest(zeit.workflow.testing.FunctionalTestCase):
         video = self.repository['video'] = video
         data = zeit.workflow.testing.publish_json(video, 'datascience')
         self.assertEqual(data['body'], lxml.etree.tostring(video.xml, encoding=str))
+
+
+class FollowingsPayloadTest(zeit.workflow.testing.FunctionalTestCase):
+    layer = zeit.content.article.testing.LAYER
+
+    def test_datascience_payload_audio(self):
+        from zeit.content.audio.testing import AudioBuilder
+
+        article = ICMSContent('http://xml.zeit.de/online/2022/08/kaenguru-comics-folge-448')
+        self.repository['chefsache'] = zeit.content.cp.centerpage.CenterPage()
+        audio = AudioBuilder().with_audio_type('podcast').build()
+        audio = self.repository['audio'] = audio
+
+        audios_refs = zeit.content.audio.interfaces.IAudioReferences(article)
+        audios_refs.add(audio)
+
+        data = zeit.workflow.testing.publish_json(article, 'followings')
+        self.assertEqual(data['parent_id'], lxml.etree.tostring(audio.xml, encoding=str))
