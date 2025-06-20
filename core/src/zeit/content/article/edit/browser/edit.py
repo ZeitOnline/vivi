@@ -250,11 +250,19 @@ class EditRawText(
         return 'rawtext.{0}'.format(self.context.__name__)
 
 
+class PreviewWidget(zope.formlib.widget.DisplayWidget):
+    def __call__(self):
+        if not self._renderedValueSet() or not self._data:
+            return ''
+        return f'<img src="{self._data}"/>'
+
+
 class EditEmbed(zeit.cms.browser.manual.FormMixin, zeit.edit.browser.form.InlineForm):
     legend = None
     form_fields = zope.formlib.form.FormFields(zeit.content.article.edit.interfaces.IEmbed).omit(
         '__name__', '__parent__', 'xml'
     )
+    form_fields['preview_url'].custom_widget = PreviewWidget
 
     bsky_api = 'https://public.api.bsky.app/xrpc/com.atproto.identity.resolveHandle'
     bsky_regex = re.compile(

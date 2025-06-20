@@ -66,6 +66,8 @@ class IEmbed(zeit.edit.interfaces.IBlock):
 
     domain = zope.interface.Attribute('The secondlevel domain of our `url`')
 
+    preview_url = zope.schema.URI(readonly=True, required=False)
+
     def extract_domain(url):
         pass
 
