@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.120.0 (2025-06-20)
+--------------------
+
+MAINT:
+- Add preview thumbnail to datawrapper easy embed module
+
+
 7.119.0 (2025-06-20)
 --------------------
 
