@@ -1972,6 +1972,10 @@
   left: auto;
 }
 
+.type-article [action$="@@edit-embed"] .fieldname-preview_url img {
+    height: 200px;
+}
+
 /* prevent scroll jump when adding/removing modules */
 .type-article .block .block-inner {
     overflow-y: auto;
@@ -2007,6 +2011,10 @@
 
 .type-article .block.type-embed .block-inner {
     height: 100px;
+}
+
+.type-article .block.type-embed .block-inner:has(.fieldname-preview_url img) {
+    height: 320px;
 }
 
 .type-article .block.type-gallery .block-inner {

@@ -1,4 +1,4 @@
-from urllib.parse import urlparse
+from urllib.parse import urlparse, urlunparse
 
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
@@ -25,6 +25,20 @@ class Embed(zeit.edit.block.Element):
         if not url:
             return None
         return '.'.join(urlparse(url).netloc.split('.')[-2:])
+
+    @cachedproperty
+    def preview_url(self):
+        if not self.url:
+            return None
+        parts = urlparse(self.url)
+        if not parts.netloc.endswith('dwcdn.net'):  # Could use adapter here
+            return None
+        path = parts.path.rstrip('/').split('/')
+        if len(path) != 3:
+            return None
+        path = '/'.join(path[:-1]) + '/full.png'
+        parts = parts._replace(path=path)
+        return urlunparse(parts)
 
 
 @grok.implementer(zeit.cmp.interfaces.IConsentInfo)
