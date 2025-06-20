@@ -560,6 +560,7 @@ class Product(AllowedBase):
         self,
         id=None,
         title=None,
+        vivi_title=None,
         vgwort_code=None,
         href=None,
         target=None,
@@ -575,6 +576,7 @@ class Product(AllowedBase):
         counter=False,
     ):
         super().__init__(id, title, None)
+        self.vivi_title = vivi_title
         self.vgwort_code = vgwort_code
         self.href = href
         self.target = target
@@ -603,6 +605,7 @@ class ProductSource(ObjectSource, SimpleContextualXMLSource):
             product = Product(
                 str(node.get('id')),
                 str(node.text.strip()),
+                unicode_or_none(node.get('vivi_title')),
                 unicode_or_none(node.get('vgwort_code')),
                 unicode_or_none(node.get('href')),
                 unicode_or_none(node.get('target')),
@@ -636,6 +639,12 @@ class ProductSource(ObjectSource, SimpleContextualXMLSource):
                 dependent_products[value.relates_to] += [value]
         for product in main_products:
             product.dependent_products = dependent_products[product.id]
+
+    def getTitle(self, context, value):
+        if not isinstance(zope.security.proxy.removeSecurityProxy(value), Product):
+            # Content has a stored id that is not in the config file anymore
+            return value
+        return value.vivi_title or value.title
 
 
 PRODUCT_SOURCE = ProductSource()

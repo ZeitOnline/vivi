@@ -248,7 +248,9 @@ class SearchResult(JSONView):
     def get_product(self, result):
         source = zeit.cms.content.interfaces.ICommonMetadata['product'].source(None)
         product = source.find(result.get('payload.workflow.product-id'))
-        return product and product.title or ''
+        if not product:
+            return ''
+        return product.vivi_title or product.title or ''
 
     def get_publication_status(self, result):
         r = self.resource_url

@@ -37,7 +37,7 @@ class Display(zeit.cms.browser.view.Base):
     def description(self):
         volume = self.context.target
         return '{}, Jahrgang: {}, Ausgabe {}'.format(
-            volume.product.title,
+            volume.product.vivi_title or volume.product.title,
             volume.year,
             volume.volume,
         )
