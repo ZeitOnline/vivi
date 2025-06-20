@@ -29,12 +29,6 @@ class RelatedContent(RelatedBase):
     related = zeit.cms.content.reference.MultiResource('.head.references.reference', 'related')
 
 
-@zope.component.adapter(zeit.cms.content.interfaces.ITemplate)
-@zope.interface.implementer(zeit.cms.related.interfaces.IRelatedContent)
-def related_from_template(context):
-    return RelatedContent(context)
-
-
 @zope.component.adapter(zeit.cms.interfaces.ICMSContent)
 @zope.interface.implementer(zeit.cms.content.interfaces.IXMLReference)
 def BasicReference(context, suppress_errors=False):

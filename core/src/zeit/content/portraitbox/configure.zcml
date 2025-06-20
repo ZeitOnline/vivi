@@ -23,10 +23,6 @@
     component=".interfaces.portraitboxSource"
     name="zeit.content.portraitbox"
     />
-  <adapter
-    factory=".reference.PortraitboxReference"
-    for="zeit.cms.content.interfaces.ITemplate"
-    />
 
   <class class=".reference.PortraitboxReference">
     <require

@@ -176,7 +176,6 @@
     provides=".interfaces.IImages"
     trusted="yes"
     />
-  <adapter factory=".imagereference.images_from_template" />
   <class class=".imagereference.ImagesAdapter">
     <require
       interface=".interfaces.IImages"
