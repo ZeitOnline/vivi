@@ -3,6 +3,16 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.119.0 (2025-06-20)
+--------------------
+
+- ES-196: Support differrent product title for vivi and zeit.web
+
+
+MAINT:
+- Remove obsolete content template implementation
+
+
 7.118.0 (2025-06-18)
 --------------------
 
