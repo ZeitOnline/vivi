@@ -23,7 +23,11 @@ class VolumeListRepresentation(grok.MultiAdapter, zeit.cms.browser.listing.BaseL
     @property
     def title(self):
         volume = self.context
-        return '%s %s/%s' % (volume.product.title, volume.year, volume.volume)
+        return '%s %s/%s' % (
+            volume.product.vivi_title or volume.product.title,
+            volume.year,
+            volume.volume,
+        )
 
     @property
     def searchableText(self):

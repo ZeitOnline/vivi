@@ -76,7 +76,11 @@ class Base:
                 self.form_fields += zope.formlib.form.FormFields(field)
                 fieldnames.append(field.__name__)
                 self.field_groups += (
-                    gocept.form.grouped.Fields(product.title, fieldnames, css_class='column-right'),
+                    gocept.form.grouped.Fields(
+                        product.vivi_title or product.title,
+                        fieldnames,
+                        css_class='column-right',
+                    ),
                 )
         # Append the teaser field to the teaser group at the end of the dom
         # so it is aligned properly

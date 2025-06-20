@@ -236,6 +236,7 @@ class IProduct(zope.interface.Interface):
 
     id = zope.interface.Attribute('id')
     title = zope.interface.Attribute('title')
+    vivi_title = zope.interface.Attribute('override title for vivi only')
     vgwort_code = zope.interface.Attribute('VGWort code, optional')
     href = zope.interface.Attribute('URL for the "homepage" of this product')
     target = zope.interface.Attribute('Optional link target (e.g. _blank)')
