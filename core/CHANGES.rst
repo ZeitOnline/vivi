@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.121.0 (2025-06-24)
+--------------------
+
+- WCM-953: Add system user for bulk operations
+
+
 7.120.0 (2025-06-20)
 --------------------
 
