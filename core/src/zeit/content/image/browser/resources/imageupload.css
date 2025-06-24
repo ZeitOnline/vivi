@@ -1,0 +1,11 @@
+/* IMAGE UPLOAD */
+.imageupload {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.imageupload__input {
+  background-color: #f1f4f9;
+  flex: 1;
+}

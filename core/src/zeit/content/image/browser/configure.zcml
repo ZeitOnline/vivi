@@ -410,4 +410,15 @@
     permission="zope.View"
     />
 
+  <!-- image upload -->
+
+  <browser:page
+    name="upload-images"
+    for="zeit.cms.interfaces.ICMSContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".imageupload.UploadForm"
+    permission="zeit.AddContent"
+    template="imageupload.upload-images.pt"
+    />
+
 </configure>
