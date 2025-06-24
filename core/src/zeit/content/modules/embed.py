@@ -26,7 +26,7 @@ class Embed(zeit.edit.block.Element):
             return None
         return '.'.join(urlparse(url).netloc.split('.')[-2:])
 
-    @cachedproperty
+    @property
     def preview_url(self):
         if not self.url:
             return None
