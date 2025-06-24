@@ -263,7 +263,7 @@ def login(username):
 
 def principal_from_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--user', '-u', help='username, e.g. email')
+    parser.add_argument('--user', '-u', help='username, e.g. email', default='system.teamcontent')
     options, left = parser.parse_known_args()
     sys.argv = sys.argv[:1] + left
     if not options.user:
