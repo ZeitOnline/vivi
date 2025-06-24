@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.122.0 (2025-06-24)
+--------------------
+
+MAINT:
+- Show embed preview thumbnail immediately during editing
+
+
 7.121.0 (2025-06-24)
 --------------------
 
