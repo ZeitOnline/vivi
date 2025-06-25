@@ -100,10 +100,8 @@ class VariantProperties(zeit.content.image.testing.FunctionalTestCase):
         self.assertEqual(False, self.variants['square'].is_default)
 
     def test_relative_path_links_to_thumbnail_of_that_variant(self):
-        self.assertEqual('thumbnails/default', self.variants['default'].relative_thumbnail_path)
-        self.assertEqual('thumbnails/square', self.variants['square'].relative_thumbnail_path)
+        self.assertEqual('default__1000x0', self.variants['default'].relative_thumbnail_path)
+        self.assertEqual('square__1000x0', self.variants['square'].relative_thumbnail_path)
 
     def test_relative_path_contains_max_size_to_distinguish_variant_sizes(self):
-        self.assertEqual(
-            'thumbnails/cinema__320x180', self.variants['cinema-small'].relative_thumbnail_path
-        )
+        self.assertEqual('cinema__320x180', self.variants['cinema-small'].relative_thumbnail_path)

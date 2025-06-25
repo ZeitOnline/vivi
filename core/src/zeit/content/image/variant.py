@@ -6,6 +6,7 @@ from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
 import zope.schema
 
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.interfaces import CONFIG_CACHE
 import zeit.cms.content.sources
 import zeit.content.image.interfaces
@@ -157,13 +158,19 @@ class Variant(zeit.cms.content.sources.AllowedBase):
     def is_default(self):
         return self.id == self.DEFAULT_NAME
 
+    THUMBNAIL_WIDTH = 1000
+
     @property
     def relative_thumbnail_path(self):
-        if self.max_size is None:
-            return '%s/%s' % (zeit.content.image.imagegroup.Thumbnails.NAME, self.name)
-        return '{}/{}__{}'.format(
-            zeit.content.image.imagegroup.Thumbnails.NAME, self.name, self.max_size
-        )
+        if FEATURE_TOGGLES.find('image_variant_preview_from_thumbnail'):
+            if self.max_size is None:
+                return '%s/%s' % (zeit.content.image.imagegroup.Thumbnails.NAME, self.name)
+            return '{}/{}__{}'.format(
+                zeit.content.image.imagegroup.Thumbnails.NAME, self.name, self.max_size
+            )
+
+        size = self.max_size or f'{self.THUMBNAIL_WIDTH}x0'
+        return f'{self.name}__{size}'
 
 
 class VariantSource(
