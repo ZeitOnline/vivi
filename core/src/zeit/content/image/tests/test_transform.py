@@ -133,7 +133,12 @@ class CreateVariantImageTest(zeit.content.image.testing.FunctionalTestCase):
             id='original', focus_x=5.0 / 16, focus_y=3.0 / 8, zoom=0.5, aspect_ratio='original'
         )
         self.assertImage(
-            ['        ', '  x     ', '        ', '        '],
+            [
+                '        ',
+                '  x     ',
+                '        ',
+                '        ',
+            ],
             self.transform.create_variant_image(variant),
         )
 
