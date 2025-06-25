@@ -81,5 +81,6 @@ class Editor:
         # Force generating thumbnail source if does not exist yet, so not each
         # variant preview tries to do it simultaneously later on (which only
         # leads to conflicts).
-        zeit.content.image.interfaces.IThumbnails(self.context).source_image
+        thumbnails = zeit.content.image.interfaces.IThumbnails(self.context)
+        thumbnails.source_image(thumbnails.master_image(''))
         return super().__call__()
