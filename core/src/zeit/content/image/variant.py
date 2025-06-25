@@ -158,7 +158,7 @@ class Variant(zeit.cms.content.sources.AllowedBase):
         return self.id == self.DEFAULT_NAME
 
     @property
-    def relative_image_path(self):
+    def relative_thumbnail_path(self):
         if self.max_size is None:
             return '%s/%s' % (zeit.content.image.imagegroup.Thumbnails.NAME, self.name)
         return '{}/{}__{}'.format(

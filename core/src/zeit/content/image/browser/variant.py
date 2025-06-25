@@ -17,7 +17,7 @@ class VariantSerializeMixin:
             data[field] = getattr(variant, field, None)
 
         base_url = self.url(zeit.content.image.interfaces.IImageGroup(variant))
-        image_url = '%s/%s/raw' % (base_url, variant.relative_image_path)
+        image_url = '%s/%s/raw' % (base_url, variant.relative_thumbnail_path)
         data['url'] = image_url
 
         return data
