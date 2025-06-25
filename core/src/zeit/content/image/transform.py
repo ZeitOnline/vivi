@@ -124,6 +124,10 @@ class ImageTransform:
                 target_width, target_height = self._fit_ratio_to_image(
                     target_width, target_height, override_ratio
                 )
+            else:
+                target_width, target_height = self._fit_size_to_ratio(
+                    target_width, target_height, w, h, target_ratio
+                )
 
         x, y = self._determine_crop_position(variant, target_width, target_height)
         image = self._crop(self.image, x, y, x + target_width, y + target_height)
@@ -150,6 +154,24 @@ class ImageTransform:
         else:
             width = int(source_height * target_ratio)
             height = source_height
+        return width, height
+
+    def _fit_size_to_ratio(
+        self, source_width, source_height, target_width, target_height, target_ratio
+    ):
+        """Keep the main dimension the same and adjust the other one to fit the
+        target ratio. Allow for either dimension to be 0 to fall back on the
+        source dimension instead."""
+        if not target_width:
+            target_width = source_width
+        if not target_height:
+            target_height = source_height
+        if target_ratio >= 1:
+            width = min(target_width, source_width)
+            height = int(width / target_ratio)
+        else:
+            height = min(target_height, source_height)
+            width = int(height * target_ratio)
         return width, height
 
     def _determine_crop_position(self, variant, target_width, target_height):

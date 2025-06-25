@@ -336,7 +336,7 @@ class VariantTraverser:
             except (IndexError, ValueError):
                 continue
             else:
-                if any(i <= 0 for i in [width, height]):
+                if any(i < 0 for i in [width, height]):
                     return INVALID_SIZE
                 return [width, height]
         return None

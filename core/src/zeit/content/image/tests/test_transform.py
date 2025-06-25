@@ -86,6 +86,15 @@ class CreateVariantImageTest(zeit.content.image.testing.FunctionalTestCase):
         image = self.transform.create_variant_image(variant, size=(10, 10))
         self.assertEqual((5, 5), image.getImageSize())
 
+    def test_fits_mask_to_image_size(self):
+        variant = Variant(id='square', focus_x=0.5, focus_y=0.5, zoom=1, aspect_ratio='1:1')
+        image = self.transform.create_variant_image(variant, size=(5, 0))
+        self.assertEqual((5, 5), image.getImageSize())
+
+        variant = Variant(id='portrait', focus_x=0.5, focus_y=0.5, zoom=1, aspect_ratio='1:2')
+        image = self.transform.create_variant_image(variant, size=(5, 0))
+        self.assertEqual((4, 8), image.getImageSize())
+
     def test_focus_point_after_crop_has_same_relative_position_as_before(self):
         variant = Variant(
             id='square', focus_x=5.0 / 16, focus_y=3.0 / 8, zoom=1, aspect_ratio='1:1'

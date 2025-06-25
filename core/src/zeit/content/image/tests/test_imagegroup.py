@@ -115,9 +115,6 @@ class ImageGroupTest(zeit.content.image.testing.FunctionalTestCase):
 
     def test_invalid_size_raises_keyerror(self):
         with self.assertRaises(NotFound):
-            self.traverse('square__0x200')
-
-        with self.assertRaises(NotFound):
             self.traverse('square__-1x200')
 
     def test_variant_url_returns_path_with_fill_color_if_given(self):
