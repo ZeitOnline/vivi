@@ -59,7 +59,7 @@ CONFIG_LAYER = ProductConfigLayer(
 
 class ElasticsearchMockLayer(plone.testing.Layer):
     def setUp(self):
-        self['elasticsearch_mocker'] = mock.patch('elasticsearch.client.Elasticsearch.search')
+        self['elasticsearch_mocker'] = mock.patch('elasticsearch.Elasticsearch.search')
         self['elasticsearch'] = self['elasticsearch_mocker'].start()
         response = (
             importlib.resources.files('zeit.retresco.tests') / 'elasticsearch_result.json'

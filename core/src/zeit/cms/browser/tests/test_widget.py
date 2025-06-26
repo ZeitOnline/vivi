@@ -374,9 +374,9 @@ class TestObjectSequenceWidgetJavascript(zeit.cms.testing.SeleniumTestCase):
         # Need xpath for assertOrdered, sigh.
         element1 = '//li[contains(@class, "element") and @index = 0]'
         element2 = '//li[contains(@class, "element") and @index = 1]'
-        s.assertOrdered(element1, element2)
+        self.assertOrdered(element1, element2)
         s.dragAndDropToObject(element1, element2)
-        s.assertOrdered(element2, element1)
+        self.assertOrdered(element2, element1)
 
     @unittest.expectedFailure
     def test_sorting_should_update_hidden_field_indexes(self):

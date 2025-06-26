@@ -15,6 +15,8 @@ import threading
 import unittest
 import xml.sax.saxutils
 
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.by import By
 import celery.contrib.testing.app
 import celery.contrib.testing.worker
 import gocept.httpserverlayer.custom
@@ -31,6 +33,7 @@ import plone.testing.zca
 import plone.testing.zodb
 import pytest
 import requests
+import selenium.webdriver
 import transaction
 import waitress.server
 import webtest.lint
@@ -65,6 +68,7 @@ class LoggingLayer(plone.testing.Layer):
         logging.getLogger('zeit').setLevel(logging.DEBUG)
         logging.getLogger('zeit.cms.repository').setLevel(logging.INFO)
         logging.getLogger('selenium').setLevel(logging.INFO)
+        logging.getLogger('urllib3').setLevel(logging.INFO)
         logging.getLogger('waitress').setLevel(logging.ERROR)
 
 
@@ -628,12 +632,25 @@ HTTP_LAYER = WSGIServerLayer(name='HTTPLayer', bases=(WSGI_LAYER,))
 
 class WebdriverLayer(gocept.selenium.WebdriverLayer):
     def get_firefox_webdriver_args(self):
-        args = super().get_firefox_webdriver_args()
-        options = args['options']
+        options = selenium.webdriver.FirefoxOptions()
+
+        if self['headless']:
+            options.add_argument('-headless')
+
+        if profile_path := os.environ.get('GOCEPT_WEBDRIVER_FF_PROFILE'):
+            options.set_preference('profile', profile_path)
+
+        # Save downloads always to disk into a predefined dir.
+        options.set_preference('browser.download.folderList', 2)
+        options.set_preference('browser.download.manager.showWhenStarting', False)
+        options.set_preference('browser.download.dir', str(self['selenium_download_dir']))
+        options.set_preference('browser.helperApps.neverAsk.saveToDisk', 'application/pdf')
+        options.set_preference('pdfjs.disabled', True)
+
         # The default 'info' is still way too verbose
         options.log.level = 'error'
-        options.binary = os.environ.get('GOCEPT_WEBDRIVER_FF_BINARY')
-        return args
+        options.binary_location = os.environ.get('GOCEPT_WEBDRIVER_FF_BINARY', '')
+        return {'options': options}
 
     def _stop_selenium(self):
         super()._stop_selenium()
@@ -649,6 +666,33 @@ WD_LAYER = WebdriverLayer(name='WebdriverLayer', bases=(HTTP_LAYER,))
 WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(
     name='WebdriverSeleneseLayer', bases=(WD_LAYER,)
 )
+
+
+def assertOrdered(self, locator1, locator2):
+    if self._find(locator2).id not in {
+        x.id for x in self.selenium.find_elements(By.XPATH, locator1 + '/following-sibling::*')
+    }:
+        raise self.failureException(
+            'Element order did not match expected %r,%r' % (locator1, locator2)
+        )
+
+
+gocept.selenium.wd_selenese.Selenese.assertOrdered = assertOrdered
+
+
+def clickAt(self, locator, coordString):
+    x, y = coordString.split(',')
+    x = int(x)
+    y = int(y)
+    elem = self._find(locator)
+    # selenium-4 switched the reference point for move_to_element to center,
+    # but selenium-3 hat top/left, so we have to calculate the inverse here.
+    x -= int(elem.rect['width'] / 2)
+    y -= int(elem.rect['height'] / 2)
+    ActionChains(self.selenium).move_to_element_with_offset(elem, x, y).click().perform()
+
+
+gocept.selenium.wd_selenese.Selenese.clickAt = clickAt
 
 
 checker = zope.testing.renormalizing.RENormalizing(

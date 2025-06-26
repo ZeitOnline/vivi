@@ -5102,7 +5102,10 @@
         "_id": "{urn:uuid:11ac1d0c-9410-4684-9581-c3d1e6af9fdc}"
       }
     ],
-    "total": 37002,
+    "total": {
+        "value": 37002,
+        "relation": "eq"
+    },
     "max_score": null
   },
   "_shards": {
