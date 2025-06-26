@@ -1,8 +1,7 @@
 import importlib.metadata
 
+import elastic_transport
 import elasticsearch
-import elasticsearch.connection
-import elasticsearch.transport
 import requests.utils
 import zope.dottedname.resolve
 import zope.interface
@@ -13,10 +12,10 @@ import zeit.cms.interfaces
 import zeit.retresco.interfaces
 
 
-class Connection(elasticsearch.connection.RequestsHttpConnection):
+class Connection(elastic_transport.RequestsHttpNode):
     def __init__(self, *args, **kw):
         super().__init__(*args, **kw)
-        self.session.headers['User-Agent'] = self._user_agent()
+        self.headers['User-Agent'] = self._user_agent()
 
     def _user_agent(self):
         return requests.utils.default_user_agent(
@@ -26,10 +25,8 @@ class Connection(elasticsearch.connection.RequestsHttpConnection):
 
 def TransportWithConnection(connection_class):
     def factory(*args, **kw):
-        kw['connection_class'] = connection_class
-        transport = elasticsearch.transport.Transport(*args, **kw)
-        # Bypass version check, we're only talking to known servers anyway.
-        transport._verified_elasticsearch = True
+        kw['node_class'] = connection_class
+        transport = elastic_transport.Transport(*args, **kw)
         return transport
 
     return factory
