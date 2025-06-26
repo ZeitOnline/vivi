@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.125.0 (2025-06-26)
+--------------------
+
+- WCM-960: Ignore elasticsearch server verification, we only talk to known servers
+
+
 7.124.0 (2025-06-26)
 --------------------
 
