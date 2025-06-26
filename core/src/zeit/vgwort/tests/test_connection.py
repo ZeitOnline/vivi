@@ -181,7 +181,7 @@ class HTTPErrorTest(unittest.TestCase):
         time.sleep(1)
         with self.assertRaises(zeit.vgwort.interfaces.TechnicalError) as e:
             list(service.order_pixels(1))
-        self.assertIn('ConnectionError', e.exception.args[0])
+        self.assertIn('Max retries exceeded', e.exception.args[0])
 
 
 class MessageServiceTest(zeit.vgwort.testing.EndToEndTestCase):
