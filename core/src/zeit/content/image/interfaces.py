@@ -325,7 +325,7 @@ class IVariant(zope.interface.Interface):
     max_height = zope.interface.Attribute('Shorthand to access height of max_size')
     fallback_width = zope.interface.Attribute('Shorthand to access width of fallback_size')
     fallback_height = zope.interface.Attribute('Shorthand to access height of fallback_size')
-    relative_image_path = zope.interface.Attribute(
+    relative_thumbnail_path = zope.interface.Attribute(
         'Image path relative to the ImageGroup the Variant lives in'
     )
     is_default = zope.interface.Attribute(
