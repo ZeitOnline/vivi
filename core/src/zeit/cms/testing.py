@@ -666,6 +666,22 @@ WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(
 )
 
 
+def assertOrdered(self, locator1, locator2):
+    if self._find(locator2).id not in {
+        x.id for x in self.selenium.find_elements_by_xpath(locator1 + '/following-sibling::*')
+    }:
+        raise self.failureException(
+            'Element order did not match expected %r,%r' % (locator1, locator2)
+        )
+
+
+def clickAt(self, locator, coordString):
+    x, y = coordString.split(',')
+    ActionChains(self.selenium).move_to_element_with_offset(
+        self._find(locator), int(x), int(y)
+    ).click().perform()
+
+
 checker = zope.testing.renormalizing.RENormalizing(
     [
         (re.compile(r'\d{4} \d{1,2} \d{1,2}  \d\d:\d\d:\d\d'), '<FORMATTED DATE>'),
