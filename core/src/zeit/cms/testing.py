@@ -65,6 +65,7 @@ class LoggingLayer(plone.testing.Layer):
         logging.getLogger('zeit').setLevel(logging.DEBUG)
         logging.getLogger('zeit.cms.repository').setLevel(logging.INFO)
         logging.getLogger('selenium').setLevel(logging.INFO)
+        logging.getLogger('urllib3').setLevel(logging.INFO)
         logging.getLogger('waitress').setLevel(logging.ERROR)
 
 
