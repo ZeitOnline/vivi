@@ -1,0 +1,1 @@
+WCM-960: Ignore elasticsearch server verification, we only talk to known servers

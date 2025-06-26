@@ -40,6 +40,8 @@ class Elasticsearch:
         self.client = elasticsearch.Elasticsearch(
             [url], transport_class=TransportWithConnection(connection_class)
         )
+        # Bypass version check, we're only talking to known servers anyway.
+        self.client._verified_elasticsearch = True
         self.index = index
 
     def search(self, query, start=0, rows=25, include_payload=False):
