@@ -75,10 +75,7 @@ class Elasticsearch:
         __traceback_info__ = (self.index, query)
         response = self.client.search(index=self.index, from_=start, size=rows, **query)
         result = zeit.cms.interfaces.Result([x['_source'] for x in response['hits']['hits']])
-        if isinstance(response['hits']['total'], int):  # BBB ES-2.x
-            result.hits = response['hits']['total']
-        else:
-            result.hits = response['hits']['total']['value']
+        result.hits = response['hits']['total']['value']
         return result
 
     def aggregate(self, query):
