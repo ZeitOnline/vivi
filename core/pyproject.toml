@@ -153,7 +153,7 @@ test = [
     "gocept.httpserverlayer>=1.4.0.dev0",
     "gocept.jasmine",
     "gocept.jslint>=0.2",
-    "gocept.selenium<7.1",  # ZO-3157
+    "gocept.selenium",
     "gocept.testing>=1.4.0.dev0",
     "opentelemetry-exporter-otlp",
     "opentelemetry-sdk",
@@ -165,7 +165,7 @@ test = [
     "pytest-rerunfailures",
     "pytest-xdist",
     "requests-mock",
-    "selenium<4",  # ZO-3157
+    "selenium >= 4.0.0.dev0",
     "time-machine",
     "waitress",
     "webtest",

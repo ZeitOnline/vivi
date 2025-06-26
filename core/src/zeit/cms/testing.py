@@ -15,6 +15,8 @@ import threading
 import unittest
 import xml.sax.saxutils
 
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.by import By
 import celery.contrib.testing.app
 import celery.contrib.testing.worker
 import gocept.httpserverlayer.custom
@@ -647,7 +649,7 @@ class WebdriverLayer(gocept.selenium.WebdriverLayer):
 
         # The default 'info' is still way too verbose
         options.log.level = 'error'
-        options.binary = os.environ.get('GOCEPT_WEBDRIVER_FF_BINARY')
+        options.binary_location = os.environ.get('GOCEPT_WEBDRIVER_FF_BINARY', '')
         return {'options': options}
 
     def _stop_selenium(self):
@@ -668,18 +670,29 @@ WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(
 
 def assertOrdered(self, locator1, locator2):
     if self._find(locator2).id not in {
-        x.id for x in self.selenium.find_elements_by_xpath(locator1 + '/following-sibling::*')
+        x.id for x in self.selenium.find_elements(By.XPATH, locator1 + '/following-sibling::*')
     }:
         raise self.failureException(
             'Element order did not match expected %r,%r' % (locator1, locator2)
         )
 
 
+gocept.selenium.wd_selenese.Selenese.assertOrdered = assertOrdered
+
+
 def clickAt(self, locator, coordString):
     x, y = coordString.split(',')
-    ActionChains(self.selenium).move_to_element_with_offset(
-        self._find(locator), int(x), int(y)
-    ).click().perform()
+    x = int(x)
+    y = int(y)
+    elem = self._find(locator)
+    # selenium-4 switched the reference point for move_to_element to center,
+    # but selenium-3 hat top/left, so we have to calculate the inverse here.
+    x -= int(elem.rect['width'] / 2)
+    y -= int(elem.rect['height'] / 2)
+    ActionChains(self.selenium).move_to_element_with_offset(elem, x, y).click().perform()
+
+
+gocept.selenium.wd_selenese.Selenese.clickAt = clickAt
 
 
 checker = zope.testing.renormalizing.RENormalizing(
