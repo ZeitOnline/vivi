@@ -10,7 +10,9 @@ zeit.content.image.DropMDBWidget = gocept.Class.extend({
         var self = this;
         element = $(document.getElementById(element));
         self.landingzone = $('.landing-zone-candidate', element);
-        self.input = $('input', element);
+        self.input = $('input[type="hidden"]', element);
+        self.id_input = $('input[type="text"]', element);
+        self.id_button = $('button', element);
         element[0].widget = self;  // for tests
 
         element.on('dragenter', function(e) {
@@ -44,6 +46,10 @@ zeit.content.image.DropMDBWidget = gocept.Class.extend({
                 return;
             }
             self.retrieve(mdb_id);
+        });
+
+        self.id_button.on('click', function(e) {
+            self.retrieve(self.id_input.val());
         });
     },
 
