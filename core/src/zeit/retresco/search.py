@@ -70,10 +70,7 @@ class Elasticsearch:
             if include_payload:
                 query['_source'].append('payload')
 
-        # XXX Kludgy heuristics, should we use an explicit "elasticsearch
-        # version" setting instead?
-        if 'cloud.es.io' in self.client.transport.hosts[0]:
-            query['track_total_hits'] = True
+        query['track_total_hits'] = True
 
         __traceback_info__ = (self.index, query)
         response = self.client.search(index=self.index, from_=start, size=rows, **query)
