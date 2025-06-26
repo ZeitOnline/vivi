@@ -9,6 +9,11 @@
          i18n:translate="" i18n:attributes="data-success">
         Drag an MDB image here
     </div>
+    <input type="text" placeholder="MDB-ID eingeben" tal:attributes="
+      id string:${view/name}.id;
+      name string:${view/name}.id;" />
+    <button type="button" class="button">→</button>
+
 </div>
 <script tal:content="string:
 new zeit.content.image.DropMDBWidget('${view/name}');
