@@ -31,6 +31,7 @@ import plone.testing.zca
 import plone.testing.zodb
 import pytest
 import requests
+import selenium.webdriver
 import transaction
 import waitress.server
 import webtest.lint
@@ -634,10 +635,7 @@ class WebdriverLayer(gocept.selenium.WebdriverLayer):
         if self['headless']:
             options.add_argument('-headless')
 
-        profile_path = os.environ.get(
-            'GOCEPT_WEBDRIVER_FF_PROFILE', os.environ.get('GOCEPT_SELENIUM_FF_PROFILE')
-        )
-        if profile_path:
+        if profile_path := os.environ.get('GOCEPT_WEBDRIVER_FF_PROFILE'):
             options.set_preference('profile', profile_path)
 
         # Save downloads always to disk into a predefined dir.
@@ -647,13 +645,10 @@ class WebdriverLayer(gocept.selenium.WebdriverLayer):
         options.set_preference('browser.helperApps.neverAsk.saveToDisk', 'application/pdf')
         options.set_preference('pdfjs.disabled', True)
 
-        args = {'options': options, 'service': FirefoxService(GeckoDriverManager().install())}
-
-        options = args['options']
         # The default 'info' is still way too verbose
         options.log.level = 'error'
         options.binary = os.environ.get('GOCEPT_WEBDRIVER_FF_BINARY')
-        return args
+        return {'options': options}
 
     def _stop_selenium(self):
         super()._stop_selenium()
