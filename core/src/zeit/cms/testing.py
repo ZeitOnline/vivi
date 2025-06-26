@@ -629,7 +629,26 @@ HTTP_LAYER = WSGIServerLayer(name='HTTPLayer', bases=(WSGI_LAYER,))
 
 class WebdriverLayer(gocept.selenium.WebdriverLayer):
     def get_firefox_webdriver_args(self):
-        args = super().get_firefox_webdriver_args()
+        options = selenium.webdriver.FirefoxOptions()
+
+        if self['headless']:
+            options.add_argument('-headless')
+
+        profile_path = os.environ.get(
+            'GOCEPT_WEBDRIVER_FF_PROFILE', os.environ.get('GOCEPT_SELENIUM_FF_PROFILE')
+        )
+        if profile_path:
+            options.set_preference('profile', profile_path)
+
+        # Save downloads always to disk into a predefined dir.
+        options.set_preference('browser.download.folderList', 2)
+        options.set_preference('browser.download.manager.showWhenStarting', False)
+        options.set_preference('browser.download.dir', str(self['selenium_download_dir']))
+        options.set_preference('browser.helperApps.neverAsk.saveToDisk', 'application/pdf')
+        options.set_preference('pdfjs.disabled', True)
+
+        args = {'options': options, 'service': FirefoxService(GeckoDriverManager().install())}
+
         options = args['options']
         # The default 'info' is still way too verbose
         options.log.level = 'error'
