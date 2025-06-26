@@ -20,7 +20,7 @@ def add_image(browser, name):
         'image/jpeg',
         name,
     )
-    browser.getControl(name='form.copyright.combination_00').value = 'ZEIT ONLINE'
+    browser.getControl(name='form.copyright.combination_00').value = 'DIE ZEIT'
     browser.getControl(name='form.copyright.combination_01').displayValue = ['dpa']
     browser.getControl(name='form.copyright.combination_03').value = 'http://www.zeit.de/'
     browser.getControl(name='form.actions.add').click()

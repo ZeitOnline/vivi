@@ -55,7 +55,7 @@ class IRessortSection(zope.interface.Interface):
 
 
 class IZONSection(ISection):
-    """Marker for the ZEIT ONLINE section (which is 95% of all content ;-)"""
+    """Marker for the ZEIT section (which is 95% of all content ;-)"""
 
 
 class IZONContent(zeit.cms.interfaces.ICMSContent, ISectionMarker):

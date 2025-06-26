@@ -46,14 +46,10 @@ class TestGalleryStorer(zeit.content.gallery.testing.FunctionalTestCase):
     def test_metadata_from_source_image_is_copied(self):
         entry = self.gallery['01.jpg']
         metadata = zeit.content.image.interfaces.IImageMetadata(entry.image)
-        self.assertEqual(
-            ('ZEIT online', None, None, 'http://www.zeit.de', False), metadata.copyright
-        )
+        self.assertEqual(('DIE ZEIT', None, None, 'http://www.zeit.de', False), metadata.copyright)
         pil = PIL.Image.open(entry.image.open())
         zeit.crop.interfaces.IStorer(entry).store('10x10', pil)
 
         entry = self.gallery['01-10x10.jpg']
         metadata = zeit.content.image.interfaces.IImageMetadata(entry.image)
-        self.assertEqual(
-            ('ZEIT online', None, None, 'http://www.zeit.de', False), metadata.copyright
-        )
+        self.assertEqual(('DIE ZEIT', None, None, 'http://www.zeit.de', False), metadata.copyright)

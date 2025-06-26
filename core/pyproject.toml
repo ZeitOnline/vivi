@@ -1,6 +1,6 @@
 [project]
 name = "vivi.core"
-authors = [{ name = "Zeit Online", email = "zon-backend@zeit.de" }]
+authors = [{ name = "DIE ZEIT", email = "zon-backend@zeit.de" }]
 dynamic = ["version"]
 
 dependencies = [

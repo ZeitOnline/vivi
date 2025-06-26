@@ -31,7 +31,7 @@ class ImageGroupHelperMixin:
 
     def fill_copyright_information(self):
         b = self.browser
-        b.getControl(name='form.copyright.combination_00').value = 'ZEIT ONLINE'
+        b.getControl(name='form.copyright.combination_00').value = 'DIE ZEIT'
         b.getControl(name='form.copyright.combination_01').displayValue = ['dpa']
         b.getControl(name='form.copyright.combination_03').value = 'http://www.zeit.de/'
 

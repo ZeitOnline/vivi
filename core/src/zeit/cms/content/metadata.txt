@@ -56,7 +56,7 @@ Setting normal values:
 >>> content.product.id
 'ZEDE'
 >>> content.product.title
-'Zeit Online'
+'Online'
 >>> properties[('product-id', 'http://namespaces.zeit.de/CMS/workflow')]
 'ZEDE'
 
