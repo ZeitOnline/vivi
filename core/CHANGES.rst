@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.124.0 (2025-06-26)
+--------------------
+
+- WCM-960: Update to current elasticsearch API
+
+
 7.123.0 (2025-06-26)
 --------------------
 
