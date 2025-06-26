@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.123.0 (2025-06-26)
+--------------------
+
+- WCM-933: Calculate variant preview images in editor directly from the source image without an intermediary thumbnail
+
+- WCM-940: Add explicit input field for MDB ID
+
+
 7.122.0 (2025-06-24)
 --------------------
 
