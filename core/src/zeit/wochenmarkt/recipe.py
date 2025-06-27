@@ -5,6 +5,7 @@ import zope.schema
 from zeit.cms.i18n import MessageFactory as _
 from zeit.wochenmarkt.sources import ingredientsSource, recipeCategoriesSource
 import zeit.cms.checkout.interfaces
+import zeit.cms.content.dav
 import zeit.content.article.interfaces
 
 
@@ -74,7 +75,8 @@ def update_recipes_of_article(context, event):
     ingredients = set()
 
     info = IRecipeArticle(context)
-    categories = list(info.categories)
+    categories = _categories(info)
+
     for recipe in recipes:
         if recipe.title:
             titles.append(recipe.title)
@@ -91,6 +93,19 @@ def update_recipes_of_article(context, event):
     info.titles = titles or None  # XXX kludgy, revisit with WCM-601
     info.ingredients = ingredients or None
     info.categories = categories
+
+
+def _categories(info):
+    # Only preserve categories independent of recipe module
+    categories = list()
+    for category in info.categories:
+        if category.id.startswith('complexity'):
+            continue
+        elif category.id.startswith('time'):
+            continue
+        else:
+            categories.append(category)
+    return categories
 
 
 def _categorize_by_ingredients_diet(ingredients):
