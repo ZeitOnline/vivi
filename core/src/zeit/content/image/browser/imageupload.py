@@ -1,4 +1,5 @@
 from collections.abc import Iterable
+import urllib.parse
 import uuid
 
 from zeit.cms.i18n import MessageFactory as _
@@ -33,10 +34,15 @@ class UploadForm(zeit.cms.browser.view.Base):
         files = self.request.form['files']
         if not isinstance(files, Iterable):
             files = (files,)
+        results = []
         for file in files:
-            self._upload_imagegroup(file, target)
+            results.append(self._upload_imagegroup(file, target))
 
-        url = self.url(target)
+        url = (
+            self.url(target, '@@edit-images')
+            + '?'
+            + urllib.parse.urlencode((('files', results),), doseq=True)
+        )
         self.redirect(url, status=303)
 
     def _upload_imagegroup(self, file, parent):
@@ -54,3 +60,4 @@ class UploadForm(zeit.cms.browser.view.Base):
         for image in form.images:
             if image is not None:
                 imagegroup[image.__name__] = image
+        return name

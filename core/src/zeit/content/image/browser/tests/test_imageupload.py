@@ -35,8 +35,9 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
             ],
         )
         b.getForm(name='imageupload').submit()
-        assert b.url.endswith('/2007/01')
-        # FIXME Redirect to multi-edit
+        folder = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01')
+        img = next(x for x in folder.values() if 'tmp' in x.uniqueId)
+        assert b.url.endswith('/2007/01/@@edit-images?files=' + img.__name__)
 
     def test_redirects_after_upload_in_folder(self):
         b = self.browser
@@ -53,8 +54,9 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
             ],
         )
         b.getForm(name='imageupload').submit()
-        assert b.url.endswith('/2007/01')
-        # FIXME Redirect to multi-edit
+        folder = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01')
+        img = next(x for x in folder.values() if 'tmp' in x.uniqueId)
+        assert b.url.endswith('/2007/01/@@edit-images?files=' + img.__name__)
 
     def test_can_upload_image(self):
         b = self.browser
