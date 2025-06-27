@@ -35,7 +35,7 @@ class TestImage(zeit.content.image.testing.BrowserTestCase):
         menu = b.getControl(name='add_menu')
         menu.displayValue = ['Image (single)']
         b.open(menu.value[0])
-        b.getControl(name='form.copyright.combination_00').value = 'ZEIT ONLINE'
+        b.getControl(name='form.copyright.combination_00').value = 'DIE ZEIT'
         b.getControl(name='form.copyright.combination_01').displayValue = ['dpa']
         b.getControl(name='form.copyright.combination_03').value = 'http://www.zeit.de/'
 
@@ -51,7 +51,7 @@ class TestImage(zeit.content.image.testing.BrowserTestCase):
         menu = b.getControl(name='add_menu')
         menu.displayValue = ['Image (single)']
         b.open(menu.value[0])
-        b.getControl(name='form.copyright.combination_00').value = 'ZEIT ONLINE'
+        b.getControl(name='form.copyright.combination_00').value = 'DIE ZEIT'
         b.getControl(name='form.copyright.combination_01').displayValue = ['dpa']
         b.getControl(name='form.copyright.combination_03').value = 'http://www.zeit.de/'
 
@@ -67,7 +67,7 @@ class TestImage(zeit.content.image.testing.BrowserTestCase):
         menu = b.getControl(name='add_menu')
         menu.displayValue = ['Image (single)']
         b.open(menu.value[0])
-        b.getControl(name='form.copyright.combination_00').value = 'ZEIT ONLINE'
+        b.getControl(name='form.copyright.combination_00').value = 'DIE ZEIT'
         b.getControl(name='form.copyright.combination_01').displayValue = ['dpa']
         b.getControl(name='form.copyright.combination_03').value = 'http://www.zeit.de/'
 
@@ -84,7 +84,7 @@ class TestImage(zeit.content.image.testing.BrowserTestCase):
         menu = b.getControl(name='add_menu')
         menu.displayValue = ['Image (single)']
         b.open(menu.value[0])
-        b.getControl(name='form.copyright.combination_00').value = 'ZEIT ONLINE'
+        b.getControl(name='form.copyright.combination_00').value = 'DIE ZEIT'
         b.getControl(name='form.copyright.combination_01').displayValue = ['dpa']
         b.getControl(name='form.copyright.combination_03').value = 'http://www.zeit.de/'
 

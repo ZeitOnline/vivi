@@ -381,7 +381,7 @@ copied to the article. To see this, set a copyright and a BU for the image:
 >>> import zeit.cms.checkout.interfaces
 >>> image = zeit.cms.checkout.interfaces.ICheckoutManager(image).checkout()
 >>> metadata = zeit.content.image.interfaces.IImageMetadata(image)
->>> metadata.copyrights = (('ZEIT ONLINE', 'http://zeit.de'))
+>>> metadata.copyrights = (('DIE ZEIT', 'http://zeit.de'))
 >>> metadata.caption = 'Cap cap cap'
 >>> image = zeit.cms.checkout.interfaces.ICheckinManager(image).checkin()
 

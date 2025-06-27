@@ -95,7 +95,7 @@ Fill out some values:
 >>> browser.getControl('Image sub text').value = 'Tanz beim Opernball'
 >>> browser.getControl('Links to').value = 'http://www.zeit.de'
 >>> browser.getControl(name='form.copyright.combination_00').value = (
-...     'ZEIT ONLINE')
+...     'DIE ZEIT')
 >>> browser.getControl(name='form.copyright.combination_01').displayValue = (
 ...     ['dpa'])
 >>> browser.getControl(name='form.copyright.combination_03').value = (
@@ -173,7 +173,7 @@ Make sure the image is not changed by looking at the image view:
   ...
   <ol class="image-copyright">
     <li>
-      ZEIT ONLINE /
+      DIE ZEIT /
       dpa
       (<a href="http://www.zeit.de/">http://www.zeit.de/</a>)
     </li>
@@ -221,7 +221,7 @@ The image file is required:
 >>> browser.getControl(name='form.copyright.combination_01').displayValue = (
 ...     ['dpa'])
 >>> browser.getControl(name='form.copyright.combination_00').value = (
-...     'ZEIT ONLINE')
+...     'DIE ZEIT')
 
 >>> browser.getControl(name='form.actions.add').click()
 >>> print(browser.contents)
@@ -331,7 +331,7 @@ Lets create an image group:
 >>> browser.getControl("File name").value = 'new-hampshire'
 >>> browser.getControl('Image title').value = 'New Hampshire'
 >>> browser.getControl(name='form.copyright.combination_00').value = (
-...     'ZEIT ONLINE')
+...     'DIE ZEIT')
 >>> browser.getControl(name='form.copyright.combination_01').displayValue = (
 ...     ['dpa'])
 

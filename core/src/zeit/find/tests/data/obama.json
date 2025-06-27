@@ -171,7 +171,7 @@
               "tldr_milestone": false,
               "comments": true,
               "minimal_header": false,
-              "copyrights": "ZEIT ONLINE, AP, AFP, dpa, st\u00fc, ces",
+              "copyrights": "DIE ZEIT, AP, AFP, dpa, st\u00fc, ces",
               "template": "zon-article",
               "color_scheme": "Redaktion",
               "overscrolling": true,
@@ -1297,7 +1297,7 @@
               "tldr_milestone": false,
               "comments": true,
               "minimal_header": false,
-              "copyrights": "ZEIT ONLINE, AP, dpa, ces",
+              "copyrights": "DIE ZEIT, AP, dpa, ces",
               "template": "zon-article",
               "color_scheme": "Redaktion",
               "overscrolling": true,
@@ -1607,7 +1607,7 @@
               "product-id": "ZEDE",
               "published": true,
               "refined": "no",
-              "product-name": "ZEIT ONLINE"
+              "product-name": "DIE ZEIT"
             },
             "vivi": {
               "cms_icon": "/@@/zeit-content-cp-interfaces-ICenterPage-zmi_icon.png",
@@ -1631,7 +1631,7 @@
               "type": "manualtopic"
             },
             "tagging": {
-              "keywords": "<ns0:rankedTags xmlns:ns0=\"http://namespaces.zeit.de/CMS/tagging\"><ns0:rankedTags><tag type=\"person\">Silvio Berlusconi</tag><tag type=\"person\">Manuel Silvestri</tag><tag type=\"person\">Barack Obama</tag><tag type=\"person\">Matteo Renzi Tony Gentile Matteo Salvini</tag><tag type=\"person\">Ulrich Ladurner</tag><tag type=\"person\">Roberto Saviano</tag><tag type=\"person\">Matteo Renzi</tag><tag type=\"person\">Tony Gentile Matteo Salvini</tag><tag type=\"person\">Matteo Salvini</tag><tag type=\"location\">Italien</tag><tag type=\"location\">Santa Maria</tag><tag type=\"location\">Venice</tag><tag type=\"location\">Italy</tag><tag type=\"location\">Rom</tag><tag type=\"location\">Lombardei</tag><tag type=\"location\">Venetien</tag><tag type=\"organisation\">Reuters</tag><tag type=\"organisation\">Zeit Online</tag><tag type=\"organisation\">EU</tag><tag type=\"organisation\">Lega Nord</tag><tag type=\"keyword\">Neuwahl</tag><tag type=\"keyword\">Erdbeben</tag></ns0:rankedTags></ns0:rankedTags>"
+              "keywords": "<ns0:rankedTags xmlns:ns0=\"http://namespaces.zeit.de/CMS/tagging\"><ns0:rankedTags><tag type=\"person\">Silvio Berlusconi</tag><tag type=\"person\">Manuel Silvestri</tag><tag type=\"person\">Barack Obama</tag><tag type=\"person\">Matteo Renzi Tony Gentile Matteo Salvini</tag><tag type=\"person\">Ulrich Ladurner</tag><tag type=\"person\">Roberto Saviano</tag><tag type=\"person\">Matteo Renzi</tag><tag type=\"person\">Tony Gentile Matteo Salvini</tag><tag type=\"person\">Matteo Salvini</tag><tag type=\"location\">Italien</tag><tag type=\"location\">Santa Maria</tag><tag type=\"location\">Venice</tag><tag type=\"location\">Italy</tag><tag type=\"location\">Rom</tag><tag type=\"location\">Lombardei</tag><tag type=\"location\">Venetien</tag><tag type=\"organisation\">Reuters</tag><tag type=\"organisation\">DIE ZEIT</tag><tag type=\"organisation\">EU</tag><tag type=\"organisation\">Lega Nord</tag><tag type=\"keyword\">Neuwahl</tag><tag type=\"keyword\">Erdbeben</tag></ns0:rankedTags></ns0:rankedTags>"
             }
           }
         },
@@ -1936,7 +1936,7 @@
               "tldr_milestone": false,
               "comments": true,
               "minimal_header": false,
-              "copyrights": "ZEIT ONLINE, dpa, AFP, AP, ts, lu",
+              "copyrights": "DIE ZEIT, dpa, AFP, AP, ts, lu",
               "template": "zon-article",
               "color_scheme": "Redaktion",
               "overscrolling": true,
@@ -3038,7 +3038,7 @@
             },
             "tagging": {
               "keywords": "<ns0:rankedTags xmlns:ns0=\"http://namespaces.zeit.de/CMS/tagging\"><ns0:rankedTags><tag type=\"keyword\">Menschenrechte</tag><tag type=\"person\">Florian Irminger</tag><tag type=\"organisation\">Generalversammlung der Vereinten Nationen</tag><tag type=\"keyword\">US-Regierung</tag><tag type=\"person\">Donald Trump</tag><tag type=\"keyword\">Menschenrechtsverletzung</tag><tag type=\"person\">Barack Obama</tag><tag type=\"location\">USA</tag><tag type=\"location\">Amerika</tag><tag type=\"location\">Genf</tag><tag type=\"organisation\">UN</tag></ns0:rankedTags></ns0:rankedTags>",
-              "disabled": "organisation\u2603Zeit Online\tperson\u2603Nicky Haley\tperson\u2603John Bolton\tlocation\u2603Venezuela\tlocation\u2603Schweiz"
+              "disabled": "organisation\u2603DIE ZEIT\tperson\u2603Nicky Haley\tperson\u2603John Bolton\tlocation\u2603Venezuela\tlocation\u2603Schweiz"
             }
           }
         },
@@ -3808,7 +3808,7 @@
               "tldr_milestone": false,
               "comments": true,
               "minimal_header": false,
-              "copyrights": "ZEIT ONLINE, dpa, spo",
+              "copyrights": "DIE ZEIT, dpa, spo",
               "template": "zon-article",
               "color_scheme": "Redaktion",
               "overscrolling": true,
@@ -4413,7 +4413,7 @@
               "tldr_milestone": false,
               "comments": true,
               "minimal_header": false,
-              "copyrights": "ZEIT ONLINE, afp, kat",
+              "copyrights": "DIE ZEIT, afp, kat",
               "template": "zon-article",
               "color_scheme": "Redaktion",
               "overscrolling": true,
@@ -4520,7 +4520,7 @@
               "previous_uniqueIds": [
                 "http://xml.zeit.de/sport/2018-06/c574e8f5-88d6-40dd-b97f-dabc84742baf.tmp"
               ],
-              "copyrights": "ZEIT ONLINE",
+              "copyrights": "DIE ZEIT",
               "template": "zon-article",
               "color_scheme": "Redaktion",
               "memo": "ps: ich hab in der ersten Zeile 'diesem pubert\u00e4ren Pr\u00e4sidenten' rausgenommen, bin nicht ganz sicher wie ihr das im Sport haltet... \nund zu Infantinos Mobbing f\u00e4nde ich noch eine Erl\u00e4uterung gut, habe dazu aber nichts gefunden. ",

@@ -65,7 +65,7 @@ class TestSearch(zeit.cms.testing.SeleniumTestCase):
         s = self.selenium
         s.click('id=extended_search_button')
         s.waitForVisible('id=extended_search')
-        s.select('name=product', 'Zeit Online')
+        s.select('name=product', 'Online')
         s.type('name=author', 'foo')
         s.select('name=sort_order', 'Datum')
         s.click('id=type_search_button')
@@ -78,7 +78,7 @@ class TestSearch(zeit.cms.testing.SeleniumTestCase):
         self.selenium.waitForElementPresent('css=div.no_search_result')
         # The extended_search is already visible as its state is restored, too.
         s.waitForVisible('id=extended_search')
-        s.verifySelectedLabel('name=product', 'Zeit Online')
+        s.verifySelectedLabel('name=product', 'Online')
         s.verifyValue('name=author', 'foo')
         s.verifySelectedLabel('name=sort_order', 'Datum')
         s.verifyChecked('id=search-type-testcontenttype')

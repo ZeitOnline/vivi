@@ -44,13 +44,13 @@ class SourceAPI(zeit.cms.testing.ZeitCmsBrowserTestCase):
         b = self.browser
         b.open('http://localhost/@@source?name=zeit.cms.content.sources.ProductSource')
         data = json.loads(b.contents)
-        self.assertIn({'id': 'ZEDE', 'title': 'Zeit Online'}, data)
+        self.assertIn({'id': 'ZEDE', 'title': 'Online'}, data)
 
     def test_allows_configuring_short_names(self):
         b = self.browser
         b.open('http://localhost/@@source?name=product')
         data = json.loads(b.contents)
-        self.assertIn({'id': 'ZEDE', 'title': 'Zeit Online'}, data)
+        self.assertIn({'id': 'ZEDE', 'title': 'Online'}, data)
 
     def test_serializes_subressorts(self):
         b = self.browser

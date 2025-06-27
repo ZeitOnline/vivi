@@ -47,7 +47,7 @@
 
   <cpextra for="zeit.content.cp.interfaces.IArea"
            id="homepage_news">
-    Neu auf Zeit Online
+    Neu bei der ZEIT
   </cpextra>
 
   <cpextra
@@ -69,7 +69,7 @@
   <cpextra
     for="zeit.content.cp.interfaces.IArea"
     id="homepage_news_pics">
-    Neu auf Zeit Online (Bilder)
+    Neu bei der ZEIT (Bilder)
   </cpextra>
 
   <cpextra for="zeit.content.cp.interfaces.IArea"

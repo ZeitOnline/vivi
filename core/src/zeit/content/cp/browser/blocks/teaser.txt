@@ -98,7 +98,7 @@ Then we need to create a test 'article' to be included in this CenterPage:
 >>> browser.getControl('Teaser title').value = 'Foreign teaser'
 >>> browser.getControl('Title').value = 'Auf den Spuren der Elfen'
 >>> browser.getControl('Year').value = '2007'
->>> browser.getControl('Copyright (c)').value = 'ZEIT ONLINE'
+>>> browser.getControl('Copyright (c)').value = 'DIE ZEIT'
 >>> browser.getControl('Ressort').displayValue = ['Reisen']
 >>> browser.getControl('Apply').click()
 >>> browser.getLink('Checkin').click()
