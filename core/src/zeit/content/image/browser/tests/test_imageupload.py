@@ -1,3 +1,5 @@
+import re
+
 import webtest.forms
 
 from zeit.content.image.testing import fixture_bytes
@@ -117,6 +119,29 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
         assert len(images) == 2
         for img in images:
             assert zeit.content.image.interfaces.IImageGroup.providedBy(img)
+
+    def test_redirects_after_multi_upload(self):
+        b = self.browser
+        b.open('/repository/online/2007/01/Somalia/@@upload-images')
+        file_input = b.getControl(name='files')
+        add_file_multi(
+            file_input,
+            [
+                (
+                    fixture_bytes('new-hampshire-450x200.jpg'),
+                    'new-hampshire-450x200.jpg',
+                    'image/jpg',
+                ),
+                (fixture_bytes('opernball.jpg'), 'opernball.jpg', 'image/jpg'),
+            ],
+        )
+        b.getForm(name='imageupload').submit()
+        folder = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01')
+        images = tuple(x for x in folder.values() if 'tmp' in x.uniqueId)
+        # We don't know the exact order of the url params
+        assert '/2007/01/@@edit-images?files=' in b.url
+        assert re.search('[&?]files=' + re.escape(images[0].__name__) + '(&|$)', b.url)
+        assert re.search('[&?]files=' + re.escape(images[1].__name__) + '(&|$)', b.url)
 
     def test_huge_image_is_resized(self):
         b = self.browser

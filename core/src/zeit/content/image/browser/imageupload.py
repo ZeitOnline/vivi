@@ -34,9 +34,11 @@ class UploadForm(zeit.cms.browser.view.Base):
         files = self.request.form['files']
         if not isinstance(files, Iterable):
             files = (files,)
+
         results = []
         for file in files:
-            results.append(self._upload_imagegroup(file, target))
+            result = self._upload_imagegroup(file, target)
+            results.append(result)
 
         url = (
             self.url(target, '@@edit-images')
@@ -61,3 +63,7 @@ class UploadForm(zeit.cms.browser.view.Base):
             if image is not None:
                 imagegroup[image.__name__] = image
         return name
+
+
+class EditForm(zeit.cms.browser.view.Base):
+    pass
