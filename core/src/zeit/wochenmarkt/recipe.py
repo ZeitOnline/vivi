@@ -75,7 +75,8 @@ def update_recipes_of_article(context, event):
     ingredients = set()
 
     info = IRecipeArticle(context)
-    categories = list(info.categories)
+    categories = [x for x in info.categories if x.flag != 'no-search']
+
     for recipe in recipes:
         if recipe.title:
             titles.append(recipe.title)
