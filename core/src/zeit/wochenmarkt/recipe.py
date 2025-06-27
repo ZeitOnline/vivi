@@ -5,6 +5,7 @@ import zope.schema
 from zeit.cms.i18n import MessageFactory as _
 from zeit.wochenmarkt.sources import ingredientsSource, recipeCategoriesSource
 import zeit.cms.checkout.interfaces
+import zeit.cms.content.dav
 import zeit.content.article.interfaces
 
 
