@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.126.0 (2025-06-27)
+--------------------
+
+- WCM-911: ZEIT ONLINE -> DIE ZEIT
+
+
 7.125.0 (2025-06-26)
 --------------------
 
