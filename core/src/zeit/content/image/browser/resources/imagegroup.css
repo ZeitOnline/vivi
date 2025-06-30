@@ -42,6 +42,10 @@
   top: 33px;
 }
 
+#form\.mdb_blob\.id {
+    margin-top: 1em;
+}
+
 /* XXX Unsure what the purpose is of the rule in cms_widgets.css, but it's too
    global to just remove it. */
 .field.fieldname-mdb_blob button {
