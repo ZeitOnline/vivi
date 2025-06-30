@@ -55,6 +55,12 @@ class PodcastSourceTest(FunctionalTestCase):
         assert images.fill_color == 'e5ded8', (
             'Fill color should match color audio/tests/fixtures/podcasts.xml'
         )
+        podcast = zeit.content.audio.interfaces.IPodcastEpisodeInfo(audio).podcast
+        images = zeit.content.image.interfaces.IImages(podcast)
+        assert images.image.uniqueId == 'http://xml.zeit.de/2006/DSC00109_2.JPG'
+        assert images.fill_color == 'e5ded8', (
+            'Fill color should match color audio/tests/fixtures/podcasts.xml'
+        )
 
 
 class WorkflowTest(FunctionalTestCase):
