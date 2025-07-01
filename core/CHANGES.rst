@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.127.0 (2025-07-01)
+--------------------
+
+- WCM-959: Do not add categories during checkout which depend on the recipe module and might have changed during edit
+
+- WCM-950: get podcast image cover directly from podcast object same way as audio object
+
+
 7.126.0 (2025-06-27)
 --------------------
 
