@@ -5,6 +5,7 @@ import zope.schema
 from zeit.cms.i18n import MessageFactory as _
 from zeit.wochenmarkt.sources import ingredientsSource, recipeCategoriesSource
 import zeit.cms.checkout.interfaces
+import zeit.cms.content.dav
 import zeit.content.article.interfaces
 
 
@@ -74,7 +75,8 @@ def update_recipes_of_article(context, event):
     ingredients = set()
 
     info = IRecipeArticle(context)
-    categories = list(info.categories)
+    categories = [x for x in info.categories if x.flag != 'no-search']
+
     for recipe in recipes:
         if recipe.title:
             titles.append(recipe.title)

@@ -53,6 +53,22 @@ class RecipeArticle(zeit.wochenmarkt.testing.FunctionalTestCase):
         )
 
     def test_recipe_special_categories_are_updated(self):
+        with checked_out(self.repository['article']):
+            pass
+        recipe = IRecipeArticle(self.repository['article'])
+        categories = [category.id for category in recipe.categories]
+        self.assertEqual(
+            [
+                'complexity-easy',
+                'complexity-hard',
+                'pastagerichte',
+                'time-30min',
+                'time-90min',
+                'wurstiges',
+            ],
+            sorted(categories),
+        )
+
         with checked_out(self.repository['article']) as co:
             recipelist = co.body.filter_values(zeit.content.modules.interfaces.IRecipeList)
             for recipe in recipelist:
