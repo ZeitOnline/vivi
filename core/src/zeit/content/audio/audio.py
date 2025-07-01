@@ -6,7 +6,7 @@ import zope.interface
 
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.interfaces import AUDIO_SCHEMA_NS
-from zeit.content.audio.interfaces import IAudio, IPodcastEpisodeInfo, ISpeechInfo
+from zeit.content.audio.interfaces import IAudio, IPodcast, IPodcastEpisodeInfo, ISpeechInfo
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
 import zeit.cms.content.metadata
@@ -77,31 +77,24 @@ class AudioType(zeit.cms.type.XMLContentTypeDeclaration):
 @grok.implementer(zeit.content.image.interfaces.IImages)
 def audio_image(context):
     if context.audio_type == 'podcast':
-        return PodcastImage(context)
+        info = IPodcastEpisodeInfo(context)
+        if info.podcast:
+            return zeit.content.image.interfaces.IImages(info.podcast)
     return zeit.content.image.imagereference.ImagesAdapter(context)
 
 
-@zope.interface.implementer(zeit.content.image.interfaces.IImages)
-class PodcastImage:
-    def __init__(self, context):
-        self.context = context
-
-    def _get_podcast(self):
-        if self.context.audio_type == 'podcast':
-            info = IPodcastEpisodeInfo(self.context)
-            return info.podcast
+@grok.implementer(zeit.content.image.interfaces.IImages)
+class PodcastImage(grok.Adapter):
+    grok.context(IPodcast)
 
     @property
     def fill_color(self):
-        podcast = self._get_podcast()
-        if podcast:
-            return podcast.color
+        return self.context.color
 
     @property
     def image(self):
-        podcast = self._get_podcast()
-        if podcast and podcast.image:
-            return zeit.cms.interfaces.ICMSContent(podcast.image, None)
+        if self.context.image:
+            return zeit.cms.interfaces.ICMSContent(self.context.image, None)
 
 
 @grok.implementer(ISpeechInfo)

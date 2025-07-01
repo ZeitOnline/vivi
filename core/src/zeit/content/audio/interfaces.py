@@ -69,6 +69,7 @@ class IPodcast(zope.interface.Interface):
     rss_image = zope.schema.URI(title=_('rss_image'))
 
 
+@zope.interface.implementer(IPodcast)
 class Podcast(zeit.cms.content.sources.AllowedBase):
     def __init__(
         self,
