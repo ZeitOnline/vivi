@@ -26,6 +26,10 @@ def asset_path(*parts):
     return os.path.join(HERE, 'tests', 'data', *parts)
 
 
+with open(asset_path('entries.json')) as f:
+    DPA_ENTRIES = json.load(f)
+
+
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
     {
         'weblines-url': 'http://dpa_api_test.com',
@@ -45,11 +49,10 @@ class DPALayer(plone.testing.Layer):
     module = None
 
     url = 'http://dpa_api_test.com'
-    dpa_entries = json.load(open(asset_path('entries.json')))
 
     def setUp(self):
         logging.getLogger('zeit.newsimport.news').setLevel(logging.INFO)
-        self['entries'] = copy.deepcopy(self.dpa_entries)
+        self['entries'] = copy.deepcopy(DPA_ENTRIES)
         self['dpa_api_mock'] = r_mock = requests_mock.Mocker()
         self['dpa_api_get'] = r_mock.register_uri(
             'GET', '{}/entries.json'.format(self.url), json=copy.deepcopy(self['entries'])
@@ -65,7 +68,7 @@ class DPALayer(plone.testing.Layer):
         del self['dpa_api_mock']
 
     def testSetUp(self):
-        self['entries'] = copy.deepcopy(self.dpa_entries)
+        self['entries'] = copy.deepcopy(DPA_ENTRIES)
 
 
 DPA_LAYER = DPALayer(name='DPALayer', bases=(ZOPE_LAYER,))
@@ -79,13 +82,12 @@ class DPAMockLayer(plone.testing.Layer):
     name = 'DPAMockLayer'
     module = None
 
-    dpa_entries = json.load(open(asset_path('entries.json')))
     image = asset_path('urn_newsml_dpa.com_20090101_220202-99-942804-v3-s2048.jpeg')
 
     def setUp(self):
         logging.getLogger('zeit.newsimport.news').setLevel(logging.INFO)
         registry = zope.component.getGlobalSiteManager()
-        self['dpa_entries'] = copy.deepcopy(self.dpa_entries)
+        self['dpa_entries'] = copy.deepcopy(DPA_ENTRIES)
         self['dpa_mock'] = mock.Mock()
         self['dpa_mock'].get_entries.side_effect = lambda *args, **kw: self['dpa_entries'][
             'entries'
@@ -112,7 +114,7 @@ class DPAMockLayer(plone.testing.Layer):
                 image_bytes = fd.read()
             return image_bytes
 
-        self['dpa_entries'] = copy.deepcopy(self.dpa_entries)
+        self['dpa_entries'] = copy.deepcopy(DPA_ENTRIES)
 
         image_entry = self['dpa_entries']['entries'][-1]['associations'][0]
         self['image_server_mock'] = r_mock = requests_mock.Mocker()
