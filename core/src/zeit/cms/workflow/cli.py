@@ -55,6 +55,8 @@ def tasks():
             continue
 
         payload = _publisher_payload(content, options.action, options.services)
+        if set(payload) == {'uniqueId', 'uuid'}:
+            continue
         action = 'update' if options.action == 'publish' else options.action
         payload = {
             k if k in ('uniqueId', 'uuid') else f'{action}_{k}': v for k, v in payload.items()
