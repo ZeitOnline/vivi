@@ -14,6 +14,7 @@ import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.content.image.browser.imagegroup
 import zeit.content.image.image
+import zeit.content.image.interfaces
 
 
 class UploadForm(zeit.cms.browser.view.Base, zeit.content.image.browser.form.CreateImageMixin):
@@ -71,6 +72,33 @@ class EditForm(zeit.cms.browser.view.Base):
     # FIXME: Translations
     title = _('Edit images')
 
+    def __call__(self):
+        if self.request.method == 'POST':
+            return self.handle_post()
+        return super().__call__()
+
+    def handle_post(self):
+        index = 0
+        renamer = zope.copypastemove.interfaces.IContainerItemRenamer(self.context)
+        while f'cur_name[{index}]' in self.request.form:
+            cur_name = self.request.form[f'cur_name[{index}]']
+            name = self.request.form[f'name[{index}]']
+            renamer.renameItem(cur_name, name)
+            with zeit.cms.checkout.helper.checked_out(self.context[name]) as imagegroup:
+                if imagegroup is not None:
+                    metadata = zeit.content.image.interfaces.IImageMetadata(imagegroup)
+                    metadata.copyright = (
+                        None,
+                        None,
+                        self.request.form[f'copyright[{index}]'],
+                        None,
+                        False,
+                    )
+                    metadata.title = self.request.form[f'title[{index}]']
+                    metadata.caption = self.request.form[f'caption[{index}]']
+            index += 1
+        self.redirect(self.url(name=''), status=303)
+
     def rows(self):
         from_name = self.request.form.get('from', None)
         filenames = self.request.form.get('files', ())
@@ -109,7 +137,7 @@ class EditForm(zeit.cms.browser.view.Base):
                             ),
                         )
                     ),
-                    'description': data.get('description', {})
+                    'caption': data.get('description', {})
                     .get('Alt', {})
                     .get('li', {})
                     .get('text', ''),
