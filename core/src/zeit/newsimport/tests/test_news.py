@@ -49,7 +49,7 @@ class TestNews(zeit.newsimport.testing.FunctionalTestCase):
         table = etree.tostring(
             article.body.xml.find('division/box'), pretty_print=True, encoding='unicode'
         )
-        self.assertEllipsis('...Tabellen&amp;#xFC;berschrift...', table)
+        self.assertEllipsis('...Tabellenüberschrift...', table)
         self.assertEllipsis('...<subtitle>&lt;table...', table)
         self.assertEllipsis('...&lt;td&gt;foo&lt;/td&gt;...', table)
 
