@@ -1,6 +1,7 @@
 import requests_mock
 import zope.component
 
+from zeit.cms.checkout.helper import checked_out
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.workflow.interfaces import IPublish, IPublisher, IPublishInfo
 import zeit.cms.config
@@ -65,6 +66,19 @@ class Retract3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             (result,) = response.last_request.json()
             assert 'comments' not in result
         self.assertFalse(IPublishInfo(article).published)
+
+    def test_no_speechbert_if_tts_is_deactivated(self):
+        article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        IPublishInfo(article).published = True
+
+        data_factory = zope.component.getAdapter(
+            article, zeit.workflow.interfaces.IPublisherData, name='speechbert'
+        )
+        assert data_factory.retract_json() == {}
+        with checked_out(article) as co:
+            co.audio_speechbert = False
+
+        assert data_factory.retract_json() is None
 
     def test_speechbert_is_retracted(self):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')

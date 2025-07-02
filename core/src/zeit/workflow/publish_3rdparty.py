@@ -363,6 +363,11 @@ class Speechbert(grok.Adapter, IgnoreMixin):
             payload['series'] = self.context.serie.serienname
         return {k: v for k, v in payload.items() if v}
 
+    def retract_json(self):
+        if self.context.audio_speechbert is False or self.ignore('retract'):
+            return None
+        return {}
+
 
 @grok.implementer(zeit.workflow.interfaces.IPublisherData)
 class TMS(grok.Adapter):
