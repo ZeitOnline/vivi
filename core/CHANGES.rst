@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.128.0 (2025-07-02)
+--------------------
+
+MAINT:
+- Do not send retract request if text to speech player is deactivated
+
+
 7.127.0 (2025-07-01)
 --------------------
 
