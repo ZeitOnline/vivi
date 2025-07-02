@@ -412,7 +412,7 @@
 
   <!-- image upload -->
 
-  <browser:page
+  <gocept:pagelet
     name="upload-images"
     for="zeit.cms.interfaces.ICMSContent"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
@@ -421,7 +421,7 @@
     template="imageupload.upload-images.pt"
     />
 
-  <browser:page
+  <gocept:pagelet
     name="edit-images"
     for="zeit.cms.repository.interfaces.ICollection"
     layer="zeit.cms.browser.interfaces.ICMSLayer"

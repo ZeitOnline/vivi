@@ -1,19 +1,15 @@
-<metal:use-macro use-macro="context/@@standard_macros/page">
-  <metal:data fill-slot="body">
-    <tal:block i18n:domain="zeit.cms">
-      <form action="" method="post">
-        <table class="edit-image-table">
-          <tr><th></th><th>Dateiname</th><th>Copyright</th><th>Titel</th><th>Beschreibung</th></tr>
-          <tr tal:repeat="item view/rows">
-            <td><img tal:attributes="src item/thumbnail"><input type="hidden" tal:attributes="value item/cur_name; name string:cur_name[${repeat/item/index}]" /></td>
-            <td><input tal:attributes="value item/name; name string:name[${repeat/item/index}]"></td>
-            <td><input tal:attributes="value item/copyright; name string:copyright[${repeat/item/index}]"></td>
-            <td><textarea tal:content="item/title" tal:attributes="name string:title[${repeat/item/index}]"></textarea></td>
-            <td><textarea tal:content="item/description" tal:attributes="name string:description[${repeat/item/index}]"></textarea></td>
-          </tr>
-        </table>
-        <p><button>Hochladen</button></p>
-      </form>
-    </tal:block>
-  </metal:data>
-</metal:use-macro>
+<tal:block i18n:domain="zeit.cms">
+  <form action="" method="post">
+    <table class="edit-image-table">
+      <tr><th></th><th>Dateiname</th><th>Copyright</th><th>Titel</th><th>Beschreibung</th></tr>
+      <tr tal:repeat="item view/rows">
+        <td><img tal:attributes="src item/thumbnail"><input type="hidden" tal:attributes="value item/cur_name; name string:cur_name[${repeat/item/index}]" /></td>
+        <td><input tal:attributes="value item/name; name string:name[${repeat/item/index}]"></td>
+        <td><input tal:attributes="value item/copyright; name string:copyright[${repeat/item/index}]"></td>
+        <td><textarea tal:content="item/title" tal:attributes="name string:title[${repeat/item/index}]"></textarea></td>
+        <td><textarea tal:content="item/description" tal:attributes="name string:description[${repeat/item/index}]"></textarea></td>
+      </tr>
+    </table>
+    <p><button>Hochladen</button></p>
+  </form>
+</tal:block>
