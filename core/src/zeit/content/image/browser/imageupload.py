@@ -16,7 +16,7 @@ import zeit.content.image.browser.imagegroup
 import zeit.content.image.image
 
 
-class UploadForm(zeit.cms.browser.view.Base):
+class UploadForm(zeit.cms.browser.view.Base, zeit.content.image.browser.form.CreateImageMixin):
     # FIXME: Translations
     title = _('Upload images')
 
@@ -57,19 +57,13 @@ class UploadForm(zeit.cms.browser.view.Base):
 
     def _upload_imagegroup(self, file, parent):
         imagegroup = zeit.content.image.imagegroup.ImageGroup()
-
-        form = zeit.content.image.browser.imagegroup.AddForm(None, None)
-        form.new_object = imagegroup
-        form.adapters = {}
-        imagegroup = form.create({'master_image_blobs': (file,)})
-
+        image = self.create_image(file)
+        viewport = next(iter(zeit.content.image.interfaces.VIEWPORT_SOURCE))
+        imagegroup.master_images = ((viewport, image.__name__),)
         name = f'{uuid.uuid4()}.tmp'
         zeit.cms.repository.interfaces.IAutomaticallyRenameable(imagegroup).renameable = True
         parent[name] = imagegroup
-
-        for image in form.images:
-            if image is not None:
-                imagegroup[image.__name__] = image
+        imagegroup[image.__name__] = image
         return name
 
 

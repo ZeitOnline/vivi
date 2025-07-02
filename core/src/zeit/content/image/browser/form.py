@@ -44,7 +44,7 @@ class ImageFormBase(zeit.cms.repository.browser.file.FormBase):
         )
 
 
-class CreateImageMixin(zeit.cms.repository.browser.file.FormBase):
+class CreateImageMixin:
     def _reduceToMaxImageSize(self, image):
         self.max_size = int(zeit.cms.config.get('zeit.content.image', 'max-image-size', 4000))
         size = image.getImageSize()
@@ -68,7 +68,7 @@ class CreateImageMixin(zeit.cms.repository.browser.file.FormBase):
             image = zeit.content.image.image.LocalImage()
         if name is None:
             name = getattr(blob, 'filename', '')
-        self.update_file(image, blob)
+        zeit.cms.repository.browser.file.update_file(image, blob)
         image = self._reduceToMaxImageSize(image)
         if name:
             image.__name__ = zeit.cms.interfaces.normalize_filename(name)
