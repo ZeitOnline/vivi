@@ -55,7 +55,7 @@ class UploadForm(zeit.cms.browser.view.Base):
         form.adapters = {}
         imagegroup = form.create({'master_image_blobs': (file,)})
 
-        name = '{0}.tmp'.format(uuid.uuid4())
+        name = f'{uuid.uuid4()}.tmp'
         zeit.cms.repository.interfaces.IAutomaticallyRenameable(imagegroup).renameable = True
         parent[name] = imagegroup
 
