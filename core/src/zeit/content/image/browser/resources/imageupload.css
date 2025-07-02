@@ -9,3 +9,40 @@
   background-color: #f1f4f9;
   flex: 1;
 }
+
+.edit-image-table {
+  width: calc(100% - 8px);
+}
+
+.edit-image-table td,
+.edit-image-table th {
+  padding: 1em 0.2em;
+  vertical-align: top;
+}
+
+.edit-image-table td:first-child {
+  width: 67px;
+}
+
+.edit-image-table img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  object-position: center;
+}
+
+.edit-image-table input,
+.edit-image-table textarea {
+  border: 1px solid #aaa;
+  border-radius: 3px;
+  box-sizing: border-box;
+  padding: 5px;
+  font-family: unset;
+  width: 100%;
+}
+
+.edit-image-table textarea {
+  height: 67px;
+  margin: 0;
+  resize: none;
+}
