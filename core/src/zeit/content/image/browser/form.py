@@ -44,8 +44,8 @@ class ImageFormBase(zeit.cms.repository.browser.file.FormBase):
         )
 
 
-class Resize:
-    def reduceToMaxImageSize(self, image):
+class CreateImageMixin(zeit.cms.repository.browser.file.FormBase):
+    def _reduceToMaxImageSize(self, image):
         self.max_size = int(zeit.cms.config.get('zeit.content.image', 'max-image-size', 4000))
         size = image.getImageSize()
         largest = max(size)
@@ -63,8 +63,19 @@ class Resize:
             image = ImageTransform(image).resize(**resize)
         return image
 
+    def create_image(self, blob, name=None, image=None):
+        if image is None:
+            image = zeit.content.image.image.LocalImage()
+        if name is None:
+            name = getattr(blob, 'filename', '')
+        self.update_file(image, blob)
+        image = self._reduceToMaxImageSize(image)
+        if name:
+            image.__name__ = zeit.cms.interfaces.normalize_filename(name)
+        return image
 
-class AddForm(ImageFormBase, zeit.cms.browser.form.AddForm, Resize):
+
+class AddForm(ImageFormBase, zeit.cms.browser.form.AddForm, CreateImageMixin):
     form_fields = zope.formlib.form.FormFields(
         zeit.content.image.browser.interfaces.IFileAddSchema
     ) + ImageFormBase.form_fields.omit('references', 'external_id')
@@ -73,15 +84,7 @@ class AddForm(ImageFormBase, zeit.cms.browser.form.AddForm, Resize):
     factory = zeit.content.image.image.LocalImage
 
     def create(self, data):
-        image = self.new_object
-        blob = data.pop('blob')
-        self.update_file(image, blob)
-        image = self.reduceToMaxImageSize(image)
-        name = data.pop('__name__')
-        if not name:
-            name = getattr(blob, 'filename', '')
-        if name:
-            image.__name__ = zeit.cms.interfaces.normalize_filename(name)
+        image = self.create_image(data.pop('blob'), data.pop('__name__'), image=self.new_object)
         self.applyChanges(image, data)
         return image
 

@@ -46,7 +46,7 @@ class AddForm(
     FormBase,
     zeit.cms.repository.browser.file.FormBase,
     zeit.cms.browser.form.AddForm,
-    zeit.content.image.browser.form.Resize,
+    zeit.content.image.browser.form.CreateImageMixin,
 ):
     title = _('Add image group')
     factory = zeit.content.image.imagegroup.ImageGroup
@@ -114,7 +114,7 @@ class AddForm(
         group = super().create(data)
 
         # Create images from blobs. Skip missing blobs, i.e. None.
-        self.images = [self.create_image(blob, data) for blob in blobs if blob]
+        self.images = [self.create_image_and_set_attrs(blob, data) for blob in blobs if blob]
 
         # Prefill `master_images` with uploaded images and configure viewport.
         # Viewports should be prefilled sequentially, i.e. primary master image
@@ -146,13 +146,8 @@ class AddForm(
         info = zeit.cms.workflow.interfaces.IPublishInfo(self._created_object)
         info.release_period = release_period
 
-    def create_image(self, blob, data):
-        image = zeit.content.image.image.LocalImage()
-        self.update_file(image, blob)
-        image = self.reduceToMaxImageSize(image)
-        name = getattr(blob, 'filename', '')
-        if name:
-            image.__name__ = zeit.cms.interfaces.normalize_filename(name)
+    def create_image_and_set_attrs(self, blob, data):
+        image = self.create_image(blob)
         zeit.cms.browser.form.apply_changes_with_setattr(
             image, self.form_fields.omit('__name__', 'display_type'), data
         )
