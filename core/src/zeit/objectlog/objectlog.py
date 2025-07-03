@@ -61,6 +61,15 @@ class ObjectLog(persistent.Persistent):
         )
         transaction.savepoint(optimistic=True)
 
+    def copy(self, source_ref, target):
+        source_key = zope.app.keyreference.interfaces.IKeyReference(source_ref, None)
+        source_log = self.get_log(source_key)
+        if not source_log:
+            return
+        target_log = zeit.objectlog.interfaces.ILog(target)
+        for entry in source_log:
+            target_log.log(entry.message, timestamp=entry.time)
+
     def delete(self, object):
         key = zope.app.keyreference.interfaces.IKeyReference(object, None)
         if key is None:
