@@ -3,11 +3,13 @@ import zope.schema
 from zeit.cms.admin.interfaces import IAdjustSemanticPublish
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.content.interfaces import ICommonMetadata
+from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import IPublishInfo
 from zeit.content.image.interfaces import IImages
 from zeit.content.link.link import Link
 import zeit.cms.config
 import zeit.cms.interfaces
+import zeit.objectlog.interfaces
 
 
 def create(content, uniqueId):
@@ -54,3 +56,9 @@ def _adjust_workflow(source, target):
     target_pub.adjust_first_released = source_pub.date_first_released
     target_pub.adjust_semantic_publish = source_pub.date_last_published_semantic
     IPublishInfo(target).urgent = True
+    url = source.uniqueId.replace(
+        zeit.cms.interfaces.ID_NAMESPACE,
+        zeit.cms.config.required('zeit.cms', 'live-prefix'),
+    )
+    log = zeit.objectlog.interfaces.ILog(target)
+    log.log(_('Redirect created for %s', url))
