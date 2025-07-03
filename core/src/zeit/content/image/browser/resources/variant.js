@@ -111,6 +111,8 @@
             if (zoom > 1) { zoom = 1; }
             if (focus_x > 1) { focus_x = 1; }
             if (focus_y > 1) { focus_y = 1; }
+            if (focus_x < 0) { focus_x = 0; }
+            if (focus_y < 0) { focus_y = 0; }
 
             return self.save(
                 {"focus_x": focus_x, "focus_y": focus_y, "zoom": zoom}
