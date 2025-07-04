@@ -83,7 +83,8 @@ class EditForm(zeit.cms.browser.view.Base):
         while f'cur_name[{index}]' in self.request.form:
             cur_name = self.request.form[f'cur_name[{index}]']
             name = self.request.form[f'name[{index}]']
-            renamer.renameItem(cur_name, name)
+            if name != cur_name:
+                renamer.renameItem(cur_name, name)
             with zeit.cms.checkout.helper.checked_out(
                 self.context[name], temporary=False, raise_if_error=True
             ) as imagegroup:

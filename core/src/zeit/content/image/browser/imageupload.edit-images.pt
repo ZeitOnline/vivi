@@ -1,5 +1,5 @@
 <tal:block i18n:domain="zeit.cms">
-  <form action="" method="post">
+  <form action="" method="post" name="edit-images">
     <table class="edit-image-table">
       <tr><th></th><th>Dateiname</th><th>Copyright</th><th>Titel</th><th>Beschreibung</th></tr>
       <tr tal:repeat="item view/rows">
