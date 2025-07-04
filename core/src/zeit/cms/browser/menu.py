@@ -147,3 +147,11 @@ class SecondaryActions(DropDownMenuBase, MenuItemBase):
 
 class GlobalSecondaryActions(DropDownMenuBase, GlobalMenuItem):
     """Menu for global secondary actions."""
+
+
+class Empty(zope.viewlet.manager.ViewletManagerBase):
+    def render(self):
+        return ''
+
+    def update(self):
+        pass

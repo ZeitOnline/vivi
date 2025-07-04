@@ -21,6 +21,8 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
     def test_article_has_images_upload_form(self):
         b = self.browser
         b.open('/repository/online/2007/01/Somalia/@@upload-images')
+        # The "context views/actions" menu is hidden for this view
+        self.assertNotEllipsis('...Checkout...', b.contents)
 
     def test_redirects_after_upload(self):
         b = self.browser

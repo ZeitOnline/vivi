@@ -17,6 +17,7 @@ import zeit.content.image.image
 import zeit.content.image.interfaces
 
 
+@zope.interface.implementer(zeit.cms.browser.interfaces.IHideContextViews)
 class UploadForm(zeit.cms.browser.view.Base, zeit.content.image.browser.form.CreateImageMixin):
     # FIXME: Translations
     title = _('Upload images')
@@ -68,6 +69,7 @@ class UploadForm(zeit.cms.browser.view.Base, zeit.content.image.browser.form.Cre
         return name
 
 
+@zope.interface.implementer(zeit.cms.browser.interfaces.IHideContextViews)
 class EditForm(zeit.cms.browser.view.Base):
     # FIXME: Translations
     title = _('Edit images')

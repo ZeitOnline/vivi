@@ -69,6 +69,24 @@
     />
 
   <browser:viewletManager
+    name="zeit.cms.context-actions"
+    provides=".interfaces.IContextActions"
+    layer=".interfaces.ICMSLayer"
+    view=".interfaces.IHideContextViews"
+    class=".menu.Empty"
+    permission="zope.View"
+    />
+  <browser:viewletManager
+    name="zeit.cms.context-views"
+    provides=".interfaces.IContextViews"
+    layer=".interfaces.ICMSLayer"
+    view=".interfaces.IHideContextViews"
+    class=".menu.Empty"
+    permission="zope.View"
+    />
+
+
+  <browser:viewletManager
     name="zeit.cms.GlobalInformation"
     provides=".interfaces.IGlobalInformation"
     layer=".interfaces.ICMSLayer"
