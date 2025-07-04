@@ -3,6 +3,16 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.130.0 (2025-07-04)
+--------------------
+
+- WCM-936: Implement batch image upload
+
+
+FIX:
+- Try to avoid negative focus point coordinates
+
+
 7.129.0 (2025-07-02)
 --------------------
 
