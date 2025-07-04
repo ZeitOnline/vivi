@@ -84,18 +84,19 @@ class EditForm(zeit.cms.browser.view.Base):
             cur_name = self.request.form[f'cur_name[{index}]']
             name = self.request.form[f'name[{index}]']
             renamer.renameItem(cur_name, name)
-            with zeit.cms.checkout.helper.checked_out(self.context[name]) as imagegroup:
-                if imagegroup is not None:
-                    metadata = zeit.content.image.interfaces.IImageMetadata(imagegroup)
-                    metadata.copyright = (
-                        None,
-                        None,
-                        self.request.form[f'copyright[{index}]'],
-                        None,
-                        False,
-                    )
-                    metadata.title = self.request.form[f'title[{index}]']
-                    metadata.caption = self.request.form[f'caption[{index}]']
+            with zeit.cms.checkout.helper.checked_out(
+                self.context[name], temporary=False, raise_if_error=True
+            ) as imagegroup:
+                metadata = zeit.content.image.interfaces.IImageMetadata(imagegroup)
+                metadata.copyright = (
+                    None,
+                    None,
+                    self.request.form[f'copyright[{index}]'],
+                    None,
+                    False,
+                )
+                metadata.title = self.request.form[f'title[{index}]']
+                metadata.caption = self.request.form[f'caption[{index}]']
             index += 1
         self.redirect(self.url(name=''), status=303)
 
