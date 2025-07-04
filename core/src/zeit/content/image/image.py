@@ -1,8 +1,10 @@
+from contextlib import contextmanager
 import os
 import urllib.parse
 
 import filetype
 import lxml.builder
+import lxml.etree
 import PIL.Image
 import requests
 import zope.cachedescriptors.property
@@ -24,9 +26,20 @@ import zeit.workflow.interfaces
 import zeit.workflow.timebased
 
 
+# Kludgy way to make Pillow use lxml for XMP parsing.
+# Cannot use monkey:patch for unknown reason.
+PIL.Image.ElementTree = lxml.etree
+
+
 class BaseImage:
     def __init__(self, uniqueId=None):
         super().__init__(uniqueId)
+
+    @contextmanager
+    def as_pil(self):
+        with self.open() as f:
+            with PIL.Image.open(f) as pil:
+                yield pil
 
     @property
     def mimeType(self):
@@ -38,8 +51,12 @@ class BaseImage:
         return file_type
 
     def getImageSize(self):
-        with self.open() as f:
-            return PIL.Image.open(f).size
+        with self.as_pil() as img:
+            return img.size
+
+    def getXMP(self):
+        with self.as_pil() as img:
+            return img.getxmp()
 
     @property
     def ratio(self):

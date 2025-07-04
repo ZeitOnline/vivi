@@ -2,8 +2,6 @@ from collections.abc import Iterable
 import urllib.parse
 import uuid
 
-import lxml.etree
-import PIL.Image
 import zope.formlib.form
 import zope.formlib.widgets
 
@@ -123,7 +121,7 @@ class EditForm(zeit.cms.browser.view.Base):
                     if not self.context.get(name):
                         break
 
-            data = self._image_data(imggroup[imggroup.master_image])
+            data = imggroup[imggroup.master_image].getXMP()
             data = data.get('xmpmeta', {}).get('RDF', {}).get('Description', {})
             result.append(
                 {
@@ -147,16 +145,3 @@ class EditForm(zeit.cms.browser.view.Base):
                 }
             )
         return result
-
-    def _image_data(self, img):
-        try:
-            with zope.security.proxy.removeSecurityProxy(img.open()) as f:
-                PIL.Image.ElementTree = lxml.etree
-                image = PIL.Image.open(f)
-                image.load()
-                return image.getxmp()
-        except IOError:
-            # FIXME: only log
-            raise zeit.content.image.interfaces.ImageProcessingError(
-                'Cannot retrieve XMP metadata from image %s' % img.__name__
-            )
