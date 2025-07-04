@@ -1,5 +1,5 @@
 <tal:block i18n:domain="zeit.cms">
-  <form action="" method="post">
+  <form action="" method="post" name="edit-images">
     <table class="edit-image-table">
       <tr><th></th><th>Dateiname</th><th>Copyright</th><th>Titel</th><th>Beschreibung</th></tr>
       <tr tal:repeat="item view/rows">
@@ -10,6 +10,6 @@
         <td><textarea tal:content="item/caption" tal:attributes="name string:caption[${repeat/item/index}]"></textarea></td>
       </tr>
     </table>
-    <p><button>Hochladen</button></p>
+    <p><button>Hochladen</button><button name="cancel">Abbrechen</button></p>
   </form>
 </tal:block>

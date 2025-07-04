@@ -74,8 +74,17 @@ class EditForm(zeit.cms.browser.view.Base):
 
     def __call__(self):
         if self.request.method == 'POST':
+            if 'cancel' in self.request.form:
+                return self.handle_cancel()
             return self.handle_post()
         return super().__call__()
+
+    def handle_cancel(self):
+        index = 0
+        while f'cur_name[{index}]' in self.request.form:
+            del self.context[self.request.form[f'cur_name[{index}]']]
+            index += 1
+        self.redirect(self.url(name=''), status=303)
 
     def handle_post(self):
         index = 0
@@ -83,7 +92,8 @@ class EditForm(zeit.cms.browser.view.Base):
         while f'cur_name[{index}]' in self.request.form:
             cur_name = self.request.form[f'cur_name[{index}]']
             name = self.request.form[f'name[{index}]']
-            renamer.renameItem(cur_name, name)
+            if name != cur_name:
+                renamer.renameItem(cur_name, name)
             with zeit.cms.checkout.helper.checked_out(
                 self.context[name], temporary=False, raise_if_error=True
             ) as imagegroup:
