@@ -108,6 +108,15 @@
     class=".editor.Editor"
     permission="zope.View"
     />
+  <browser:menuItem
+    for="zeit.content.cp.interfaces.ICenterPage"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    action="@@edit.html"
+    menu="zeit-context-views"
+    title="Edit contents"
+    permission="zope.View"
+    filter="python:modules['zeit.cms.checkout.interfaces'].ILocalContent.providedBy(context)"
+    />
 
   <browser:page
     for="zeit.content.cp.interfaces.ICenterPage"
