@@ -380,7 +380,6 @@ pre {
 
 #breadcrumbs li,
 #main-navigation li,
-#folder-actions li,
 .context-views li {
   display: inline;
   padding: 4px 25px;
@@ -495,13 +494,6 @@ pre {
 #main-navigation > li.secondary > ul > li {
   display: block;
   white-space: nowrap;
-}
-
-#folder-actions {
-  margin: 0em;
-  padding: 0.5em;
-  padding-bottom: 0;
-  display: inline;
 }
 
 .heading {

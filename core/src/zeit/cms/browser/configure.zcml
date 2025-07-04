@@ -77,11 +77,6 @@
     title="context sensitive views"
     />
 
-  <browser:menu
-    id="folder-actions"
-    title="folder specific actions"
-    />
-
   <browser:viewletManager
     name="zeit.cms.GlobalInformation"
     provides=".interfaces.IGlobalInformation"
