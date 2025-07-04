@@ -74,8 +74,17 @@ class EditForm(zeit.cms.browser.view.Base):
 
     def __call__(self):
         if self.request.method == 'POST':
+            if 'cancel' in self.request.form:
+                return self.handle_cancel()
             return self.handle_post()
         return super().__call__()
+
+    def handle_cancel(self):
+        index = 0
+        while f'cur_name[{index}]' in self.request.form:
+            del self.context[self.request.form[f'cur_name[{index}]']]
+            index += 1
+        self.redirect(self.url(name=''), status=303)
 
     def handle_post(self):
         index = 0

@@ -10,6 +10,6 @@
         <td><textarea tal:content="item/caption" tal:attributes="name string:caption[${repeat/item/index}]"></textarea></td>
       </tr>
     </table>
-    <p><button>Hochladen</button></p>
+    <p><button>Hochladen</button><button name="cancel">Abbrechen</button></p>
   </form>
 </tal:block>

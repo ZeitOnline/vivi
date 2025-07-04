@@ -268,3 +268,24 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
         b.getControl(name='name[0]').value = filename
         b.getForm(name='edit-images').submit()
         assert zeit.cms.interfaces.ICMSContent(f'http://xml.zeit.de/online/2007/01/{filename}')
+
+    def test_editimages_deletes_files_on_cancel(self):
+        b = self.browser
+        b.open('/repository/online/2007/01/Somalia/@@upload-images')
+        file_input = b.getControl(name='files')
+        add_file_multi(
+            file_input,
+            [
+                (
+                    fixture_bytes('new-hampshire-450x200.jpg'),
+                    'new-hampshire-450x200.jpg',
+                    'image/jpg',
+                ),
+            ],
+        )
+        b.getForm(name='imageupload').submit()
+        b.getForm(name='edit-images').getControl(name='cancel').click()
+        folder = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01')
+        images = tuple(x for x in folder.values() if 'tmp' in x.uniqueId or '-bild' in x.uniqueId)
+        assert len(images) == 0
+        assert b.url.endswith('/repository/online/2007/01/')
