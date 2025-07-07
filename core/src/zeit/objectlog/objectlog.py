@@ -13,6 +13,7 @@ import zope.component
 import zope.interface
 import zope.security.management
 
+from zeit.cms.content.sources import FEATURE_TOGGLES
 import zeit.cms.cli
 import zeit.objectlog.interfaces
 
@@ -30,6 +31,8 @@ class ObjectLog(persistent.Persistent):
 
     def get_log(self, object):
         key = zope.app.keyreference.interfaces.IKeyReference(object, None)
+        if FEATURE_TOGGLES.find('uuid_key_reference') and key is None:
+            key = zeit.cms.content.interfaces.IUUID(object).shortened
         if key is None:
             return
         object_log = self._object_log.get(key, [])
@@ -39,9 +42,11 @@ class ObjectLog(persistent.Persistent):
     def log(self, object, message, mapping=None, timestamp=None):
         logger.debug('Logging: %s %s %s' % (object, message, mapping))
         obj_key = zope.app.keyreference.interfaces.IKeyReference(object)
-
         object_log = self._object_log.get(obj_key)
         if object_log is None:
+            if FEATURE_TOGGLES.find('uuid_key_reference'):
+                obj_key = zeit.cms.content.interfaces.IUUID(object).shortened
+
             # Create a timeline for the object.
             object_log = self._object_log[obj_key] = BTrees.family64.IO.BTree()
 
@@ -63,6 +68,8 @@ class ObjectLog(persistent.Persistent):
 
     def delete(self, object):
         key = zope.app.keyreference.interfaces.IKeyReference(object, None)
+        if FEATURE_TOGGLES.find('uuid_key_reference') and key is None:
+            key = zeit.cms.content.interfaces.IUUID(object).shortened
         if key is None:
             return
         self._object_log.pop(key, None)

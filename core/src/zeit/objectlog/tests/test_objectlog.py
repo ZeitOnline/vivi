@@ -6,6 +6,8 @@ import ZODB.Connection
 import ZODB.POSException
 import zope.component
 
+from zeit.cms.checkout.helper import checked_out
+from zeit.cms.content.sources import FEATURE_TOGGLES
 import zeit.objectlog.interfaces
 import zeit.objectlog.objectlog
 import zeit.objectlog.testing
@@ -52,3 +54,16 @@ class ObjectLog(zeit.objectlog.testing.FunctionalTestCase):
             zeit.objectlog.interfaces.ILog(self.content).log('one')
             log.clean(timedelta(days=0))
             self.assertEqual(0, len(list(log.get_log(self.content))))
+
+    def test_uuid_as_keyreference(self):
+        FEATURE_TOGGLES.set('uuid_key_reference')
+        with checked_out(self.repository['testcontent']):
+            pass
+
+        content = self.repository['testcontent']
+        objectlog = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
+        contentlog = list(objectlog.get_log(content))
+        self.assertEqual(1, len(contentlog))
+        self.assertEqual(contentlog[0].message, 'Checked in')
+        self.assertTrue(objectlog._object_log.get(content))
+        self.assertFalse(objectlog._object_log.get(content, False))
