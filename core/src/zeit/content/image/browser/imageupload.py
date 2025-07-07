@@ -132,26 +132,14 @@ class EditForm(zeit.cms.browser.view.Base):
                     if not self.context.get(name):
                         break
 
-            data = imggroup[imggroup.master_image].getXMP()
-            data = data.get('xmpmeta', {}).get('RDF', {}).get('Description', {})
+            meta = imggroup[imggroup.master_image].getXMPMetadata()
             result.append(
                 {
                     'cur_name': imggroup.__name__,
                     'name': name,
-                    'title': data.get('Headline', ''),
-                    'copyright': ' / '.join(
-                        filter(
-                            None,
-                            (
-                                data.get('creator', {}).get('Seq', {}).get('li', None),
-                                data.get('Credit', None),
-                            ),
-                        )
-                    ),
-                    'caption': data.get('description', {})
-                    .get('Alt', {})
-                    .get('li', {})
-                    .get('text', ''),
+                    'title': meta['title'],
+                    'copyright': meta['copyright'],
+                    'caption': meta['caption'],
                     'thumbnail': self.url(imggroup, 'thumbnail'),
                 }
             )

@@ -31,6 +31,41 @@ import zeit.workflow.timebased
 PIL.Image.ElementTree = lxml.etree
 
 
+def extract_metadata_from_xmp(xmp):
+    result = {'title': None, 'copyright': None, 'caption': None}
+    if 'xmpmeta' in xmp:
+        data = xmp['xmpmeta']
+        data = data.get('RDF', {}).get('Description', {})
+        result = {
+            'title': data.get('Headline', ''),
+            'creator': data.get('creator', {}).get('Seq', {}).get('li', None),
+            'credit': data.get('Credit', None),
+            'caption': data.get('description', {}).get('Alt', {}).get('li', {}).get('text', ''),
+        }
+    elif 'xapmeta' in xmp:
+        data = xmp['xapmeta']
+        data = data.get('RDF', {}).get('Description', {})
+        for item in data:
+            if 'Headline' in item:
+                result['title'] = item['Headline']
+            if 'creator' in item:
+                result['creator'] = item['creator'].get('Seq', {}).get('li', None)
+            if 'Credit' in item:
+                result['credit'] = item['Credit']
+            if 'description' in item:
+                result['caption'] = (
+                    item.get('description', {}).get('Alt', {}).get('li', {}).get('text', None)
+                )
+
+    if 'credit' in result or 'creator' in result:
+        result['copyright'] = ' / '.join(
+            filter(None, (result.get('creator', None), result.get('credit', None)))
+        )
+        del result['credit']
+        del result['creator']
+    return result
+
+
 class BaseImage:
     def __init__(self, uniqueId=None):
         super().__init__(uniqueId)
@@ -54,9 +89,9 @@ class BaseImage:
         with self.as_pil() as img:
             return img.size
 
-    def getXMP(self):
+    def getXMPMetadata(self):
         with self.as_pil() as img:
-            return img.getxmp()
+            return extract_metadata_from_xmp(img.getxmp())
 
     @property
     def ratio(self):
