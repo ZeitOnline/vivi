@@ -58,7 +58,7 @@ def extract_metadata_from_xmp(xmp):
                 )
 
     if 'credit' in result or 'creator' in result:
-        result['copyright'] = ' / '.join(
+        result['copyright'] = '/'.join(
             filter(None, (result.get('creator', None), result.get('credit', None)))
         )
         del result['credit']
