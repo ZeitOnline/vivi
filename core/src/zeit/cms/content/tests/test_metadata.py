@@ -78,6 +78,12 @@ class ChannelCopying(zeit.cms.testing.ZeitCmsTestCase):
 
 
 class Access(zeit.cms.testing.ZeitCmsTestCase):
+    def setUp(self):
+        super().setUp()
+        self.article = self.repository['testcontent']
+        with zeit.cms.checkout.helper.checked_out(self.article):
+            pass
+
     def test_change_access_value_is_logged(self):
         article = self.repository['testcontent']
         log = zeit.objectlog.interfaces.ILog(article)
@@ -103,7 +109,9 @@ class Access(zeit.cms.testing.ZeitCmsTestCase):
                     zeit.cms.content.interfaces.ICommonMetadata, 'access'
                 ),
             )
-            self.assertEqual([], list(log.get_log()))
+            log_list = list(log.get_log())
+            self.assertEqual(1, len(log_list))
+            self.assertEqual('Checked in', log_list[0].message)
 
 
 class ColorScheme(zeit.cms.testing.ZeitCmsTestCase):

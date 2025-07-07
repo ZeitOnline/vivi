@@ -63,7 +63,8 @@ def delete_objectlog_on_move(context, event):
     if zeit.cms.checkout.interfaces.IWorkingcopy.providedBy(event.newParent):
         return
     log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
-    log.delete(zeit.cms.content.keyreference.UniqueIdKeyReference(event.oldParent, event.oldName))
+
+    log.delete(zeit.cms.content.interfaces.IUUID(context))
 
 
 @zope.interface.implementer(zeit.cms.repository.interfaces.IRenameInfo)
