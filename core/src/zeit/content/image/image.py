@@ -33,18 +33,27 @@ PIL.Image.ElementTree = lxml.etree
 
 def extract_metadata_from_xmp(xmp):
     result = {'title': None, 'copyright': None, 'caption': None}
+    if 'xapmeta' in xmp:
+        data = xmp['xapmeta']
+        data = data.get('RDF', {}).get('Description', {})
+        if isinstance(data, dict):
+            data = (data,)
+        for item in data:
+            if 'Headline' in item:
+                result['title'] = item['Headline']
+            if 'creator' in item:
+                result['creator'] = item['creator'].get('Seq', {}).get('li', None)
+            if 'Credit' in item:
+                result['credit'] = item['Credit']
+            if 'description' in item:
+                result['caption'] = (
+                    item.get('description', {}).get('Alt', {}).get('li', {}).get('text', None)
+                )
     if 'xmpmeta' in xmp:
         data = xmp['xmpmeta']
         data = data.get('RDF', {}).get('Description', {})
-        result = {
-            'title': data.get('Headline', ''),
-            'creator': data.get('creator', {}).get('Seq', {}).get('li', None),
-            'credit': data.get('Credit', None),
-            'caption': data.get('description', {}).get('Alt', {}).get('li', {}).get('text', ''),
-        }
-    elif 'xapmeta' in xmp:
-        data = xmp['xapmeta']
-        data = data.get('RDF', {}).get('Description', {})
+        if isinstance(data, dict):
+            data = (data,)
         for item in data:
             if 'Headline' in item:
                 result['title'] = item['Headline']

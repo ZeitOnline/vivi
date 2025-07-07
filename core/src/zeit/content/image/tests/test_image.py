@@ -170,8 +170,8 @@ class TestImageMIMEType(zeit.content.image.testing.FunctionalTestCase):
                         'Dlref': 'ydE3ZN9fAEsj8ap7LAuqtQ==',
                         'ImageRank': '2',
                         'AssetID': '2221849504',
-                        'WebStatement': 'https://www.gettyimages.com/eula?utm_medium=organic&utm_source=google&utm_campaign=iptcurl',
-                        'DataMining': 'http://ns.useplus.org/ldf/vocab/DMI-PROHIBITED-EXCEPTSEARCHENGINEINDEXING',
+                        'WebStatement': 'https://www.gettyimages.com/eula?utm_medium=organic&',
+                        'DataMining': 'http://ns.useplus.org/ldf/vocab/DMI-PROHIBITED-EXCEPTSEARCH',
                         'CreatorTool': 'Adobe Photoshop 26.8 (Macintosh)',
                         'ModifyDate': '2025-06-24T17:27:51+02:00',
                         'CreateDate': '2025-06-24T06:38:43',
@@ -232,7 +232,7 @@ class TestImageMIMEType(zeit.content.image.testing.FunctionalTestCase):
                         'Licensor': {
                             'Seq': {
                                 'li': {
-                                    'LicensorURL': 'https://www.gettyimages.com/detail/2221849504?utm_medium=organic&utm_source=google&utm_campaign=iptcurl'
+                                    'LicensorURL': 'https://www.gettyimages.com/detail/2221849504?u'
                                 }
                             }
                         },
@@ -260,6 +260,411 @@ class TestImageMIMEType(zeit.content.image.testing.FunctionalTestCase):
                         },
                         'PersonInImage': {'Bag': {'li': 'Donald Trump'}},
                     }
+                },
+            }
+        },
+        {
+            'xmpmeta': {
+                'xmptk': 'Image::ExifTool 10.96',
+                'RDF': {
+                    'Description': [
+                        {
+                            'about': '',
+                            'CountryCode': 'USA',
+                            'CreatorContactInfo': {
+                                'parseType': 'Resource',
+                                'CiAdrCity': 'Anytown',
+                                'CiAdrCtry': 'USA',
+                                'CiAdrExtadr': '123 Main St',
+                                'CiAdrPcode': '12345',
+                                'CiAdrRegion': 'Florida',
+                                'CiEmailWork': 'joe@joephotographer.com',
+                                'CiTelWork': '123-456-7890',
+                                'CiUrlWork': 'joephotographer.com',
+                            },
+                            'IntellectualGenre': 'intelectual genre here',
+                            'Location': '123 Main Street',
+                            'Scene': {'Bag': {'li': 'IPTC scene'}},
+                            'SubjectCode': {'Bag': {'li': 'iptc subject code here'}},
+                        },
+                        {
+                            'about': '',
+                            'AOCopyrightNotice': '(c) 2017 Carl Seibert. 954-256-5834',
+                            'AOCreator': {'Seq': {'li': 'Carl Seibert'}},
+                            'AODateCreated': '2017-05-29T17:19:21-0400',
+                            'AddlModelInfo': 'model info',
+                            'ArtworkOrObject': {
+                                'Bag': {
+                                    'li': {
+                                        'parseType': 'Resource',
+                                        'AOCircaDateCreated': 'Default',
+                                        'AOContentDescription': {
+                                            'Alt': {'li': {'lang': 'x-default', 'text': 'Default'}}
+                                        },
+                                        'AOContributionDescription': {
+                                            'Alt': {'li': {'lang': 'x-default', 'text': 'Default'}}
+                                        },
+                                        'AOCopyrightNotice': 'Default',
+                                        'AOCreator': {'Seq': {'li': 'Default'}},
+                                        'AOCreatorId': {'Seq': {'li': 'Default'}},
+                                        'AOCurrentCopyrightOwnerId': 'Default',
+                                        'AOCurrentCopyrightOwnerName': 'Default',
+                                        'AOCurrentLicensorId': 'Default',
+                                        'AOCurrentLicensorName': 'Default',
+                                        'AODateCreated': 'Default',
+                                        'AOPhysicalDescription': {
+                                            'Alt': {'li': {'lang': 'x-default', 'text': 'Default'}}
+                                        },
+                                        'AOSource': 'Default',
+                                        'AOSourceInvNo': 'Default',
+                                        'AOSourceInvURL': 'Default',
+                                        'AOStylePeriod': {'Bag': {'li': 'Default'}},
+                                        'AOTitle': {
+                                            'Alt': {'li': {'lang': 'x-default', 'text': 'Default'}}
+                                        },
+                                    }
+                                }
+                            },
+                            'DigitalSourceType': 'http://cv.iptc.org/newscodes/digitalsourcetype/d',
+                            'Event': {'Alt': {'li': {'lang': 'x-default', 'text': 'event here'}}},
+                            'LocationCreated': {
+                                'Bag': {
+                                    'li': {
+                                        'parseType': 'Resource',
+                                        'City': 'sublocation city here',
+                                        'CountryCode': 'sub loc country code',
+                                        'CountryName': 'sublocation country',
+                                        'ProvinceState': 'sublocation state',
+                                        'Sublocation': 'sublocation here',
+                                        'WorldRegion': 'world region',
+                                    }
+                                }
+                            },
+                            'LocationShown': {
+                                'Bag': {
+                                    'li': {
+                                        'parseType': 'Resource',
+                                        'City': 'sublocation city here',
+                                        'CountryCode': 'sub loc country code',
+                                        'CountryName': 'sublocation country',
+                                        'ProvinceState': 'sublocation state',
+                                        'Sublocation': 'sublocation here',
+                                        'WorldRegion': 'world region',
+                                    }
+                                }
+                            },
+                            'MaxAvailHeight': '2000',
+                            'MaxAvailWidth': '2000',
+                            'ModelAge': {'Bag': {'li': 'model ages'}},
+                            'OrganisationInImageCode': {'Bag': {'li': 'Featured org code'}},
+                            'OrganisationInImageName': {'Bag': {'li': 'Featured org name'}},
+                            'PersonInImage': {'Bag': {'li': 'person shown'}},
+                            'RegistryId': {
+                                'Bag': {
+                                    'li': {
+                                        'parseType': 'Resource',
+                                        'RegItemId': '123445',
+                                        'RegOrgId': 'PLUS',
+                                    }
+                                }
+                            },
+                        },
+                        {'about': '', 'Rating': '0'},
+                        {'about': '', 'Lens': 'Samsung Galaxy S7 Rear Camera'},
+                        {
+                            'about': '',
+                            'creator': {'Seq': {'li': 'Carl Seibert (XMP)'}},
+                            'date': {'Seq': {'li': '2017-05-29T17:19:21-0400'}},
+                            'description': {
+                                'Alt': {
+                                    'li': {
+                                        'lang': 'x-default',
+                                        'text': '(This caption in XMP) This is a metadata test',
+                                    }
+                                }
+                            },
+                            'format': 'image/jpeg',
+                            'rights': {
+                                'Alt': {
+                                    'li': {
+                                        'lang': 'x-default',
+                                        'text': '© Copyright 2017 Carl Seibert (XMP)',
+                                    }
+                                }
+                            },
+                            'subject': {
+                                'Bag': {
+                                    'li': [
+                                        'keywords go here',
+                                        'keywords* test image metadata',
+                                        'Users',
+                                        'carl',
+                                        'Documents',
+                                        'Websites',
+                                        'aa',
+                                        'carlsite',
+                                        'content',
+                                        'blog',
+                                        'sample',
+                                        'templates',
+                                        'metadata',
+                                        'all',
+                                        'fields',
+                                        'w',
+                                        'ps',
+                                        'hist.jpg',
+                                    ]
+                                }
+                            },
+                            'title': {
+                                'Alt': {'li': {'lang': 'x-default', 'text': 'object name here'}}
+                            },
+                        },
+                        {
+                            'about': '',
+                            'GPSAltitude': '0/10',
+                            'GPSAltitudeRef': '0',
+                            'GPSLatitude': '26,34.951N',
+                            'GPSLongitude': '80,12.014W',
+                        },
+                        {
+                            'about': '',
+                            'ColorClass': '0',
+                            'EditStatus': 'edit status',
+                            'PMVersion': 'PM5',
+                            'Prefs': '0:0:0:-00001',
+                            'Tagged': 'False',
+                        },
+                        {
+                            'about': '',
+                            'AuthorsPosition': 'stf',
+                            'CaptionWriter': 'jp',
+                            'Category': 'Category',
+                            'City': 'Anytown',
+                            'Country': 'United States',
+                            'Credit': 'credit here',
+                            'DateCreated': '2017-05-29T17:19:21-04:00',
+                            'Headline': 'This is the headline field',
+                            'Source': 'source here',
+                            'State': 'Florida',
+                            'SupplementalCategories': {
+                                'Bag': {'li': ['suppcat 1', 'suppcat 2', 'suppcat 3']}
+                            },
+                            'TransmissionReference': 'trans ref here',
+                            'Urgency': '1',
+                        },
+                        {
+                            'about': '',
+                            'CopyrightOwner': {
+                                'Seq': {
+                                    'li': {
+                                        'parseType': 'Resource',
+                                        'CopyrightOwnerID': 'Default',
+                                        'CopyrightOwnerName': 'Joe Photographer',
+                                    }
+                                }
+                            },
+                            'ImageCreator': {
+                                'Seq': {
+                                    'li': {
+                                        'parseType': 'Resource',
+                                        'ImageCreatorID': 'Default',
+                                        'ImageCreatorName': 'Joe Photographer',
+                                    }
+                                }
+                            },
+                            'ImageSupplier': {
+                                'Seq': {
+                                    'li': {
+                                        'parseType': 'Resource',
+                                        'ImageSupplierID': 'image supplier id',
+                                        'ImageSupplierName': 'image aupplier name',
+                                    }
+                                }
+                            },
+                            'ImageSupplierImageID': 'suppliers image id',
+                            'MinorModelAgeDisclosure': 'http://ns.useplus.org/ldf/vocab/AG-A25',
+                            'ModelReleaseID': {'Bag': {'li': 'model release ids'}},
+                            'ModelReleaseStatus': 'http://ns.useplus.org/ldf/vocab/MR-LMR',
+                            'PropertyReleaseID': {'Bag': {'li': 'property release ids'}},
+                            'PropertyReleaseStatus': 'http://ns.useplus.org/ldf/vocab/PR-UPR',
+                        },
+                        {
+                            'about': '',
+                            'CreateDate': '2017-05-29T17:19:21-04:00',
+                            'CreatorTool': 'Adobe Photoshop Lightroom 6.10.1 (Macintosh)',
+                            'MetadataDate': '2017-07-17T12:17:25-04:00',
+                            'ModifyDate': '2017-07-17T12:17:25-04:00',
+                            'Rating': '0',
+                        },
+                        {
+                            'about': '',
+                            'DocumentID': 'xmp.did:49a1e4c8-d59e-40ec-837f-3718022f9dea',
+                            'History': {
+                                'Seq': {
+                                    'li': [
+                                        {
+                                            'parseType': 'Resource',
+                                            'action': 'derived',
+                                            'parameters': 'saved to new location',
+                                        },
+                                        {
+                                            'parseType': 'Resource',
+                                            'action': 'derived',
+                                            'parameters': 'converted from image/jpeg to image/tiff',
+                                        },
+                                        {
+                                            'parseType': 'Resource',
+                                            'action': 'converted',
+                                            'parameters': 'from image/tiff to image/jpeg',
+                                        },
+                                        {
+                                            'parseType': 'Resource',
+                                            'action': 'derived',
+                                            'parameters': 'converted from image/tiff to image/jpeg',
+                                        },
+                                        {
+                                            'parseType': 'Resource',
+                                            'action': 'derived',
+                                            'parameters': 'saved to new location',
+                                        },
+                                    ]
+                                }
+                            },
+                            'InstanceID': 'xmp.iid:49a1e4c8-d59e-40ec-837f-3718022f9dea',
+                            'OriginalDocumentID': 'C2FF15856CFA5CB554F4CB05B9933A56',
+                        },
+                        {
+                            'about': '',
+                            'Marked': 'True',
+                            'UsageTerms': {
+                                'Alt': {
+                                    'li': {
+                                        'lang': 'x-default',
+                                        'text': 'This image is licensed under Creative Commons 4.0',
+                                    }
+                                }
+                            },
+                            'WebStatement': 'metadatamatters.blog',
+                        },
+                        {
+                            'about': '',
+                            'AlreadyApplied': 'True',
+                            'AutoLateralCA': '0',
+                            'AutoWhiteVersion': '134348800',
+                            'Blacks2012': '0',
+                            'BlueHue': '0',
+                            'BlueSaturation': '0',
+                            'CameraProfile': 'Embedded',
+                            'Clarity2012': '0',
+                            'ColorNoiseReduction': '0',
+                            'Contrast2012': '0',
+                            'ConvertToGrayscale': 'False',
+                            'DefringeGreenAmount': '0',
+                            'DefringeGreenHueHi': '60',
+                            'DefringeGreenHueLo': '40',
+                            'DefringePurpleAmount': '0',
+                            'DefringePurpleHueHi': '70',
+                            'DefringePurpleHueLo': '30',
+                            'Dehaze': '0',
+                            'Exposure2012': '0.00',
+                            'GrainAmount': '0',
+                            'GreenHue': '0',
+                            'GreenSaturation': '0',
+                            'HasSettings': 'True',
+                            'Highlights2012': '0',
+                            'HueAdjustmentAqua': '0',
+                            'HueAdjustmentBlue': '0',
+                            'HueAdjustmentGreen': '0',
+                            'HueAdjustmentMagenta': '0',
+                            'HueAdjustmentOrange': '0',
+                            'HueAdjustmentPurple': '0',
+                            'HueAdjustmentRed': '0',
+                            'HueAdjustmentYellow': '0',
+                            'IncrementalTemperature': '0',
+                            'IncrementalTint': '0',
+                            'LensManualDistortionAmount': '0',
+                            'LensProfileEnable': '0',
+                            'LensProfileSetup': 'LensDefaults',
+                            'LuminanceAdjustmentAqua': '0',
+                            'LuminanceAdjustmentBlue': '0',
+                            'LuminanceAdjustmentGreen': '0',
+                            'LuminanceAdjustmentMagenta': '0',
+                            'LuminanceAdjustmentOrange': '0',
+                            'LuminanceAdjustmentPurple': '0',
+                            'LuminanceAdjustmentRed': '0',
+                            'LuminanceAdjustmentYellow': '0',
+                            'LuminanceSmoothing': '0',
+                            'ParametricDarks': '0',
+                            'ParametricHighlightSplit': '75',
+                            'ParametricHighlights': '0',
+                            'ParametricLights': '0',
+                            'ParametricMidtoneSplit': '50',
+                            'ParametricShadowSplit': '25',
+                            'ParametricShadows': '0',
+                            'PerspectiveAspect': '0',
+                            'PerspectiveHorizontal': '0',
+                            'PerspectiveRotate': '0.0',
+                            'PerspectiveScale': '100',
+                            'PerspectiveUpright': '0',
+                            'PerspectiveVertical': '0',
+                            'PerspectiveX': '0.00',
+                            'PerspectiveY': '0.00',
+                            'PostCropVignetteAmount': '0',
+                            'ProcessVersion': '6.7',
+                            'RedHue': '0',
+                            'RedSaturation': '0',
+                            'Saturation': '0',
+                            'SaturationAdjustmentAqua': '0',
+                            'SaturationAdjustmentBlue': '0',
+                            'SaturationAdjustmentGreen': '0',
+                            'SaturationAdjustmentMagenta': '0',
+                            'SaturationAdjustmentOrange': '0',
+                            'SaturationAdjustmentPurple': '0',
+                            'SaturationAdjustmentRed': '0',
+                            'SaturationAdjustmentYellow': '0',
+                            'ShadowTint': '0',
+                            'Shadows2012': '0',
+                            'SharpenDetail': '25',
+                            'SharpenEdgeMasking': '0',
+                            'SharpenRadius': '+1.0',
+                            'Sharpness': '0',
+                            'SplitToningBalance': '0',
+                            'SplitToningHighlightHue': '0',
+                            'SplitToningHighlightSaturation': '0',
+                            'SplitToningShadowHue': '0',
+                            'SplitToningShadowSaturation': '0',
+                            'ToneCurve': {'Seq': {'li': ['0, 0', '255, 255']}},
+                            'ToneCurveBlue': {'Seq': {'li': ['0, 0', '255, 255']}},
+                            'ToneCurveGreen': {'Seq': {'li': ['0, 0', '255, 255']}},
+                            'ToneCurveName': 'Linear',
+                            'ToneCurveName2012': 'Linear',
+                            'ToneCurvePV2012': {'Seq': {'li': ['0, 0', '255, 255']}},
+                            'ToneCurvePV2012Blue': {'Seq': {'li': ['0, 0', '255, 255']}},
+                            'ToneCurvePV2012Green': {'Seq': {'li': ['0, 0', '255, 255']}},
+                            'ToneCurvePV2012Red': {'Seq': {'li': ['0, 0', '255, 255']}},
+                            'ToneCurveRed': {'Seq': {'li': ['0, 0', '255, 255']}},
+                            'ToneMapStrength': '0',
+                            'UprightCenterMode': '0',
+                            'UprightCenterNormX': '0.5',
+                            'UprightCenterNormY': '0.5',
+                            'UprightFocalLength35mm': '35',
+                            'UprightFocalMode': '0',
+                            'UprightFourSegmentsCount': '0',
+                            'UprightPreview': 'False',
+                            'UprightTransformCount': '6',
+                            'UprightVersion': '151388160',
+                            'Version': '9.10.1',
+                            'Vibrance': '0',
+                            'VignetteAmount': '0',
+                            'WhiteBalance': 'As Shot',
+                            'Whites2012': '0',
+                        },
+                        {
+                            'about': '',
+                            'History': 'New Layer\nMake layer\t2\n',
+                        },
+                    ]
                 },
             }
         },
