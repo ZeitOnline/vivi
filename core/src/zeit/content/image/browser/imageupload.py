@@ -107,6 +107,9 @@ class EditForm(zeit.cms.browser.view.Base):
                 )
                 metadata.title = self.request.form[f'title[{index}]']
                 metadata.caption = self.request.form[f'caption[{index}]']
+                zeit.cms.repository.interfaces.IAutomaticallyRenameable(
+                    imagegroup
+                ).renameable = False
             index += 1
         self.redirect(self.url(name=''), status=303)
 

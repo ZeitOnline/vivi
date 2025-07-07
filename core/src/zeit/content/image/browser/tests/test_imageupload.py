@@ -165,7 +165,7 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
         img = next(x for x in folder.values() if 'tmp' in x.uniqueId)
         self.assertEqual((2250, 4000), img[img.master_image].getImageSize())
 
-    def test_imagegroup_is_automatically_renameble(self):
+    def test_imagegroup_is_automatically_renameable(self):
         b = self.browser
         b.open('/repository/online/2007/01/Somalia/@@upload-images')
         file_input = b.getControl(name='files')
@@ -184,6 +184,8 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
         img = next(x for x in folder.values() if 'tmp' in x.uniqueId)
         self.assertTrue(zeit.cms.repository.interfaces.IAutomaticallyRenameable(img).renameable)
         self.assertFalse(zeit.cms.repository.interfaces.IAutomaticallyRenameable(img).rename_to)
+        b.getForm(name='edit-images').submit()
+        assert not zeit.cms.repository.interfaces.IAutomaticallyRenameable(img).renameable
 
     def test_editimages_correctly_names_single_image(self):
         b = self.browser
