@@ -2,6 +2,7 @@
 name = "vivi.core"
 authors = [{ name = "DIE ZEIT", email = "zon-backend@zeit.de" }]
 dynamic = ["version"]
+requires-python = ">=3.13"
 
 dependencies = [
     "beautifulsoup4",
