@@ -124,10 +124,6 @@ class ImageTransform:
                 target_width, target_height = self._fit_ratio_to_image(
                     target_width, target_height, override_ratio
                 )
-            else:
-                target_width, target_height = self._fit_size_to_ratio(
-                    target_width, target_height, w, h, target_ratio
-                )
 
         x, y = self._determine_crop_position(variant, target_width, target_height)
         image = self._crop(self.image, x, y, x + target_width, y + target_height)
@@ -135,7 +131,7 @@ class ImageTransform:
         if size:
             w, h = size
             if w == 0 or h == 0:
-                return image
+                w, h = self._fit_size_to_ratio(target_width, target_height, w, h, target_ratio)
             if w > self.MAXIMUM_IMAGE_SIZE:
                 w = self.MAXIMUM_IMAGE_SIZE
             if h > self.MAXIMUM_IMAGE_SIZE:
