@@ -50,7 +50,7 @@ class Form:
             'article_uuid', 'preview_url', 'checksum'
         )
         + zope.formlib.form.FormFields(zeit.cms.content.interfaces.ICommonMetadata).select(
-            'teaserTitle', 'teaserSupertitle', 'teaserText'
+            'teaserTitle', 'teaserSupertitle', 'teaserText', 'ir_mediasync_id'
         )
         + zope.formlib.form.FormFields(zeit.content.image.interfaces.IImages).select('image')
     )
@@ -91,6 +91,12 @@ class Form:
         css_class='wide-widgets column-left',
     )
 
+    premium_fields = gocept.form.grouped.Fields(
+        _('Premium Audio'),
+        ('ir_mediasync_id',),
+        css_class='wide-widgets column-left',
+    )
+
     field_groups = (
         gocept.form.grouped.Fields(
             _('Navigation'), ('__name__',), css_class='wide-widgets column-right'
@@ -102,6 +108,7 @@ class Form:
         tts_fields,
         tts_file_fields,
         teaser_fields,
+        premium_fields,
     )
 
 
