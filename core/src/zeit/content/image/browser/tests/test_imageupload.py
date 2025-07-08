@@ -165,7 +165,7 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
         img = next(x for x in folder.values() if 'tmp' in x.uniqueId)
         self.assertEqual((2250, 4000), img[img.master_image].getImageSize())
 
-    def test_imagegroup_is_automatically_renameble(self):
+    def test_imagegroup_is_automatically_renameable(self):
         b = self.browser
         b.open('/repository/online/2007/01/Somalia/@@upload-images')
         file_input = b.getControl(name='files')
@@ -184,6 +184,8 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
         img = next(x for x in folder.values() if 'tmp' in x.uniqueId)
         self.assertTrue(zeit.cms.repository.interfaces.IAutomaticallyRenameable(img).renameable)
         self.assertFalse(zeit.cms.repository.interfaces.IAutomaticallyRenameable(img).rename_to)
+        b.getForm(name='edit-images').submit()
+        assert not zeit.cms.repository.interfaces.IAutomaticallyRenameable(img).renameable
 
     def test_editimages_correctly_names_single_image(self):
         b = self.browser
@@ -201,6 +203,29 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
         )
         b.getForm(name='imageupload').submit()
         assert b.getControl(name='name[0]').value == 'Somalia-bild'
+
+    def test_editimages_correctly_shows_xmp_data(self):
+        b = self.browser
+        b.open('/repository/online/2007/01/@@upload-images')
+        file_input = b.getControl(name='files')
+        add_file_multi(
+            file_input,
+            [
+                (
+                    fixture_bytes('gettyimages-2168232879-150x100.jpg'),
+                    'gettyimages-2168232879-150x100.jpg',
+                    'image/jpg',
+                ),
+            ],
+        )
+        b.getForm(name='imageupload').submit()
+        assert b.getControl(name='copyright[0]').value == 'DAVID PINTENS/Belga/AFP via Getty Images'
+        assert (
+            b.getControl(name='caption[0]').value
+            == "UAE Team Emirates' German rider Nils Politt competes during stage two of the "
+            + '"Renewi Tour" multi-stage cycling race'
+        )
+        assert b.getControl(name='title[0]').value == 'CYCLING-BEL-RENEWI'
 
     def test_editimages_correctly_names_multiple_images(self):
         b = self.browser
@@ -248,3 +273,44 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
         assert b.getControl(name='name[0]').value == 'Somalia-bild-01'
         assert b.getControl(name='name[1]').value == 'Somalia-bild-02'
         assert b.getControl(name='name[9]').value == 'Somalia-bild-10'
+
+    def test_editimages_can_handle_non_renaming(self):
+        b = self.browser
+        b.open('/repository/online/2007/01/Somalia/@@upload-images')
+        file_input = b.getControl(name='files')
+        add_file_multi(
+            file_input,
+            [
+                (
+                    fixture_bytes('new-hampshire-450x200.jpg'),
+                    'new-hampshire-450x200.jpg',
+                    'image/jpg',
+                ),
+            ],
+        )
+        b.getForm(name='imageupload').submit()
+        filename = b.getControl(name='cur_name[0]').value
+        b.getControl(name='name[0]').value = filename
+        b.getForm(name='edit-images').submit()
+        assert zeit.cms.interfaces.ICMSContent(f'http://xml.zeit.de/online/2007/01/{filename}')
+
+    def test_editimages_deletes_files_on_cancel(self):
+        b = self.browser
+        b.open('/repository/online/2007/01/Somalia/@@upload-images')
+        file_input = b.getControl(name='files')
+        add_file_multi(
+            file_input,
+            [
+                (
+                    fixture_bytes('new-hampshire-450x200.jpg'),
+                    'new-hampshire-450x200.jpg',
+                    'image/jpg',
+                ),
+            ],
+        )
+        b.getForm(name='imageupload').submit()
+        b.getForm(name='edit-images').getControl(name='cancel').click()
+        folder = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01')
+        images = tuple(x for x in folder.values() if 'tmp' in x.uniqueId or '-bild' in x.uniqueId)
+        assert len(images) == 0
+        assert b.url.endswith('/repository/online/2007/01/')

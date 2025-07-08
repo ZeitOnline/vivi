@@ -74,8 +74,17 @@ class EditForm(zeit.cms.browser.view.Base):
 
     def __call__(self):
         if self.request.method == 'POST':
+            if 'cancel' in self.request.form:
+                return self.handle_cancel()
             return self.handle_post()
         return super().__call__()
+
+    def handle_cancel(self):
+        index = 0
+        while f'cur_name[{index}]' in self.request.form:
+            del self.context[self.request.form[f'cur_name[{index}]']]
+            index += 1
+        self.redirect(self.url(name=''), status=303)
 
     def handle_post(self):
         index = 0
@@ -83,7 +92,8 @@ class EditForm(zeit.cms.browser.view.Base):
         while f'cur_name[{index}]' in self.request.form:
             cur_name = self.request.form[f'cur_name[{index}]']
             name = self.request.form[f'name[{index}]']
-            renamer.renameItem(cur_name, name)
+            if name != cur_name:
+                renamer.renameItem(cur_name, name)
             with zeit.cms.checkout.helper.checked_out(
                 self.context[name], temporary=False, raise_if_error=True
             ) as imagegroup:
@@ -97,6 +107,9 @@ class EditForm(zeit.cms.browser.view.Base):
                 )
                 metadata.title = self.request.form[f'title[{index}]']
                 metadata.caption = self.request.form[f'caption[{index}]']
+                zeit.cms.repository.interfaces.IAutomaticallyRenameable(
+                    imagegroup
+                ).renameable = False
             index += 1
         self.redirect(self.url(name=''), status=303)
 
@@ -122,26 +135,14 @@ class EditForm(zeit.cms.browser.view.Base):
                     if not self.context.get(name):
                         break
 
-            data = imggroup[imggroup.master_image].getXMP()
-            data = data.get('xmpmeta', {}).get('RDF', {}).get('Description', {})
+            meta = imggroup[imggroup.master_image].getXMPMetadata()
             result.append(
                 {
                     'cur_name': imggroup.__name__,
                     'name': name,
-                    'title': data.get('Headline', ''),
-                    'copyright': ' / '.join(
-                        filter(
-                            None,
-                            (
-                                data.get('creator', {}).get('Seq', {}).get('li', None),
-                                data.get('Credit', None),
-                            ),
-                        )
-                    ),
-                    'caption': data.get('description', {})
-                    .get('Alt', {})
-                    .get('li', {})
-                    .get('text', ''),
+                    'title': meta['title'],
+                    'copyright': meta['copyright'],
+                    'caption': meta['caption'],
                     'thumbnail': self.url(imggroup, 'thumbnail'),
                 }
             )
