@@ -204,6 +204,29 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
         b.getForm(name='imageupload').submit()
         assert b.getControl(name='name[0]').value == 'Somalia-bild'
 
+    def test_editimages_correctly_shows_xmp_data(self):
+        b = self.browser
+        b.open('/repository/online/2007/01/@@upload-images')
+        file_input = b.getControl(name='files')
+        add_file_multi(
+            file_input,
+            [
+                (
+                    fixture_bytes('gettyimages-2168232879-150x100.jpg'),
+                    'gettyimages-2168232879-150x100.jpg',
+                    'image/jpg',
+                ),
+            ],
+        )
+        b.getForm(name='imageupload').submit()
+        assert b.getControl(name='copyright[0]').value == 'DAVID PINTENS/Belga/AFP via Getty Images'
+        assert (
+            b.getControl(name='caption[0]').value
+            == "UAE Team Emirates' German rider Nils Politt competes during stage two of the "
+            + '"Renewi Tour" multi-stage cycling race'
+        )
+        assert b.getControl(name='title[0]').value == 'CYCLING-BEL-RENEWI'
+
     def test_editimages_correctly_names_multiple_images(self):
         b = self.browser
         b.open('/repository/online/2007/01/Somalia/@@upload-images')
