@@ -2,5 +2,4 @@
 # Ignore intelliJ configuration files
 .idea/
 *.pyc
-.pipenv.success
 smoketest/msal.json

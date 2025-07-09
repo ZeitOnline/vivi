@@ -62,11 +62,20 @@ jobs:
             mkdir -p deployment/work/source
             ln -s $PWD deployment/work/source/vivi
 
+      - run: |
+          uv_version=$(sed -ne '/astral-sh\/uv:/s+^.*astral-sh/uv:\([^@]*\).*$+\1+p' deployment/components/docker/Dockerfile)
+          echo "UV_VERSION=$uv_version" >> $GITHUB_ENV
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
         with:
-          python-version: "3.13"
+          python-version-file: core/pyproject.toml
           cache: "pip"
           cache-dependency-path: |
+              deployment/components/source/*.txt
+      - uses: astral-sh/setup-uv@bd01e18f51369d5a26f1651c3cb451d3417e3bba  # v6.3.1
+        with:
+          version: ${{env.UV_VERSION}}
+          enable-cache: true
+          cache-dependency-glob: |
               deployment/components/source/*.txt
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0  # for jshint
         with:

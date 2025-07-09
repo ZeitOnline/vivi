@@ -42,11 +42,6 @@ case $COMMAND in
 
         cd "$DIR/../smoketest"
 
-        if [[ Pipfile.lock -nt .pipenv.success ]]; then
-            pipenv sync
-            touch .pipenv.success
-        fi
-
         if ! [ -x "$(command -v yq)" ]; then
             echo 'Error: yq is not installed, install with: brew install yq.' >&2
             exit 1
@@ -60,7 +55,7 @@ case $COMMAND in
         export OIDC_CLIENT_SECRET=$(vault read -field client_secret zon/v1/keycloak/production/zeit-online/edge-www)
         export OIDC_CLIENT_ID=edge-www
 
-        exec pipenv run pytest -c none --tb=native --nightwatch-environment=$environment "$@"
+        exec uv run pytest -c none --tb=native --nightwatch-environment=$environment "$@"
         ;;
     *)
         echo "Unrecognized command: $COMMAND"
