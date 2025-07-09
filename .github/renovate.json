@@ -9,7 +9,8 @@
         "github-actions",
         "pipenv",
         "pre-commit",
-        "dockerfile"
+        "dockerfile",
+        "kustomize"
     ],
     "pre-commit": {
         "enabled": true
