@@ -12,6 +12,10 @@ patches:
     - op: replace
       path: /spec/template/spec/containers/0/env/0/value
       value: production
+    # XXX Should be able to use $NIGHTWATCH_ENVIRONMENT instead.
+    - op: replace
+      path: /spec/template/spec/containers/0/args/0
+      value: "--nightwatch-environment=production"
 - target:
     kind: ExternalSecret
     name: nightwatch-secrets
