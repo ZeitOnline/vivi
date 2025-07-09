@@ -1,0 +1,9 @@
+[project]
+name = "vivi-nightwatch"
+version = "0.0.1"
+requires-python = ">=3.13"
+
+dependencies = [
+    "zeit.nightwatch",
+    "zeit.msal",
+]
