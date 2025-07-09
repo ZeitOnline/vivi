@@ -16,14 +16,20 @@ class CMSObjectMover(zope.copypastemove.ObjectMover):
 
     def moveTo(self, target, new_name=None):
         obj = self.context
-
         orig_name = obj.__name__
         if new_name is None:
             new_name = orig_name
 
+        orig_log = list(zeit.objectlog.interfaces.ILog(obj).get_log())
+
         chooser = zope.container.interfaces.INameChooser(target)
         new_name = chooser.chooseName(new_name, obj)
         target[new_name] = obj
+
+        if orig_log:
+            log = zeit.objectlog.interfaces.ILog(target[new_name])
+            for entry in orig_log:
+                log.log(entry.message, timestamp=entry.time)
         return new_name
 
 
