@@ -226,6 +226,7 @@ release = ["towncrier"]
 name = "pypi-zon"
 url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/"
 default = true
+publish-url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon-internal/"
 
 [project.scripts]
 alembic-vivi = "zeit.connector.cli:alembic"
