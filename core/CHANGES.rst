@@ -6,6 +6,16 @@ vivi.core changes
 7.132.0 (2025-07-09)
 --------------------
 
+- - WCM-938: Polish image edit form (Add cancel button, don't fail if files are not renamed, support more metadata formats, remove whitespace around copyright slash)
+
+- WCM-933: Apply thumbnail size after focuspoint has been calculated, not before
+
+- WCM-973: Use title from metadata for filename in @@edit-images if not uploading from an article etc.
+
+
+7.132.0 (2025-07-09)
+--------------------
+
 - failed release
 
 
