@@ -123,6 +123,8 @@ class EditForm(zeit.cms.browser.view.Base):
         for name in filenames:
             imggroup = self.context[name]
 
+            meta = imggroup[imggroup.master_image].getXMPMetadata()
+
             if from_name:
                 while True:
                     suffix = ''
@@ -134,8 +136,11 @@ class EditForm(zeit.cms.browser.view.Base):
                     name_index += 1
                     if not self.context.get(name):
                         break
+            elif meta['title'] is not None:
+                name = zeit.cms.interfaces.normalize_filename(meta['title']) + '-bild'
+            else:
+                name = ''
 
-            meta = imggroup[imggroup.master_image].getXMPMetadata()
             result.append(
                 {
                     'cur_name': imggroup.__name__,

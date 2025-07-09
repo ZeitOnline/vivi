@@ -219,6 +219,7 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
             ],
         )
         b.getForm(name='imageupload').submit()
+        assert b.getControl(name='name[0]').value == 'cycling-bel-renewi-bild'
         assert b.getControl(name='copyright[0]').value == 'DAVID PINTENS/Belga/AFP via Getty Images'
         assert (
             b.getControl(name='caption[0]').value
@@ -226,6 +227,11 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
             + '"Renewi Tour" multi-stage cycling race'
         )
         assert b.getControl(name='title[0]').value == 'CYCLING-BEL-RENEWI'
+
+    def test_editimages_correctly_names_image_without_xmp(self):
+        b = self.browser
+        b.open('/repository/2007/03/@@edit-images?files=group')
+        assert b.getControl(name='name[0]').value == ''
 
     def test_editimages_correctly_names_multiple_images(self):
         b = self.browser
