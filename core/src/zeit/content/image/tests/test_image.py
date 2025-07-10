@@ -668,6 +668,39 @@ class TestImageMIMEType(zeit.content.image.testing.FunctionalTestCase):
                 },
             }
         },
+        {
+            'xmpmeta': {
+                'xmptk': 'Adobe XMP Core 9.1-c003 79.9690a87fc, 2025/03/06-20:50:16        ',
+                'RDF': {
+                    'Description': {
+                        'about': '',
+                        'Category': 'A',
+                        'Source': 'Getty Images North America',
+                        'City': 'Washington',
+                        'AuthorsPosition': 'Staff',
+                        'CopyrightFlag': 'true',
+                        'Country': 'United States',
+                        'DateCreated': '2025-06-24',
+                        'Headline': 'President Trump Departs Washington For NATO Summit',
+                        'Credit': 'Getty Images',
+                        'description': {
+                            'Alt': {
+                                'li': {
+                                    'lang': 'x-default',
+                                    'text': 'WASHINGTON, DC - JUNE 24: U.S. President Donald '
+                                    + 'Trump speaks to reporters before boarding the Marine One '
+                                    + 'presidential helicopter and departing the White House on '
+                                    + 'June 24, 2025 in Washington, DC. Less than 12 hours after '
+                                    + 'announcing a ceasefire between Israel and Iran, Trump is '
+                                    + "traveling to the Netherlands to attend the NATO leaders'"
+                                    + 'summit.  (Photo by Chip Somodevilla/Getty Images)',
+                                }
+                            }
+                        },
+                    }
+                },
+            }
+        },
     ],
 )
 def test_editimages_extracts_metadata(data):
