@@ -100,7 +100,7 @@ class EditForm(zeit.cms.browser.view.Base):
                 metadata = zeit.content.image.interfaces.IImageMetadata(imagegroup)
                 metadata.copyright = (
                     None,
-                    None,
+                    'Andere',
                     self.request.form[f'copyright[{index}]'],
                     None,
                     False,
