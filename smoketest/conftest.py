@@ -142,7 +142,7 @@ def azure_id_token():
         os.environ.get('AD_CLIENT_ID'), os.environ.get('AD_CLIENT_SECRET'), cache
     )
     # Change into smoketest directory and run:
-    # >> pipenv run msal-token --client-id=myclient --client-secret=mysecret \ # noqa: E800
+    # uv run msal-token --client-id=myclient --client-secret=mysecret \
     #       --cache-url=file:///tmp/msal.json login
     # Secrets are stored in zon/v1/azure/activedirectory/oidc/<staging/production>/vivi
     # Replace new refresh token in secret with key refresh_token

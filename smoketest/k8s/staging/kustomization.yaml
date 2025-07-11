@@ -6,6 +6,17 @@ resources:
 
 patches:
   - target:
+      kind: Deployment
+      name: nightwatch
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/env/0/value
+        value: staging
+      # XXX Should be able to use $NIGHTWATCH_ENVIRONMENT instead.
+      - op: replace
+        path: /spec/template/spec/containers/0/args/0
+        value: "--nightwatch-environment=staging"
+  - target:
       kind: ExternalSecret
       name: nightwatch-secrets
     patch: |

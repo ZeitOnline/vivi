@@ -410,4 +410,24 @@
     permission="zope.View"
     />
 
+  <!-- image upload -->
+
+  <gocept:pagelet
+    name="upload-images"
+    for="zeit.cms.interfaces.ICMSContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".imageupload.UploadForm"
+    permission="zeit.AddContent"
+    template="imageupload.upload-images.pt"
+    />
+
+  <gocept:pagelet
+    name="edit-images"
+    for="zeit.cms.repository.interfaces.ICollection"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".imageupload.EditForm"
+    permission="zeit.RenameContent"
+    template="imageupload.edit-images.pt"
+    />
+
 </configure>

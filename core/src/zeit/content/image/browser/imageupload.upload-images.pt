@@ -1,0 +1,7 @@
+<tal:block i18n:domain="zeit.cms">
+  <form name="imageupload" enctype="multipart/form-data" class="imageupload" method="POST" tal:attributes="action view/action">
+    <input type="hidden" name="from" tal:attributes="value view/from_name">
+    <input type="file" class="imageupload__input" multiple name="files">
+    <p><button>Hochladen</button></p>
+  </form>
+</tal:block>

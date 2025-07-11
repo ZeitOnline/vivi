@@ -109,6 +109,9 @@ class IImage(
     def getImageSize():
         """return tuple (width, heigth) of image."""
 
+    def getXMPMetadata():
+        """return dict of title, copyright, caption as defined in the XMP metadata"""
+
     format = zope.interface.Attribute(
         'Our mimeType formatted as a PIL-compatible format (e.g. JPEG, PNG)'
     )

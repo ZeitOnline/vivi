@@ -15,23 +15,34 @@
     permission="zope.View"
     />
 
-  <browser:viewlet
-      name="Workflow"
-      for="zeit.content.article.interfaces.IArticle"
-      layer="zeit.cms.browser.interfaces.ICMSLayer"
-      class="zeit.workflow.browser.menu.WorkflowMenuItem"
-      manager="zeit.cms.browser.interfaces.IContextViews"
-      permission="zeit.cms.admin.View"
-   />
+  <browser:menuItem
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    action="@@workflow.html"
+    menu="zeit-context-views"
+    title="Workflow"
+    permission="zeit.cms.admin.View"
+    filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
+    />
 
- <browser:viewlet
-      name="Edit contents"
-      for="zeit.content.article.interfaces.IArticle"
-      layer="zeit.cms.browser.interfaces.ICMSLayer"
-      class=".menu.EditContentsMenuItem"
-      manager="zeit.cms.browser.interfaces.IContextViews"
-      permission="zope.View"
-   />
+  <browser:menuItem
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    action="@@edit.html"
+    menu="zeit-context-views"
+    title="View"
+    permission="zope.View"
+    filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
+    />
+  <browser:menuItem
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    action="@@edit.html"
+    menu="zeit-context-views"
+    title="Edit contents"
+    permission="zope.View"
+    filter="python:modules['zeit.cms.checkout.interfaces'].ILocalContent.providedBy(context)"
+    />
 
   <browser:icon
     for="zeit.content.article.interfaces.IArticle"

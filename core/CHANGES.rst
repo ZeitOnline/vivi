@@ -3,6 +3,32 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.132.0 (2025-07-09)
+--------------------
+
+- - WCM-938: Polish image edit form (Add cancel button, don't fail if files are not renamed, support more metadata formats, remove whitespace around copyright slash)
+
+- WCM-933: Apply thumbnail size after focuspoint has been calculated, not before
+
+- WCM-973: Use title from metadata for filename in @@edit-images if not uploading from an article etc.
+
+
+7.132.0 (2025-07-09)
+--------------------
+
+- failed release
+
+
+7.130.0 (2025-07-04)
+--------------------
+
+- WCM-936: Implement batch image upload
+
+
+FIX:
+- Try to avoid negative focus point coordinates
+
+
 7.129.0 (2025-07-02)
 --------------------
 

@@ -48,20 +48,25 @@ class BlobWidget(zope.app.form.browser.FileWidget):
                 return self.context.missing_value
 
 
+BUFFER_SIZE = 10240
+
+
+def update_file(file, data):
+    target = zope.security.proxy.removeSecurityProxy(file.open('w'))
+    s = data.read(BUFFER_SIZE)
+    while s:
+        target.write(s)
+        s = data.read(BUFFER_SIZE)
+    data.close()
+    target.close()
+
+
 class FormBase:
     form_fields = zope.formlib.form.FormFields(IFileEditSchema)
     form_fields['blob'].custom_widget = BlobWidget
 
-    BUFFER_SIZE = 10240
-
     def update_file(self, file, data):
-        target = zope.security.proxy.removeSecurityProxy(file.open('w'))
-        s = data.read(self.BUFFER_SIZE)
-        while s:
-            target.write(s)
-            s = data.read(self.BUFFER_SIZE)
-        data.close()
-        target.close()
+        return update_file(file, data)
 
 
 class AddForm(FormBase, zeit.cms.browser.form.AddForm):

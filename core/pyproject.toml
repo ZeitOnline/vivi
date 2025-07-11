@@ -1,7 +1,8 @@
 [project]
 name = "vivi.core"
 authors = [{ name = "DIE ZEIT", email = "zon-backend@zeit.de" }]
-dynamic = ["version"]
+version = "7.133.0.dev0"
+requires-python = ">=3.13"
 
 dependencies = [
     "beautifulsoup4",
@@ -218,6 +219,15 @@ ui-zon = [
     "zc.datetimewidget==0.8.0+py3.2",
 ]
 
+[dependency-groups]
+release = ["towncrier"]
+
+[[tool.uv.index]]
+name = "pypi-zon"
+url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/"
+default = true
+publish-url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon-internal/"
+
 [project.scripts]
 alembic-vivi = "zeit.connector.cli:alembic"
 alembic-vivi-wait = "zeit.connector.cli:wait_for_migrations"
@@ -298,20 +308,15 @@ pgsock = "zeit.cms.relstorage:socket_resolver"
 
 
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+requires = ["uv_build"]
+build-backend = "uv_build"
 
-[tool.hatch.version]
-path = "src/zeit/cms/__init__.py"
-
-[tool.hatch.build]
-only-include = ["src"]
-exclude = [
+[tool.uv.build-backend]
+module-name = "zeit"
+namespace = true
+source-exclude = [
     "src/zeit/connector/testcontent/**",
 ]
-
-[tool.hatch.build.targets.wheel]
-packages = ["src/zeit"]
 
 
 [tool.towncrier]

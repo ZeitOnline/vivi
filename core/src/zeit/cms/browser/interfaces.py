@@ -93,6 +93,11 @@ class IMetadataPreview(zope.viewlet.interfaces.IViewletManager):
     """Viewlets for the metadata preview."""
 
 
+class IHideContextViews(zope.publisher.interfaces.browser.IBrowserView):
+    """Marker interface for views that do not want to show context view tabs
+    and context action buttons."""
+
+
 class IListRepresentation(zope.interface.Interface):
     """List representation of content objects"""
 

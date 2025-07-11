@@ -7,10 +7,15 @@
     ],
     "enabledManagers": [
         "github-actions",
-        "pipenv",
         "pre-commit",
-        "dockerfile"
+        "dockerfile",
+        "kustomize"
     ],
+    "lockFileMaintenance": {
+        "enabled": true,
+        "schedule": ["before 8am on wednesday"],
+        "commitMessageAction": "Update dependencies"
+    },
     "pre-commit": {
         "enabled": true
     },

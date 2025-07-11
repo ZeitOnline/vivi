@@ -139,10 +139,6 @@ class DropDownMenuBase:
         self.items = provider.render()
 
 
-class ContextViewsMenu(MenuItemBase, z3c.menu.simple.menu.ContextMenuItem):
-    template = zope.app.pagetemplate.ViewPageTemplateFile('context-views-menu-item.pt')
-
-
 class SecondaryActions(DropDownMenuBase, MenuItemBase):
     """Menu for secondary actions."""
 
@@ -151,3 +147,11 @@ class SecondaryActions(DropDownMenuBase, MenuItemBase):
 
 class GlobalSecondaryActions(DropDownMenuBase, GlobalMenuItem):
     """Menu for global secondary actions."""
+
+
+class Empty(zope.viewlet.manager.ViewletManagerBase):
+    def render(self):
+        return ''
+
+    def update(self):
+        pass
