@@ -319,6 +319,32 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         # content has to provide one of interfaces defined above
         return any(x.providedBy(content) for x in self.assets_to_publish)
 
+    def get_audios(self):
+        feed_url = 'https://medien.zeit.de/feeds/die-zeit/issue'
+        response = requests.get(
+            feed_url,
+            params={'year': self.year, 'number': self.volume},
+            timeout=2,
+        )
+        data = response.json()
+        result = {}
+        for part_of_volume in data['dataFeedElement'][0]['item']['hasPart']:
+            for article in part_of_volume.get('hasPart', []):
+                mediasync_id = article.get('identifier', None)
+                mp3_object = next(
+                    filter(
+                        lambda x: x.get('encodingFormat') == 'audio/mpeg',
+                        article.get('associatedMedia', []),
+                    ),
+                    None,
+                )
+                if mediasync_id and mp3_object:
+                    result[mediasync_id] = {
+                        'url': mp3_object.get('url', None),
+                        'duration': mp3_object.get('duration', None),
+                    }
+        return result
+
 
 class VolumeType(zeit.cms.type.XMLContentTypeDeclaration):
     factory = Volume
