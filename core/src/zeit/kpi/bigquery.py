@@ -67,3 +67,20 @@ class KPIData(Base):
     visits = mapped_column('visits', Integer)
     comments = mapped_column('comments', Integer)
     subscriptions = mapped_column('orders', Integer)
+
+
+@zope.interface.implementer(zeit.kpi.interfaces.IKPIDatasource)
+class MockKPI:
+    result = []
+
+    def query(self, contents):
+        return self.result
+
+    def _reset(self):
+        self.result[:] = []
+
+
+def reset_mock():
+    mock = zope.component.queryUtility(zeit.kpi.interfaces.IKPIDatasource)
+    if isinstance(mock, MockKPI):
+        mock._reset()

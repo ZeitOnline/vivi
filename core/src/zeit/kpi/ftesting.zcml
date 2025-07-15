@@ -4,7 +4,7 @@
   >
 
   <include package="zeit.cms" file="ftesting.zcml" />
-  <include package="zeit.kpi" />
+  <include package="zeit.kpi" file="ctesting.zcml" />
 
   <utility factory="zeit.kpi.bigquery.from_product_config" />
 
