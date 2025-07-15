@@ -314,7 +314,8 @@ class Repository(persistent.Persistent, Container):
 
     def search(self, query, timeout=None):
         connector = self.connector
-        return [self._makeContent(x) for x in connector.search_sql(query, timeout)]
+        for x in connector.search_sql(query, timeout):
+            yield self._makeContent(x)
 
     def _makeContent(self, resource):
         """Cobbles together the relevant parts of _getContent() and

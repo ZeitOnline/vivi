@@ -102,7 +102,7 @@ class IRepository(zope.interface.Interface):
             If given maximum amount of time this query is allowed to take
             else configured application timeout is used
 
-        returns a list of ICMSContent objects
+        returns an iterator that yields ICMSContent objects
         """
 
 

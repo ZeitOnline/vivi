@@ -638,7 +638,6 @@ class Connector:
         if self.support_locking:
             query = query.options(joinedload(Content.lock))
 
-        result = []
         rows = self.execute_sql(query, timeout)
 
         for content in rows.scalars():
@@ -648,10 +647,7 @@ class Connector:
                 properties = content.to_webdav()
                 self.property_cache[uniqueid] = properties
                 self._update_body_cache(content.uniqueid, content)
-            resource = self.resource(uniqueid, properties)
-            result.append(resource)
-
-        return result
+            yield self.resource(uniqueid, properties)
 
     def search_sql_count(self, query):
         rows = self.execute_sql(

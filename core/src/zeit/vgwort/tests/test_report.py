@@ -38,7 +38,7 @@ class ReportTest(zeit.vgwort.testing.SQLTestCase):
         )
         query = select(Content).filter_by(type='article')
         repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
-        result = repository.search(query)
+        result = list(repository.search(query))
 
         source = zope.component.getUtility(zeit.vgwort.interfaces.IReportableContentSource)
         result = list(source)

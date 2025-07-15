@@ -220,7 +220,7 @@ class IConnector(zope.interface.Interface):
         timeout:
             optional statement timeout in ms
 
-        returns a list of IResource objects
+        returns an iterator that yields IResource objects
         """
 
     def search_sql_count(query):
