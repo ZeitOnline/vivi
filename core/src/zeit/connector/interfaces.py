@@ -211,7 +211,7 @@ class IConnector(zope.interface.Interface):
             (unique_id, attributes[0], attributes[1], ...)
         """
 
-    def search_sql(query, timeout=None):
+    def search_sql(query, timeout=None, cache=True):
         """Search for `query`
 
         query:
@@ -219,6 +219,10 @@ class IConnector(zope.interface.Interface):
 
         timeout:
             optional statement timeout in ms
+
+        cache:
+            optionally disable populating connector cache with the results
+            (e.g. for migrations or other scripted usecases)
 
         returns an iterator that yields IResource objects
         """

@@ -93,14 +93,13 @@ class IRepository(zope.interface.Interface):
         repository.
         """
 
-    def search(query, timeout=None):
+    def search(query, timeout=None, cache=True):
         """Search for `query`
 
         query:
             `sqlalchemy.select(zeit.connector.models.Content)` object
-        timeout:
-            If given maximum amount of time this query is allowed to take
-            else configured application timeout is used
+        timeout, cache:
+            see IConnector.search_sql()
 
         returns an iterator that yields ICMSContent objects
         """
