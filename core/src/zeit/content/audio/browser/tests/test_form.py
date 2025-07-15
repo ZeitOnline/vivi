@@ -71,6 +71,22 @@ class TestAudioForm(zeit.content.audio.testing.BrowserTestCase):
         self.browser.getControl('Add').click()
         assert 'There were errors' not in self.browser.contents
 
+    def test_add_premium_audio(self):
+        self.browser.open('/repository/online/2007/01')
+        menu = self.browser.getControl(name='add_menu')
+        menu.displayValue = ['Audio']
+        self.browser.open(menu.value[0])
+        self.browser.getControl('File name').value = 'test-audio'
+        self.browser.getControl('Type').displayValue = 'Premium'
+        self.browser.getControl('Title').value = 'Cat article'
+        self.browser.getControl(label='Preview URL').value = 'http://example.com/audio/1234'
+        self.browser.getControl('Duration').value = 123
+        # Premium specific fields
+        self.browser.getControl('InterRed Article ID').value = 12345
+        self.browser.getControl('InterRed MediaSync ID').value = 67890
+        self.browser.getControl('Add').click()
+        assert 'There were errors' not in self.browser.contents
+
     def test_add_custom_audio(self):
         self.browser.open('/repository/online/2007/01')
         menu = self.browser.getControl(name='add_menu')

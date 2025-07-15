@@ -24,6 +24,8 @@ class Base:
 
 
 class Form:
+    _omit_premium_fields = ('ir_article_id', 'ir_mediasync_id')
+
     _omit_podcast_fields = (
         'podcast',
         'episode_nr',
@@ -50,7 +52,7 @@ class Form:
             'article_uuid', 'preview_url', 'checksum'
         )
         + zope.formlib.form.FormFields(zeit.cms.content.interfaces.ICommonMetadata).select(
-            'teaserTitle', 'teaserSupertitle', 'teaserText'
+            'teaserTitle', 'teaserSupertitle', 'teaserText', 'ir_article_id', 'ir_mediasync_id'
         )
         + zope.formlib.form.FormFields(zeit.content.image.interfaces.IImages).select('image')
     )
@@ -85,6 +87,12 @@ class Form:
         css_class='wide-widgets column-left',
     )
 
+    premium_fields = gocept.form.grouped.Fields(
+        _('Interred Info'),
+        ('ir_article_id', 'ir_mediasync_id'),
+        css_class='wide-widgets column-left',
+    )
+
     teaser_fields = gocept.form.grouped.Fields(
         _('Teaser'),
         ('teaserTitle', 'teaserSupertitle', 'teaserText', 'image'),
@@ -101,6 +109,7 @@ class Form:
         podcast_host_fields,
         tts_fields,
         tts_file_fields,
+        premium_fields,
         teaser_fields,
     )
 
@@ -109,12 +118,20 @@ class Mixin(Form):
     def __init__(self, context, request):
         super().__init__(context, request)
         if context.audio_type == 'tts':
-            self.form_fields = self.form_fields.omit(*self._omit_podcast_fields)
+            self.form_fields = self.form_fields.omit(
+                *self._omit_premium_fields, *self._omit_podcast_fields
+            )
         elif context.audio_type == 'podcast':
-            self.form_fields = self.form_fields.omit(*self._omit_tts_fields)
-        elif context.audio_type == 'custom':
+            self.form_fields = self.form_fields.omit(
+                *self._omit_premium_fields, *self._omit_tts_fields
+            )
+        elif context.audio_type == 'premium':
             self.form_fields = self.form_fields.omit(
                 *self._omit_podcast_fields, *self._omit_tts_fields
+            )
+        elif context.audio_type == 'custom':
+            self.form_fields = self.form_fields.omit(
+                *self._omit_premium_fields, *self._omit_podcast_fields, *self._omit_tts_fields
             )
 
 
