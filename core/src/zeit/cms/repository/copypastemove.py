@@ -57,13 +57,14 @@ def delete_objectlog_on_delete(event):
 @grok.subscribe(
     zeit.cms.repository.interfaces.IRepositoryContent, zope.lifecycleevent.IObjectMovedEvent
 )
-def delete_objectlog_on_move(context, event):
+def move_objectlog_on_move(context, event):
     if not all([event.oldParent, event.oldName]):
         return
     if zeit.cms.checkout.interfaces.IWorkingcopy.providedBy(event.newParent):
         return
+    key_ref = zeit.cms.content.keyreference.UniqueIdKeyReference(event.oldParent, event.oldName)
     log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
-    log.delete(zeit.cms.content.keyreference.UniqueIdKeyReference(event.oldParent, event.oldName))
+    log.move(key_ref, event.object)
 
 
 @zope.interface.implementer(zeit.cms.repository.interfaces.IRenameInfo)
