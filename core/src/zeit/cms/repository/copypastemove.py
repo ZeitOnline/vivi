@@ -64,8 +64,7 @@ def move_objectlog_on_move(context, event):
         return
     key_ref = zeit.cms.content.keyreference.UniqueIdKeyReference(event.oldParent, event.oldName)
     log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
-    log.copy(key_ref, event.object)
-    log.delete(key_ref)
+    log.move(key_ref, event.object)
 
 
 @zope.interface.implementer(zeit.cms.repository.interfaces.IRenameInfo)
