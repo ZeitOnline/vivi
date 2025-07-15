@@ -110,3 +110,18 @@ class SpeechTest(FunctionalTestCase):
         with checked_out(audio) as co:
             co.url = ''
         assert zeit.cms.workflow.interfaces.IPublishInfo(audio).can_publish() == CAN_PUBLISH_ERROR
+
+
+class PremiumTest(FunctionalTestCase):
+    def setUp(self):
+        super().setUp()
+        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        uuid = zeit.cms.content.interfaces.IUUID(article).shortened
+        AudioBuilder().with_audio_type('premium').with_article_uuid(uuid).build(self.repository)
+
+    def test_create_premium_audio(self):
+        audio = self.repository['audio']
+        self.assertEqual(audio.audio_type, 'premium')
+        self.assertEqual(audio.ir_article_id, 89123456)
+        self.assertEqual(audio.ir_mediasync_id, 1234567)
+        self.assertEqual(audio.url, 'https://example.de/audio/1234567')

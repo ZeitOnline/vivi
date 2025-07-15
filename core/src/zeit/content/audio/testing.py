@@ -66,6 +66,7 @@ class AudioBuilder:
                 'preview_url': 'https://example-preview-url.bert',
                 'checksum': '123foo',
             },
+            'premium': {'ir_article_id': 89123456, 'ir_mediasync_id': 1234567},
         }
 
     def with_attribute(self, attribute_name: str, value: T):
@@ -91,6 +92,11 @@ class AudioBuilder:
             audio.external_id = ''
             for attribute, value in self.attributes[audio_type].items():
                 setattr(tts, attribute, value)
+        if audio_type == 'premium':
+            audio.external_id = ''
+            audio.url = 'https://example.de/audio/1234567'
+            for attribute, value in self.attributes[audio_type].items():
+                setattr(audio, attribute, value)
         if repository is not None:
             repository[unique_id] = audio
 
