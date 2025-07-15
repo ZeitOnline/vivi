@@ -3,6 +3,15 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.133.0 (2025-07-15)
+--------------------
+
+FIX:
+- FIX: Correctly set copyright in imageupload
+
+- FIX: Accept images with missing creator or copyright notice in @@edit-images
+
+
 7.132.0 (2025-07-09)
 --------------------
 
