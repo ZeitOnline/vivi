@@ -1,0 +1,8 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:zcml="http://namespaces.zope.org/zcml"
+  i18n_domain="zeit.cms">
+
+  <utility factory=".bigquery.from_product_config" zcml:condition="not-have zeit.cms.testing" />
+
+</configure>

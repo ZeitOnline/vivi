@@ -1,0 +1,20 @@
+projects:
+- id: vivi-test
+  datasets:
+    - id: export
+      tables:
+        - id: export_buzzboard
+          columns:
+            - name: page
+              type: STRING
+            - name: visits
+              type: INTEGER
+            - name: comments
+              type: INTEGER
+            - name: orders
+              type: INTEGER
+          data:
+            - page: http://localhost/live-prefix/testcontent
+              visits: 1
+              comments: 2
+              orders: 3

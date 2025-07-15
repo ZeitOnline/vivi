@@ -199,6 +199,7 @@ deploy = [
     "python-json-logger",
     "relstorage",
     "repoze.vhm",
+    "sqlalchemy-bigquery",
     "waitress",
 ]
 
