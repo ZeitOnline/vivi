@@ -19,7 +19,7 @@
       title="Add"
       description="Menu for objects to be added according to
                    containment constraints"
-      interface="zope.app.publisher.interfaces.browser.AddMenu"
+      interface="zope.browsermenu.interfaces.AddMenu"
       />
   <browser:menu
       id="add_component"

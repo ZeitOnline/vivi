@@ -433,6 +433,7 @@
     permission="zope.Public"
   />
 
+  <include package="zope.ptresource" zcml:condition="have zeit.cms.testing" />
   <browser:resourceDirectory
     zcml:condition="have zeit.cms.testing"
     name="zeit.cms.browser.tests.fixtures"
