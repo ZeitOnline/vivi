@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.134.0 (2025-07-16)
+--------------------
+
+- WCM-954: Preserve content objectlog during copy and move
+
+
 7.133.0 (2025-07-15)
 --------------------
 
