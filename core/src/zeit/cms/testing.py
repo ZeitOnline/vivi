@@ -526,6 +526,7 @@ HERE = importlib.resources.files(__package__)
 CONFIG_LAYER = ProductConfigLayer(
     {
         'environment': 'testing',
+        'tracing-instrument': 'True',
         'source-serie': f'file://{HERE}/content/serie.xml',
         'source-ressorts': f'file://{HERE}/content/ressorts.xml',
         'source-keyword': f'file://{HERE}/content/zeit-ontologie-prism.xml',

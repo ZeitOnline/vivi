@@ -113,6 +113,18 @@ def default_tracer():
     * We don't really care about the `library.name` field that's populated by
       the argument to get_tracer().
     """
+    config = zeit.cms.config.package('zeit.cms')
+
+    if config.get('otlp-url') == 'stdout':
+        config['tracing-instrument'] = 'True'
+        provider = TracerProvider()
+        provider.add_span_processor(BatchSpanProcessor(ConsoleSpanExporter()))
+        opentelemetry.trace.set_tracer_provider(provider)
+    else:
+        provider = None
+    if config.get('tracing-instrument'):
+        _setup_instrumentors(provider)
+
     return opentelemetry.trace.get_tracer(__name__)
 
 
@@ -134,20 +146,6 @@ def tracer_from_product_config():
     resource['host.name'] = os.environ.get('kubernetes.node_name', '')
     opentelemetry.trace.set_tracer_provider(provider)
     _setup_instrumentors(provider)
-    return default_tracer()
-
-
-@zope.interface.implementer(zeit.cms.interfaces.ITracer)
-def stdout_tracer():
-    provider = TracerProvider()
-    provider.add_span_processor(BatchSpanProcessor(ConsoleSpanExporter()))
-    opentelemetry.trace.set_tracer_provider(provider)
-    return default_tracer()
-
-
-@zope.interface.implementer(zeit.cms.interfaces.ITracer)
-def testing_tracer():
-    _setup_instrumentors(None)
     return default_tracer()
 
 
