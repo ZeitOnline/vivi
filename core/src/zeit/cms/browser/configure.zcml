@@ -55,6 +55,7 @@
     />
   <browser:menu
     id="zeit-context-views"
+    class=".menu.OrderedMenu"
     title="context sensitive views"
     />
   <browser:viewlet
