@@ -283,14 +283,17 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
                 current_span.record_exception(err)
         return contents
 
-    def articles_with_references_for_publishing(self):
+    def get_articles(self):
         conditions = """
         type='article'
         AND published=false
         AND unsorted @@ '$.workflow.urgent == "yes"'
         """
         query = self._query_content_for_current_volume().where(sql(conditions))
-        articles_to_publish = self.repository.search(query)
+        return self.repository.search(query)
+
+    def articles_with_references_for_publishing(self):
+        articles_to_publish = self.get_articles()
 
         publishable_content = set()
         for article in articles_to_publish:
