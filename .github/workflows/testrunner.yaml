@@ -87,7 +87,7 @@ jobs:
                 libasound2 libatk1.0-0 libcairo-gobject2 libcairo2 libdbus-1-3 libdbus-glib-1-2 libfontconfig1 libfreetype6 libgdk-pixbuf-2.0-0 libglib2.0-0 libgtk-3-0 libpango-1.0-0 libpangocairo-1.0-0 libx11-6 libx11-xcb1 libxcb-shm0 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxtst6 \
                 build-essential graphviz-dev \
                 pandoc
-      - uses: browser-actions/setup-firefox@634a60ccd6599686158cf5a570481b4cd30455a2 # v1.5.4
+      - uses: browser-actions/setup-firefox@c04e669ab1d810acd2530e553388c1d183d765cf # v1.6.0
       - name: setup geckodriver
         run: |
           curl -fsSL https://github.com/mozilla/geckodriver/releases/download/v0.34.0/geckodriver-v0.34.0-linux64.tar.gz \
@@ -160,7 +160,7 @@ jobs:
           output: |
               {"summary": "[Download](${{env.build_url}}/artifacts/${{steps.coverage.outputs.artifact-id}})"}
 
-      - uses: slackapi/slack-github-action@b0fa283ad8fea605de13dc3f449259339835fc52 # v2.1.0
+      - uses: slackapi/slack-github-action@91efab103c0de0a537f72a35f6b8cda0ee76bf0a # v2.1.1
         if: failure() && github.ref_name == 'main' && github.event_name != 'schedule'
         with:
           method: chat.postMessage
