@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.135.0 (2025-07-16)
+--------------------
+
+- WCM-989: Order "context views" tabs explicitly
+
+
 7.134.0 (2025-07-16)
 --------------------
 
