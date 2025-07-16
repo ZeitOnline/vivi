@@ -16,8 +16,8 @@ INTERVALS = {
     '48h': "date_first_released >= now() - interval '48h'",
     '7d': """date_first_released < now() - interval '48h' AND
              date_first_released >= now() - interval '7d'""",
-    'all': """date_part('day', date_first_released)=date_part('day', now()) AND
-              date_part('hour', date_first_released)=date_part('hour', now())""",
+    'all': """idate_part('day', date_first_released)=idate_part('day', now()) AND
+              idate_part('hour', date_first_released)=idate_part('hour', now())""",
 }
 
 
