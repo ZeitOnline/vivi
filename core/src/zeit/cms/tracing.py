@@ -170,7 +170,11 @@ def _setup_instrumentors(provider):
         'server.address',
     ]
 
-    RequestsInstrumentor().instrument(tracer_provider=provider)
+    RequestsInstrumentor().instrument(
+        tracer_provider=provider,
+        # google.cloud.bigquery has its own otel instrumentation
+        excluded_urls='^https://bigquery.googleapis.com',
+    )
     RelStorageInstrumentor().instrument(tracer_provider=provider)
     TransactionInstrumentor().instrument(tracer_provider=provider)
 
