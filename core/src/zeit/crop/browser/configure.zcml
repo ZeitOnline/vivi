@@ -12,7 +12,6 @@
     class=".crop.Imp"
     permission="zeit.imp.Use"
     />
-
   <browser:menuItem
     zcml:condition="not-have zeit.content.image.variants"
     for="zeit.content.image.interfaces.IRepositoryImageGroup"

@@ -154,6 +154,7 @@ When editing an image and not uploading a new image the old image is kept:
 >>> print(browser.contents)
 <?xml...
     ...Updated on ...
+>>> browser.getLink('Checkin').click()
 
 Make sure the image is not changed by looking at the image view:
 
@@ -202,7 +203,7 @@ Try the drag pane:
 ...              'DSC00109_2.JPG/@@drag-pane.html')
 >>> print(browser.contents)
   <img src="http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG/thumbnail" alt="" height="100" width="74" border="0" />
-  <div class="Text">Opernball</div>
+  <div class="Text">Opernball in Wien</div>
   <div class="UniqueId">http://xml.zeit.de/2006/DSC00109_2.JPG</div>
 
 
@@ -255,53 +256,6 @@ When editing, the image file is no longer required:
 >>> browser.getControl('Apply').click()
 >>> 'Required input is missing' in browser.contents
 False
-
-
-Image browser
-=============
-
-The zeit.content.image package provides an image browser for IFolder:
-
->>> browser.open('http://localhost/++skin++cms/repository/2006/')
->>> browser.getLink('Images').click()
->>> print(browser.contents)
-<?xml version="1.0"?>
-<!DOCTYPE html ...
-    <title> 2006 – Images </title>
-    ...
-    <div id="edit-form" class="image-list">
-      <div class="image">
-        <div class="image-data">
-          <a href="http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG/@@view.html"
-             title="Opernball">
-            <img src="http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG/thumbnail" alt="" height="100" width="74" border="0" />
-          </a>
-          <span class="URL">http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG</span>
-        </div>
-        <div class="image-metadata">
-          <div>image/jpeg</div>
-          <div>
-            119x160
-          </div>
-        </div>
-      </div>
-      ...
-      <div class="image">
-        <div class="image-data">
-          <a href="http://localhost/++skin++cms/repository/2006/opernball.jpg/@@view.html">
-            <img src="http://localhost/++skin++cms/repository/2006/opernball.jpg/thumbnail" alt="" height="100" width="74" border="0" />
-          </a>
-          <span class="URL">http://localhost/++skin++cms/repository/2006/opernball.jpg</span>
-        </div>
-        <div class="image-metadata">
-          <div>image/jpeg</div>
-          <div>
-            119x160
-          </div>
-        </div>
-      </div>
-    </div>
-    ...
 
 
 Image Groups

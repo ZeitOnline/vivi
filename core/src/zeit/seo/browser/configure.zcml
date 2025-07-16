@@ -13,14 +13,12 @@
     permission="zeit.seo.View"
     class=".form.SEODisplay"
     />
-
   <browser:menuItem
     for="zeit.cms.content.interfaces.ICommonMetadata"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     action="@@seo-view.html"
-    menu="zeit-context-views"
-    title="View SEO"
     permission="zeit.seo.View"
+    menu="zeit-context-views" title="View SEO"
     filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
     />
 
@@ -29,6 +27,12 @@
     for="zeit.cms.content.interfaces.ICommonMetadata"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     class=".form.SEOEdit"
+    permission="zeit.seo.Edit"
+    />
+  <browser:menuItem
+    for="zeit.cms.content.interfaces.ICommonMetadata"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    action="@@seo-edit.html"
     permission="zeit.seo.Edit"
     menu="zeit-context-views" title="Edit SEO"
     />
@@ -43,14 +47,12 @@
     permission="zeit.seo.View"
     class=".form.OnlySEODisplay"
     />
-
   <browser:menuItem
     for="zeit.cms.interfaces.ICMSContent"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     action="@@seo-view.html"
-    menu="zeit-context-views"
-    title="View SEO"
     permission="zeit.seo.View"
+    menu="zeit-context-views" title="View SEO"
     filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
     />
 
@@ -59,6 +61,12 @@
     for="zeit.cms.interfaces.ICMSContent"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     class=".form.OnlySEOEdit"
+    permission="zeit.seo.Edit"
+    />
+  <browser:menuItem
+    for="zeit.cms.interfaces.ICMSContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    action="@@seo-edit.html"
     permission="zeit.seo.Edit"
     menu="zeit-context-views" title="Edit SEO"
     />

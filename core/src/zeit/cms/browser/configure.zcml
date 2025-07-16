@@ -55,6 +55,7 @@
     />
   <browser:menu
     id="zeit-context-views"
+    class=".menu.OrderedMenu"
     title="context sensitive views"
     />
   <browser:viewlet
@@ -410,6 +411,7 @@
 
   <!-- testing -->
   <gocept:pagelet
+    zcml:condition="have zeit.cms.testing"
     for="*"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="wrap"
@@ -418,6 +420,7 @@
     />
 
   <browser:page
+    zcml:condition="have zeit.cms.testing"
     for="zope.location.interfaces.ISite"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="test-setup-auth"
@@ -426,6 +429,7 @@
   />
 
   <browser:page
+    zcml:condition="have zeit.cms.testing"
     for="zope.location.interfaces.ISite"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="ping"
@@ -433,6 +437,7 @@
     permission="zope.Public"
   />
 
+  <include package="zope.ptresource" zcml:condition="have zeit.cms.testing" />
   <browser:resourceDirectory
     zcml:condition="have zeit.cms.testing"
     name="zeit.cms.browser.tests.fixtures"

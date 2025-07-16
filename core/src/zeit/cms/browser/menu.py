@@ -3,8 +3,9 @@ import xml.sax.saxutils
 
 import z3c.menu.simple.menu
 import zope.app.pagetemplate
-import zope.app.publisher.browser.menu
-import zope.app.publisher.interfaces.browser
+import zope.browsermenu.interfaces
+import zope.browsermenu.menu
+import zope.i18n
 import zope.viewlet.interfaces
 import zope.viewlet.viewlet
 
@@ -12,7 +13,36 @@ from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.browser.view
 
 
-class ExternalActionsMenu(zope.app.publisher.browser.menu.BrowserMenu):
+class OrderedMenu(zope.browsermenu.menu.BrowserMenu):
+    def getMenuItems(self, object, request):
+        result = []
+        for _name, item in zope.component.getAdapters((object, request), self.getMenuItemType()):
+            if item.available():
+                result.append(item)
+
+        result = sorted(
+            result, key=lambda x: (x.order, zope.i18n.translate(x.title, context=request))
+        )
+
+        return [
+            {
+                'title': item.title,
+                'description': item.description,
+                'action': item.action,
+                'selected': 'selected' if item.selected() else '',
+                'icon': item.icon,
+                'extra': item.extra,
+                'submenu': (
+                    zope.browsermenu.menu.getMenu(item.submenuId, object, request)
+                    if zope.browsermenu.interfaces.IBrowserSubMenuItem.providedBy(item)
+                    else None
+                ),
+            }
+            for item in result
+        ]
+
+
+class ExternalActionsMenu(zope.browsermenu.menu.BrowserMenu):
     def getMenuItems(self, object, request):
         result = super().getMenuItems(object, request)
         for item in result:
@@ -60,9 +90,7 @@ class MenuViewlet(MenuItemBase):
 
     @property
     def menu_items(self):
-        menu = zope.component.getUtility(
-            zope.app.publisher.interfaces.browser.IBrowserMenu, name=self.menu
-        )
+        menu = zope.component.getUtility(zope.browsermenu.interfaces.IBrowserMenu, name=self.menu)
         return menu.getMenuItems(self.context, self.request)
 
 
