@@ -19,8 +19,7 @@
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     action="@@workflow.html"
-    menu="zeit-context-views"
-    title="Workflow"
+    menu="zeit-context-views" title="Workflow" order="-100"
     permission="zeit.cms.admin.View"
     filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
     />
@@ -29,8 +28,7 @@
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     action="@@edit.html"
-    menu="zeit-context-views"
-    title="View"
+    menu="zeit-context-views" title="View" order="-200"
     permission="zope.View"
     filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
     />
@@ -38,8 +36,7 @@
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     action="@@edit.html"
-    menu="zeit-context-views"
-    title="Edit contents"
+    menu="zeit-context-views" title="Edit contents" order="-200"
     permission="zope.View"
     filter="python:modules['zeit.cms.checkout.interfaces'].ILocalContent.providedBy(context)"
     />

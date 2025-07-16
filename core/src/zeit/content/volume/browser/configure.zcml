@@ -21,7 +21,12 @@
      for="..interfaces.IVolume"
      class=".form.Edit"
      permission="zeit.EditContent"
-     menu="zeit-context-views" title="Edit metadata"
+     />
+   <browser:menuItem
+     for="..interfaces.IVolume"
+     action="@@edit.html"
+     permission="zeit.EditContent"
+     menu="zeit-context-views" title="Edit metadata" order="-200"
      />
 
    <browser:page
@@ -29,6 +34,13 @@
      for="..interfaces.IVolume"
      class=".form.Display"
      permission="zope.View"
+     />
+   <browser:menuItem
+     for="..interfaces.IVolume"
+     action="@@view.html"
+     permission="zope.View"
+     menu="zeit-context-views" title="View metadata" order="-200"
+     filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
      />
 
    <browser:page
@@ -55,15 +67,6 @@
     class=".admin.PublishAll"
     permission="zeit.cms.admin.View"
     />
-
-   <browser:menuItem
-     for="..interfaces.IVolume"
-     action="@@view.html"
-     menu="zeit-context-views"
-     title="View metadata"
-     permission="zope.View"
-     filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
-     />
 
    <browser:icon
      for="..interfaces.IVolume"

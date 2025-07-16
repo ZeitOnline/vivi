@@ -36,7 +36,13 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     class=".form.EditGallery"
     permission="zeit.EditContent"
-    menu="zeit-context-views" title="Edit metadata"
+    />
+  <browser:menuItem
+    for="..interfaces.IGallery"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    action="@@edit.html"
+    permission="zeit.EditContent"
+    menu="zeit-context-views" title="Edit metadata" order="-50"
     />
 
   <browser:page
@@ -46,14 +52,12 @@
     class=".form.DisplayGallery"
     permission="zope.View"
     />
-
   <browser:menuItem
     for="..interfaces.IGallery"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    menu="zeit-context-views"
-    title="View metadata"
     action="@@view.html"
     permission="zope.View"
+    menu="zeit-context-views" title="View metadata" order="-50"
     filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
     />
 
@@ -83,6 +87,12 @@
     class=".overview.Overview"
     template="overview.pt"
     permission="zeit.EditContent"
+    />
+  <browser:menuItem
+    for="..interfaces.IGallery"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    action="@@overview.html"
+    permission="zeit.EditContent"
     menu="zeit-context-views" title="Images"
     />
 
@@ -93,7 +103,6 @@
     name="synchronise-with-image-folder"
     permission="zeit.EditContent"
     />
-
   <browser:viewlet
     name="synchronise-with-image-folder"
     for="..interfaces.IGallery"
