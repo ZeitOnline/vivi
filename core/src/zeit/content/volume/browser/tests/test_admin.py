@@ -47,6 +47,7 @@ class VolumeAdminBrowserTest(zeit.content.volume.testing.BrowserTestCase):
         article.year = 2017
         article.title = 'title'
         article.ressort = 'Deutschland'
+        article.ir_mediasync_id = 1234
         portraitbox = Portraitbox()
         self.repository['portraitbox'] = portraitbox
         body = EditableBody(article, article.xml.find('body'))
@@ -97,6 +98,24 @@ class VolumeAdminBrowserTest(zeit.content.volume.testing.BrowserTestCase):
         self.assertTrue(
             zeit.cms.workflow.interfaces.IPublishInfo(self.repository['infobox']).published
         )
+
+    def test_referenced_premium_audio_object_is_published_as_well(self):
+        self.create_article_with_references()
+        connector = zope.component.getUtility(zeit.cms.interfaces.IConnector)
+        connector.search_result = ['http://xml.zeit.de/article_with_ref']
+        with mock.patch('zeit.content.volume.volume.Volume.get_audios') as get_audios:
+            get_audios.return_value = {
+                1234: {
+                    'url': 'https://media-delivery.testing.de/d7f6ed45-18b8-45de-9e8f-1aef4e6a33a9.mp3',
+                    'duration': 'PT9M7S',
+                }
+            }
+            self.publish_content()
+        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/article_with_ref')
+        audio = self.repository['premium']['audio']['2015']['01'][
+            zeit.cms.content.interfaces.IUUID(article).shortened
+        ]
+        self.assertTrue(zeit.cms.workflow.interfaces.IPublishInfo(audio).published)
 
     def test_referenced_image_is_not_published(self):
         self.create_article_with_references()

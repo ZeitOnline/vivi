@@ -12,9 +12,11 @@ from zeit.cms.repository.folder import Folder
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.cms.workflow.interfaces import IPublicationDependencies, IPublishInfo
 from zeit.content.article.article import Article
+from zeit.content.article.interfaces import IArticle
 from zeit.content.image.testing import create_image_group
 from zeit.content.volume.volume import Volume
 import zeit.cms.config
+import zeit.cms.content.field
 import zeit.cms.content.sources
 import zeit.cms.interfaces
 import zeit.cms.workflow.interfaces
@@ -195,6 +197,47 @@ class TestVolume(zeit.content.volume.testing.FunctionalTestCase):
             IPublicationDependencies(volume).get_retract_dependencies(),
         )
 
+
+class TestVolumeArticleAudios(zeit.content.volume.testing.SQLTestCase):
+    def setUp(self):
+        super().setUp()
+        self.create_volume(2025, 1)
+        self.create_volume_content('2025', '01', 'article01')
+
+    def create_volume_content(self, volume_year, volume_number, name, product='ZEI'):
+        article = Article()
+        zeit.cms.content.field.apply_default_values(article, IArticle)
+        article.product = zeit.cms.content.sources.Product(product)
+        article.volume = int(volume_number)
+        article.year = int(volume_year)
+        article.title = 'title'
+        article.ressort = 'Kultur'
+        article.access = 'free'
+        article.ir_mediasync_id = 1234
+        self.repository[volume_year][volume_number][name] = article
+        info = IPublishInfo(self.repository[volume_year][volume_number][name])
+        info.published = False
+        info.urgent = True
+        return self.repository[volume_year][volume_number][name]
+
+    def test_article_with_premium_audio_creates_audio_object(self):
+        with mock.patch('zeit.content.volume.volume.Volume.get_audios') as get_audios:
+            get_audios.return_value = {
+                1234: {
+                    'url': 'https://media-delivery.testing.de/d7f6ed45-18b8-45de-9e8f-1aef4e6a33a9.mp3',
+                    'duration': 'PT9M7S',
+                }
+            }
+            volume = self.repository['2025']['01']['ausgabe']
+            volume.process_audios()
+            all_content_to_publish = volume.articles_with_references_for_publishing()
+
+        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2025/01/article01')
+        self.assertIn(article, all_content_to_publish)
+        self.assertIn(
+            zeit.content.audio.interfaces.IAudioReferences(article).items[0], all_content_to_publish
+        )
+
     def test_get_audios(self):
         data = {
             '@context': 'https://schema.org',
@@ -273,9 +316,9 @@ class TestVolume(zeit.content.volume.testing.FunctionalTestCase):
             'name': 'DIE ZEIT',
         }
         mocker = requests_mock.Mocker()
-        mocker.get('https://medien.zeit.de/feeds/die-zeit/issue?year=2015&number=1', json=data)
+        mocker.get('https://medien.zeit.de/feeds/die-zeit/issue?year=2025&number=1', json=data)
         with mocker:
-            volume = self.repository['2015']['01']['ausgabe']
+            volume = self.repository['2025']['01']['ausgabe']
             audios = volume.get_audios()
             assert audios == {
                 1064677: {
@@ -348,9 +391,6 @@ class TestVolumeAccessQueries(zeit.content.volume.testing.SQLTestCase):
         self.create_volume_content('2025', '01', 'article01')
 
     def create_volume_content(self, volume_year, volume_number, name, product='ZEI'):
-        from zeit.content.article.interfaces import IArticle
-        import zeit.cms.content.field
-
         article = Article()
         zeit.cms.content.field.apply_default_values(article, IArticle)
         article.product = zeit.cms.content.sources.Product(product)
