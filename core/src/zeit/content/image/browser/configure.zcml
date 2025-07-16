@@ -165,18 +165,6 @@
     />
 
 
-  <!-- Collection / Image-browser-->
-
-  <browser:page
-    for="zeit.cms.repository.interfaces.IFolder"
-    name="imagebrowser.html"
-    class=".imagebrowser.ImageBrowser"
-    template="imagebrowser.pt"
-    permission="zope.View"
-    menu="zeit-context-views" title="Images"
-    />
-
-
   <!-- Image group -->
   <browser:icon
     for="zeit.content.image.interfaces.IImageGroup"
