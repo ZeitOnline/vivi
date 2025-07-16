@@ -283,14 +283,17 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
                 current_span.record_exception(err)
         return contents
 
-    def articles_with_references_for_publishing(self):
+    def get_articles(self):
         conditions = """
         type='article'
         AND published=false
         AND unsorted @@ '$.workflow.urgent == "yes"'
         """
         query = self._query_content_for_current_volume().where(sql(conditions))
-        articles_to_publish = self.repository.search(query)
+        return self.repository.search(query)
+
+    def articles_with_references_for_publishing(self):
+        articles_to_publish = self.get_articles()
 
         publishable_content = set()
         for article in articles_to_publish:
@@ -314,6 +317,32 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
             return False
         # content has to provide one of interfaces defined above
         return any(x.providedBy(content) for x in self.assets_to_publish)
+
+    def get_audios(self):
+        feed_url = 'https://medien.zeit.de/feeds/die-zeit/issue'
+        response = requests.get(
+            feed_url,
+            params={'year': self.year, 'number': self.volume},
+            timeout=2,
+        )
+        data = response.json()
+        result = {}
+        for part_of_volume in data['dataFeedElement'][0]['item']['hasPart']:
+            for article in part_of_volume.get('hasPart', []):
+                mediasync_id = article.get('identifier', None)
+                mp3_object = next(
+                    filter(
+                        lambda x: x.get('encodingFormat') == 'audio/mpeg',
+                        article.get('associatedMedia', []),
+                    ),
+                    None,
+                )
+                if mediasync_id and mp3_object:
+                    result[mediasync_id] = {
+                        'url': mp3_object.get('url', None),
+                        'duration': mp3_object.get('duration', None),
+                    }
+        return result
 
 
 class VolumeType(zeit.cms.type.XMLContentTypeDeclaration):

@@ -12,9 +12,11 @@ from zeit.cms.repository.folder import Folder
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.cms.workflow.interfaces import IPublicationDependencies, IPublishInfo
 from zeit.content.article.article import Article
+from zeit.content.article.interfaces import IArticle
 from zeit.content.image.testing import create_image_group
 from zeit.content.volume.volume import Volume
 import zeit.cms.config
+import zeit.cms.content.field
 import zeit.cms.content.sources
 import zeit.cms.interfaces
 import zeit.cms.workflow.interfaces
@@ -196,6 +198,136 @@ class TestVolume(zeit.content.volume.testing.FunctionalTestCase):
         )
 
 
+class TestVolumeArticleAudios(zeit.content.volume.testing.SQLTestCase):
+    def setUp(self):
+        super().setUp()
+        self.create_volume(2025, 1)
+        self.create_volume_content('2025', '01', 'article01')
+
+    def create_volume_content(self, volume_year, volume_number, name, product='ZEI'):
+        article = Article()
+        zeit.cms.content.field.apply_default_values(article, IArticle)
+        article.product = zeit.cms.content.sources.Product(product)
+        article.volume = int(volume_number)
+        article.year = int(volume_year)
+        article.title = 'title'
+        article.ressort = 'Kultur'
+        article.access = 'free'
+        article.ir_mediasync_id = 1234
+        info = IPublishInfo(article)
+        info.published = True
+        self.repository[volume_year][volume_number][name] = article
+        return self.repository[volume_year][volume_number][name]
+
+    def test_article_with_premium_audio_creates_audio_object(self):
+        with mock.patch('zeit.content.volume.volume.Volume.get_audios') as get_audios:
+            get_audios.return_value = {
+                1234: {
+                    'url': 'https://media-delivery.testing.de/d7f6ed45-18b8-45de-9e8f-1aef4e6a33a9.mp3',
+                    'duration': 'PT9M7S',
+                }
+            }
+            volume = self.repository['2025']['01']['ausgabe']
+            articles = volume.get_articles()
+            audios = volume.get_audios()
+            volume.create_audio_objects(audios)
+            all_content_to_publish = volume.articles_with_references_for_publishing()
+
+        self.assertIn(articles[0], all_content_to_publish)
+        self.assertIn(
+            zeit.content.audio.interfaces.IAudioReferences(articles[0])[0], all_content_to_publish
+        )
+
+    def test_get_audios(self):
+        data = {
+            '@context': 'https://schema.org',
+            '@type': 'DataFeed',
+            'dataFeedElement': [
+                {
+                    '@type': 'DataFeedItem',
+                    'dateCreated': '2024-07-10T15:00:49.626Z',
+                    'dateModified': '2024-07-10T16:02:36Z',
+                    'item': {
+                        '@type': 'PublicationIssue',
+                        'dateModified': '2024-07-10T16:02:36Z',
+                        'datePublished': '2024-07-10T15:00:49.626Z',
+                        'hasPart': [
+                            {
+                                '@type': 'CreativeWork',
+                                'hasPart': [
+                                    {
+                                        '@type': 'Article',
+                                        'associatedMedia': [
+                                            {
+                                                '@type': 'MediaObject',
+                                                'contentSize': '5.7K',
+                                                'contentUrl': 'https://storage.cloud.google.com/digitalabo-medien/4b7db5db-af0d-4975-838d-ef1fbe6c86c9.xml',
+                                                'dateModified': '2024-07-07T19:38:50Z',
+                                                'encodingFormat': 'text/xml',
+                                                'name': '4b7db5db-af0d-4975-838d-ef1fbe6c86c9.xml',
+                                                'url': 'https://media-delivery.zeit.de/4b7db5db-af0d-4975-838d-ef1fbe6c86c9.xml',
+                                            }
+                                        ],
+                                        'dateModified': '2024-07-07T19:38:50Z',
+                                        'identifier': 1068953,
+                                    },
+                                    {
+                                        '@type': 'Article',
+                                        'abstract': (
+                                            'Über die Notwendigkeit, '
+                                            + 'dass Helmut Schmidt wiederkehrt.'
+                                        ),
+                                        'articleSection': 'zeitmagazin',
+                                        'associatedMedia': [
+                                            {
+                                                '@type': 'MediaObject',
+                                                'contentSize': '6.5M',
+                                                'contentUrl': 'https://storage.cloud.google.com/digitalabo-medien/715e31fd-edaf-436a-a42e-30546ba35319.mp3',
+                                                'dateModified': '2024-07-10T14:39:38Z',
+                                                'duration': 'PT4M42S',
+                                                'encodingFormat': 'audio/mpeg',
+                                                'name': '715e31fd-edaf-436a-a42e-30546ba35319.mp3',
+                                                'url': 'https://media-delivery.zeit.de/715e31fd-edaf-436a-a42e-30546ba35319.mp3',
+                                            },
+                                            {
+                                                '@type': 'MediaObject',
+                                                'contentSize': '6K',
+                                                'contentUrl': 'https://storage.cloud.google.com/digitalabo-medien/7cf7fe6f-f8db-4f99-8edd-21177ac9a3a7.xml',
+                                                'dateModified': '2024-07-07T19:38:32Z',
+                                                'encodingFormat': 'text/xml',
+                                                'name': '7cf7fe6f-f8db-4f99-8edd-21177ac9a3a7.xml',
+                                                'url': 'https://media-delivery.zeit.de/7cf7fe6f-f8db-4f99-8edd-21177ac9a3a7.xml',
+                                            },
+                                        ],
+                                        'author': [
+                                            {'@type': 'Person', 'name': 'Harald Martenstein'}
+                                        ],
+                                        'dateModified': '2024-07-10T14:39:47Z',
+                                        'identifier': 1064677,
+                                        'name': 'Harald Martenstein',
+                                    },
+                                ],
+                            }
+                        ],
+                    },
+                }
+            ],
+            'dateModified': '2025-07-09T17:11:28Z',
+            'name': 'DIE ZEIT',
+        }
+        mocker = requests_mock.Mocker()
+        mocker.get('https://medien.zeit.de/feeds/die-zeit/issue?year=2015&number=1', json=data)
+        with mocker:
+            volume = self.repository['2015']['01']['ausgabe']
+            audios = volume.get_audios()
+            assert audios == {
+                1064677: {
+                    'url': 'https://media-delivery.zeit.de/715e31fd-edaf-436a-a42e-30546ba35319.mp3',
+                    'duration': 'PT4M42S',
+                }
+            }
+
+
 @pytest.mark.parametrize(
     'color, raised_exception',
     [
@@ -259,9 +391,6 @@ class TestVolumeAccessQueries(zeit.content.volume.testing.SQLTestCase):
         self.create_volume_content('2025', '01', 'article01')
 
     def create_volume_content(self, volume_year, volume_number, name, product='ZEI'):
-        from zeit.content.article.interfaces import IArticle
-        import zeit.cms.content.field
-
         article = Article()
         zeit.cms.content.field.apply_default_values(article, IArticle)
         article.product = zeit.cms.content.sources.Product(product)
