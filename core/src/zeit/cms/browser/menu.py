@@ -5,6 +5,7 @@ import z3c.menu.simple.menu
 import zope.app.pagetemplate
 import zope.browsermenu.interfaces
 import zope.browsermenu.menu
+import zope.i18n
 import zope.viewlet.interfaces
 import zope.viewlet.viewlet
 
@@ -19,7 +20,9 @@ class OrderedMenu(zope.browsermenu.menu.BrowserMenu):
             if item.available():
                 result.append(item)
 
-        result = sorted(result, key=lambda x: (x.order, x.title))
+        result = sorted(
+            result, key=lambda x: (x.order, zope.i18n.translate(x.title, context=request))
+        )
 
         return [
             {
