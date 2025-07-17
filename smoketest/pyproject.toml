@@ -7,3 +7,8 @@ dependencies = [
     "zeit.nightwatch",
     "zeit.msal",
 ]
+
+[[tool.uv.index]]
+name = "pypi-zon"
+url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/"
+default = true

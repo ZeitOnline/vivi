@@ -1,0 +1,7 @@
+#!/bin/bash
+
+if [[ -z "$CI" ]]; then
+    export GCLOUD_TOKEN=$(gcloud auth application-default print-access-token)
+fi
+
+export DOCKER_OPTS_PYPI_ZON="--secret id=GCLOUD_TOKEN,env=GCLOUD_TOKEN"

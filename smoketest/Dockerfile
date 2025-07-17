@@ -5,7 +5,8 @@ COPY --from=ghcr.io/astral-sh/uv:0.7.21@sha256:a64333b61f96312df88eafce95121b017
 ENV UV_NO_MANAGED_PYTHON=1 \
     UV_NO_CACHE=1 \
     UV_COMPILE_BYTECODE=1 \
-    UV_FROZEN=1
+    UV_FROZEN=1 \
+    UV_INDEX_PYPI_ZON_USERNAME="oauth2accesstoken"
 
 WORKDIR /app
 RUN groupadd --gid=10000 app && \
@@ -16,7 +17,8 @@ USER app
 ENV PATH=/app/.venv/bin:$PATH
 
 COPY pyproject.toml uv.lock ./
-RUN uv sync
+RUN --mount=type=secret,id=GCLOUD_TOKEN,env=UV_INDEX_PYPI_ZON_PASSWORD \
+    uv sync
 USER root
 RUN playwright install-deps firefox
 USER app
