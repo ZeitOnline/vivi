@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.136.0 (2025-07-17)
+--------------------
+
+- WCM-982: Implement cronjob to import KPI data from BigQuery
+
+
 7.135.0 (2025-07-16)
 --------------------
 
