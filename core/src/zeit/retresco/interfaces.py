@@ -12,12 +12,8 @@
   with ``ITMSRepresentation`` and ``ITMSContent``
 """
 
-import collections
-import logging
-
 import zope.interface
 
-from zeit.cms.interfaces import CONFIG_CACHE
 import zeit.cms.content.sources
 import zeit.cms.interfaces
 
@@ -225,26 +221,3 @@ class IElasticsearch(zope.interface.Interface):
         Returns a `zeit.cms.interfaces.IResult` object, containing dictionaries
         with the keys `url`, `doc_id` and `doc_type`.
         """
-
-
-class KPIFieldSource(zeit.cms.content.sources.CachedXMLBase, collections.UserDict):
-    product_configuration = 'zeit.retresco'
-    config_url = 'kpi-fields'
-    default_filename = 'topicpage-kpi.xml'
-
-    @property
-    def data(self):
-        try:
-            return self._data()
-        except Exception:
-            logging.getLogger(__name__).exception('KPIFieldSource failed to load')
-            return {}
-
-    @data.setter
-    def data(self, value):
-        pass
-
-    @CONFIG_CACHE.cache_on_arguments()
-    def _data(self):
-        tree = self._get_tree()
-        return {node.get('id'): node.get('tms_id') for node in tree.iterchildren('*')}

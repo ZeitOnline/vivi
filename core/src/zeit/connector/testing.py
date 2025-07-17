@@ -1,15 +1,12 @@
 from io import BytesIO
-import contextlib
 import importlib.resources
 import inspect
 import os
-import socket
 import time
 
 from gcp_storage_emulator.server import create_server as create_gcp_server
 from sqlalchemy import text as sql
 from sqlalchemy.exc import OperationalError
-import docker
 import plone.testing
 import requests
 import sqlalchemy
@@ -26,19 +23,6 @@ import zeit.connector.models
 ROOT = 'http://xml.zeit.de/testing'
 
 
-class DockerSetupError(requests.exceptions.ConnectionError):
-    # for more informative error output
-    pass
-
-
-# Taken from pytest-nginx
-def get_random_port():
-    s = socket.socket()
-    with contextlib.closing(s):
-        s.bind(('localhost', 0))
-        return s.getsockname()[1]
-
-
 FILESYSTEM_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     features=['zeit.connector.filesystem'], bases=(zeit.cms.testing.CONFIG_LAYER,)
 )
@@ -51,22 +35,19 @@ MOCK_CONNECTOR_LAYER = zeit.cms.testing.ZopeLayer(bases=(MOCK_ZCML_LAYER,))
 
 
 class SQLServerLayer(plone.testing.Layer):
+    defaultBases = (zeit.cms.testing.DOCKER_LAYER,)
+
     container_image = 'postgres:14'
 
     def setUp(self):
-        self['docker'] = docker.from_env()
-        port = get_random_port()
-        try:
-            self['psql_container'] = self['docker'].containers.run(
-                self.container_image,
-                detach=True,
-                remove=True,
-                environment={'POSTGRES_PASSWORD': 'postgres'},
-                ports={5432: port},
-            )
-        except requests.exceptions.ConnectionError:
-            raise DockerSetupError("Couldn't start docker container, is docker running?")
-
+        port = zeit.cms.testing.get_random_port()
+        self['psql_container'] = zeit.cms.testing.DOCKER_LAYER.run_container(
+            self.container_image,
+            detach=True,
+            remove=True,
+            environment={'POSTGRES_PASSWORD': 'postgres'},
+            ports={5432: port},
+        )
         self['dsn'] = f'postgresql://postgres:postgres@localhost:{port}'
         self.wait_for_startup(self['dsn'])
 
@@ -90,8 +71,6 @@ class SQLServerLayer(plone.testing.Layer):
         del self['dsn']
         self['psql_container'].stop()
         del self['psql_container']
-        self['docker'].close()
-        del self['docker']
 
 
 SQL_SERVER_LAYER = SQLServerLayer()

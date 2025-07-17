@@ -155,7 +155,10 @@ class TMSVolume(Content, zeit.content.volume.volume.Volume):
 @grok.implementer(zeit.cms.content.interfaces.IKPI)
 class KPI(grok.Adapter):
     grok.context(zeit.retresco.interfaces.ITMSContent)
-    FIELDS = zeit.retresco.interfaces.KPIFieldSource()
+    FIELDS = {
+        name: field.getTaggedValue('zeit.retresco.field')
+        for name, field in zope.schema.getFields(zeit.cms.content.interfaces.IKPI).items()
+    }
 
     def __init__(self, context):
         super().__init__(context)

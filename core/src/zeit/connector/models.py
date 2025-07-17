@@ -40,19 +40,27 @@ class Base(sqlalchemy.orm.DeclarativeBase):
         return Index(name, *args, **kw)
 
 
-CREATE_EXTENSION_UNACCENT = 'CREATE EXTENSION IF NOT EXISTS unaccent;'
-# Support using the unaccent() function in an index expression, see
-# <https://stackoverflow.com/questions/11005036/11007216>.
-# The (faster?) "language C" wrapper function does not work on CloudSQL.
-CREATE_EXTENSION_UNACCENT += """\
-CREATE OR REPLACE FUNCTION iunaccent(text) RETURNS text
-LANGUAGE sql IMMUTABLE PARALLEL SAFE STRICT
-RETURN public.unaccent('public.unaccent', $1);"""
+SQL_FUNCTIONS = {
+    # Support using the unaccent() function in an index expression, see
+    # <https://stackoverflow.com/questions/11005036/11007216>.
+    # The (faster?) "language C" wrapper function does not work on CloudSQL.
+    'unaccent': """CREATE EXTENSION IF NOT EXISTS unaccent;
+    CREATE OR REPLACE FUNCTION iunaccent(text) RETURNS text
+    LANGUAGE sql IMMUTABLE PARALLEL SAFE STRICT
+    RETURN public.unaccent('public.unaccent', $1);""",
+    # Support using the date_part() function in an index expression.
+    # (Apparently, evaluating timestamptz values needs a timezone, defaulting to
+    # the server runtime, which is why the built-in version is not immutable.)
+    'date_part': """\
+    CREATE OR REPLACE FUNCTION idate_part(text, timestamp with time zone) RETURNS double precision
+    LANGUAGE sql IMMUTABLE PARALLEL SAFE STRICT
+    RETURN date_part($1, timezone('UTC', $2));""",
+}
 
 
 @sqlalchemy.event.listens_for(Base.metadata, 'before_create')
 def metadata_create(target, connection, **kw):
-    connection.execute(sql(CREATE_EXTENSION_UNACCENT))
+    connection.execute(sql('\n'.join(SQL_FUNCTIONS.values())))
 
 
 class CommonMetadata:
@@ -224,6 +232,11 @@ class Content(
                 ),
                 cls.Index('recipe_categories', ops='jsonb_path_ops'),
                 cls.Index('recipe_ingredients', ops='jsonb_path_ops'),
+                cls.Index(
+                    sqlalchemy.func.idate_part('day', cls.date_first_released),
+                    sqlalchemy.func.idate_part('hour', cls.date_first_released),
+                    name='date_first_released_kpi_shard',
+                ),
             )
             + tuple(
                 cls.Index(getattr(cls, column).desc().nulls_last())

@@ -27,6 +27,7 @@
   <include package="zeit.wochenmarkt" />
 
   <include package="zeit.find" />
+  <include package="zeit.kpi" file="ctesting.zcml" />
   <include package="zeit.seo" />
   <include package="zeit.push" file="ctesting.zcml" />
 

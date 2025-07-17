@@ -3,17 +3,21 @@ from unittest import mock
 import json
 import urllib.parse
 
+from sqlalchemy import select
 import zope.component
 
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.interfaces import Result
-from zeit.cms.workflow.interfaces import IPublishInfo
+from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
+from zeit.connector.models import Content
 import zeit.cms.tagging.interfaces
 import zeit.cms.tagging.tag
 import zeit.connector.interfaces
 import zeit.content.rawxml.rawxml
 import zeit.content.text.text
+import zeit.kpi.interfaces
+import zeit.kpi.update
 import zeit.retresco.connection
 import zeit.retresco.interfaces
 import zeit.retresco.tagger
@@ -390,3 +394,38 @@ class TopiclistUpdateTest(zeit.retresco.testing.FunctionalTestCase):
         ]
         text = zeit.retresco.connection._build_topic_redirects(pages)
         self.assertEllipsis('.../thema/berlin = http://www.zeit.de/thema/hamburg\n', text)
+
+    def test_event_calls_update_kpi(self):
+        IPublish(self.repository['testcontent']).publish(background=False)
+        requests = self.layer['request_handler'].requests
+        requests.clear()
+
+        self.repository.connector.search_result = ['http://xml.zeit.de/testcontent']
+        kpi = zope.component.getUtility(zeit.kpi.interfaces.IKPIDatasource)
+        kpi.result = [
+            (self.repository['testcontent'], mock.Mock(visits=1, comments=2, subscriptions=3))
+        ]
+        zeit.kpi.update.update(select(Content), 1, 1)
+
+        payload = json.loads(requests[0]['body'])
+        self.assertEqual({'kpi_1': 1, 'kpi_2': 2, 'kpi_3': 3}, payload)
+        self.assertEndsWith('/publish', requests[1]['path'])
+
+    def test_update_kpi_does_not_publish_changed_objects(self):
+        IPublish(self.repository['testcontent']).publish(background=False)
+        with checked_out(self.repository['testcontent']):
+            pass  # update date_last_modified
+        requests = self.layer['request_handler'].requests
+        requests.clear()
+
+        self.repository.connector.search_result = ['http://xml.zeit.de/testcontent']
+        kpi = zope.component.getUtility(zeit.kpi.interfaces.IKPIDatasource)
+        kpi.result = [
+            (self.repository['testcontent'], mock.Mock(visits=1, comments=2, subscriptions=3))
+        ]
+        zeit.kpi.update.update(select(Content), 1, 1)
+
+        (request,) = requests
+        payload = json.loads(request['body'])
+        self.assertEqual({'kpi_1': 1, 'kpi_2': 2, 'kpi_3': 3}, payload)
+        self.assertNotEllipsis('.../publish', request['path'])

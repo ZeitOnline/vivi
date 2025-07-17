@@ -534,9 +534,12 @@ class ICachingTime(zope.interface.Interface):
 class IKPI(zope.interface.Interface):
     """Provides access to kpi fields (visits, comments, etc.) on ITMSContent."""
 
-    visits = zope.schema.Int(default=0, readonly=True)
-    comments = zope.schema.Int(default=0, readonly=True)
-    subscriptions = zope.schema.Int(default=0, readonly=True)
+    visits = zope.schema.Int(title=_('KPI Visits'), default=0, readonly=True)
+    visits.setTaggedValue('zeit.retresco.field', 'kpi_1')
+    comments = zope.schema.Int(title=_('KPI Comments'), default=0, readonly=True)
+    comments.setTaggedValue('zeit.retresco.field', 'kpi_2')
+    subscriptions = zope.schema.Int(title=_('KPI Subscriptions'), default=0, readonly=True)
+    subscriptions.setTaggedValue('zeit.retresco.field', 'kpi_3')
 
 
 @grok.implementer(IKPI)

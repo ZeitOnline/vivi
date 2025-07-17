@@ -9,6 +9,7 @@ import json
 import logging
 import os
 import re
+import socket
 import sys
 import tempfile
 import threading
@@ -19,6 +20,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 import celery.contrib.testing.app
 import celery.contrib.testing.worker
+import docker
 import gocept.httpserverlayer.custom
 import gocept.jslint
 import gocept.selenium
@@ -33,6 +35,7 @@ import plone.testing.zca
 import plone.testing.zodb
 import pytest
 import requests
+import requests.exceptions
 import selenium.webdriver
 import transaction
 import waitress.server
@@ -507,6 +510,7 @@ class RecordingRequestHandler(gocept.httpserverlayer.custom.RequestHandler):
     do_POST = do_GET
     do_PUT = do_GET
     do_DELETE = do_GET
+    do_PATCH = do_GET
 
 
 class HTTPLayer(gocept.httpserverlayer.custom.Layer):
@@ -522,6 +526,7 @@ HERE = importlib.resources.files(__package__)
 CONFIG_LAYER = ProductConfigLayer(
     {
         'environment': 'testing',
+        'tracing-instrument': 'True',
         'source-serie': f'file://{HERE}/content/serie.xml',
         'source-ressorts': f'file://{HERE}/content/ressorts.xml',
         'source-keyword': f'file://{HERE}/content/zeit-ontologie-prism.xml',
@@ -1248,3 +1253,33 @@ def vault_read(path, field=None):
     r.raise_for_status()
     data = r.json()['data']
     return data[field] if field else data
+
+
+class DockerLayer(plone.testing.Layer):
+    def setUp(self):
+        self['docker'] = docker.from_env()
+
+    def tearDown(self):
+        self['docker'].close()
+        del self['docker']
+
+    def run_container(self, *args, **kw):
+        try:
+            return self['docker'].containers.run(*args, **kw)
+        except requests.exceptions.ConnectionError:
+            raise DockerSetupError("Couldn't start docker container, is docker running?")
+
+
+DOCKER_LAYER = DockerLayer()
+
+
+class DockerSetupError(requests.exceptions.ConnectionError):
+    pass
+
+
+# Taken from pytest-nginx
+def get_random_port():
+    s = socket.socket()
+    with contextlib.closing(s):
+        s.bind(('localhost', 0))
+        return s.getsockname()[1]

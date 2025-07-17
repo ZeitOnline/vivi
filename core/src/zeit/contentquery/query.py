@@ -76,7 +76,10 @@ class SQLContentQuery(ContentQuery):
             if self.rows == 0:
                 return []
             repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
-            result = repository.search(query)
+            # self.rows should always be small enough that loading all results
+            # into memory at once is not an issue -- and it's really helpful to
+            # record the actually retrieved count for tracing.
+            result = list(repository.search(query))
             span.set_attribute('db.count', len(result))
             return result
 

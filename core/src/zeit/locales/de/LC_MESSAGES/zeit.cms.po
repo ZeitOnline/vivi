@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Tue Jul  8 18:10:24 2025\n"
+"POT-Creation-Date: Tue Jul 15 13:19:10 2025\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -593,7 +593,7 @@ msgstr "Jahr"
 
 #: zeit/cms/content/interfaces.py:80
 #: zeit/content/article/edit/interfaces.py:253
-#: zeit/content/volume/browser/form.py:38 zeit/content/volume/volume.py:322
+#: zeit/content/volume/browser/form.py:38 zeit/content/volume/volume.py:326
 msgid "Volume"
 msgstr "Ausgabe"
 
@@ -789,11 +789,23 @@ msgstr "Cachezeit Browser"
 msgid "Caching time server"
 msgstr "Cachezeit Fastly"
 
-#: zeit/cms/content/interfaces.py:553
+#: zeit/cms/content/interfaces.py:537
+msgid "KPI Visits"
+msgstr "Visits"
+
+#: zeit/cms/content/interfaces.py:539
+msgid "KPI Comments"
+msgstr "Kommentare"
+
+#: zeit/cms/content/interfaces.py:541
+msgid "KPI Subscriptions"
+msgstr "Abos"
+
+#: zeit/cms/content/interfaces.py:556
 msgid "Remote image URL"
 msgstr "Remote Bild URL"
 
-#: zeit/cms/content/interfaces.py:555
+#: zeit/cms/content/interfaces.py:558
 msgid "Remote timestamp URL"
 msgstr "Remote Zeitstempel URL"
 
@@ -1183,7 +1195,7 @@ msgstr "Der Ordner kann nicht umbenannt werden, da er bereits Inhalte enthält."
 msgid "\"${name}\" not found."
 msgstr "»${name}« nicht gefunden."
 
-#: zeit/cms/repository/browser/move.py:34 zeit/cms/repository/interfaces.py:191
+#: zeit/cms/repository/browser/move.py:34 zeit/cms/repository/interfaces.py:190
 msgid "\"${name}\" already exists."
 msgstr "\"${name}\" ist bereits vorhanden."
 
@@ -1230,7 +1242,7 @@ msgid "Only unpublished objects can be renamed."
 msgstr "Nur unveröffentlichte Inhalte können umbenannt werden."
 
 #: zeit/cms/repository/browser/rename.py:19
-#: zeit/cms/repository/interfaces.py:211
+#: zeit/cms/repository/interfaces.py:210
 msgid "New file name"
 msgstr "Dateiname"
 
@@ -1242,7 +1254,7 @@ msgstr "»${name}« wird jetzt nicht mehr im Navigationsbaum angezeigt."
 msgid "\"${name}\" is now shown in the navigation tree."
 msgstr "»${name}« wird jetzt im Navigationsbaum angezeigt."
 
-#: zeit/cms/repository/interfaces.py:231
+#: zeit/cms/repository/interfaces.py:230
 msgid "previous uniqueIds of this ICMSContent"
 msgstr "Vorherige IDs"
 
@@ -1813,7 +1825,7 @@ msgstr "Easy-Embed"
 #: zeit/content/article/interfaces.py:65 zeit/content/cp/interfaces.py:128
 #: zeit/content/cp/interfaces.py:302 zeit/content/cp/interfaces.py:641
 #: zeit/content/image/browser/configure.zcml:265
-#: zeit/content/image/browser/imagegroup.py:220 zeit/content/image/image.py:187
+#: zeit/content/image/browser/imagegroup.py:220 zeit/content/image/image.py:189
 #: zeit/content/portraitbox/interfaces.py:16
 #: zeit/wysiwyg/browser/resources/reference/image.pt:17
 msgid "Image"
