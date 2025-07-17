@@ -11,7 +11,7 @@ ENV UV_NO_MANAGED_PYTHON=1 \
 WORKDIR /app
 RUN groupadd --gid=10000 app && \
     useradd --uid=10000 --gid=app --no-user-group \
-    --create-home --home-dir /app app && \
+    --create-home --home-dir /tmp app && \
     chown -R app:app /app
 USER app
 ENV PATH=/app/.venv/bin:$PATH
@@ -19,9 +19,11 @@ ENV PATH=/app/.venv/bin:$PATH
 COPY pyproject.toml uv.lock ./
 RUN --mount=type=secret,id=GCLOUD_TOKEN,env=UV_INDEX_PYPI_ZON_PASSWORD \
     uv sync
+
 USER root
 RUN playwright install-deps firefox
 USER app
+ENV PLAYWRIGHT_BROWSERS_PATH=/app/.playwright
 RUN playwright install firefox
 
 COPY *.py ./
