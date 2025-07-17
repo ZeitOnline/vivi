@@ -14,7 +14,7 @@ projects:
             - name: orders
               type: INTEGER
           data:
-            - page: http://localhost/live-prefix/testcontent
+            - page: https://www.zeit.de/testcontent
               visits: 1
               comments: 2
               orders: 3

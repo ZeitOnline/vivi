@@ -33,7 +33,9 @@ class KPIBigQuery:
 
         self.engine = sqlalchemy.create_engine(dsn, connect_args=args)
         self.session = sqlalchemy.orm.scoped_session(sqlalchemy.orm.sessionmaker(bind=self.engine))
-        self.LIVE_PREFIX = zeit.cms.config.required('zeit.cms', 'live-prefix')
+
+    # There is no staging BigQuery table.
+    LIVE_PREFIX = 'https://www.zeit.de/'
 
     def query(self, contents):
         by_url = {}
