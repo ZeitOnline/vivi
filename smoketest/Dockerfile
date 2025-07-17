@@ -24,3 +24,9 @@ RUN playwright install firefox
 
 COPY *.py ./
 ENTRYPOINT ["pytest", "--tb=native"]
+
+# Security updates run last, to intentionally bust the docker cache.
+USER root
+RUN apt-get update && apt-get -y upgrade && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+USER app
