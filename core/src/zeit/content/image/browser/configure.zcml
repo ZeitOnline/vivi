@@ -34,7 +34,14 @@
     class=".image.ImageView"
     template="image_view.pt"
     permission="zope.View"
-    menu="zeit-context-views" title="View"
+    />
+  <browser:menuItem
+    for="..interfaces.IImage"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    action="@@view.html"
+    permission="zope.View"
+    menu="zeit-context-views" title="View" order="-200"
+    filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
     />
 
   <browser:page
@@ -128,10 +135,9 @@
 
   <browser:menuItem
     for="zeit.content.image.interfaces.IImage"
-    menu="zeit-context-views"
-    title="Edit"
     action="@@edit.html"
     permission="zeit.EditContent"
+    menu="zeit-context-views" title="Edit" order="-200"
     filter="python:modules['zeit.cms.workingcopy.interfaces'].ILocalContent.providedBy(context)"
     />
 
@@ -162,18 +168,6 @@
     permission="zeit.AddContent"
     class=".form.AddForm"
     menu="zeit-add-menu" title="Image (single)"
-    />
-
-
-  <!-- Collection / Image-browser-->
-
-  <browser:page
-    for="zeit.cms.repository.interfaces.IFolder"
-    name="imagebrowser.html"
-    class=".imagebrowser.ImageBrowser"
-    template="imagebrowser.pt"
-    permission="zope.View"
-    menu="zeit-context-views" title="Images"
     />
 
 
@@ -220,9 +214,14 @@
     class="zeit.content.image.browser.imagegroup.View"
     template="content_listing.pt"
     permission="zope.View"
-    menu="zeit-context-views" title="File list"
     />
   </configure>
+  <browser:menuItem
+    for="zeit.content.image.interfaces.IRepositoryImageGroup"
+    action="@@view.html"
+    permission="zope.View"
+    menu="zeit-context-views" title="File list" order="-25"
+    />
 
   <browser:page
     name="default.html"
@@ -241,7 +240,12 @@
     for="..interfaces.IRepositoryImageGroup"
     class=".imagegroup.DisplayForm"
     permission="zope.View"
-    menu="zeit-context-views" title="Metadata"
+    />
+  <browser:menuItem
+    for="..interfaces.IRepositoryImageGroup"
+    action="@@metadata.html"
+    permission="zope.View"
+    menu="zeit-context-views" title="Metadata" order="-50"
     />
 
   <browser:viewlet
@@ -275,7 +279,12 @@
     for="..interfaces.ILocalImageGroup"
     class=".imagegroup.EditForm"
     permission="zeit.EditContent"
-    menu="zeit-context-views" title="Metadata"
+    />
+  <browser:menuItem
+    for="..interfaces.ILocalImageGroup"
+    action="@@edit.html"
+    permission="zeit.EditContent"
+    menu="zeit-context-views" title="Metadata" order="-200"
     />
 
   <browser:page
@@ -325,13 +334,11 @@
     template="image-variants.pt"
     permission="zope.View"
     />
-
   <browser:menuItem
     for="zeit.content.image.interfaces.IRepositoryImageGroup"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     action="@@variant.html"
-    menu="zeit-context-views"
-    title="Edit"
+    menu="zeit-context-views" title="Edit" order="-200"
     permission="zope.View"
     filter="python:context.display_type != modules['zeit.content.image.interfaces'].INFOGRAPHIC_DISPLAY_TYPE"
     />

@@ -31,14 +31,12 @@
     class=".form.EditForm"
     permission="zeit.EditContent"
     />
-
   <browser:menuItem
     for="..interfaces.IAuthor"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    menu="zeit-context-views"
-    title="Edit"
     action="@@edit.html"
     permission="zeit.EditContent"
+    menu="zeit-context-views" title="Edit" order="-200"
     icon="metadata-edit"
     />
 
@@ -48,6 +46,14 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     class=".form.DisplayForm"
     permission="zope.View"
+    />
+  <browser:menuItem
+    for="..interfaces.IAuthor"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    action="@@view.html"
+    permission="zope.View"
+    menu="zeit-context-views" title="View" order="-200"
+    filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
     />
 
   <browser:icon

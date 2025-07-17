@@ -278,8 +278,8 @@ class TestVolumeAccessQueries(zeit.content.volume.testing.SQLTestCase):
     def test_all_content_via_storage_returns_ICMS_content(self):
         volume = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2025/01/ausgabe')
         query = volume._query_content_for_current_volume()
-        result = self.repository.search(query)
-        self.assertListEqual(
+        result = list(self.repository.search(query))
+        self.assertEqual(
             [volume, zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2025/01/article01')],
             result,
         )
@@ -287,7 +287,7 @@ class TestVolumeAccessQueries(zeit.content.volume.testing.SQLTestCase):
     def test_all_content_via_storage_returns_only_volume(self):
         volume = self.create_volume(2025, 2)
         query = volume._query_content_for_current_volume()
-        result = self.repository.search(query)
+        result = list(self.repository.search(query))
         self.assertEqual(
             [volume],
             result,
@@ -302,7 +302,7 @@ class TestVolumeAccessQueries(zeit.content.volume.testing.SQLTestCase):
         self.create_volume_content('2025', '01', 'article02')
         self.create_volume_content('2025', '01', 'article03')
         query = volume._query_content_for_current_volume()
-        cnt = self.repository.search(query)
+        cnt = list(self.repository.search(query))
         for c in cnt:
             if c.uniqueId != volume.uniqueId:
                 self.assertEqual('free', c.access)

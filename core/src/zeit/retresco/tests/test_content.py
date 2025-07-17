@@ -181,9 +181,9 @@ class ContentTest(zeit.retresco.testing.FunctionalTestCase):
         with checked_out(article):
             pass
         data = zeit.retresco.interfaces.ITMSRepresentation(article)()
-        data['kpi_visits'] = 1
-        data['kpi_comments'] = 2
-        data['kpi_subscriptions'] = 3
+        data['kpi_1'] = 1
+        data['kpi_2'] = 2
+        data['kpi_3'] = 3
         content = zeit.retresco.interfaces.ITMSContent(data)
         kpi = zeit.cms.content.interfaces.IKPI(content)
         self.assertEqual(1, kpi.visits)

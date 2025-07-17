@@ -7,19 +7,30 @@
   <grok:grok package="." />
 
   <browser:page
-    name="metadata.html"
-    for="..interfaces.IDynamicFolder"
-    class=".folder.DisplayForm"
-    permission="zope.View"
-    menu="zeit-context-views" title="View metadata"
-    />
-
-  <browser:page
     name="edit.html"
     for="..interfaces.IDynamicFolder"
     class=".folder.EditForm"
     permission="zeit.EditContent"
-    menu="zeit-context-views" title="Edit metadata"
+    />
+  <browser:menuItem
+    for="..interfaces.IDynamicFolder"
+    action="@@edit.html"
+    permission="zeit.EditContent"
+    menu="zeit-context-views" title="Edit metadata" order="-200"
+    />
+
+  <browser:page
+    name="metadata.html"
+    for="..interfaces.IDynamicFolder"
+    class=".folder.DisplayForm"
+    permission="zope.View"
+    />
+  <browser:menuItem
+    for="..interfaces.IDynamicFolder"
+    action="metadata.html"
+    permission="zope.View"
+    menu="zeit-context-views" title="View metadata" order="-50"
+    filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
     />
 
   <configure package="zeit.cms.repository.browser">
@@ -29,9 +40,15 @@
     class="zeit.content.dynamicfolder.browser.folder.View"
     template="content_listing.pt"
     permission="zope.View"
-    menu="zeit-context-views" title="View"
     />
   </configure>
+  <browser:menuItem
+    for="zeit.content.dynamicfolder.interfaces.IDynamicFolder"
+    action="@@view.html"
+    permission="zope.View"
+    menu="zeit-context-views" title="View" order="-200"
+    filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
+    />
 
   <adapter
     for="zeit.content.dynamicfolder.interfaces.IDynamicFolder

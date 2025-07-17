@@ -20,7 +20,6 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     class=".portraitbox.Edit"
     permission="zeit.EditContent"
-    menu="zeit-context-views" title="Edit metadata"
     />
 
   <browser:page

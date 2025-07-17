@@ -11,7 +11,7 @@ from typing import Sequence, Union
 from alembic import op
 import sqlalchemy as sa
 
-from zeit.connector.models import CREATE_EXTENSION_UNACCENT
+from zeit.connector.models import SQL_FUNCTIONS
 
 
 # revision identifiers, used by Alembic.
@@ -22,7 +22,7 @@ depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade() -> None:
-    op.execute(CREATE_EXTENSION_UNACCENT)
+    op.execute(SQL_FUNCTIONS['unaccent'])
 
     with op.get_context().autocommit_block():
         op.create_index(

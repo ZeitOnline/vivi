@@ -15,7 +15,12 @@
     for="..interfaces.IHTMLContent"
     class=".form.EditForm"
     permission="zeit.EditContent"
-    menu="zeit-context-views" title="Edit WYSIWYG"
+    />
+  <browser:menuItem
+    action="@wysiwyg_edit.html"
+    for="..interfaces.IHTMLContent"
+    permission="zeit.EditContent"
+    menu="zeit-context-views" title="Edit WYSIWYG" order="-200"
     />
 
   <adapter

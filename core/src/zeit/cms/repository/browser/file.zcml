@@ -12,6 +12,21 @@
     permission="zope.View"
     />
 
+  <browser:page
+    for="zeit.cms.repository.interfaces.IFile"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.html"
+    class=".file.EditForm"
+    permission="zeit.EditContent"
+    />
+  <browser:menuItem
+    for="zeit.cms.repository.interfaces.IFile"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    action="@@edit.html"
+    permission="zeit.EditContent"
+    menu="zeit-context-views" title="Edit" order="-200"
+    />
+
   <gocept:pagelet
     for="zeit.cms.repository.interfaces.IFile"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
@@ -20,26 +35,14 @@
     template="file_view.pt"
     permission="zope.View"
     />
-
   <browser:menuItem
     for="zeit.cms.repository.interfaces.IFile"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    menu="zeit-context-views"
-    title="View"
     action="@@view.html"
     permission="zope.View"
+    menu="zeit-context-views" title="View" order="-200"
     filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
     />
-
-  <browser:page
-    for="zeit.cms.repository.interfaces.IFile"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="edit.html"
-    class=".file.EditForm"
-    permission="zeit.EditContent"
-    menu="zeit-context-views" title="Edit"
-    />
-
 
   <adapter factory=".file.FileListRepresentation" />
 

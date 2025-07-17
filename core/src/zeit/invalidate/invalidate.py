@@ -1,8 +1,8 @@
 import logging
 import xmlrpc.client
 
-import zope.app.publisher.xmlrpc
 import zope.event
+import zope.publisher.xmlrpc
 
 import zeit.connector.interfaces
 
@@ -10,7 +10,7 @@ import zeit.connector.interfaces
 logger = logging.getLogger(__name__)
 
 
-class Invalidate(zope.app.publisher.xmlrpc.XMLRPCView):
+class Invalidate(zope.publisher.xmlrpc.XMLRPCView):
     def invalidate(self, resource_id):
         if not isinstance(resource_id, str):
             raise xmlrpc.client.Fault(

@@ -1,7 +1,9 @@
 from io import StringIO
 import logging
 
+import grokcore.component as grok
 import lxml.builder
+import opentelemetry.trace
 import requests
 import requests.exceptions
 import requests.sessions
@@ -11,6 +13,7 @@ import zope.interface
 
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.content.sources import FEATURE_TOGGLES
+from zeit.cms.workflow.interfaces import IPublicationStatus
 import zeit.cms.cli
 import zeit.cms.config
 import zeit.cms.content.interfaces
@@ -19,6 +22,7 @@ import zeit.cms.requests
 import zeit.cms.tagging.tag
 import zeit.cms.workflow.interfaces
 import zeit.content.rawxml.interfaces
+import zeit.kpi.interfaces
 import zeit.retresco.interfaces
 
 
@@ -275,6 +279,13 @@ class TMS:
             else:
                 raise
 
+    def update_kpi(self, content, kpi):
+        uuid = zeit.cms.content.interfaces.IUUID(content).id
+        data = {}
+        for name, field in zeit.retresco.content.KPI.FIELDS.items():
+            data[field] = getattr(kpi, name)
+        return self._request(f'PATCH /content/{uuid}', json=data)
+
     def _request(self, request, **kw):
         if FEATURE_TOGGLES.find('disable_tms'):
             return {}
@@ -408,3 +419,26 @@ def get_tagslist(response):
         )
         result.append(keyword)
     return result
+
+
+@grok.subscribe(zeit.kpi.interfaces.IKPIUpdateEvent)
+def update_kpi(event):
+    tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
+    for content, kpi in event.data:
+        try:
+            tms.update_kpi(content, kpi)
+
+            status = IPublicationStatus(content).published
+            if status == 'published':
+                tms.publish(content)
+            else:
+                opentelemetry.trace.get_current_span().add_event(
+                    'exception',
+                    {
+                        'exception.type': 'SkipUnpublishedChanges',
+                        'exception.severity': 'info',
+                        'exception.message': f'Skip {content}: {status}',
+                    },
+                )
+        except Exception as e:
+            opentelemetry.trace.get_current_span().record_exception(e)

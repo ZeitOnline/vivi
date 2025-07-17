@@ -30,14 +30,12 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     permission="zope.View"
     />
-
   <browser:menuItem
-    menu="zeit-context-views"
-    title="View"
     for="zeit.cms.repository.interfaces.IUnknownResource"
-    action="view.html"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
+    action="@@view.html"
     permission="zope.View"
+    menu="zeit-context-views" title="View" order="-200"
     />
 
   <browser:page

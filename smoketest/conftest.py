@@ -136,16 +136,15 @@ def tms(config):
 
 @pytest.fixture(scope='session')
 def azure_id_token():
-    path = f'{os.getcwd()}/msal.json'
-    cache = f'file://{path}'
+    cache = '/tmp/msal.json'
     auth = zeit.msal.Authenticator(
-        os.environ.get('AD_CLIENT_ID'), os.environ.get('AD_CLIENT_SECRET'), cache
+        os.environ.get('AD_CLIENT_ID'), os.environ.get('AD_CLIENT_SECRET'), f'file://{cache}'
     )
     # Change into smoketest directory and run:
     # uv run msal-token --client-id=myclient --client-secret=mysecret \
     #       --cache-url=file:///tmp/msal.json login
     # Secrets are stored in zon/v1/azure/activedirectory/oidc/<staging/production>/vivi
     # Replace new refresh token in secret with key refresh_token
-    if not os.path.exists(path):
+    if not os.path.exists(cache):
         auth.login_with_refresh_token(os.environ.get('AD_REFRESH_TOKEN'))
     return auth.get_id_token()

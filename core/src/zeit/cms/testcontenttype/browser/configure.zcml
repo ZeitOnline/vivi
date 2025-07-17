@@ -10,13 +10,11 @@
     permission="zope.View"
     class="zeit.cms.content.browser.form.CommonMetadataDisplayForm"
     />
-
   <browser:menuItem
     for="..interfaces.IExampleContentType"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     action="@@view.html"
-    menu="zeit-context-views"
-    title="View metadata"
+    menu="zeit-context-views" title="View metadata" order="-200"
     permission="zope.View"
     filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
     />
@@ -27,7 +25,13 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     class=".form.Edit"
     permission="zeit.EditContent"
-    menu="zeit-context-views" title="Edit metadata"
+    />
+  <browser:menuItem
+    for="..interfaces.IExampleContentType"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    action="@@edit.html"
+    permission="zeit.EditContent"
+    menu="zeit-context-views" title="Edit metadata" order="-200"
     />
 
 </configure>

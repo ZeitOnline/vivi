@@ -21,7 +21,13 @@
     class="zeit.cms.browser.listing.Listing"
     template="content_listing.pt"
     permission="zope.View"
-    menu="zeit-context-views" title="View"
+    />
+  <browser:menuItem
+    for="zeit.cms.repository.interfaces.IFolder"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    action="@@view.html"
+    permission="zope.View"
+    menu="zeit-context-views" title="View" order="-200"
     />
 
   <browser:defaultView

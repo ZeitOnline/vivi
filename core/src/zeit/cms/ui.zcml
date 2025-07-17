@@ -15,19 +15,25 @@
 
   <!-- XXX Each zcml file should include the meta it needs, instead of doing
        it globally -->
-  <include package="zope.app.publisher" file="meta.zcml" />
-  <include package="zope.principalregistry" file="meta.zcml" />
   <include package="zope.app.container.browser" file="meta.zcml" />
+  <include package="zope.app.publisher.xmlrpc" file="meta.zcml" />
+  <include package="zope.browserresource" file="meta.zcml" />
+  <include package="zope.browsermenu" file="meta.zcml" />
+  <include package="zope.browserpage" file="meta.zcml" />
+  <include package="zope.principalregistry" file="meta.zcml" />
+  <include package="zope.publisher" file="meta.zcml" />
   <include package="zeit.cms" file="application.zcml" />
   <include package="zeit.cms" file="menu.zcml" />
 
   <include package="zope.app.pagetemplate" />
   <include package="zope.app.publication" file="meta.zcml" />
   <include package="zope.app.publication" />
-  <include package="zope.app.publisher" />
+  <include package="zope.app.publisher.xmlrpc" />
   <!-- We should copy those two files instead, the package is archived -->
   <include package="zope.app.security" file="globalmodules.zcml" />
   <include package="zope.app.security" file="_protections.zcml" />
+  <include package="zope.browsermenu" />
+  <include package="zope.browserresource" />
   <include package="zope.copypastemove" />
   <include package="zope.componentvocabulary" />
   <include package="zope.error" />

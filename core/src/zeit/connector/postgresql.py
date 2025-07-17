@@ -384,7 +384,9 @@ class Connector:
             'gcs',
             attributes={'db.operation': span_name, 'ids': ids},
         ):
-            for chunk in batched(ids, google.cloud.storage.batch.Batch._MAX_BATCH_SIZE - 1):
+            for chunk in itertools.batched(
+                ids, google.cloud.storage.batch.Batch._MAX_BATCH_SIZE - 1
+            ):
                 # We'd rather use the official `with client.batch()` API, but
                 # that does not return responses with raise_exception=False.
                 batch = self.gcs_client.batch()
@@ -634,11 +636,10 @@ class Connector:
 
     search = _search_dav  # BBB
 
-    def search_sql(self, query, timeout=None):
-        if self.support_locking:
+    def search_sql(self, query, timeout=None, cache=True):
+        if cache and self.support_locking:
             query = query.options(joinedload(Content.lock))
 
-        result = []
         rows = self.execute_sql(query, timeout)
 
         for content in rows.scalars():
@@ -646,12 +647,10 @@ class Connector:
             properties = self.property_cache.get(uniqueid)
             if properties is None:
                 properties = content.to_webdav()
-                self.property_cache[uniqueid] = properties
-                self._update_body_cache(content.uniqueid, content)
-            resource = self.resource(uniqueid, properties)
-            result.append(resource)
-
-        return result
+                if cache:
+                    self.property_cache[uniqueid] = properties
+                    self._update_body_cache(content.uniqueid, content)
+            yield self.resource(uniqueid, properties)
 
     def search_sql_count(self, query):
         rows = self.execute_sql(
@@ -716,18 +715,6 @@ class Connector:
 
 
 factory = Connector.factory
-
-
-def batched(iterable, n):
-    """Batch data into tuples of length n. The last batch may be shorter.
-    Example: `batched('ABCDEFG', 3) --> ABC DEF G`
-    Backport from Python-3.12, see stdlib itertools recipes.
-    """
-    if n < 1:
-        raise ValueError('n must be at least one')
-    it = iter(iterable)
-    while batch := list(itertools.islice(it, n)):
-        yield batch
 
 
 class SQLZopeConnector(Connector):

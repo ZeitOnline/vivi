@@ -150,14 +150,14 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
         res = self.add_resource('one', type='article')
         self.add_resource('two', type='centerpage')
         query = select(Content).filter_by(type='article')
-        result = self.connector.search_sql(query)
+        result = list(self.connector.search_sql(query))
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0].id, res.id)
 
     def test_search_by_sql_prefills_cache(self):
         self.add_resource('one', body=b'mybody', type='article')
         query = select(Content).filter_by(type='article')
-        result = self.connector.search_sql(query)
+        result = list(self.connector.search_sql(query))
         with mock.patch.object(
             self.connector.session, 'execute', side_effect=RuntimeError('disabled')
         ):
@@ -169,7 +169,7 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
         self.connector.lock(res.id, 'someone', until)
         transaction.commit()  # empty cache
         query = select(Content).filter_by(type='article')
-        self.connector.search_sql(query)
+        list(self.connector.search_sql(query))
         self.assertNotEqual((None, None, False), self.connector.locked(res.id))
 
     def test_search_by_sql_reuses_existing_cache(self):
@@ -178,7 +178,7 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
         self.connector.add(res)
         self.connector.property_cache[res.id][prop] = 'bar'
         query = select(Content).filter_by(type='article')
-        result = self.connector.search_sql(query)
+        result = list(self.connector.search_sql(query))
         self.assertEqual('bar', result[0].properties[prop])
 
     def test_search_sql_count_returns_result_count(self):
@@ -191,10 +191,10 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
     def test_search_sql_suppresses_errors(self):
         self.connector.session.execute(sql('set local statement_timeout=1'))
         query = select(Content).add_columns(sql('pg_sleep(1)'))
-        result = self.connector.search_sql(query)
+        result = list(self.connector.search_sql(query))
         self.assertEqual(len(result), 0)
         # Ensure no InFailedSqlTransaction exception happens on subsequent calls
-        result = self.connector.search_sql(select(Content))
+        result = list(self.connector.search_sql(select(Content)))
         self.assertEqual(len(result), 1)
 
     def test_search_sql_count_suppresses_errors(self):

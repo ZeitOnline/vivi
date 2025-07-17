@@ -31,10 +31,9 @@
   <browser:menuItem
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    menu="zeit-context-views"
-    title="VGWort Status"
     action="@@vgwort.html"
     permission="zope.View"
+    menu="zeit-context-views" title="VGWort Status"
     filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
     />
 

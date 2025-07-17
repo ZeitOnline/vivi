@@ -42,13 +42,11 @@
     class=".form.DisplayForm"
     permission="zope.View"
     />
-
   <browser:menuItem
     for="..interfaces.ICenterPage"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    menu="zeit-context-views"
-    title="View metadata"
     action="@@view.html"
+    menu="zeit-context-views" title="View metadata" order="-50"
     permission="zope.View"
     filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
     />
@@ -57,9 +55,8 @@
     for="..interfaces.ICenterPage"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     action="@@seo-view.html"
-    menu="zeit-context-views"
-    title="View SEO"
     permission="zope.View"
+    menu="zeit-context-views" title="View SEO"
     filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
     />
 
@@ -77,7 +74,13 @@
     name="edit-metadata.html"
     class=".form.EditForm"
     permission="zeit.EditContent"
-    menu="zeit-context-views" title="Edit metadata"
+    />
+  <browser:menuItem
+    for="..interfaces.ICenterPage"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    action="@@edit-metadata.html"
+    permission="zeit.EditContent"
+    menu="zeit-context-views" title="Edit metadata" order="-50"
     />
 
   <browser:page
@@ -112,9 +115,8 @@
     for="zeit.content.cp.interfaces.ICenterPage"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     action="@@edit.html"
-    menu="zeit-context-views"
-    title="Edit contents"
     permission="zope.View"
+    menu="zeit-context-views" title="Edit contents" order="-200"
     filter="python:modules['zeit.cms.checkout.interfaces'].ILocalContent.providedBy(context)"
     />
 

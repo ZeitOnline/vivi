@@ -139,8 +139,10 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
                 date_digital_published=self.date_digital_published,
             )
         )
-        results = self.repository.search(query)
-        return results[0] if results else None
+        try:
+            return next(self.repository.search(query))
+        except StopIteration:
+            return None
 
     @staticmethod
     def published_days_ago(days_ago):
@@ -163,8 +165,10 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         )
 
         repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
-        result = repository.search(query)
-        return result[0] if result else None
+        try:
+            return next(repository.search(query))
+        except StopIteration:
+            return None
 
     def get_cover(self, cover_id, product_id=None, use_fallback=True):
         if product_id is None and use_fallback:
@@ -267,8 +271,9 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
                 current_span = opentelemetry.trace.get_current_span()
                 current_span.record_exception(err)
 
-        contents = self.repository.search(query)
-        for content in contents:
+        contents = []
+        for content in self.repository.search(query):
+            contents.append(content)
             try:
                 with zeit.cms.checkout.helper.checked_out(content) as co:
                     co.access = access_to
@@ -290,10 +295,9 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         AND unsorted @@ '$.workflow.urgent == "yes"'
         """
         query = self._query_content_for_current_volume().where(sql(conditions))
-        articles_to_publish = self.repository.search(query)
 
         publishable_content = set()
-        for article in articles_to_publish:
+        for article in self.repository.search(query):
             publishable_content.update(self._with_publishable_references(article))
 
         publishable_content.add(self)

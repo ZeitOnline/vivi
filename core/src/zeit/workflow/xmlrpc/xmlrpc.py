@@ -1,12 +1,12 @@
-import zope.app.publisher.xmlrpc
 import zope.cachedescriptors.property
 import zope.component
+import zope.publisher.xmlrpc
 
 import zeit.cms.repository.interfaces
 import zeit.workflow.interfaces
 
 
-class Publish(zope.app.publisher.xmlrpc.XMLRPCView):
+class Publish(zope.publisher.xmlrpc.XMLRPCView):
     def can_publish(self, unique_id):
         info = zeit.cms.workflow.interfaces.IPublishInfo(self.repository.getContent(unique_id))
         can_publish = info.can_publish()

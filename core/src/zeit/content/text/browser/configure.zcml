@@ -18,9 +18,14 @@
     name="edit.html"
     class=".form.Edit"
     permission="zeit.EditContent"
-    menu="zeit-context-views" title="Edit"
     />
-
+  <browser:menuItem
+    for="zeit.content.text.interfaces.IText"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    action="@@edit.html"
+    permission="zeit.EditContent"
+    menu="zeit-context-views" title="Edit" order="-200"
+    />
 
   <browser:page
     for="zeit.content.text.interfaces.IText"
@@ -28,7 +33,14 @@
     name="view.html"
     class=".form.Display"
     permission="zope.View"
-    menu="zeit-context-views" title="View"
+    />
+  <browser:menuItem
+    for="zeit.content.text.interfaces.IText"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    action="@@view.html"
+    permission="zope.View"
+    menu="zeit-context-views" title="View" order="-200"
+    filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
     />
 
   <browser:icon
@@ -63,7 +75,6 @@
     name="edit.html"
     class=".jinja.Edit"
     permission="zeit.EditContent"
-    menu="zeit-context-views" title="Edit"
     />
 
   <adapter factory=".jinja.ListRepresentation" />
@@ -82,7 +93,6 @@
     name="edit.html"
     class=".json.Edit"
     permission="zeit.EditContent"
-    menu="zeit-context-views" title="Edit"
     />
 
   <browser:page
@@ -91,7 +101,6 @@
     name="view.html"
     class=".json.Display"
     permission="zope.View"
-    menu="zeit-context-views" title="View"
     />
 
   <browser:page
@@ -100,8 +109,7 @@
     name="validate.html"
     class=".json.Validate"
     permission="zeit.EditContent"
-    menu="zeit-context-views"
-    title="Validate"
+    menu="zeit-context-views" title="Validate"
     />
 
   <gocept:pagelet
@@ -162,7 +170,6 @@
     name="view.html"
     class=".embed.Display"
     permission="zope.View"
-    menu="zeit-context-views" title="View"
     />
 
   <adapter

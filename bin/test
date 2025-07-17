@@ -1,11 +1,13 @@
 #!/bin/bash
 
+set -e
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 COMMAND=$1
 case $COMMAND in
     smoke)
-        set -e
+        source $DIR/configure-artifact-registry-auth
+
         shift
         if [[ "$1" != -* ]]; then
             environment=$1
@@ -18,7 +20,8 @@ case $COMMAND in
 
         image=$(awk -F': ' '/^  newName:/ { print $2 }' \
                 < k8s/base/kustomization.yaml)
-        docker buildx build --output type=docker --quiet --tag $image .
+        docker buildx build --output type=docker $DOCKER_OPTS_PYPI_ZON \
+               --quiet --tag $image .
         docker run --rm -it \
             -e VIVI_XMLRPC_PASSWORD=$(vault read -field password zon/v1/vivi/$environment/nightwatch) \
             -e TMS_PASSWORD=$(vault read -field password zon/v1/retresco/$environment/tms) \
@@ -31,7 +34,6 @@ case $COMMAND in
             --nightwatch-environment=$environment "$@"
         ;;
     local)
-        set -e
         shift
         if [[ "$1" != -* ]]; then
             environment=$1

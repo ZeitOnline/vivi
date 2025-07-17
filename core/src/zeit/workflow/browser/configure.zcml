@@ -22,8 +22,7 @@
     for="zeit.cms.interfaces.ICMSContent"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     action="@@workflow.html"
-    menu="zeit-context-views"
-    title="Workflow"
+    menu="zeit-context-views" title="Workflow" order="-100"
     permission="zeit.workflow.Publish"
     filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
     />

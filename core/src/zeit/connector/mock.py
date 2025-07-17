@@ -314,12 +314,13 @@ class Connector(zeit.connector.filesystem.Connector):
             stmt.compile(dialect=postgresql.dialect(), compile_kwargs={'literal_binds': True})
         )
 
-    def search_sql(self, query, timeout=None):
+    def search_sql(self, query, timeout=None, cache=True):
         self.search_args.append(self._compile_sql(query))
-        return [self[uniqueid] for uniqueid in self.search_result]
+        for uniqueid in self.search_result:
+            yield self[uniqueid]
 
     def search_sql_count(self, query):
-        return len(self.search_sql(query))
+        return len(list(self.search_sql(query)))
 
     def execute_sql(self, query, timeout=None):
         self.search_args.append(self._compile_sql(query))

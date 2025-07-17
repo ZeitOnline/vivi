@@ -19,7 +19,12 @@
     for="zeit.content.link.interfaces.ILink"
     class=".form.Edit"
     permission="zeit.EditContent"
-    menu="zeit-context-views" title="Edit metadata"
+    />
+  <browser:menuItem
+    for="zeit.content.link.interfaces.ILink"
+    action="@@edit.html"
+    permission="zeit.EditContent"
+    menu="zeit-context-views" title="Edit metadata" order="-200"
     />
 
   <browser:page
@@ -28,13 +33,11 @@
     class=".form.Display"
     permission="zope.View"
     />
-
   <browser:menuItem
     for="zeit.content.link.interfaces.ILink"
     action="@@view.html"
-    menu="zeit-context-views"
-    title="View metadata"
     permission="zope.View"
+    menu="zeit-context-views" title="View metadata" order="-200"
     filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
     />
 
