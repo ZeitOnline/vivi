@@ -20,11 +20,10 @@ COPY pyproject.toml uv.lock ./
 RUN --mount=type=secret,id=GCLOUD_TOKEN,env=UV_INDEX_PYPI_ZON_PASSWORD \
     uv sync
 
+ENV PLAYWRIGHT_BROWSERS_PATH=/opt/playwright
 USER root
-RUN playwright install-deps firefox
+RUN playwright install --with-deps firefox
 USER app
-ENV PLAYWRIGHT_BROWSERS_PATH=/app/.playwright
-RUN playwright install firefox
 
 COPY *.py ./
 ENTRYPOINT ["pytest", "--tb=native"]
