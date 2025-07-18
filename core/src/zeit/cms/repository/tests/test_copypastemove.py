@@ -37,7 +37,7 @@ class MoveContentBaseTest(zeit.cms.testing.ZeitCmsTestCase):
         event = move.call_args[0][0]
         self.assertEqual(self.repository['online']['2007']['01'], event.oldParent)
 
-    def test_move_content_preserves_objectlog(self):
+    def test_move_content_preserves_objectlog_even_in_root_folder(self):
         with checked_out(self.repository['testcontent']):
             # checkout to create log entry in workflowlog
             pass
@@ -45,6 +45,23 @@ class MoveContentBaseTest(zeit.cms.testing.ZeitCmsTestCase):
         original_log = list(zeit.objectlog.interfaces.ILog(original).get_log())
         zope.copypastemove.interfaces.IObjectMover(original).moveTo(self.repository, 'changed')
         changed = self.repository['changed']
+        changed_log = list(zeit.objectlog.interfaces.ILog(changed).get_log())
+        self.assertEqual(len(original_log), len(changed_log))
+        for old, copied in zip(original_log, changed_log):
+            self.assertEqual(old.message, copied.message)
+            self.assertEqual(old.time, copied.time)
+
+    def test_move_content_preserves_objectlog(self):
+        self.repository['online']['testcontent'] = ExampleContentType()
+        with checked_out(self.repository['online']['testcontent']):
+            # checkout to create log entry in workflowlog
+            pass
+        original = self.repository['online']['testcontent']
+        original_log = list(zeit.objectlog.interfaces.ILog(original).get_log())
+        zope.copypastemove.interfaces.IObjectMover(original).moveTo(
+            self.repository['online'], 'changed'
+        )
+        changed = self.repository['online']['changed']
         changed_log = list(zeit.objectlog.interfaces.ILog(changed).get_log())
         self.assertEqual(len(original_log), len(changed_log))
         for old, copied in zip(original_log, changed_log):
