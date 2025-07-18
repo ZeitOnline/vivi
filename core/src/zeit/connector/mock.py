@@ -89,12 +89,6 @@ class Connector(zeit.connector.filesystem.Connector):
         names |= self._paths.get(path, set())
         return names
 
-    def getResourceType(self, id):
-        id = self._get_cannonical_id(id)
-        if id in self._deleted:
-            raise KeyError("The resource '%s' does not exist." % id)
-        return super().getResourceType(id)
-
     def __getitem__(self, id):
         id = self._get_cannonical_id(id)
         if id in self._deleted:
