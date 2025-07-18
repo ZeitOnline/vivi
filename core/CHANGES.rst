@@ -3,6 +3,16 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.137.0 (2025-07-18)
+--------------------
+
+- WCM-1003: Remove DAV-ism "folders have trailing slash" from mock connector
+
+
+MAINT:
+- MAINT: Remove unused encoded/video attribute from Series
+
+
 7.136.0 (2025-07-17)
 --------------------
 
