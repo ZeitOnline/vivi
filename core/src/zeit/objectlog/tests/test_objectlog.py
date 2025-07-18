@@ -6,6 +6,10 @@ import ZODB.Connection
 import ZODB.POSException
 import zope.component
 
+from zeit.cms.repository.folder import Folder
+from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
+import zeit.cms.content.reference
+import zeit.cms.interfaces
 import zeit.objectlog.interfaces
 import zeit.objectlog.objectlog
 import zeit.objectlog.testing
@@ -52,3 +56,23 @@ class ObjectLog(zeit.objectlog.testing.SQLTestCase):
             zeit.objectlog.interfaces.ILog(self.content).log('one')
             log.clean(timedelta(days=0))
             self.assertEqual(0, len(list(log.get_log(self.content))))
+
+    def test_move_objectlog_from_left_to_right(self):
+        self.repository['2025'] = Folder()
+        self.repository['2025']['testcontent'] = ExampleContentType()
+        content = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2025/testcontent')
+        log = zeit.objectlog.interfaces.ILog(content)
+        log.log('foo', timestamp=datetime(2025, 7, 18, 16, 35))
+        original_log = list(zeit.objectlog.interfaces.ILog(content).get_log())
+        self.repository['2025']['testcontent2'] = ExampleContentType()
+        ref = zeit.cms.content.keyreference.UniqueIdKeyReference(
+            self.repository['2025'], content.__name__
+        )
+        content2 = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2025/testcontent2')
+        log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
+        log.move(ref, content2)
+        changed_log = list(zeit.objectlog.interfaces.ILog(content2).get_log())
+        self.assertEqual(len(original_log), len(changed_log))
+        for old, copied in zip(original_log, changed_log):
+            self.assertEqual(old.message, copied.message)
+            self.assertEqual(old.time, copied.time)
