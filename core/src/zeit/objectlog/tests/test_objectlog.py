@@ -22,7 +22,7 @@ class FakeObjectLog(dict):
         return super().__setitem__(key, FakeLogItem())
 
 
-class ObjectLog(zeit.objectlog.testing.FunctionalTestCase):
+class ObjectLog(zeit.objectlog.testing.SQLTestCase):
     def setUp(self):
         super().setUp()
         self.content = zeit.objectlog.testing.Content()
