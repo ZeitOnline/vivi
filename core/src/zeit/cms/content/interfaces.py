@@ -267,9 +267,7 @@ class ISerie(zope.interface.Interface):
     title = zope.interface.Attribute('')
     serienname = zope.interface.Attribute('')
     url = zope.interface.Attribute('')
-    encoded = zope.interface.Attribute('')
     column = zope.interface.Attribute('')
-    video = zope.interface.Attribute('')
 
 
 def hex_literal(value):
