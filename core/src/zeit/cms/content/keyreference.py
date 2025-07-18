@@ -43,4 +43,4 @@ class CMSContentKeyReference:
 
 class UniqueIdKeyReference(CMSContentKeyReference):
     def __init__(self, parent, name):
-        self.referenced_object = parent.uniqueId + name
+        self.referenced_object = f'{parent.uniqueId}/{name}'
