@@ -350,7 +350,7 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
                         'publish_status': 'not-published',
                     },
                 },
-                'url': '/image-group/',
+                'url': '/image-group',
                 'title': 'mytitle',
                 'teaser': 'mycaption',
             },

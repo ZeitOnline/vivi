@@ -45,7 +45,7 @@ The author image group is stored using the IImages interface.
 >>> print(zeit.cms.testing.xmltotext(shakespeare.xml))
 <author...>
   ...
-  <image_group base-id="http://xml.zeit.de/2007/03/group/" type="jpg"/>
+  <image_group base-id="http://xml.zeit.de/2007/03/group" type="jpg"/>
 </author>
 
 Using authors

@@ -21,5 +21,5 @@ class FolderDependenciesTest(zeit.workflow.testing.FunctionalTestCase):
         dependencies = list(
             zeit.cms.workflow.interfaces.IPublicationDependencies(folder).get_dependencies()
         )
-        self.assertEqual('http://xml.zeit.de/online/2007/01/', dependencies[0].uniqueId)
-        self.assertEqual('http://xml.zeit.de/online/2007/02/', dependencies[1].uniqueId)
+        self.assertEqual('http://xml.zeit.de/online/2007/01', dependencies[0].uniqueId)
+        self.assertEqual('http://xml.zeit.de/online/2007/02', dependencies[1].uniqueId)

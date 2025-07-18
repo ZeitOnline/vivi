@@ -527,7 +527,7 @@ The image group has a special drag pane which shows all the images:
   <img src="http://localhost/++skin++cms/repository/2006/new-hampshire/obama-clinton-120x120.jpg/thumbnail" alt="" height="100" width="100" border="0" />
   <img src="http://localhost/++skin++cms/repository/2006/new-hampshire/opernball.jpg/thumbnail" alt="" height="100" width="74" border="0" />
   <div class="Text">New Hampshire</div>
-  <div class="UniqueId">http://xml.zeit.de/2006/new-hampshire/</div>
+  <div class="UniqueId">http://xml.zeit.de/2006/new-hampshire</div>
 
 
 It is possible to open the object browser on an image group (this used to
@@ -537,7 +537,7 @@ break):
 ...     'http://localhost/++skin++cms/repository/2006/new-hampshire/'
 ...     '@@get_object_browser')
 >>> print(browser.contents)
- <h1>http://xml.zeit.de/2006/new-hampshire/</h1>
+ <h1>http://xml.zeit.de/2006/new-hampshire</h1>
  ...
 
 Image groups also have a thumbnail:

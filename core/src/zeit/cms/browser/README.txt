@@ -165,7 +165,7 @@ The preview is on the container now:
 ...     'http://localhost/++skin++cms/repository/online/2007/01/Somalia' )
 >>> zeit.cms.testing.click_wo_redirect(browser, 'Preview')
 302 Moved Temporarily
-http://localhost/preview-prefix/online/2007/01/
+http://localhost/preview-prefix/online/2007/01
 
 
 Clean up:

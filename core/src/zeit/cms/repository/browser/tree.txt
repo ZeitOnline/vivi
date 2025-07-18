@@ -53,17 +53,17 @@ X-Powered-By: Zope (www.zope.org), Python (www.python.org)
       </p>
   <ul>
       <li action="expand" class="NotRoot..."
-          uniqueid="http://xml.zeit.de/2007/">
+          uniqueid="http://xml.zeit.de/2007">
         <p>
         <a href="http://localhost/++skin++cms/repository/2007">2007</a>
-        <span class="uniqueId">http://xml.zeit.de/2007/</span>
+        <span class="uniqueId">http://xml.zeit.de/2007</span>
       </p>
       </li>
       <li action="expand" class="NotRoot..."
-          uniqueid="http://xml.zeit.de/online/">
+          uniqueid="http://xml.zeit.de/online">
         <p>
         <a href="http://localhost/++skin++cms/repository/online">online</a>
-        <span class="uniqueId">http://xml.zeit.de/online/</span>
+        <span class="uniqueId">http://xml.zeit.de/online</span>
       </p>
       </li>
   </ul>
@@ -98,11 +98,11 @@ When we visit `online` it is *not* automatically expanded while visiting it:
 
 
 Now we expand online/2007. This is done via an ajax request. Thus the returned
-"page" only conatains the tree, not the full html page:
+"page" only contains the tree, not the full html page:
 
 >>> view_url = 'http://localhost/++skin++cms/repository'
 >>> browser.open('http://localhost/++skin++cms/repository/tree.html/'
-...              '@@expandTree?uniqueId=http://xml.zeit.de/online/'
+...              '@@expandTree?uniqueId=http://xml.zeit.de/online'
 ...              '&view_url=%s' % urllib.parse.quote(view_url))
 >>> print(zeit.cms.testing.xmltotext(browser.document))
 <ul>

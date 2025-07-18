@@ -58,7 +58,7 @@ class MobileFormTest(zeit.content.article.testing.BrowserTestCase):
         article = self.get_article()
         push = zeit.push.interfaces.IPushMessages(article)
         service = push.get(type='mobile', variant='manual')
-        self.assertEqual('http://xml.zeit.de/2007/03/group/', service['image'])
+        self.assertEqual('http://xml.zeit.de/2007/03/group', service['image'])
         self.assertEqual(True, service['image_set_manually'])
 
     def test_shows_notice_for_author_push(self):

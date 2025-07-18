@@ -44,7 +44,9 @@ class VolumeBrowserTest(zeit.content.volume.testing.BrowserTestCase):
         b.getControl('Landscape', index=0).value = 'http://xml.zeit.de/imagegroup'
         b.getControl('Apply').click()
         b.getLink('Checkin').click()
-        self.assertIn('<span class="uniqueId">http://xml.zeit.de/imagegroup/</span>', b.contents)
+        self.assertEllipsis(
+            '...<span class="uniqueId">http://xml.zeit.de/imagegroup</span>...', b.contents
+        )
 
     def test_saves_imagegroup_for_dependent_project_in_xml(self):
         self.repository['imagegroup'] = create_image_group()
@@ -60,7 +62,7 @@ class VolumeBrowserTest(zeit.content.volume.testing.BrowserTestCase):
         xml = volume.xml.find('covers/cover')
         self.assertEqual('landscape', xml.get('id'))
         self.assertEqual('ZMLB', xml.get('product_id'))
-        self.assertEqual('http://xml.zeit.de/imagegroup/', xml.get('href'))
+        self.assertEqual('http://xml.zeit.de/imagegroup', xml.get('href'))
 
     def test_displays_warning_if_volume_with_same_name_already_exists(self):
         b = self.browser

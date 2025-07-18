@@ -37,7 +37,7 @@ class VideoTest(zeit.brightcove.testing.FunctionalTestCase, zeit.cms.tagging.tes
         bc.data['created_at'] = '2017-05-15T08:24:55.916Z'
         self.assertEqual('http://xml.zeit.de/video/2017-05/myvid', bc.uniqueId)
         self.assertEqual(
-            zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/video/2017-05/'), bc.__parent__
+            zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/video/2017-05'), bc.__parent__
         )
 
     def test_converts_authors(self):
@@ -186,7 +186,7 @@ class VideoTest(zeit.brightcove.testing.FunctionalTestCase, zeit.cms.tagging.tes
                 bc = BCVideo.find_by_id('nonexistent')
         self.assertIsInstance(bc, zeit.brightcove.convert.DeletedVideo)
         self.assertEqual('http://xml.zeit.de/online/2007/01/Somalia', bc.uniqueId)
-        self.assertEqual('http://xml.zeit.de/online/2007/01/', bc.__parent__.uniqueId)
+        self.assertEqual('http://xml.zeit.de/online/2007/01', bc.__parent__.uniqueId)
 
     def test_missing_values_use_field_default(self):
         bc = BCVideo()

@@ -36,7 +36,7 @@ class TestVolumeCovers(zeit.content.volume.testing.FunctionalTestCase):
 
     def add_ipad_cover(self, product_id='ZEI'):
         node = lxml.builder.E.cover(
-            href='http://xml.zeit.de/imagegroup/', id='ipad', product_id=product_id
+            href='http://xml.zeit.de/imagegroup', id='ipad', product_id=product_id
         )
         self.volume.xml.find('covers').append(node)
 
@@ -49,7 +49,7 @@ class TestVolumeCovers(zeit.content.volume.testing.FunctionalTestCase):
         xml = self.volume.xml.find('covers/cover')
         self.assertEqual('ipad', xml.get('id'))
         self.assertEqual('ZEI', xml.get('product_id'))
-        self.assertEqual('http://xml.zeit.de/imagegroup/', xml.get('href'))
+        self.assertEqual('http://xml.zeit.de/imagegroup', xml.get('href'))
 
     def test_deletes_existing_node_if_value_is_None(self):
         self.volume.set_cover('ipad', 'ZEI', self.repository['imagegroup'])
