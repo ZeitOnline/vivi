@@ -16,5 +16,6 @@
   <include package="zeit.content.video" />
   <include package="zeit.seo" />
   <include package="zeit.vgwort" />
+  <include package="zeit.wochenmarkt" />
 
 </configure>
