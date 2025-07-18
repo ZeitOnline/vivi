@@ -29,7 +29,7 @@ class Converter:
 
     @cachedproperty
     def uniqueId(self):
-        return self.__parent__.uniqueId + self.id
+        return self.__parent__.uniqueId + '/' + self.id
 
     @cachedproperty
     def id(self):
