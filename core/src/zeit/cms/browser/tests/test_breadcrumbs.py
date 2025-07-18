@@ -103,12 +103,12 @@ class Breadcrumbs(zeit.cms.testing.ZeitCmsTestCase):
                 },
                 {
                     'title': 'kultur',
-                    'uniqueId': 'http://xml.zeit.de/kultur/',
+                    'uniqueId': 'http://xml.zeit.de/kultur',
                     'url': 'http://127.0.0.1/repository/kultur',
                 },
                 {
                     'title': 'musik',
-                    'uniqueId': 'http://xml.zeit.de/kultur/musik/',
+                    'uniqueId': 'http://xml.zeit.de/kultur/musik',
                     'url': 'http://127.0.0.1/repository/kultur/musik',
                 },
             ],
@@ -128,7 +128,7 @@ class Breadcrumbs(zeit.cms.testing.ZeitCmsTestCase):
                 },
                 {
                     'title': '2006',
-                    'uniqueId': 'http://xml.zeit.de/2006/',
+                    'uniqueId': 'http://xml.zeit.de/2006',
                     'url': 'http://127.0.0.1/repository/2006',
                 },
                 {

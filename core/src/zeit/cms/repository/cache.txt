@@ -22,10 +22,10 @@ After accessing something it will be filled:
 >>> repository['online'].keys()
 ['2005', '2006', '2007', '2022']
 >>> pprint.pprint(repository['online']._v_local_unique_map)
-{'2005': 'http://xml.zeit.de/online/2005/',
- '2006': 'http://xml.zeit.de/online/2006/',
- '2007': 'http://xml.zeit.de/online/2007/',
- '2022': 'http://xml.zeit.de/online/2022/'}
+{'2005': 'http://xml.zeit.de/online/2005',
+ '2006': 'http://xml.zeit.de/online/2006',
+ '2007': 'http://xml.zeit.de/online/2007',
+ '2022': 'http://xml.zeit.de/online/2022'}
 >>> pprint.pprint(repository._content)
 {'http://xml.zeit.de/online': <zeit.cms.repository.folder.Folder...>}
 
@@ -48,10 +48,10 @@ Let's fill the cache again and try abort:
 >>> repository['online'].keys()
 ['2005', '2006', '2007', '2022']
 >>> pprint.pprint(repository['online']._v_local_unique_map)
-{'2005': 'http://xml.zeit.de/online/2005/',
- '2006': 'http://xml.zeit.de/online/2006/',
- '2007': 'http://xml.zeit.de/online/2007/',
- '2022': 'http://xml.zeit.de/online/2022/'}
+{'2005': 'http://xml.zeit.de/online/2005',
+ '2006': 'http://xml.zeit.de/online/2006',
+ '2007': 'http://xml.zeit.de/online/2007',
+ '2022': 'http://xml.zeit.de/online/2022'}
 >>> pprint.pprint(repository._content)
 {'http://xml.zeit.de/online': <zeit.cms.repository.folder.Folder...>}
 

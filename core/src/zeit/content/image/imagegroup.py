@@ -160,7 +160,7 @@ class ImageGroupBase:
             image = transform.create_variant_image(variant, size, fill, format)
             image.__name__ = url or variant.name
             image.__parent__ = self
-            image.uniqueId = '%s%s' % (self.uniqueId, image.__name__)
+            image.uniqueId = self.uniqueId + '/' + image.__name__
             image.variant_source = source.__name__
 
         return image

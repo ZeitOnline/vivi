@@ -22,7 +22,7 @@ class TestForm(zeit.content.link.testing.BrowserTestCase):
         b.getControl('Ressort', index=0).displayValue = ['Leben']
         b.getControl('Link address').value = 'http://gocept.com'
         b.getControl('HTTP Status Code').displayValue = ['307']
-        b.getControl(name='form.image').value = 'http://xml.zeit.de/2007/03/group/'
+        b.getControl(name='form.image').value = 'http://xml.zeit.de/2007/03/group'
         b.getControl(name='form.actions.add').click()
         self.assertFalse('There were errors' in b.contents)
         b.getLink('Source').click()
@@ -34,7 +34,7 @@ class TestForm(zeit.content.link.testing.BrowserTestCase):
             """
         <link...
         <head>...
-            <image base-id="http://xml.zeit.de/2007/03/group/" type="jpg"/>...
+            <image base-id="http://xml.zeit.de/2007/03/group" type="jpg"/>...
          """,
             xml,
         )

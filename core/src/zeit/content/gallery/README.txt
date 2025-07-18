@@ -46,7 +46,7 @@ The gallery is also noted in the xml structure:
 >>> print(zeit.cms.testing.xmltotext(gallery.xml))
 <gallery>
   <head>
-    <image-folder>http://xml.zeit.de/2006/</image-folder>
+    <image-folder>http://xml.zeit.de/2006</image-folder>
   </head>
   <body>
     <column layout="left"/>
@@ -90,7 +90,7 @@ The change is reflected in the xml:
 >>> print(zeit.cms.testing.xmltotext(gallery.xml))
 <gallery>
   <head>
-    <image-folder>http://xml.zeit.de/2006/</image-folder>
+    <image-folder>http://xml.zeit.de/2006</image-folder>
   </head>
   <body>
     <column layout="left"/>
@@ -143,7 +143,7 @@ xml:
 >>> print(zeit.cms.testing.xmltotext(gallery.xml))
 <gallery>
   <head>
-    <image-folder>http://xml.zeit.de/2006/</image-folder>
+    <image-folder>http://xml.zeit.de/2006</image-folder>
   </head>
   <body>
     <column layout="left"/>
@@ -168,7 +168,7 @@ When we assign the entry the change will be reflected:
 >>> print(zeit.cms.testing.xmltotext(gallery.xml))
 <gallery>
   <head>
-    <image-folder>http://xml.zeit.de/2006/</image-folder>
+    <image-folder>http://xml.zeit.de/2006</image-folder>
   </head>
   <body>
     <column layout="left"/>
@@ -199,7 +199,7 @@ well:
 >>> print(zeit.cms.testing.xmltotext(gallery.xml))
 <gallery>
   <head>
-    <image-folder>http://xml.zeit.de/2006/</image-folder>
+    <image-folder>http://xml.zeit.de/2006</image-folder>
   </head>
   <body>
     <column layout="left"/>
@@ -253,7 +253,7 @@ True
 >>> print(zeit.cms.testing.xmltotext(gallery.xml))
 <gallery>
   <head>
-    <image-folder>http://xml.zeit.de/2006/</image-folder>
+    <image-folder>http://xml.zeit.de/2006</image-folder>
   </head>
   <body>
     <column layout="left"/>
@@ -285,7 +285,7 @@ When we set the layout to None again, the layout attribute is removed:
 >>> print(zeit.cms.testing.xmltotext(gallery.xml))
 <gallery>
   <head>
-    <image-folder>http://xml.zeit.de/2006/</image-folder>
+    <image-folder>http://xml.zeit.de/2006</image-folder>
   </head>
   <body>
     <column layout="left"/>
@@ -369,7 +369,7 @@ This is of course reflected int he XML:
 >>> print(zeit.cms.testing.xmltotext(gallery.xml))
 <gallery>
   <head>
-    <image-folder>http://xml.zeit.de/2006/</image-folder>
+    <image-folder>http://xml.zeit.de/2006</image-folder>
   </head>
   <body>
     <column layout="left"/>
@@ -480,7 +480,7 @@ Note that his has *not* changed the xml so far:
 >>> print(zeit.cms.testing.xmltotext(gallery.xml))
 <gallery>
   <head>
-    <image-folder>http://xml.zeit.de/2006/</image-folder>
+    <image-folder>http://xml.zeit.de/2006</image-folder>
   </head>
   <body>
     <column layout="left"/>
@@ -501,7 +501,7 @@ When calling `reload_image_folder` the entry is removed from the xml:
 >>> print(zeit.cms.testing.xmltotext(gallery.xml))
 <gallery>
   <head>
-    <image-folder>http://xml.zeit.de/2006/</image-folder>
+    <image-folder>http://xml.zeit.de/2006</image-folder>
   </head>
   <body>
     <column layout="left"/>
@@ -586,7 +586,7 @@ There are some major differences to the new xml:
 The image folder is /2006, decuced from /cms/work/2006/DSC00109_2.jpg:
 
 >>> gallery.image_folder.uniqueId
-'http://xml.zeit.de/2006/'
+'http://xml.zeit.de/2006'
 
 The keys also correct(ed) and the names are set:
 
@@ -595,7 +595,7 @@ The keys also correct(ed) and the names are set:
 >>> print(zeit.cms.testing.xmltotext(gallery.xml))
 <gallery>
   <head>
-      <image-folder>http://xml.zeit.de/2006/</image-folder>
+      <image-folder>http://xml.zeit.de/2006</image-folder>
   </head>
   <body>
     <column layout="left"/>
@@ -679,7 +679,7 @@ Let's make sure this also works, when the image urls are not starting wich
 The image folder is resolved correcty, too:
 
 >>> gallery.image_folder.uniqueId
-'http://xml.zeit.de/2006/'
+'http://xml.zeit.de/2006'
 
 The keys also correct(ed) and the names are set:
 
@@ -688,7 +688,7 @@ The keys also correct(ed) and the names are set:
 >>> print(zeit.cms.testing.xmltotext(gallery.xml))
 <gallery>
   <head>
-      <image-folder>http://xml.zeit.de/2006/</image-folder>
+      <image-folder>http://xml.zeit.de/2006</image-folder>
   </head>
   <body>
     <column layout="left"/>

@@ -95,7 +95,7 @@ There is an extra warning about deleting the folder:
   <p class="DeleteItem">
     <img src="http://localhost/++skin++cms/@@/zeit-cms-repository-interfaces-IFolder-zmi_icon.png" alt="Folder" width="20" height="20" border="0" />
     <span>01</span>
-    (<span>http://xml.zeit.de/2007/01/</span>)
+    (<span>http://xml.zeit.de/2007/01</span>)
   </p>
   <p class="warning">
       You're about to delete a folder with content!

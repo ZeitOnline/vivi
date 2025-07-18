@@ -107,7 +107,7 @@ reachable at `get_object_browser` for every folder:
 >>> browser.open('http://localhost/++skin++cms/repository/online/2007/01/'
 ...              '@@get_object_browser')
 >>> print(browser.contents)
-  <h1>http://xml.zeit.de/online/2007/01/</h1>
+  <h1>http://xml.zeit.de/online/2007/01</h1>
   <div id="popup-navtree" class="Tree">
   <ul>
       <li active="True" class="Root...">
@@ -196,7 +196,7 @@ When there are no suitable objects, we'll get a message:
 ...     'http://localhost/++skin++cms/repository/online/2007/01/'
 ...     '@@get_object_browser?type_filter=folders')
 >>> print(browser.contents)
-  <h1>http://xml.zeit.de/online/2007/01/</h1>
+  <h1>http://xml.zeit.de/online/2007/01</h1>
   ...
   <div class="objectbrowser-content no-content">
     There are no selectable objects in this folder.
@@ -210,10 +210,10 @@ Within the object browser the tree is automatically expanded:
 ...     'http://localhost/++skin++cms/repository/online/2007/01/'
 ...     '@@get_object_browser')
 >>> print(browser.contents)
-  <h1>http://xml.zeit.de/online/2007/01/</h1>
+  <h1>http://xml.zeit.de/online/2007/01</h1>
   ...
       <li action="collapse" active="True" class="NotRoot..."
-          uniqueid="http://xml.zeit.de/online/2007/01/">
+          uniqueid="http://xml.zeit.de/online/2007/01">
           ...
 
 
@@ -243,7 +243,7 @@ For any type the default browse location will be the folder itself:
 ...     (online, source),
 ...     zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
 >>> location.uniqueId
-'http://xml.zeit.de/online/'
+'http://xml.zeit.de/online'
 
 For a content object it will be the folder it is contained in:
 
@@ -251,7 +251,7 @@ For a content object it will be the folder it is contained in:
 ...     (online['2007']['01']['Saarland'], source),
 ...     zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
 >>> location.uniqueId
-'http://xml.zeit.de/online/2007/01/'
+'http://xml.zeit.de/online/2007/01'
 
 
 There is a view all ICMSContent which redirects to the browsing location:
@@ -311,7 +311,7 @@ reload. Reloading sends an IResourceInvalidatedEvent.
 
 >>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
 >>> browser.getLink('Reload').click()
-Invalidate: http://xml.zeit.de/online/2007/01/
+Invalidate: http://xml.zeit.de/online/2007/01
 >>> browser.url
 'http://localhost/++skin++cms/repository/online/2007/01/@@view.html'
 

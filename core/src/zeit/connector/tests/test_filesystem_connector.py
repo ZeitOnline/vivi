@@ -7,12 +7,12 @@ class FilesystemConnectorTest(zeit.connector.testing.FilesystemConnectorTest):
     def test_list_root(self):
         root = list(self.connector.listCollection('http://xml.zeit.de/'))
         for item in [
-            ('2006', 'http://xml.zeit.de/2006/'),
-            ('2007', 'http://xml.zeit.de/2007/'),
-            ('2016', 'http://xml.zeit.de/2016/'),
-            ('online', 'http://xml.zeit.de/online/'),
+            ('2006', 'http://xml.zeit.de/2006'),
+            ('2007', 'http://xml.zeit.de/2007'),
+            ('2016', 'http://xml.zeit.de/2016'),
+            ('online', 'http://xml.zeit.de/online'),
             ('testcontent', 'http://xml.zeit.de/testcontent'),
-            ('testing', 'http://xml.zeit.de/testing/'),
+            ('testing', 'http://xml.zeit.de/testing'),
         ]:
             self.assertIn(item, root)
 
@@ -57,11 +57,6 @@ class MetadataTest(zeit.connector.testing.FilesystemConnectorTest):
         type_ = group.properties[('type', 'http://namespaces.zeit.de/CMS/meta')]
         self.assertEqual('image-group', type_)
 
-    def test_imagegroup_has_trailing_slash_in_uniqueId(self):
-        # Since XSLT expects it and the real connector does it like that.
-        group = self.connector['http://xml.zeit.de/2007/03/group']
-        self.assertEqual('http://xml.zeit.de/2007/03/group/', group.id)
-
     def test_empty_attribute_node_is_parsed_as_empty_string(self):
         image = self.connector['http://xml.zeit.de/2006/DSC00109_2.JPG']
         copyrights = image.properties[('copyrights', 'http://namespaces.zeit.de/CMS/document')]
@@ -78,5 +73,5 @@ class CachingTest(zeit.connector.testing.FilesystemConnectorTest):
         self.assertIn('http://xml.zeit.de/testcontent', self.connector.body_cache)
 
     def test_caches_childnames(self):
-        self.connector.listCollection('http://xml.zeit.de/online/')
-        self.assertIn('http://xml.zeit.de/online/', self.connector.child_name_cache)
+        self.connector.listCollection('http://xml.zeit.de/online')
+        self.assertIn('http://xml.zeit.de/online', self.connector.child_name_cache)

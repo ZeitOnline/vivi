@@ -1,6 +1,5 @@
 from io import BytesIO
 from urllib.parse import urlparse
-import ast
 import email.utils
 import logging
 import os
@@ -12,7 +11,8 @@ import lxml.etree
 import zope.app.file.image
 import zope.interface
 
-from zeit.connector.interfaces import ID_NAMESPACE, CannonicalId, DeleteProperty
+from zeit.connector.interfaces import ID_NAMESPACE, DeleteProperty
+from zeit.connector.postgresql import Connector as SQLConnector
 import zeit.cms.config
 import zeit.cms.content.dav
 import zeit.connector.converter
@@ -32,14 +32,12 @@ class Connector:
     """
 
     resource_class = zeit.connector.resource.CachedResource
-    canonicalize_directories = True
 
     _set_lastmodified_property = False
 
     property_cache = gocept.cache.property.TransactionBoundCache('_v_property_cache', dict)
     body_cache = gocept.cache.property.TransactionBoundCache('_v_body_cache', dict)
     child_name_cache = gocept.cache.property.TransactionBoundCache('_v_child_name_cache', dict)
-    canonical_id_cache = gocept.cache.property.TransactionBoundCache('_v_canonical_id_cache', dict)
 
     def __init__(self, repository_path):
         # Support `egg://` product config from zeit.cms.zope
@@ -50,15 +48,11 @@ class Connector:
     @zope.interface.implementer(zeit.connector.interfaces.IConnector)
     def factory(cls):
         config = zeit.cms.config.package('zeit.connector')
-        connector = cls(config['repository-path'])
-        canonicalize = config.get('canonicalize-directories', None)
-        if canonicalize is not None:
-            connector.canonicalize_directories = ast.literal_eval(canonicalize)
-        return connector
+        return cls(config['repository-path'])
 
     def listCollection(self, id):
         """List the filenames of a collection identified by path."""
-        id = self._get_cannonical_id(id)
+        id = SQLConnector._normalize(id)
         try:
             return self.child_name_cache[id]
         except KeyError:
@@ -71,7 +65,7 @@ class Connector:
 
         result = []
         for name in sorted(names):
-            child_id = str(self._get_cannonical_id(os.path.join(id, name)))
+            child_id = os.path.join(id, name)
             result.append((name, child_id))
         self.child_name_cache[id] = result
         return result
@@ -95,7 +89,7 @@ class Connector:
         return names
 
     def __getitem__(self, id):
-        id = self._get_cannonical_id(id)
+        id = SQLConnector._normalize(id)
         properties = self._get_properties(id)
         path = urlparse(id).path.strip('/').split('/')
         return self.resource_class(
@@ -129,6 +123,7 @@ class Connector:
         return properties.get(davtype, '') == 'httpd/unix-directory'
 
     def __setitem__(self, id, resource):
+        id = SQLConnector._normalize(id)
         resource.id = id
         self.add(resource)
 
@@ -161,6 +156,7 @@ class Connector:
         raise NotImplementedError()
 
     def changeProperties(self, id, properties):
+        id = SQLConnector._normalize(id)
         resource = self[id]
         current = dict(resource.properties)
         current.update(properties)
@@ -181,35 +177,9 @@ class Connector:
 
     # internal helpers
 
-    def _get_cannonical_id(self, id):
-        """Add / for collections if not appended yet."""
-        if isinstance(id, CannonicalId):
-            return id
-        if id == ID_NAMESPACE:
-            return CannonicalId(id)
-
-        input = id
-        result = id
-        try:
-            return self.canonical_id_cache[input]
-        except KeyError:
-            pass
-
-        if result.endswith('/'):
-            result = result[:-1]
-
-        if self.canonicalize_directories:
-            path = self._path(result)
-            if os.path.isdir(path):
-                result = result + '/'
-
-        result = CannonicalId(result)
-        self.canonical_id_cache[input] = result
-        return result
-
     def _path(self, id):
-        if not id.startswith(ID_NAMESPACE):
-            raise ValueError('The id %r is invalid.' % id)
+        if id == ID_NAMESPACE.rstrip('/'):
+            return self.repository_path
         path = id.replace(ID_NAMESPACE, '', 1).rstrip('/')
         return os.path.join(self.repository_path, path).rstrip('/')
 
@@ -250,9 +220,6 @@ class Connector:
             data = self._get_metadata_file(id)
             xml = lxml.etree.parse(data)
         except ValueError:
-            # Performance optimization: We know this error happens only for
-            # directories, so we can determine the resource type here instead
-            # of waiting for getResourceType() doing the isdir check _again_.
             properties[zeit.connector.interfaces.RESOURCE_TYPE_PROPERTY] = 'collection'
             metadata_parse_error = True
         except lxml.etree.LxmlError:

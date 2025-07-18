@@ -239,7 +239,7 @@ class TestDynamicFolder(zeit.content.dynamicfolder.testing.FunctionalTestCase):
             ),
         )
         zeit.cms.workflow.interfaces.IPublish(self.folder).publish(background=False)
-        self.assertIn('http://xml.zeit.de/dynamicfolder/', calls)
+        self.assertIn('http://xml.zeit.de/dynamicfolder', calls)
         # Would be nice to check these, for completeness, but mock IPublish
         # does not handle IPublicationDependencies, so we have
         # `test_publishes_folder_with_config_and_template` instead.
