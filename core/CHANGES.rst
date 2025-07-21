@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.140.0 (2025-07-21)
+--------------------
+
+FIX:
+- Prevent DetachedInstanceError when querying reportable vgwort articles
+
+
 7.139.0 (2025-07-21)
 --------------------
 
