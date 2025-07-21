@@ -47,7 +47,9 @@ class ReportableContentSource(grok.GlobalUtility):
         query = query.where(sql(sql_query).bindparams(age=int(age), age_limit=int(age_limit)))
 
         repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
-        return list(repository.search(query, query_timeout))
+        results = list(repository.search(query, query_timeout))
+        for resource in results:
+            yield resource
 
     def mark_done(self, content):
         info = zeit.vgwort.interfaces.IReportInfo(content)
