@@ -523,4 +523,4 @@ class Followings(grok.Adapter, IgnoreMixin):
             f'{zeit.cms.interfaces.ID_NAMESPACE}serie/{article.serie.url}'
         )
         series = zeit.cms.content.interfaces.IUUID(series_content).shortened
-        return {'parent_id': series}
+        return {'parent_uuid': series}
