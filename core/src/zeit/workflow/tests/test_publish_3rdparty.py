@@ -656,4 +656,4 @@ class FollowingsPayloadTest(zeit.workflow.testing.FunctionalTestCase):
         expected_uuid = zeit.cms.content.interfaces.IUUID(cp).shortened
 
         data = zeit.workflow.testing.publish_json(article, 'followings')
-        self.assertEqual(data['parent_id'], expected_uuid)
+        self.assertEqual(data['parent_uuid'], expected_uuid)
