@@ -3,6 +3,16 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.138.0 (2025-07-21)
+--------------------
+
+- ENG-232: send followings to publisher
+
+
+FIX:
+- WCM-954: Parent_path no longer provides trailing slash by default
+
+
 7.137.0 (2025-07-18)
 --------------------
 
