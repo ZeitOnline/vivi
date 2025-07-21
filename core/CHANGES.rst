@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.139.0 (2025-07-21)
+--------------------
+
+- ENG-232: fix faulty parameter name in publisher"
+
+
 7.138.0 (2025-07-21)
 --------------------
 
