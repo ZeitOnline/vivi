@@ -83,7 +83,9 @@ def report_new_documents():
 
     vgwort = zope.component.getUtility(zeit.vgwort.interfaces.IMessageService)
     source = zope.component.getUtility(zeit.vgwort.interfaces.IReportableContentSource)
-    for i, content in enumerate(source):
+    # Have to load all results first; since we commit inside the loop, this would
+    # raise DetachedInstanceError otherwise.
+    for i, content in enumerate(list(source)):
         try:
             for _ in zeit.cms.cli.commit_with_retry():
                 report(content)
