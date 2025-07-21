@@ -61,4 +61,4 @@ def _adjust_workflow(source, target):
         zeit.cms.config.required('zeit.cms', 'live-prefix'),
     )
     log = zeit.objectlog.interfaces.ILog(target)
-    log.log(_('Redirect created for %s', url))
+    log.log(_('Redirect created for ${url}', mapping={'url': url}))

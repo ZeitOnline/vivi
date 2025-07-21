@@ -43,4 +43,7 @@ class CMSContentKeyReference:
 
 class UniqueIdKeyReference(CMSContentKeyReference):
     def __init__(self, parent, name):
-        self.referenced_object = parent.uniqueId + name
+        path = f'{parent.uniqueId}/'
+        if parent.uniqueId == zeit.cms.interfaces.ID_NAMESPACE:
+            path = parent.uniqueId
+        self.referenced_object = f'{path}{name}'
