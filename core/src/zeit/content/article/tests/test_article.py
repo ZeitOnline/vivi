@@ -441,12 +441,12 @@ class AudioArticle(zeit.content.article.testing.FunctionalTestCase):
                 )
             )
         # without items, no changes
-        assert 'podcast' != self.article.header_layout
+        assert self.article.header_layout != 'podcast'
 
     def test_podcast_updates_article_information(self):
         self._add_audio_to_article()
 
-        assert 'podcast' == self.article.header_layout
+        assert self.article.header_layout == 'podcast'
         assert self.audio.title == self.article.title
         assert self.audio.title == self.article.teaserTitle
         assert self.info.summary == self.article.teaserText
@@ -466,7 +466,7 @@ class AudioArticle(zeit.content.article.testing.FunctionalTestCase):
         )
         self._add_audio_to_article()
 
-        assert 'podcast' == self.article.header_layout
+        assert self.article.header_layout == 'podcast'
         assert self.audio.title != self.article.title
         assert self.audio.title != self.article.teaserTitle
         assert self.info.summary != self.article.teaserText
@@ -477,7 +477,7 @@ class AudioArticle(zeit.content.article.testing.FunctionalTestCase):
         AudioBuilder().with_audio_type('premium').build(self.repository)
         self._add_audio_to_article()
 
-        assert 'default' == self.article.header_layout
+        assert self.article.header_layout == 'default'
         assert self.audio.title != self.article.title
         assert self.info.summary != self.article.teaserText
         assert len(self.article.body.values()) == 1, (
