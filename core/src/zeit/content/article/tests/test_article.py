@@ -477,7 +477,7 @@ class AudioArticle(zeit.content.article.testing.FunctionalTestCase):
         AudioBuilder().with_audio_type('premium').build(self.repository)
         self._add_audio_to_article()
 
-        assert 'podcast' == self.article.header_layout
+        assert 'default' == self.article.header_layout
         assert self.audio.title != self.article.title
         assert self.info.summary != self.article.teaserText
         assert len(self.article.body.values()) == 1, (
