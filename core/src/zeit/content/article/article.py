@@ -379,11 +379,11 @@ def set_podcast_header_when_article_has_podcast_audio(context, event):
     if not audio.items:
         return
 
-    context.header_layout = 'podcast'
-
     main_audio = audio.items[0]
     if main_audio.audio_type != 'podcast':
         return
+
+    context.header_layout = 'podcast'
 
     if not context.title:
         context.title = main_audio.title
