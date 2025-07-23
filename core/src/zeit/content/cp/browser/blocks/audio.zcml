@@ -10,7 +10,7 @@
     view="zope.interface.Interface"
     manager="..interfaces.IEditorContentViewletManager"
     name="contents"
-    template="layout.block.type.pt"
+    template="layout.podcastheader.content.pt"
     permission="zeit.EditContent"
     weight="0"
     />
