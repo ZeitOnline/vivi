@@ -108,21 +108,9 @@ class VolumeAdminBrowserTest(zeit.content.volume.testing.BrowserTestCase):
         uniqueIds = ('http://xml.zeit.de/article_1', 'http://xml.zeit.de/article_2')
         connector = zope.component.getUtility(zeit.cms.interfaces.IConnector)
         connector.search_result = list(uniqueIds)
-        with mock.patch('zeit.content.volume.volume.Volume.get_audios') as get_audios:
-            get_audios.return_value = {
-                1234: {
-                    'url': 'https://media-delivery.testing.de/d7f6ed45-18b8-45de-9e8f-1aef4e6a33a9.mp3',
-                    'duration': 'PT9M7S',
-                },
-                1235: {
-                    'url': 'https://media-delivery.testing.de/d7f6ed45-18b8-45de-9e8f-1aef4e6a33a9.mp3',
-                    'duration': 'PT12M',
-                },
-            }
-            b = self.browser
-            b.open(
-                'http://localhost/++skin++vivi/repository/2015/01/ausgabe/@@create-audio-objects'
-            )
+
+        b = self.browser
+        b.open('http://localhost/++skin++vivi/repository/2015/01/ausgabe/@@create-audio-objects')
         self.publish_content()
         for uniqueId in uniqueIds:
             article = zeit.cms.interfaces.ICMSContent(uniqueId)
