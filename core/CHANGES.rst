@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.141.0 (2025-07-23)
+--------------------
+
+- WCM-999: premium audio does not change article header automatically
+
+
 7.140.0 (2025-07-21)
 --------------------
 
