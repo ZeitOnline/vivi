@@ -19,7 +19,9 @@ def _handle_scheduled_content(action, sql_query, **params):
     query = select(ConnectorModel)
     query = query.where(sql(sql_query).bindparams(**bind_params))
     repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
-    for content in repository.search(query, query_timeout):
+    # Have to load all results first; since we commit inside the loop, this would
+    # raise DetachedInstanceError otherwise.
+    for content in list(repository.search(query, query_timeout)):
         publish = zeit.cms.workflow.interfaces.IPublish(content)
         for _ in commit_with_retry():
             try:
