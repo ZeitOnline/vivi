@@ -377,12 +377,6 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
                 references = zeit.content.audio.interfaces.IAudioReferences(co)
                 references.add(folder[article_uuid.shortened])
 
-    def process_audios(self):
-        self.ensure_audio_folder()
-        articles = self.get_articles()
-        audios = self.get_audios()
-        self.create_audio_objects(articles, audios)
-
 
 class VolumeType(zeit.cms.type.XMLContentTypeDeclaration):
     factory = Volume

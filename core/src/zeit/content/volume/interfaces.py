@@ -118,12 +118,6 @@ class IVolume(zeit.cms.content.interfaces.IXMLContent):
         :return: [ICMSContent, ...]
         """
 
-    def process_audios():
-        """
-        Requests premium audio information from medienservice and creates
-        premium audio objects corresponding to volume articles
-        """
-
 
 class IVolumeReference(zeit.cms.content.interfaces.IReference):
     volume_note = IVolume['volume_note'].bind(object())

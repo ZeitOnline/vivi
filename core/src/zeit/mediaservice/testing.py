@@ -1,10 +1,11 @@
 import zeit.cms.testing
 import zeit.connector.testing
+import zeit.content.article.testing
 
 
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
     {'medienservice-folder': 'premium', 'audio-folder': 'audio'},
-    bases=(zeit.cms.testing.CONFIG_LAYER,),
+    bases=(zeit.content.article.testing.CONFIG_LAYER,),
 )
 
 SQL_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(

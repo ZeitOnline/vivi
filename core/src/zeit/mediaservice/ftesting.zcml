@@ -4,6 +4,9 @@
    i18n_domain="zope">
 
   <include package="zeit.cms" file="ftesting.zcml" />
+  <include package="zeit.content.volume" />
+  <include package="zeit.content.article" />
+  <include package="zeit.content.audio" />
 
   <include package="zeit.mediaservice" />
 
