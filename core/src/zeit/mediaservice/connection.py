@@ -4,10 +4,9 @@ import zope.interface
 import zeit.mediaservice.interfaces
 
 
-@zope.interface.implementer(zeit.mediaservice.interfaces.IMediaService)
 class MediaService:
-    def __init__(self):
-        self.feed_url = 'https://medien.zeit.de/feeds/die-zeit/issue'
+    def __init__(self, feed_url):
+        self.feed_url = feed_url
 
     def get_audios(self, year, volume):
         response = requests.get(
@@ -35,4 +34,7 @@ class MediaService:
         return result
 
 
-MEDIASERVICE = MediaService
+@zope.interface.implementer(zeit.mediaservice.interfaces.IMediaService)
+def from_product_config():
+    conf = zeit.cms.config.package('zeit.mediaservice')
+    return MediaService(conf['feed-url'])

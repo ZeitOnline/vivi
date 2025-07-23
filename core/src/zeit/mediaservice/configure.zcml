@@ -7,7 +7,7 @@
 
   <utility
    provides="zeit.mediaservice.interfaces.IMediaService"
-   factory=".connection.MEDIASERVICE"
+   factory=".connection.from_product_config"
    />
 
 </configure>
