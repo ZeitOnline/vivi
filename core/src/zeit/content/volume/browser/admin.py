@@ -36,10 +36,15 @@ class VolumeAdminForm(zeit.cms.admin.browser.admin.EditFormCI):
 class PublishAll:
     # See zeit.workflow.json.publish.Publish.publish()
     def __call__(self):
-        self.context.process_audios()
         all_content_to_publish = self.context.articles_with_references_for_publishing()
         IPublish(self.context).publish_multiple(
             all_content_to_publish,
             priority=zeit.cms.workflow.interfaces.IPublishPriority(self.context),
         )
         return json.dumps('')
+
+
+class CreateAudioObjects:
+    def __call__(self):
+        task = zeit.mediaservice.mediaservice.create_audio_objects.delay(self.context.uniqueId)
+        return json.dumps(task.id)

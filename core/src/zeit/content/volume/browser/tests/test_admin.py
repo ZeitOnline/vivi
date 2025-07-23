@@ -119,7 +119,11 @@ class VolumeAdminBrowserTest(zeit.content.volume.testing.BrowserTestCase):
                     'duration': 'PT12M',
                 },
             }
-            self.publish_content()
+            b = self.browser
+            b.open(
+                'http://localhost/++skin++vivi/repository/2015/01/ausgabe/@@create-audio-objects'
+            )
+        self.publish_content()
         for uniqueId in uniqueIds:
             article = zeit.cms.interfaces.ICMSContent(uniqueId)
             audio = self.repository['premium']['audio']['2015']['01'][
