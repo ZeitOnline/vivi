@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Tue Jul 15 13:19:10 2025\n"
+"POT-Creation-Date: Wed Jul 23 08:47:37 2025\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -110,26 +110,26 @@ msgstr "context sensitive actions"
 msgid "context sensitive views"
 msgstr "context sensitive views"
 
-#: zeit/cms/browser/configure.zcml:231 zeit/cms/browser/configure.zcml:239
+#: zeit/cms/browser/configure.zcml:232 zeit/cms/browser/configure.zcml:240
 msgid "Source"
 msgstr "Quelltext"
 
-#: zeit/cms/browser/configure.zcml:256
+#: zeit/cms/browser/configure.zcml:257
 msgid "View source"
 msgstr "Quelltext anzeigen"
 
-#: zeit/cms/browser/configure.zcml:329
+#: zeit/cms/browser/configure.zcml:330
 msgid "Zeit CMS User Preferences"
 msgstr "Benutzereinstellungen"
 
-#: zeit/cms/browser/configure.zcml:378
+#: zeit/cms/browser/configure.zcml:379
 #: zeit/cms/browser/object-details-body.pt:19
 #: zeit/cms/workingcopy/browser/configure.zcml:72
 #: zeit/content/video/browser/object-details-body.pt:10
 msgid "Preview"
 msgstr "Vorschau"
 
-#: zeit/cms/browser/configure.zcml:387
+#: zeit/cms/browser/configure.zcml:388
 #: zeit/content/article/edit/browser/object-details-internallinks-heading.pt:20
 msgid "Live"
 msgstr "Live"
@@ -143,15 +143,13 @@ msgstr "Hinzufügen…"
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: zeit/cms/browser/form.py:278 zeit/cms/repository/browser/file.zcml:34
+#: zeit/cms/browser/form.py:278 zeit/cms/repository/browser/file.zcml:22
 #: zeit/content/article/edit/browser/recension-list.pt:29
-#: zeit/content/gallery/browser/configure.zcml:130
-#: zeit/content/image/browser/configure.zcml:129
-#: zeit/content/image/browser/configure.zcml:329
-#: zeit/content/rawxml/browser/configure.zcml:15
-#: zeit/content/text/browser/configure.zcml:15
-#: zeit/content/text/browser/configure.zcml:60
-#: zeit/content/text/browser/configure.zcml:79 zeit/edit/browser/editor.py:9
+#: zeit/content/gallery/browser/configure.zcml:139
+#: zeit/content/image/browser/configure.zcml:136
+#: zeit/content/image/browser/configure.zcml:337
+#: zeit/content/rawxml/browser/configure.zcml:22
+#: zeit/content/text/browser/configure.zcml:22 zeit/edit/browser/editor.py:9
 msgid "Edit"
 msgstr "Bearbeiten"
 
@@ -165,16 +163,14 @@ msgstr "Bearbeiten"
 msgid "Apply"
 msgstr "Speichern"
 
-#: zeit/cms/browser/form.py:305 zeit/cms/repository/browser/file.zcml:24
-#: zeit/cms/repository/browser/folder.zcml:17
-#: zeit/cms/repository/browser/unknown.zcml:34
-#: zeit/content/article/browser/configure.zcml:28
+#: zeit/cms/browser/form.py:305 zeit/cms/repository/browser/file.zcml:38
+#: zeit/cms/repository/browser/folder.zcml:25
+#: zeit/cms/repository/browser/unknown.zcml:33
+#: zeit/content/article/browser/configure.zcml:27
 #: zeit/content/author/browser/form.py:109
-#: zeit/content/image/browser/configure.zcml:30
-#: zeit/content/rawxml/browser/configure.zcml:32
-#: zeit/content/text/browser/configure.zcml:25
-#: zeit/content/text/browser/configure.zcml:88
-#: zeit/content/text/browser/configure.zcml:159
+#: zeit/content/image/browser/configure.zcml:38
+#: zeit/content/rawxml/browser/configure.zcml:37
+#: zeit/content/text/browser/configure.zcml:37
 msgid "View"
 msgstr "Anzeigen"
 
@@ -227,7 +223,7 @@ msgid "Modified"
 msgstr "Verändert"
 
 #: zeit/cms/browser/listing.py:265 zeit/cms/content/interfaces.py:85
-#: zeit/cms/content/interfaces.py:491
+#: zeit/cms/content/interfaces.py:489
 #: zeit/content/volume/browser/toc-listing.pt:25
 #: zeit/content/volume/browser/toc_listing.py:39
 #: zeit/contentquery/interfaces.py:171
@@ -278,7 +274,7 @@ msgstr "Hinzufügen …"
 msgid "Manual-Link"
 msgstr "Vivi-Handbuch"
 
-#: zeit/cms/browser/menu.py:92 zeit/cms/browser/object-details-body.pt:13
+#: zeit/cms/browser/menu.py:120 zeit/cms/browser/object-details-body.pt:13
 #: zeit/content/article/edit/browser/object-details-internallinks-heading.pt:14
 #: zeit/content/audio/browser/object-details-body.pt:27
 msgid "CMS"
@@ -585,7 +581,7 @@ msgstr "abopflichtig"
 msgid "access-dynamic"
 msgstr "dynamisch"
 
-#: zeit/cms/content/interfaces.py:78 zeit/cms/content/interfaces.py:498
+#: zeit/cms/content/interfaces.py:78 zeit/cms/content/interfaces.py:496
 #: zeit/content/article/edit/interfaces.py:476
 #: zeit/content/article/interfaces.py:208
 msgid "Year"
@@ -597,7 +593,7 @@ msgstr "Jahr"
 msgid "Volume"
 msgstr "Ausgabe"
 
-#: zeit/cms/content/interfaces.py:89 zeit/cms/content/interfaces.py:495
+#: zeit/cms/content/interfaces.py:89 zeit/cms/content/interfaces.py:493
 #: zeit/contentquery/interfaces.py:174
 msgid "Sub ressort"
 msgstr "Unterressort"
@@ -749,27 +745,27 @@ msgstr "MediaSync ID"
 msgid "InterRed Article ID"
 msgstr "InterRed Beitrags-ID"
 
-#: zeit/cms/content/interfaces.py:279
+#: zeit/cms/content/interfaces.py:277
 msgid "Invalid hex literal"
 msgstr "Kein gültiger Farbwert"
 
-#: zeit/cms/content/interfaces.py:355 zeit/content/cp/interfaces.py:615
+#: zeit/cms/content/interfaces.py:353 zeit/content/cp/interfaces.py:615
 msgid "XML Source"
 msgstr "XML-Quelltext"
 
-#: zeit/cms/content/interfaces.py:459
+#: zeit/cms/content/interfaces.py:457
 msgid "Last semantic change"
 msgstr "Letzte inhaltliche Änderung"
 
-#: zeit/cms/content/interfaces.py:463
+#: zeit/cms/content/interfaces.py:461
 msgid "Update last semantic change"
 msgstr "Datum / Uhrzeit aktualisieren"
 
-#: zeit/cms/content/interfaces.py:482
+#: zeit/cms/content/interfaces.py:480
 msgid "Memo"
 msgstr "Memo"
 
-#: zeit/cms/content/interfaces.py:487
+#: zeit/cms/content/interfaces.py:485
 #: zeit/content/audio/browser/object-details-body.pt:10
 #: zeit/content/audio/interfaces.py:40 zeit/content/audio/interfaces.py:68
 #: zeit/content/image/browser/image_view.pt:6
@@ -777,35 +773,35 @@ msgstr "Memo"
 msgid "Type"
 msgstr "Typ"
 
-#: zeit/cms/content/interfaces.py:500
+#: zeit/cms/content/interfaces.py:498
 msgid "Month"
 msgstr "Monat"
 
-#: zeit/cms/content/interfaces.py:529
+#: zeit/cms/content/interfaces.py:527
 msgid "Caching time browser"
 msgstr "Cachezeit Browser"
 
-#: zeit/cms/content/interfaces.py:531
+#: zeit/cms/content/interfaces.py:529
 msgid "Caching time server"
 msgstr "Cachezeit Fastly"
 
-#: zeit/cms/content/interfaces.py:537
+#: zeit/cms/content/interfaces.py:535
 msgid "KPI Visits"
 msgstr "Visits"
 
-#: zeit/cms/content/interfaces.py:539
+#: zeit/cms/content/interfaces.py:537
 msgid "KPI Comments"
 msgstr "Kommentare"
 
-#: zeit/cms/content/interfaces.py:541
+#: zeit/cms/content/interfaces.py:539
 msgid "KPI Subscriptions"
 msgstr "Abos"
 
-#: zeit/cms/content/interfaces.py:556
+#: zeit/cms/content/interfaces.py:554
 msgid "Remote image URL"
 msgstr "Remote Bild URL"
 
-#: zeit/cms/content/interfaces.py:558
+#: zeit/cms/content/interfaces.py:556
 msgid "Remote timestamp URL"
 msgstr "Remote Zeitstempel URL"
 
@@ -1157,7 +1153,7 @@ msgstr "Datei bearbeiten"
 msgid "Your changes have been saved."
 msgstr "Ihre Änderungen wurden gespeichert."
 
-#: zeit/cms/repository/browser/file.zcml:81 zeit/cms/repository/file.py:86
+#: zeit/cms/repository/browser/file.zcml:84 zeit/cms/repository/file.py:86
 msgid "File"
 msgstr "Datei"
 
@@ -1174,7 +1170,7 @@ msgid "Add folder"
 msgstr "Ordner hinzufügen"
 
 #: zeit/cms/repository/browser/folder.py:12
-#: zeit/cms/repository/browser/folder.zcml:107 zeit/cms/repository/folder.py:21
+#: zeit/cms/repository/browser/folder.zcml:113 zeit/cms/repository/folder.py:21
 msgid "Folder"
 msgstr "Ordner"
 
@@ -1439,31 +1435,30 @@ msgstr "Bearbeitung abbrechen"
 msgid "Animation"
 msgstr "Animation"
 
-#: zeit/content/animation/browser/configure.zcml:15
-#: zeit/content/audio/browser/configure.zcml:15
-#: zeit/content/cp/browser/configure.zcml:74
+#: zeit/content/animation/browser/configure.zcml:21
+#: zeit/content/audio/browser/configure.zcml:21
+#: zeit/content/cp/browser/configure.zcml:78
 #: zeit/content/dynamicfolder/browser/folder.py:18
-#: zeit/content/gallery/browser/configure.zcml:33
-#: zeit/content/link/browser/configure.zcml:17
-#: zeit/content/markup/browser/configure.zcml:18
-#: zeit/content/volume/browser/configure.zcml:19
-#: zeit/magazin/browser/configure.zcml:17
+#: zeit/content/gallery/browser/configure.zcml:40
+#: zeit/content/link/browser/configure.zcml:23
+#: zeit/content/markup/browser/configure.zcml:24
+#: zeit/content/volume/browser/configure.zcml:25
 msgid "Edit metadata"
 msgstr "Metadaten bearbeiten"
 
-#: zeit/content/animation/browser/configure.zcml:30
-#: zeit/content/audio/browser/configure.zcml:30
-#: zeit/content/cp/browser/configure.zcml:46
-#: zeit/content/gallery/browser/configure.zcml:50
-#: zeit/content/link/browser/configure.zcml:32
-#: zeit/content/markup/browser/configure.zcml:33
-#: zeit/content/volume/browser/configure.zcml:59
+#: zeit/content/animation/browser/configure.zcml:34
+#: zeit/content/audio/browser/configure.zcml:34
+#: zeit/content/cp/browser/configure.zcml:45
+#: zeit/content/gallery/browser/configure.zcml:55
+#: zeit/content/link/browser/configure.zcml:36
+#: zeit/content/markup/browser/configure.zcml:37
+#: zeit/content/volume/browser/configure.zcml:38
 msgid "View metadata"
 msgstr "Metadaten anzeigen"
 
 #: zeit/content/animation/browser/form.py:21
 #: zeit/content/animation/interfaces.py:28 zeit/content/article/article.py:210
-#: zeit/content/article/browser/configure.zcml:85
+#: zeit/content/article/browser/configure.zcml:82
 #: zeit/content/article/edit/browser/form.py:58
 msgid "Article"
 msgstr "Artikel"
@@ -1510,9 +1505,7 @@ msgstr "Video"
 
 #: zeit/content/animation/interfaces.py:44
 #: zeit/content/article/edit/interfaces.py:578
-#: zeit/content/gallery/browser/configure.zcml:79
-#: zeit/content/image/browser/configure.zcml:170
-#: zeit/content/image/browser/imagebrowser.py:6
+#: zeit/content/gallery/browser/configure.zcml:91
 msgid "Images"
 msgstr "Bilder"
 
@@ -1546,12 +1539,12 @@ msgstr "Veröffentlichen & Push"
 msgid "Workflow"
 msgstr "Workflowstatus"
 
-#: zeit/content/article/browser/configure.zcml:37
-#: zeit/content/cp/browser/configure.zcml:111
+#: zeit/content/article/browser/configure.zcml:35
+#: zeit/content/cp/browser/configure.zcml:114
 msgid "Edit contents"
 msgstr "Bearbeiten"
 
-#: zeit/content/article/browser/configure.zcml:100
+#: zeit/content/article/browser/configure.zcml:97
 #: zeit/content/article/interfaces.py:239
 msgid "Add breaking news"
 msgstr "Eilmeldung"
@@ -1631,8 +1624,8 @@ msgid "Status"
 msgstr "Status"
 
 #: zeit/content/article/edit/browser/form.py:200
-#: zeit/content/image/browser/configure.zcml:239
-#: zeit/content/image/browser/configure.zcml:273
+#: zeit/content/image/browser/configure.zcml:244
+#: zeit/content/image/browser/configure.zcml:283
 #: zeit/content/link/browser/form.py:17
 msgid "Metadata"
 msgstr "Metadaten"
@@ -1824,7 +1817,7 @@ msgstr "Easy-Embed"
 #: zeit/content/article/edit/interfaces.py:585
 #: zeit/content/article/interfaces.py:65 zeit/content/cp/interfaces.py:128
 #: zeit/content/cp/interfaces.py:302 zeit/content/cp/interfaces.py:641
-#: zeit/content/image/browser/configure.zcml:265
+#: zeit/content/image/browser/configure.zcml:269
 #: zeit/content/image/browser/imagegroup.py:220 zeit/content/image/image.py:189
 #: zeit/content/portraitbox/interfaces.py:16
 #: zeit/wysiwyg/browser/resources/reference/image.pt:17
@@ -1912,7 +1905,7 @@ msgstr "Seitenverhältnis"
 
 #: zeit/content/article/edit/interfaces.py:187
 #: zeit/content/article/edit/reference.py:74
-#: zeit/content/gallery/browser/configure.zcml:61
+#: zeit/content/gallery/browser/configure.zcml:65
 #: zeit/content/gallery/gallery.py:262
 msgid "Gallery"
 msgstr "Bildergalerie"
@@ -2774,13 +2767,13 @@ msgstr "Zitat:"
 msgid "CenterPage"
 msgstr "Center-Page"
 
-#: zeit/content/cp/browser/configure.zcml:56 zeit/seo/browser/configure.zcml:17
-#: zeit/seo/browser/configure.zcml:47
+#: zeit/content/cp/browser/configure.zcml:54 zeit/seo/browser/configure.zcml:16
+#: zeit/seo/browser/configure.zcml:50
 msgid "View SEO"
 msgstr "SEO ansehen"
 
-#: zeit/content/cp/browser/configure.zcml:83 zeit/seo/browser/configure.zcml:27
-#: zeit/seo/browser/configure.zcml:57
+#: zeit/content/cp/browser/configure.zcml:86 zeit/seo/browser/configure.zcml:32
+#: zeit/seo/browser/configure.zcml:66
 msgid "Edit SEO"
 msgstr "SEO bearbeiten"
 
@@ -3212,7 +3205,7 @@ msgstr "Materialisiert"
 msgid "About to publish ${count} objects"
 msgstr "Es werden ${count} Objekte veröffentlicht"
 
-#: zeit/content/gallery/browser/configure.zcml:166
+#: zeit/content/gallery/browser/configure.zcml:175
 msgid "Transform"
 msgstr "Bearbeiten"
 
@@ -3320,17 +3313,17 @@ msgstr "Nur Bild"
 msgid "Hidden"
 msgstr "Versteckt"
 
-#: zeit/content/image/browser/configure.zcml:159
+#: zeit/content/image/browser/configure.zcml:165
 msgid "Image (single)"
 msgstr "Einzelbild"
 
-#: zeit/content/image/browser/configure.zcml:208
+#: zeit/content/image/browser/configure.zcml:202
 #: zeit/content/image/browser/imagegroup.py:204
 #: zeit/content/image/interfaces.py:403
 msgid "Image group"
 msgstr "Bildergruppe"
 
-#: zeit/content/image/browser/configure.zcml:217
+#: zeit/content/image/browser/configure.zcml:219
 msgid "File list"
 msgstr "Dateiliste"
 
@@ -3676,8 +3669,8 @@ msgid "Blog"
 msgstr "Blog"
 
 #: zeit/content/link/redirect.py:64
-msgid "Redirect created for %s"
-msgstr "Weiterleitung eingerichtet für"
+msgid "Redirect created for ${url}"
+msgstr "Weiterleitung eingerichtet für ${url}"
 
 #: zeit/content/markup/browser/configure.zcml:9
 msgid "Markup"
@@ -3903,19 +3896,19 @@ msgstr "XML-Datei anzeigen"
 msgid "Plain text"
 msgstr "Textdatei"
 
-#: zeit/content/text/browser/configure.zcml:71 zeit/content/text/json.py:36
+#: zeit/content/text/browser/configure.zcml:82 zeit/content/text/json.py:36
 msgid "JSON file"
 msgstr "JSON-Datei"
 
-#: zeit/content/text/browser/configure.zcml:97
+#: zeit/content/text/browser/configure.zcml:106
 msgid "Validate"
 msgstr "Validieren"
 
-#: zeit/content/text/browser/configure.zcml:132 zeit/content/text/embed.py:76
+#: zeit/content/text/browser/configure.zcml:140 zeit/content/text/embed.py:76
 msgid "Embed"
 msgstr "Embed"
 
-#: zeit/content/text/browser/configure.zcml:150
+#: zeit/content/text/browser/configure.zcml:158
 #: zeit/content/text/browser/embed.py:45
 msgid "Edit embed parameters"
 msgstr "Parameter"
@@ -4074,7 +4067,7 @@ msgstr "Typ"
 msgid "Publish content of this volume"
 msgstr "Gesamte Ausgabe veröffentlichen"
 
-#: zeit/content/volume/browser/configure.zcml:105
+#: zeit/content/volume/browser/configure.zcml:108
 msgid "Table of Content"
 msgstr "Inhaltsverzeichnis"
 
@@ -4753,7 +4746,7 @@ msgstr "Automatisch zurückziehen am ${date}"
 msgid "publish-preconditions-urgent"
 msgstr "Prüfen Sie die Status und/oder das »Eilig«-Feld."
 
-#: zeit/wysiwyg/browser/configure.zcml:13
+#: zeit/wysiwyg/browser/configure.zcml:19
 msgid "Edit WYSIWYG"
 msgstr "Bearbeiten"
 
