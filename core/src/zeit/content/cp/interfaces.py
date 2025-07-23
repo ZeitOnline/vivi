@@ -721,3 +721,7 @@ class ICpSEO(zeit.seo.interfaces.ISEO):
     enable_rss_tracking_parameter = zope.schema.Bool(
         title=_('Enable RSS Tracking-Parameter'), required=False
     )
+
+
+class IPodcastHeaderBlock(IBlock):
+    pass

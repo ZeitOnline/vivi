@@ -7,4 +7,5 @@
   <module id="jobbox_ticker" title="Jobbox Ticker"/>
   <module id="teaser" title="Teaser"/>
   <module id="xml" title="Rohes XML"/>
+  <module id="podcastheader" title="Podcastheader"/>
 </modules>
