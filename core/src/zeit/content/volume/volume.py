@@ -350,35 +350,32 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         return str(self.volume).rjust(2, '0')
 
     def create_audio_objects(self, articles, audios):
+        folder = self.repository['premium']['audio'][str(self.year)][self.volume_number]
         for article in articles:
-            audio = audios.get(article.ir_mediasync_id)
-            if audio:
-                audios[article.ir_mediasync_id]['article_uuid'] = zeit.cms.content.interfaces.IUUID(
-                    article, None
-                )
+            audio_info = audios.get(article.ir_mediasync_id)
+            if not audio_info:
+                continue
 
-        for entry in audios:
-            if not audios[entry].get('article_uuid', None):
+            audio_url = audio_info.get('url')
+            if not audio_url:
+                # FIXME: Mediaservice returns broken data, log
                 continue
-            if not audios[entry].get('url'):
+
+            article_uuid = zeit.cms.content.interfaces.IUUID(article, None)
+            if not article_uuid:
+                # FIXME: This sounds like a really bad situation which we at least want to log
                 continue
+
             audio = zeit.content.audio.audio.Audio()
             audio.audio_type = 'premium'
-            audio.external_id = entry
-            audio.url = audios[entry]['url']
-            audio.duration = audios[entry]['duration']
+            audio.external_id = article.ir_mediasync_id
+            audio.url = audio_url
+            audio.duration = audio_info['duration']  # FIXME: Maybe handle more gracefully?
 
-            self.repository['premium']['audio'][str(self.year)][self.volume_number][
-                audios[entry]['article_uuid'].shortened
-            ] = audio
-            article = zeit.cms.interfaces.ICMSContent(audios[entry]['article_uuid'])
+            folder[article_uuid.shortened] = audio
             with checked_out(article, raise_if_error=True) as co:
                 references = zeit.content.audio.interfaces.IAudioReferences(co)
-                references.add(
-                    self.repository['premium']['audio'][str(self.year)][self.volume_number][
-                        audios[entry]['article_uuid'].shortened
-                    ]
-                )
+                references.add(folder[article_uuid.shortened])
 
     def process_audios(self):
         self.ensure_audio_folder()
