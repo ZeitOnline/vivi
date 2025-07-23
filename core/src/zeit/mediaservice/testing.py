@@ -5,7 +5,6 @@ import zeit.content.article.testing
 
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
     {
-        'feed-url': 'https://medien.zeit.de/feeds/die-zeit/issue',
         'medienservice-folder': 'premium',
         'audio-folder': 'audio',
     },

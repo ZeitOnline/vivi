@@ -1,5 +1,4 @@
 import requests_mock
-import zope.component
 
 import zeit.mediaservice.testing
 
@@ -84,7 +83,9 @@ class TestImportAudios(zeit.mediaservice.testing.SQLTestCase):
         mocker = requests_mock.Mocker()
         mocker.get('https://medien.zeit.de/feeds/die-zeit/issue?year=2025&number=1', json=DATA)
         with mocker:
-            mediaservice = zope.component.getUtility(zeit.mediaservice.interfaces.IMediaService)
+            mediaservice = zeit.mediaservice.connection.MediaService(
+                'https://medien.zeit.de/feeds/die-zeit/issue'
+            )
             audios = mediaservice.get_audios(year=2025, volume=1)
             assert audios == {
                 1064677: {

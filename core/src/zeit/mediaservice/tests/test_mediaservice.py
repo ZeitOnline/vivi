@@ -1,5 +1,3 @@
-from unittest import mock
-
 from pendulum import datetime
 
 from zeit.cms.workflow.interfaces import IPublishInfo
@@ -50,16 +48,9 @@ class TestVolumeArticleAudios(zeit.mediaservice.testing.SQLTestCase):
         return self.repository[volume_year][volume_number][name]
 
     def test_article_with_premium_audio_creates_audio_object(self):
-        with mock.patch('zeit.content.volume.volume.Volume.get_audios') as get_audios:
-            get_audios.return_value = {
-                1234: {
-                    'url': 'https://media-delivery.testing.de/d7f6ed45-18b8-45de-9e8f-1aef4e6a33a9.mp3',
-                    'duration': 'PT9M7S',
-                }
-            }
-            volume = self.repository['2025']['01']['ausgabe']
-            zeit.mediaservice.mediaservice.create_audio_objects(volume.uniqueId)
-            all_content_to_publish = volume.articles_with_references_for_publishing()
+        volume = self.repository['2025']['01']['ausgabe']
+        zeit.mediaservice.mediaservice.create_audio_objects(volume.uniqueId)
+        all_content_to_publish = volume.articles_with_references_for_publishing()
 
         article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2025/01/article01')
         self.assertIn(article, all_content_to_publish)
