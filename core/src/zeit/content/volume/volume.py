@@ -32,6 +32,7 @@ import zeit.content.infobox.interfaces
 import zeit.content.portraitbox.interfaces
 import zeit.content.volume.interfaces
 import zeit.edit.interfaces
+import zeit.mediaservice.interfaces
 import zeit.retresco.interfaces
 import zeit.retresco.search
 
@@ -332,30 +333,8 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         return any(x.providedBy(content) for x in self.assets_to_publish)
 
     def get_audios(self):
-        feed_url = 'https://medien.zeit.de/feeds/die-zeit/issue'
-        response = requests.get(
-            feed_url,
-            params={'year': self.year, 'number': self.volume},
-            timeout=2,
-        )
-        data = response.json()
-        result = {}
-        for part_of_volume in data['dataFeedElement'][0]['item']['hasPart']:
-            for article in part_of_volume.get('hasPart', []):
-                mediasync_id = article.get('identifier', None)
-                mp3_object = next(
-                    filter(
-                        lambda x: x.get('encodingFormat') == 'audio/mpeg',
-                        article.get('associatedMedia', []),
-                    ),
-                    None,
-                )
-                if mediasync_id and mp3_object:
-                    result[mediasync_id] = {
-                        'url': mp3_object.get('url', None),
-                        'duration': mp3_object.get('duration', None),
-                    }
-        return result
+        ms = zope.component.getUtility(zeit.mediaservice.interfaces.IMediaService)
+        return ms.get_audios(self.year, self.volume)
 
     def search_audio_objects(self):
         # was the audio object created before?
