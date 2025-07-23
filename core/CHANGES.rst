@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.142.0 (2025-07-23)
+--------------------
+
+- WCM-1005: Update article+cp module icons
+
+
 7.141.0 (2025-07-23)
 --------------------
 
