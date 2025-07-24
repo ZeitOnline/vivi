@@ -724,4 +724,10 @@ class ICpSEO(zeit.seo.interfaces.ISEO):
 
 
 class IPodcastHeaderBlock(IBlock):
+    """A podcast header block, which is basically a marker to
+    load a different layout for the centerpage.
+
+    The information which will be displayed are read from
+    the podcasts.xml source"""
+
     pass
