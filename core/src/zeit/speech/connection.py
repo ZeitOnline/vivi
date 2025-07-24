@@ -15,8 +15,8 @@ from zeit.content.article.interfaces import IArticle
 from zeit.content.audio.audio import AUDIO_SCHEMA_NS, Audio
 from zeit.content.audio.interfaces import IAudio, IAudioReferences, ISpeechInfo
 import zeit.cms.config
+import zeit.cms.content.add
 import zeit.cms.interfaces
-import zeit.cms.repository.folder
 import zeit.connector.interfaces
 import zeit.speech.interfaces
 
@@ -30,7 +30,6 @@ AUDIO_ID = SearchVar('article_uuid', AUDIO_SCHEMA_NS)
 class Speech:
     def _get_target_folder(self, article_uuid: str) -> IFolder:
         """Returns the folder corresponding to the article's first release date."""
-        repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
         speech_folder = zeit.cms.config.required('zeit.speech', 'speech-folder')
 
         article = zeit.cms.interfaces.ICMSContent(IUUID(article_uuid))
@@ -38,11 +37,7 @@ class Speech:
         # even if e.g. multi publish did not commit the zodb cache due to errors.
         zope.event.notify(zeit.connector.interfaces.ResourceInvalidatedEvent(article.uniqueId))
         yyyy_mm = IPublishInfo(article).date_first_released.strftime('%Y-%m')
-        if speech_folder not in repository:
-            repository[speech_folder] = zeit.cms.repository.folder.Folder()
-        if yyyy_mm not in repository[speech_folder]:
-            repository[speech_folder][yyyy_mm] = zeit.cms.repository.folder.Folder()
-        return repository[speech_folder][yyyy_mm]
+        return zeit.cms.content.add.find_or_create_folder(speech_folder, yyyy_mm)
 
     @staticmethod
     def convert_ms_to_sec(milliseconds: int) -> int:
