@@ -8,7 +8,19 @@ import zeit.cms.content.sources
 import zeit.cms.interfaces
 import zeit.cms.repository.folder
 import zeit.content.volume.volume
+import zeit.mediaservice.mediaservice
 import zeit.mediaservice.testing
+
+
+class TestCreateAudio(zeit.mediaservice.testing.FunctionalTestCase):
+    def test_creates_audio_object(self):
+        mediaservice = zeit.mediaservice.mediaservice.MediaService()
+        audio = mediaservice.create_audio_object(
+            1234, {'url': 'http://example.com/example.mp3', 'duration': 'PT4M42S'}
+        )
+        assert audio.external_id == '1234'
+        assert audio.audio_type == 'premium'
+        assert audio.url == 'http://example.com/example.mp3'
 
 
 class TestVolumeArticleAudios(zeit.mediaservice.testing.SQLTestCase):

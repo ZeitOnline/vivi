@@ -10,6 +10,8 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
     },
     bases=(zeit.content.article.testing.CONFIG_LAYER,),
 )
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER,))
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
 
 SQL_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     'ftesting.zcml',
@@ -22,3 +24,7 @@ SQL_CONNECTOR_LAYER = zeit.connector.testing.SQLDatabaseLayer(bases=(SQL_ZOPE_LA
 
 class SQLTestCase(zeit.connector.testing.TestCase):
     layer = SQL_CONNECTOR_LAYER
+
+
+class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
+    layer = ZOPE_LAYER

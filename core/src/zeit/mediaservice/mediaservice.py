@@ -38,7 +38,7 @@ class MediaService:
             if not audio_info:
                 continue
 
-            audio = self._create_audio_object(article, audio_info)
+            audio = self.create_audio_object(article.ir_mediasync_id, audio_info)
             if not audio:
                 continue
 
@@ -49,21 +49,21 @@ class MediaService:
                 # FIXME: Deduplicate, see speech
                 references.add(folder[article_uuid.shortened])
 
-    def _create_audio_object(self, article, audio_info):
+    def create_audio_object(self, mediasync_id, audio_info):
         audio_url = audio_info.get('url')
         if not audio_url:
-            err = ValueError(f'Premium audio info without URL for {article.ir_mediasync_id}')
+            err = ValueError(f'Premium audio info without URL for {mediasync_id}')
             current_span = opentelemetry.trace.get_current_span()
             current_span.record_exception(err)
             return
 
         audio = zeit.content.audio.audio.Audio()
         audio.audio_type = 'premium'
-        audio.external_id = article.ir_mediasync_id
+        audio.external_id = mediasync_id
         audio.url = audio_url
         audio_duration = audio_info.get('duration')  # FIXME: Parse duration ISO 8601
         if not audio_duration:
-            err = ValueError(f'Premium audio info without duration for {article.ir_mediasync_id}')
+            err = ValueError(f'Premium audio info without duration for {mediasync_id}')
             current_span = opentelemetry.trace.get_current_span()
             current_span.record_exception(err)
         audio.duration = audio_duration
