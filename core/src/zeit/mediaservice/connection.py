@@ -1,3 +1,4 @@
+import opentelemetry.trace
 import requests
 import zope.interface
 
@@ -27,8 +28,14 @@ class Connection:
                     None,
                 )
                 if mediasync_id and mp3_object:
+                    if 'url' not in mp3_object:
+                        err = ValueError(f'Premium audio info without URL for {mediasync_id}')
+                        current_span = opentelemetry.trace.get_current_span()
+                        current_span.record_exception(err)
+                        continue
+
                     result[mediasync_id] = {
-                        'url': mp3_object.get('url', None),
+                        'url': mp3_object['url'],
                         'duration': mp3_object.get('duration', None),
                     }
         return result

@@ -160,8 +160,6 @@ class TestImportAudios(zeit.mediaservice.testing.SQLTestCase):
             )
             audios = mediaservice.get_audio_infos(year=2025, volume=11)
             assert audios == {
-                1: {'duration': None, 'url': None},
-                2: {'duration': 'PT4M42S', 'url': None},
                 3: {
                     'url': 'https://media-delivery.zeit.de/715e31fd-edaf-436a-a42e-30546ba35319.mp3',
                     'duration': None,
