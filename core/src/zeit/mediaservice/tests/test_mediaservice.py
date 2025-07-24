@@ -1,4 +1,5 @@
 from pendulum import datetime
+import transaction
 
 from zeit.cms.workflow.interfaces import IPublishInfo
 from zeit.content.article.article import Article
@@ -70,3 +71,13 @@ class TestVolumeArticleAudios(zeit.mediaservice.testing.SQLTestCase):
         self.assertIn(
             zeit.content.audio.interfaces.IAudioReferences(article).items[0], all_content_to_publish
         )
+
+    def test_mediaservice_does_not_add_duplicate_references(self):
+        volume = self.repository['2025']['01']['ausgabe']
+        zeit.mediaservice.mediaservice.create_audio_objects(volume.uniqueId)
+        transaction.commit()
+        zeit.mediaservice.mediaservice.create_audio_objects(volume.uniqueId)
+        audio_references = zeit.content.audio.interfaces.IAudioReferences(
+            self.repository['2025']['01']['article01']
+        )
+        assert len(audio_references.get_by_type('premium')) == 1

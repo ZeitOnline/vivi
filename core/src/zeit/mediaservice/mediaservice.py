@@ -30,7 +30,6 @@ class MediaService:
             'premium', 'audio', str(volume.year), volume.volume_number
         )
 
-    # FIXME: Peek at zeit.speech
     def _create_audio_objects(self, folder, articles, audios):
         for article in articles:
             audio_info = audios.get(article.ir_mediasync_id)
@@ -45,7 +44,7 @@ class MediaService:
             folder[article_uuid.shortened] = audio
             with checked_out(article, raise_if_error=True) as co:
                 references = zeit.content.audio.interfaces.IAudioReferences(co)
-                # FIXME: Deduplicate, see speech
+                # AudioReferences deduplicates through zeit.cms.content.reference.ReferenceProperty
                 references.add(folder[article_uuid.shortened])
 
     def create_audio_object(self, mediasync_id, audio_info):
