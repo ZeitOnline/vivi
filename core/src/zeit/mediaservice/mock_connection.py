@@ -9,10 +9,14 @@ class MockConnection:
         return {
             1234: {
                 'url': 'https://media-delivery.testing.de/d7f6ed45-18b8-45de-9e8f-1aef4e6a33a9.mp3',
-                'duration': 'PT9M7S',
+                'duration': 547,
             },
             1235: {
                 'url': 'https://media-delivery.testing.de/d7f6ed45-18b8-45de-9e8f-1aef4e6a33a9.mp3',
-                'duration': 'PT12M',
+                'duration': 720,
+            },
+            1236: {
+                'url': 'https://media-delivery.testing.de/d7f6ed45-18b8-45de-9e8f-1aef4e6a33a9.mp3',
+                'duration': None,
             },
         }

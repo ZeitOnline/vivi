@@ -124,6 +124,17 @@ BROKEN_DATA = {
                                     },
                                 ],
                             },
+                            {
+                                'abstract': 'Media with broken duration',
+                                'identifier': 5,
+                                'associatedMedia': [
+                                    {
+                                        'duration': '2500',
+                                        'encodingFormat': 'audio/mpeg',
+                                        'url': 'https://media-delivery.zeit.de/715e31fd-edaf-436a-a42e-30546ba35319.mp3',
+                                    },
+                                ],
+                            },
                         ]
                     }
                 ]
@@ -145,7 +156,7 @@ class TestImportAudios(zeit.mediaservice.testing.SQLTestCase):
             assert audios == {
                 1064677: {
                     'url': 'https://media-delivery.zeit.de/715e31fd-edaf-436a-a42e-30546ba35319.mp3',
-                    'duration': 'PT4M42S',
+                    'duration': 282,
                 }
             }
 
@@ -166,6 +177,10 @@ class TestImportAudios(zeit.mediaservice.testing.SQLTestCase):
                 },
                 4: {
                     'url': 'https://media-delivery.zeit.de/715e31fd-edaf-436a-a42e-30546ba35319.mp3',
-                    'duration': 'PT4M42S',
+                    'duration': 282,
+                },
+                5: {
+                    'url': 'https://media-delivery.zeit.de/715e31fd-edaf-436a-a42e-30546ba35319.mp3',
+                    'duration': None,
                 },
             }

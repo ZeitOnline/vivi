@@ -16,11 +16,12 @@ class TestCreateAudio(zeit.mediaservice.testing.FunctionalTestCase):
     def test_creates_audio_object(self):
         mediaservice = zeit.mediaservice.mediaservice.MediaService()
         audio = mediaservice.create_audio_object(
-            1234, {'url': 'http://example.com/example.mp3', 'duration': 'PT4M42S'}
+            1234, {'url': 'http://example.com/example.mp3', 'duration': 282}
         )
         assert audio.external_id == '1234'
         assert audio.audio_type == 'premium'
         assert audio.url == 'http://example.com/example.mp3'
+        assert audio.duration == 282
 
 
 class TestVolumeArticleAudios(zeit.mediaservice.testing.SQLTestCase):

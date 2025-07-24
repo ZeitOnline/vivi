@@ -1,4 +1,3 @@
-import opentelemetry.trace
 import zope.component
 
 from zeit.cms.checkout.helper import checked_out
@@ -54,10 +53,5 @@ class MediaService:
         audio.audio_type = 'premium'
         audio.external_id = mediasync_id
         audio.url = audio_info['url']
-        audio_duration = audio_info.get('duration')  # FIXME: Parse duration ISO 8601
-        if not audio_duration:
-            err = ValueError(f'Premium audio info without duration for {mediasync_id}')
-            current_span = opentelemetry.trace.get_current_span()
-            current_span.record_exception(err)
-        audio.duration = audio_duration
+        audio.duration = audio_info['duration']
         return audio

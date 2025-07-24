@@ -1,4 +1,5 @@
 import opentelemetry.trace
+import pendulum
 import requests
 import zope.interface
 
@@ -34,9 +35,25 @@ class Connection:
                         current_span.record_exception(err)
                         continue
 
+                    audio_duration = mp3_object.get('duration')
+                    if not audio_duration:
+                        err = ValueError(f'Premium audio info without duration for {mediasync_id}')
+                        current_span = opentelemetry.trace.get_current_span()
+                        current_span.record_exception(err)
+                    else:
+                        try:
+                            audio_duration = pendulum.parse(audio_duration).in_seconds()
+                        except Exception:
+                            err = ValueError(
+                                f'Premium audio info with invalid duration for {mediasync_id}'
+                            )
+                            current_span = opentelemetry.trace.get_current_span()
+                            current_span.record_exception(err)
+                            audio_duration = None
+
                     result[mediasync_id] = {
                         'url': mp3_object['url'],
-                        'duration': mp3_object.get('duration', None),
+                        'duration': audio_duration,
                     }
         return result
 
