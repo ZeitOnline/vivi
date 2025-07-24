@@ -13,7 +13,6 @@ import zope.interface
 import zope.lifecycleevent
 import zope.schema
 
-from zeit.cms.checkout.helper import checked_out
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import IPublish
 from zeit.connector.models import Content as ConnectorModel
@@ -25,14 +24,12 @@ import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.type
 import zeit.cms.workflow.dependency
-import zeit.content.audio.audio
 import zeit.content.audio.interfaces
 import zeit.content.cp.interfaces
 import zeit.content.infobox.interfaces
 import zeit.content.portraitbox.interfaces
 import zeit.content.volume.interfaces
 import zeit.edit.interfaces
-import zeit.mediaservice.interfaces
 import zeit.retresco.interfaces
 import zeit.retresco.search
 
@@ -332,57 +329,9 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         # content has to provide one of interfaces defined above
         return any(x.providedBy(content) for x in self.assets_to_publish)
 
-    def get_audios(self):
-        ms = zope.component.getUtility(zeit.mediaservice.interfaces.IMediaService)
-        return ms.get_audios(self.year, self.volume)
-
-    def search_audio_objects(self):
-        # was the audio object created before?
-        pass
-
-    def ensure_audio_folder(self):
-        zeit.cms.content.add.find_or_create_folder(
-            'premium', 'audio', str(self.year), self.volume_number
-        )
-
     @property
     def volume_number(self):
         return str(self.volume).rjust(2, '0')
-
-    # FIXME: Move everything to zeit.mediaservice and peek at zeit.speech
-    def create_audio_objects(self, articles, audios):
-        folder = self.repository['premium']['audio'][str(self.year)][self.volume_number]
-        for article in articles:
-            audio_info = audios.get(article.ir_mediasync_id)
-            if not audio_info:
-                continue
-
-            audio_url = audio_info.get('url')
-            if not audio_url:
-                err = ValueError(f'Premium audio info without URL for {article.ir_mediasync_id}')
-                current_span = opentelemetry.trace.get_current_span()
-                current_span.record_exception(err)
-                continue
-
-            article_uuid = zeit.cms.content.interfaces.IUUID(article)
-            audio = zeit.content.audio.audio.Audio()
-            audio.audio_type = 'premium'
-            audio.external_id = article.ir_mediasync_id
-            audio.url = audio_url
-            audio_duration = audio_info.get('duration')  # FIXME: Parse duration ISO 8601
-            if not audio_duration:
-                err = ValueError(
-                    f'Premium audio info without duration for {article.ir_mediasync_id}'
-                )
-                current_span = opentelemetry.trace.get_current_span()
-                current_span.record_exception(err)
-            audio.duration = audio_duration
-
-            folder[article_uuid.shortened] = audio
-            with checked_out(article, raise_if_error=True) as co:
-                references = zeit.content.audio.interfaces.IAudioReferences(co)
-                # FIXME: Deduplicate, see speech
-                references.add(folder[article_uuid.shortened])
 
 
 class VolumeType(zeit.cms.type.XMLContentTypeDeclaration):
