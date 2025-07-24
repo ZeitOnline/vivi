@@ -349,6 +349,7 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
     def volume_number(self):
         return str(self.volume).rjust(2, '0')
 
+    # FIXME: Move everything to zeit.mediaservice and peek at zeit.speech
     def create_audio_objects(self, articles, audios):
         folder = self.repository['premium']['audio'][str(self.year)][self.volume_number]
         for article in articles:
@@ -358,23 +359,29 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
 
             audio_url = audio_info.get('url')
             if not audio_url:
-                # FIXME: Mediaservice returns broken data, log
+                err = ValueError(f'Premium audio info without URL for {article.ir_mediasync_id}')
+                current_span = opentelemetry.trace.get_current_span()
+                current_span.record_exception(err)
                 continue
 
-            article_uuid = zeit.cms.content.interfaces.IUUID(article, None)
-            if not article_uuid:
-                # FIXME: This sounds like a really bad situation which we at least want to log
-                continue
-
+            article_uuid = zeit.cms.content.interfaces.IUUID(article)
             audio = zeit.content.audio.audio.Audio()
             audio.audio_type = 'premium'
             audio.external_id = article.ir_mediasync_id
             audio.url = audio_url
-            audio.duration = audio_info['duration']  # FIXME: Maybe handle more gracefully?
+            audio_duration = audio_info.get('duration')  # FIXME: Parse duration ISO 8601
+            if not audio_duration:
+                err = ValueError(
+                    f'Premium audio info without duration for {article.ir_mediasync_id}'
+                )
+                current_span = opentelemetry.trace.get_current_span()
+                current_span.record_exception(err)
+            audio.duration = audio_duration
 
             folder[article_uuid.shortened] = audio
             with checked_out(article, raise_if_error=True) as co:
                 references = zeit.content.audio.interfaces.IAudioReferences(co)
+                # FIXME: Deduplicate, see speech
                 references.add(folder[article_uuid.shortened])
 
 
