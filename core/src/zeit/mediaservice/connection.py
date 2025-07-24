@@ -4,11 +4,11 @@ import zope.interface
 import zeit.mediaservice.interfaces
 
 
-class MediaService:
+class Connection:
     def __init__(self, feed_url):
         self.feed_url = feed_url
 
-    def get_audios(self, year, volume):
+    def get_audio_infos(self, year, volume):
         response = requests.get(
             self.feed_url,
             params={'year': year, 'number': volume},
@@ -34,7 +34,7 @@ class MediaService:
         return result
 
 
-@zope.interface.implementer(zeit.mediaservice.interfaces.IMediaService)
+@zope.interface.implementer(zeit.mediaservice.interfaces.IConnection)
 def from_product_config():
     conf = zeit.cms.config.package('zeit.mediaservice')
-    return MediaService(conf['feed-url'])
+    return Connection(conf['feed-url'])

@@ -79,14 +79,14 @@ DATA = {
 
 
 class TestImportAudios(zeit.mediaservice.testing.SQLTestCase):
-    def test_get_audios(self):
+    def test_get_audio_infos(self):
         mocker = requests_mock.Mocker()
         mocker.get('https://medien.zeit.de/feeds/die-zeit/issue?year=2025&number=1', json=DATA)
         with mocker:
-            mediaservice = zeit.mediaservice.connection.MediaService(
+            mediaservice = zeit.mediaservice.connection.Connection(
                 'https://medien.zeit.de/feeds/die-zeit/issue'
             )
-            audios = mediaservice.get_audios(year=2025, volume=1)
+            audios = mediaservice.get_audio_infos(year=2025, volume=1)
             assert audios == {
                 1064677: {
                     'url': 'https://media-delivery.zeit.de/715e31fd-edaf-436a-a42e-30546ba35319.mp3',

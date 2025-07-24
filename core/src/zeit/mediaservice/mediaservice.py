@@ -18,8 +18,8 @@ def create_audio_objects(volume_uniqueid):
 
 
 def get_audios(volume):
-    ms = zope.component.getUtility(zeit.mediaservice.interfaces.IMediaService)
-    return ms.get_audios(volume.year, volume.volume)
+    connection = zope.component.getUtility(zeit.mediaservice.interfaces.IConnection)
+    return connection.get_audio_infos(volume.year, volume.volume)
 
 
 def ensure_audio_folder(volume):

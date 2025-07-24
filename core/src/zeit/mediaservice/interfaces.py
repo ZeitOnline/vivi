@@ -1,6 +1,7 @@
 import zope.interface
 
 
-class IMediaService(zope.interface.Interface):
-    def get_audios(self):
-        """Returns a list of audio files."""
+class IConnection(zope.interface.Interface):
+    def get_audio_infos(self, year, volume):
+        """Returns information about available premium audio MP3s for a given volume. The result
+        is a dict with one entry per mediasync id. Each entry has `url` and `duration` fields."""

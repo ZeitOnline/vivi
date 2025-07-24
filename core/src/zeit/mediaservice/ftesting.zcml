@@ -11,8 +11,8 @@
   <include package="zeit.mediaservice" />
 
   <utility
-   provides="zeit.mediaservice.interfaces.IMediaService"
-   factory="zeit.mediaservice.mock_connection.MockMediaService"
+   provides="zeit.mediaservice.interfaces.IConnection"
+   factory="zeit.mediaservice.mock_connection.MockConnection"
    />
 
 </configure>

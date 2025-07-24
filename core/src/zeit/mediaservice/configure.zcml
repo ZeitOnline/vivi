@@ -6,7 +6,7 @@
   <grok:grok package="." exclude="testing" />
 
   <utility
-   provides="zeit.mediaservice.interfaces.IMediaService"
+   provides="zeit.mediaservice.interfaces.IConnection"
    factory=".connection.from_product_config"
    />
 

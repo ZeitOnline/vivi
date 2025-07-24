@@ -6,8 +6,8 @@
   <grok:grok package="." exclude="testing" />
 
   <utility
-   provides="zeit.mediaservice.interfaces.IMediaService"
-   factory=".mock_connection.MockMediaService"
+   provides="zeit.mediaservice.interfaces.IConnection"
+   factory=".mock_connection.MockConnection"
    />
 
 </configure>
