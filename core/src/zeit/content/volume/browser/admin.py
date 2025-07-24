@@ -8,6 +8,7 @@ import zope.traversing.browser
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import IPublish
 import zeit.cms.admin.browser.admin
+import zeit.mediaservice.mediaservice
 
 
 class PublishAction(zope.formlib.form.Action):
