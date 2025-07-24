@@ -77,6 +77,61 @@ DATA = {
     'name': 'DIE ZEIT',
 }
 
+BROKEN_DATA = {
+    'dataFeedElement': [
+        {
+            'item': {
+                'hasPart': [
+                    {
+                        'hasPart': [
+                            {
+                                'abstract': 'Media with nothing',
+                                'identifier': 1,
+                                'associatedMedia': [
+                                    {
+                                        'encodingFormat': 'audio/mpeg',
+                                    },
+                                ],
+                            },
+                            {
+                                'abstract': 'Media without URL',
+                                'identifier': 2,
+                                'associatedMedia': [
+                                    {
+                                        'duration': 'PT4M42S',
+                                        'encodingFormat': 'audio/mpeg',
+                                    },
+                                ],
+                            },
+                            {
+                                'abstract': 'Media without duration',
+                                'identifier': 3,
+                                'associatedMedia': [
+                                    {
+                                        'encodingFormat': 'audio/mpeg',
+                                        'url': 'https://media-delivery.zeit.de/715e31fd-edaf-436a-a42e-30546ba35319.mp3',
+                                    },
+                                ],
+                            },
+                            {
+                                'abstract': 'Complete media',
+                                'identifier': 4,
+                                'associatedMedia': [
+                                    {
+                                        'duration': 'PT4M42S',
+                                        'encodingFormat': 'audio/mpeg',
+                                        'url': 'https://media-delivery.zeit.de/715e31fd-edaf-436a-a42e-30546ba35319.mp3',
+                                    },
+                                ],
+                            },
+                        ]
+                    }
+                ]
+            }
+        }
+    ]
+}
+
 
 class TestImportAudios(zeit.mediaservice.testing.SQLTestCase):
     def test_get_audio_infos(self):
@@ -92,4 +147,27 @@ class TestImportAudios(zeit.mediaservice.testing.SQLTestCase):
                     'url': 'https://media-delivery.zeit.de/715e31fd-edaf-436a-a42e-30546ba35319.mp3',
                     'duration': 'PT4M42S',
                 }
+            }
+
+    def test_broken_json(self):
+        mocker = requests_mock.Mocker()
+        mocker.get(
+            'https://medien.zeit.de/feeds/die-zeit/issue?year=2025&number=11', json=BROKEN_DATA
+        )
+        with mocker:
+            mediaservice = zeit.mediaservice.connection.Connection(
+                'https://medien.zeit.de/feeds/die-zeit/issue'
+            )
+            audios = mediaservice.get_audio_infos(year=2025, volume=11)
+            assert audios == {
+                1: {'duration': None, 'url': None},
+                2: {'duration': 'PT4M42S', 'url': None},
+                3: {
+                    'url': 'https://media-delivery.zeit.de/715e31fd-edaf-436a-a42e-30546ba35319.mp3',
+                    'duration': None,
+                },
+                4: {
+                    'url': 'https://media-delivery.zeit.de/715e31fd-edaf-436a-a42e-30546ba35319.mp3',
+                    'duration': 'PT4M42S',
+                },
             }
