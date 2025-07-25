@@ -74,12 +74,15 @@ class KPIData(Base):
 @zope.interface.implementer(zeit.kpi.interfaces.IKPIDatasource)
 class MockKPI:
     result = []
+    calls = []
 
     def query(self, contents):
+        self.calls.append(contents)
         return self.result
 
     def _reset(self):
-        self.result[:] = []
+        self.result.clear()
+        self.calls.clear()
 
 
 def reset_mock():
