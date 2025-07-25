@@ -312,8 +312,8 @@ class Repository(persistent.Persistent, Container):
         content.__name__ = resource.__name__
         return content
 
-    def search(self, query, timeout=None, cache=True):
-        for x in self.connector.search_sql(query, timeout=timeout, cache=cache):
+    def search(self, query, timeout=None):
+        for x in self.connector.search_sql(query, timeout=timeout):
             yield self._makeContent(x)
 
     def _makeContent(self, resource):
