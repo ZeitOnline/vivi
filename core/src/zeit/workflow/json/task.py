@@ -11,9 +11,6 @@ class Status:
     def getStatus(self, job):
         return json.dumps(self._result(job).state)
 
-    def getError(self, job):
-        return json.dumps(self._result(job).failed())
-
     def getResult(self, job):
         result = self._result(job)
         if result.state == 'SUCCESS':
