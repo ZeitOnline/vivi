@@ -37,14 +37,6 @@
 
   <browser:page
     for="zope.location.interfaces.ISite"
-    name="job-error"
-    class=".task.Status"
-    attribute="getError"
-    permission="zeit.workflow.Publish"
-    />
-
-  <browser:page
-    for="zope.location.interfaces.ISite"
     name="job-result"
     class=".task.Status"
     attribute="getResult"
