@@ -42,5 +42,5 @@ def update(query, kpi_batch_size, sql_batch_size):
     repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
     source = zope.component.getUtility(IKPIDatasource)
     query = query.execution_options(yield_per=sql_batch_size)
-    for batch in itertools.batched(repository.search(query, cache=False), kpi_batch_size):
+    for batch in itertools.batched(repository.search(query), kpi_batch_size):
         zope.event.notify(KPIUpdateEvent(source.query(batch)))
