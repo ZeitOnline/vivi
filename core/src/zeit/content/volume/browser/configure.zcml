@@ -68,6 +68,14 @@
     permission="zeit.cms.admin.View"
     />
 
+   <browser:page
+    for="..interfaces.IVolume"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="create-audio-objects"
+    class=".admin.CreateAudioObjects"
+    permission="zeit.cms.admin.View"
+    />
+
    <browser:icon
      for="..interfaces.IVolume"
      name="zmi_icon"

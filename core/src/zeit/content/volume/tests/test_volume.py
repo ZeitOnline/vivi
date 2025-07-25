@@ -12,9 +12,11 @@ from zeit.cms.repository.folder import Folder
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.cms.workflow.interfaces import IPublicationDependencies, IPublishInfo
 from zeit.content.article.article import Article
+from zeit.content.article.interfaces import IArticle
 from zeit.content.image.testing import create_image_group
 from zeit.content.volume.volume import Volume
 import zeit.cms.config
+import zeit.cms.content.field
 import zeit.cms.content.sources
 import zeit.cms.interfaces
 import zeit.cms.workflow.interfaces
@@ -259,9 +261,6 @@ class TestVolumeAccessQueries(zeit.content.volume.testing.SQLTestCase):
         self.create_volume_content('2025', '01', 'article01')
 
     def create_volume_content(self, volume_year, volume_number, name, product='ZEI'):
-        from zeit.content.article.interfaces import IArticle
-        import zeit.cms.content.field
-
         article = Article()
         zeit.cms.content.field.apply_default_values(article, IArticle)
         article.product = zeit.cms.content.sources.Product(product)

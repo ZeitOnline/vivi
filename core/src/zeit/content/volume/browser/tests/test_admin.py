@@ -34,7 +34,7 @@ class VolumeAdminBrowserTest(zeit.content.volume.testing.BrowserTestCase):
         content.product = zeit.cms.content.sources.Product('ZEI')
         self.repository['testcontent'] = content
 
-    def create_article_with_references(self):
+    def create_article_with_references(self, mediasync_id=1234, name='article_with_ref'):
         from zeit.content.article.article import Article
         from zeit.content.article.edit.body import EditableBody
         from zeit.content.article.interfaces import IArticle
@@ -47,25 +47,29 @@ class VolumeAdminBrowserTest(zeit.content.volume.testing.BrowserTestCase):
         article.year = 2017
         article.title = 'title'
         article.ressort = 'Deutschland'
-        portraitbox = Portraitbox()
-        self.repository['portraitbox'] = portraitbox
+        article.ir_mediasync_id = mediasync_id
+        if 'portraitbox' not in self.repository:
+            portraitbox = Portraitbox()
+            self.repository['portraitbox'] = portraitbox
         body = EditableBody(article, article.xml.find('body'))
         portraitbox_reference = body.create_item('portraitbox', 1)
         portraitbox_reference._validate = mock.Mock()
-        portraitbox_reference.references = portraitbox
-        infobox = Infobox()
-        self.repository['infobox'] = infobox
+        portraitbox_reference.references = self.repository['portraitbox']
+        if 'infobox' not in self.repository:
+            infobox = Infobox()
+            self.repository['infobox'] = infobox
         infobox_reference = body.create_item('infobox', 2)
         infobox_reference._validate = mock.Mock()
-        infobox_reference.references = infobox
-        self.repository['image'] = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/2006/DSC00109_2.JPG'
-        )
+        infobox_reference.references = self.repository['infobox']
+        if 'image' not in self.repository:
+            self.repository['image'] = zeit.cms.interfaces.ICMSContent(
+                'http://xml.zeit.de/2006/DSC00109_2.JPG'
+            )
         image_reference = body.create_item('image', 3)
         image_reference.references = image_reference.references.create(self.repository['image'])
         image_reference._validate = mock.Mock()
-        self.repository['article_with_ref'] = article
-        return self.repository['article_with_ref']
+        self.repository[name] = article
+        return self.repository[name]
 
     def test_view_has_action_buttons(self):
         # Cause the VolumeAdminForm has additional actions
@@ -97,6 +101,23 @@ class VolumeAdminBrowserTest(zeit.content.volume.testing.BrowserTestCase):
         self.assertTrue(
             zeit.cms.workflow.interfaces.IPublishInfo(self.repository['infobox']).published
         )
+
+    def test_referenced_premium_audio_objects_are_published_as_well(self):
+        self.create_article_with_references(mediasync_id=1234, name='article_1')
+        self.create_article_with_references(mediasync_id=1235, name='article_2')
+        uniqueIds = ('http://xml.zeit.de/article_1', 'http://xml.zeit.de/article_2')
+        connector = zope.component.getUtility(zeit.cms.interfaces.IConnector)
+        connector.search_result = list(uniqueIds)
+
+        b = self.browser
+        b.open('http://localhost/++skin++vivi/repository/2015/01/ausgabe/@@create-audio-objects')
+        self.publish_content()
+        for uniqueId in uniqueIds:
+            article = zeit.cms.interfaces.ICMSContent(uniqueId)
+            audio = self.repository['premium']['audio']['2015']['01'][
+                zeit.cms.content.interfaces.IUUID(article).shortened
+            ]
+            self.assertTrue(zeit.cms.workflow.interfaces.IPublishInfo(audio).published)
 
     def test_referenced_image_is_not_published(self):
         self.create_article_with_references()

@@ -8,7 +8,9 @@
   <include package="zeit.content.volume.browser" />
 
   <include package="zeit.addcentral" />
+  <include package="zeit.mediaservice" file="ctesting.zcml" />
   <include package="zeit.content.article" file="ctesting.zcml" />
+  <include package="zeit.content.audio" file="ctesting.zcml" />
   <include package="zeit.content.author" />
   <include package="zeit.content.cp" file="ctesting.zcml" />
   <include package="zeit.content.image" />
