@@ -60,6 +60,7 @@ Resource(
 Resource('strftime.js')
 Resource('jsuri.js')
 Resource('citation_comment.js')
+Resource('memo.js')
 
 
 # XXX zeit.content.article needs zeit.workflow to function,
