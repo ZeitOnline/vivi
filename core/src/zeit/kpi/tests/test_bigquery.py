@@ -4,7 +4,9 @@ import zeit.kpi.interfaces
 import zeit.kpi.testing
 
 
-class BigQueryTest(zeit.kpi.testing.FunctionalTestCase):
+class BigQueryTest(zeit.cms.testing.FunctionalTestCase):
+    layer = zeit.kpi.testing.BIGQUERY_LAYER
+
     def test_query_according_url(self):
         api = zope.component.getUtility(zeit.kpi.interfaces.IKPIDatasource)
         data = api.query([self.repository['testcontent']])

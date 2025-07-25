@@ -1,0 +1,9 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  i18n_domain="zope"
+  >
+
+  <include package="zeit.kpi" file="ftesting.zcml" />
+  <utility factory="zeit.kpi.bigquery.from_product_config" />
+
+</configure>
