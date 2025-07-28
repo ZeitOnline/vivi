@@ -608,14 +608,6 @@ def validate_xml_block(xml):
     return True
 
 
-class IXMLBlock(IBlock):
-    """A block containing raw XML."""
-
-    xml = zeit.cms.content.field.XMLTree(
-        title=_('XML Source'), constraint=validate_xml_block, tidy_input=True
-    )
-
-
 class ICPExtraBlock(IBlock):
     """Block which contains a cp_extra."""
 

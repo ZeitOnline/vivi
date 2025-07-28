@@ -93,7 +93,6 @@
 
   <include file="teaser.zcml" />
   <include file="automatic.zcml" />
-  <include file="xml.zcml" />
   <include file="cpextra.zcml" />
   <include file="quiz.zcml" />
   <include file="headerimage.zcml" />

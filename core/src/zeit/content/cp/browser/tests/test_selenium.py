@@ -289,18 +289,6 @@ class TestQuizBlock(zeit.content.cp.testing.SeleniumTestCase):
         s.waitForElementPresent('css=div.type-quiz')
 
 
-class TestXMLBlock(zeit.content.cp.testing.SeleniumTestCase):
-    def test_add_xml_to_lead(self):
-        self.open_centerpage()
-
-        s = self.selenium
-        s.click('link=Struktur')
-        module = self.get_module('cp', 'XML')
-        s.waitForElementPresent(module)
-        s.dragAndDropToObject(module, 'css=.landing-zone.action-cp-module-droppable', '10,10')
-        s.waitForElementPresent('css=div.type-xml')
-
-
 class TestSidebar(zeit.content.cp.testing.SeleniumTestCase):
     def test_sidebar_should_be_folded_away(self):
         s = self.selenium

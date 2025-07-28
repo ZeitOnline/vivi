@@ -5,5 +5,4 @@
   <module id="quiz" title="Quiz-Block"/>
   <module id="jobbox_ticker" title="Jobbox Ticker"/>
   <module id="teaser" title="Teaser"/>
-  <module id="xml" title="Rohes XML"/>
 </modules>

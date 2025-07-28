@@ -21,7 +21,6 @@ def test_suite():
     return zeit.content.cp.testing.FunctionalDocFileSuite(
         'cpextra.txt',
         'teaser.txt',
-        'xml.txt',
         package='zeit.content.cp.browser.blocks',
         layer=zeit.content.cp.testing.WSGI_LAYER,
     )
