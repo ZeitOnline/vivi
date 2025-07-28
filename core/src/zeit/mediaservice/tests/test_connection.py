@@ -160,7 +160,7 @@ class TestImportAudios(zeit.mediaservice.testing.SQLTestCase):
                 }
             }
 
-    def test_broken_json(self):
+    def test_ignores_invalid_entries(self):
         mocker = requests_mock.Mocker()
         mocker.get(
             'https://medien.zeit.de/feeds/die-zeit/issue?year=2025&number=11', json=BROKEN_DATA
