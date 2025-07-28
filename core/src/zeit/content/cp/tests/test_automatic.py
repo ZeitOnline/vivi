@@ -72,7 +72,9 @@ class AutomaticAreaElasticsearchTest(zeit.content.cp.testing.FunctionalTestCase)
         self.repository['normal'] = ExampleContentType()
         self.repository['leader'] = ExampleContentType()
 
-        zope.component.getAdapter(self.area, zeit.edit.interfaces.IElementFactory, name='xml')()
+        zope.component.getAdapter(
+            self.area, zeit.edit.interfaces.IElementFactory, name='headerimage'
+        )()
 
         full = zeit.cms.interfaces.Result([{'url': '/normal'}, {'url': '/leader'}])
         full.hits = 2
@@ -82,7 +84,7 @@ class AutomaticAreaElasticsearchTest(zeit.content.cp.testing.FunctionalTestCase)
         self.area.automatic = False
 
         result = self.area.values()
-        self.assertEqual(['teaser', 'teaser', 'xml'], [x.type for x in result])
+        self.assertEqual(['teaser', 'teaser', 'headerimage'], [x.type for x in result])
         self.assertEqual('http://xml.zeit.de/normal', list(result[0])[0].uniqueId)
         self.assertEqual('http://xml.zeit.de/leader', list(result[1])[0].uniqueId)
 

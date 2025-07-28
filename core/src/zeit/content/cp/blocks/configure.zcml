@@ -46,15 +46,6 @@
       permission="zeit.EditContent"/>
   </class>
 
-  <class class=".xml.XMLBlock">
-    <require
-      interface="..interfaces.IXMLBlock"
-      permission="zope.View" />
-    <require
-      set_schema="..interfaces.IXMLBlock"
-      permission="zeit.EditContent"/>
-  </class>
-
   <class class=".quiz.QuizBlock">
     <require
       interface="..interfaces.IQuizBlock"
