@@ -39,6 +39,8 @@ class PodcastSourceTest(FunctionalTestCase):
             'News',
             'serial',
             'https://rss_image',
+            'Every Meowday',
+            'pawdcast@example.com',
         )
         assert values[0] == podcast
 
