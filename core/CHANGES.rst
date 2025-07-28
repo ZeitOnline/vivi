@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.145.0 (2025-07-28)
+--------------------
+
+- ES-275: Add release_frequency & contact_email attributes to Podcast
+
+
 7.144.0 (2025-07-28)
 --------------------
 
