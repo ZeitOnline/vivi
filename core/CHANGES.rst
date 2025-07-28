@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.144.0 (2025-07-28)
+--------------------
+
+- WCM-982: Integrate KPI import cronjobs with connector cache
+
+
 7.143.0 (2025-07-23)
 --------------------
 
