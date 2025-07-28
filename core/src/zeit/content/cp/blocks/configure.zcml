@@ -109,15 +109,6 @@
       permission="zeit.EditContent"/>
   </class>
 
-  <class class=".cardstack.CardstackBlock">
-    <require
-      interface="..interfaces.ICardstackBlock"
-      permission="zope.View" />
-    <require
-      set_schema="..interfaces.ICardstackBlock"
-      permission="zeit.EditContent"/>
-  </class>
-
   <class class=".mail.MailBlock">
     <require
       interface="..interfaces.IMailBlock"
