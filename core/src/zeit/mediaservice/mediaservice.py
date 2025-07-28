@@ -57,11 +57,15 @@ class MediaService:
                 audio = self.create_audio_object(mediasync_id, audio_info)
                 folder[article_uuid.shortened] = audio
 
-            with checked_out(article, raise_if_error=True) as co:
-                co.has_audio = True
-                references = zeit.content.audio.interfaces.IAudioReferences(co)
-                # AudioReferences deduplicates through zeit.cms.content.reference.ReferenceProperty
-                references.add(folder[article_uuid.shortened])
+            missing_audio_reference = not zeit.content.audio.interfaces.IAudioReferences(
+                article
+            ).get_by_type('premium')
+            if not article.has_audio or missing_audio_reference:
+                with checked_out(article, raise_if_error=True) as co:
+                    co.has_audio = True
+                    if missing_audio_reference:
+                        references = zeit.content.audio.interfaces.IAudioReferences(co)
+                        references.add(folder[article_uuid.shortened])
 
     def create_audio_object(self, mediasync_id, audio_info):
         audio = zeit.content.audio.audio.Audio()
