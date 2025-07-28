@@ -72,6 +72,20 @@ class TestVolumeArticleAudios(zeit.mediaservice.testing.SQLTestCase):
             zeit.content.audio.interfaces.IAudioReferences(article).items[0], all_content_to_publish
         )
 
+    def test_mediaservice_creates_premium_audio_for_published_article(self):
+        volume = self.repository['2025']['01']['ausgabe']
+        article = self.repository['2025']['01']['article01']
+        article.date_digital_published = datetime(2025, 1, 1)
+        info = IPublishInfo(article)
+        info.published = True
+        info.date_first_released = datetime(2025, 1, 1)
+        zeit.mediaservice.mediaservice.create_audio_objects(volume.uniqueId)
+        transaction.commit()
+
+        article = self.repository['2025']['01']['article01']
+        audio = zeit.content.audio.interfaces.IAudioReferences(article).items[0]
+        assert audio
+
     def test_mediaservice_does_not_add_duplicate_references(self):
         volume = self.repository['2025']['01']['ausgabe']
         zeit.mediaservice.mediaservice.create_audio_objects(volume.uniqueId)

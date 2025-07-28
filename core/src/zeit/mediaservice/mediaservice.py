@@ -1,10 +1,15 @@
+import opentelemetry.trace
 import zope.component
 
 from zeit.cms.checkout.helper import checked_out
+from zeit.connector.search import SearchVar
 import zeit.cms.celery
 import zeit.cms.content.add
 import zeit.cms.interfaces
 import zeit.content.audio.audio
+
+
+MEDIASYNC_ID = SearchVar('mediasync_id', zeit.cms.interfaces.IR_NAMESPACE)
 
 
 @zeit.cms.celery.task(queue='mediaservice')
@@ -16,10 +21,9 @@ def create_audio_objects(volume_uniqueid):
 
 class MediaService:
     def create_audio_objects(self, volume):
-        articles = volume.get_articles()
         folder = self._audio_folder(volume)
         audios = self._get_audios(volume)
-        self._create_audio_objects(folder, articles, audios)
+        self._create_audio_objects(folder, audios)
 
     def _get_audios(self, volume):
         connection = zope.component.getUtility(zeit.mediaservice.interfaces.IConnection)
@@ -30,13 +34,25 @@ class MediaService:
             'premium', 'audio', str(volume.year), volume.volume_number
         )
 
-    def _create_audio_objects(self, folder, articles, audios):
-        for article in articles:
-            audio_info = audios.get(article.ir_mediasync_id)
-            if not audio_info:
+    def _get_article(self, mediasync_id):
+        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+        result = list(connector.search([MEDIASYNC_ID], (MEDIASYNC_ID == str(mediasync_id))))
+        if not result:
+            return None
+        return zeit.cms.interfaces.ICMSContent(result[0][0])
+
+    def _create_audio_objects(self, folder, audios):
+        for mediasync_id, audio_info in audios.items():
+            article = self._get_article(mediasync_id)
+            if not article:
+                err = ValueError(
+                    f'No article with {mediasync_id} found for available premium audio'
+                )
+                current_span = opentelemetry.trace.get_current_span()
+                current_span.record_exception(err)
                 continue
 
-            audio = self.create_audio_object(article.ir_mediasync_id, audio_info)
+            audio = self.create_audio_object(mediasync_id, audio_info)
             if not audio:
                 continue
 
