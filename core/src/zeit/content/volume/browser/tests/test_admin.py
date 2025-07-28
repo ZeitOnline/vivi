@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from unittest import mock
 
+from pendulum import datetime
 import pytest
 import zope.component
 
@@ -43,7 +44,9 @@ class VolumeAdminBrowserTest(zeit.content.volume.testing.BrowserTestCase):
         IPublishInfo(article).urgent = True
         return article
 
-    def create_article_with_references(self, mediasync_id=1234, name='article_with_ref'):
+    def create_article_with_references(
+        self, mediasync_id=1234, name='article_with_ref', published=False
+    ):
         from zeit.content.article.edit.body import EditableBody
         from zeit.content.infobox.infobox import Infobox
         from zeit.content.portraitbox.portraitbox import Portraitbox
@@ -69,6 +72,13 @@ class VolumeAdminBrowserTest(zeit.content.volume.testing.BrowserTestCase):
         image_reference = body.create_item('image', 3)
         image_reference.references = image_reference.references.create(self.repository['image'])
         image_reference._validate = mock.Mock()
+
+        if published:
+            article.date_digital_published = datetime(2025, 1, 1)
+            info = IPublishInfo(article)
+            info.published = True
+            info.date_first_released = datetime(2025, 1, 1)
+
         self.repository[name] = article
         article = self.repository[name]
         return article
@@ -103,14 +113,12 @@ class VolumeAdminBrowserTest(zeit.content.volume.testing.BrowserTestCase):
 
     def test_referenced_premium_audio_objects_are_published_as_well(self):
         self.create_article_with_references(mediasync_id=1234, name='article_1')
-        self.create_article_with_references(mediasync_id=1235, name='article_2')
-        uniqueIds = ('http://xml.zeit.de/article_1', 'http://xml.zeit.de/article_2')
-        connector = zope.component.getUtility(zeit.cms.interfaces.IConnector)
-        connector.search_result = list(uniqueIds)
+        self.create_article_with_references(mediasync_id=1235, name='article_2', published=True)
 
         b = self.browser
         b.open('http://localhost/++skin++vivi/repository/2015/01/ausgabe/@@create-audio-objects')
         self.publish_content()
+        uniqueIds = ('http://xml.zeit.de/article_1', 'http://xml.zeit.de/article_2')
         for uniqueId in uniqueIds:
             article = zeit.cms.interfaces.ICMSContent(uniqueId)
             audio = self.repository['premium']['audio']['2015']['01'][
