@@ -99,7 +99,6 @@
   <include file="headerimage.zcml" />
   <include file="rawtext.zcml" />
   <include file="markup.zcml" />
-  <include file="cardstack.zcml" />
   <include file="jobticker.zcml" />
   <include file="mail.zcml" />
   <include file="newslettersignup.zcml" />

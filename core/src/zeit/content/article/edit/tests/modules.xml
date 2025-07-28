@@ -3,7 +3,6 @@
   <module id="author">Autorenbox</module>
   <module id="audio">Audio</module>
   <module id="box">Box</module>
-  <module id="cardstack">Kartenstapel</module>
   <module id="citation">Zitat</module>
   <module id="citation_comment">Zitat-Leserkommentar</module>
   <module id="division">Seitenumbruch</module>

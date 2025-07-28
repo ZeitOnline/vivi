@@ -1,5 +1,4 @@
 <modules>
-  <module id="cardstack" title="Kartenstapel"/>
   <module id="cpextra" title="CPExtra"/>
   <module id="headerimage" title="Headerbild"/>
   <module id="markup" title="HTML-Block"/>
