@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 from unittest import mock
+import time
 
 from pendulum import datetime
-import pytest
+import pendulum
 import zope.component
 
 from zeit.cms.workflow.interfaces import IPublishInfo
@@ -151,7 +152,17 @@ class PublishAllContent(zeit.content.volume.testing.SeleniumTestCase):
         volume.product = zeit.cms.content.sources.Product('ZEI')
         self.repository['ausgabe'] = volume
 
-    @pytest.mark.xfail(reason='no task to wait for is returned')
+    def create_article(self, name='article'):
+        article = Article()
+        zeit.cms.content.field.apply_default_values(article, IArticle)
+        article.year = 2015
+        article.volume = 1
+        article.product = zeit.cms.content.sources.Product('ZEI')
+        self.repository[name] = article
+        article = self.repository[name]
+        IPublishInfo(article).urgent = True
+        return article
+
     def test_publish_shows_spinner(self):
         s = self.selenium
         self.open('/repository/ausgabe/@@admin.html', self.login_as)
@@ -164,7 +175,29 @@ class PublishAllContent(zeit.content.volume.testing.SeleniumTestCase):
         s.click('css=li.workflow')
         s.assertText('css=.fieldname-logs .widget', '*Collective Publication*')
 
-    @pytest.mark.xfail(reason='no task to wait for is returned')
+    def test_publish_waits_for_all_subtasks(self):
+        s = self.selenium
+        self.create_article('article1')
+        self.create_article('article2')
+        connector = zope.component.getUtility(zeit.cms.interfaces.IConnector)
+        connector.search_result = ['http://xml.zeit.de/article1', 'http://xml.zeit.de/article2']
+
+        self.open('/repository/ausgabe/@@admin.html', self.login_as)
+        with mock.patch('zeit.workflow.publish.PublishTask.recurse') as recurse:
+
+            def delay(_method, start_obj, *_args):
+                if start_obj.uniqueId == 'http://xml.zeit.de/article2':
+                    time.sleep(1)
+                return start_obj
+
+            recurse.side_effect = delay
+            s.click('id=form.actions.publish-all')
+            s.waitForElementPresent('css=ol#worklist')
+            s.waitForElementPresent('css=li.busy[action=start_job]')
+            start = pendulum.now('UTC')
+            s.waitForElementNotPresent('css=li.busy[action=start_job]')
+            assert start.diff(pendulum.now('UTC')).in_seconds() >= 3
+
     def test_multi_publish_errors_are_logged_on_volume(self):
         s = self.selenium
         self.open('/repository/ausgabe/@@admin.html', self.login_as)

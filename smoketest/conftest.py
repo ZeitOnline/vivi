@@ -112,12 +112,12 @@ class StorageClient:
         return self._request('post', f'/internal/api/v1/retract{path}').json()['job-id']
 
     def job_status(self, job):
-        r = self.http.get(self.vivi_url + '/@@job-status', params={'job': job})
+        r = self.http.get(self.vivi_url + '/@@job-status', params={'jobs': job})
         r.raise_for_status()
         return r.json()
 
     def job_result(self, job):
-        r = self.http.get(self.vivi_url + '/@@job-result', params={'job': job})
+        r = self.http.get(self.vivi_url + '/@@job-result', params={'jobs': job})
         r.raise_for_status()
         return r.text
 

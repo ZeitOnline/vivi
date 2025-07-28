@@ -38,11 +38,11 @@ class PublishAll:
     # See zeit.workflow.json.publish.Publish.publish()
     def __call__(self):
         all_content_to_publish = self.context.articles_with_references_for_publishing()
-        IPublish(self.context).publish_multiple(
+        tasks = IPublish(self.context).publish_multiple(
             all_content_to_publish,
             priority=zeit.cms.workflow.interfaces.IPublishPriority(self.context),
         )
-        return json.dumps('')
+        return json.dumps(','.join((task.id for task in tasks)))
 
 
 class CreateAudioObjects:

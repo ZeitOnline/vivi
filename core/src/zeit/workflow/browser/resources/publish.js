@@ -90,7 +90,7 @@ zeit.workflow.publish.Publisher = gocept.Class.extend({
             return;
         }
         var d = MochiKit.Async.loadJSONDoc(
-            window.application_url + '/@@job-status', {'job': job});
+            window.application_url + '/@@job-status', {'jobs': job});
         // status is defined in celery.result.AsyncResult.state
         d.addCallback(function(status) {
             if (status == 'SUCCESS' || status == 'FAILURE') {
