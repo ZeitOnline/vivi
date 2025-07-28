@@ -9,14 +9,27 @@ class Status:
         self.request = request
 
     def getStatus(self, job):
-        return json.dumps(self._result(job).state)
+        jobs = job.split(',')
+        results = (self._result(job) for job in jobs)
+        return json.dumps(self._get_joined_state(results))
 
+    # This is only used in a smoketest
     def getResult(self, job):
-        result = self._result(job)
-        if result.state == 'SUCCESS':
-            return result.get()
+        jobs = job.split(',')
+        results = (self._result(job) for job in jobs)
+        if self._get_joined_state(results) == 'SUCCESS':
+            return ', '.join((result.get() for result in results))
         else:
-            return result.traceback
+            return ', '.join((result.traceback for result in results if result.state == 'FAILURE'))
+
+    def _get_joined_state(self, results):
+        all_success = True
+        for result in results:
+            if result.state == 'FAILURE':
+                return 'FAILURE'
+            if result.state != 'SUCCESS':
+                all_success = False
+        return 'SUCCESS' if all_success else 'PENDING'
 
     def _result(self, job):
         return celery.result.AsyncResult(job)

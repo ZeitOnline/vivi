@@ -400,6 +400,7 @@ class CeleryWorkerLayer(plone.testing.Layer):
         'publish_default',
         'publish_timebased',
         'webhook',
+        'mediaservice',
     )
     default_queue = 'default'
 
