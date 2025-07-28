@@ -290,7 +290,7 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
                 current_span.record_exception(err)
         return contents
 
-    def get_articles(self):
+    def get_articles_for_publishing(self):
         conditions = """
         type='article'
         AND (published=false OR audio_premium_enabled=true)
@@ -300,7 +300,7 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         return self.repository.search(query)
 
     def articles_with_references_for_publishing(self):
-        articles_to_publish = self.get_articles()
+        articles_to_publish = self.get_articles_for_publishing()
         publishable_content = set()
         for article in articles_to_publish:
             publishable_content.update(self._with_publishable_references(article))

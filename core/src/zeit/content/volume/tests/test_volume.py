@@ -346,14 +346,14 @@ class TestVolumeGetArticlesQuery(zeit.content.volume.testing.SQLTestCase):
 
     def test_volume_considers_unpublished_article(self):
         volume = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2025/01/ausgabe')
-        result = list(volume.get_articles())
+        result = list(volume.get_articles_for_publishing())
         self.assertIn(
             zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2025/01/article01'), result
         )
 
     def test_volume_considers_article_with_audio(self):
         volume = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2025/01/ausgabe')
-        result = list(volume.get_articles())
+        result = list(volume.get_articles_for_publishing())
         self.assertIn(
             zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2025/01/article02'), result
         )
