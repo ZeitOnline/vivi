@@ -111,7 +111,6 @@ class Container(ContentBase):
     def __getitem__(self, key):
         """See interface `IReadContainer`"""
         unique_id = self._get_id_for_name(key)
-        __traceback_info__ = (key, unique_id)
         content = self.repository._getContent(unique_id)
         return zope.container.contained.contained(content, self, content.__name__)
 
@@ -219,7 +218,6 @@ class Container(ContentBase):
 
     @property
     def _local_unique_map(self):
-        __traceback_info__ = (self.uniqueId,)
         if not self._local_unique_map_data:
             self._local_unique_map_data.update(self.connector.listCollection(self.uniqueId))
         return self._local_unique_map_data

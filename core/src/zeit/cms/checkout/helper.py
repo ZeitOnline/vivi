@@ -30,7 +30,6 @@ def checked_out(
     raise_if_error=False,
     will_publish_soon=False,
 ):
-    __traceback_info__ = (content.uniqueId,)
     manager = zeit.cms.checkout.interfaces.ICheckoutManager(content)
     try:
         checked_out = manager.checkout(temporary=temporary, event=events)

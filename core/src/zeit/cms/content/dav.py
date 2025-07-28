@@ -49,7 +49,6 @@ class DAVProperty:
         PROPERTY_REGISTRY[(name, namespace)] = self
 
     def __get__(self, instance, class_, properties=None):
-        __traceback_info = (instance,)  # noqa
         if instance is None:
             return self
         if properties is None:
@@ -61,7 +60,6 @@ class DAVProperty:
             value = self.missing_value
         else:
             field = self.field.bind(instance)
-            __traceback_info__ = (instance, field, field.__name__, dav_value)
             try:
                 converter = zope.component.getMultiAdapter(
                     (field, properties, key),

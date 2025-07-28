@@ -170,8 +170,6 @@ class PublishRetractTask:
     def run(self, ids, collect_errors_on=None):
         """Run task in worker."""
         ids_str = ', '.join(ids)
-        info = (type(self).__name__, ids_str, self.jobid)
-        __traceback_info__ = info
         logger.info('Running job %s for %s', self.jobid, ids_str)
 
         objs = []

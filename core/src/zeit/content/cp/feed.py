@@ -141,7 +141,6 @@ class ContentList:
 
     @property
     def entries(self):
-        __traceback_info__ = (self.uniqueId,)
         result = self.xml.find('container')
         if result is None:
             log.error('Invalid channel XML format', exc_info=True)

@@ -65,7 +65,6 @@ class HTMLConverter:
             return
 
         value = '<div>' + self._replace_entities(value) + '</div>'
-        __traceback_info__ = (value,)
         html = lxml.etree.fromstring(value)
 
         self._apply_steps(html, 'xpath_html', 'to_xml')

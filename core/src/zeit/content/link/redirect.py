@@ -37,7 +37,6 @@ def _copy_values(source, target):
         src = iface(source)
         tgt = iface(target)
         for name, field in zope.schema.getFields(iface).items():
-            __traceback_info__ = (field,)
             if name in SKIP_FIELDS:
                 continue
             if field.readonly:

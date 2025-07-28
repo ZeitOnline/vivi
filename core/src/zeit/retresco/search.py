@@ -71,7 +71,6 @@ class Elasticsearch:
 
         query['track_total_hits'] = True
 
-        __traceback_info__ = (self.index, query)
         response = self.client.search(index=self.index, from_=start, size=rows, **query)
         result = zeit.cms.interfaces.Result([x['_source'] for x in response['hits']['hits']])
         result.hits = response['hits']['total']['value']
@@ -82,8 +81,6 @@ class Elasticsearch:
         Search - Aggregations documentation for further information."""
         if FEATURE_TOGGLES.find('disable_elasticsearch'):
             return {}
-
-        __traceback_info__ = (self.index, query)
         response = self.client.search(index=self.index, **query)
         return response['aggregations']
 

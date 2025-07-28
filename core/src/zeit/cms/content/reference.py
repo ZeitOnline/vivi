@@ -514,5 +514,4 @@ class OverridableProperty:
             self.field.missing_value
 
     def __set__(self, inst, value):
-        __traceback_info__ = (self.field.__name__, value)
         setattr(inst, '_%s_local' % self.field.__name__, value)
