@@ -1,15 +1,17 @@
 import argparse
-import itertools
 
 from sqlalchemy import and_ as sql_and
 from sqlalchemy import select
 from sqlalchemy import text as sql
+import opentelemetry.trace
+import transaction.interfaces
 import zope.component
 
 from zeit.connector.models import Content
 from zeit.kpi.interfaces import IKPIDatasource, KPIUpdateEvent
 import zeit.cms.cli
 import zeit.cms.repository.interfaces
+import zeit.connector.interfaces
 
 
 INTERVALS = {
@@ -40,7 +42,25 @@ def main():
 
 def update(query, kpi_batch_size, sql_batch_size):
     repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
+    connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+    count = connector.search_sql_count(query)
+
+    batch = []
+    query = query.order_by(Content.id).limit(sql_batch_size)
+    for i in range(int(count / sql_batch_size) + 1):
+        batch.extend(repository.search(query.offset(i * sql_batch_size)))
+        if len(batch) >= kpi_batch_size:
+            _update_batch(batch)
+            batch.clear()
+    if batch:
+        _update_batch(batch)
+
+
+def _update_batch(batch):
     source = zope.component.getUtility(IKPIDatasource)
-    query = query.execution_options(yield_per=sql_batch_size)
-    for batch in itertools.batched(repository.search(query, cache=False), kpi_batch_size):
-        zope.event.notify(KPIUpdateEvent(source.query(batch)))
+    event = KPIUpdateEvent(source.query(batch))
+    try:
+        for _ in zeit.cms.cli.commit_with_retry():
+            zope.event.notify(event)
+    except transaction.interfaces.TransientError as e:
+        opentelemetry.trace.get_current_span().record_exception(e)

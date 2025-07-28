@@ -72,6 +72,7 @@ class Connector(zeit.connector.filesystem.Connector):
         self._deleted = set()
         self._properties = {}
         self.search_result = []
+        self.search_result_count = None
         self.search_args = []
         self.search_dav_args = []
 
@@ -314,7 +315,10 @@ class Connector(zeit.connector.filesystem.Connector):
             yield self[uniqueid]
 
     def search_sql_count(self, query):
-        return len(list(self.search_sql(query)))
+        if self.search_result_count is not None:
+            return self.search_result_count
+        else:
+            return len(list(self.search_sql(query)))
 
     def execute_sql(self, query, timeout=None):
         self.search_args.append(self._compile_sql(query))

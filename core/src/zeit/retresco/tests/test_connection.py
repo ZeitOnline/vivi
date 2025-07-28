@@ -423,7 +423,7 @@ class TopiclistUpdateTest(zeit.retresco.testing.FunctionalTestCase):
         kpi.result = [
             (self.repository['testcontent'], mock.Mock(visits=1, comments=2, subscriptions=3))
         ]
-        zeit.kpi.update.update(select(Content), 1, 1)
+        zeit.kpi.update.update(select(Content), 1, 10)
 
         (request,) = requests
         payload = json.loads(request['body'])
