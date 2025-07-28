@@ -46,7 +46,7 @@ class MediaService:
             article = self._get_article(mediasync_id)
             if not article:
                 err = ValueError(
-                    f'No article with {mediasync_id} found for available premium audio'
+                    f'No article with mediasync id {mediasync_id} found for available premium audio'
                 )
                 current_span = opentelemetry.trace.get_current_span()
                 current_span.record_exception(err)
