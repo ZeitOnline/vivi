@@ -8,6 +8,7 @@ import zeit.cms.content.field
 import zeit.cms.content.sources
 import zeit.cms.interfaces
 import zeit.cms.repository.folder
+import zeit.content.audio.audio
 import zeit.content.volume.volume
 import zeit.mediaservice.mediaservice
 import zeit.mediaservice.testing
@@ -97,3 +98,15 @@ class TestVolumeArticleAudios(zeit.mediaservice.testing.SQLTestCase):
             self.repository['2025']['01']['article01']
         )
         assert len(audio_references.get_by_type('premium')) == 1
+
+    def test_mediaservice_does_not_recreate_audio(self):
+        volume = self.repository['2025']['01']['ausgabe']
+        article = self.repository['2025']['01']['article01']
+        article_uuid = zeit.cms.content.interfaces.IUUID(article).shortened
+        audio_folder = zeit.cms.content.add.find_or_create_folder('premium', 'audio', '2025', '01')
+
+        audio = zeit.content.audio.audio.Audio()
+        audio.audio_type = 'custom'  # This is just used as a marker
+        audio_folder[article_uuid] = audio
+        zeit.mediaservice.mediaservice.create_audio_objects(volume.uniqueId)
+        assert audio_folder[article_uuid].audio_type == 'custom'

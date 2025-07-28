@@ -52,12 +52,11 @@ class MediaService:
                 current_span.record_exception(err)
                 continue
 
-            audio = self.create_audio_object(mediasync_id, audio_info)
-            if not audio:
-                continue
-
             article_uuid = zeit.cms.content.interfaces.IUUID(article)
-            folder[article_uuid.shortened] = audio
+            if article_uuid.shortened not in folder:
+                audio = self.create_audio_object(mediasync_id, audio_info)
+                folder[article_uuid.shortened] = audio
+
             with checked_out(article, raise_if_error=True) as co:
                 co.has_audio = True
                 references = zeit.content.audio.interfaces.IAudioReferences(co)
