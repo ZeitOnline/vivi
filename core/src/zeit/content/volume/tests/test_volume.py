@@ -318,6 +318,47 @@ class TestVolumeAccessQueries(zeit.content.volume.testing.SQLTestCase):
         self.assertEqual(volume, result)
 
 
+class TestVolumeGetArticlesQuery(zeit.content.volume.testing.SQLTestCase):
+    def setUp(self):
+        super().setUp()
+        self.create_volume(2025, 1)
+        self.create_volume_content('2025', '01', 'article01')
+        self.create_volume_content('2025', '01', 'article02', published=True, has_audio=True)
+
+    def create_volume_content(
+        self, volume_year, volume_number, name, product='ZEI', published=False, has_audio=False
+    ):
+        article = Article()
+        zeit.cms.content.field.apply_default_values(article, IArticle)
+        article.product = zeit.cms.content.sources.Product(product)
+        article.volume = int(volume_number)
+        article.year = int(volume_year)
+        article.title = 'title'
+        article.ressort = 'Kultur'
+        article.access = 'free'
+        article.has_audio = has_audio
+        info = IPublishInfo(article)
+        info.published = published
+        self.repository[volume_year][volume_number][name] = article
+        article = self.repository[volume_year][volume_number][name]
+        info = IPublishInfo(article)
+        info.urgent = True
+
+    def test_volume_considers_unpublished_article(self):
+        volume = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2025/01/ausgabe')
+        result = list(volume.get_articles())
+        self.assertIn(
+            zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2025/01/article01'), result
+        )
+
+    def test_volume_considers_article_with_audio(self):
+        volume = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2025/01/ausgabe')
+        result = list(volume.get_articles())
+        self.assertIn(
+            zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2025/01/article02'), result
+        )
+
+
 class TestWebtrekkQuery(TestVolumeAccessQueries):
     def setUp(self):
         super().setUp()

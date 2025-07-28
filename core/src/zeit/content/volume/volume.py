@@ -293,7 +293,7 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
     def get_articles(self):
         conditions = """
         type='article'
-        AND published=false
+        AND (published=false OR audio_premium_enabled=true)
         AND unsorted @@ '$.workflow.urgent == "yes"'
         """
         query = self._query_content_for_current_volume().where(sql(conditions))

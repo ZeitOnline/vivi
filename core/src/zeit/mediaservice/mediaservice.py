@@ -59,6 +59,7 @@ class MediaService:
             article_uuid = zeit.cms.content.interfaces.IUUID(article)
             folder[article_uuid.shortened] = audio
             with checked_out(article, raise_if_error=True) as co:
+                co.has_audio = True
                 references = zeit.content.audio.interfaces.IAudioReferences(co)
                 # AudioReferences deduplicates through zeit.cms.content.reference.ReferenceProperty
                 references.add(folder[article_uuid.shortened])
