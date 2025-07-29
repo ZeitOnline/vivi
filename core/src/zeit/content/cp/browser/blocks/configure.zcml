@@ -101,5 +101,5 @@
   <include file="jobticker.zcml" />
   <include file="mail.zcml" />
   <include file="newslettersignup.zcml" />
-
+  <include file="audio.zcml" />
 </configure>
