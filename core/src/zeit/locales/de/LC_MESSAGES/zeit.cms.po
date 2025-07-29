@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Tue Jul 29 08:36:55 2025\n"
+"POT-Creation-Date: Tue Jul 29 15:13:47 2025\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -587,7 +587,7 @@ msgstr "Jahr"
 
 #: zeit/cms/content/interfaces.py:80
 #: zeit/content/article/edit/interfaces.py:253
-#: zeit/content/volume/browser/form.py:38 zeit/content/volume/volume.py:326
+#: zeit/content/volume/browser/form.py:38 zeit/content/volume/volume.py:340
 msgid "Volume"
 msgstr "Ausgabe"
 
@@ -1741,7 +1741,7 @@ msgstr "Veröffentlichen"
 
 #: zeit/content/article/edit/browser/save-and-publish.pt:8
 #: zeit/content/cp/browser/publish.pt:9
-#: zeit/content/volume/browser/publish-all.pt:6
+#: zeit/content/volume/browser/publish-all.pt:7
 #: zeit/seo/browser/enable-crawler.pt:9 zeit/workflow/browser/publish.pt:9
 #: zeit/workflow/browser/retract.pt:8
 msgid "Reloading"
@@ -4049,11 +4049,11 @@ msgstr "Werbung"
 msgid "Video type"
 msgstr "Typ"
 
-#: zeit/content/volume/browser/admin.py:29
+#: zeit/content/volume/browser/admin.py:30
 msgid "Publish content of this volume"
 msgstr "Gesamte Ausgabe veröffentlichen"
 
-#: zeit/content/volume/browser/configure.zcml:108
+#: zeit/content/volume/browser/configure.zcml:116
 msgid "Table of Content"
 msgstr "Inhaltsverzeichnis"
 
@@ -4074,6 +4074,10 @@ msgid "View volume"
 msgstr "Ausgabe anzeigen"
 
 #: zeit/content/volume/browser/publish-all.pt:5
+msgid "Create audio objects"
+msgstr "Importiere Medienservice-Audios"
+
+#: zeit/content/volume/browser/publish-all.pt:6
 msgid "Publishing volume content"
 msgstr "Sammelveröffentlichung"
 
@@ -4344,6 +4348,10 @@ msgstr "Suche"
 #: zeit/magazin/interfaces.py:49
 msgid "long text (ZMO)"
 msgstr "langer Text - ZEITmagazin"
+
+#: zeit/mediaservice/mediaservice.py:26
+msgid "Found ${existing} and created ${created} mediaservice audio objects"
+msgstr "Medien-Service Audios angelegt: ${created}, vorhanden: ${existing}"
 
 #: zeit/push/browser/banner-retract.pt:9
 msgid "Retract ${target}"

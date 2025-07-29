@@ -1,0 +1,13 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:grok="http://namespaces.zope.org/grok"
+  xmlns:zcml="http://namespaces.zope.org/zcml">
+
+  <grok:grok package="." exclude="testing" />
+
+  <utility
+   provides="zeit.mediaservice.interfaces.IConnection"
+   factory=".mock_connection.MockConnection"
+   />
+
+</configure>

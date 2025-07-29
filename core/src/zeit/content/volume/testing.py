@@ -66,6 +66,7 @@ SQL_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
 )
 SQL_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(SQL_ZCML_LAYER,))
 SQL_CONNECTOR_LAYER = zeit.connector.testing.SQLDatabaseLayer(bases=(SQL_ZOPE_LAYER,))
+SQL_WSGI_LAYER = zeit.cms.testing.WSGILayer(name='SQLWSGILayer', bases=(SQL_CONNECTOR_LAYER,))
 
 
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):

@@ -8,6 +8,7 @@ import zope.traversing.browser
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import IPublish
 import zeit.cms.admin.browser.admin
+import zeit.mediaservice.mediaservice
 
 
 class PublishAction(zope.formlib.form.Action):
@@ -42,3 +43,9 @@ class PublishAll:
             priority=zeit.cms.workflow.interfaces.IPublishPriority(self.context),
         )
         return json.dumps('')
+
+
+class CreateAudioObjects:
+    def __call__(self):
+        task = zeit.mediaservice.mediaservice.create_audio_objects.delay(self.context.uniqueId)
+        return json.dumps(task.id)

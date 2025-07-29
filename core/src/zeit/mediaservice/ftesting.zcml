@@ -1,0 +1,18 @@
+<configure
+   xmlns="http://namespaces.zope.org/zope"
+   xmlns:zcml="http://namespaces.zope.org/zcml"
+   i18n_domain="zope">
+
+  <include package="zeit.cms" file="ftesting.zcml" />
+  <include package="zeit.content.volume" />
+  <include package="zeit.content.article" />
+  <include package="zeit.content.audio" />
+
+  <include package="zeit.mediaservice" />
+
+  <utility
+   provides="zeit.mediaservice.interfaces.IConnection"
+   factory="zeit.mediaservice.mock_connection.MockConnection"
+   />
+
+</configure>

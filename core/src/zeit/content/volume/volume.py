@@ -24,6 +24,7 @@ import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.type
 import zeit.cms.workflow.dependency
+import zeit.content.audio.interfaces
 import zeit.content.cp.interfaces
 import zeit.content.infobox.interfaces
 import zeit.content.portraitbox.interfaces
@@ -60,6 +61,7 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
     assets_to_publish = [
         zeit.content.portraitbox.interfaces.IPortraitbox,
         zeit.content.infobox.interfaces.IInfobox,
+        zeit.content.audio.interfaces.IAudio,
     ]
 
     @property
@@ -288,16 +290,19 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
                 current_span.record_exception(err)
         return contents
 
-    def articles_with_references_for_publishing(self):
+    def get_articles_for_publishing(self):
         conditions = """
         type='article'
-        AND published=false
-        AND unsorted @@ '$.workflow.urgent == "yes"'
+        AND ((published=false AND unsorted @@ '$.workflow.urgent == "yes"')
+        OR audio_premium_enabled=true)
         """
         query = self._query_content_for_current_volume().where(sql(conditions))
+        return self.repository.search(query)
 
+    def articles_with_references_for_publishing(self):
+        articles_to_publish = self.get_articles_for_publishing()
         publishable_content = set()
-        for article in self.repository.search(query):
+        for article in articles_to_publish:
             publishable_content.update(self._with_publishable_references(article))
 
         publishable_content.add(self)
@@ -309,6 +314,11 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
             for content in zeit.edit.interfaces.IElementReferences(article, [])
             if self._needs_publishing(content)
         ]
+        premium_audio = zeit.content.audio.interfaces.IAudioReferences(article).get_by_type(
+            'premium'
+        )
+        if premium_audio:
+            with_dependencies.append(premium_audio[0])
         with_dependencies.append(article)
         return with_dependencies
 
@@ -318,6 +328,10 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
             return False
         # content has to provide one of interfaces defined above
         return any(x.providedBy(content) for x in self.assets_to_publish)
+
+    @property
+    def volume_number(self):
+        return str(self.volume).rjust(2, '0')
 
 
 class VolumeType(zeit.cms.type.XMLContentTypeDeclaration):
