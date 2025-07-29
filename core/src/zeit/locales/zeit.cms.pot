@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Mon Jul 28 13:12:27 2025\n"
+"POT-Creation-Date: Tue Jul 29 08:36:55 2025\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -2698,6 +2698,10 @@ msgstr ""
 msgid "Area"
 msgstr ""
 
+#: zeit/content/cp/blocks/audio.py:17
+msgid "Podcastblock"
+msgstr ""
+
 #: zeit/content/cp/blocks/cpextra.py:31
 msgid "CP extra"
 msgstr ""
@@ -2784,6 +2788,14 @@ msgstr ""
 
 #: zeit/content/cp/browser/blocks/layout.placeholder.edit.pt:1
 msgid "Drop articles here to create a teaser list."
+msgstr ""
+
+#: zeit/content/cp/browser/blocks/layout.podcastheader.content.pt:2
+msgid "Podcast Header Block"
+msgstr ""
+
+#: zeit/content/cp/browser/blocks/layout.podcastheader.content.pt:7
+msgid "Changes centerpage layout for podcast display"
 msgstr ""
 
 #: zeit/content/cp/browser/blocks/layout.teaser-automatic.edit-properties.pt:1

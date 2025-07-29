@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Mon Jul 28 13:12:27 2025\n"
+"POT-Creation-Date: Tue Jul 29 08:36:55 2025\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -2652,6 +2652,10 @@ msgstr "Rolle"
 msgid "Area"
 msgstr "Fläche"
 
+#: zeit/content/cp/blocks/audio.py:17
+msgid "Podcastblock"
+msgstr "Podcastblock"
+
 #: zeit/content/cp/blocks/cpextra.py:31
 msgid "CP extra"
 msgstr "CPExtra"
@@ -2731,6 +2735,14 @@ msgstr "Klicken Sie hier, um den Block-Typen zu wählen."
 #: zeit/content/cp/browser/blocks/layout.placeholder.edit.pt:1
 msgid "Drop articles here to create a teaser list."
 msgstr "Ziehen Sie Inhalte hierher um einen neuen Teaserblock zu erzeugen."
+
+#: zeit/content/cp/browser/blocks/layout.podcastheader.content.pt:2
+msgid "Podcast Header Block"
+msgstr "Podcast-Header-Block"
+
+#: zeit/content/cp/browser/blocks/layout.podcastheader.content.pt:7
+msgid "Changes centerpage layout for podcast display"
+msgstr "Ändert das Layout der Centerpage für die Anzeige von Podcasts"
 
 #: zeit/content/cp/browser/blocks/layout.teaser-automatic.edit-properties.pt:1
 #: zeit/content/cp/browser/layout.block.edit-properties.pt:1
@@ -5048,9 +5060,6 @@ msgstr "mit Info"
 
 #~ msgid "Enable Twitter Print"
 #~ msgstr "Direkt auf Twitter @DIEZEIT veröffentlichen"
-
-#~ msgid "Podcast block"
-#~ msgstr "Podcast-Block"
 
 #~ msgid "Podcast id"
 #~ msgstr "Episoden-ID"

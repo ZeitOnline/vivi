@@ -129,4 +129,12 @@
       />
   </class>
 
+  <class class=".audio.PodcastHeaderBlock">
+    <require
+      interface="..interfaces.IPodcastHeaderBlock"
+      permission="zope.View" />
+    <require
+      set_schema="..interfaces.IPodcastHeaderBlock"
+      permission="zeit.EditContent"/>
+  </class>
 </configure>

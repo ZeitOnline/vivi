@@ -683,3 +683,13 @@ class ICpSEO(zeit.seo.interfaces.ISEO):
     enable_rss_tracking_parameter = zope.schema.Bool(
         title=_('Enable RSS Tracking-Parameter'), required=False
     )
+
+
+class IPodcastHeaderBlock(IBlock):
+    """A podcast header block, which is basically a marker to
+    load a different layout for the centerpage.
+
+    The information which will be displayed are read from
+    the podcasts.xml source"""
+
+    pass
