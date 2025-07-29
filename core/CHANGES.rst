@@ -3,6 +3,18 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.146.0 (2025-07-29)
+--------------------
+
+- WCM-987: add new module podcastheader
+
+
+MAINT:
+- Be dilligent about closing filehandles in connector setitem
+
+- Remove obsolete cardstack and xml modules
+
+
 7.145.0 (2025-07-28)
 --------------------
 
