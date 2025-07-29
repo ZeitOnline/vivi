@@ -19,6 +19,7 @@ def find_ingredients():
         type = 'article'
         AND article_genre in :genres
         AND published = true
+        AND recipe_ingredients IS NOT NULL
     """
     query = (
         select(func.jsonb_array_elements(Content.recipe_ingredients))
