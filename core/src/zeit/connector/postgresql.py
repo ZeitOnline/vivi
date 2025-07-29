@@ -286,9 +286,9 @@ class Connector:
         content.is_collection = resource.is_collection
 
         if not content.is_collection:
+            data = resource.data  # May be a dynamic property.
             if content.binary_body:
                 blob = self.bucket.blob(content.id)
-                data = resource.data  # may not be a static property
                 size = data.seek(0, os.SEEK_END)
                 data.seek(0)
                 with zeit.cms.tracing.use_span(
@@ -300,7 +300,8 @@ class Connector:
             else:
                 # vivi uses utf-8 encoding throughout, see
                 # zeit.cms.content.adapter for XML and zeit.content.text.text
-                content.body = resource.data.read().decode('utf-8')
+                content.body = data.read().decode('utf-8')
+            data.close()
 
         self.property_cache[uniqueid] = content.to_webdav()
         if content.is_collection:

@@ -128,6 +128,11 @@ class ContractReadWrite:
         with self.assertRaises(KeyError):
             self.connector['http://xml.zeit.de/'] = res
 
+    def test_setitem_closes_body_file(self):
+        res = self.get_resource('foo', body=b'foo')
+        self.connector.add(res)
+        self.assertTrue(res.data.closed)
+
     def test_delitem_removes_resource(self):
         res = self.add_resource('foo')
         self.assertIn(res.id, self.connector)
