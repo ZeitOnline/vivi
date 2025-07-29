@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.147.0 (2025-07-29)
+--------------------
+
+FIX:
+- ingredients collect should work with empty recipes without ingredients
+
+
 7.146.0 (2025-07-29)
 --------------------
 
