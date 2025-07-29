@@ -188,7 +188,6 @@ class Base(
 
     def updateOrder(self, order, send_event=True):
         old_order = self.keys()
-        __traceback_info__ = (order, old_order)
         if not zope.security.proxy.isinstance(order, (tuple, list)):
             raise TypeError('order must be tuple or list, got %s.' % type(order))
         if set(order) != set(old_order):
@@ -233,7 +232,6 @@ class Base(
         zope.container.contained.notifyContainerModified(self)
 
     def _delete(self, key):
-        __traceback_info__ = (key,)
         item = self[key]
         item.xml.getparent().remove(item.xml)
         return item

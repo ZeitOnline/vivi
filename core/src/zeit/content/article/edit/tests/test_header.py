@@ -46,9 +46,9 @@ class HeaderAreaTest(zeit.content.article.testing.FunctionalTestCase):
         header.create_item('quiz')
         self.assertEqual(['quiz'], [x.type for x in header.values()])
         self.assertEqual('quiz', header.module.type)
-        header.create_item('cardstack')
-        self.assertEqual(['cardstack'], [x.type for x in header.values()])
-        self.assertEqual('cardstack', header.module.type)
+        header.create_item('video')
+        self.assertEqual(['video'], [x.type for x in header.values()])
+        self.assertEqual('video', header.module.type)
 
     def test_module_is_accessible_after_checkin(self):
         # On checkin, the cp:__name__ attributes are removed, so the header

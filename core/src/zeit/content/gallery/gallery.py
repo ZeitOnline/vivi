@@ -372,7 +372,6 @@ class EntryMetadata:
         self._image_metadata = zeit.content.image.interfaces.IImageMetadata(context.image, None)
 
     def __getattr__(self, name):
-        __traceback_info__ = (self.context.__name__, name)
         # Delegate attributes to ImageMetadata of entry image
         value = getattr(self.context, name, self)
         if value is self:  # Using self as a marker

@@ -39,7 +39,7 @@ applicable(is_block)
 error_unless(content == [])
 """
         )
-        area = self.cp.body['informatives'].create_item('xml')
+        area = self.cp.body['informatives'].create_item('headerimage')
         s = r.apply(area, IRuleGlobs(area))
         self.assertNotEqual(zeit.edit.rule.ERROR, s.status)
 

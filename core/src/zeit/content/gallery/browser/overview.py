@@ -82,7 +82,6 @@ class UploadImage(zeit.cms.browser.view.JSON):
                 result['error'] = 'NotAnImage'
             else:
                 # Okay, something else.
-                __traceback_info__ = (view.errors,)
                 self.request.response.setStatus(500)
         else:
             self.request.response.setStatus(201)  # Created

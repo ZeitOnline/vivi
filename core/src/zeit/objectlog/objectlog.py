@@ -53,13 +53,16 @@ class ObjectLog(persistent.Persistent):
 
         # Create savepoint to assign oid to log-entries. Required for
         # displaying in the same transaction.
-        __traceback_info__ = (
-            'If you see this in a test you tried to run something '
-            'asynchronously but inline of the process. Do not do this! '
-            'Either run the test inline synchronously (default) or as actual '
-            'end to end test using z3c.celery.layer.EndToEndLayer.'
-        )
-        transaction.savepoint(optimistic=True)
+        try:
+            transaction.savepoint(optimistic=True)
+        except Exception as e:
+            e.add_note(
+                'If you see this in a test you tried to run something '
+                'asynchronously but inline of the process. Do not do this! '
+                'Either run the test inline synchronously (default) or as actual '
+                'end to end test using z3c.celery.layer.EndToEndLayer.'
+            )
+            raise e
 
     def move(self, source_ref, target):
         source_key = zope.app.keyreference.interfaces.IKeyReference(source_ref)

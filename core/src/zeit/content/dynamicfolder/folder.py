@@ -61,7 +61,6 @@ class RepositoryDynamicFolder(DynamicFolderBase, zeit.cms.repository.folder.Fold
 
         """
         unique_id = self._get_id_for_name(key)
-        __traceback_info__ = (key, unique_id)
         try:
             content = self.repository._getContent(unique_id)
         except KeyError as error:

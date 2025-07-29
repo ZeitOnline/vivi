@@ -608,14 +608,6 @@ def validate_xml_block(xml):
     return True
 
 
-class IXMLBlock(IBlock):
-    """A block containing raw XML."""
-
-    xml = zeit.cms.content.field.XMLTree(
-        title=_('XML Source'), constraint=validate_xml_block, tidy_input=True
-    )
-
-
 class ICPExtraBlock(IBlock):
     """Block which contains a cp_extra."""
 
@@ -665,36 +657,6 @@ class IMarkupBlock(IBlock):
     )
 
 
-class CardstackColorSource(zeit.cms.content.sources.SimpleDictSource):
-    values = {
-        color: color
-        for color in [
-            '#D8D8D8',
-            '#5E534F',
-            '#E4DED8',
-            '#69696C',
-            '#FF7783',
-            '#7C0E14',
-            '#6FA6B9',
-            '#085064',
-            '#57C494',
-            '#1E6847',
-        ]
-    }
-
-
-class ICardstackBlock(IBlock):
-    card_id = zope.schema.TextLine(title=_('Cardstack id'))
-
-    is_advertorial = zope.schema.Bool(title=_('Advertorial?'), default=False)
-
-    cardstack_background_color = zope.schema.Choice(
-        title=_('Background color'),
-        description=_('Choose a background color'),
-        source=CardstackColorSource(),
-    )
-
-
 JOBTICKER_SOURCE = zeit.content.modules.jobticker.FeedSource(ICenterPage)
 
 
@@ -721,3 +683,13 @@ class ICpSEO(zeit.seo.interfaces.ISEO):
     enable_rss_tracking_parameter = zope.schema.Bool(
         title=_('Enable RSS Tracking-Parameter'), required=False
     )
+
+
+class IPodcastHeaderBlock(IBlock):
+    """A podcast header block, which is basically a marker to
+    load a different layout for the centerpage.
+
+    The information which will be displayed are read from
+    the podcasts.xml source"""
+
+    pass

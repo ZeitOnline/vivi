@@ -78,7 +78,6 @@ class ImageReference(zeit.cms.content.reference.Reference):
             return object.__getattribute__(self, key)
 
     def __setattr__(self, key, value):
-        __traceback_info__ = (key, value)
         if key in zope.schema.getFieldNames(
             zeit.content.image.interfaces.IImageMetadata
         ) and hasattr(self, '_%s_local' % key):

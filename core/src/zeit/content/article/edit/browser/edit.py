@@ -39,7 +39,6 @@ class AutoSaveText(zeit.edit.browser.view.Action):
     paragraphs = zeit.edit.browser.view.Form('paragraphs')
 
     def update(self):
-        __traceback_info__ = (self.paragraphs, self.text)
         if self.paragraphs:
             original_keys = self.context.keys()
             insert_at = original_keys.index(self.paragraphs[0])
@@ -401,17 +400,6 @@ class EditTickarooLiveblog(zeit.edit.browser.form.InlineForm):
         # and the field loses its values.
         self.form_reset = True
         return super().render()
-
-
-class EditCardstack(zeit.edit.browser.form.InlineForm):
-    legend = None
-    form_fields = zope.formlib.form.FormFields(
-        zeit.content.article.edit.interfaces.ICardstack
-    ).omit(*list(zeit.edit.interfaces.IBlock))
-
-    @property
-    def prefix(self):
-        return 'cardstack.{0}'.format(self.context.__name__)
 
 
 class EditQuiz(zeit.edit.browser.form.InlineForm):

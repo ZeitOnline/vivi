@@ -637,8 +637,8 @@ class Connector:
 
     search = _search_dav  # BBB
 
-    def search_sql(self, query, timeout=None, cache=True):
-        if cache and self.support_locking:
+    def search_sql(self, query, timeout=None):
+        if self.support_locking:
             query = query.options(joinedload(Content.lock))
 
         rows = self.execute_sql(query, timeout)
@@ -648,9 +648,8 @@ class Connector:
             properties = self.property_cache.get(uniqueid)
             if properties is None:
                 properties = content.to_webdav()
-                if cache:
-                    self.property_cache[uniqueid] = properties
-                    self._update_body_cache(content.uniqueid, content)
+                self.property_cache[uniqueid] = properties
+                self._update_body_cache(content.uniqueid, content)
             yield self.resource(uniqueid, properties)
 
     def search_sql_count(self, query):

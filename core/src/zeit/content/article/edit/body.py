@@ -71,7 +71,6 @@ class EditableBody(zeit.content.article.edit.container.TypeOnTagContainer, grok.
         return item.__name__
 
     def _delete(self, key):
-        __traceback_info__ = (key,)
         item = self[key]
         assert item is not None
         if zeit.content.article.edit.interfaces.IDivision.providedBy(item):

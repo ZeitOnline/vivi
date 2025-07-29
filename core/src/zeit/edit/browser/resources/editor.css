@@ -405,7 +405,9 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
   vertical-align: middle;
 }
 
-.module-inner > img{
+.module-inner > img {
+  width: 40px;
+  height: 40px;
   line-height: 50px;
   margin: 5px auto;
   display: block;

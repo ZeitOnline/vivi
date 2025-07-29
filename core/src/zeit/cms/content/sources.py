@@ -63,7 +63,6 @@ class CachedXMLBase(OverridableURLConfiguration):
 
     @CONFIG_CACHE.cache_on_arguments()
     def _get_tree_from_url(self, url):
-        __traceback_info__ = (url,)
         logger.debug('Getting %s' % url)
         return lxml.objectify.parse(load(url)).getroot()
 
@@ -72,7 +71,6 @@ class ShortCachedXMLBase(CachedXMLBase):
     # Unfortunately needs copy&paste to change the cache region.
     @FEATURE_CACHE.cache_on_arguments()
     def _get_tree_from_url(self, url):
-        __traceback_info__ = (url,)
         logger.debug('Getting %s' % url)
         return lxml.objectify.parse(load(url)).getroot()
 
@@ -112,7 +110,6 @@ class XMLSource(SimpleXMLSourceBase, zc.sourcefactory.contextual.BasicContextual
         return False
 
     def getTitle(self, context, value):
-        __traceback_info__ = (value,)
         tree = self._get_tree()
         nodes = tree.xpath(
             '%s[@%s= %s]' % (self.title_xpath, self.attribute, xml.sax.saxutils.quoteattr(value))
@@ -307,7 +304,6 @@ class ParentChildSource(XMLSource):
     parent_value_key = NotImplemented
 
     def getValues(self, context):
-        __traceback_info__ = (context,)
         parent_nodes = self._get_parent_nodes(context)
         child_nodes = reduce(operator.add, [node.findall(self.child_tag) for node in parent_nodes])
         result = {

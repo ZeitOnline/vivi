@@ -3,6 +3,48 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.146.0 (2025-07-29)
+--------------------
+
+- WCM-987: add new module podcastheader
+
+
+MAINT:
+- Be dilligent about closing filehandles in connector setitem
+
+- Remove obsolete cardstack and xml modules
+
+
+7.145.0 (2025-07-28)
+--------------------
+
+- ES-275: Add release_frequency & contact_email attributes to Podcast
+
+
+7.144.0 (2025-07-28)
+--------------------
+
+- WCM-982: Integrate KPI import cronjobs with connector cache
+
+
+7.143.0 (2025-07-23)
+--------------------
+
+- WCM-1005: More article+cp module icons
+
+
+7.142.0 (2025-07-23)
+--------------------
+
+- WCM-1005: Update article+cp module icons
+
+
+7.141.0 (2025-07-23)
+--------------------
+
+- WCM-999: premium audio does not change article header automatically
+
+
 7.140.0 (2025-07-21)
 --------------------
 

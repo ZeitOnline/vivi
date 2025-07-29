@@ -39,8 +39,6 @@ class TMS:
         self.password = password
 
     def extract_keywords(self, content):
-        __traceback_info__ = (content.uniqueId,)
-
         response = self.enrich(content, intextlinks=False)
         return self.generate_keyword_list(response)
 
@@ -52,7 +50,6 @@ class TMS:
         return result
 
     def get_keywords(self, search_string, entity_type=None):
-        __traceback_info__ = (search_string,)
         params = {'q': search_string}
         if entity_type is not None:
             params['item_type'] = entity_type
@@ -171,7 +168,6 @@ class TMS:
             return self._get_intextlink_data_preview(content, timeout).get('body')
 
     def _get_intextlink_data(self, content, timeout):
-        __traceback_info__ = (content.uniqueId,)
         uuid = zeit.cms.content.interfaces.IUUID(content).id
         if uuid is None:
             log.warning('%s has no UUID, intextlinks request skipped', content)
@@ -238,7 +234,6 @@ class TMS:
             return ()
 
     def index(self, content, overrides=None):
-        __traceback_info__ = (content.uniqueId,)
         data = zeit.retresco.interfaces.ITMSRepresentation(content)()
 
         if data is None:
@@ -251,7 +246,6 @@ class TMS:
         return self._request('PUT /content/%s' % data['doc_id'], json=data)
 
     def publish(self, content):
-        __traceback_info__ = (content.uniqueId,)
         uuid = zeit.cms.content.interfaces.IUUID(content).id
         return self._request('POST /content/%s/publish' % uuid)
 
@@ -259,7 +253,6 @@ class TMS:
         return self._request('POST /content/%s/unpublish' % uuid)
 
     def enrich(self, content, intextlinks=True):
-        __traceback_info__ = (content.uniqueId,)
         data = zeit.retresco.interfaces.ITMSRepresentation(content)()
         if data is None:
             log.info('Skip enrich for %s, it is missing required fields', content.uniqueId)

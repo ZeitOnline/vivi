@@ -1,10 +1,9 @@
 <modules>
-  <module id="cardstack" title="Kartenstapel"/>
   <module id="cpextra" title="CPExtra"/>
   <module id="headerimage" title="Headerbild"/>
   <module id="markup" title="HTML-Block"/>
   <module id="quiz" title="Quiz-Block"/>
   <module id="jobbox_ticker" title="Jobbox Ticker"/>
   <module id="teaser" title="Teaser"/>
-  <module id="xml" title="Rohes XML"/>
+  <module id="podcastheader" title="Podcastheader"/>
 </modules>

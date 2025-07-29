@@ -360,11 +360,6 @@ class ITickarooLiveblog(IBlock, zeit.content.modules.interfaces.ITickarooLiveblo
     pass
 
 
-class ICardstack(IBlock):
-    card_id = zope.schema.TextLine(title=_('Cardstack id'))
-    is_advertorial = zope.schema.Bool(title=_('Advertorial?'), default=False)
-
-
 class IQuiz(IBlock, zeit.content.modules.interfaces.IQuiz):
     pass
 

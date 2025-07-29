@@ -185,7 +185,6 @@ class Connector:
 
     def _get_file(self, id, mode='rb'):
         filename = self._path(id)
-        __traceback_info__ = (id, filename)
         try:
             return open(filename, mode)
         except IOError:
@@ -195,7 +194,6 @@ class Connector:
 
     def _get_metadata_file(self, id, mode='rb'):
         filename = self._path(id) + '.meta'
-        __traceback_info__ = (id, filename)
         try:
             return open(filename, mode)
         except IOError:

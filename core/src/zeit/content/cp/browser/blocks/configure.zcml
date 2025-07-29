@@ -93,15 +93,13 @@
 
   <include file="teaser.zcml" />
   <include file="automatic.zcml" />
-  <include file="xml.zcml" />
   <include file="cpextra.zcml" />
   <include file="quiz.zcml" />
   <include file="headerimage.zcml" />
   <include file="rawtext.zcml" />
   <include file="markup.zcml" />
-  <include file="cardstack.zcml" />
   <include file="jobticker.zcml" />
   <include file="mail.zcml" />
   <include file="newslettersignup.zcml" />
-
+  <include file="audio.zcml" />
 </configure>

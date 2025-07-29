@@ -64,7 +64,6 @@ class CMSContentSource:
     def get_check_types(self):
         types = []
         for interface in self.get_check_interfaces():
-            __traceback_info__ = (interface,)
             types.append(interface.getTaggedValue('zeit.cms.type'))
         return types
 

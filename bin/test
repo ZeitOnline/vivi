@@ -3,11 +3,11 @@
 set -e
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+source $DIR/configure-artifact-registry-auth
+
 COMMAND=$1
 case $COMMAND in
     smoke)
-        source $DIR/configure-artifact-registry-auth
-
         shift
         if [[ "$1" != -* ]]; then
             environment=$1
@@ -56,6 +56,10 @@ case $COMMAND in
         export TMS_PASSWORD=$(vault read -field password zon/v1/retresco/$environment/tms)
         export OIDC_CLIENT_SECRET=$(vault read -field client_secret zon/v1/keycloak/production/zeit-online/edge-www)
         export OIDC_CLIENT_ID=edge-www
+
+
+        export UV_INDEX_PYPI_ZON_USERNAME=oauth2accesstoken
+        export UV_INDEX_PYPI_ZON_PASSWORD=$GCLOUD_TOKEN
 
         exec uv run pytest -c none --tb=native --nightwatch-environment=$environment "$@"
         ;;

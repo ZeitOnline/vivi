@@ -46,15 +46,6 @@
       permission="zeit.EditContent"/>
   </class>
 
-  <class class=".xml.XMLBlock">
-    <require
-      interface="..interfaces.IXMLBlock"
-      permission="zope.View" />
-    <require
-      set_schema="..interfaces.IXMLBlock"
-      permission="zeit.EditContent"/>
-  </class>
-
   <class class=".quiz.QuizBlock">
     <require
       interface="..interfaces.IQuizBlock"
@@ -109,15 +100,6 @@
       permission="zeit.EditContent"/>
   </class>
 
-  <class class=".cardstack.CardstackBlock">
-    <require
-      interface="..interfaces.ICardstackBlock"
-      permission="zope.View" />
-    <require
-      set_schema="..interfaces.ICardstackBlock"
-      permission="zeit.EditContent"/>
-  </class>
-
   <class class=".mail.MailBlock">
     <require
       interface="..interfaces.IMailBlock"
@@ -147,4 +129,12 @@
       />
   </class>
 
+  <class class=".audio.PodcastHeaderBlock">
+    <require
+      interface="..interfaces.IPodcastHeaderBlock"
+      permission="zope.View" />
+    <require
+      set_schema="..interfaces.IPodcastHeaderBlock"
+      permission="zeit.EditContent"/>
+  </class>
 </configure>
