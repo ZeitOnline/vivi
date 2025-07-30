@@ -32,7 +32,7 @@ import zeit.workflow.testing
 
 
 class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
-    layer = zeit.workflow.testing.ARTICLE_LAYER
+    layer = zeit.workflow.testing.CONTENT_LAYER
 
     def setUp(self):
         super().setUp()
@@ -46,8 +46,10 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
     def test_ignore_3rdparty_list_is_respected(self):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         self.assertFalse(IPublishInfo(article).published)
+        IPublishInfo(article).urgent = True
         article_2 = ICMSContent('http://xml.zeit.de/online/2007/01/Schrempp')
         IPublishInfo(article_2).published = True
+        IPublishInfo(article_2).urgent = True
         self.assertTrue(IPublishInfo(article_2).published)
         with requests_mock.Mocker() as rmock:
             zeit.workflow.publish_3rdparty.PublisherData.ignore = ['speechbert']
@@ -71,6 +73,7 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
     def test_bigquery_is_published(self):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         self.assertFalse(IPublishInfo(article).published)
+        IPublishInfo(article).urgent = True
         with requests_mock.Mocker() as rmock:
             response = rmock.post('http://localhost:8060/test/publish', status_code=200)
             IPublish(article).publish(background=False)
@@ -151,6 +154,7 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
     def test_comments_are_published(self):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         self.assertFalse(IPublishInfo(article).published)
+        IPublishInfo(article).urgent = True
         with requests_mock.Mocker() as rmock:
             response = rmock.post('http://localhost:8060/test/publish', status_code=200)
             IPublish(article).publish(background=False)
@@ -193,6 +197,7 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
     def test_speechbert_is_published(self):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         self.assertFalse(IPublishInfo(article).published)
+        IPublishInfo(article).urgent = True
         with requests_mock.Mocker() as rmock:
             response = rmock.post('http://localhost:8060/test/publish', status_code=200)
             IPublish(article).publish(background=False)
@@ -287,7 +292,7 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
 
 
 class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
-    layer = zeit.content.article.testing.LAYER
+    layer = zeit.workflow.testing.CONTENT_LAYER
 
     def create_author(self, firstname, lastname, key):
         author = zeit.content.author.author.Author()
@@ -578,7 +583,7 @@ class IndexNowPayloadTest(zeit.workflow.testing.FunctionalTestCase):
 
 
 class DatasciencePayloadTest(zeit.workflow.testing.FunctionalTestCase):
-    layer = zeit.content.article.testing.LAYER
+    layer = zeit.workflow.testing.CONTENT_LAYER
 
     def test_datascience_payload_article(self):
         article = zeit.content.article.testing.create_article()
@@ -639,7 +644,7 @@ class DatasciencePayloadTest(zeit.workflow.testing.FunctionalTestCase):
 
 
 class FollowingsPayloadTest(zeit.workflow.testing.FunctionalTestCase):
-    layer = zeit.content.article.testing.LAYER
+    layer = zeit.workflow.testing.CONTENT_LAYER
 
     def test_followings_payload_audio(self):
         from zeit.content.audio.testing import AudioBuilder

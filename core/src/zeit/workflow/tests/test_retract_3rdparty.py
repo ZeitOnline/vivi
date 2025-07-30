@@ -10,7 +10,7 @@ import zeit.workflow.testing
 
 
 class Retract3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
-    layer = zeit.workflow.testing.ARTICLE_LAYER
+    layer = zeit.workflow.testing.CONTENT_LAYER
 
     def setUp(self):
         super().setUp()
