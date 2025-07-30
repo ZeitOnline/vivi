@@ -512,7 +512,7 @@ class Followings(grok.Adapter, IgnoreMixin):
     grok.name('followings')
 
     def get_following_type(self):
-        if self.context.serie is None:
+        if self.context.serie is None or self.context.serie.url == '-':
             return None
         audio_refs = zeit.content.audio.interfaces.IAudioReferences(self.context, None)
         if audio_refs is not None and bool(audio_refs.get_by_type('podcast')):
