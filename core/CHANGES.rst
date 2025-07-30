@@ -3,6 +3,16 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.148.0 (2025-07-30)
+--------------------
+
+- WCM-983: Publish premium audio objects with collective publication
+
+
+MAINT:
+- Be dilligent about closing filehandles in connector setitem
+
+
 7.147.0 (2025-07-29)
 --------------------
 
