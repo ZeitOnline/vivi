@@ -302,7 +302,7 @@ class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
 
     @pytest.fixture(autouse=True)
     def _monkeypatch(self, monkeypatch):
-        monkeypatch.setattr(zeit.workflow.publish_3rdparty.Speechbert, 'ignore', lambda s, m: False)
+        monkeypatch.setattr(zeit.workflow.publish_3rdparty.Speechbert, 'ignore', lambda self: False)
 
     def test_speechbert_payload(self):
         article = ICMSContent('http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept')

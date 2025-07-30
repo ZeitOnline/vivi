@@ -476,7 +476,7 @@ class Speechbert(zeit.cms.content.dav.DAVPropertiesAdapter):
         speechbert = zope.component.getAdapter(
             self.context, zeit.workflow.interfaces.IPublisherData, name='speechbert'
         )
-        if speechbert.ignore('publish'):
+        if speechbert.ignore():
             return
         checksum = hashlib.md5(usedforsecurity=False)
         body = json.dumps(self.context.get_body(), ensure_ascii=False).encode('utf-8')

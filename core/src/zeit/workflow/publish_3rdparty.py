@@ -279,12 +279,10 @@ class IgnoreMixin:
     def name(self):
         return grok.name.bind().get(self.__class__)
 
-    def ignore(self, method):
-        if method == 'publish':
-            for check in self.CHECKS:
-                if self.is_on_ignorelist(**check):
-                    return True
-        return False
+    def ignore(self):
+        for check in self.CHECKS:
+            if self.is_on_ignorelist(**check):
+                return True
 
     def is_on_ignorelist(self, iface=None, field=None, getter=None):
         if not iface.providedBy(self.context):
@@ -303,16 +301,6 @@ class IgnoreMixin:
         value = getter(self.context)
         return value and value.lower() in ignore_list
 
-    def publish_json(self):
-        if self.ignore('publish'):
-            return None
-        return self._json()
-
-    def retract_json(self):
-        if self.ignore('retract'):
-            return None
-        return {}
-
 
 @grok.implementer(zeit.workflow.interfaces.IPublisherData)
 class Speechbert(grok.Adapter, IgnoreMixin):
@@ -329,8 +317,8 @@ class Speechbert(grok.Adapter, IgnoreMixin):
             return None
         return f'{prefix}{variant_url}'
 
-    def _json(self):
-        if self.context.audio_speechbert is False:
+    def publish_json(self):
+        if self.context.audio_speechbert is False or self.ignore():
             return None
 
         checksum = zeit.content.article.interfaces.ISpeechbertChecksum(self.context)
@@ -362,7 +350,7 @@ class Speechbert(grok.Adapter, IgnoreMixin):
         return {k: v for k, v in payload.items() if v}
 
     def retract_json(self):
-        if self.context.audio_speechbert is False or self.ignore('retract'):
+        if self.context.audio_speechbert is False:
             return None
         return {}
 
@@ -427,20 +415,17 @@ class Summy(grok.Adapter, IgnoreMixin):
     grok.context(zeit.content.article.interfaces.IArticle)
     grok.name('summy')
 
-    def _json(self):
-        return {
-            'text': self.context.get_body(),
-            'avoid_create_summary': bool(self.context.avoid_create_summary),
-        }
-
     def publish_json(self):
-        if self.ignore('publish'):
+        if self.ignore():
             # this is explicitly set to empty dict
             # because we still want to notify summy
             # and summy will store some additional values
             # even though it does not create a summary
             return {}
-        return self._json()
+        return {
+            'text': self.context.get_body(),
+            'avoid_create_summary': bool(self.context.avoid_create_summary),
+        }
 
     def retract_json(self):
         return {}
@@ -471,11 +456,16 @@ class DataScience(grok.Adapter, PropertiesMixin, IgnoreMixin):
     grok.baseclass()
     grok.name('datascience')
 
-    def _json(self):
+    def publish_json(self):
+        if self.ignore():
+            return None
         return {
             'properties': self.properties,
             'body': lxml.etree.tostring(self.context.xml, encoding='unicode'),
         }
+
+    def retract_json(self):
+        return {}
 
 
 class ArticleDataScience(DataScience):
@@ -507,7 +497,10 @@ class Followings(grok.Adapter, IgnoreMixin):
     grok.context(zeit.content.article.interfaces.IArticle)
     grok.name('followings')
 
-    def _json(self):
+    def publish_json(self):
+        if self.ignore():
+            return None
+
         article = self.context
         if article.serie is None:
             return None
@@ -520,3 +513,6 @@ class Followings(grok.Adapter, IgnoreMixin):
         )
         series = zeit.cms.content.interfaces.IUUID(series_content).shortened
         return {'parent_uuid': series}
+
+    def retract_json(self):
+        return {}
