@@ -2,9 +2,15 @@ from functools import partialmethod
 from typing import Optional, TypeVar
 import importlib.resources
 
-from zeit.cms.repository.interfaces import IRepository
+from zeit.cms.repository.interfaces import IFolder, IRepository
+from zeit.content.article.interfaces import IArticle
 from zeit.content.audio.audio import Audio
-from zeit.content.audio.interfaces import IPodcastEpisodeInfo, ISpeechInfo, Podcast
+from zeit.content.audio.interfaces import (
+    IAudioReferences,
+    IPodcastEpisodeInfo,
+    ISpeechInfo,
+    Podcast,
+)
 import zeit.cms.testing
 import zeit.content.image.testing
 
@@ -76,7 +82,10 @@ class AudioBuilder:
         raise ValueError(f'Unknown attribute {attribute_name}')
 
     def build(
-        self, repository: Optional[IRepository] = None, unique_id: Optional[str] = 'audio'
+        self,
+        repository: Optional[IRepository | IFolder] = None,
+        unique_id: Optional[str] = 'audio',
+        reference: Optional[IArticle] = None,
     ) -> Audio:
         audio = Audio()
         audio_type = self.attributes['audio']['audio_type']
@@ -93,6 +102,10 @@ class AudioBuilder:
                 setattr(tts, attribute, value)
         if repository is not None:
             repository[unique_id] = audio
+
+        if reference:
+            references = IAudioReferences(reference)
+            references.add(audio)
 
         return audio
 
