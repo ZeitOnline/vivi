@@ -473,9 +473,7 @@ class Speechbert(zeit.cms.content.dav.DAVPropertiesAdapter):
         return self.checksum == checksum
 
     def calculate(self) -> str:
-        speechbert = zope.component.getAdapter(
-            self.context, zeit.workflow.interfaces.IPublisherData, name='speechbert'
-        )
+        speechbert = zeit.workflow.publish_3rdparty.Speechbert(self.context)
         if speechbert.ignore():
             return
         checksum = hashlib.md5(usedforsecurity=False)

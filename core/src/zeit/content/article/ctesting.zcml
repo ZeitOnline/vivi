@@ -23,7 +23,4 @@
   <!-- XXX zeit.find should provide a mock utility by default for tests -->
   <include package="zeit.find.browser" />
 
-  <grok:grok package="zeit.workflow.publish_3rdparty" />
-  <include package="zeit.workflow" file="ctesting.zcml" />
-
 </configure>

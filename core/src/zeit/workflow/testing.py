@@ -61,25 +61,6 @@ class SQLTestCase(zeit.connector.testing.TestCase):
     layer = SQL_CONNECTOR_LAYER
 
 
-@zope.component.adapter(zeit.cms.interfaces.ICMSContent)
-@zope.interface.implementer(zeit.retresco.interfaces.ITMSRepresentation)
-class MockTMSRepresentation:
-    result = _default_result = {}
-
-    def __init__(self, context):
-        self.context = context
-
-    def __call__(self):
-        return self.result
-
-    @classmethod
-    def reset(cls):
-        cls.result = cls._default_result
-
-
-reset_mock_tms = MockTMSRepresentation.reset  # ZCA cannot use classmethods
-
-
 @zope.interface.implementer(zeit.cms.workflow.interfaces.IPublishInfo)
 class FakeValidatingWorkflow(zeit.workflow.publishinfo.PublishInfo):
     """Workflow with validations like zeit.edit.rule.ValidatingWorkflow.
