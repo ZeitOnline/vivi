@@ -134,9 +134,9 @@ class LiveUrlMixin:
 class PropertiesMixin(LiveUrlMixin):
     @property
     def properties(self):
-        tms = zeit.retresco.interfaces.ITMSRepresentation(self.context)()
-        if tms is None:
-            return None
+        tms = zeit.retresco.interfaces.ITMSRepresentation(self.context)
+        tms.validate = False
+        tms = tms()
         properties = tms.get('payload', {})
         properties.setdefault('meta', {})['url'] = self.live_url
         properties['tagging'] = {k: v for k, v in tms.items() if k.startswith('rtr_')}
@@ -149,8 +149,6 @@ class BigQuery(grok.Adapter, PropertiesMixin):
     grok.name('bigquery')
 
     def publish_json(self):
-        if self.properties is None:
-            return None
         return {
             'properties': self.properties,
             'body': badgerfish(self.context.xml.find('body'))['body'],
@@ -474,8 +472,6 @@ class DataScience(grok.Adapter, PropertiesMixin, IgnoreMixin):
     grok.name('datascience')
 
     def _json(self):
-        if self.properties is None:
-            return None
         return {
             'properties': self.properties,
             'body': lxml.etree.tostring(self.context.xml, encoding='unicode'),

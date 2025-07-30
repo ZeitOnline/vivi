@@ -53,6 +53,8 @@ MIN_DATE = datetime(1970, 1, 1)
 class TMSRepresentation(grok.Adapter):
     grok.context(zeit.cms.interfaces.ICMSContent)
 
+    validate = True  # Kludge to enable reuse in zeit.workflow.publish_3rdparty
+
     def __call__(self):
         result = {}
         for name, converter in sorted(
@@ -63,7 +65,7 @@ class TMSRepresentation(grok.Adapter):
                 # adapters, i.e. this one.
                 continue
             merge_and_skip_empty(converter(), result)
-        if not self._validate(result):
+        if self.validate and not self._is_valid(result):
             return None
         return result
 
@@ -77,7 +79,7 @@ class TMSRepresentation(grok.Adapter):
         'date',
     )
 
-    def _validate(self, data):
+    def _is_valid(self, data):
         return all(data.get(x) for x in self.REQUIRED_FIELDS)
 
 

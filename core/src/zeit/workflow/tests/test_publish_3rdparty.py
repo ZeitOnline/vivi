@@ -11,11 +11,11 @@ import zope.i18n
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.interfaces import ICMSContent
+from zeit.cms.tagging.tag import Tag
 from zeit.cms.workflow.interfaces import IPublish, IPublisher, IPublishInfo
 from zeit.content.image.testing import create_image_group_with_master_image
 import zeit.cms.related.interfaces
-import zeit.cms.tagging.tag
-import zeit.cms.tagging.testing
+import zeit.cms.tagging.interfaces
 import zeit.cms.testing
 import zeit.content.article.article
 import zeit.content.audio.audio
@@ -451,9 +451,10 @@ class AirshipTest(zeit.workflow.testing.FunctionalTestCase):
 
 
 class TMSPayloadTest(zeit.workflow.testing.FunctionalTestCase):
+    layer = zeit.workflow.testing.CONTENT_LAYER
+
     def test_tms_wait_for_index_article(self):
-        article = self.repository['testcontent']
-        zope.interface.alsoProvides(article, zeit.content.article.interfaces.IArticle)
+        article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         data_factory = zope.component.getAdapter(
             article, zeit.workflow.interfaces.IPublisherData, name='tms'
         )
@@ -461,8 +462,11 @@ class TMSPayloadTest(zeit.workflow.testing.FunctionalTestCase):
         assert payload == {'wait': True}
 
     def test_tms_only_waits_for_articles(self):
-        content = self.repository['testcontent']
-        zope.interface.alsoProvides(content, zeit.content.cp.interfaces.ICenterPage)
+        content = zeit.content.cp.centerpage.CenterPage()
+        content.title = 'test'
+        self.repository['cp'] = content
+        content = self.repository['cp']
+
         data_factory = zope.component.getAdapter(
             content, zeit.workflow.interfaces.IPublisherData, name='tms'
         )
@@ -471,8 +475,8 @@ class TMSPayloadTest(zeit.workflow.testing.FunctionalTestCase):
 
     def test_tms_ignores_content_without_tms_representation(self):
         content = self.repository['testcontent']
-        zope.interface.alsoProvides(content, zeit.content.article.interfaces.IArticle)
-        zeit.workflow.testing.MockTMSRepresentation.result = None
+        # Fake a known content type, so IPublisherData picks it up.
+        zope.interface.alsoProvides(content, zeit.content.cp.interfaces.ICenterPage)
         data_factory = zope.component.getAdapter(
             content, zeit.workflow.interfaces.IPublisherData, name='tms'
         )
@@ -481,37 +485,28 @@ class TMSPayloadTest(zeit.workflow.testing.FunctionalTestCase):
 
 
 class BigQueryPayloadTest(zeit.workflow.testing.FunctionalTestCase):
-    def setUp(self):
-        super().setUp()
-        zeit.workflow.testing.MockTMSRepresentation.result = {
-            'payload': {'document': {'uuid': '{urn:uuid:myuuid}'}}
-        }
-        with checked_out(self.repository['testcontent']):
-            pass  # XXX trigger uuid generation
-        self.article = self.repository['testcontent']
-        zope.interface.alsoProvides(self.article, zeit.content.article.interfaces.IArticle)
+    layer = zeit.workflow.testing.CONTENT_LAYER
 
     def test_includes_uniqueid_under_meta(self):
+        article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         data = zope.component.getAdapter(
-            self.article, zeit.workflow.interfaces.IPublisherData, name='bigquery'
+            article, zeit.workflow.interfaces.IPublisherData, name='bigquery'
         )
         for action in ['publish', 'retract']:
             d = getattr(data, f'{action}_json')()
             self.assertEqual(
-                'http://localhost/live-prefix/testcontent', d['properties']['meta']['url']
+                'http://localhost/live-prefix/online/2007/01/Somalia',
+                d['properties']['meta']['url'],
             )
             self.assertStartsWith('{urn:uuid:', d['properties']['document']['uuid'])
 
     def test_moves_rtr_keywords_under_tagging(self):
-        zeit.workflow.testing.MockTMSRepresentation.result = {
-            'rtr_locations': [],
-            'rtr_keywords': ['one', 'two'],
-            'title': 'ignored',
-        }
-        data = zeit.workflow.testing.publish_json(self.article, 'bigquery')
-        self.assertEqual(
-            {'rtr_locations': [], 'rtr_keywords': ['one', 'two']}, data['properties']['tagging']
-        )
+        article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        with checked_out(article) as co:
+            co.keywords = (Tag('Hannover', 'location'), Tag('Paris', 'location'))
+
+        data = zeit.workflow.testing.publish_json(article, 'bigquery')
+        self.assertEqual(['Hannover', 'Paris'], data['properties']['tagging']['rtr_locations'])
 
     def test_converts_body_to_badgerfish_json(self):
         # fmt: off
@@ -521,11 +516,12 @@ class BigQueryPayloadTest(zeit.workflow.testing.FunctionalTestCase):
 </body>
 """
         # fmt: on
-        self.article.xml.replace(
-            self.article.xml.find('body'),
+        article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        article.xml.replace(
+            article.xml.find('body'),
             lxml.etree.fromstring(body_string),
         )
-        data = zeit.workflow.testing.publish_json(self.article, 'bigquery')
+        data = zeit.workflow.testing.publish_json(article, 'bigquery')
         self.assertEqual({'division': {'p': [{'$': 'one'}, {'$': 'two'}]}}, data['body'])
 
 
@@ -607,14 +603,16 @@ class DatasciencePayloadTest(zeit.workflow.testing.FunctionalTestCase):
         self.assertEqual(payload, None)
 
     def test_datascience_payload_centerpage(self):
-        cp = self.repository['testcontent']
-        zope.interface.alsoProvides(cp, zeit.content.cp.interfaces.ICenterPage)
+        cp = zeit.content.cp.centerpage.CenterPage()
+        self.repository['cp'] = cp
+        cp = self.repository['cp']
         data = zeit.workflow.testing.publish_json(cp, 'datascience')
         self.assertEqual(data['body'], lxml.etree.tostring(cp.xml, encoding=str))
 
     def test_datascience_payload_gallery(self):
-        gallery = self.repository['testcontent']
-        zope.interface.alsoProvides(gallery, zeit.content.gallery.interfaces.IGallery)
+        gallery = zeit.content.gallery.gallery.Gallery()
+        self.repository['gallery'] = gallery
+        gallery = self.repository['gallery']
         data = zeit.workflow.testing.publish_json(gallery, 'datascience')
         self.assertEqual(data['body'], lxml.etree.tostring(gallery.xml, encoding=str))
 
