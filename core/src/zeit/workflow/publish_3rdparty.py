@@ -523,4 +523,5 @@ class Followings(grok.Adapter, IgnoreMixin):
             f'{zeit.cms.interfaces.ID_NAMESPACE}serie/{article.serie.url}'
         )
         series = zeit.cms.content.interfaces.IUUID(series_content).shortened
-        return {'parent_uuid': series}
+        created = zeit.cms.workflow.interfaces.IPublishInfo(article).date_first_released.isoformat()
+        return {'parent_uuid': series, 'created': created}

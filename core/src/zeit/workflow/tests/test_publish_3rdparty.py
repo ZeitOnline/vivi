@@ -650,6 +650,7 @@ class FollowingsPayloadTest(zeit.workflow.testing.FunctionalTestCase):
         cp = self.repository['serie']['chefsache']
         audio = AudioBuilder().with_audio_type('podcast').build()
         audio = self.repository['audio'] = audio
+        date = zeit.cms.workflow.interfaces.IPublishInfo(article).date_first_released
 
         audios_refs = zeit.content.audio.interfaces.IAudioReferences(article)
         audios_refs.add(audio)
@@ -657,3 +658,4 @@ class FollowingsPayloadTest(zeit.workflow.testing.FunctionalTestCase):
 
         data = zeit.workflow.testing.publish_json(article, 'followings')
         self.assertEqual(data['parent_uuid'], expected_uuid)
+        self.assertEqual(data['created'], date.isoformat())
