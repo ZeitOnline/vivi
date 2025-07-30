@@ -5,6 +5,7 @@ import urllib.parse
 import xml.sax.saxutils
 
 import docutils.core
+import docutils.writers.html4css1
 import grokcore.component as grok
 import markdown
 import markdownify
@@ -536,7 +537,9 @@ def CheckboxDisplayWidget(context, request):
 
 def rst2html(text):
     return docutils.core.publish_parts(
-        text, writer_name='html', settings_overrides={'report_level': 5}
+        text,
+        writer=docutils.writers.html4css1.Writer(),
+        settings_overrides={'report_level': 5},
     )['fragment']
 
 
