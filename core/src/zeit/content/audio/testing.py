@@ -1,8 +1,8 @@
 from functools import partialmethod
-from typing import Optional, TypeVar
+from typing import TypeVar
 import importlib.resources
 
-from zeit.cms.repository.interfaces import IFolder, IRepository
+from zeit.cms.checkout.helper import checked_out
 from zeit.content.article.interfaces import IArticle
 from zeit.content.audio.audio import Audio
 from zeit.content.audio.interfaces import (
@@ -46,6 +46,9 @@ class AudioBuilder:
         >>> AudioBuilder().with_title('foo').build()
     """
 
+    reference = None
+    _unique_id = 'http://xml.zeit.de/audio'
+
     def __init__(self):
         self.attributes = {
             'audio': {
@@ -81,12 +84,15 @@ class AudioBuilder:
                 return self
         raise ValueError(f'Unknown attribute {attribute_name}')
 
-    def build(
-        self,
-        repository: Optional[IRepository | IFolder] = None,
-        unique_id: Optional[str] = 'audio',
-        reference: Optional[IArticle] = None,
-    ) -> Audio:
+    def referenced_by(self, article: IArticle):
+        self.reference = article
+        return self
+
+    def unique_id(self, unique_id: str):
+        self._unique_id = unique_id
+        return self
+
+    def build(self) -> Audio:
         audio = Audio()
         audio_type = self.attributes['audio']['audio_type']
         for attribute, value in self.attributes['audio'].items():
@@ -100,12 +106,19 @@ class AudioBuilder:
             audio.external_id = ''
             for attribute, value in self.attributes[audio_type].items():
                 setattr(tts, attribute, value)
-        if repository is not None:
-            repository[unique_id] = audio
 
-        if reference:
-            references = IAudioReferences(reference)
-            references.add(audio)
+        unique_id_components = self._unique_id.split('/')
+        container_url = '/'.join(unique_id_components[:-1]) + '/'
+        container = zeit.cms.interfaces.ICMSContent(container_url)
+        name = unique_id_components[-1]
+
+        container[name] = audio
+        audio = container[name]
+
+        if self.reference:
+            with checked_out(self.reference, raise_if_error=True) as co:
+                references = IAudioReferences(co)
+                references.add(audio)
 
         return audio
 

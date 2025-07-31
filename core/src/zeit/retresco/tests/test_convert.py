@@ -476,11 +476,8 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
         )
 
     def test_converts_article_with_audio(self):
-        audio = zeit.content.audio.testing.AudioBuilder().build(self.repository)
         article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
-        with checked_out(article) as co:
-            audios = zeit.content.audio.interfaces.IAudioReferences
-            audios(co).items = (self.repository['audio'],)
+        audio = zeit.content.audio.testing.AudioBuilder().referenced_by(article).build()
         article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         data = zeit.retresco.interfaces.ITMSRepresentation(article)()
         assert data['payload']['head']['audio_references'] == [audio.uniqueId]

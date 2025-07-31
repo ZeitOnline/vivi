@@ -411,14 +411,14 @@ class AudioArticle(zeit.content.article.testing.FunctionalTestCase):
         self.article = self.get_article()
         self.article.title = ''
         self.article.body.create_item('image')
-        self.audio = AudioBuilder().build(self.repository)
+        self.audio = AudioBuilder().build()
         self.info = zeit.content.audio.interfaces.IPodcastEpisodeInfo(self.audio)
 
     def test_filter_audios_by_audio_type(self):
         self.repository['article'] = self.article
-        tts = AudioBuilder().with_audio_type('tts').build(self.repository, 'tts')
-        pc1 = AudioBuilder().with_audio_type('podcast').build(self.repository, 'pc1')
-        pc2 = AudioBuilder().with_audio_type('podcast').build(self.repository, 'pc2')
+        tts = AudioBuilder().with_audio_type('tts').unique_id('http://xml.zeit.de/tts').build()
+        pc1 = AudioBuilder().with_audio_type('podcast').unique_id('http://xml.zeit.de/pc1').build()
+        pc2 = AudioBuilder().with_audio_type('podcast').unique_id('http://xml.zeit.de/pc2').build()
         audios_refs = zeit.content.audio.interfaces.IAudioReferences(self.article)
         audios_refs.add(tts)
         audios_refs.add(pc1)
@@ -474,7 +474,7 @@ class AudioArticle(zeit.content.article.testing.FunctionalTestCase):
         assert self.info.podcast.id != self.article.serie.url
 
     def test_other_than_podcast_type_does_not_edit_content(self):
-        AudioBuilder().with_audio_type('premium').build(self.repository)
+        AudioBuilder().with_audio_type('premium').build()
         self._add_audio_to_article()
 
         assert self.article.header_layout == 'default'

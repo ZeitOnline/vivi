@@ -33,6 +33,7 @@ class TestVolumeArticleAudios(zeit.mediaservice.testing.SQLTestCase):
         super().setUp()
         self.create_volume(2025, 1)
         self.create_volume_content('2025', '01', 'article01')
+        transaction.commit()
 
     def create_volume(self, year, name, product='ZEI', published=True):
         volume = zeit.content.volume.volume.Volume()
@@ -115,7 +116,10 @@ class TestVolumeArticleAudios(zeit.mediaservice.testing.SQLTestCase):
         article_uuid = zeit.cms.content.interfaces.IUUID(article).shortened
         audio_folder = zeit.cms.content.add.find_or_create_folder('premium', 'audio', '2025', '01')
 
-        AudioBuilder().with_audio_type('premium').build(audio_folder, article_uuid, article)
+        AudioBuilder().with_audio_type('premium').unique_id(
+            audio_folder.uniqueId + '/' + article_uuid
+        ).referenced_by(article).build()
+        transaction.commit()
         zeit.mediaservice.mediaservice.create_audio_objects(volume.uniqueId)
         transaction.commit()
 
@@ -137,8 +141,11 @@ class TestVolumeArticleAudios(zeit.mediaservice.testing.SQLTestCase):
         article = self.repository['2025']['01']['article01']
         article_uuid = zeit.cms.content.interfaces.IUUID(article).shortened
         audio_folder = zeit.cms.content.add.find_or_create_folder('premium', 'audio', '2025', '01')
+        transaction.commit()
 
-        AudioBuilder().with_audio_type('custom').build(audio_folder, article_uuid, article)
+        AudioBuilder().with_audio_type('custom').unique_id(
+            audio_folder.uniqueId + '/' + article_uuid
+        ).referenced_by(article).build()
         zeit.mediaservice.mediaservice.create_audio_objects(volume.uniqueId)
         assert audio_folder[article_uuid].audio_type == 'custom'
 
@@ -148,11 +155,16 @@ class TestVolumeArticleAudios(zeit.mediaservice.testing.SQLTestCase):
         article_uuid = zeit.cms.content.interfaces.IUUID(article).shortened
         audio_folder = zeit.cms.content.add.find_or_create_folder('premium', 'audio', '2025', '01')
 
-        audio = AudioBuilder().with_audio_type('premium').build(audio_folder, article_uuid)
+        (
+            AudioBuilder()
+            .with_audio_type('premium')
+            .unique_id(audio_folder.uniqueId + '/' + article_uuid)
+            .referenced_by(article)
+            .build()
+        )
+
         with checked_out(article, raise_if_error=True) as co:
             co.has_audio = True
-            references = zeit.content.audio.interfaces.IAudioReferences(co)
-            references.add(audio)
 
         transaction.commit()
         with checked_out(article, raise_if_error=True) as co:
