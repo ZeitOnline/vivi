@@ -530,4 +530,4 @@ class Followings(grok.Adapter, IgnoreMixin):
         created = zeit.cms.workflow.interfaces.IPublishInfo(
             self.context
         ).date_first_released.isoformat()
-        return {'parent_uuid': series, 'created': created, 'following_type': following_type}
+        return {'parent_uuid': series, 'created': created}
