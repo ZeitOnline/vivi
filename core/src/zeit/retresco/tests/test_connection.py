@@ -27,7 +27,7 @@ import zeit.retresco.testing
 class TMSTest(zeit.retresco.testing.FunctionalTestCase):
     def setUp(self):
         super().setUp()
-        patcher = mock.patch('zeit.retresco.convert.TMSRepresentation._validate')
+        patcher = mock.patch('zeit.retresco.convert.TMSRepresentation._is_valid')
         validate = patcher.start()
         validate.return_value = True
         self.addCleanup(patcher.stop)

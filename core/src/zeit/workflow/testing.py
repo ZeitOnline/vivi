@@ -39,9 +39,8 @@ SQL_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
 SQL_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(SQL_ZCML_LAYER,))
 SQL_CONNECTOR_LAYER = zeit.connector.testing.SQLDatabaseLayer(bases=(SQL_ZOPE_LAYER,))
 
-ARTICLE_LAYER = zeit.cms.testing.AdditionalZCMLLayer(
-    'zeit.content.article',
-    'ctesting.zcml',
+CONTENT_LAYER = zeit.cms.testing.AdditionalZCMLLayer(
+    config_file='ftesting-content.zcml',
     bases=(ZOPE_LAYER, zeit.content.article.testing.CONFIG_LAYER),
 )
 
@@ -60,25 +59,6 @@ class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
 
 class SQLTestCase(zeit.connector.testing.TestCase):
     layer = SQL_CONNECTOR_LAYER
-
-
-@zope.component.adapter(zeit.cms.interfaces.ICMSContent)
-@zope.interface.implementer(zeit.retresco.interfaces.ITMSRepresentation)
-class MockTMSRepresentation:
-    result = _default_result = {}
-
-    def __init__(self, context):
-        self.context = context
-
-    def __call__(self):
-        return self.result
-
-    @classmethod
-    def reset(cls):
-        cls.result = cls._default_result
-
-
-reset_mock_tms = MockTMSRepresentation.reset  # ZCA cannot use classmethods
 
 
 @zope.interface.implementer(zeit.cms.workflow.interfaces.IPublishInfo)
