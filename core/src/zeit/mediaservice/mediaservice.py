@@ -66,6 +66,7 @@ class MediaService:
             if article_uuid.shortened not in folder:
                 count['created'] += 1
                 audio = self.create_audio_object(mediasync_id, audio_info)
+                audio.title = article.title
                 folder[article_uuid.shortened] = audio
             else:
                 count['existing'] += 1
