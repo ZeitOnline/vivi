@@ -11,9 +11,13 @@
   <include package="zeit.content.audio" />
   <include package="zeit.content.author" />
   <include package="zeit.content.image" />
-  <includeOverrides package="zeit.workflow" file="ftesting.zcml" />
 
   <!-- Use the actual implementation, not the mocks from zeit.cms.tagging. -->
   <includeOverrides package="zeit.retresco" />
+
+  <includeOverrides package="zeit.workflow" />
+  <!-- required by zeit.workflow, but we cannot use ftesting.zcml which includes it,
+       because it would conflict with the zeit.retresco override above. -->
+  <include package="zeit.push" />
 
 </configure>
