@@ -641,7 +641,7 @@ class DatasciencePayloadTest(zeit.workflow.testing.FunctionalTestCase):
 class FollowingsPayloadTest(zeit.workflow.testing.FunctionalTestCase):
     layer = zeit.content.article.testing.LAYER
 
-    def test_followings_payload_following_type_podcast(self):
+    def test_followings_podcast(self):
         from zeit.content.audio.testing import AudioBuilder
 
         article = ICMSContent('http://xml.zeit.de/online/2022/08/kaenguru-comics-folge-448')
@@ -660,7 +660,7 @@ class FollowingsPayloadTest(zeit.workflow.testing.FunctionalTestCase):
         self.assertEqual(data['parent_uuid'], expected_uuid)
         self.assertEqual(data['created'], date.isoformat())
 
-    def test_followings_payload_following_type_series(self):
+    def test_followings_series(self):
         article = ICMSContent('http://xml.zeit.de/online/2022/08/kaenguru-comics-folge-448')
         self.repository['serie'] = zeit.cms.repository.folder.Folder()
         self.repository['serie']['chefsache'] = zeit.content.cp.centerpage.CenterPage()
@@ -673,7 +673,7 @@ class FollowingsPayloadTest(zeit.workflow.testing.FunctionalTestCase):
         self.assertEqual(data['parent_uuid'], expected_uuid)
         self.assertEqual(data['created'], date.isoformat())
 
-    def test_followings_payload_following_type_no_series(self):
+    def test_followings_no_series(self):
         article = ICMSContent('http://xml.zeit.de/online/2022/08/trockenheit')
 
         data = zeit.workflow.testing.publish_json(article, 'followings')
