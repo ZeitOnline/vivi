@@ -125,10 +125,7 @@ class TestSpeech(FunctionalTestCase):
         audio = self.create_audio(TTS_CREATED)
         assert IAudioReferences(ICMSContent(self.article_uid)).items == (audio,)
         self.repository.connector.search_result = [(self.article.uniqueId)]
-        podcast = AudioBuilder().build(self.repository)
-        with checked_out(self.article) as co:
-            references = IAudioReferences(co)
-            references.add(podcast)
+        podcast = AudioBuilder().referenced_by(self.article).build()
         assert IAudioReferences(ICMSContent(self.article_uid)).items == (audio, podcast)
         self.repository.connector.search_result = [(self.article_uid)]
         with mock.patch('zeit.speech.connection.Speech._find', return_value=audio):
@@ -138,7 +135,7 @@ class TestSpeech(FunctionalTestCase):
         assert audio.items == (podcast,)
 
     def test_unable_to_remove_anything_because_article_is_missing(self):
-        audio = AudioBuilder().with_audio_type('tts').build(self.repository)
+        audio = AudioBuilder().with_audio_type('tts').build()
         self.repository.connector.search_result = []
         with mock.patch('zeit.speech.connection.Speech._find', return_value=audio):
             Speech().delete(TTS_DELETED)

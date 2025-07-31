@@ -51,7 +51,7 @@ class PodcastSourceTest(FunctionalTestCase):
         self.assertEqual((), audio.authorships)
 
     def test_get_podcast_image(self):
-        audio = AudioBuilder().build(self.repository)
+        audio = AudioBuilder().build()
         images = zeit.content.image.interfaces.IImages(audio)
         assert images.image.uniqueId == 'http://xml.zeit.de/2006/DSC00109_2.JPG'
         assert images.fill_color == 'e5ded8', (
@@ -67,19 +67,19 @@ class PodcastSourceTest(FunctionalTestCase):
 
 class WorkflowTest(FunctionalTestCase):
     def test_podcast_not_published_if_requirements_not_met_url(self):
-        audio = AudioBuilder().with_url('').build(self.repository)
+        audio = AudioBuilder().with_url('').build()
         workflow = zeit.cms.workflow.interfaces.IPublishInfo(audio)
         assert workflow.can_publish() == zeit.cms.workflow.interfaces.CAN_PUBLISH_ERROR
         assert 'Audio URL is missing' in workflow.error_messages[0]
 
     def test_podcast_not_published_if_requirements_not_met_is_published(self):
-        audio = AudioBuilder().with_is_published(False).build(self.repository)
+        audio = AudioBuilder().with_is_published(False).build()
         workflow = zeit.cms.workflow.interfaces.IPublishInfo(audio)
         assert workflow.can_publish() == zeit.cms.workflow.interfaces.CAN_PUBLISH_ERROR
         assert 'Podcast Episode is not published by Provider' in workflow.error_messages[0]
 
     def test_podcast_not_retracted_if_requirements_not_met_is_not_published(self):
-        audio = AudioBuilder().build(self.repository)
+        audio = AudioBuilder().build()
         workflow = zeit.cms.workflow.interfaces.IPublishInfo(audio)
         assert workflow.can_retract() == zeit.cms.workflow.interfaces.CAN_RETRACT_ERROR
         assert 'Podcast Episode is published by Provider' in workflow.error_messages[0]
@@ -90,7 +90,7 @@ class SpeechTest(FunctionalTestCase):
         super().setUp()
         article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         uuid = zeit.cms.content.interfaces.IUUID(article).shortened
-        AudioBuilder().with_audio_type('tts').with_article_uuid(uuid).build(self.repository)
+        AudioBuilder().with_audio_type('tts').with_article_uuid(uuid).build()
 
     def test_create_tts_audio(self):
         article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')

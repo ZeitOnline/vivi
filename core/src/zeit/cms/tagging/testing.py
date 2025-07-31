@@ -106,7 +106,13 @@ class DummyWhitelist:
         ]
 
     def get(self, tag_id):
-        label = tag_id.replace('test%s' % Tag.SEPARATOR, '')
+        if Tag.SEPARATOR in tag_id:
+            typ, label = tag_id.split(Tag.SEPARATOR)
+        else:
+            typ = self.entity_type
+            label = tag_id
+        if typ == 'location' and label in self.location_tags:
+            return Tag(label, typ)
         if label in self.tags:
             return Tag(label, self.entity_type)
         return None

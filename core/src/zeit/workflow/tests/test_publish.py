@@ -524,7 +524,7 @@ class MultiPublishRetractTest(zeit.workflow.testing.FunctionalTestCase):
 
 
 class NewPublisherTest(zeit.workflow.testing.FunctionalTestCase):
-    layer = zeit.workflow.testing.ARTICLE_LAYER
+    layer = zeit.workflow.testing.CONTENT_LAYER
 
     def setUp(self):
         super().setUp()

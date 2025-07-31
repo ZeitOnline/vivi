@@ -191,7 +191,7 @@ class ContentTest(zeit.retresco.testing.FunctionalTestCase):
         self.assertEqual(3, kpi.subscriptions)
 
     def test_convert_tms_result_with_audio_to_cmscontent(self):
-        audio = zeit.content.audio.testing.AudioBuilder().build(self.repository)
+        audio = zeit.content.audio.testing.AudioBuilder().build()
         article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         with checked_out(article) as co:
             audios = IAudioReferences

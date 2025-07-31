@@ -5,7 +5,7 @@ from zeit.content.audio.testing import AudioBuilder, BrowserTestCase
 
 class AudioObjectDetails(BrowserTestCase):
     def test_displays_details(self):
-        audio = AudioBuilder().build(self.repository)
+        audio = AudioBuilder().build()
         b = self.browser
         b.open('/repository/audio/@@object-details')
         self.assert_ellipsis(
@@ -23,7 +23,7 @@ class AudioObjectDetails(BrowserTestCase):
     def test_displays_additional_info_only_if_available(self):
         AudioBuilder().with_duration(0).with_url('').with_title('mytitle').with_audio_type(
             'tts'
-        ).build(self.repository)
+        ).build()
         b = self.browser
         b.open('/repository/audio/@@object-details')
         self.assert_ellipsis(
@@ -38,7 +38,7 @@ class AudioObjectDetails(BrowserTestCase):
         )
 
     def test_cannot_delete_if_permissions_missing(self):
-        AudioBuilder().build(self.repository)
+        AudioBuilder().build()
         b = self.browser
         b.open('/repository/audio')
         with self.assertRaises(LinkNotFoundError):
@@ -49,10 +49,8 @@ class AudioObjectDetails(BrowserTestCase):
             (1500, '25:00'),
             (7512, '02:05:12'),
         ]
-        audio = AudioBuilder().build(self.repository)
         for duration, expected in test_cases:
-            audio.duration = duration
-            self.repository['audio'] = audio
+            AudioBuilder().with_duration(duration).build()
             b = self.browser
             b.open('/repository/audio/@@object-details')
             self.assert_ellipsis(f'...<dd>{expected}</dd>...', b.contents)

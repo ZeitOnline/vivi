@@ -8,14 +8,14 @@ import zeit.simplecast.testing
 
 class AudioUpdateTest(BrowserTestCase):
     def test_request_audio_update_unavailable_to_normal_user(self):
-        AudioBuilder().build(self.repository)
+        AudioBuilder().build()
         browser = self.browser
         browser.login('user', 'userpw')
         browser.open('/repository/audio')
         self.assertNotIn('Update audio from simplecast', browser.contents)
 
     def test_request_audio_update_unavailable_for_checked_out_object(self):
-        AudioBuilder().build(self.repository)
+        AudioBuilder().build()
         browser = self.browser
         browser.login('producer', 'producerpw')
         browser.open('/repository/audio')
@@ -24,7 +24,7 @@ class AudioUpdateTest(BrowserTestCase):
         self.assertNotIn('Update audio from simplecast', browser.contents)
 
     def test_audio_is_updated(self):
-        audio = AudioBuilder().build(self.repository)
+        audio = AudioBuilder().build()
         simplecast = zope.component.getUtility(zeit.simplecast.interfaces.ISimplecast)
         simplecast.fetch_episode.return_value = zeit.simplecast.testing.EPISODE_200
         browser = self.browser
@@ -36,7 +36,7 @@ class AudioUpdateTest(BrowserTestCase):
         simplecast.publish.assert_called_once()
 
     def test_simplecast_request_failed_displays_error(self):
-        AudioBuilder().build(self.repository)
+        AudioBuilder().build()
         simplecast = zope.component.getUtility(zeit.simplecast.interfaces.ISimplecast)
         simplecast.fetch_episode.return_value = {}
         browser = self.browser
