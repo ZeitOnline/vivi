@@ -5,7 +5,7 @@
   <div class="block-item">
     <div class="podcast-info">
       <span class="podcast-type" i18n:translate="">
-        Changes centerpage layout for podcast display
+        Displays a header for this podcast series centerpage.
       </span>
     </div>
   </div>

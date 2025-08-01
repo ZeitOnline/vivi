@@ -12,9 +12,9 @@ class PodcastHeaderBlock(zeit.content.cp.blocks.block.Block):
     type = 'podcastheader'
 
 
-class Factory(zeit.content.cp.blocks.block.BlockFactory):
+class PodcastHeaderFactory(zeit.content.cp.blocks.block.BlockFactory):
     produces = PodcastHeaderBlock
-    title = _('Podcastblock')
+    title = _('Podcast Header')
 
 
 @grok.implementer(IPodcastMetadataBlock)

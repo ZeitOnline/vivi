@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Fri Aug  1 10:59:36 2025\n"
+"POT-Creation-Date: Fri Aug  1 11:23:45 2025\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -2699,7 +2699,7 @@ msgid "Area"
 msgstr ""
 
 #: zeit/content/cp/blocks/audio.py:17
-msgid "Podcastblock"
+msgid "Podcast Header"
 msgstr ""
 
 #: zeit/content/cp/blocks/audio.py:31
@@ -2799,7 +2799,7 @@ msgid "Podcast Header Block"
 msgstr ""
 
 #: zeit/content/cp/browser/blocks/layout.podcastheader.content.pt:7
-msgid "Changes centerpage layout for podcast display"
+msgid "Displays a header for this podcast series centerpage."
 msgstr ""
 
 #: zeit/content/cp/browser/blocks/layout.podcastmetadata.content.pt:2
@@ -2807,7 +2807,7 @@ msgid "Podcast Metadata Block"
 msgstr ""
 
 #: zeit/content/cp/browser/blocks/layout.podcastmetadata.content.pt:7
-msgid "Displays metadata for this podcast series centerpage"
+msgid "Displays metadata for this podcast series centerpage."
 msgstr ""
 
 #: zeit/content/cp/browser/blocks/layout.teaser-automatic.edit-properties.pt:1
@@ -3207,7 +3207,7 @@ msgstr ""
 msgid "Enable RSS Tracking-Parameter"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:704
+#: zeit/content/cp/interfaces.py:702
 msgid "Podcast description"
 msgstr ""
 

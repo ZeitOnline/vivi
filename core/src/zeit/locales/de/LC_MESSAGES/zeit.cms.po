@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Fri Aug  1 10:59:36 2025\n"
+"POT-Creation-Date: Fri Aug  1 11:23:45 2025\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -2653,8 +2653,8 @@ msgid "Area"
 msgstr "Fläche"
 
 #: zeit/content/cp/blocks/audio.py:17
-msgid "Podcastblock"
-msgstr "Podcastblock"
+msgid "Podcast Header"
+msgstr "Podcast-Header"
 
 #: zeit/content/cp/blocks/audio.py:31
 msgid "Podcast Metadata"
@@ -2745,16 +2745,16 @@ msgid "Podcast Header Block"
 msgstr "Podcast-Header-Block"
 
 #: zeit/content/cp/browser/blocks/layout.podcastheader.content.pt:7
-msgid "Changes centerpage layout for podcast display"
-msgstr "Ändert das Layout der Centerpage für die Anzeige von Podcasts"
+msgid "Displays a header for this podcast series centerpage."
+msgstr "Zeigt den Header für diese Podcast-Serien-Centerpage."
 
 #: zeit/content/cp/browser/blocks/layout.podcastmetadata.content.pt:2
 msgid "Podcast Metadata Block"
 msgstr "Podcast-Metadaten-Block"
 
 #: zeit/content/cp/browser/blocks/layout.podcastmetadata.content.pt:7
-msgid "Displays metadata for this podcast series centerpage"
-msgstr "Zeigt Metadaten für diese Podcast-Serien-Centerpage"
+msgid "Displays metadata for this podcast series centerpage."
+msgstr "Zeigt Metadaten für diese Podcast-Serien-Centerpage."
 
 #: zeit/content/cp/browser/blocks/layout.teaser-automatic.edit-properties.pt:1
 #: zeit/content/cp/browser/layout.block.edit-properties.pt:1
@@ -3143,7 +3143,7 @@ msgstr "Jobbox Ticker"
 msgid "Enable RSS Tracking-Parameter"
 msgstr "RSS Tracking-Parameter aktivieren"
 
-#: zeit/content/cp/interfaces.py:704
+#: zeit/content/cp/interfaces.py:702
 msgid "Podcast description"
 msgstr "Podcastbeschreibung"
 
@@ -4826,6 +4826,12 @@ msgstr "Format"
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:53
 msgid "with info"
 msgstr "mit Info"
+
+#~ msgid "Podcastblock"
+#~ msgstr "Podcastblock"
+
+#~ msgid "Changes centerpage layout for podcast display"
+#~ msgstr "Ändert das Layout der Centerpage für die Anzeige von Podcasts"
 
 #~ msgid "Cardstack block"
 #~ msgstr "Kartenstapel"
