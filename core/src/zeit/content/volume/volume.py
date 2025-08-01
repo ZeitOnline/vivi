@@ -314,11 +314,6 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
             for content in zeit.edit.interfaces.IElementReferences(article, [])
             if self._needs_publishing(content)
         ]
-        premium_audio = zeit.content.audio.interfaces.IAudioReferences(article).get_by_type(
-            'premium'
-        )
-        if premium_audio:
-            with_dependencies.append(premium_audio[0])
         with_dependencies.append(article)
         return with_dependencies
 
