@@ -1,7 +1,9 @@
 from pendulum import datetime
+import pendulum
 import transaction
 
 from zeit.cms.checkout.helper import checked_out
+from zeit.cms.content.interfaces import ISemanticChange
 from zeit.cms.workflow.interfaces import IPublishInfo
 from zeit.content.article.article import Article
 from zeit.content.article.interfaces import IArticle
@@ -26,6 +28,9 @@ class TestCreateAudio(zeit.mediaservice.testing.FunctionalTestCase):
         assert audio.audio_type == 'premium'
         assert audio.url == 'http://example.com/example.mp3'
         assert audio.duration == 282
+        assert (
+            ISemanticChange(audio).last_semantic_change.diff(pendulum.now('UTC')).in_minutes() <= 1
+        )
 
 
 class TestVolumeArticleAudios(zeit.mediaservice.testing.SQLTestCase):
