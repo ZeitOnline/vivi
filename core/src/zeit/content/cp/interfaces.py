@@ -693,3 +693,14 @@ class IPodcastHeaderBlock(IBlock):
     the podcasts.xml source"""
 
     pass
+
+
+class IPodcastMetadataBlock(IBlock):
+    """A podcast metadata block, that display podcast metadata
+    information on the centerpage. Most of the displayed data
+    is read from the podcasts.xml via the podcast series."""
+
+    description = zope.schema.Text(
+        title=_('Podcast description'),
+        required=False,
+    )

@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Tue Jul 29 15:13:47 2025\n"
+"POT-Creation-Date: Fri Aug  1 10:59:36 2025\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -359,20 +359,20 @@ msgstr ""
 msgid "Logout"
 msgstr ""
 
-#: zeit/cms/browser/widget.py:57
+#: zeit/cms/browser/widget.py:58
 msgid "The object could not be found."
 msgstr ""
 
-#: zeit/cms/browser/widget.py:358
+#: zeit/cms/browser/widget.py:359
 #: zeit/cms/repository/browser/repository.py:166
 msgid "The object '${id}' could not be found."
 msgstr ""
 
-#: zeit/cms/browser/widget.py:365
+#: zeit/cms/browser/widget.py:366
 msgid "'${id}' does not have an accepted type (${types})."
 msgstr ""
 
-#: zeit/cms/browser/widget.py:616
+#: zeit/cms/browser/widget.py:619
 msgid "Type to find entries ..."
 msgstr ""
 
@@ -2702,6 +2702,10 @@ msgstr ""
 msgid "Podcastblock"
 msgstr ""
 
+#: zeit/content/cp/blocks/audio.py:31
+msgid "Podcast Metadata"
+msgstr ""
+
 #: zeit/content/cp/blocks/cpextra.py:31
 msgid "CP extra"
 msgstr ""
@@ -2796,6 +2800,14 @@ msgstr ""
 
 #: zeit/content/cp/browser/blocks/layout.podcastheader.content.pt:7
 msgid "Changes centerpage layout for podcast display"
+msgstr ""
+
+#: zeit/content/cp/browser/blocks/layout.podcastmetadata.content.pt:2
+msgid "Podcast Metadata Block"
+msgstr ""
+
+#: zeit/content/cp/browser/blocks/layout.podcastmetadata.content.pt:7
+msgid "Displays metadata for this podcast series centerpage"
 msgstr ""
 
 #: zeit/content/cp/browser/blocks/layout.teaser-automatic.edit-properties.pt:1
@@ -3193,6 +3205,10 @@ msgstr ""
 
 #: zeit/content/cp/interfaces.py:684
 msgid "Enable RSS Tracking-Parameter"
+msgstr ""
+
+#: zeit/content/cp/interfaces.py:704
+msgid "Podcast description"
 msgstr ""
 
 #: zeit/content/dynamicfolder/browser/materialize.pt:3
