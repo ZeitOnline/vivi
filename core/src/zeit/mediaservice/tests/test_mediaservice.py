@@ -153,7 +153,6 @@ class TestVolumeArticleAudios(zeit.mediaservice.testing.SQLTestCase):
         article = self.repository['2025']['01']['article01']
         article_uuid = zeit.cms.content.interfaces.IUUID(article).shortened
         audio_folder = zeit.cms.content.add.find_or_create_folder('premium', 'audio', '2025', '01')
-        transaction.commit()
 
         (
             AudioBuilder()
