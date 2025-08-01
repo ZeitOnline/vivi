@@ -69,8 +69,6 @@ True
 Date...UTC...
 >>> log_entry.message
 'Foo'
->>> log_entry.mapping is None
-True
 
 
 When we log another text, we'll get two results. Also, when a principal is
@@ -90,19 +88,6 @@ The order is oldest first:
 'bar'
 >>> result[1].principal
 'test.hans'
-
-
-It is possible to pass a mapping to the log which can be used for translating
-variables in the message:
-
->>> log.log(content, "baz", dict(foo='bar'))
->>> result = list(log.get_log(content))
->>> len(result)
-3
->>> result[-1].message
-'baz'
->>> result[-1].mapping
-{'foo': 'bar'}
 
 
 When we log to another object, the log is obviously seperated:
@@ -138,21 +123,19 @@ True
 We get the same log messages here as when asking the utility directly:
 
 >>> [entry.message for entry in content_log.get_log()]
-['Foo', 'bar', 'baz']
+['Foo', 'bar']
 
 We can also create new entries:
 
->>> content_log.log('bling', dict())
+>>> content_log.log('bling')
 >>> [entry.message for entry in content_log.get_log()]
-['Foo', 'bar', 'baz', 'bling']
->>> list(content_log.get_log())[-1].mapping
-{}
+['Foo', 'bar', 'bling']
 
 The log adapter also has an attribute `logs` which is a property of
 get_log:
 
 >>> len(content_log.logs)
-4
+3
 >>> content_log.logs
 (<zeit.objectlog.objectlog.LogEntry object at 0x...>, ...)
 
@@ -168,7 +151,7 @@ The `logs` property is contrainted with a source:
 >>> field = field.bind(content_log)
 >>> source = field.value_type.source
 >>> len(list(source))
-4
+3
 >>> list(source)
 [<zeit.objectlog.objectlog.LogEntry object at 0x...>, ...]
 
@@ -232,7 +215,7 @@ the log is accessed through the ILog.logs property. Let's create a processor
 that reduces the list of log entries to just the last two:
 
 >>> [entry.message for entry in content_log.logs]
-['not-there-log', 'bling', 'baz', 'bar', 'Foo']
+['not-there-log', 'bling', 'bar', 'Foo']
 
 >>> @zope.component.adapter(Content)
 ... @zope.interface.implementer(zeit.objectlog.interfaces.ILogProcessor)
@@ -249,7 +232,7 @@ that reduces the list of log entries to just the last two:
 The adapter does not affect the get_log method:
 
 >>> [entry.message for entry in content_log.get_log()]
-['Foo', 'bar', 'baz', 'bling', 'not-there-log']
+['Foo', 'bar', 'bling', 'not-there-log']
 
 
 Cleaning the log
