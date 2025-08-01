@@ -497,22 +497,28 @@ class Followings(grok.Adapter, IgnoreMixin):
     grok.context(zeit.content.article.interfaces.IArticle)
     grok.name('followings')
 
+    def get_following_type(self):
+        if self.context.serie is None or self.context.serie.url == '-':
+            return None
+        audio_refs = zeit.content.audio.interfaces.IAudioReferences(self.context, None)
+        if audio_refs is not None and bool(audio_refs.get_by_type('podcast')):
+            return 'podcast'
+        return 'series'
+
     def publish_json(self):
         if self.ignore():
             return None
-
-        article = self.context
-        if article.serie is None:
-            return None
-        # Check if the Article has a podcast
-        audio_refs = zeit.content.audio.interfaces.IAudioReferences(article, None)
-        if audio_refs is None or not bool(audio_refs.get_by_type('podcast')):
+        following_type = self.get_following_type()
+        if following_type is None:
             return None
         series_content = zeit.cms.interfaces.ICMSContent(
-            f'{zeit.cms.interfaces.ID_NAMESPACE}serie/{article.serie.url}'
+            f'{zeit.cms.interfaces.ID_NAMESPACE}serie/{self.context.serie.url}'
         )
         series = zeit.cms.content.interfaces.IUUID(series_content).shortened
-        return {'parent_uuid': series}
+        created = zeit.cms.workflow.interfaces.IPublishInfo(
+            self.context
+        ).date_first_released.isoformat()
+        return {'parent_uuid': series, 'created': created}
 
     def retract_json(self):
         return {}
