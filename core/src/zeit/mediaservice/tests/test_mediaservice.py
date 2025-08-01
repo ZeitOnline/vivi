@@ -69,13 +69,12 @@ class TestVolumeArticleAudios(zeit.mediaservice.testing.SQLTestCase):
         volume = self.repository['2025']['01']['ausgabe']
         zeit.mediaservice.mediaservice.create_audio_objects(volume.uniqueId)
         all_content_to_publish = volume.articles_with_references_for_publishing()
-
         article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2025/01/article01')
-        assert article.has_audio
+        self.assertTrue(article.has_audio)
+        audio = zeit.content.audio.interfaces.IAudioReferences(article).items[0]
         self.assertIn(article, all_content_to_publish)
-        self.assertIn(
-            zeit.content.audio.interfaces.IAudioReferences(article).items[0], all_content_to_publish
-        )
+        self.assertIn(audio, all_content_to_publish)
+        self.assertEqual(audio.title, article.title)
 
     def test_mediaservice_creates_premium_audio_for_published_article(self):
         volume = self.repository['2025']['01']['ausgabe']
