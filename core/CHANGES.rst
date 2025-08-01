@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.150.0 (2025-08-01)
+--------------------
+
+- WCM-983: No need to separately collect audio objects for publishing, they are already declared as dependencies
+
+- WCM-983: Set last_semantic_change for premium audio
+
+
 7.149.0 (2025-08-01)
 --------------------
 

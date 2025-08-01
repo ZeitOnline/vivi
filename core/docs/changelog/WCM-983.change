@@ -1,1 +1,0 @@
-WCM-983: No need to separately collect audio objects for publishing, they are already declared as dependencies
