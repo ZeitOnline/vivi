@@ -1,4 +1,5 @@
 from pendulum import datetime
+import time_machine
 
 import zeit.objectlog.interfaces
 import zeit.workflow.testing
@@ -8,9 +9,12 @@ class ObjectLog(zeit.workflow.testing.BrowserTestCase):
     def test_log_entries_are_grouped_by_date(self):
         testcontent = self.repository['testcontent']
         object_log = zeit.objectlog.interfaces.ILog(testcontent)
-        object_log.log('one', timestamp=datetime(2012, 6, 12, 9, 14))
-        object_log.log('two', timestamp=datetime(2012, 6, 12, 10, 25))
-        object_log.log('three', timestamp=datetime(2012, 6, 13, 12, 8))
+        with time_machine.travel(datetime(2012, 6, 12, 9, 14)):
+            object_log.log('one')
+        with time_machine.travel(datetime(2012, 6, 12, 10, 25)):
+            object_log.log('two')
+        with time_machine.travel(datetime(2012, 6, 13, 12, 8)):
+            object_log.log('three')
         self.browser.open('http://localhost/++skin++vivi/repository/testcontent/@@objectlog')
         self.assertEllipsis(
             """...

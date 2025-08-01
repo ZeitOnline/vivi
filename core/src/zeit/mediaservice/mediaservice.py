@@ -25,8 +25,10 @@ def create_audio_objects(volume_uniqueid):
     mediaservice = MediaService()
     count = mediaservice.create_audio_objects(volume)
     zeit.objectlog.interfaces.ILog(volume).log(
-        _('Found ${existing} and created ${created} mediaservice audio objects'),
-        mapping=dict(count),
+        _(
+            'Found ${existing} and created ${created} mediaservice audio objects',
+            mapping=dict(count),
+        ),
     )
 
 
