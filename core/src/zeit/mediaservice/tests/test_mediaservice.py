@@ -1,7 +1,9 @@
 from pendulum import datetime
+import pendulum
 import transaction
 
 from zeit.cms.checkout.helper import checked_out
+from zeit.cms.content.interfaces import ISemanticChange
 from zeit.cms.workflow.interfaces import IPublishInfo
 from zeit.content.article.article import Article
 from zeit.content.article.interfaces import IArticle
@@ -26,6 +28,9 @@ class TestCreateAudio(zeit.mediaservice.testing.FunctionalTestCase):
         assert audio.audio_type == 'premium'
         assert audio.url == 'http://example.com/example.mp3'
         assert audio.duration == 282
+        assert (
+            ISemanticChange(audio).last_semantic_change.diff(pendulum.now('UTC')).in_minutes() <= 1
+        )
 
 
 class TestVolumeArticleAudios(zeit.mediaservice.testing.SQLTestCase):
@@ -69,13 +74,12 @@ class TestVolumeArticleAudios(zeit.mediaservice.testing.SQLTestCase):
         volume = self.repository['2025']['01']['ausgabe']
         zeit.mediaservice.mediaservice.create_audio_objects(volume.uniqueId)
         all_content_to_publish = volume.articles_with_references_for_publishing()
-
         article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2025/01/article01')
-        assert article.has_audio
+        self.assertTrue(article.has_audio)
+        audio = zeit.content.audio.interfaces.IAudioReferences(article).items[0]
         self.assertIn(article, all_content_to_publish)
-        self.assertIn(
-            zeit.content.audio.interfaces.IAudioReferences(article).items[0], all_content_to_publish
-        )
+        self.assertIn(audio, all_content_to_publish)
+        self.assertEqual(audio.title, article.title)
 
     def test_mediaservice_creates_premium_audio_for_published_article(self):
         volume = self.repository['2025']['01']['ausgabe']
@@ -121,7 +125,6 @@ class TestVolumeArticleAudios(zeit.mediaservice.testing.SQLTestCase):
         ).referenced_by(article).build()
         transaction.commit()
         zeit.mediaservice.mediaservice.create_audio_objects(volume.uniqueId)
-        transaction.commit()
 
         article = self.repository['2025']['01']['article01']
         assert article.has_audio
@@ -141,7 +144,6 @@ class TestVolumeArticleAudios(zeit.mediaservice.testing.SQLTestCase):
         article = self.repository['2025']['01']['article01']
         article_uuid = zeit.cms.content.interfaces.IUUID(article).shortened
         audio_folder = zeit.cms.content.add.find_or_create_folder('premium', 'audio', '2025', '01')
-        transaction.commit()
 
         AudioBuilder().with_audio_type('custom').unique_id(
             audio_folder.uniqueId + '/' + article_uuid

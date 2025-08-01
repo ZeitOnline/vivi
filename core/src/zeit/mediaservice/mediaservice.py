@@ -1,9 +1,11 @@
 import collections
 
 import opentelemetry.trace
+import pendulum
 import zope.component
 
 from zeit.cms.checkout.helper import checked_out
+from zeit.cms.content.interfaces import ISemanticChange
 from zeit.cms.i18n import MessageFactory as _
 from zeit.connector.search import SearchVar
 from zeit.content.audio.interfaces import IAudioReferences
@@ -66,6 +68,7 @@ class MediaService:
             if article_uuid.shortened not in folder:
                 count['created'] += 1
                 audio = self.create_audio_object(mediasync_id, audio_info)
+                audio.title = article.title
                 folder[article_uuid.shortened] = audio
             else:
                 count['existing'] += 1
@@ -85,4 +88,5 @@ class MediaService:
         audio.external_id = mediasync_id
         audio.url = audio_info['url']
         audio.duration = audio_info['duration']
+        ISemanticChange(audio).last_semantic_change = pendulum.now('UTC')
         return audio
