@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Tue Jul 29 15:13:47 2025\n"
+"POT-Creation-Date: Fri Aug  1 11:23:45 2025\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -332,19 +332,19 @@ msgstr "Entfernen"
 msgid "Logout"
 msgstr "Abmelden"
 
-#: zeit/cms/browser/widget.py:57
+#: zeit/cms/browser/widget.py:58
 msgid "The object could not be found."
 msgstr "Das Objekt konnte nicht gefunden werden."
 
-#: zeit/cms/browser/widget.py:358 zeit/cms/repository/browser/repository.py:166
+#: zeit/cms/browser/widget.py:359 zeit/cms/repository/browser/repository.py:166
 msgid "The object '${id}' could not be found."
 msgstr "Das Objekt »${id}« konnte nicht gefunden werden."
 
-#: zeit/cms/browser/widget.py:365
+#: zeit/cms/browser/widget.py:366
 msgid "'${id}' does not have an accepted type (${types})."
 msgstr "'${id}' hat keinen hier akzeptierten Typ (${types})."
 
-#: zeit/cms/browser/widget.py:616
+#: zeit/cms/browser/widget.py:619
 msgid "Type to find entries ..."
 msgstr "Name eingeben …"
 
@@ -2653,8 +2653,12 @@ msgid "Area"
 msgstr "Fläche"
 
 #: zeit/content/cp/blocks/audio.py:17
-msgid "Podcastblock"
-msgstr "Podcastblock"
+msgid "Podcast Header"
+msgstr "Podcast-Header"
+
+#: zeit/content/cp/blocks/audio.py:31
+msgid "Podcast Metadata"
+msgstr "Podcast-Metadaten"
 
 #: zeit/content/cp/blocks/cpextra.py:31
 msgid "CP extra"
@@ -2741,8 +2745,16 @@ msgid "Podcast Header Block"
 msgstr "Podcast-Header-Block"
 
 #: zeit/content/cp/browser/blocks/layout.podcastheader.content.pt:7
-msgid "Changes centerpage layout for podcast display"
-msgstr "Ändert das Layout der Centerpage für die Anzeige von Podcasts"
+msgid "Displays a header for this podcast series centerpage."
+msgstr "Zeigt den Header für diese Podcast-Serien-Centerpage."
+
+#: zeit/content/cp/browser/blocks/layout.podcastmetadata.content.pt:2
+msgid "Podcast Metadata Block"
+msgstr "Podcast-Metadaten-Block"
+
+#: zeit/content/cp/browser/blocks/layout.podcastmetadata.content.pt:7
+msgid "Displays metadata for this podcast series centerpage."
+msgstr "Zeigt Metadaten für diese Podcast-Serien-Centerpage."
 
 #: zeit/content/cp/browser/blocks/layout.teaser-automatic.edit-properties.pt:1
 #: zeit/content/cp/browser/layout.block.edit-properties.pt:1
@@ -3130,6 +3142,10 @@ msgstr "Jobbox Ticker"
 #: zeit/content/cp/interfaces.py:684
 msgid "Enable RSS Tracking-Parameter"
 msgstr "RSS Tracking-Parameter aktivieren"
+
+#: zeit/content/cp/interfaces.py:702
+msgid "Podcast description"
+msgstr "Podcastbeschreibung"
 
 #. Default: "Materialize content"
 #: zeit/content/dynamicfolder/browser/materialize.pt:3
@@ -4811,6 +4827,12 @@ msgstr "Format"
 msgid "with info"
 msgstr "mit Info"
 
+#~ msgid "Podcastblock"
+#~ msgstr "Podcastblock"
+
+#~ msgid "Changes centerpage layout for podcast display"
+#~ msgstr "Ändert das Layout der Centerpage für die Anzeige von Podcasts"
+
 #~ msgid "Cardstack block"
 #~ msgstr "Kartenstapel"
 
@@ -5068,9 +5090,6 @@ msgstr "mit Info"
 
 #~ msgid "Enable Twitter Print"
 #~ msgstr "Direkt auf Twitter @DIEZEIT veröffentlichen"
-
-#~ msgid "Podcast id"
-#~ msgstr "Episoden-ID"
 
 #~ msgid "Provider"
 #~ msgstr "Quelle"
