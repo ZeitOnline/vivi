@@ -36,7 +36,7 @@ class ObjectLog(persistent.Persistent):
         for key in object_log:
             yield object_log[key]
 
-    def log(self, object, message, timestamp=None):
+    def log(self, object, message):
         logger.debug('Logging: %s %s' % (object, message))
         obj_key = zope.app.keyreference.interfaces.IKeyReference(object)
 
@@ -45,7 +45,7 @@ class ObjectLog(persistent.Persistent):
             # Create a timeline for the object.
             object_log = self._object_log[obj_key] = BTrees.family64.IO.BTree()
 
-        log_entry = LogEntry(object, message, timestamp)
+        log_entry = LogEntry(object, message)
 
         time_key = int(time.mktime(log_entry.time.utctimetuple()) * 10e6)
         while not object_log.insert(time_key, log_entry):
@@ -99,8 +99,8 @@ class ObjectLog(persistent.Persistent):
 
 @zope.interface.implementer(zeit.objectlog.interfaces.ILogEntry)
 class LogEntry(persistent.Persistent):
-    def __init__(self, object, message, timestamp):
-        self.time = timestamp or pendulum.now('UTC')
+    def __init__(self, object, message):
+        self.time = pendulum.now('UTC')
         self.object_reference = zope.app.keyreference.interfaces.IKeyReference(object)
         self.message = message
         participations = zope.security.management.getInteraction().participations
@@ -119,9 +119,9 @@ class Log:
     def __init__(self, context):
         self.context = context
 
-    def log(self, message, timestamp=None):
+    def log(self, message):
         log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
-        log.log(self.context, message, timestamp)
+        log.log(self.context, message)
 
     def get_log(self):
         log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)

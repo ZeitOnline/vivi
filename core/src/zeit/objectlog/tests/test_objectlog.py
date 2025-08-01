@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import timedelta
 from unittest import mock
 
 import transaction
@@ -33,12 +33,6 @@ class ObjectLog(zeit.objectlog.testing.SQLTestCase):
         self.getRootFolder()['content'] = self.content
         transaction.commit()
 
-    def test_timestamp_can_be_overridden(self):
-        log = zeit.objectlog.interfaces.ILog(self.content)
-        log.log('foo', timestamp=datetime(2012, 6, 12, 13, 49))
-        entries = list(log.get_log())
-        self.assertEqual(datetime(2012, 6, 12, 13, 49), entries[-1].time)
-
     def test_delete_removes_entries_of_object(self):
         content2 = zeit.objectlog.testing.Content()
         self.getRootFolder()['content2'] = content2
@@ -62,7 +56,7 @@ class ObjectLog(zeit.objectlog.testing.SQLTestCase):
         self.repository['2025']['testcontent'] = ExampleContentType()
         content = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2025/testcontent')
         log = zeit.objectlog.interfaces.ILog(content)
-        log.log('foo', timestamp=datetime(2025, 7, 18, 16, 35))
+        log.log('foo')
         original_log = list(zeit.objectlog.interfaces.ILog(content).get_log())
         self.repository['2025']['testcontent2'] = ExampleContentType()
         ref = zeit.cms.content.keyreference.UniqueIdKeyReference(

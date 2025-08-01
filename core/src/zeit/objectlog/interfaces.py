@@ -10,7 +10,7 @@ import zeit.objectlog.source
 class IObjectLog(zope.interface.Interface):
     """Utility which logs object changes."""
 
-    def log(object, message, timestamp=None):
+    def log(object, message):
         """Log message for object."""
 
     def get_log(object):
@@ -41,7 +41,7 @@ class ILogEntry(zope.interface.Interface):
 class ILog(zope.interface.Interface):
     """Logging interface for one object."""
 
-    def log(message, timestamp=None):
+    def log(message):
         """Log message for context."""
 
     def get_log():
