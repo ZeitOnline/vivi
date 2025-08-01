@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.149.0 (2025-08-01)
+--------------------
+
+- WCM-1026: Generate publisher bigquery and datascience properties regardless of TMS validation rules
+
+- WCM-1032: Set a title on audio object, so it appears in the vivi search
+
+
 7.148.0 (2025-07-30)
 --------------------
 
