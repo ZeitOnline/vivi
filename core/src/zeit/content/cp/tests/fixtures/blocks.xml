@@ -6,4 +6,5 @@
   <module id="jobbox_ticker" title="Jobbox Ticker"/>
   <module id="teaser" title="Teaser"/>
   <module id="podcastheader" title="Podcastheader"/>
+  <module id="podcastmetadata" title="Podcast Metadata"/>
 </modules>
