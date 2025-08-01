@@ -405,6 +405,17 @@ def set_podcast_header_when_article_has_podcast_audio(context, event):
 
 
 @grok.subscribe(
+    zeit.content.article.interfaces.IArticle, zeit.cms.checkout.interfaces.IBeforeCheckinEvent
+)
+def set_has_audio_flag_according_to_audio_references(context, event):
+    audio = zeit.content.audio.interfaces.IAudioReferences(context)
+    if audio.get_by_type('premium'):
+        context.has_audio = True
+    else:
+        context.has_audio = None  # make use of default=False
+
+
+@grok.subscribe(
     zeit.content.article.interfaces.IArticle, zeit.cms.checkout.interfaces.IAfterCheckoutEvent
 )
 def ensure_block_ids(context, event):
