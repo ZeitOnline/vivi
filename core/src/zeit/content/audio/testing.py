@@ -2,6 +2,8 @@ from functools import partialmethod
 from typing import TypeVar
 import importlib.resources
 
+import transaction
+
 from zeit.cms.checkout.helper import checked_out
 from zeit.content.article.interfaces import IArticle
 from zeit.content.audio.audio import Audio
@@ -119,6 +121,7 @@ class AudioBuilder:
             with checked_out(self.reference, raise_if_error=True) as co:
                 references = IAudioReferences(co)
                 references.add(audio)
+            transaction.commit()
 
         return audio
 

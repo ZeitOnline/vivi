@@ -120,7 +120,6 @@ class TestVolumeArticleAudios(zeit.mediaservice.testing.SQLTestCase):
         ).referenced_by(article).build()
         transaction.commit()
         zeit.mediaservice.mediaservice.create_audio_objects(volume.uniqueId)
-        transaction.commit()
 
         article = self.repository['2025']['01']['article01']
         assert article.has_audio
@@ -140,7 +139,6 @@ class TestVolumeArticleAudios(zeit.mediaservice.testing.SQLTestCase):
         article = self.repository['2025']['01']['article01']
         article_uuid = zeit.cms.content.interfaces.IUUID(article).shortened
         audio_folder = zeit.cms.content.add.find_or_create_folder('premium', 'audio', '2025', '01')
-        transaction.commit()
 
         AudioBuilder().with_audio_type('custom').unique_id(
             audio_folder.uniqueId + '/' + article_uuid
