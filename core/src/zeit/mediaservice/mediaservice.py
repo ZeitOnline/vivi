@@ -79,7 +79,6 @@ class MediaService:
                 missing_audio_reference = not IAudioReferences(article).get_by_type('premium')
                 if not article.has_audio or missing_audio_reference:
                     with checked_out(article, raise_if_error=True) as co:
-                        co.has_audio = True
                         if missing_audio_reference:
                             references = IAudioReferences(co)
                             references.add(folder[article_uuid.shortened])
