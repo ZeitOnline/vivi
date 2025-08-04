@@ -55,7 +55,7 @@ class MediaService:
         return zeit.cms.interfaces.ICMSContent(result[0][0])
 
     def _create_audio_objects(self, folder, audios):
-        count = collections.Counter()
+        count = collections.Counter(created=0, existing=0)
         for mediasync_id, audio_info in audios.items():
             article = self._get_article(mediasync_id)
             if not article:

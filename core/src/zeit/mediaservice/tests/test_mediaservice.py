@@ -18,7 +18,7 @@ import zeit.mediaservice.mediaservice
 import zeit.mediaservice.testing
 
 
-class TestCreateAudio(zeit.mediaservice.testing.FunctionalTestCase):
+class TestMediaService(zeit.mediaservice.testing.FunctionalTestCase):
     def test_creates_audio_object(self):
         mediaservice = zeit.mediaservice.mediaservice.MediaService()
         audio = mediaservice.create_audio_object(
@@ -31,6 +31,14 @@ class TestCreateAudio(zeit.mediaservice.testing.FunctionalTestCase):
         assert (
             ISemanticChange(audio).last_semantic_change.diff(pendulum.now('UTC')).in_minutes() <= 1
         )
+
+    def test_correctly_counts_zero_objects(self):
+        mediaservice = zeit.mediaservice.mediaservice.MediaService()
+        counts = mediaservice.create_audio_objects(zeit.content.volume.volume.Volume())
+        assert 'existing' in counts
+        assert counts['existing'] == 0
+        assert 'created' in counts
+        assert counts['created'] == 0
 
 
 class TestVolumeArticleAudios(zeit.mediaservice.testing.SQLTestCase):
