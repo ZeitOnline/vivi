@@ -18,7 +18,10 @@ class Connection:
         )
         data = response.json()
         result = {}
-        for part_of_volume in data['dataFeedElement'][0]['item'].get('hasPart', []):
+        volumes = data['dataFeedElement']
+        if not volumes:
+            return result
+        for part_of_volume in volumes[0]['item'].get('hasPart', []):
             for article in part_of_volume.get('hasPart', []):
                 mediasync_id = article.get('identifier', None)
                 mp3_object = next(
