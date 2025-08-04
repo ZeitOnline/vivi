@@ -16,8 +16,7 @@ The serie source returns the possible "serie" values:
 >>> attr = ('serienname', 'title', 'url', 'column')
 >>> pprint(sorted([[getattr(x, a) for a in attr] for x in serie],
 ...               key=lambda x: x[0]))
-[['-', '-', '-', False],
- ['Autotest', 'Autotest', 'zeitmagazin-autotest', False],
+[['Autotest', 'Autotest', 'zeitmagazin-autotest', False],
  ['BR', 'BR', 'br', False],
  ['Bachelor Tagebuch', 'Bachelor Tagebuch', 'bachelor-tagebuch', False],
  ['Cat Jokes', 'Cat Jokes', 'cat-jokes-pawdcast', False],

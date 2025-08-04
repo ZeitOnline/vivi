@@ -1,0 +1,28 @@
+<head>
+  <attribute ns="http://namespaces.zeit.de/CMS/meta" name="type">centerpage-2009</attribute>
+  <attribute ns="http://namespaces.zeit.de/CMS/meta" name="provides">&lt;pickle&gt;
+  &lt;initialized_object&gt;
+    &lt;klass&gt;
+      &lt;global name="Provides" module="zope.interface.declarations"/&gt;
+    &lt;/klass&gt;
+    &lt;arguments&gt;
+      &lt;tuple&gt;
+        &lt;global name="CenterPage" module="zeit.content.cp.centerpage"/&gt;
+        &lt;global name="IZONContent" module="zeit.cms.section.interfaces"/&gt;
+      &lt;/tuple&gt;
+    &lt;/arguments&gt;
+  &lt;/initialized_object&gt;
+&lt;/pickle&gt;</attribute>
+  <attribute ns="http://namespaces.zeit.de/CMS/document" name="uuid">{urn:uuid:aef26ab6-a362-41de-a1d8-cb61665e76cb}</attribute>
+  <attribute ns="http://namespaces.zeit.de/CMS/document" name="serie">Geschafft!</attribute>
+  <attribute ns="http://namespaces.zeit.de/CMS/document" name="ressort">Administratives</attribute>
+  <attribute ns="http://namespaces.zeit.de/CMS/document" name="date_created">2025-08-04T11:36:45.287428+00:00</attribute>
+  <attribute ns="http://namespaces.zeit.de/CMS/document" name="overscrolling">no</attribute>
+  <attribute ns="http://namespaces.zeit.de/CMS/document" name="last_modified_by">martin.stolle@zeit.de</attribute>
+  <attribute ns="http://namespaces.zeit.de/CMS/document" name="date_last_checkout">2025-08-04T11:37:57.326879+00:00</attribute>
+  <attribute ns="http://namespaces.zeit.de/CMS/document" name="date_last_modified">2025-08-04T11:39:28.676467+00:00</attribute>
+  <attribute ns="http://namespaces.zeit.de/CMS/document" name="last-semantic-change">2025-08-04T11:36:45.287641+00:00</attribute>
+  <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="published">no</attribute>
+  <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="product-id">ZEDE</attribute>
+  <attribute ns="http://namespaces.zeit.de/CMS/zeit.content.cp" name="type">serienseite</attribute>
+</head>

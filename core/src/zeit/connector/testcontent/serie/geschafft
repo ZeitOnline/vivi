@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<centerpage xmlns:cp="http://namespaces.zeit.de/CMS/cp">
+  <head/>
+  <body><title>Serie: Geschafft!</title><cluster visible="True" area="id-60922162-46d2-4819-9a45-8acfc7b93523" kind="standard" kind_title="Standard-Region"><region visible="True" area="id-b4faace0-804e-4dae-b8ad-e9e25d5156a4" kind="standard"><container cp:type="markup" module="markup" visible="True" cp:__name__="id-7c8f9d13-bcc3-4fe6-bc8d-8f7590d36ca5" align="left"><text><p>Geschafft! Die Serie!</p></text></container></region></cluster></body>
+<teaser><title>Serie: Geschafft!</title></teaser></centerpage>
