@@ -7,7 +7,9 @@ import signal
 import sys
 import time
 
+from gocept.runner import from_config  # noqa API
 from opentelemetry.trace import SpanKind
+import gocept.runner
 import opentelemetry.context
 import transaction
 import transaction.interfaces
@@ -135,120 +137,109 @@ def _configure_logging(settings):
         zeit.cms.logging.configure(config)
 
 
-try:
-    from gocept.runner import from_config  # noqa API
-    import gocept.runner
-except ImportError:
-    # Provide fake decorator so zeit.web can avoid importing the zope machinery
-    def runner(*args, **kw):
-        return lambda x: x
+class MainLoop(gocept.runner.runner.MainLoop):
+    def __call__(self):
+        # copy&paste to adjust exception handling in `once` mode.
+        old_site = zope.component.hooks.getSite()
+        zope.component.hooks.setSite(self.app)
 
-    def from_config(*args, **kw):
-        return None
-else:
+        self._is_running = True
 
-    class MainLoop(gocept.runner.runner.MainLoop):
-        def __call__(self):
-            # copy&paste to adjust exception handling in `once` mode.
-            old_site = zope.component.hooks.getSite()
-            zope.component.hooks.setSite(self.app)
+        while self._is_running:
+            context = zeit.cms.tracing.apply_samplerate_productconfig(
+                'zeit.cms.relstorage',
+                'zeit.cms',
+                'samplerate-zodb',
+                opentelemetry.context.get_current(),
+            )
+            context = zeit.cms.tracing.apply_samplerate_productconfig(
+                'zeit.connector.postgresql.tracing', 'zeit.cms', 'samplerate-sql', context
+            )
+            context = opentelemetry.context.set_value(
+                # See opentelemetry.instrumentation.sqlcommenter_utils
+                'SQLCOMMENTER_ORM_TAGS_AND_VALUES',
+                {
+                    'application': 'vivi',
+                    'controller': 'cli',
+                    'route': self.worker.__name__,
+                    # 'action':
+                },
+                context,
+            )
+            context = opentelemetry.context.attach(context)
 
-            self._is_running = True
-
-            while self._is_running:
-                context = zeit.cms.tracing.apply_samplerate_productconfig(
-                    'zeit.cms.relstorage',
-                    'zeit.cms',
-                    'samplerate-zodb',
-                    opentelemetry.context.get_current(),
-                )
-                context = zeit.cms.tracing.apply_samplerate_productconfig(
-                    'zeit.connector.postgresql.tracing', 'zeit.cms', 'samplerate-sql', context
-                )
-                context = opentelemetry.context.set_value(
-                    # See opentelemetry.instrumentation.sqlcommenter_utils
-                    'SQLCOMMENTER_ORM_TAGS_AND_VALUES',
-                    {
-                        'application': 'vivi',
-                        'controller': 'cli',
-                        'route': self.worker.__name__,
-                        # 'action':
-                    },
-                    context,
-                )
-                context = opentelemetry.context.attach(context)
-
-                ticks = None
-                self.begin()
+            ticks = None
+            self.begin()
+            try:
+                tracer = zope.component.getUtility(zeit.cms.interfaces.ITracer)
+                with tracer.start_as_current_span(
+                    'cli %s' % self.worker.__name__, kind=SpanKind.SERVER
+                ):
+                    ticks = self.worker()
+            except (KeyboardInterrupt, SystemExit):
+                self.abort()
+                break
+            except Exception:
+                self.abort()
+                if self.once:
+                    raise
+                else:
+                    log.error('Error in worker', exc_info=True)
+            else:
                 try:
-                    tracer = zope.component.getUtility(zeit.cms.interfaces.ITracer)
-                    with tracer.start_as_current_span(
-                        'cli %s' % self.worker.__name__, kind=SpanKind.SERVER
-                    ):
-                        ticks = self.worker()
-                except (KeyboardInterrupt, SystemExit):
-                    self.abort()
-                    break
-                except Exception:
+                    self.commit()
+                except transaction.interfaces.TransientError:
                     self.abort()
                     if self.once:
                         raise
                     else:
-                        log.error('Error in worker', exc_info=True)
-                else:
-                    try:
-                        self.commit()
-                    except transaction.interfaces.TransientError:
-                        self.abort()
-                        if self.once:
-                            raise
-                        else:
-                            # Ignore silently, the next run will retry.
-                            log.warning('Conflict error', exc_info=True)
-                finally:
-                    if context is not None:
-                        opentelemetry.context.detach(context)
+                        # Ignore silently, the next run will retry.
+                        log.warning('Conflict error', exc_info=True)
+            finally:
+                if context is not None:
+                    opentelemetry.context.detach(context)
 
-                if self.once or ticks is gocept.runner.Exit:
-                    self._is_running = False
-                else:
-                    if ticks is None:
-                        ticks = self.ticks
-                    log.debug('Sleeping %s seconds' % ticks)
-                    time.sleep(ticks)
+            if self.once or ticks is gocept.runner.Exit:
+                self._is_running = False
+            else:
+                if ticks is None:
+                    ticks = self.ticks
+                log.debug('Sleeping %s seconds' % ticks)
+                time.sleep(ticks)
 
-            zope.component.hooks.setSite(old_site)
+        zope.component.hooks.setSite(old_site)
 
-    class runner(gocept.runner.appmain):
-        def __init__(self, ticks=1, principal=None, once=True):
-            super().__init__(ticks=ticks, principal=principal)
-            self.once = once
 
-        def __call__(self, worker_method):
-            # copy&paste to adjust configuration handling.
-            def run():
-                import zeit.cms.zope
+class runner(gocept.runner.appmain):
+    def __init__(self, ticks=1, principal=None, once=True):
+        super().__init__(ticks=ticks, principal=principal)
+        self.once = once
 
-                settings = parse_paste_ini()
-                try:
-                    db = zeit.cms.zope.bootstrap(settings)
-                    root = db.open().root()
-                    # zope.app.publication.ZopePublication.root_name
-                    app = root['Application']
-                    mloop = MainLoop(
-                        app,
-                        self.ticks,
-                        worker_method,
-                        principal=self.get_principal(),
-                        once=self.once,
-                    )
-                    signal.signal(signal.SIGHUP, mloop.stopMainLoop)
-                    signal.signal(signal.SIGTERM, mloop.stopMainLoop)
-                    mloop()
-                finally:
-                    db.close()
+    def __call__(self, worker_method):
+        # copy&paste to adjust configuration handling.
+        def run():
+            import zeit.cms.zope
 
-            return run
+            settings = parse_paste_ini()
+            try:
+                db = zeit.cms.zope.bootstrap(settings)
+                root = db.open().root()
+                # zope.app.publication.ZopePublication.root_name
+                app = root['Application']
+                mloop = MainLoop(
+                    app,
+                    self.ticks,
+                    worker_method,
+                    principal=self.get_principal(),
+                    once=self.once,
+                )
+                signal.signal(signal.SIGHUP, mloop.stopMainLoop)
+                signal.signal(signal.SIGTERM, mloop.stopMainLoop)
+                mloop()
+            finally:
+                db.close()
+
+        return run
 
 
 def commit_with_retry(*, attempts=3, wait=0.5):
