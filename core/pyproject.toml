@@ -266,6 +266,7 @@ vgwort-order-tokens = "zeit.vgwort.token:order_tokens"
 vgwort-report = "zeit.vgwort.report:report_new_documents"
 vivi-config-history = "zeit.cms.history:main"
 vivi-metrics = "zeit.cms.metrics:collect"
+vivi-waitress = "zeit.cms.cli:waitress_serve"
 vivi-zodbpack = "zeit.cms.relstorage:zodbpack"
 zopeshell = "zeit.cms.cli:zope_shell"
 
