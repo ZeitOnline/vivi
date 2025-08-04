@@ -234,13 +234,18 @@ class IConnector(zope.interface.Interface):
 
     def execute_sql(query, timeout=None):
         """
-        Execute `query` and suppress errors.
+        Execute `query`.
+        If configured (e.g. via `zeit.connector:sql-search-suppress-errors`),
+        suppresses errors and timeouts, and returns an empty result instead.
 
         query:
             `sqlalchemy.select(Content)` object
 
         timeout:
             optional statement timeout in ms
+            The main use case is zeit.web, to use a much lower per-query timeout
+            instead of the configured overall connection timeout
+            (think 1-2s vs 5-10s)
 
         returns a sqlalchemy result object
         """
