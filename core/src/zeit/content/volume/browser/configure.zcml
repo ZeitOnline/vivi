@@ -55,7 +55,7 @@
     for="..interfaces.IVolume"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="do-publish-all"
-    class="zeit.workflow.browser.publish.Publish"
+    class=".admin.PublishLightbox"
     template="publish-all.pt"
     permission="zeit.cms.admin.View"
     />

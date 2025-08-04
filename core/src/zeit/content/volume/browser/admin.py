@@ -5,6 +5,7 @@ import zope.browserpage.namedtemplate
 import zope.formlib.form
 import zope.traversing.browser
 
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import IPublish
 import zeit.cms.admin.browser.admin
@@ -18,6 +19,11 @@ class PublishAction(zope.formlib.form.Action):
 class RenderPublishAction(zeit.cms.browser.form.RenderLightboxAction):
     grok.context(PublishAction)
     target = 'do-publish-all'
+
+
+class PublishLightbox(zeit.workflow.browser.publish.Publish):
+    def create_audio_objects(self):
+        return FEATURE_TOGGLES.find('volume_publish_create_audio_objects')
 
 
 class VolumeAdminForm(zeit.cms.admin.browser.admin.EditFormCI):

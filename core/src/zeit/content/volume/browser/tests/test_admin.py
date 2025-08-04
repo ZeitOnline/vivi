@@ -5,6 +5,7 @@ from pendulum import datetime
 import pytest
 import zope.component
 
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.workflow.interfaces import IPublishInfo
 from zeit.content.article.article import Article
 from zeit.content.article.interfaces import IArticle
@@ -112,6 +113,7 @@ class VolumeAdminBrowserTest(zeit.content.volume.testing.BrowserTestCase):
         )
 
     def test_referenced_premium_audio_objects_are_published_as_well(self):
+        FEATURE_TOGGLES.set('volume_publish_create_audio_objects')
         self.create_article_with_references(mediasync_id=1234, name='article_1')
         self.create_article_with_references(mediasync_id=1235, name='article_2', published=True)
 
