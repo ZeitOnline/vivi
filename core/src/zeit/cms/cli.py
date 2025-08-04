@@ -7,15 +7,14 @@ import signal
 import sys
 import time
 
-from gocept.runner import Exit  # noqa API
 from opentelemetry.trace import SpanKind
-import gocept.runner
 import opentelemetry.context
 import transaction
 import transaction.interfaces
 import waitress
 import zope.component
 import zope.component.hooks
+import zope.publisher.base
 
 import zeit.cms.config
 import zeit.cms.logging
@@ -138,9 +137,31 @@ def _configure_logging(settings):
         zeit.cms.logging.configure(config)
 
 
-class MainLoop(gocept.runner.runner.MainLoop):
+class RunnerRequest(zope.publisher.base.BaseRequest):
+    """A custom publisher request for the runner."""
+
+    def __init__(self, *args):
+        super().__init__(None, {}, positional=args)
+
+
+class MainLoop:
+    def __init__(self, app, ticks, worker, principal=None, once=False):
+        self._is_running = False
+        self.app = app
+        self.ticks = ticks
+        self.worker = worker
+        self.once = once
+        if principal is None:
+            self.interaction = False
+        else:
+            self.interaction = True
+            self.principal_id = principal
+
+    def stopMainLoop(self, signum, frame):
+        log.info('Received signal %s, terminating.' % signum)
+        self._is_running = False
+
     def __call__(self):
-        # copy&paste to adjust exception handling in `once` mode.
         old_site = zope.component.hooks.getSite()
         zope.component.hooks.setSite(self.app)
 
@@ -200,7 +221,7 @@ class MainLoop(gocept.runner.runner.MainLoop):
                 if context is not None:
                     opentelemetry.context.detach(context)
 
-            if self.once or ticks is gocept.runner.Exit:
+            if self.once or ticks == 0:
                 self._is_running = False
             else:
                 if ticks is None:
@@ -210,16 +231,45 @@ class MainLoop(gocept.runner.runner.MainLoop):
 
         zope.component.hooks.setSite(old_site)
 
+    def begin(self):
+        transaction.begin()
+        if self.interaction:
+            request = RunnerRequest()
+            request.setPrincipal(self.principal)
+            zope.security.management.newInteraction(request)
 
-class runner(gocept.runner.appmain):
+    def abort(self):
+        transaction.abort()
+        if self.interaction:
+            zope.security.management.endInteraction()
+
+    def commit(self):
+        transaction.commit()
+        if self.interaction:
+            zope.security.management.endInteraction()
+
+    @property
+    def principal(self):
+        import zope.authentication.interfaces  # UI-only dependency
+
+        auth = zope.component.getUtility(
+            zope.authentication.interfaces.IAuthentication,
+        )
+        return auth.getPrincipal(self.principal_id)
+
+
+class runner:
     def __init__(self, ticks=1, principal=None, once=True):
-        super().__init__(ticks=ticks, principal=principal)
+        self.ticks = ticks
+        self.principal = principal
         self.once = once
 
+    def get_principal(self):
+        return self.principal() if callable(self.principal) else self.principal
+
     def __call__(self, worker_method):
-        # copy&paste to adjust configuration handling.
         def run():
-            import zeit.cms.zope
+            import zeit.cms.zope  # UI-only dependency
 
             settings = parse_paste_ini()
             try:

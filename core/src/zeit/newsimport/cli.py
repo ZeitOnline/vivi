@@ -27,8 +27,8 @@ def import_dpa_news_api(args=None):
         '-i',
         '--interval',
         type=int,
-        default=zeit.cms.cli.Exit,
-        help='seconds to wait between imports',
+        default=0,
+        help='seconds to wait between imports (0=exit after one run)',
     )
     arg('-o', '--owner', default='zope.dpa', help='article owner')
     arg('--profile', default='weblines', help='dpa API profile')
