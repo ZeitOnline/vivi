@@ -5,7 +5,7 @@ import socket
 import sys
 
 from zope.security.management import getInteraction
-import gocept.runner
+import transaction
 import zope.component
 
 import zeit.cms.cli
@@ -27,14 +27,14 @@ def import_dpa_news_api(args=None):
         '-i',
         '--interval',
         type=int,
-        default=gocept.runner.Exit,
+        default=zeit.cms.cli.Exit,
         help='seconds to wait between imports',
     )
     arg('-o', '--owner', default='zope.dpa', help='article owner')
     arg('--profile', default='weblines', help='dpa API profile')
     args = parser.parse_args(args)
 
-    @gocept.runner.transaction_per_item
+    @transaction_per_item
     def importer():
         getInteraction().participations[0]._zeit_connector_referrer = (
             'http://%s/runner/import_dpa_news' % socket.getfqdn()
@@ -49,3 +49,21 @@ def import_dpa_news_api(args=None):
 
     run = zeit.cms.cli.runner(ticks=args.interval, principal=args.owner, once=False)(importer)
     return run()
+
+
+def transaction_per_item(func):
+    def wrapped():
+        for action in func():
+            try:
+                action()
+            except Exception as e:
+                log.error('Error in item %s: %s', action, e, exc_info=True)
+                transaction.abort()
+            else:
+                try:
+                    transaction.commit()
+                except transaction.interfaces.TransientError:
+                    log.warning('Conflict error', exc_info=True)
+                    transaction.abort()
+
+    return wrapped

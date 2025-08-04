@@ -7,6 +7,7 @@ import signal
 import sys
 import time
 
+from gocept.runner import Exit  # noqa API
 from opentelemetry.trace import SpanKind
 import gocept.runner
 import opentelemetry.context
