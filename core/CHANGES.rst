@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.152.0 (2025-08-04)
+--------------------
+
+- WCM-983: Put audio import during volume publish behind toggle volume_publish_create_audio_objects
+
+
 7.151.0 (2025-08-04)
 --------------------
 
