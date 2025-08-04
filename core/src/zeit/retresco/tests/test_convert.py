@@ -92,7 +92,7 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
                         'prevent_ligatus_indexing': False,
                         'ressort': 'International',
                         'revision': '11',
-                        'serie': '-',
+                        'serie': 'Geschafft!',
                         'show_commentthread': False,
                         'template': 'article',
                         'text-length': 1036,

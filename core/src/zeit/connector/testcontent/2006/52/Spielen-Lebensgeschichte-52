@@ -17,7 +17,7 @@
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="page">69</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="paragraphsperpage">6</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="ressort">Leben</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="serie">-</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="serie">Geschafft!</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="topic">Vermischtes</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="type">article</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="volume">52</attribute>

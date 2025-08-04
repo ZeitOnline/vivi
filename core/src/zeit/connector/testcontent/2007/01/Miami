@@ -18,7 +18,7 @@
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="page">65</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="paragraphsperpage">11</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="ressort">Reisen</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="serie">-</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="serie">Geschafft!</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="topic">Reisen</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="type">article</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="volume">01</attribute>

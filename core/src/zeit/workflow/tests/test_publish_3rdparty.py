@@ -391,7 +391,7 @@ class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/weissrussland-russland-gas')
         payload = zeit.workflow.testing.publish_json(article, 'speechbert')
         assert article.serie is not None
-        assert payload['series'] == '-'
+        assert payload['series'] == 'Geschafft!'
 
     def test_speechbert_payload_supertitle(self):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/weissrussland-russland-gas')
