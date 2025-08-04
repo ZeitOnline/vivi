@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.151.0 (2025-08-04)
+--------------------
+
+- WCM-983: Correctly count to zero in premium media publishing
+
+- WCM-983: Don't fail on volume with no parts or missing volume
+
+
 7.150.0 (2025-08-01)
 --------------------
 
