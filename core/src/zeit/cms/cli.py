@@ -7,7 +7,6 @@ import signal
 import sys
 import time
 
-from gocept.runner import from_config  # noqa API
 from opentelemetry.trace import SpanKind
 import gocept.runner
 import opentelemetry.context
@@ -17,6 +16,7 @@ import waitress
 import zope.component
 import zope.component.hooks
 
+import zeit.cms.config
 import zeit.cms.logging
 import zeit.cms.tracing
 
@@ -277,6 +277,10 @@ def principal_from_args():
         parser.print_help()
         raise SystemExit(1)
     return options.user
+
+
+def from_config(package, key):
+    return lambda: zeit.cms.config.required(package, key)
 
 
 @runner(principal=principal_from_args)
