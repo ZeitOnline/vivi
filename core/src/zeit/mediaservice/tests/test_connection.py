@@ -143,6 +143,35 @@ BROKEN_DATA = {
     ]
 }
 
+NO_VOLUME = {
+    '@context': 'https://schema.org',
+    '@type': 'DataFeed',
+    'name': 'DIE ZEIT',
+    'dateModified': '2025-07-30T15:00:00Z',
+    'dataFeedElement': [],
+}
+
+NO_PARTS = {
+    '@context': 'https://schema.org',
+    '@type': 'DataFeed',
+    'name': 'DIE ZEIT',
+    'dateModified': '2025-07-30T15:00:00Z',
+    'dataFeedElement': [
+        {
+            '@type': 'DataFeedItem',
+            'dateCreated': '2025-07-02T15:00:25.592Z',
+            'dateModified': '2025-07-16T08:25:12Z',
+            'item': {
+                '@type': 'PublicationIssue',
+                'dateModified': '2025-07-16T08:25:12Z',
+                'datePublished': '2025-07-02T15:00:25.592Z',
+                'issueNumber': 28,
+                'isPartOf': {'@type': 'PublicationVolume', 'volumeNumber': 2025},
+            },
+        }
+    ],
+}
+
 
 class TestImportAudios(zeit.mediaservice.testing.SQLTestCase):
     def test_get_audio_infos(self):
@@ -184,3 +213,25 @@ class TestImportAudios(zeit.mediaservice.testing.SQLTestCase):
                     'duration': None,
                 },
             }
+
+    def test_dont_fail_on_missing_volume(self):
+        mocker = requests_mock.Mocker()
+        mocker.get(
+            'https://medien.zeit.de/feeds/die-zeit/issue?year=2025&number=500', json=NO_VOLUME
+        )
+        with mocker:
+            mediaservice = zeit.mediaservice.connection.Connection(
+                'https://medien.zeit.de/feeds/die-zeit/issue'
+            )
+            audios = mediaservice.get_audio_infos(year=2025, volume=500)
+            assert not audios
+
+    def test_dont_fail_on_volume_with_no_parts(self):
+        mocker = requests_mock.Mocker()
+        mocker.get('https://medien.zeit.de/feeds/die-zeit/issue?year=2025&number=28', json=NO_PARTS)
+        with mocker:
+            mediaservice = zeit.mediaservice.connection.Connection(
+                'https://medien.zeit.de/feeds/die-zeit/issue'
+            )
+            audios = mediaservice.get_audio_infos(year=2025, volume=28)
+            assert not audios
