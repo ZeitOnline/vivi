@@ -644,7 +644,7 @@ class DatasciencePayloadTest(zeit.workflow.testing.FunctionalTestCase):
 class FollowingsPayloadTest(zeit.workflow.testing.FunctionalTestCase):
     layer = zeit.workflow.testing.CONTENT_LAYER
 
-    def test_followings_payload_audio(self):
+    def test_followings_podcast(self):
         from zeit.content.audio.testing import AudioBuilder
 
         article = ICMSContent('http://xml.zeit.de/online/2022/08/kaenguru-comics-folge-448')
@@ -653,6 +653,7 @@ class FollowingsPayloadTest(zeit.workflow.testing.FunctionalTestCase):
         cp = self.repository['serie']['chefsache']
         audio = AudioBuilder().with_audio_type('podcast').build()
         audio = self.repository['audio'] = audio
+        date = zeit.cms.workflow.interfaces.IPublishInfo(article).date_first_released
 
         audios_refs = zeit.content.audio.interfaces.IAudioReferences(article)
         audios_refs.add(audio)
@@ -660,3 +661,23 @@ class FollowingsPayloadTest(zeit.workflow.testing.FunctionalTestCase):
 
         data = zeit.workflow.testing.publish_json(article, 'followings')
         self.assertEqual(data['parent_uuid'], expected_uuid)
+        self.assertEqual(data['created'], date.isoformat())
+
+    def test_followings_series(self):
+        article = ICMSContent('http://xml.zeit.de/online/2022/08/kaenguru-comics-folge-448')
+        self.repository['serie'] = zeit.cms.repository.folder.Folder()
+        self.repository['serie']['chefsache'] = zeit.content.cp.centerpage.CenterPage()
+        cp = self.repository['serie']['chefsache']
+        date = zeit.cms.workflow.interfaces.IPublishInfo(article).date_first_released
+
+        expected_uuid = zeit.cms.content.interfaces.IUUID(cp).shortened
+
+        data = zeit.workflow.testing.publish_json(article, 'followings')
+        self.assertEqual(data['parent_uuid'], expected_uuid)
+        self.assertEqual(data['created'], date.isoformat())
+
+    def test_followings_no_series(self):
+        article = ICMSContent('http://xml.zeit.de/online/2022/08/trockenheit')
+
+        data = zeit.workflow.testing.publish_json(article, 'followings')
+        self.assertEqual(data, None)
