@@ -9,7 +9,7 @@ import zeit.newsimport.testing
 
 
 def unwrap():
-    """set up the importer without `gocept.runner.appmain`"""
+    """set up the importer without `zeit.cms.cli.runner`"""
 
     def appmain(**kw):
         def appmain_call(worker):
