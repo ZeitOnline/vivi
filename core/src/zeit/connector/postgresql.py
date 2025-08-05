@@ -67,6 +67,7 @@ class Connector:
         reconnect_wait=0.1,
         support_locking=False,
         pool_class=None,
+        search_suppress_errors=False,
     ):
         self.dsn = dsn
         self.reconnect_tries = reconnect_tries
@@ -82,6 +83,7 @@ class Connector:
         self.gcs_client = storage.Client(project=storage_project)
         self.bucket = self.gcs_client.bucket(storage_bucket)
         self.support_locking = support_locking
+        self.search_suppress_errors = search_suppress_errors
 
     @classmethod
     @zope.interface.implementer(zeit.connector.interfaces.IConnector)
@@ -98,6 +100,9 @@ class Connector:
         pool = config.get('sql-pool-class')
         if pool:
             params['pool_class'] = pkgutil.resolve_name(pool)
+        params['search_suppress_errors'] = literal_eval(
+            config.get('sql-search-suppress-errors', 'False')
+        )
         return cls(config['dsn'], config['storage-project'], config['storage-bucket'], **params)
 
     # Inspired by <https://docs.sqlalchemy.org/en/20/core/pooling.html
@@ -665,6 +670,8 @@ class Connector:
         try:
             return self.session.execute(query, execution_options={'statement_timeout': timeout})
         except Exception as e:
+            if not self.search_suppress_errors:
+                raise e
             log.warning('Error during search_sql, suppressed', exc_info=True)
             span = opentelemetry.trace.get_current_span()
             span.set_status(Status(StatusCode.ERROR, str(e)))

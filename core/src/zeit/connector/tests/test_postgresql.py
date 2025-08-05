@@ -5,7 +5,7 @@ import datetime
 from pytest import raises
 from sqlalchemy import func, select
 from sqlalchemy import text as sql
-from sqlalchemy.exc import IntegrityError
+from sqlalchemy.exc import IntegrityError, OperationalError
 import google.api_core.exceptions
 import pendulum
 import transaction
@@ -188,10 +188,11 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
         query = select(Content).where(sql("type='article'"))
         self.assertEqual(self.connector.search_sql_count(query), 2)
 
-    def test_search_sql_suppresses_errors(self):
+    def test_search_sql_suppresses_errors_if_configured(self):
         self.connector.session.execute(sql('set local statement_timeout=1'))
         query = select(Content).add_columns(sql('pg_sleep(1)'))
-        result = list(self.connector.search_sql(query))
+        with mock.patch.object(self.connector, 'search_suppress_errors', True):
+            result = list(self.connector.search_sql(query))
         self.assertEqual(len(result), 0)
         # Ensure no InFailedSqlTransaction exception happens on subsequent calls
         result = list(self.connector.search_sql(select(Content)))
@@ -202,13 +203,15 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
         query = select(Content)
         with mock.patch('sqlalchemy.func.count') as count:
             count.return_value = sql('count(*), pg_sleep(1)')
-            self.assertEqual(0, self.connector.search_sql_count(query))
+            with mock.patch.object(self.connector, 'search_suppress_errors', True):
+                self.assertEqual(0, self.connector.search_sql_count(query))
         # Ensure no InFailedSqlTransaction exception happens on subsequent calls
         self.assertEqual(1, self.connector.search_sql_count(query))
 
     def test_search_sql_supports_separate_timeout(self):
         query = select(Content).add_columns(sql('pg_sleep(1)'))
-        assert self.connector.execute_sql(query, timeout=1)
+        with self.assertRaises(OperationalError):
+            self.connector.execute_sql(query, timeout=1)
 
     def test_search_returns_uuid(self):
         res = self.get_resource(
