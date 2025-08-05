@@ -60,9 +60,9 @@ SQL_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     features=['zeit.connector.sql'],
     bases=(CONFIG_LAYER, zeit.connector.testing.SQL_CONFIG_LAYER, ARTICLE_CONFIG_LAYER),
 )
-SQL_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(SQL_ZCML_LAYER)
-SQL_CONNECTOR_LAYER = zeit.connector.testing.SQLDatabaseLayer(SQL_ZOPE_LAYER)
-SQL_WSGI_LAYER = zeit.cms.testing.WSGILayer(SQL_CONNECTOR_LAYER, name='SQLWSGILayer')
+SQL_CONNECTOR_LAYER = zeit.connector.testing.SQLIsolationLayer(SQL_ZCML_LAYER)
+SQL_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(SQL_CONNECTOR_LAYER)
+SQL_WSGI_LAYER = zeit.cms.testing.WSGILayer(SQL_ZOPE_LAYER, name='SQLWSGILayer')
 
 
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
@@ -78,7 +78,7 @@ class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
 
 
 class SQLTestCase(zeit.connector.testing.TestCase):
-    layer = SQL_CONNECTOR_LAYER
+    layer = SQL_ZOPE_LAYER
 
     def create_volume(self, year, name, product='ZEI', published=True):
         volume = Volume()
