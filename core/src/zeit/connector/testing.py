@@ -153,9 +153,13 @@ class SQLDatabaseLayer(zeit.cms.testing.Layer):
             os.environ['PGDATABASE'] = self.dbname
             self['sql_connection'] = engine.connect()
 
-        # Make sqlalchemy use only this specific connection, so we can apply a
-        # nested transaction in testSetUp()
-        self.connector.session.configure(bind=self['sql_connection'])
+        # Configure sqlalchemy session to use only this specific connection,
+        # and use savepoints instead of full commits. Thus it joins the transaction
+        # that we start in testSetUp() and roll back in testTearDown()
+        # See "Joining a Session into an External Transaction" in the sqlalchemy docs
+        self.connector.session.configure(
+            bind=self['sql_connection'], join_transaction_mode='create_savepoint'
+        )
 
         # Create tables
         c = self['sql_connection']
@@ -170,21 +174,7 @@ class SQLDatabaseLayer(zeit.cms.testing.Layer):
         os.environ.pop('PGDATABASE', None)
 
     def testSetUp(self):
-        """Sets up a transaction savepoint, which will be rolled back
-        after each test. See <https://docs.sqlalchemy.org/en/14/orm/
-         session_transaction.html#joining-a-session-into-an-external-transaction
-         -such-as-for-test-suites>
-        Note that the example operates with a single session object, whereas we
-        tie the connection to the session factory instead.
-        """
-        connection = self['sql_connection']
-        # Begin a non-orm transaction which we roll back in testTearDown().
-        self['sql_transaction'] = connection.begin()
-
-        # Begin savepoint, so we can use transaction.abort() during tests.
-        self['sql_nested'] = connection.begin_nested()
-        self['sql_session'] = self.connector.session()
-        sqlalchemy.event.listen(self['sql_session'], 'after_transaction_end', self.end_savepoint)
+        self['sql_transaction'] = self['sql_connection'].begin()
 
         if self.zodb:
             with zeit.cms.testing.site(self['zodbApp']):
@@ -193,20 +183,10 @@ class SQLDatabaseLayer(zeit.cms.testing.Layer):
             mkdir(self.connector, ROOT)
         transaction.commit()
 
-    def end_savepoint(self, session, transaction):
-        if not self['sql_nested'].is_active:
-            self['sql_nested'] = self['sql_connection'].begin_nested()
-
     def testTearDown(self):
-        transaction.abort()
-
-        sqlalchemy.event.remove(self['sql_session'], 'after_transaction_end', self.end_savepoint)
-        self.connector.session.remove()
-        del self['sql_session']
-
+        transaction.abort()  # includes self.connector.session.close()
         self['sql_transaction'].rollback()
         del self['sql_transaction']
-        del self['sql_nested']
 
 
 SQL_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
