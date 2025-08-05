@@ -45,7 +45,6 @@ dependencies = [
     "z3c.traverser",  # XXX Should be [ui], but is entrenched
     "zc.form",  # Should be [ui], but it also contains schema fields
     "zc.queue",
-    "zc.relation",
     "zc.set",
     "zc.sourcefactory",
     "zodb",
