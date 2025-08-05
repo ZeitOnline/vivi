@@ -168,13 +168,17 @@ class SQLDatabaseLayer(zeit.cms.testing.Layer):
         zeit.connector.models.Base.metadata.create_all(c)
         t.commit()
 
+        self['sql_transaction_layer'] = self['sql_connection'].begin()
+
     def tearDown(self):
+        self['sql_transaction_layer'].rollback()
+        del self['sql_transaction_layer']
         self['sql_connection'].close()
         del self['sql_connection']
         os.environ.pop('PGDATABASE', None)
 
     def testSetUp(self):
-        self['sql_transaction'] = self['sql_connection'].begin()
+        self['sql_transaction_test'] = self['sql_connection'].begin_nested()
 
         if self.zodb:
             with zeit.cms.testing.site(self['zodbApp']):
@@ -185,8 +189,8 @@ class SQLDatabaseLayer(zeit.cms.testing.Layer):
 
     def testTearDown(self):
         transaction.abort()  # includes self.connector.session.close()
-        self['sql_transaction'].rollback()
-        del self['sql_transaction']
+        self['sql_transaction_test'].rollback()
+        del self['sql_transaction_test']
 
 
 SQL_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
