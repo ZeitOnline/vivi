@@ -1,11 +1,11 @@
 <div i18n:domain="zeit.cms">
   <div class="cpextra-title" i18n:translate="">
-    Podcast Header Block
+    Podcast Metadata Block
   </div>
   <div class="block-item">
     <div class="podcast-info">
       <span class="podcast-type" i18n:translate="">
-        Displays a header for this podcast series centerpage.
+        Displays metadata for this podcast series centerpage.
       </span>
     </div>
   </div>

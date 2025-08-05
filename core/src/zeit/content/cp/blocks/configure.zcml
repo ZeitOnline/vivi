@@ -137,4 +137,13 @@
       set_schema="..interfaces.IPodcastHeaderBlock"
       permission="zeit.EditContent"/>
   </class>
+
+  <class class=".audio.PodcastMetadataBlock">
+    <require
+      interface="..interfaces.IPodcastMetadataBlock"
+      permission="zope.View" />
+    <require
+      set_schema="..interfaces.IPodcastMetadataBlock"
+      permission="zeit.EditContent"/>
+  </class>
 </configure>

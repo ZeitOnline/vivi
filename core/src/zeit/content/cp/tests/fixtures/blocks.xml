@@ -5,5 +5,6 @@
   <module id="quiz" title="Quiz-Block"/>
   <module id="jobbox_ticker" title="Jobbox Ticker"/>
   <module id="teaser" title="Teaser"/>
-  <module id="podcastheader" title="Podcastheader"/>
+  <module id="podcastheader" title="Podcast Header"/>
+  <module id="podcastmetadata" title="Podcast Metadata"/>
 </modules>
