@@ -151,7 +151,7 @@ test = [
     "gcp-storage-emulator",
     "gocept.httpserverlayer>=1.4.0.dev0",
     "gocept.jasmine",
-    "gocept.jslint==0.2",
+    "gocept.jslint>=0.2",
     "gocept.selenium",
     "gocept.testing>=1.4.0.dev0",
     "opentelemetry-exporter-otlp",
