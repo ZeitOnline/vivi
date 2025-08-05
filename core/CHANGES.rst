@@ -3,6 +3,16 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.153.0 (2025-08-05)
+--------------------
+
+- ENG-232: extend followings series and pass date_first_released
+
+- WCM-1043: Make suppressing errors in SQL search configurable
+
+- WCM-1044: Vendor gocept.runner in zeit.cms.cli
+
+
 7.152.0 (2025-08-04)
 --------------------
 
