@@ -11,6 +11,7 @@ import zope.testing.renormalizing
 import zeit.cms.interfaces
 import zeit.cms.testcontenttype.testcontenttype
 import zeit.cms.testing
+import zeit.cms.testing.doctest
 import zeit.content.image.testing
 import zeit.content.modules.testing
 import zeit.content.text.testing
@@ -102,7 +103,7 @@ checker = zope.testing.renormalizing.RENormalizing(
     ]
 )
 
-checker.transformers[0:0] = zeit.cms.testing.checker.transformers
+checker.transformers[0:0] = zeit.cms.testing.doctest.checker.transformers
 
 
 def FunctionalDocFileSuite(*args, **kw):
