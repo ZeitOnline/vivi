@@ -501,6 +501,9 @@ class RecordingRequestHandler(gocept.httpserverlayer.custom.RequestHandler):
 
 
 class HTTPLayer(gocept.httpserverlayer.custom.Layer):
+    def __init__(self, request_handler=RecordingRequestHandler):
+        super().__init__(request_handler)
+
     def testSetUp(self):
         super().testSetUp()
         self['request_handler'].requests = []
