@@ -11,7 +11,6 @@ from opentelemetry.trace import SpanKind
 import opentelemetry.context
 import transaction
 import transaction.interfaces
-import waitress
 import zope.component
 import zope.component.hooks
 import zope.publisher.base
@@ -68,6 +67,8 @@ Modules that were pre-imported for convenience: zope, zeit, transaction
 
 
 def waitress_serve():
+    import waitress  # UI-only dependency
+
     import zeit.cms.application  # break circular import
 
     settings = _parse_paste_ini(sys.argv.pop(1))

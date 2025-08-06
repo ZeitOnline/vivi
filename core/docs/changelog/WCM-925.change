@@ -1,0 +1,1 @@
+WCM-925: Handle waitress as a UI-only dependency (for bin/serve)
