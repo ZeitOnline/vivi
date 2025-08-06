@@ -96,11 +96,11 @@ class TMSMockLayer(zeit.cms.testing.Layer):
 TMS_MOCK_LAYER = TMSMockLayer()
 
 
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER,))
-ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
-WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(ZOPE_LAYER,))
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER)
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
+WSGI_LAYER = zeit.cms.testing.WSGILayer(ZOPE_LAYER)
 
-CELERY_LAYER = zeit.cms.testing.CeleryWorkerLayer(bases=(ZOPE_LAYER,))
+CELERY_LAYER = zeit.cms.testing.CeleryWorkerLayer(ZOPE_LAYER)
 CELERY_LAYER.queues += ('search',)
 
 

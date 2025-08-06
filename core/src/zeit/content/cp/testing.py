@@ -49,8 +49,8 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
         zeit.content.text.testing.CONFIG_LAYER,
     ),
 )
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER,))
-ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER)
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
 
 
 class CPTemplateLayer(zeit.cms.testing.Layer):
@@ -77,7 +77,7 @@ CP_TEMPLATE_LAYER = CPTemplateLayer()
 
 
 LAYER = zeit.cms.testing.Layer(
-    bases=(CP_TEMPLATE_LAYER, zeit.retresco.testhelper.ELASTICSEARCH_MOCK_LAYER)
+    (CP_TEMPLATE_LAYER, zeit.retresco.testhelper.ELASTICSEARCH_MOCK_LAYER)
 )
 
 
@@ -132,9 +132,9 @@ class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
         return cp
 
 
-WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(LAYER,))
-HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(bases=(WSGI_LAYER,))
-WEBDRIVER_LAYER = zeit.cms.testing.WebdriverLayer(bases=(HTTP_LAYER,))
+WSGI_LAYER = zeit.cms.testing.WSGILayer(LAYER)
+HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(WSGI_LAYER)
+WEBDRIVER_LAYER = zeit.cms.testing.WebdriverLayer(HTTP_LAYER)
 
 
 class BrowserTestCase(zeit.cms.testing.BrowserTestCase):

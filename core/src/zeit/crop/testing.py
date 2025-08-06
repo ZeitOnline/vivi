@@ -11,11 +11,11 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
         'scale-source': f'file://{HERE}/scales.xml',
         'color-source': f'file://{HERE}/colors.xml',
     },
-    bases=(zeit.content.image.testing.CONFIG_LAYER,),
+    bases=zeit.content.image.testing.CONFIG_LAYER,
 )
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER,))
-ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
-WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(ZOPE_LAYER,))
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER)
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
+WSGI_LAYER = zeit.cms.testing.WSGILayer(ZOPE_LAYER)
 
 
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
@@ -26,8 +26,8 @@ class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
     layer = WSGI_LAYER
 
 
-HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(bases=(WSGI_LAYER,))
-WEBDRIVER_LAYER = zeit.cms.testing.WebdriverLayer(bases=(HTTP_LAYER,))
+HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(WSGI_LAYER)
+WEBDRIVER_LAYER = zeit.cms.testing.WebdriverLayer(HTTP_LAYER)
 
 
 class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
