@@ -2,7 +2,6 @@ from unittest import mock
 import importlib.resources
 import json
 
-import gocept.selenium
 import plone.testing
 import zope.component
 
@@ -44,10 +43,7 @@ LAYER = Layer()
 
 WSGI_LAYER = zeit.cms.testing.WSGILayer(name='WSGILayer', bases=(LAYER,))
 HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(name='HTTPLayer', bases=(WSGI_LAYER,))
-WD_LAYER = zeit.cms.testing.WebdriverLayer(name='WebdriverLayer', bases=(HTTP_LAYER,))
-SELENIUM_LAYER = gocept.selenium.WebdriverSeleneseLayer(
-    name='WebdriverSeleneseLayer', bases=(WD_LAYER,)
-)
+WEBDRIVER_LAYER = zeit.cms.testing.WebdriverLayer(name='WebdriverLayer', bases=(HTTP_LAYER,))
 
 
 class SearchMockLayer(plone.testing.Layer):

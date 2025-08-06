@@ -1,8 +1,6 @@
 # coding: utf8
 import importlib.resources
 
-import gocept.selenium
-
 import zeit.cms.testing
 import zeit.content.image.testing
 
@@ -29,10 +27,7 @@ class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
 
 
 HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(name='HTTPLayer', bases=(WSGI_LAYER,))
-WD_LAYER = zeit.cms.testing.WebdriverLayer(name='WebdriverLayer', bases=(HTTP_LAYER,))
-WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(
-    name='WebdriverSeleneseLayer', bases=(WD_LAYER,)
-)
+WEBDRIVER_LAYER = zeit.cms.testing.WebdriverLayer(name='WebdriverLayer', bases=(HTTP_LAYER,))
 
 
 class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):

@@ -2,7 +2,6 @@ from unittest import mock
 import importlib.resources
 import re
 
-import gocept.selenium
 import plone.testing
 import transaction
 import zope.component
@@ -136,10 +135,7 @@ class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
 
 WSGI_LAYER = zeit.cms.testing.WSGILayer(name='WSGILayer', bases=(LAYER,))
 HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(name='HTTPLayer', bases=(WSGI_LAYER,))
-WD_LAYER = zeit.cms.testing.WebdriverLayer(name='WebdriverLayer', bases=(HTTP_LAYER,))
-WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(
-    name='WebdriverSeleneseLayer', bases=(WD_LAYER,)
-)
+WEBDRIVER_LAYER = zeit.cms.testing.WebdriverLayer(name='WebdriverLayer', bases=(HTTP_LAYER,))
 
 
 class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
