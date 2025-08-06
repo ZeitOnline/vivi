@@ -12,8 +12,8 @@ import zeit.cms.testing
 import zeit.content.cp.testing
 
 
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(zeit.content.cp.testing.CONFIG_LAYER,))
-ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(zeit.content.cp.testing.CONFIG_LAYER)
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
 
 
 class DynamicLayer(zeit.cms.testing.Layer):
@@ -52,7 +52,7 @@ def create_dynamic_folder(package, files):
 LAYER = DynamicLayer(
     path='tests/fixtures/dynamic-centerpages/', files=['config.xml', 'tags.xml', 'template.xml']
 )
-WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(LAYER,))
+WSGI_LAYER = zeit.cms.testing.WSGILayer(LAYER)
 
 
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):

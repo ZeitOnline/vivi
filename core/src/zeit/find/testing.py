@@ -15,10 +15,10 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
         'elasticsearch-url': 'http://tms-backend.staging.zeit.de:80/elasticsearch',
         'elasticsearch-index': 'foo_pool',
     },
-    bases=(zeit.content.audio.testing.CONFIG_LAYER,),
+    bases=zeit.content.audio.testing.CONFIG_LAYER,
 )
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER,))
-ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER)
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
 
 
 class Layer(zeit.cms.testing.Layer):
@@ -40,9 +40,9 @@ class Layer(zeit.cms.testing.Layer):
 
 LAYER = Layer()
 
-WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(LAYER,))
-HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(bases=(WSGI_LAYER,))
-WEBDRIVER_LAYER = zeit.cms.testing.WebdriverLayer(bases=(HTTP_LAYER,))
+WSGI_LAYER = zeit.cms.testing.WSGILayer(LAYER)
+HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(WSGI_LAYER)
+WEBDRIVER_LAYER = zeit.cms.testing.WebdriverLayer(HTTP_LAYER)
 
 
 class SearchMockLayer(zeit.cms.testing.Layer):

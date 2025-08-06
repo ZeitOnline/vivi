@@ -35,12 +35,12 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
         'nextline-url': 'http://dpa_api_test.com',
         'dpa-rubric-config-source': f'file://{HERE}/tests/data/products.xml',
     },
-    bases=(zeit.retresco.testing.CONFIG_LAYER,),
+    bases=zeit.retresco.testing.CONFIG_LAYER,
 )
 # NOTE author config layer is included in article config layer
 # NOTE article config layer is included in retresco config layer
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER,))
-ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER, zeit.retresco.testhelper.TMS_MOCK_LAYER))
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER)
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer((ZCML_LAYER, zeit.retresco.testhelper.TMS_MOCK_LAYER))
 
 
 class DPALayer(zeit.cms.testing.Layer):
@@ -67,7 +67,7 @@ class DPALayer(zeit.cms.testing.Layer):
         self['entries'] = copy.deepcopy(DPA_ENTRIES)
 
 
-DPA_LAYER = DPALayer(bases=(ZOPE_LAYER,))
+DPA_LAYER = DPALayer(ZOPE_LAYER)
 
 
 class FunctionalAPITestCase(zeit.cms.testing.FunctionalTestCase):
@@ -122,8 +122,8 @@ class DPAMockLayer(zeit.cms.testing.Layer):
         self['dpa_mock'].reset_mock()
 
 
-DPA_MOCK_LAYER = DPAMockLayer(bases=(ZOPE_LAYER,))
-CELERY_LAYER = zeit.cms.testing.CeleryWorkerLayer(bases=(DPA_MOCK_LAYER,))
+DPA_MOCK_LAYER = DPAMockLayer(ZOPE_LAYER)
+CELERY_LAYER = zeit.cms.testing.CeleryWorkerLayer(DPA_MOCK_LAYER)
 CELERY_LAYER.queues += ('search',)
 
 

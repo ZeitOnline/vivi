@@ -22,14 +22,14 @@ ROOT = 'http://xml.zeit.de/testing'
 
 
 FILESYSTEM_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    features=['zeit.connector.filesystem'], bases=(zeit.cms.testing.CONFIG_LAYER,)
+    features=['zeit.connector.filesystem'], bases=zeit.cms.testing.CONFIG_LAYER
 )
-FILESYSTEM_CONNECTOR_LAYER = zeit.cms.testing.ZopeLayer(bases=(FILESYSTEM_ZCML_LAYER,))
+FILESYSTEM_CONNECTOR_LAYER = zeit.cms.testing.ZopeLayer(FILESYSTEM_ZCML_LAYER)
 
 MOCK_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    features=['zeit.connector.mock'], bases=(zeit.cms.testing.CONFIG_LAYER,)
+    features=['zeit.connector.mock'], bases=zeit.cms.testing.CONFIG_LAYER
 )
-MOCK_CONNECTOR_LAYER = zeit.cms.testing.ZopeLayer(bases=(MOCK_ZCML_LAYER,))
+MOCK_CONNECTOR_LAYER = zeit.cms.testing.ZopeLayer(MOCK_ZCML_LAYER)
 
 
 class SQLServerLayer(zeit.cms.testing.Layer):
@@ -123,7 +123,9 @@ SQL_CONFIG_LAYER = SQLConfigLayer()
 
 
 class SQLDatabaseLayer(zeit.cms.testing.Layer):
-    def __init__(self, zodb=False, connector=None, dbname='vivi_test', bases=()):
+    def __init__(self, bases=(), zodb=False, connector=None, dbname='vivi_test'):
+        if not isinstance(bases, tuple):
+            bases = (bases,)
         super().__init__(bases)
         self.zodb = zodb
         self._connector = connector
@@ -210,30 +212,30 @@ class SQLDatabaseLayer(zeit.cms.testing.Layer):
 SQL_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     features=['zeit.connector.sql'], bases=(zeit.cms.testing.CONFIG_LAYER, SQL_CONFIG_LAYER)
 )
-SQL_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(SQL_ZCML_LAYER,))
-SQL_CONNECTOR_LAYER = SQLDatabaseLayer(bases=(SQL_ZOPE_LAYER,))
+SQL_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(SQL_ZCML_LAYER)
+SQL_CONNECTOR_LAYER = SQLDatabaseLayer(SQL_ZOPE_LAYER)
 
 
 ZOPE_SQL_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     features=['zeit.connector.sql.zope'], bases=(zeit.cms.testing.CONFIG_LAYER, SQL_CONFIG_LAYER)
 )
-ZOPE_SQL_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZOPE_SQL_ZCML_LAYER,))
-ZOPE_SQL_CONNECTOR_LAYER = SQLDatabaseLayer(bases=(ZOPE_SQL_ZOPE_LAYER,), zodb=True)
+ZOPE_SQL_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZOPE_SQL_ZCML_LAYER)
+ZOPE_SQL_CONNECTOR_LAYER = SQLDatabaseLayer(ZOPE_SQL_ZOPE_LAYER, zodb=True)
 
 
 SQL_CONTENT_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    str((importlib.resources.files('zeit.cms') / 'ftesting.zcml')),
+    config_file=str((importlib.resources.files('zeit.cms') / 'ftesting.zcml')),
     features=['zeit.connector.sql.zope'],
     bases=(zeit.cms.testing.CONFIG_LAYER, SQL_CONFIG_LAYER),
 )
-SQL_CONTENT_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(SQL_CONTENT_ZCML_LAYER,))
-SQL_CONTENT_LAYER = SQLDatabaseLayer(bases=(SQL_CONTENT_ZOPE_LAYER,), zodb=True)
+SQL_CONTENT_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(SQL_CONTENT_ZCML_LAYER)
+SQL_CONTENT_LAYER = SQLDatabaseLayer(SQL_CONTENT_ZOPE_LAYER, zodb=True)
 
 
 COLUMNS_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    'testing-columns.zcml', bases=(zeit.cms.testing.CONFIG_LAYER,)
+    config_file='testing-columns.zcml', bases=zeit.cms.testing.CONFIG_LAYER
 )
-COLUMNS_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(COLUMNS_ZCML_LAYER,))
+COLUMNS_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(COLUMNS_ZCML_LAYER)
 
 
 class TestCase(zeit.cms.testing.FunctionalTestCase):

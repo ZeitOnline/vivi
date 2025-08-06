@@ -53,9 +53,9 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
     # XXX Kludge because we depend on zeit.workflow.publish_3rdparty in our tests
     patches={'zeit.workflow': {}},
 )
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER,))
-ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
-PUSH_LAYER = zeit.push.testing.UrbanairshipTemplateLayer(bases=(ZOPE_LAYER,))
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER)
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
+PUSH_LAYER = zeit.push.testing.UrbanairshipTemplateLayer(ZOPE_LAYER)
 
 
 # This is a copy from z.c.cp ElasticsearchMockLayer with an
@@ -140,9 +140,9 @@ def create_article():
     return article
 
 
-WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(LAYER,))
-HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(bases=(WSGI_LAYER,))
-WEBDRIVER_LAYER = zeit.cms.testing.WebdriverLayer(bases=(HTTP_LAYER,))
+WSGI_LAYER = zeit.cms.testing.WSGILayer(LAYER)
+HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(WSGI_LAYER)
+WEBDRIVER_LAYER = zeit.cms.testing.WebdriverLayer(HTTP_LAYER)
 
 
 class BrowserTestCase(zeit.cms.testing.BrowserTestCase):

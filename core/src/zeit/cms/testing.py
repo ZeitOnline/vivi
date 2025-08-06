@@ -68,6 +68,8 @@ import zeit.connector.mock
 
 class Layer(plone.testing.Layer):
     def __init__(self, bases=None, name=None):
+        if bases is not None and not isinstance(bases, tuple):
+            bases = (bases,)
         if name is None:
             name = self.__class__.__name__
         for item in inspect.stack():
@@ -157,10 +159,12 @@ class ZCMLLayer(Layer):
 
     def __init__(
         self,
+        bases=(),
         config_file='ftesting.zcml',
         features=('zeit.connector.mock',),
-        bases=(),
     ):
+        if not isinstance(bases, tuple):
+            bases = (bases,)
         super().__init__(bases=self.defaultBases + bases)
         package, _ = self.__module__.rsplit('.', 1)
         if not config_file.startswith('/'):
@@ -290,6 +294,8 @@ class ZopeLayer(Layer):
     )
 
     def __init__(self, bases=()):
+        if not isinstance(bases, tuple):
+            bases = (bases,)
         super().__init__(
             # This is a bit kludgy. We need an individual ZODB layer per ZCML
             # file (so e.g. different install generations are isolated), but
@@ -545,9 +551,9 @@ CONFIG_LAYER = ProductConfigLayer(
         }
     },
 )
-ZCML_LAYER = ZCMLLayer(bases=(CONFIG_LAYER,))
-ZOPE_LAYER = ZopeLayer(bases=(ZCML_LAYER,))
-WSGI_LAYER = WSGILayer(bases=(ZOPE_LAYER,))
+ZCML_LAYER = ZCMLLayer(CONFIG_LAYER)
+ZOPE_LAYER = ZopeLayer(ZCML_LAYER)
+WSGI_LAYER = WSGILayer(ZOPE_LAYER)
 
 
 # Layer API modelled after gocept.httpserverlayer.wsgi
@@ -613,7 +619,7 @@ class WSGIServerLayer(Layer):
         del self['http_address']
 
 
-HTTP_LAYER = WSGIServerLayer(bases=(WSGI_LAYER,))
+HTTP_LAYER = WSGIServerLayer(WSGI_LAYER)
 
 
 class WebdriverLayer(Layer, gocept.selenium.WebdriverLayer):
@@ -671,7 +677,7 @@ class WebdriverLayer(Layer, gocept.selenium.WebdriverLayer):
             binary._log_file.close()
 
 
-WEBDRIVER_LAYER = WebdriverLayer(bases=(HTTP_LAYER,))
+WEBDRIVER_LAYER = WebdriverLayer(HTTP_LAYER)
 
 
 def assertOrdered(self, locator1, locator2):

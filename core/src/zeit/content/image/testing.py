@@ -23,14 +23,14 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
         'mdb-api-username': 'mdbuser',
         'mdb-api-password': 'mdbpass',
     },
-    bases=(zeit.cms.testing.CONFIG_LAYER,),
+    bases=zeit.cms.testing.CONFIG_LAYER,
 )
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER,))
-ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
-WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(ZOPE_LAYER,))
-HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(bases=(WSGI_LAYER,))
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER)
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
+WSGI_LAYER = zeit.cms.testing.WSGILayer(ZOPE_LAYER)
+HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(WSGI_LAYER)
 HTTP_STATIC_LAYER = gocept.httpserverlayer.static.Layer(name='HTTPStaticLayer', bases=(HTTP_LAYER,))
-WEBDRIVER_LAYER = zeit.cms.testing.WebdriverLayer(bases=(HTTP_LAYER,))
+WEBDRIVER_LAYER = zeit.cms.testing.WebdriverLayer(HTTP_LAYER)
 
 
 def fixture_bytes(filename, package=None, folder=None):

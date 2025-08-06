@@ -15,8 +15,8 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
     },
     bases=(zeit.cms.testing.CONFIG_LAYER,),
 )
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer('testing.zcml', bases=(CONFIG_LAYER,))
-ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(config_file='testing.zcml', bases=CONFIG_LAYER)
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
 
 
 class Layer(zeit.cms.testing.Layer):

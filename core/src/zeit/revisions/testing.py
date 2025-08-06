@@ -9,12 +9,12 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
         'storage-project': 'ignored_by_emulator',
         'storage-bucket': GCS_SERVER_LAYER.bucket,
     },
-    bases=(zeit.content.article.testing.CONFIG_LAYER,),
+    bases=zeit.content.article.testing.CONFIG_LAYER,
 )
 
 
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER, GCS_SERVER_LAYER))
-ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer((CONFIG_LAYER, GCS_SERVER_LAYER))
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
 
 
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
