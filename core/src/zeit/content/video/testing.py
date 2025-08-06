@@ -8,10 +8,10 @@ import zeit.cms.testing
 import zeit.push.testing
 
 
-CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer({}, bases=(zeit.push.testing.CONFIG_LAYER,))
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER,))
-ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
-PUSH_LAYER = zeit.push.testing.UrbanairshipTemplateLayer(bases=(ZOPE_LAYER,))
+CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer({}, bases=zeit.push.testing.CONFIG_LAYER)
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER)
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
+PUSH_LAYER = zeit.push.testing.UrbanairshipTemplateLayer(ZOPE_LAYER)
 
 
 class PlayerMockLayer(zeit.cms.testing.Layer):
@@ -34,8 +34,8 @@ class PlayerMockLayer(zeit.cms.testing.Layer):
 PLAYER_MOCK_LAYER = PlayerMockLayer()
 
 
-LAYER = zeit.cms.testing.Layer(bases=(PUSH_LAYER, PLAYER_MOCK_LAYER))
-WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(LAYER,))
+LAYER = zeit.cms.testing.Layer((PUSH_LAYER, PLAYER_MOCK_LAYER))
+WSGI_LAYER = zeit.cms.testing.WSGILayer(LAYER)
 
 
 class TestCase(zeit.cms.testing.FunctionalTestCase):
