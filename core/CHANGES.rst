@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.155.0 (2025-08-06)
+--------------------
+
+- WCM-925: Handle waitress as a UI-only dependency (for bin/serve)
+
+
 7.154.0 (2025-08-06)
 --------------------
 
