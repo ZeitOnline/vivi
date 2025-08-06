@@ -2,7 +2,6 @@ import importlib.resources
 import logging
 import urllib.parse
 
-import gocept.selenium
 import plone.testing
 import zope.interface
 
@@ -112,10 +111,7 @@ class TestCase(zeit.cms.testing.FunctionalTestCase):
 
 WSGI_LAYER = zeit.cms.testing.WSGILayer(name='WSGILayer', bases=(LAYER,))
 HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(name='HTTPLayer', bases=(WSGI_LAYER,))
-WD_LAYER = zeit.cms.testing.WebdriverLayer(name='WebdriverLayer', bases=(HTTP_LAYER,))
-WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(
-    name='WebdriverSeleneseLayer', bases=(WD_LAYER,)
-)
+WEBDRIVER_LAYER = zeit.cms.testing.WebdriverLayer(name='WebdriverLayer', bases=(HTTP_LAYER,))
 
 
 class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
