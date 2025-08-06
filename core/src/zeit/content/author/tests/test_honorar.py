@@ -13,7 +13,7 @@ import zeit.content.author.interfaces
 import zeit.content.author.testing
 
 
-HTTP_LAYER = zeit.cms.testing.HTTPLayer(zeit.cms.testing.RecordingRequestHandler)
+HTTP_LAYER = zeit.cms.testing.HTTPLayer()
 LAYER = zeit.cms.testing.Layer(
     bases=(HTTP_LAYER, zeit.content.author.testing.ZOPE_LAYER), name='HDokLayer'
 )

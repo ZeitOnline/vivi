@@ -13,7 +13,7 @@ import zeit.cms.testing
 import zeit.cms.workflow.interfaces
 
 
-HTTP_LAYER = zeit.cms.testing.HTTPLayer(zeit.cms.testing.RecordingRequestHandler)
+HTTP_LAYER = zeit.cms.testing.HTTPLayer()
 WEBHOOK_LAYER = zeit.cms.testing.Layer(
     (zeit.cms.testing.ZOPE_LAYER, HTTP_LAYER), name='WebhookLayer'
 )

@@ -14,7 +14,7 @@ import zeit.find.testing
 import zeit.wochenmarkt.testing
 
 
-HTTP_LAYER = zeit.cms.testing.HTTPLayer(zeit.cms.testing.RecordingRequestHandler)
+HTTP_LAYER = zeit.cms.testing.HTTPLayer()
 
 
 class ProductConfigLayer(zeit.cms.testing.ProductConfigLayer):
