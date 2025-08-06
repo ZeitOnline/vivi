@@ -3,7 +3,7 @@ import zope.component
 import zope.index.text.interfaces
 import zope.interface
 
-from zeit.cms.testing import vault_read
+from zeit.cms.testing.utils import vault_read
 import zeit.cms.content.interfaces
 import zeit.cms.testing
 import zeit.cms.webtest

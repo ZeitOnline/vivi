@@ -12,6 +12,7 @@ import transaction
 import zope.component.hooks
 
 import zeit.cms.testing
+import zeit.cms.testing.docker
 import zeit.connector.gcsemulator  # activate monkey patches
 import zeit.connector.interfaces
 import zeit.connector.mock
@@ -33,13 +34,13 @@ MOCK_CONNECTOR_LAYER = zeit.cms.testing.ZopeLayer(MOCK_ZCML_LAYER)
 
 
 class SQLServerLayer(zeit.cms.testing.Layer):
-    defaultBases = (zeit.cms.testing.DOCKER_LAYER,)
+    defaultBases = (zeit.cms.testing.docker.LAYER,)
 
     container_image = 'postgres:14'
 
     def setUp(self):
-        port = zeit.cms.testing.get_random_port()
-        self['psql_container'] = zeit.cms.testing.DOCKER_LAYER.run_container(
+        port = zeit.cms.testing.docker.get_random_port()
+        self['psql_container'] = zeit.cms.testing.docker.LAYER.run_container(
             self.container_image,
             detach=True,
             remove=True,

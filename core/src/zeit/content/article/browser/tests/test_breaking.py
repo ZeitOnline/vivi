@@ -7,6 +7,7 @@ import zope.i18n.translationdomain
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
 import zeit.cms.checkout.helper
+import zeit.cms.testing.i18n
 import zeit.content.article.interfaces
 import zeit.content.article.testing
 
@@ -16,7 +17,7 @@ class TestAdding(zeit.content.article.testing.BrowserTestCase):
         super().setUp()
         domain = zope.i18n.translationdomain.TranslationDomain('zeit.cms')
         zope.component.getGlobalSiteManager().registerUtility(domain, name='zeit.cms')
-        self.catalog = zeit.cms.testing.TestCatalog()
+        self.catalog = zeit.cms.testing.i18n.TestCatalog()
         domain.addCatalog(self.catalog)
 
         for _name, notifier in zope.component.getUtilitiesFor(zeit.push.interfaces.IPushNotifier):

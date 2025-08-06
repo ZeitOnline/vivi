@@ -8,6 +8,7 @@ import zope.testing.renormalizing
 import zeit.cms.tagging.interfaces
 import zeit.cms.tagging.testing
 import zeit.cms.testing
+import zeit.cms.testing.doctest
 import zeit.content.author.testing
 import zeit.content.gallery.testing
 import zeit.content.volume.testing
@@ -19,7 +20,7 @@ import zeit.wochenmarkt.testing
 checker = zope.testing.renormalizing.RENormalizing(
     [(re.compile('[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'), '<GUID>')]
 )
-checker.transformers[0:0] = zeit.cms.testing.checker.transformers
+checker.transformers[0:0] = zeit.cms.testing.doctest.checker.transformers
 
 
 HERE = importlib.resources.files(__package__)

@@ -3,7 +3,7 @@ import transaction
 
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.cli import commit_with_retry
-from zeit.cms.testing import CommitExceptionDataManager
+from zeit.cms.testing.transaction import CommitExceptionDataManager
 import zeit.cms.testing
 
 
