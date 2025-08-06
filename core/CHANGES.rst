@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.154.0 (2025-08-06)
+--------------------
+
+- ES-204: Add podcast metadata block for podcast-series CPs
+
+
 7.153.0 (2025-08-05)
 --------------------
 
