@@ -6,7 +6,7 @@ import zeit.find.testing
 
 
 class TestSearch(zeit.cms.testing.SeleniumTestCase):
-    layer = zeit.find.testing.SELENIUM_LAYER
+    layer = zeit.find.testing.WEBDRIVER_LAYER
     skin = 'vivi'
 
     def setUp(self):

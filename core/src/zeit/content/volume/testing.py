@@ -2,7 +2,6 @@
 import importlib.resources
 
 from pendulum import datetime
-import gocept.selenium
 
 from zeit.cms.repository.folder import Folder
 from zeit.cms.workflow.interfaces import IPublishInfo
@@ -54,10 +53,7 @@ WORKFLOW_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(WORKFLOW_LAYER,))
 CELERY_LAYER = zeit.cms.testing.CeleryWorkerLayer(bases=(WORKFLOW_ZOPE_LAYER,))
 WSGI_LAYER = zeit.cms.testing.WSGILayer(name='WSGILayer', bases=(CELERY_LAYER,))
 HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(name='HTTPLayer', bases=(WSGI_LAYER,))
-WD_LAYER = zeit.cms.testing.WebdriverLayer(name='WebdriverLayer', bases=(HTTP_LAYER,))
-WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(
-    name='WebdriverSeleneseLayer', bases=(WD_LAYER,)
-)
+WEBDRIVER_LAYER = zeit.cms.testing.WebdriverLayer(name='WebdriverLayer', bases=(HTTP_LAYER,))
 
 SQL_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     'ftesting-workflow.zcml',

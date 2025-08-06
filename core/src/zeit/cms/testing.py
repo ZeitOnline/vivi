@@ -24,6 +24,7 @@ import docker
 import gocept.httpserverlayer.custom
 import gocept.jslint
 import gocept.selenium
+import gocept.selenium.wd_selenese
 import gocept.testing.assertion
 import kombu
 import lxml.cssselect
@@ -657,6 +658,29 @@ class WebdriverLayer(gocept.selenium.WebdriverLayer):
         options.binary_location = os.environ.get('GOCEPT_WEBDRIVER_FF_BINARY', '')
         return {'options': options}
 
+    def setUp(self):
+        super().setUp()
+        self['selenium'] = gocept.selenium.wd_selenese.Selenese(
+            self['seleniumrc'], self['http_address'], SeleniumTestCase.TIMEOUT * 1000
+        )
+
+        # NOTE: Massively kludgy workaround. It seems that Firefox has a timing
+        # issue with HTTP auth and AJAX calls: if you open a page that requires
+        # auth and has AJAX calls to further pages that require the same auth,
+        # sometimes those AJAX calls come back as 401 (nothing to do with
+        # Selenium, we've seen this against the actual server).
+        #
+        # It seems that opening a page and then giving it a little time
+        # to settle in is enough to work around this issue.
+        s = self['selenium']
+        # XXX It seems something is not ready immediately?!??
+        s.pause(1000)
+        # XXX Credentials are duplicated from SeleniumTestCase.open().
+        s.open('http://user:userpw@%s/++skin++vivi/@@test-setup-auth' % self['http_address'])
+        # We don't really know how much time the browser needs until it's
+        # satisfied, or how we could determine this.
+        s.pause(1000)
+
     def _stop_selenium(self):
         super()._stop_selenium()
         if 'seleniumrc' not in self:
@@ -667,10 +691,7 @@ class WebdriverLayer(gocept.selenium.WebdriverLayer):
             binary._log_file.close()
 
 
-WD_LAYER = WebdriverLayer(name='WebdriverLayer', bases=(HTTP_LAYER,))
-WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(
-    name='WebdriverSeleneseLayer', bases=(WD_LAYER,)
-)
+WEBDRIVER_LAYER = WebdriverLayer(name='WebdriverLayer', bases=(HTTP_LAYER,))
 
 
 def assertOrdered(self, locator1, locator2):
@@ -775,45 +796,6 @@ class FunctionalTestCase(
         super().setUp()
         zope.component.hooks.setSite(self.getRootFolder())
         self.principal = create_interaction('zope.user')
-
-
-# XXX We should subclass instead of monkey-patch, but then I'd have
-# to change all the layer declarations in the zeit.* packages, sigh.
-
-
-def selenium_setup_authcache(self):
-    # NOTE: Massively kludgy workaround. It seems that Firefox has a timing
-    # issue with HTTP auth and AJAX calls: if you open a page that requires
-    # auth and has AJAX calls to further pages that require the same auth,
-    # sometimes those AJAX calls come back as 401 (nothing to do with
-    # Selenium, we've seen this against the actual server).
-    #
-    # It seems that opening a page and then giving it a little time
-    # to settle in is enough to work around this issue.
-
-    original_setup(self)
-    s = self['selenium']
-    self['http_auth_cache'] = True
-    # XXX It seems something is not ready immediately?!??
-    s.pause(1000)
-    # XXX Credentials are duplicated from SeleniumTestCase.open().
-    s.open('http://user:userpw@%s/++skin++vivi/@@test-setup-auth' % self['http_address'])
-    # We don't really know how much time the browser needs until it's
-    # satisfied, or how we could determine this.
-    s.pause(1000)
-
-
-original_setup = gocept.selenium.webdriver.WebdriverSeleneseLayer.setUp
-gocept.selenium.webdriver.WebdriverSeleneseLayer.setUp = selenium_setup_authcache
-
-
-def selenium_teardown_authcache(self):
-    original_teardown(self)
-    del self['http_auth_cache']
-
-
-original_teardown = gocept.selenium.webdriver.WebdriverSeleneseLayer.tearDown
-gocept.selenium.webdriver.WebdriverSeleneseLayer.tearDown = selenium_teardown_authcache
 
 
 @pytest.mark.selenium()
