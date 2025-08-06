@@ -1,6 +1,5 @@
 # coding: utf8
 from unittest import mock
-import unittest
 
 import lxml.builder
 import lxml.etree
@@ -18,15 +17,6 @@ import zeit.cms.repository.interfaces
 import zeit.cms.tagging.interfaces
 import zeit.connector.interfaces
 import zeit.retresco.testing
-
-
-try:
-    import zeit.intrafind.tag
-    import zeit.intrafind.tagger
-
-    HAVE_INTRAFIND = True
-except ImportError:  # Soft dependency, only needed for transitional period
-    HAVE_INTRAFIND = False
 
 
 class TestTagger(zeit.retresco.testing.FunctionalTestCase, zeit.retresco.testing.TagTestHelpers):
@@ -485,20 +475,3 @@ class TaggerUpdateTest(
                 },
                 tagger.links,
             )
-
-    @unittest.skipUnless(HAVE_INTRAFIND, 'zeit.intrafind not available')
-    def test_update_should_keep_intrafind_pinned_tags(self):
-        content = create_testcontent()
-        intra = zeit.intrafind.tagger.Tagger(content)
-        intra['uid-intra'] = zeit.intrafind.tag.Tag('uid-intra', 'Berlin', entity_type='free')
-        intra.set_pinned(['uid-intra'])
-        tagger = Tagger(content)
-        tagger.update()
-        self.assertEqual(['keyword☃Berlin'], list(tagger))
-        self.assertEqual(('keyword☃Berlin',), tagger.pinned)
-
-        # Pinned are converted to TMS ids, so intrafind is no longer relevant.
-        del intra['uid-intra']
-        tagger.update()
-        self.assertEqual(['keyword☃Berlin'], list(tagger))
-        self.assertEqual(('keyword☃Berlin',), tagger.pinned)

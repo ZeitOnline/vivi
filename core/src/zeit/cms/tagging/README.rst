@@ -4,8 +4,7 @@ Verschlagwortung
 Alle Objekte, die ``zeit.cms.content.interfaces.ICommonMetadata``
 implementieren, bieten über die Eigenschaft ``keywords`` Schlagworte an.
 Dieses Paket definitiert die abstrakten APIs, konkrete Implementierungen
-dazu befinden sich in `zeit.intrafind
-<https://github.com/ZeitOnline/zeit.intrafind>`_ bzw. `zeit.retresco
+dazu befinden sich in `zeit.retresco
 <https://github.com/ZeitOnline/zeit.retresco>`_.
 
 
