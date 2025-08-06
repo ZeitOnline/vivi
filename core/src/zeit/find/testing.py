@@ -2,7 +2,6 @@ from unittest import mock
 import importlib.resources
 import json
 
-import plone.testing
 import zope.component
 
 import zeit.cms.testing
@@ -22,7 +21,7 @@ ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER,))
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
 
 
-class Layer(plone.testing.Layer):
+class Layer(zeit.cms.testing.Layer):
     defaultBases = (ZOPE_LAYER,)
 
     def setUp(self):
@@ -41,12 +40,12 @@ class Layer(plone.testing.Layer):
 
 LAYER = Layer()
 
-WSGI_LAYER = zeit.cms.testing.WSGILayer(name='WSGILayer', bases=(LAYER,))
-HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(name='HTTPLayer', bases=(WSGI_LAYER,))
-WEBDRIVER_LAYER = zeit.cms.testing.WebdriverLayer(name='WebdriverLayer', bases=(HTTP_LAYER,))
+WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(LAYER,))
+HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(bases=(WSGI_LAYER,))
+WEBDRIVER_LAYER = zeit.cms.testing.WebdriverLayer(bases=(HTTP_LAYER,))
 
 
-class SearchMockLayer(plone.testing.Layer):
+class SearchMockLayer(zeit.cms.testing.Layer):
     def setUp(self):
         registry = zope.component.getGlobalSiteManager()
         self['old_es'] = registry.queryUtility(zeit.find.interfaces.ICMSSearch)

@@ -66,7 +66,18 @@ import zeit.connector.interfaces
 import zeit.connector.mock
 
 
-class LoggingLayer(plone.testing.Layer):
+class Layer(plone.testing.Layer):
+    def __init__(self, bases=None, name=None):
+        if name is None:
+            name = self.__class__.__name__
+        for item in inspect.stack():
+            if item.function == '<module>':
+                module = item.frame.f_globals['__name__']
+                break
+        super().__init__(bases, name, module)
+
+
+class LoggingLayer(Layer):
     def setUp(self):
         logging.getLogger().setLevel(logging.INFO)
         logging.getLogger('zeit').setLevel(logging.DEBUG)
@@ -79,7 +90,7 @@ class LoggingLayer(plone.testing.Layer):
 LOGGING_LAYER = LoggingLayer()
 
 
-class CeleryEagerLayer(plone.testing.Layer):
+class CeleryEagerLayer(Layer):
     def setUp(self):
         zeit.cms.celery.CELERY.conf.task_always_eager = True
 
@@ -90,17 +101,13 @@ class CeleryEagerLayer(plone.testing.Layer):
 CELERY_EAGER_LAYER = CeleryEagerLayer()
 
 
-class ProductConfigLayer(plone.testing.Layer):
+class ProductConfigLayer(Layer):
     DELETE = object()
 
-    def __init__(
-        self, config, package=None, patches=None, name='ConfigLayer', module=None, bases=None
-    ):
-        if module is None:
-            module = inspect.stack()[1][0].f_globals['__name__']
-        super().__init__(name=name, module=module, bases=bases)
+    def __init__(self, config, package=None, patches=None, bases=None):
+        super().__init__(bases)
         if not package:
-            package = '.'.join(module.split('.')[:-1])
+            package = '.'.join(self.__module__.split('.')[:-1])
         self.package = package
         self.config = config
         self.patches = patches or {}
@@ -145,25 +152,21 @@ class ProductConfigLayer(plone.testing.Layer):
                 product[key] = copy.deepcopy(value)
 
 
-class ZCMLLayer(plone.testing.Layer):
+class ZCMLLayer(Layer):
     defaultBases = (LOGGING_LAYER,)
 
     def __init__(
         self,
         config_file='ftesting.zcml',
         features=('zeit.connector.mock',),
-        name='ZCMLLayer',
-        module=None,
         bases=(),
     ):
-        if module is None:
-            module = inspect.stack()[1][0].f_globals['__name__']
-        package, _ = module.rsplit('.', 1)
+        super().__init__(bases=self.defaultBases + bases)
+        package, _ = self.__module__.rsplit('.', 1)
         if not config_file.startswith('/'):
             config_file = str((importlib.resources.files(package) / config_file))
         self.config_file = config_file
         self.features = features
-        super().__init__(name=name, module=module, bases=self.defaultBases + bases)
 
     def setUp(self):
         self['zcaRegistry'] = plone.testing.zca.pushGlobalRegistry()
@@ -213,25 +216,16 @@ class ZCMLLayer(plone.testing.Layer):
         self['zcaRegistry'] = plone.testing.zca.popGlobalRegistry()
 
 
-class AdditionalZCMLLayer(plone.testing.Layer):
+class AdditionalZCMLLayer(Layer):
     """Requires a ZCMLLayer instance in the layer hierarchy above it."""
 
-    def __init__(
-        self,
-        package=None,
-        config_file='configure.zcml',
-        name='AdditionalZCMLLayer',
-        module=None,
-        bases=(),
-    ):
-        if module is None:
-            module = inspect.stack()[1][0].f_globals['__name__']
+    def __init__(self, package=None, config_file='configure.zcml', bases=()):
+        super().__init__(self.defaultBases + bases)
         if package is None:
-            package, _ = module.rsplit('.', 1)
+            package, _ = self.__module__.rsplit('.', 1)
         if not config_file.startswith('/'):
             config_file = str((importlib.resources.files(package) / config_file))
         self.config_file = config_file
-        super().__init__(name=name, module=module, bases=self.defaultBases + bases)
 
     def setUp(self):
         self['zcaRegistryAdd'] = plone.testing.zca.pushGlobalRegistry()
@@ -243,7 +237,7 @@ class AdditionalZCMLLayer(plone.testing.Layer):
         del self['zcaRegistryAdd']
 
 
-class ZODBLayer(plone.testing.Layer):
+class ZODBLayer(Layer):
     def setUp(self):
         self['zodbDB-layer'] = ZODB.DB(ZODB.DemoStorage.DemoStorage(name=self.__name__ + '-layer'))
 
@@ -269,7 +263,7 @@ class ResetMocks:
     """ZCA event for pluggable reset handlers that run on testTearDown."""
 
 
-class MockResetLayer(plone.testing.Layer):
+class MockResetLayer(Layer):
     event = (zope.interface.providedBy(ResetMocks()),)
 
     def testTearDown(self):
@@ -289,22 +283,18 @@ def reset_connector():
         connector._reset()
 
 
-class ZopeLayer(plone.testing.Layer):
+class ZopeLayer(Layer):
     defaultBases = (
         CELERY_EAGER_LAYER,
         MOCK_RESET_LAYER,
     )
 
-    def __init__(self, name='ZopeLayer', module=None, bases=()):
-        if module is None:
-            module = inspect.stack()[1][0].f_globals['__name__']
+    def __init__(self, bases=()):
         super().__init__(
-            name=name,
-            module=module,
             # This is a bit kludgy. We need an individual ZODB layer per ZCML
             # file (so e.g. different install generations are isolated), but
             # we don't really want to have to create one per package.
-            bases=self.defaultBases + bases + (ZODBLayer(),),
+            self.defaultBases + bases + (ZODBLayer(),),
         )
 
     def setUp(self):
@@ -350,12 +340,7 @@ class ZopeLayer(plone.testing.Layer):
         site.__bases__ = (self['zcaRegistry'],)
 
 
-class WSGILayer(plone.testing.Layer):
-    def __init__(self, name='WSGILayer', module=None, bases=None):
-        if module is None:
-            module = inspect.stack()[1][0].f_globals['__name__']
-        super().__init__(name=name, module=module, bases=bases)
-
+class WSGILayer(Layer):
     def setUp(self):
         self['zope_app'] = zope.app.wsgi.WSGIPublisherApplication(self['zodbDB-layer'])
         self['wsgi_app'] = zeit.cms.wsgi.wsgi_pipeline(
@@ -386,7 +371,7 @@ class WSGILayer(plone.testing.Layer):
         del self['zope_app']
 
 
-class CeleryWorkerLayer(plone.testing.Layer):
+class CeleryWorkerLayer(Layer):
     """Sets up a thread-layerd celery worker.
 
     Modeled after celery.contrib.testing.pytest.celery_session_worker and
@@ -403,11 +388,6 @@ class CeleryWorkerLayer(plone.testing.Layer):
         'webhook',
     )
     default_queue = 'default'
-
-    def __init__(self, name='CeleryLayer', module=None, bases=None):
-        if module is None:
-            module = inspect.stack()[1][0].f_globals['__name__']
-        super().__init__(name=name, module=module, bases=bases)
 
     def setUp(self):
         self['celery_app'] = zeit.cms.celery.CELERY
@@ -565,17 +545,17 @@ CONFIG_LAYER = ProductConfigLayer(
         }
     },
 )
-ZCML_LAYER = ZCMLLayer('ftesting.zcml', bases=(CONFIG_LAYER,))
+ZCML_LAYER = ZCMLLayer(bases=(CONFIG_LAYER,))
 ZOPE_LAYER = ZopeLayer(bases=(ZCML_LAYER,))
 WSGI_LAYER = WSGILayer(bases=(ZOPE_LAYER,))
 
 
 # Layer API modelled after gocept.httpserverlayer.wsgi
-class WSGIServerLayer(plone.testing.Layer):
+class WSGIServerLayer(Layer):
     port = 0  # choose automatically
 
-    def __init__(self, *args, **kw):
-        super().__init__(*args, **kw)
+    def __init__(self, bases=None):
+        super().__init__(bases)
         self.wsgi_app = None
 
     @property
@@ -633,10 +613,10 @@ class WSGIServerLayer(plone.testing.Layer):
         del self['http_address']
 
 
-HTTP_LAYER = WSGIServerLayer(name='HTTPLayer', bases=(WSGI_LAYER,))
+HTTP_LAYER = WSGIServerLayer(bases=(WSGI_LAYER,))
 
 
-class WebdriverLayer(gocept.selenium.WebdriverLayer):
+class WebdriverLayer(Layer, gocept.selenium.WebdriverLayer):
     def get_firefox_webdriver_args(self):
         options = selenium.webdriver.FirefoxOptions()
 
@@ -691,7 +671,7 @@ class WebdriverLayer(gocept.selenium.WebdriverLayer):
             binary._log_file.close()
 
 
-WEBDRIVER_LAYER = WebdriverLayer(name='WebdriverLayer', bases=(HTTP_LAYER,))
+WEBDRIVER_LAYER = WebdriverLayer(bases=(HTTP_LAYER,))
 
 
 def assertOrdered(self, locator1, locator2):
@@ -1237,7 +1217,7 @@ def vault_read(path, field=None):
     return data[field] if field else data
 
 
-class DockerLayer(plone.testing.Layer):
+class DockerLayer(Layer):
     def setUp(self):
         self['docker'] = docker.from_env()
 

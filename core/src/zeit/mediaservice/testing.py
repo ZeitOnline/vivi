@@ -14,7 +14,6 @@ ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER,))
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
 
 SQL_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    'ftesting.zcml',
     features=['zeit.connector.sql'],
     bases=(CONFIG_LAYER, zeit.connector.testing.SQL_CONFIG_LAYER),
 )

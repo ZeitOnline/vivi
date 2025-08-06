@@ -2,7 +2,6 @@ from unittest import mock
 
 import celery.exceptions
 import lxml.etree
-import plone.testing
 import requests.exceptions
 
 from zeit.cms.checkout.helper import checked_out
@@ -14,13 +13,9 @@ import zeit.cms.testing
 import zeit.cms.workflow.interfaces
 
 
-HTTP_LAYER = zeit.cms.testing.HTTPLayer(
-    zeit.cms.testing.RecordingRequestHandler, name='HTTPLayer', module=__name__
-)
-
-
-WEBHOOK_LAYER = plone.testing.Layer(
-    bases=(zeit.cms.testing.ZOPE_LAYER, HTTP_LAYER), name='WebhookLayer', module=__name__
+HTTP_LAYER = zeit.cms.testing.HTTPLayer(zeit.cms.testing.RecordingRequestHandler)
+WEBHOOK_LAYER = zeit.cms.testing.Layer(
+    bases=(zeit.cms.testing.ZOPE_LAYER, HTTP_LAYER), name='WebhookLayer'
 )
 
 

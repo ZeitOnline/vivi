@@ -1,7 +1,6 @@
 from unittest import mock
 import importlib.resources
 
-import plone.testing
 import zope.component
 
 import zeit.cms.testing
@@ -22,7 +21,7 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
 )
 
 
-class HonorarMockLayer(plone.testing.Layer):
+class HonorarMockLayer(zeit.cms.testing.Layer):
     def testTearDown(self):
         honorar = zope.component.getUtility(zeit.content.author.interfaces.IHonorar)
         if isinstance(honorar, mock.Mock):

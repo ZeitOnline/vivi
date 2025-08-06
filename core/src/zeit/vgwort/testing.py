@@ -1,4 +1,3 @@
-import plone.testing
 import pytest
 import zope.component
 import zope.index.text.interfaces
@@ -40,11 +39,10 @@ SQL_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(SQL_ZCML_LAYER,))
 SQL_CONNECTOR_LAYER = zeit.connector.testing.SQLDatabaseLayer(bases=(SQL_ZOPE_LAYER,))
 
 
-class XMLRPCLayer(plone.testing.Layer):
+class XMLRPCLayer(zeit.cms.testing.Layer):
     defaultBases = (WSGI_LAYER,)
 
     def setUp(self):
-        super().setUp()
         token_service = zeit.vgwort.token.TokenService()
         token_service.ServerProxy = lambda x: zeit.cms.webtest.ServerProxy(x, self['wsgi_app'])
         zope.component.getSiteManager().registerUtility(token_service)
