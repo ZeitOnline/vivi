@@ -26,8 +26,8 @@ class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
     layer = WSGI_LAYER
 
 
-HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(name='HTTPLayer', bases=(WSGI_LAYER,))
-WEBDRIVER_LAYER = zeit.cms.testing.WebdriverLayer(name='WebdriverLayer', bases=(HTTP_LAYER,))
+HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(bases=(WSGI_LAYER,))
+WEBDRIVER_LAYER = zeit.cms.testing.WebdriverLayer(bases=(HTTP_LAYER,))
 
 
 class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):

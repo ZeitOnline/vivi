@@ -1,4 +1,3 @@
-import plone.testing
 import zope.component
 
 import zeit.cms.repository.interfaces
@@ -20,7 +19,7 @@ ZCML_LAYER = zeit.cms.testing.ZCMLLayer('testing.zcml', bases=(CONFIG_LAYER,))
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
 
 
-class Layer(plone.testing.Layer):
+class Layer(zeit.cms.testing.Layer):
     defaultBases = (ZOPE_LAYER,)
 
     def testSetUp(self):

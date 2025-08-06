@@ -2,7 +2,6 @@ import importlib.resources
 import time
 import urllib.parse
 
-import plone.testing
 import requests
 
 import zeit.cms.testing
@@ -11,7 +10,7 @@ import zeit.cms.testing
 HERE = importlib.resources.files(__package__)
 
 
-class BQEmulatorLayer(plone.testing.Layer):
+class BQEmulatorLayer(zeit.cms.testing.Layer):
     defaultBases = (zeit.cms.testing.DOCKER_LAYER,)
 
     container_image = 'ghcr.io/goccy/bigquery-emulator:0.6.6'

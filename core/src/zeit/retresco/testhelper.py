@@ -8,7 +8,6 @@ busy work for (so far) not _much_ gain.
 
 from unittest import mock
 
-import plone.testing
 import zope.component
 import zope.interface
 
@@ -16,7 +15,7 @@ import zeit.cms.interfaces
 import zeit.retresco.interfaces
 
 
-class ElasticsearchMockLayer(plone.testing.Layer):
+class ElasticsearchMockLayer(zeit.cms.testing.Layer):
     def testSetUp(self):
         self['elasticsearch'] = mock.Mock()
         self['elasticsearch'].search.return_value = zeit.cms.interfaces.Result()
@@ -31,7 +30,7 @@ class ElasticsearchMockLayer(plone.testing.Layer):
 ELASTICSEARCH_MOCK_LAYER = ElasticsearchMockLayer()
 
 
-class TMSMockLayer(plone.testing.Layer):
+class TMSMockLayer(zeit.cms.testing.Layer):
     def testSetUp(self):
         self['tms'] = mock.Mock()
         self['tms'].get_topicpage_documents.return_value = zeit.cms.interfaces.Result()

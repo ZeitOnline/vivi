@@ -2,7 +2,6 @@ import importlib.resources
 import logging
 import urllib.parse
 
-import plone.testing
 import zope.interface
 
 import zeit.cms.config
@@ -59,7 +58,7 @@ ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER, ARTICLE_CONFIG_LAYE
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
 
 
-class PushMockLayer(plone.testing.Layer):
+class PushMockLayer(zeit.cms.testing.Layer):
     """Helper layer to reset mock notifiers."""
 
     def testSetUp(self):
@@ -70,7 +69,7 @@ class PushMockLayer(plone.testing.Layer):
 PUSH_MOCK_LAYER = PushMockLayer()
 
 
-class UrbanairshipTemplateLayer(plone.testing.Layer):
+class UrbanairshipTemplateLayer(zeit.cms.testing.Layer):
     defaultBases = (ZOPE_LAYER,)
 
     def create_template(self, text=None, name='template.json'):
@@ -99,7 +98,7 @@ class UrbanairshipTemplateLayer(plone.testing.Layer):
 
 URBANAIRSHIP_TEMPLATE_LAYER = UrbanairshipTemplateLayer()
 
-LAYER = plone.testing.Layer(name='Layer', bases=(URBANAIRSHIP_TEMPLATE_LAYER, PUSH_MOCK_LAYER))
+LAYER = zeit.cms.testing.Layer(bases=(URBANAIRSHIP_TEMPLATE_LAYER, PUSH_MOCK_LAYER))
 
 
 class TestCase(zeit.cms.testing.FunctionalTestCase):
@@ -109,9 +108,9 @@ class TestCase(zeit.cms.testing.FunctionalTestCase):
         self.layer['create_template'](text, name)
 
 
-WSGI_LAYER = zeit.cms.testing.WSGILayer(name='WSGILayer', bases=(LAYER,))
-HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(name='HTTPLayer', bases=(WSGI_LAYER,))
-WEBDRIVER_LAYER = zeit.cms.testing.WebdriverLayer(name='WebdriverLayer', bases=(HTTP_LAYER,))
+WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(LAYER,))
+HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(bases=(WSGI_LAYER,))
+WEBDRIVER_LAYER = zeit.cms.testing.WebdriverLayer(bases=(HTTP_LAYER,))
 
 
 class BrowserTestCase(zeit.cms.testing.BrowserTestCase):

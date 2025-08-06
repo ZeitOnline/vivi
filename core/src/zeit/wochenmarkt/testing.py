@@ -39,12 +39,7 @@ MODULES_CONFIG_LAYER = ModulesConfigLayer({}, package='zeit.content.modules')
 
 
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    'ftesting.zcml',
-    bases=(
-        CONFIG_LAYER,
-        ARTICLE_CONFIG_LAYER,
-        MODULES_CONFIG_LAYER,
-    ),
+    bases=(CONFIG_LAYER, ARTICLE_CONFIG_LAYER, MODULES_CONFIG_LAYER)
 )
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
 

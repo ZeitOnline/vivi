@@ -1,4 +1,3 @@
-import plone.testing
 import zope.component
 
 from zeit.wochenende.interfaces import IZWEFolder, IZWESection
@@ -11,7 +10,7 @@ ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(zeit.content.article.testing.CONF
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
 
 
-class Layer(plone.testing.Layer):
+class Layer(zeit.cms.testing.Layer):
     defaultBases = (ZOPE_LAYER,)
 
     def testSetUp(self):

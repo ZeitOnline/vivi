@@ -2,9 +2,7 @@ import zeit.cms.testing
 import zeit.retresco.testing
 
 
-HTTP_LAYER = zeit.cms.testing.HTTPLayer(
-    zeit.cms.testing.RecordingRequestHandler, name='HTTPLayer', module=__name__
-)
+HTTP_LAYER = zeit.cms.testing.HTTPLayer(zeit.cms.testing.RecordingRequestHandler)
 CONFIG_LAYER = zeit.retresco.testing.ProductConfigLayer(
     {
         'url': 'http://localhost:{port}',
