@@ -1,7 +1,5 @@
 import importlib.resources
 
-import plone.testing
-
 import zeit.cms.testing
 import zeit.push.testing
 
@@ -15,10 +13,8 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
 )
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER,))
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
-PUSH_LAYER = zeit.push.testing.UrbanairshipTemplateLayer(
-    name='UrbanairshipTemplateLayer', bases=(ZOPE_LAYER,)
-)
-LAYER = plone.testing.Layer(bases=(PUSH_LAYER,), name='Layer')
+PUSH_LAYER = zeit.push.testing.UrbanairshipTemplateLayer(bases=(ZOPE_LAYER,))
+LAYER = zeit.cms.testing.Layer(bases=(PUSH_LAYER,))
 WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(LAYER,))
 
 

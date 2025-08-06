@@ -2,14 +2,13 @@
 from unittest import mock
 
 import gocept.httpserverlayer.static
-import plone.testing
 import transaction
 
 import zeit.cms.testing
 import zeit.content.video.testing
 
 
-class MockAPILayer(plone.testing.Layer):
+class MockAPILayer(zeit.cms.testing.Layer):
     def setUp(self):
         self.cmsapi_patch = mock.patch('zeit.brightcove.connection.CMSAPI._request')
         self.cmsapi_patch.start()

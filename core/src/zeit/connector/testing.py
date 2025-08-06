@@ -1,13 +1,11 @@
 from io import BytesIO
 import importlib.resources
-import inspect
 import os
 import time
 
 from gcp_storage_emulator.server import create_server as create_gcp_server
 from sqlalchemy import text as sql
 from sqlalchemy.exc import OperationalError
-import plone.testing
 import requests
 import sqlalchemy
 import transaction
@@ -34,7 +32,7 @@ MOCK_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
 MOCK_CONNECTOR_LAYER = zeit.cms.testing.ZopeLayer(bases=(MOCK_ZCML_LAYER,))
 
 
-class SQLServerLayer(plone.testing.Layer):
+class SQLServerLayer(zeit.cms.testing.Layer):
     defaultBases = (zeit.cms.testing.DOCKER_LAYER,)
 
     container_image = 'postgres:14'
@@ -76,7 +74,7 @@ class SQLServerLayer(plone.testing.Layer):
 SQL_SERVER_LAYER = SQLServerLayer()
 
 
-class GCSServerLayer(plone.testing.Layer):
+class GCSServerLayer(zeit.cms.testing.Layer):
     bucket = 'vivi-test'
 
     def setUp(self):
@@ -124,19 +122,9 @@ class SQLConfigLayer(zeit.cms.testing.ProductConfigLayer):
 SQL_CONFIG_LAYER = SQLConfigLayer()
 
 
-class SQLDatabaseLayer(plone.testing.Layer):
-    def __init__(
-        self,
-        zodb=False,
-        connector=None,
-        dbname='vivi_test',
-        name='SQLDatabaseLayer',
-        module=None,
-        bases=(),
-    ):
-        if module is None:
-            module = inspect.stack()[1][0].f_globals['__name__']
-        super().__init__(name=name, module=module, bases=bases)
+class SQLDatabaseLayer(zeit.cms.testing.Layer):
+    def __init__(self, zodb=False, connector=None, dbname='vivi_test', bases=()):
+        super().__init__(bases)
         self.zodb = zodb
         self._connector = connector
         self.dbname = dbname

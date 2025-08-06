@@ -1,6 +1,5 @@
 from unittest import mock
 
-import plone.testing
 import zope.component
 import zope.interface
 
@@ -12,12 +11,10 @@ import zeit.push.testing
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer({}, bases=(zeit.push.testing.CONFIG_LAYER,))
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER,))
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
-PUSH_LAYER = zeit.push.testing.UrbanairshipTemplateLayer(
-    name='UrbanairshipTemplateLayer', bases=(ZOPE_LAYER,)
-)
+PUSH_LAYER = zeit.push.testing.UrbanairshipTemplateLayer(bases=(ZOPE_LAYER,))
 
 
-class PlayerMockLayer(plone.testing.Layer):
+class PlayerMockLayer(zeit.cms.testing.Layer):
     def setUp(self):
         self['player'] = mock.Mock()
         zope.interface.alsoProvides(self['player'], zeit.content.video.interfaces.IPlayer)
@@ -37,7 +34,7 @@ class PlayerMockLayer(plone.testing.Layer):
 PLAYER_MOCK_LAYER = PlayerMockLayer()
 
 
-LAYER = plone.testing.Layer(bases=(PUSH_LAYER, PLAYER_MOCK_LAYER), name='Layer', module=__name__)
+LAYER = zeit.cms.testing.Layer(bases=(PUSH_LAYER, PLAYER_MOCK_LAYER))
 WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(LAYER,))
 
 

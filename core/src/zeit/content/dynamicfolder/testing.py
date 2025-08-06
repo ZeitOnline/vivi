@@ -1,7 +1,6 @@
 # coding: utf-8
 import importlib.resources
 
-import plone.testing
 import transaction
 import zope.component
 
@@ -17,7 +16,7 @@ ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(zeit.content.cp.testing.CONFIG_LA
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
 
 
-class DynamicLayer(plone.testing.Layer):
+class DynamicLayer(zeit.cms.testing.Layer):
     defaultBases = (ZOPE_LAYER,)
 
     def __init__(self, path, files):
