@@ -15,12 +15,12 @@ import alembic.script
 import sqlalchemy
 
 from zeit.connector.cli import _db_is_current
+import zeit.cms.testing.sql
 import zeit.connector.models
-import zeit.connector.testing
 
 
 class DBTestCase(unittest.TestCase):
-    layer = zeit.connector.testing.SQL_SERVER_LAYER
+    layer = zeit.cms.testing.sql.SQL_SERVER_LAYER
     dbname = 'vivi_migrations'
 
     def setUp(self):

@@ -251,13 +251,17 @@ class ZopeLayer(Layer):
     defaultBases = (CELERY_EAGER_LAYER, MOCK_RESET_LAYER)
 
     def __init__(self, bases=()):
+        from .sql import SQLIsolationLayer  # break circular import
+
         if not isinstance(bases, tuple):
             bases = (bases,)
         super().__init__(
             # This is a bit kludgy. We need an individual ZODB layer per ZCML
             # file (so e.g. different install generations are isolated), but
             # we don't really want to have to create one per package.
-            self.defaultBases + bases + (ZODBLayer(),),
+            # And until *all* tests are using the SQL connector, we have to
+            # configure that layer depending on the actual connector in use.
+            self.defaultBases + bases + (ZODBLayer(), SQLIsolationLayer()),
         )
 
     def setUp(self):

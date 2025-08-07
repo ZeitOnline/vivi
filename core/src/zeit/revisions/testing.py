@@ -1,4 +1,4 @@
-from zeit.connector.testing import GCS_SERVER_LAYER
+from zeit.cms.testing.sql import GCS_SERVER_LAYER
 import zeit.cms.checkout
 import zeit.cms.testing
 import zeit.content.article.testing

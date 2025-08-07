@@ -1,5 +1,4 @@
 import zeit.cms.testing
-import zeit.connector.testing
 import zeit.content.article.testing
 
 
@@ -13,10 +12,9 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     config_file='ftesting.zcml',
     features=['zeit.connector.sql'],
-    bases=(CONFIG_LAYER, zeit.connector.testing.SQL_CONFIG_LAYER),
+    bases=(CONFIG_LAYER, zeit.cms.testing.SQL_LAYER),
 )
-SQL_LAYER = zeit.connector.testing.SQLIsolationLayer(ZCML_LAYER)
-ZOPE_LAYER = zeit.cms.testing.ZopeLayer(SQL_LAYER)
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
 
 
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
