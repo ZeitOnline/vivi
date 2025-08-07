@@ -2,8 +2,6 @@ from unittest import mock
 import importlib.resources
 import json
 
-import gocept.selenium
-import plone.testing
 import zope.component
 
 import zeit.cms.testing
@@ -17,13 +15,13 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
         'elasticsearch-url': 'http://tms-backend.staging.zeit.de:80/elasticsearch',
         'elasticsearch-index': 'foo_pool',
     },
-    bases=(zeit.content.audio.testing.CONFIG_LAYER,),
+    bases=zeit.content.audio.testing.CONFIG_LAYER,
 )
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER,))
-ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER)
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
 
 
-class Layer(plone.testing.Layer):
+class Layer(zeit.cms.testing.Layer):
     defaultBases = (ZOPE_LAYER,)
 
     def setUp(self):
@@ -42,15 +40,12 @@ class Layer(plone.testing.Layer):
 
 LAYER = Layer()
 
-WSGI_LAYER = zeit.cms.testing.WSGILayer(name='WSGILayer', bases=(LAYER,))
-HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(name='HTTPLayer', bases=(WSGI_LAYER,))
-WD_LAYER = zeit.cms.testing.WebdriverLayer(name='WebdriverLayer', bases=(HTTP_LAYER,))
-SELENIUM_LAYER = gocept.selenium.WebdriverSeleneseLayer(
-    name='WebdriverSeleneseLayer', bases=(WD_LAYER,)
-)
+WSGI_LAYER = zeit.cms.testing.WSGILayer(LAYER)
+HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(WSGI_LAYER)
+WEBDRIVER_LAYER = zeit.cms.testing.WebdriverLayer(HTTP_LAYER)
 
 
-class SearchMockLayer(plone.testing.Layer):
+class SearchMockLayer(zeit.cms.testing.Layer):
     def setUp(self):
         registry = zope.component.getGlobalSiteManager()
         self['old_es'] = registry.queryUtility(zeit.find.interfaces.ICMSSearch)

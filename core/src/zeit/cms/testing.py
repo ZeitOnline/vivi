@@ -24,6 +24,7 @@ import docker
 import gocept.httpserverlayer.custom
 import gocept.jslint
 import gocept.selenium
+import gocept.selenium.wd_selenese
 import gocept.testing.assertion
 import kombu
 import lxml.cssselect
@@ -65,7 +66,20 @@ import zeit.connector.interfaces
 import zeit.connector.mock
 
 
-class LoggingLayer(plone.testing.Layer):
+class Layer(plone.testing.Layer):
+    def __init__(self, bases=None, name=None):
+        if bases is not None and not isinstance(bases, tuple):
+            bases = (bases,)
+        if name is None:
+            name = self.__class__.__name__
+        for item in inspect.stack():
+            if item.function == '<module>':
+                module = item.frame.f_globals['__name__']
+                break
+        super().__init__(bases, name, module)
+
+
+class LoggingLayer(Layer):
     def setUp(self):
         logging.getLogger().setLevel(logging.INFO)
         logging.getLogger('zeit').setLevel(logging.DEBUG)
@@ -78,7 +92,7 @@ class LoggingLayer(plone.testing.Layer):
 LOGGING_LAYER = LoggingLayer()
 
 
-class CeleryEagerLayer(plone.testing.Layer):
+class CeleryEagerLayer(Layer):
     def setUp(self):
         zeit.cms.celery.CELERY.conf.task_always_eager = True
 
@@ -89,17 +103,13 @@ class CeleryEagerLayer(plone.testing.Layer):
 CELERY_EAGER_LAYER = CeleryEagerLayer()
 
 
-class ProductConfigLayer(plone.testing.Layer):
+class ProductConfigLayer(Layer):
     DELETE = object()
 
-    def __init__(
-        self, config, package=None, patches=None, name='ConfigLayer', module=None, bases=None
-    ):
-        if module is None:
-            module = inspect.stack()[1][0].f_globals['__name__']
-        super().__init__(name=name, module=module, bases=bases)
+    def __init__(self, config, package=None, patches=None, bases=None):
+        super().__init__(bases)
         if not package:
-            package = '.'.join(module.split('.')[:-1])
+            package = '.'.join(self.__module__.split('.')[:-1])
         self.package = package
         self.config = config
         self.patches = patches or {}
@@ -144,25 +154,23 @@ class ProductConfigLayer(plone.testing.Layer):
                 product[key] = copy.deepcopy(value)
 
 
-class ZCMLLayer(plone.testing.Layer):
+class ZCMLLayer(Layer):
     defaultBases = (LOGGING_LAYER,)
 
     def __init__(
         self,
+        bases=(),
         config_file='ftesting.zcml',
         features=('zeit.connector.mock',),
-        name='ZCMLLayer',
-        module=None,
-        bases=(),
     ):
-        if module is None:
-            module = inspect.stack()[1][0].f_globals['__name__']
-        package, _ = module.rsplit('.', 1)
+        if not isinstance(bases, tuple):
+            bases = (bases,)
+        super().__init__(bases=self.defaultBases + bases)
+        package, _ = self.__module__.rsplit('.', 1)
         if not config_file.startswith('/'):
             config_file = str((importlib.resources.files(package) / config_file))
         self.config_file = config_file
         self.features = features
-        super().__init__(name=name, module=module, bases=self.defaultBases + bases)
 
     def setUp(self):
         self['zcaRegistry'] = plone.testing.zca.pushGlobalRegistry()
@@ -212,25 +220,16 @@ class ZCMLLayer(plone.testing.Layer):
         self['zcaRegistry'] = plone.testing.zca.popGlobalRegistry()
 
 
-class AdditionalZCMLLayer(plone.testing.Layer):
+class AdditionalZCMLLayer(Layer):
     """Requires a ZCMLLayer instance in the layer hierarchy above it."""
 
-    def __init__(
-        self,
-        package=None,
-        config_file='configure.zcml',
-        name='AdditionalZCMLLayer',
-        module=None,
-        bases=(),
-    ):
-        if module is None:
-            module = inspect.stack()[1][0].f_globals['__name__']
+    def __init__(self, package=None, config_file='configure.zcml', bases=()):
+        super().__init__(self.defaultBases + bases)
         if package is None:
-            package, _ = module.rsplit('.', 1)
+            package, _ = self.__module__.rsplit('.', 1)
         if not config_file.startswith('/'):
             config_file = str((importlib.resources.files(package) / config_file))
         self.config_file = config_file
-        super().__init__(name=name, module=module, bases=self.defaultBases + bases)
 
     def setUp(self):
         self['zcaRegistryAdd'] = plone.testing.zca.pushGlobalRegistry()
@@ -242,7 +241,7 @@ class AdditionalZCMLLayer(plone.testing.Layer):
         del self['zcaRegistryAdd']
 
 
-class ZODBLayer(plone.testing.Layer):
+class ZODBLayer(Layer):
     def setUp(self):
         self['zodbDB-layer'] = ZODB.DB(ZODB.DemoStorage.DemoStorage(name=self.__name__ + '-layer'))
 
@@ -268,7 +267,7 @@ class ResetMocks:
     """ZCA event for pluggable reset handlers that run on testTearDown."""
 
 
-class MockResetLayer(plone.testing.Layer):
+class MockResetLayer(Layer):
     event = (zope.interface.providedBy(ResetMocks()),)
 
     def testTearDown(self):
@@ -288,22 +287,20 @@ def reset_connector():
         connector._reset()
 
 
-class ZopeLayer(plone.testing.Layer):
+class ZopeLayer(Layer):
     defaultBases = (
         CELERY_EAGER_LAYER,
         MOCK_RESET_LAYER,
     )
 
-    def __init__(self, name='ZopeLayer', module=None, bases=()):
-        if module is None:
-            module = inspect.stack()[1][0].f_globals['__name__']
+    def __init__(self, bases=()):
+        if not isinstance(bases, tuple):
+            bases = (bases,)
         super().__init__(
-            name=name,
-            module=module,
             # This is a bit kludgy. We need an individual ZODB layer per ZCML
             # file (so e.g. different install generations are isolated), but
             # we don't really want to have to create one per package.
-            bases=self.defaultBases + bases + (ZODBLayer(),),
+            self.defaultBases + bases + (ZODBLayer(),),
         )
 
     def setUp(self):
@@ -349,12 +346,7 @@ class ZopeLayer(plone.testing.Layer):
         site.__bases__ = (self['zcaRegistry'],)
 
 
-class WSGILayer(plone.testing.Layer):
-    def __init__(self, name='WSGILayer', module=None, bases=None):
-        if module is None:
-            module = inspect.stack()[1][0].f_globals['__name__']
-        super().__init__(name=name, module=module, bases=bases)
-
+class WSGILayer(Layer):
     def setUp(self):
         self['zope_app'] = zope.app.wsgi.WSGIPublisherApplication(self['zodbDB-layer'])
         self['wsgi_app'] = zeit.cms.wsgi.wsgi_pipeline(
@@ -385,7 +377,7 @@ class WSGILayer(plone.testing.Layer):
         del self['zope_app']
 
 
-class CeleryWorkerLayer(plone.testing.Layer):
+class CeleryWorkerLayer(Layer):
     """Sets up a thread-layerd celery worker.
 
     Modeled after celery.contrib.testing.pytest.celery_session_worker and
@@ -402,11 +394,6 @@ class CeleryWorkerLayer(plone.testing.Layer):
         'webhook',
     )
     default_queue = 'default'
-
-    def __init__(self, name='CeleryLayer', module=None, bases=None):
-        if module is None:
-            module = inspect.stack()[1][0].f_globals['__name__']
-        super().__init__(name=name, module=module, bases=bases)
 
     def setUp(self):
         self['celery_app'] = zeit.cms.celery.CELERY
@@ -514,6 +501,9 @@ class RecordingRequestHandler(gocept.httpserverlayer.custom.RequestHandler):
 
 
 class HTTPLayer(gocept.httpserverlayer.custom.Layer):
+    def __init__(self, request_handler=RecordingRequestHandler):
+        super().__init__(request_handler)
+
     def testSetUp(self):
         super().testSetUp()
         self['request_handler'].requests = []
@@ -564,17 +554,17 @@ CONFIG_LAYER = ProductConfigLayer(
         }
     },
 )
-ZCML_LAYER = ZCMLLayer('ftesting.zcml', bases=(CONFIG_LAYER,))
-ZOPE_LAYER = ZopeLayer(bases=(ZCML_LAYER,))
-WSGI_LAYER = WSGILayer(bases=(ZOPE_LAYER,))
+ZCML_LAYER = ZCMLLayer(CONFIG_LAYER)
+ZOPE_LAYER = ZopeLayer(ZCML_LAYER)
+WSGI_LAYER = WSGILayer(ZOPE_LAYER)
 
 
 # Layer API modelled after gocept.httpserverlayer.wsgi
-class WSGIServerLayer(plone.testing.Layer):
+class WSGIServerLayer(Layer):
     port = 0  # choose automatically
 
-    def __init__(self, *args, **kw):
-        super().__init__(*args, **kw)
+    def __init__(self, bases=None):
+        super().__init__(bases)
         self.wsgi_app = None
 
     @property
@@ -632,10 +622,10 @@ class WSGIServerLayer(plone.testing.Layer):
         del self['http_address']
 
 
-HTTP_LAYER = WSGIServerLayer(name='HTTPLayer', bases=(WSGI_LAYER,))
+HTTP_LAYER = WSGIServerLayer(WSGI_LAYER)
 
 
-class WebdriverLayer(gocept.selenium.WebdriverLayer):
+class WebdriverLayer(Layer, gocept.selenium.WebdriverLayer):
     def get_firefox_webdriver_args(self):
         options = selenium.webdriver.FirefoxOptions()
 
@@ -657,6 +647,29 @@ class WebdriverLayer(gocept.selenium.WebdriverLayer):
         options.binary_location = os.environ.get('GOCEPT_WEBDRIVER_FF_BINARY', '')
         return {'options': options}
 
+    def setUp(self):
+        super().setUp()
+        self['selenium'] = gocept.selenium.wd_selenese.Selenese(
+            self['seleniumrc'], self['http_address'], SeleniumTestCase.TIMEOUT * 1000
+        )
+
+        # NOTE: Massively kludgy workaround. It seems that Firefox has a timing
+        # issue with HTTP auth and AJAX calls: if you open a page that requires
+        # auth and has AJAX calls to further pages that require the same auth,
+        # sometimes those AJAX calls come back as 401 (nothing to do with
+        # Selenium, we've seen this against the actual server).
+        #
+        # It seems that opening a page and then giving it a little time
+        # to settle in is enough to work around this issue.
+        s = self['selenium']
+        # XXX It seems something is not ready immediately?!??
+        s.pause(1000)
+        # XXX Credentials are duplicated from SeleniumTestCase.open().
+        s.open('http://user:userpw@%s/++skin++vivi/@@test-setup-auth' % self['http_address'])
+        # We don't really know how much time the browser needs until it's
+        # satisfied, or how we could determine this.
+        s.pause(1000)
+
     def _stop_selenium(self):
         super()._stop_selenium()
         if 'seleniumrc' not in self:
@@ -667,10 +680,7 @@ class WebdriverLayer(gocept.selenium.WebdriverLayer):
             binary._log_file.close()
 
 
-WD_LAYER = WebdriverLayer(name='WebdriverLayer', bases=(HTTP_LAYER,))
-WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(
-    name='WebdriverSeleneseLayer', bases=(WD_LAYER,)
-)
+WEBDRIVER_LAYER = WebdriverLayer(HTTP_LAYER)
 
 
 def assertOrdered(self, locator1, locator2):
@@ -775,45 +785,6 @@ class FunctionalTestCase(
         super().setUp()
         zope.component.hooks.setSite(self.getRootFolder())
         self.principal = create_interaction('zope.user')
-
-
-# XXX We should subclass instead of monkey-patch, but then I'd have
-# to change all the layer declarations in the zeit.* packages, sigh.
-
-
-def selenium_setup_authcache(self):
-    # NOTE: Massively kludgy workaround. It seems that Firefox has a timing
-    # issue with HTTP auth and AJAX calls: if you open a page that requires
-    # auth and has AJAX calls to further pages that require the same auth,
-    # sometimes those AJAX calls come back as 401 (nothing to do with
-    # Selenium, we've seen this against the actual server).
-    #
-    # It seems that opening a page and then giving it a little time
-    # to settle in is enough to work around this issue.
-
-    original_setup(self)
-    s = self['selenium']
-    self['http_auth_cache'] = True
-    # XXX It seems something is not ready immediately?!??
-    s.pause(1000)
-    # XXX Credentials are duplicated from SeleniumTestCase.open().
-    s.open('http://user:userpw@%s/++skin++vivi/@@test-setup-auth' % self['http_address'])
-    # We don't really know how much time the browser needs until it's
-    # satisfied, or how we could determine this.
-    s.pause(1000)
-
-
-original_setup = gocept.selenium.webdriver.WebdriverSeleneseLayer.setUp
-gocept.selenium.webdriver.WebdriverSeleneseLayer.setUp = selenium_setup_authcache
-
-
-def selenium_teardown_authcache(self):
-    original_teardown(self)
-    del self['http_auth_cache']
-
-
-original_teardown = gocept.selenium.webdriver.WebdriverSeleneseLayer.tearDown
-gocept.selenium.webdriver.WebdriverSeleneseLayer.tearDown = selenium_teardown_authcache
 
 
 @pytest.mark.selenium()
@@ -1255,7 +1226,7 @@ def vault_read(path, field=None):
     return data[field] if field else data
 
 
-class DockerLayer(plone.testing.Layer):
+class DockerLayer(Layer):
     def setUp(self):
         self['docker'] = docker.from_env()
 
