@@ -147,8 +147,13 @@ class ZCMLLayer(Layer):
         config_file='ftesting.zcml',
         features=('zeit.connector.mock',),
     ):
+        from .sql import SQL_CONFIG_LAYER  # break circular import
+
         if not isinstance(bases, tuple):
             bases = (bases,)
+        if any(x.startswith('zeit.connector.sql') for x in features):
+            bases += (SQL_CONFIG_LAYER,)
+
         super().__init__(bases=self.defaultBases + bases)
         package, _ = self.__module__.rsplit('.', 1)
         if not config_file.startswith('/'):

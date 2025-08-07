@@ -43,16 +43,14 @@ class ContentFixtureLayer(zeit.cms.testing.Layer):
 
 
 SQL_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    features=['zeit.connector.sql'],
-    bases=(zeit.cms.testing.CONFIG_LAYER, zeit.cms.testing.SQL_LAYER),
+    features=['zeit.connector.sql'], bases=zeit.cms.testing.CONFIG_LAYER
 )
 SQL_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(SQL_ZCML_LAYER)
 SQL_CONNECTOR_LAYER = ContentFixtureLayer(SQL_ZOPE_LAYER)
 
 
 ZOPE_SQL_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    features=['zeit.connector.sql.zope'],
-    bases=(zeit.cms.testing.CONFIG_LAYER, zeit.cms.testing.SQL_LAYER),
+    features=['zeit.connector.sql.zope'], bases=zeit.cms.testing.CONFIG_LAYER
 )
 ZOPE_SQL_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZOPE_SQL_ZCML_LAYER)
 ZOPE_SQL_CONNECTOR_LAYER = ContentFixtureLayer(ZOPE_SQL_ZOPE_LAYER)
@@ -61,7 +59,7 @@ ZOPE_SQL_CONNECTOR_LAYER = ContentFixtureLayer(ZOPE_SQL_ZOPE_LAYER)
 SQL_CONTENT_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     config_file=str((importlib.resources.files('zeit.cms') / 'ftesting.zcml')),
     features=['zeit.connector.sql.zope'],
-    bases=(zeit.cms.testing.CONFIG_LAYER, zeit.cms.testing.SQL_LAYER),
+    bases=zeit.cms.testing.CONFIG_LAYER,
 )
 SQL_CONTENT_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(SQL_CONTENT_ZCML_LAYER)
 SQL_CONTENT_LAYER = ContentFixtureLayer(SQL_CONTENT_ZOPE_LAYER)

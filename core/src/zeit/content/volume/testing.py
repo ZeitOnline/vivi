@@ -57,7 +57,7 @@ WEBDRIVER_LAYER = zeit.cms.testing.WebdriverLayer(HTTP_LAYER)
 SQL_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     config_file='ftesting-workflow.zcml',
     features=['zeit.connector.sql'],
-    bases=(CONFIG_LAYER, zeit.cms.testing.SQL_LAYER, ARTICLE_CONFIG_LAYER),
+    bases=(CONFIG_LAYER, ARTICLE_CONFIG_LAYER),
 )
 SQL_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(SQL_ZCML_LAYER)
 SQL_WSGI_LAYER = zeit.cms.testing.WSGILayer(SQL_ZOPE_LAYER, name='SQLWSGILayer')
