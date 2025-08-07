@@ -7,8 +7,6 @@ from zeit.cms.testing.utils import vault_read
 import zeit.cms.content.interfaces
 import zeit.cms.testing
 import zeit.cms.webtest
-import zeit.connector
-import zeit.connector.testing
 import zeit.content.author.testing
 import zeit.vgwort.interfaces
 
@@ -33,10 +31,9 @@ WSGI_LAYER = zeit.cms.testing.WSGILayer(ZOPE_LAYER)
 SQL_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     config_file='ftesting-mock.zcml',
     features=['zeit.connector.sql'],
-    bases=(CONFIG_LAYER, zeit.connector.testing.SQL_CONFIG_LAYER),
+    bases=(CONFIG_LAYER, zeit.cms.testing.SQL_LAYER),
 )
-SQL_CONNECTOR_LAYER = zeit.connector.testing.SQLIsolationLayer(SQL_ZCML_LAYER)
-SQL_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(SQL_CONNECTOR_LAYER)
+SQL_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(SQL_ZCML_LAYER)
 
 
 class XMLRPCLayer(zeit.cms.testing.Layer):
@@ -72,7 +69,7 @@ class TestCase(zeit.cms.testing.FunctionalTestCase):
     layer = ZOPE_LAYER
 
 
-class SQLTestCase(zeit.connector.testing.TestCase):
+class SQLTestCase(zeit.cms.testing.FunctionalTestCase):
     layer = SQL_ZOPE_LAYER
 
 

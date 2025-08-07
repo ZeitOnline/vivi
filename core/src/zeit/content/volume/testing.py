@@ -8,7 +8,6 @@ from zeit.cms.workflow.interfaces import IPublishInfo
 from zeit.content.volume.volume import Volume
 import zeit.cms.content.sources
 import zeit.cms.testing
-import zeit.connector.testing
 import zeit.content.cp.testing
 import zeit.content.image.testing
 import zeit.push.testing
@@ -58,10 +57,9 @@ WEBDRIVER_LAYER = zeit.cms.testing.WebdriverLayer(HTTP_LAYER)
 SQL_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     config_file='ftesting-workflow.zcml',
     features=['zeit.connector.sql'],
-    bases=(CONFIG_LAYER, zeit.connector.testing.SQL_CONFIG_LAYER, ARTICLE_CONFIG_LAYER),
+    bases=(CONFIG_LAYER, zeit.cms.testing.SQL_LAYER, ARTICLE_CONFIG_LAYER),
 )
-SQL_CONNECTOR_LAYER = zeit.connector.testing.SQLIsolationLayer(SQL_ZCML_LAYER)
-SQL_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(SQL_CONNECTOR_LAYER)
+SQL_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(SQL_ZCML_LAYER)
 SQL_WSGI_LAYER = zeit.cms.testing.WSGILayer(SQL_ZOPE_LAYER, name='SQLWSGILayer')
 
 
@@ -77,7 +75,7 @@ class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
     layer = WEBDRIVER_LAYER
 
 
-class SQLTestCase(zeit.connector.testing.TestCase):
+class SQLTestCase(zeit.cms.testing.FunctionalTestCase):
     layer = SQL_ZOPE_LAYER
 
     def create_volume(self, year, name, product='ZEI', published=True):

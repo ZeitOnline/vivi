@@ -11,6 +11,7 @@ from .layer import Layer
 from .mock import ResetMocks
 from .pytest import copy_inherited_functions
 from .selenium import SeleniumTestCase, WebdriverLayer
+from .sql import SQL_CONFIG_LAYER as SQL_LAYER
 from .utils import xmltotext
 from .zope import (
     AdditionalZCMLLayer,

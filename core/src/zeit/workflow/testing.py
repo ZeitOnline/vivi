@@ -6,7 +6,6 @@ from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR, CAN_PUBLISH_WARNING
 import zeit.cms.testcontenttype.interfaces
 import zeit.cms.testing
 import zeit.cms.workflow.interfaces
-import zeit.connector.testing
 import zeit.content.article.testing
 import zeit.push.testing
 import zeit.workflow.publishinfo
@@ -31,10 +30,9 @@ WEBDRIVER_LAYER = zeit.cms.testing.WebdriverLayer(HTTP_LAYER)
 
 SQL_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     features=['zeit.connector.sql'],
-    bases=(CONFIG_LAYER, zeit.connector.testing.SQL_CONFIG_LAYER),
+    bases=(CONFIG_LAYER, zeit.cms.testing.SQL_LAYER),
 )
-SQL_CONNECTOR_LAYER = zeit.connector.testing.SQLIsolationLayer(SQL_ZCML_LAYER)
-SQL_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(SQL_CONNECTOR_LAYER)
+SQL_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(SQL_ZCML_LAYER)
 
 CONTENT_LAYER = zeit.cms.testing.AdditionalZCMLLayer(
     config_file='ftesting-content.zcml',
@@ -54,7 +52,7 @@ class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
     layer = WEBDRIVER_LAYER
 
 
-class SQLTestCase(zeit.connector.testing.TestCase):
+class SQLTestCase(zeit.cms.testing.FunctionalTestCase):
     layer = SQL_ZOPE_LAYER
 
 

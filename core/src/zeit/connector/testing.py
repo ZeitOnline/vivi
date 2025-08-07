@@ -1,19 +1,10 @@
 from io import BytesIO
 import importlib.resources
-import os
-import time
 
-from gcp_storage_emulator.server import create_server as create_gcp_server
-from sqlalchemy import text as sql
-from sqlalchemy.exc import OperationalError
-import requests
-import sqlalchemy
 import transaction
-import zope.component.hooks
+import zope.component
 
 import zeit.cms.testing
-import zeit.cms.testing.docker
-import zeit.connector.gcsemulator  # activate monkey patches
 import zeit.connector.interfaces
 import zeit.connector.mock
 import zeit.connector.models
@@ -31,161 +22,6 @@ MOCK_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     features=['zeit.connector.mock'], bases=zeit.cms.testing.CONFIG_LAYER
 )
 MOCK_CONNECTOR_LAYER = zeit.cms.testing.ZopeLayer(MOCK_ZCML_LAYER)
-
-
-class SQLServerLayer(zeit.cms.testing.Layer):
-    defaultBases = (zeit.cms.testing.docker.LAYER,)
-
-    container_image = 'postgres:14'
-
-    def setUp(self):
-        port = zeit.cms.testing.docker.get_random_port()
-        self['psql_container'] = zeit.cms.testing.docker.LAYER.run_container(
-            self.container_image,
-            detach=True,
-            remove=True,
-            environment={'POSTGRES_PASSWORD': 'postgres'},
-            ports={5432: port},
-        )
-        self['dsn'] = f'postgresql://postgres:postgres@localhost:{port}'
-        self.wait_for_startup(self['dsn'])
-
-    def wait_for_startup(self, dsn, timeout=10, sleep=0.2):
-        engine = sqlalchemy.create_engine(dsn)
-        slept = 0
-        while slept < timeout:
-            slept += sleep
-            time.sleep(sleep)
-            try:
-                engine.connect()
-            except Exception:
-                pass
-            else:
-                engine.dispose()
-                return
-        print(self['psql_container'].logs(timestamps=True).decode('utf-8'))
-        raise RuntimeError('%s did not start up' % dsn)
-
-    def tearDown(self):
-        del self['dsn']
-        self['psql_container'].stop()
-        del self['psql_container']
-
-
-SQL_SERVER_LAYER = SQLServerLayer()
-
-
-class GCSServerLayer(zeit.cms.testing.Layer):
-    bucket = 'vivi-test'
-
-    def setUp(self):
-        self['gcp_server'] = create_gcp_server(
-            'localhost', 0, in_memory=True, default_bucket=self.bucket
-        )
-        self['gcp_server'].start()
-        _, port = self['gcp_server']._api._httpd.socket.getsockname()
-        # Evaluated automatically by google.cloud.storage.Client
-        os.environ['STORAGE_EMULATOR_HOST'] = 'http://localhost:%s' % port
-
-    def testSetUp(self):
-        requests.get(os.environ['STORAGE_EMULATOR_HOST'] + '/wipe?keep-buckets=True')
-
-    def tearDown(self):
-        self['gcp_server'].stop()
-        del self['gcp_server']
-
-
-GCS_SERVER_LAYER = GCSServerLayer()
-
-
-class SQLDatabaseLayer(zeit.cms.testing.Layer):
-    defaultBases = (SQL_SERVER_LAYER,)
-    dbname = 'vivi_test'
-
-    def setUp(self):
-        dsn = self['dsn']
-        self['dsn'] += f'/{self.dbname}'
-
-        engine = sqlalchemy.create_engine(self['dsn'])
-        try:
-            engine.connect()
-            return
-        except OperationalError:
-            pass  # Database does not exist yet, have to create it
-
-        engine = sqlalchemy.create_engine(f'{dsn}/template1')
-        with engine.connect() as c:
-            c.connection.driver_connection.set_isolation_level(0)
-            c.execute(sql(f'CREATE DATABASE {self.dbname}'))
-        engine.dispose()
-
-        engine = sqlalchemy.create_engine(self['dsn'])
-        with engine.connect() as c:
-            t = c.begin()
-            zeit.connector.models.Base.metadata.drop_all(c)
-            zeit.connector.models.Base.metadata.create_all(c)
-            t.commit()
-        engine.dispose()
-
-    def tearDown(self):
-        del self['dsn']
-
-
-SQL_DATABASE_LAYER = SQLDatabaseLayer()
-
-
-class SQLConfigLayer(zeit.cms.testing.ProductConfigLayer):
-    defaultBases = (
-        SQL_DATABASE_LAYER,
-        GCS_SERVER_LAYER,
-    )
-
-    def __init__(self):
-        super().__init__(
-            {
-                'storage-project': 'ignored_by_emulator',
-                'storage-bucket': GCS_SERVER_LAYER.bucket,
-                'sql-locking': 'True',
-                'sql-pool-class': 'sqlalchemy.pool.NullPool',
-            }
-        )
-
-    def setUp(self):
-        self.config['dsn'] = self['dsn']
-        super().setUp()
-
-
-SQL_CONFIG_LAYER = SQLConfigLayer()
-
-
-class SQLIsolationLayer(zeit.cms.testing.Layer):
-    def setUp(self):
-        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
-        self['sql_connection'] = connector.engine.connect()
-
-        # Configure sqlalchemy session to use only this specific connection,
-        # and to use savepoints instead of full commits. Thus it joins the
-        # transaction that we start in testSetUp() and roll back in testTearDown()
-        # See "Joining a Session into an External Transaction" in the sqlalchemy doc
-        connector.session.configure(
-            bind=self['sql_connection'], join_transaction_mode='create_savepoint'
-        )
-
-        self['sql_transaction_layer'] = self['sql_connection'].begin()
-
-    def tearDown(self):
-        self['sql_transaction_layer'].rollback()
-        del self['sql_transaction_layer']
-        self['sql_connection'].close()
-        del self['sql_connection']
-
-    def testSetUp(self):
-        self['sql_transaction_test'] = self['sql_connection'].begin_nested()
-
-    def testTearDown(self):
-        transaction.abort()  # includes connector.session.close()
-        self['sql_transaction_test'].rollback()
-        del self['sql_transaction_test']
 
 
 class ContentFixtureLayer(zeit.cms.testing.Layer):
@@ -207,28 +43,27 @@ class ContentFixtureLayer(zeit.cms.testing.Layer):
 
 
 SQL_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    features=['zeit.connector.sql'], bases=(zeit.cms.testing.CONFIG_LAYER, SQL_CONFIG_LAYER)
+    features=['zeit.connector.sql'],
+    bases=(zeit.cms.testing.CONFIG_LAYER, zeit.cms.testing.SQL_LAYER),
 )
-SQL_SQL_LAYER = SQLIsolationLayer(SQL_ZCML_LAYER)
-SQL_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(SQL_SQL_LAYER)
+SQL_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(SQL_ZCML_LAYER)
 SQL_CONNECTOR_LAYER = ContentFixtureLayer(SQL_ZOPE_LAYER)
 
 
 ZOPE_SQL_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    features=['zeit.connector.sql.zope'], bases=(zeit.cms.testing.CONFIG_LAYER, SQL_CONFIG_LAYER)
+    features=['zeit.connector.sql.zope'],
+    bases=(zeit.cms.testing.CONFIG_LAYER, zeit.cms.testing.SQL_LAYER),
 )
-ZOPE_SQL_SQL_LAYER = SQLIsolationLayer(ZOPE_SQL_ZCML_LAYER)
-ZOPE_SQL_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZOPE_SQL_SQL_LAYER)
+ZOPE_SQL_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZOPE_SQL_ZCML_LAYER)
 ZOPE_SQL_CONNECTOR_LAYER = ContentFixtureLayer(ZOPE_SQL_ZOPE_LAYER)
 
 
 SQL_CONTENT_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     config_file=str((importlib.resources.files('zeit.cms') / 'ftesting.zcml')),
     features=['zeit.connector.sql.zope'],
-    bases=(zeit.cms.testing.CONFIG_LAYER, SQL_CONFIG_LAYER),
+    bases=(zeit.cms.testing.CONFIG_LAYER, zeit.cms.testing.SQL_LAYER),
 )
-SQL_CONTENT_SQL_LAYER = SQLIsolationLayer(SQL_CONTENT_ZCML_LAYER)
-SQL_CONTENT_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(SQL_CONTENT_SQL_LAYER)
+SQL_CONTENT_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(SQL_CONTENT_ZCML_LAYER)
 SQL_CONTENT_LAYER = ContentFixtureLayer(SQL_CONTENT_ZOPE_LAYER)
 
 
