@@ -4,8 +4,7 @@ import zeit.cms.testing
 
 
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    features=['zeit.connector.sql'],
-    bases=(zeit.cms.testing.CONFIG_LAYER, zeit.cms.testing.SQL_LAYER),
+    features=['zeit.connector.sql'], bases=zeit.cms.testing.CONFIG_LAYER
 )
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
 
