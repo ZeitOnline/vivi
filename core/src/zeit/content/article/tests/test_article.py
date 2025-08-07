@@ -502,6 +502,16 @@ class AudioArticle(zeit.content.article.testing.FunctionalTestCase):
         assert self.article.body.values()[4].text == ol
         assert self.article.body.values()[5].text == h
 
+    def test_sets_has_audio_on_checkin(self):
+        self.assertFalse(self.article.has_audio)
+        self.audio = AudioBuilder().with_audio_type('premium').build()
+        self._add_audio_to_article()
+        self.assertTrue(self.article.has_audio)
+
+        self.audio = AudioBuilder().with_audio_type('tts').build()
+        self._add_audio_to_article()
+        self.assertFalse(self.article.has_audio)
+
 
 class ArticleProperties(zeit.content.article.testing.FunctionalTestCase):
     def test_article_text_length_is_updated_on_change(self):
