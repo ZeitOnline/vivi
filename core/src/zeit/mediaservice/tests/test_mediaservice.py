@@ -35,11 +35,12 @@ class TestMediaService(zeit.mediaservice.testing.FunctionalTestCase):
 
     def test_correctly_counts_zero_objects(self):
         mediaservice = zeit.mediaservice.mediaservice.MediaService()
-        counts = mediaservice.create_audio_objects(zeit.content.volume.volume.Volume())
+        counts, articles = mediaservice.create_audio_objects(zeit.content.volume.volume.Volume())
         assert 'existing' in counts
         assert counts['existing'] == 0
         assert 'created' in counts
         assert counts['created'] == 0
+        assert not articles
 
 
 class TestCreateAudioObjects(zeit.mediaservice.testing.SQLTestCase):
@@ -96,7 +97,10 @@ class TestCreateAudioObjects(zeit.mediaservice.testing.SQLTestCase):
         self.assertEqual(audio.title, article.title)
 
         entries = self.get_log_entries(volume)
-        assert entries == ('Found 0 and created 1 mediaservice audio objects',)
+        assert entries == (
+            'Found 0 and created 1 mediaservice audio objects',
+            'Audio objects created for the following articles: http://xml.zeit.de/2025/01/article01',
+        )
 
     def test_mediaservice_creates_premium_audio_for_published_article(self):
         volume = self.repository['2025']['01']['ausgabe']
@@ -114,7 +118,10 @@ class TestCreateAudioObjects(zeit.mediaservice.testing.SQLTestCase):
         assert audio
 
         entries = self.get_log_entries(volume)
-        assert entries == ('Found 0 and created 1 mediaservice audio objects',)
+        assert entries == (
+            'Found 0 and created 1 mediaservice audio objects',
+            'Audio objects created for the following articles: http://xml.zeit.de/2025/01/article01',
+        )
 
     def test_mediaservice_creates_premium_audio_for_article_with_has_audio(self):
         volume = self.repository['2025']['01']['ausgabe']
@@ -135,7 +142,10 @@ class TestCreateAudioObjects(zeit.mediaservice.testing.SQLTestCase):
         assert audio
 
         entries = self.get_log_entries(volume)
-        assert entries == ('Found 0 and created 1 mediaservice audio objects',)
+        assert entries == (
+            'Found 0 and created 1 mediaservice audio objects',
+            'Audio objects created for the following articles: http://xml.zeit.de/2025/01/article01',
+        )
 
     def test_mediaservice_sets_has_audio_for_article_with_premium_audio(self):
         volume = self.repository['2025']['01']['ausgabe']
@@ -168,6 +178,7 @@ class TestCreateAudioObjects(zeit.mediaservice.testing.SQLTestCase):
         entries = self.get_log_entries(volume)
         assert entries == (
             'Found 0 and created 1 mediaservice audio objects',
+            'Audio objects created for the following articles: http://xml.zeit.de/2025/01/article01',
             'Found 1 and created 0 mediaservice audio objects',
         )
 
