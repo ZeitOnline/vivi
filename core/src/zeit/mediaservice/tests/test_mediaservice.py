@@ -88,6 +88,8 @@ class TestVolumeArticleAudios(zeit.mediaservice.testing.SQLTestCase):
         self.assertEqual(audio.title, article.title)
 
     def test_mediaservice_creates_premium_audio_for_published_article(self):
+        self.create_volume_content('2025', '01', 'article02')
+        self.create_volume_content('2025', '01', 'article03')
         volume = self.repository['2025']['01']['ausgabe']
         article = self.repository['2025']['01']['article01']
         article.date_digital_published = datetime(2025, 1, 1)
@@ -97,10 +99,11 @@ class TestVolumeArticleAudios(zeit.mediaservice.testing.SQLTestCase):
         zeit.mediaservice.mediaservice.create_audio_objects(volume.uniqueId)
         transaction.commit()
 
-        article = self.repository['2025']['01']['article01']
-        assert article.has_audio
-        audio = zeit.content.audio.interfaces.IAudioReferences(article).items[0]
-        assert audio
+        for i in range(1, 4):
+            article = self.repository['2025']['01'][f'article0{i}']
+            assert article.has_audio
+            audio = zeit.content.audio.interfaces.IAudioReferences(article).items[0]
+            assert audio
 
     def test_mediaservice_creates_premium_audio_for_article_with_has_audio(self):
         volume = self.repository['2025']['01']['ausgabe']
