@@ -306,7 +306,7 @@ class PublishRetractTask:
             if current_obj.uniqueId in seen:
                 continue
             seen.add(current_obj.uniqueId)
-            logger.debug('%s %s' % (method, current_obj.uniqueId))
+            logger.debug('%s %s' % (method.__name__, current_obj.uniqueId))
             with zeit.cms.tracing.use_span(
                 __name__,
                 f'publish {method.__name__}',
