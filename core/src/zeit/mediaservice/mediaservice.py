@@ -23,13 +23,21 @@ MEDIASYNC_ID = SearchVar('mediasync_id', zeit.cms.interfaces.IR_NAMESPACE)
 def create_audio_objects(volume_uniqueid):
     volume = zeit.cms.interfaces.ICMSContent(volume_uniqueid)
     mediaservice = MediaService()
-    count = mediaservice.create_audio_objects(volume)
-    zeit.objectlog.interfaces.ILog(volume).log(
+    (count, articles) = mediaservice.create_audio_objects(volume)
+    log = zeit.objectlog.interfaces.ILog(volume)
+    log.log(
         _(
             'Found ${existing} and created ${created} mediaservice audio objects',
             mapping=dict(count),
-        ),
+        )
     )
+    if articles:
+        log.log(
+            _(
+                'Audio objects created for the following articles: ${articles}',
+                mapping={'articles': ', '.join(articles)},
+            )
+        )
 
 
 class MediaService:
@@ -56,6 +64,7 @@ class MediaService:
 
     def _create_audio_objects(self, folder, audios):
         count = collections.Counter(created=0, existing=0)
+        audio_created_for = set()
         for mediasync_id, audio_info in audios.items():
             articles = self._get_articles(mediasync_id)
             if not articles:
@@ -70,6 +79,7 @@ class MediaService:
                 article_uuid = zeit.cms.content.interfaces.IUUID(article)
                 if article_uuid.shortened not in folder:
                     count['created'] += 1
+                    audio_created_for.add(article.uniqueId)
                     audio = self.create_audio_object(mediasync_id, audio_info)
                     audio.title = article.title
                     folder[article_uuid.shortened] = audio
@@ -80,7 +90,7 @@ class MediaService:
                     with checked_out(article, raise_if_error=True) as co:
                         references = IAudioReferences(co)
                         references.add(folder[article_uuid.shortened])
-        return count
+        return count, tuple(audio_created_for)
 
     def create_audio_object(self, mediasync_id, audio_info):
         audio = zeit.content.audio.audio.Audio()
