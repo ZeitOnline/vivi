@@ -1,6 +1,7 @@
 from pendulum import datetime
 import pendulum
 import transaction
+import zope.i18n
 
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.content.interfaces import ISemanticChange
@@ -41,7 +42,7 @@ class TestMediaService(zeit.mediaservice.testing.FunctionalTestCase):
         assert counts['created'] == 0
 
 
-class TestVolumeArticleAudios(zeit.mediaservice.testing.SQLTestCase):
+class TestCreateAudioObjects(zeit.mediaservice.testing.SQLTestCase):
     def setUp(self):
         super().setUp()
         self.create_volume(2025, 1)
@@ -78,6 +79,13 @@ class TestVolumeArticleAudios(zeit.mediaservice.testing.SQLTestCase):
         info.urgent = True
         return self.repository[volume_year][volume_number][name]
 
+    def get_log_entries(self, obj):
+        log = zeit.objectlog.interfaces.ILog(obj)
+        entries = tuple(
+            zope.i18n.interpolate(entry.message, entry.message.mapping) for entry in log.get_log()
+        )
+        return entries
+
     def test_article_with_premium_audio_creates_audio_object(self):
         volume = self.repository['2025']['01']['ausgabe']
         zeit.mediaservice.mediaservice.create_audio_objects(volume.uniqueId)
@@ -87,9 +95,10 @@ class TestVolumeArticleAudios(zeit.mediaservice.testing.SQLTestCase):
         audio = zeit.content.audio.interfaces.IAudioReferences(article).items[0]
         self.assertEqual(audio.title, article.title)
 
+        entries = self.get_log_entries(volume)
+        assert entries == ('Found 0 and created 1 mediaservice audio objects',)
+
     def test_mediaservice_creates_premium_audio_for_published_article(self):
-        self.create_volume_content('2025', '01', 'article02')
-        self.create_volume_content('2025', '01', 'article03')
         volume = self.repository['2025']['01']['ausgabe']
         article = self.repository['2025']['01']['article01']
         article.date_digital_published = datetime(2025, 1, 1)
@@ -99,11 +108,13 @@ class TestVolumeArticleAudios(zeit.mediaservice.testing.SQLTestCase):
         zeit.mediaservice.mediaservice.create_audio_objects(volume.uniqueId)
         transaction.commit()
 
-        for i in range(1, 4):
-            article = self.repository['2025']['01'][f'article0{i}']
-            assert article.has_audio
-            audio = zeit.content.audio.interfaces.IAudioReferences(article).items[0]
-            assert audio
+        article = self.repository['2025']['01']['article01']
+        assert article.has_audio
+        audio = zeit.content.audio.interfaces.IAudioReferences(article).items[0]
+        assert audio
+
+        entries = self.get_log_entries(volume)
+        assert entries == ('Found 0 and created 1 mediaservice audio objects',)
 
     def test_mediaservice_creates_premium_audio_for_article_with_has_audio(self):
         volume = self.repository['2025']['01']['ausgabe']
@@ -123,6 +134,9 @@ class TestVolumeArticleAudios(zeit.mediaservice.testing.SQLTestCase):
         audio = zeit.content.audio.interfaces.IAudioReferences(article).items[0]
         assert audio
 
+        entries = self.get_log_entries(volume)
+        assert entries == ('Found 0 and created 1 mediaservice audio objects',)
+
     def test_mediaservice_sets_has_audio_for_article_with_premium_audio(self):
         volume = self.repository['2025']['01']['ausgabe']
         article = self.repository['2025']['01']['article01']
@@ -138,6 +152,9 @@ class TestVolumeArticleAudios(zeit.mediaservice.testing.SQLTestCase):
         article = self.repository['2025']['01']['article01']
         assert article.has_audio
 
+        entries = self.get_log_entries(volume)
+        assert entries == ('Found 1 and created 0 mediaservice audio objects',)
+
     def test_mediaservice_does_not_add_duplicate_references(self):
         volume = self.repository['2025']['01']['ausgabe']
         zeit.mediaservice.mediaservice.create_audio_objects(volume.uniqueId)
@@ -147,6 +164,12 @@ class TestVolumeArticleAudios(zeit.mediaservice.testing.SQLTestCase):
             self.repository['2025']['01']['article01']
         )
         assert len(audio_references.get_by_type('premium')) == 1
+
+        entries = self.get_log_entries(volume)
+        assert entries == (
+            'Found 0 and created 1 mediaservice audio objects',
+            'Found 1 and created 0 mediaservice audio objects',
+        )
 
     def test_mediaservice_does_not_recreate_audio(self):
         volume = self.repository['2025']['01']['ausgabe']
@@ -159,6 +182,9 @@ class TestVolumeArticleAudios(zeit.mediaservice.testing.SQLTestCase):
         ).referenced_by(article).build()
         zeit.mediaservice.mediaservice.create_audio_objects(volume.uniqueId)
         assert audio_folder[article_uuid].audio_type == 'custom'
+
+        entries = self.get_log_entries(volume)
+        assert entries == ('Found 1 and created 0 mediaservice audio objects',)
 
     def test_mediaservice_does_not_check_out_article_unnecessarily(self):
         volume = self.repository['2025']['01']['ausgabe']
@@ -181,3 +207,6 @@ class TestVolumeArticleAudios(zeit.mediaservice.testing.SQLTestCase):
         with checked_out(article, raise_if_error=True) as co:
             # This would fail if it would try to check out
             zeit.mediaservice.mediaservice.create_audio_objects(volume.uniqueId)
+
+        entries = self.get_log_entries(volume)
+        assert entries == ('Found 1 and created 0 mediaservice audio objects',)
