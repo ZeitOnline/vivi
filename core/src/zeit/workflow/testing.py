@@ -1,4 +1,3 @@
-import gocept.selenium
 import zope.app.appsetup.product
 import zope.component
 import zope.interface
@@ -7,7 +6,6 @@ from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR, CAN_PUBLISH_WARNING
 import zeit.cms.testcontenttype.interfaces
 import zeit.cms.testing
 import zeit.cms.workflow.interfaces
-import zeit.connector.testing
 import zeit.content.article.testing
 import zeit.push.testing
 import zeit.workflow.publishinfo
@@ -21,23 +19,17 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
         'speechbert-ignore-genres': 'datenvisualisierung video quiz',
         'speechbert-ignore-templates': 'zon-liveblog',
     },
-    bases=(zeit.push.testing.CONFIG_LAYER,),
+    bases=zeit.push.testing.CONFIG_LAYER,
 )
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER,))
-ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
-CELERY_LAYER = zeit.cms.testing.CeleryWorkerLayer(bases=(ZOPE_LAYER,))
-WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(CELERY_LAYER,))
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER)
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
+CELERY_LAYER = zeit.cms.testing.CeleryWorkerLayer(ZOPE_LAYER)
+WSGI_LAYER = zeit.cms.testing.WSGILayer(CELERY_LAYER)
+HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(WSGI_LAYER)
+WEBDRIVER_LAYER = zeit.cms.testing.WebdriverLayer(HTTP_LAYER)
 
-HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(name='HTTPLayer', bases=(WSGI_LAYER,))
-WD_LAYER = zeit.cms.testing.WebdriverLayer(name='WebdriverLayer', bases=(HTTP_LAYER,))
-WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(name='SeleniumLayer', bases=(WD_LAYER,))
-
-SQL_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    features=['zeit.connector.sql'],
-    bases=(CONFIG_LAYER, zeit.connector.testing.SQL_CONFIG_LAYER),
-)
-SQL_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(SQL_ZCML_LAYER,))
-SQL_CONNECTOR_LAYER = zeit.connector.testing.SQLDatabaseLayer(bases=(SQL_ZOPE_LAYER,))
+SQL_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER, features=['zeit.connector.sql'])
+SQL_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(SQL_ZCML_LAYER)
 
 CONTENT_LAYER = zeit.cms.testing.AdditionalZCMLLayer(
     config_file='ftesting-content.zcml',
@@ -57,8 +49,8 @@ class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
     layer = WEBDRIVER_LAYER
 
 
-class SQLTestCase(zeit.connector.testing.TestCase):
-    layer = SQL_CONNECTOR_LAYER
+class SQLTestCase(zeit.cms.testing.FunctionalTestCase):
+    layer = SQL_ZOPE_LAYER
 
 
 @zope.interface.implementer(zeit.cms.workflow.interfaces.IPublishInfo)

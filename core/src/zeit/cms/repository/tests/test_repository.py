@@ -20,7 +20,6 @@ import zeit.cms.workingcopy.interfaces
 class TestConflicts(zeit.cms.testing.ZeitCmsTestCase):
     def setUp(self):
         super().setUp()
-        self.repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
         self.repository['online']['conflicting'] = (
             zeit.cms.repository.unknown.PersistentUnknownResource('Pop')
         )

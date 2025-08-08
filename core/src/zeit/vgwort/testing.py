@@ -1,15 +1,12 @@
-import plone.testing
 import pytest
 import zope.component
 import zope.index.text.interfaces
 import zope.interface
 
-from zeit.cms.testing import vault_read
+from zeit.cms.testing.utils import vault_read
 import zeit.cms.content.interfaces
 import zeit.cms.testing
 import zeit.cms.webtest
-import zeit.connector
-import zeit.connector.testing
 import zeit.content.author.testing
 import zeit.vgwort.interfaces
 
@@ -26,25 +23,23 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
     },
     bases=(zeit.content.author.testing.CONFIG_LAYER,),
 )
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer('ftesting-mock.zcml', bases=(CONFIG_LAYER,))
-ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
-WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(ZOPE_LAYER,))
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(config_file='ftesting-mock.zcml', bases=CONFIG_LAYER)
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
+WSGI_LAYER = zeit.cms.testing.WSGILayer(ZOPE_LAYER)
 
 
 SQL_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    'ftesting-mock.zcml',
+    config_file='ftesting-mock.zcml',
     features=['zeit.connector.sql'],
-    bases=(CONFIG_LAYER, zeit.connector.testing.SQL_CONFIG_LAYER),
+    bases=CONFIG_LAYER,
 )
-SQL_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(SQL_ZCML_LAYER,))
-SQL_CONNECTOR_LAYER = zeit.connector.testing.SQLDatabaseLayer(bases=(SQL_ZOPE_LAYER,))
+SQL_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(SQL_ZCML_LAYER)
 
 
-class XMLRPCLayer(plone.testing.Layer):
+class XMLRPCLayer(zeit.cms.testing.Layer):
     defaultBases = (WSGI_LAYER,)
 
     def setUp(self):
-        super().setUp()
         token_service = zeit.vgwort.token.TokenService()
         token_service.ServerProxy = lambda x: zeit.cms.webtest.ServerProxy(x, self['wsgi_app'])
         zope.component.getSiteManager().registerUtility(token_service)
@@ -64,16 +59,18 @@ class IntegrationConfigLayer(zeit.cms.testing.ProductConfigLayer):
 
 
 SOAP_CONFIG_LAYER = IntegrationConfigLayer(CONFIG_LAYER.config)
-SOAP_ZCML_LAYER = zeit.cms.testing.ZCMLLayer('ftesting-soap.zcml', bases=(SOAP_CONFIG_LAYER,))
-SOAP_LAYER = zeit.cms.testing.ZopeLayer(bases=(SOAP_ZCML_LAYER,))
+SOAP_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
+    config_file='ftesting-soap.zcml', bases=SOAP_CONFIG_LAYER
+)
+SOAP_LAYER = zeit.cms.testing.ZopeLayer(SOAP_ZCML_LAYER)
 
 
 class TestCase(zeit.cms.testing.FunctionalTestCase):
     layer = ZOPE_LAYER
 
 
-class SQLTestCase(zeit.connector.testing.TestCase):
-    layer = SQL_CONNECTOR_LAYER
+class SQLTestCase(zeit.cms.testing.FunctionalTestCase):
+    layer = SQL_ZOPE_LAYER
 
 
 class BrowserTestCase(zeit.cms.testing.BrowserTestCase):

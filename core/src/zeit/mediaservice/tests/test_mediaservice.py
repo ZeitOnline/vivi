@@ -41,7 +41,7 @@ class TestMediaService(zeit.mediaservice.testing.FunctionalTestCase):
         assert counts['created'] == 0
 
 
-class TestVolumeArticleAudios(zeit.mediaservice.testing.SQLTestCase):
+class TestVolumeArticleAudios(zeit.mediaservice.testing.FunctionalTestCase):
     def setUp(self):
         super().setUp()
         self.create_volume(2025, 1)

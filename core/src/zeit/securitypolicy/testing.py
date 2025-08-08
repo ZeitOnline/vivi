@@ -29,13 +29,11 @@ class ZCMLLayer(zeit.cms.testing.ZCMLLayer):
         plone.testing.zca.popGlobalRegistry()
 
 
-ZCML_LAYER = ZCMLLayer(
-    bases=(zeit.brightcove.testing.CONFIG_LAYER, zeit.retresco.testing.CONFIG_LAYER)
-)
-ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER, zeit.retresco.testing.TMS_MOCK_LAYER))
+ZCML_LAYER = ZCMLLayer((zeit.brightcove.testing.CONFIG_LAYER, zeit.retresco.testing.CONFIG_LAYER))
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer((ZCML_LAYER, zeit.retresco.testing.TMS_MOCK_LAYER))
 
 
-class SecurityPolicyLayer(plone.testing.Layer):
+class SecurityPolicyLayer(zeit.cms.testing.Layer):
     defaultBases = (ZOPE_LAYER,)
 
     def testSetUp(self):
@@ -45,7 +43,7 @@ class SecurityPolicyLayer(plone.testing.Layer):
 
 
 LAYER = SecurityPolicyLayer()
-WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(LAYER,))
+WSGI_LAYER = zeit.cms.testing.WSGILayer(LAYER)
 
 
 def make_xls_test(*args):

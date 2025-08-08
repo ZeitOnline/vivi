@@ -1,6 +1,5 @@
 import importlib.resources
 
-import plone.testing
 import zope.component
 
 import zeit.cms.repository.interfaces
@@ -20,13 +19,11 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
     },
     bases=(zeit.crop.testing.CONFIG_LAYER, zeit.push.testing.CONFIG_LAYER),
 )
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER,))
-ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
-PUSH_LAYER = zeit.push.testing.UrbanairshipTemplateLayer(
-    name='UrbanairshipTemplateLayer', bases=(ZOPE_LAYER,)
-)
-LAYER = plone.testing.Layer(bases=(PUSH_LAYER,), name='GalleryLayer')
-WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(LAYER,))
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER)
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
+PUSH_LAYER = zeit.push.testing.UrbanairshipTemplateLayer(ZOPE_LAYER)
+LAYER = zeit.cms.testing.Layer(PUSH_LAYER)
+WSGI_LAYER = zeit.cms.testing.WSGILayer(LAYER)
 
 
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):

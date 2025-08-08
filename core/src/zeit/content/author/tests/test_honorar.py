@@ -3,7 +3,6 @@ from unittest import mock
 from urllib.parse import parse_qs, urlparse
 import json
 
-import plone.testing
 import zope.component
 import zope.event
 import zope.lifecycleevent
@@ -14,12 +13,9 @@ import zeit.content.author.interfaces
 import zeit.content.author.testing
 
 
-HTTP_LAYER = zeit.cms.testing.HTTPLayer(
-    zeit.cms.testing.RecordingRequestHandler, name='HTTPLayer', module=__name__
-)
-
-LAYER = plone.testing.Layer(
-    bases=(HTTP_LAYER, zeit.content.author.testing.ZOPE_LAYER), name='HDokLayer', module=__name__
+HTTP_LAYER = zeit.cms.testing.HTTPLayer()
+LAYER = zeit.cms.testing.Layer(
+    bases=(HTTP_LAYER, zeit.content.author.testing.ZOPE_LAYER), name='HDokLayer'
 )
 
 
