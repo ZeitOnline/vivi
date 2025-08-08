@@ -47,17 +47,17 @@ class MediaService:
             'premium', 'audio', str(volume.year), volume.volume_number
         )
 
-    def _get_article(self, mediasync_id):
+    def _get_articles(self, mediasync_id):
         connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
         result = list(connector.search([MEDIASYNC_ID], (MEDIASYNC_ID == str(mediasync_id))))
         if not result:
             return None
-        return [zeit.cms.interfaces.ICMSContent(i[0]) for i in result]
+        return (zeit.cms.interfaces.ICMSContent(i[0]) for i in result)
 
     def _create_audio_objects(self, folder, audios):
         count = collections.Counter(created=0, existing=0)
         for mediasync_id, audio_info in audios.items():
-            articles = self._get_article(mediasync_id)
+            articles = self._get_articles(mediasync_id)
             if not articles:
                 err = ValueError(
                     f'No article with mediasync id {mediasync_id} found for available premium audio'
