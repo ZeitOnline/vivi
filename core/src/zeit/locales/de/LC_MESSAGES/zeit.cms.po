@@ -1741,6 +1741,7 @@ msgstr "Veröffentlichen"
 
 #: zeit/content/article/edit/browser/save-and-publish.pt:8
 #: zeit/content/cp/browser/publish.pt:9
+#: zeit/content/volume/browser/create-audio-objects.pt:6
 #: zeit/content/volume/browser/publish-all.pt:7
 #: zeit/seo/browser/enable-crawler.pt:9 zeit/workflow/browser/publish.pt:9
 #: zeit/workflow/browser/retract.pt:8
@@ -4069,7 +4070,14 @@ msgstr "Typ"
 msgid "Publish content of this volume"
 msgstr "Gesamte Ausgabe veröffentlichen"
 
-#: zeit/content/volume/browser/configure.zcml:116
+#: zeit/content/volume/browser/admin.py:44
+#: zeit/content/volume/browser/create-audio-objects.pt:2
+#: zeit/content/volume/browser/create-audio-objects.pt:5
+#: zeit/content/volume/browser/publish-all.pt:5
+msgid "Create premium audio objects"
+msgstr "Premium-Audios anlegen"
+
+#: zeit/content/volume/browser/configure.zcml:125
 msgid "Table of Content"
 msgstr "Inhaltsverzeichnis"
 
@@ -4088,10 +4096,6 @@ msgstr "Ausgabe bearbeiten"
 #: zeit/content/volume/browser/form.py:157
 msgid "View volume"
 msgstr "Ausgabe anzeigen"
-
-#: zeit/content/volume/browser/publish-all.pt:5
-msgid "Create audio objects"
-msgstr "Importiere Medienservice-Audios"
 
 #: zeit/content/volume/browser/publish-all.pt:6
 msgid "Publishing volume content"
@@ -4368,6 +4372,10 @@ msgstr "langer Text - ZEITmagazin"
 #: zeit/mediaservice/mediaservice.py:26
 msgid "Found ${existing} and created ${created} mediaservice audio objects"
 msgstr "Medien-Service Audios angelegt: ${created}, vorhanden: ${existing}"
+
+#: zeit/mediaservice/mediaservice.py:36
+msgid "Audio objects created for the following articles: ${articles}"
+msgstr "Audios für folgende Artikel angelegt: ${articles}"
 
 #: zeit/push/browser/banner-retract.pt:9
 msgid "Retract ${target}"

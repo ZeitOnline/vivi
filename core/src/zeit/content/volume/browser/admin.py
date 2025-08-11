@@ -41,7 +41,9 @@ class VolumeAdminForm(zeit.cms.admin.browser.admin.EditFormCI):
 
     extra_actions = zope.formlib.form.Actions()
     extra_actions.append(PublishAction(_('Publish content of this volume'), name='publish-all'))
-    extra_actions.append(PublishAction(_('Only create audio objects'), name='create-audio-objects'))
+    extra_actions.append(
+        PublishAction(_('Create premium audio objects'), name='create-audio-objects')
+    )
 
     @property
     def actions(self):
