@@ -83,7 +83,6 @@ class TestVolumeArticleAudios(zeit.mediaservice.testing.SQLTestCase):
         zeit.mediaservice.mediaservice.create_audio_objects(volume.uniqueId)
         transaction.commit()
         article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2025/01/article01')
-        self.assertTrue(article.has_audio)
         audio = zeit.content.audio.interfaces.IAudioReferences(article).items[0]
         self.assertEqual(audio.title, article.title)
 
@@ -101,42 +100,23 @@ class TestVolumeArticleAudios(zeit.mediaservice.testing.SQLTestCase):
 
         for i in range(1, 4):
             article = self.repository['2025']['01'][f'article0{i}']
-            assert article.has_audio
             audio = zeit.content.audio.interfaces.IAudioReferences(article).items[0]
+            assert article.has_audio
             assert audio
 
-    def test_mediaservice_creates_premium_audio_for_article_with_has_audio(self):
+    def test_mediaservice_creates_premium_audio_for_article(self):
         volume = self.repository['2025']['01']['ausgabe']
         article = self.repository['2025']['01']['article01']
         article.date_digital_published = datetime(2025, 1, 1)
         info = IPublishInfo(article)
         info.published = True
         info.date_first_released = datetime(2025, 1, 1)
-        with checked_out(article, raise_if_error=True) as co:
-            co.has_audio = True
-        transaction.commit()
         zeit.mediaservice.mediaservice.create_audio_objects(volume.uniqueId)
         transaction.commit()
 
         article = self.repository['2025']['01']['article01']
-        assert article.has_audio
         audio = zeit.content.audio.interfaces.IAudioReferences(article).items[0]
         assert audio
-
-    def test_mediaservice_sets_has_audio_for_article_with_premium_audio(self):
-        volume = self.repository['2025']['01']['ausgabe']
-        article = self.repository['2025']['01']['article01']
-        article_uuid = zeit.cms.content.interfaces.IUUID(article).shortened
-        audio_folder = zeit.cms.content.add.find_or_create_folder('premium', 'audio', '2025', '01')
-
-        AudioBuilder().with_audio_type('premium').unique_id(
-            audio_folder.uniqueId + '/' + article_uuid
-        ).referenced_by(article).build()
-        transaction.commit()
-        zeit.mediaservice.mediaservice.create_audio_objects(volume.uniqueId)
-
-        article = self.repository['2025']['01']['article01']
-        assert article.has_audio
 
     def test_mediaservice_does_not_add_duplicate_references(self):
         volume = self.repository['2025']['01']['ausgabe']
@@ -174,10 +154,6 @@ class TestVolumeArticleAudios(zeit.mediaservice.testing.SQLTestCase):
             .build()
         )
 
-        with checked_out(article, raise_if_error=True) as co:
-            co.has_audio = True
-
-        transaction.commit()
-        with checked_out(article, raise_if_error=True) as co:
+        with checked_out(article, raise_if_error=True):
             # This would fail if it would try to check out
             zeit.mediaservice.mediaservice.create_audio_objects(volume.uniqueId)
