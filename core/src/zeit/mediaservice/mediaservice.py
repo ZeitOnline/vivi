@@ -76,12 +76,10 @@ class MediaService:
                 else:
                     count['existing'] += 1
 
-                missing_audio_reference = not IAudioReferences(article).get_by_type('premium')
-                if not article.has_audio or missing_audio_reference:
+                if not IAudioReferences(article).get_by_type('premium'):
                     with checked_out(article, raise_if_error=True) as co:
-                        if missing_audio_reference:
-                            references = IAudioReferences(co)
-                            references.add(folder[article_uuid.shortened])
+                        references = IAudioReferences(co)
+                        references.add(folder[article_uuid.shortened])
         return count
 
     def create_audio_object(self, mediasync_id, audio_info):
