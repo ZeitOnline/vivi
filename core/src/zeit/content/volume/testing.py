@@ -2,14 +2,12 @@
 import importlib.resources
 
 from pendulum import datetime
-import gocept.selenium
 
 from zeit.cms.repository.folder import Folder
 from zeit.cms.workflow.interfaces import IPublishInfo
 from zeit.content.volume.volume import Volume
 import zeit.cms.content.sources
 import zeit.cms.testing
-import zeit.connector.testing
 import zeit.content.cp.testing
 import zeit.content.image.testing
 import zeit.push.testing
@@ -42,31 +40,27 @@ class ArticleConfigLayer(zeit.cms.testing.ProductConfigLayer):
 
 
 ARTICLE_CONFIG_LAYER = ArticleConfigLayer({}, package='zeit.content.article')
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER, ARTICLE_CONFIG_LAYER))
-ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
-BROWSER_LAYER = zeit.cms.testing.WSGILayer(name='BrowserLayer', bases=(ZOPE_LAYER,))
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer((CONFIG_LAYER, ARTICLE_CONFIG_LAYER))
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
+BROWSER_LAYER = zeit.cms.testing.WSGILayer(ZOPE_LAYER)
 
 
 WORKFLOW_LAYER = zeit.cms.testing.ZCMLLayer(
-    'ftesting-workflow.zcml', bases=(CONFIG_LAYER, ARTICLE_CONFIG_LAYER)
+    config_file='ftesting-workflow.zcml', bases=(CONFIG_LAYER, ARTICLE_CONFIG_LAYER)
 )
-WORKFLOW_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(WORKFLOW_LAYER,))
-CELERY_LAYER = zeit.cms.testing.CeleryWorkerLayer(bases=(WORKFLOW_ZOPE_LAYER,))
-WSGI_LAYER = zeit.cms.testing.WSGILayer(name='WSGILayer', bases=(CELERY_LAYER,))
-HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(name='HTTPLayer', bases=(WSGI_LAYER,))
-WD_LAYER = zeit.cms.testing.WebdriverLayer(name='WebdriverLayer', bases=(HTTP_LAYER,))
-WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(
-    name='WebdriverSeleneseLayer', bases=(WD_LAYER,)
-)
+WORKFLOW_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(WORKFLOW_LAYER)
+CELERY_LAYER = zeit.cms.testing.CeleryWorkerLayer(WORKFLOW_ZOPE_LAYER)
+WSGI_LAYER = zeit.cms.testing.WSGILayer(CELERY_LAYER)
+HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(WSGI_LAYER)
+WEBDRIVER_LAYER = zeit.cms.testing.WebdriverLayer(HTTP_LAYER)
 
 SQL_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    'ftesting-workflow.zcml',
+    config_file='ftesting-workflow.zcml',
     features=['zeit.connector.sql'],
-    bases=(CONFIG_LAYER, zeit.connector.testing.SQL_CONFIG_LAYER, ARTICLE_CONFIG_LAYER),
+    bases=(CONFIG_LAYER, ARTICLE_CONFIG_LAYER),
 )
-SQL_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(SQL_ZCML_LAYER,))
-SQL_CONNECTOR_LAYER = zeit.connector.testing.SQLDatabaseLayer(bases=(SQL_ZOPE_LAYER,))
-SQL_WSGI_LAYER = zeit.cms.testing.WSGILayer(name='SQLWSGILayer', bases=(SQL_CONNECTOR_LAYER,))
+SQL_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(SQL_ZCML_LAYER)
+SQL_WSGI_LAYER = zeit.cms.testing.WSGILayer(SQL_ZOPE_LAYER, name='SQLWSGILayer')
 
 
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
@@ -81,8 +75,8 @@ class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
     layer = WEBDRIVER_LAYER
 
 
-class SQLTestCase(zeit.connector.testing.TestCase):
-    layer = SQL_CONNECTOR_LAYER
+class SQLTestCase(zeit.cms.testing.FunctionalTestCase):
+    layer = SQL_ZOPE_LAYER
 
     def create_volume(self, year, name, product='ZEI', published=True):
         volume = Volume()

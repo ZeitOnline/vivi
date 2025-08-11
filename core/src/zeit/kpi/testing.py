@@ -2,25 +2,25 @@ import importlib.resources
 import time
 import urllib.parse
 
-import plone.testing
 import requests
 
 import zeit.cms.testing
+import zeit.cms.testing.docker
 
 
 HERE = importlib.resources.files(__package__)
 
 
-class BQEmulatorLayer(plone.testing.Layer):
-    defaultBases = (zeit.cms.testing.DOCKER_LAYER,)
+class BQEmulatorLayer(zeit.cms.testing.Layer):
+    defaultBases = (zeit.cms.testing.docker.LAYER,)
 
     container_image = 'ghcr.io/goccy/bigquery-emulator:0.6.6'
 
     def setUp(self):
-        port = zeit.cms.testing.get_random_port()
+        port = zeit.cms.testing.docker.get_random_port()
         project = 'vivi-test'
         dataset = 'export'
-        self['bq_container'] = zeit.cms.testing.DOCKER_LAYER.run_container(
+        self['bq_container'] = zeit.cms.testing.docker.LAYER.run_container(
             self.container_image,
             command=(
                 f'bigquery-emulator --project={project} '
@@ -82,10 +82,11 @@ BQ_CONFIG_LAYER = ConfigLayer()
 
 
 BQ_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    'ftesting-bigquery.zcml', bases=(zeit.cms.testing.CONFIG_LAYER, BQ_CONFIG_LAYER)
+    config_file='ftesting-bigquery.zcml',
+    bases=(zeit.cms.testing.CONFIG_LAYER, BQ_CONFIG_LAYER),
 )
-BIGQUERY_LAYER = zeit.cms.testing.ZopeLayer(bases=(BQ_ZCML_LAYER,))
+BIGQUERY_LAYER = zeit.cms.testing.ZopeLayer(BQ_ZCML_LAYER)
 
 
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(zeit.cms.testing.CONFIG_LAYER,))
-ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(zeit.cms.testing.CONFIG_LAYER)
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)

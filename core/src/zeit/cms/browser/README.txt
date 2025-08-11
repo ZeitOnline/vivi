@@ -115,8 +115,15 @@ Make sure the menu entries are there and the targets are _blank:
 
 Check the preview:
 
->>> import zeit.cms.testing
->>> zeit.cms.testing.click_wo_redirect(browser, 'Preview')
+>>> def click_wo_redirect(browser, *args, **kwargs):
+...     browser.follow_redirects = False
+...     try:
+...         browser.getLink(*args, **kwargs).click()
+...         print((browser.headers['Status']))
+...         print((browser.headers['Location']))
+...     finally:
+...         browser.follow_redirects = True
+>>> click_wo_redirect(browser, 'Preview')
 302 Moved Temporarily
 http://localhost/preview-prefix/online/2007/01/Somalia
 
@@ -125,7 +132,7 @@ Check the live site:
 
 >>> browser.open(
 ...     'http://localhost/++skin++cms/repository/online/2007/01/Somalia' )
->>> zeit.cms.testing.click_wo_redirect(browser, 'Live')
+>>> click_wo_redirect(browser, 'Live')
 302 Moved Temporarily
 http://localhost/live-prefix/online/2007/01/Somalia
 
@@ -163,7 +170,7 @@ The preview is on the container now:
 
 >>> browser.open(
 ...     'http://localhost/++skin++cms/repository/online/2007/01/Somalia' )
->>> zeit.cms.testing.click_wo_redirect(browser, 'Preview')
+>>> click_wo_redirect(browser, 'Preview')
 302 Moved Temporarily
 http://localhost/preview-prefix/online/2007/01
 

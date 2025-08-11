@@ -3,7 +3,6 @@ import copy
 import importlib.resources
 import json
 
-import plone.testing
 import zope.app.appsetup.product
 
 import zeit.cms.content.interfaces
@@ -15,9 +14,7 @@ import zeit.find.testing
 import zeit.wochenmarkt.testing
 
 
-HTTP_LAYER = zeit.cms.testing.HTTPLayer(
-    zeit.cms.testing.RecordingRequestHandler, name='HTTPLayer', module=__name__
-)
+HTTP_LAYER = zeit.cms.testing.HTTPLayer()
 
 
 class ProductConfigLayer(zeit.cms.testing.ProductConfigLayer):
@@ -57,7 +54,7 @@ CONFIG_LAYER = ProductConfigLayer(
 )
 
 
-class ElasticsearchMockLayer(plone.testing.Layer):
+class ElasticsearchMockLayer(zeit.cms.testing.Layer):
     def setUp(self):
         self['elasticsearch_mocker'] = mock.patch('elasticsearch.Elasticsearch.search')
         self['elasticsearch'] = self['elasticsearch_mocker'].start()
@@ -75,7 +72,7 @@ class ElasticsearchMockLayer(plone.testing.Layer):
 ELASTICSEARCH_MOCK_LAYER = ElasticsearchMockLayer()
 
 
-class TMSMockLayer(plone.testing.Layer):
+class TMSMockLayer(zeit.cms.testing.Layer):
     def setUp(self):
         registry = zope.component.getGlobalSiteManager()
         self['old_tms'] = registry.queryUtility(zeit.retresco.interfaces.ITMS)
@@ -99,16 +96,17 @@ class TMSMockLayer(plone.testing.Layer):
 TMS_MOCK_LAYER = TMSMockLayer()
 
 
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER,))
-ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
-WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(ZOPE_LAYER,))
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER)
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
+WSGI_LAYER = zeit.cms.testing.WSGILayer(ZOPE_LAYER)
 
-CELERY_LAYER = zeit.cms.testing.CeleryWorkerLayer(bases=(ZOPE_LAYER,))
+CELERY_LAYER = zeit.cms.testing.CeleryWorkerLayer(ZOPE_LAYER)
 CELERY_LAYER.queues += ('search',)
 
 
-MOCK_LAYER = plone.testing.Layer(
-    bases=(ZOPE_LAYER, ELASTICSEARCH_MOCK_LAYER), name='MockLayer', module=__name__
+MOCK_LAYER = zeit.cms.testing.Layer(
+    bases=(ZOPE_LAYER, ELASTICSEARCH_MOCK_LAYER),
+    name='MockLayer',
 )
 
 

@@ -2,14 +2,13 @@
 from unittest import mock
 
 import gocept.httpserverlayer.static
-import plone.testing
 import transaction
 
 import zeit.cms.testing
 import zeit.content.video.testing
 
 
-class MockAPILayer(plone.testing.Layer):
+class MockAPILayer(zeit.cms.testing.Layer):
     def setUp(self):
         self.cmsapi_patch = mock.patch('zeit.brightcove.connection.CMSAPI._request')
         self.cmsapi_patch.start()
@@ -37,11 +36,11 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
         'index-principal': 'zope.user',
     },
     patches={'zeit.cms': {'task-queue-brightcove': 'brightcove'}},
-    bases=(zeit.content.video.testing.CONFIG_LAYER,),
+    bases=zeit.content.video.testing.CONFIG_LAYER,
 )
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER, MOCK_API_LAYER))
-ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
-WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(ZOPE_LAYER,))
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer((CONFIG_LAYER, MOCK_API_LAYER))
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
+WSGI_LAYER = zeit.cms.testing.WSGILayer(ZOPE_LAYER)
 HTTP_STATIC_LAYER = gocept.httpserverlayer.static.Layer(name='HTTPStaticLayer', bases=(WSGI_LAYER,))
 
 
