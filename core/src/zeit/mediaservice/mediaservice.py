@@ -90,7 +90,7 @@ class MediaService:
                     with checked_out(article, raise_if_error=True) as co:
                         references = IAudioReferences(co)
                         references.add(folder[article_uuid.shortened])
-        return count, tuple(audio_created_for)
+        return count, sorted(audio_created_for)
 
     def create_audio_object(self, mediasync_id, audio_info):
         audio = zeit.content.audio.audio.Audio()

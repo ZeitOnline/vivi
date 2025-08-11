@@ -121,8 +121,8 @@ class TestCreateAudioObjects(zeit.mediaservice.testing.SQLTestCase):
         entries = self.get_log_entries(volume)
         assert entries == (
             'Found 0 and created 3 mediaservice audio objects',
-            'Audio objects created for the following articles: http://xml.zeit.de/2025/01/article03'
-            ', http://xml.zeit.de/2025/01/article02, http://xml.zeit.de/2025/01/article01',
+            'Audio objects created for the following articles: http://xml.zeit.de/2025/01/article01'
+            ', http://xml.zeit.de/2025/01/article02, http://xml.zeit.de/2025/01/article03',
         )
 
     def test_mediaservice_creates_premium_audio_for_article(self):
