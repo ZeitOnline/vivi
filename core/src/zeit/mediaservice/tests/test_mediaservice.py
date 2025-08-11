@@ -35,12 +35,11 @@ class TestMediaService(zeit.mediaservice.testing.FunctionalTestCase):
 
     def test_correctly_counts_zero_objects(self):
         mediaservice = zeit.mediaservice.mediaservice.MediaService()
-        counts, articles = mediaservice.create_audio_objects(zeit.content.volume.volume.Volume())
-        assert 'existing' in counts
-        assert counts['existing'] == 0
-        assert 'created' in counts
-        assert counts['created'] == 0
-        assert not articles
+        articles = mediaservice.create_audio_objects(zeit.content.volume.volume.Volume())
+        assert 'existing_count' in articles
+        assert articles['existing_count'] == 0
+        assert 'created' in articles
+        assert not articles['created']
 
 
 class TestCreateAudioObjects(zeit.mediaservice.testing.SQLTestCase):

@@ -1,5 +1,3 @@
-import collections
-
 import opentelemetry.trace
 import pendulum
 import zope.component
@@ -23,19 +21,19 @@ MEDIASYNC_ID = SearchVar('mediasync_id', zeit.cms.interfaces.IR_NAMESPACE)
 def create_audio_objects(volume_uniqueid):
     volume = zeit.cms.interfaces.ICMSContent(volume_uniqueid)
     mediaservice = MediaService()
-    (count, articles) = mediaservice.create_audio_objects(volume)
+    articles = mediaservice.create_audio_objects(volume)
     log = zeit.objectlog.interfaces.ILog(volume)
     log.log(
         _(
             'Found ${existing} and created ${created} mediaservice audio objects',
-            mapping=dict(count),
+            mapping={'existing': articles['existing_count'], 'created': len(articles['created'])},
         )
     )
-    if articles:
+    if articles['created']:
         log.log(
             _(
                 'Audio objects created for the following articles: ${articles}',
-                mapping={'articles': ', '.join(articles)},
+                mapping={'articles': ', '.join(articles['created'])},
             )
         )
 
@@ -63,8 +61,8 @@ class MediaService:
         return (zeit.cms.interfaces.ICMSContent(i[0]) for i in result)
 
     def _create_audio_objects(self, folder, audios):
-        count = collections.Counter(created=0, existing=0)
-        audio_created_for = set()
+        articles_created = set()
+        articles_existing = set()
         for mediasync_id, audio_info in audios.items():
             articles = self._get_articles(mediasync_id)
             if not articles:
@@ -78,19 +76,18 @@ class MediaService:
             for article in articles:
                 article_uuid = zeit.cms.content.interfaces.IUUID(article)
                 if article_uuid.shortened not in folder:
-                    count['created'] += 1
-                    audio_created_for.add(article.uniqueId)
+                    articles_created.add(article.uniqueId)
                     audio = self.create_audio_object(mediasync_id, audio_info)
                     audio.title = article.title
                     folder[article_uuid.shortened] = audio
                 else:
-                    count['existing'] += 1
+                    articles_existing.add(article.uniqueId)
 
                 if not IAudioReferences(article).get_by_type('premium'):
                     with checked_out(article, raise_if_error=True) as co:
                         references = IAudioReferences(co)
                         references.add(folder[article_uuid.shortened])
-        return count, sorted(audio_created_for)
+        return {'created': sorted(articles_created), 'existing_count': len(articles_existing)}
 
     def create_audio_object(self, mediasync_id, audio_info):
         audio = zeit.content.audio.audio.Audio()
