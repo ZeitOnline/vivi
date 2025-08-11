@@ -14,6 +14,7 @@
   <include package="zeit.edit" />
   <include package="zeit.edit.browser" />
 
+  <include package="zeit.content.audio" file="ctesting.zcml" />
   <include package="zeit.content.modules" file="ctesting.zcml" />
 
   <include package="zeit.content.image" />

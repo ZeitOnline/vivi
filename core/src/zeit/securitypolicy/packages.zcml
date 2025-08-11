@@ -10,6 +10,8 @@
   <include package="zeit.content.article.browser" />
   <include package="zeit.content.article.edit.browser" />
 
+  <include package="zeit.content.audio" />
+
   <include package="zeit.content.cp" />
   <include package="zeit.content.cp.browser" />
 
