@@ -4426,8 +4426,8 @@ msgstr ""
 msgid "long text (ZMO)"
 msgstr ""
 
-#: zeit/mediaservice/mediaservice.py:29
-msgid "Found ${existing} and created ${created} mediaservice audio objects"
+#: zeit/mediaservice/mediaservice.py:27
+msgid "Found ${existing} and created ${created} premium audio objects"
 msgstr ""
 
 #: zeit/mediaservice/mediaservice.py:36

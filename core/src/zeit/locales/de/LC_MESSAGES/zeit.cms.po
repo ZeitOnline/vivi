@@ -4369,9 +4369,9 @@ msgstr "Suche"
 msgid "long text (ZMO)"
 msgstr "langer Text - ZEITmagazin"
 
-#: zeit/mediaservice/mediaservice.py:26
-msgid "Found ${existing} and created ${created} mediaservice audio objects"
-msgstr "Medien-Service Audios angelegt: ${created}, vorhanden: ${existing}"
+#: zeit/mediaservice/mediaservice.py:27
+msgid "Found ${existing} and created ${created} premium audio objects"
+msgstr "Premium-Audios angelegt: ${created}, vorhanden: ${existing}"
 
 #: zeit/mediaservice/mediaservice.py:36
 msgid "Audio objects created for the following articles: ${articles}"

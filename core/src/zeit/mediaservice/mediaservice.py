@@ -25,7 +25,7 @@ def create_audio_objects(volume_uniqueid):
     log = zeit.objectlog.interfaces.ILog(volume)
     log.log(
         _(
-            'Found ${existing} and created ${created} mediaservice audio objects',
+            'Found ${existing} and created ${created} premium audio objects',
             mapping={'existing': articles['existing_count'], 'created': len(articles['created'])},
         )
     )
