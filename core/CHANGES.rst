@@ -3,6 +3,16 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.156.0 (2025-08-11)
+--------------------
+
+- WCM-1021: Set has_audio according to referenced audio objects on checkin
+
+- WCM-983: Don't publish all articles with premium audio
+
+- WCM-1045: support premium audio generation for articles with same mediasyncid
+
+
 7.155.0 (2025-08-06)
 --------------------
 
