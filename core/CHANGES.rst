@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.157.0 (2025-08-12)
+--------------------
+
+- WCM-983: Log which articles got audio files
+  WCM-983: Add separate button for premium audio publishing
+
+
 7.156.0 (2025-08-11)
 --------------------
 
