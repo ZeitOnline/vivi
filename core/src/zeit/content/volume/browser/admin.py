@@ -18,12 +18,19 @@ class PublishAction(zope.formlib.form.Action):
 
 class RenderPublishAction(zeit.cms.browser.form.RenderLightboxAction):
     grok.context(PublishAction)
-    target = 'do-publish-all'
+
+    def __init__(self, context, *args, **kwargs):
+        super().__init__(context, *args, **kwargs)
+        self.target = 'do-' + context.name
 
 
 class PublishLightbox(zeit.workflow.browser.publish.Publish):
     def create_audio_objects(self):
         return FEATURE_TOGGLES.find('volume_publish_create_audio_objects')
+
+
+class CreateAudioObjectsLightbox(zeit.workflow.browser.publish.Publish):
+    pass
 
 
 class VolumeAdminForm(zeit.cms.admin.browser.admin.EditFormCI):
@@ -34,6 +41,9 @@ class VolumeAdminForm(zeit.cms.admin.browser.admin.EditFormCI):
 
     extra_actions = zope.formlib.form.Actions()
     extra_actions.append(PublishAction(_('Publish content of this volume'), name='publish-all'))
+    extra_actions.append(
+        PublishAction(_('Create premium audio objects'), name='create-audio-objects')
+    )
 
     @property
     def actions(self):
