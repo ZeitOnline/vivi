@@ -347,6 +347,7 @@ class TeaserImage(zeit.edit.browser.form.InlineForm):
             self.form_fields = self.form_fields.omit('fill_color')
         super().setUpWidgets(*args, **kw)
         self.widgets['image'].add_type = IImageGroup
+        self.widgets['image'].add_view = '@@upload-images'
 
     def _success_handler(self):
         self.signal('reload-inline-form', 'article-content-main-image')
