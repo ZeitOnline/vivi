@@ -1,13 +1,11 @@
 from io import BytesIO
 import importlib.resources
-import inspect
 import os
 import time
 
 from gcp_storage_emulator.server import create_server as create_gcp_server
 from sqlalchemy import text as sql
 from sqlalchemy.exc import OperationalError
-import plone.testing
 import requests
 import sqlalchemy
 import transaction
@@ -24,17 +22,17 @@ ROOT = 'http://xml.zeit.de/testing'
 
 
 FILESYSTEM_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    features=['zeit.connector.filesystem'], bases=(zeit.cms.testing.CONFIG_LAYER,)
+    features=['zeit.connector.filesystem'], bases=zeit.cms.testing.CONFIG_LAYER
 )
-FILESYSTEM_CONNECTOR_LAYER = zeit.cms.testing.ZopeLayer(bases=(FILESYSTEM_ZCML_LAYER,))
+FILESYSTEM_CONNECTOR_LAYER = zeit.cms.testing.ZopeLayer(FILESYSTEM_ZCML_LAYER)
 
 MOCK_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    features=['zeit.connector.mock'], bases=(zeit.cms.testing.CONFIG_LAYER,)
+    features=['zeit.connector.mock'], bases=zeit.cms.testing.CONFIG_LAYER
 )
-MOCK_CONNECTOR_LAYER = zeit.cms.testing.ZopeLayer(bases=(MOCK_ZCML_LAYER,))
+MOCK_CONNECTOR_LAYER = zeit.cms.testing.ZopeLayer(MOCK_ZCML_LAYER)
 
 
-class SQLServerLayer(plone.testing.Layer):
+class SQLServerLayer(zeit.cms.testing.Layer):
     defaultBases = (zeit.cms.testing.DOCKER_LAYER,)
 
     container_image = 'postgres:14'
@@ -76,7 +74,7 @@ class SQLServerLayer(plone.testing.Layer):
 SQL_SERVER_LAYER = SQLServerLayer()
 
 
-class GCSServerLayer(plone.testing.Layer):
+class GCSServerLayer(zeit.cms.testing.Layer):
     bucket = 'vivi-test'
 
     def setUp(self):
@@ -124,19 +122,11 @@ class SQLConfigLayer(zeit.cms.testing.ProductConfigLayer):
 SQL_CONFIG_LAYER = SQLConfigLayer()
 
 
-class SQLDatabaseLayer(plone.testing.Layer):
-    def __init__(
-        self,
-        zodb=False,
-        connector=None,
-        dbname='vivi_test',
-        name='SQLDatabaseLayer',
-        module=None,
-        bases=(),
-    ):
-        if module is None:
-            module = inspect.stack()[1][0].f_globals['__name__']
-        super().__init__(name=name, module=module, bases=bases)
+class SQLDatabaseLayer(zeit.cms.testing.Layer):
+    def __init__(self, bases=(), zodb=False, connector=None, dbname='vivi_test'):
+        if not isinstance(bases, tuple):
+            bases = (bases,)
+        super().__init__(bases)
         self.zodb = zodb
         self._connector = connector
         self.dbname = dbname
@@ -222,30 +212,30 @@ class SQLDatabaseLayer(plone.testing.Layer):
 SQL_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     features=['zeit.connector.sql'], bases=(zeit.cms.testing.CONFIG_LAYER, SQL_CONFIG_LAYER)
 )
-SQL_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(SQL_ZCML_LAYER,))
-SQL_CONNECTOR_LAYER = SQLDatabaseLayer(bases=(SQL_ZOPE_LAYER,))
+SQL_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(SQL_ZCML_LAYER)
+SQL_CONNECTOR_LAYER = SQLDatabaseLayer(SQL_ZOPE_LAYER)
 
 
 ZOPE_SQL_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     features=['zeit.connector.sql.zope'], bases=(zeit.cms.testing.CONFIG_LAYER, SQL_CONFIG_LAYER)
 )
-ZOPE_SQL_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZOPE_SQL_ZCML_LAYER,))
-ZOPE_SQL_CONNECTOR_LAYER = SQLDatabaseLayer(bases=(ZOPE_SQL_ZOPE_LAYER,), zodb=True)
+ZOPE_SQL_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZOPE_SQL_ZCML_LAYER)
+ZOPE_SQL_CONNECTOR_LAYER = SQLDatabaseLayer(ZOPE_SQL_ZOPE_LAYER, zodb=True)
 
 
 SQL_CONTENT_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    str((importlib.resources.files('zeit.cms') / 'ftesting.zcml')),
+    config_file=str((importlib.resources.files('zeit.cms') / 'ftesting.zcml')),
     features=['zeit.connector.sql.zope'],
     bases=(zeit.cms.testing.CONFIG_LAYER, SQL_CONFIG_LAYER),
 )
-SQL_CONTENT_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(SQL_CONTENT_ZCML_LAYER,))
-SQL_CONTENT_LAYER = SQLDatabaseLayer(bases=(SQL_CONTENT_ZOPE_LAYER,), zodb=True)
+SQL_CONTENT_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(SQL_CONTENT_ZCML_LAYER)
+SQL_CONTENT_LAYER = SQLDatabaseLayer(SQL_CONTENT_ZOPE_LAYER, zodb=True)
 
 
 COLUMNS_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    'testing-columns.zcml', bases=(zeit.cms.testing.CONFIG_LAYER,)
+    config_file='testing-columns.zcml', bases=zeit.cms.testing.CONFIG_LAYER
 )
-COLUMNS_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(COLUMNS_ZCML_LAYER,))
+COLUMNS_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(COLUMNS_ZCML_LAYER)
 
 
 class TestCase(zeit.cms.testing.FunctionalTestCase):

@@ -2,8 +2,6 @@ from unittest import mock
 import importlib.resources
 import re
 
-import gocept.selenium
-import plone.testing
 import zope.component
 import zope.testing.renormalizing
 
@@ -55,18 +53,16 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
     # XXX Kludge because we depend on zeit.workflow.publish_3rdparty in our tests
     patches={'zeit.workflow': {}},
 )
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER,))
-ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
-PUSH_LAYER = zeit.push.testing.UrbanairshipTemplateLayer(
-    name='UrbanairshipTemplateLayer', bases=(ZOPE_LAYER,)
-)
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER)
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
+PUSH_LAYER = zeit.push.testing.UrbanairshipTemplateLayer(ZOPE_LAYER)
 
 
 # This is a copy from z.c.cp ElasticsearchMockLayer with an
 # additional TMS mock.
 # A better solution would be a abstraction of these test mock layers
 # in zeit.cms so they could be used by z.c.article and z.c.cp
-class ElasticsearchMockLayer(plone.testing.Layer):
+class ElasticsearchMockLayer(zeit.cms.testing.Layer):
     def testSetUp(self):
         self['elasticsearch'] = mock.Mock()
         self['elasticsearch'].search.return_value = zeit.cms.interfaces.Result()
@@ -89,7 +85,7 @@ class ElasticsearchMockLayer(plone.testing.Layer):
 ELASTICSEARCH_MOCK_LAYER = ElasticsearchMockLayer()
 
 
-class ArticleLayer(plone.testing.Layer):
+class ArticleLayer(zeit.cms.testing.Layer):
     defaultBases = (PUSH_LAYER,)
 
     def testSetUp(self):
@@ -99,7 +95,7 @@ class ArticleLayer(plone.testing.Layer):
 
 
 LAYER = ArticleLayer()
-MOCK_LAYER = plone.testing.Layer(
+MOCK_LAYER = zeit.cms.testing.Layer(
     name='MockLayer',
     bases=(
         ZOPE_LAYER,
@@ -144,12 +140,9 @@ def create_article():
     return article
 
 
-WSGI_LAYER = zeit.cms.testing.WSGILayer(name='WSGILayer', bases=(LAYER,))
-HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(name='HTTPLayer', bases=(WSGI_LAYER,))
-WD_LAYER = zeit.cms.testing.WebdriverLayer(name='WebdriverLayer', bases=(HTTP_LAYER,))
-WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(
-    name='WebdriverSeleneseLayer', bases=(WD_LAYER,)
-)
+WSGI_LAYER = zeit.cms.testing.WSGILayer(LAYER)
+HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(WSGI_LAYER)
+WEBDRIVER_LAYER = zeit.cms.testing.WebdriverLayer(HTTP_LAYER)
 
 
 class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
