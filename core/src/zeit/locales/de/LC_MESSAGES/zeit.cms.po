@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Fri Aug  1 11:23:45 2025\n"
+"POT-Creation-Date: Wed Aug 13 10:09:52 2025\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -587,7 +587,7 @@ msgstr "Jahr"
 
 #: zeit/cms/content/interfaces.py:80
 #: zeit/content/article/edit/interfaces.py:253
-#: zeit/content/volume/browser/form.py:38 zeit/content/volume/volume.py:340
+#: zeit/content/volume/browser/form.py:38 zeit/content/volume/volume.py:333
 msgid "Volume"
 msgstr "Ausgabe"
 
@@ -1189,7 +1189,7 @@ msgstr "Der Ordner kann nicht umbenannt werden, da er bereits Inhalte enthält."
 msgid "\"${name}\" not found."
 msgstr "»${name}« nicht gefunden."
 
-#: zeit/cms/repository/browser/move.py:34 zeit/cms/repository/interfaces.py:190
+#: zeit/cms/repository/browser/move.py:34 zeit/cms/repository/interfaces.py:187
 msgid "\"${name}\" already exists."
 msgstr "\"${name}\" ist bereits vorhanden."
 
@@ -1236,7 +1236,7 @@ msgid "Only unpublished objects can be renamed."
 msgstr "Nur unveröffentlichte Inhalte können umbenannt werden."
 
 #: zeit/cms/repository/browser/rename.py:19
-#: zeit/cms/repository/interfaces.py:210
+#: zeit/cms/repository/interfaces.py:207
 msgid "New file name"
 msgstr "Dateiname"
 
@@ -1248,7 +1248,7 @@ msgstr "»${name}« wird jetzt nicht mehr im Navigationsbaum angezeigt."
 msgid "\"${name}\" is now shown in the navigation tree."
 msgstr "»${name}« wird jetzt im Navigationsbaum angezeigt."
 
-#: zeit/cms/repository/interfaces.py:230
+#: zeit/cms/repository/interfaces.py:227
 msgid "previous uniqueIds of this ICMSContent"
 msgstr "Vorherige IDs"
 
@@ -4066,11 +4066,11 @@ msgstr "Werbung"
 msgid "Video type"
 msgstr "Typ"
 
-#: zeit/content/volume/browser/admin.py:30
+#: zeit/content/volume/browser/admin.py:43
 msgid "Publish content of this volume"
 msgstr "Gesamte Ausgabe veröffentlichen"
 
-#: zeit/content/volume/browser/admin.py:44
+#: zeit/content/volume/browser/admin.py:45
 #: zeit/content/volume/browser/create-audio-objects.pt:2
 #: zeit/content/volume/browser/create-audio-objects.pt:5
 #: zeit/content/volume/browser/publish-all.pt:5
@@ -4373,7 +4373,7 @@ msgstr "langer Text - ZEITmagazin"
 msgid "Found ${existing} and created ${created} premium audio objects"
 msgstr "Premium-Audios angelegt: ${created}, vorhanden: ${existing}"
 
-#: zeit/mediaservice/mediaservice.py:36
+#: zeit/mediaservice/mediaservice.py:34
 msgid "Audio objects created for the following articles: ${articles}"
 msgstr "Audios für folgende Artikel angelegt: ${articles}"
 
