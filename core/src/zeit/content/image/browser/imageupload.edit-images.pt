@@ -1,7 +1,7 @@
 <tal:block i18n:domain="zeit.cms">
   <form action="" method="post" name="edit-images">
     <table class="edit-image-table">
-      <tr><th></th><th>Dateiname</th><th>Copyright</th><th>Titel</th><th>Beschreibung</th></tr>
+      <tr><th></th><th>Filename</th><th>Copyright</th><th>Title</th><th>Description</th></tr>
       <tr tal:repeat="item view/rows">
         <td><img tal:attributes="src item/thumbnail"><input type="hidden" tal:attributes="value item/cur_name; name string:cur_name[${repeat/item/index}]" /></td>
         <td><input tal:attributes="value item/name; name string:name[${repeat/item/index}]"></td>
@@ -10,6 +10,6 @@
         <td><textarea tal:content="item/caption" tal:attributes="name string:caption[${repeat/item/index}]"></textarea></td>
       </tr>
     </table>
-    <p><button>Hochladen</button><button name="cancel">Abbrechen</button></p>
+    <p><button>Upload</button><button name="cancel">Cancel</button></p>
   </form>
 </tal:block>
