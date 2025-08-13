@@ -426,6 +426,7 @@
     class=".imageupload.UploadForm"
     permission="zeit.AddContent"
     template="imageupload.upload-images.pt"
+    menu="zeit-add-menu" title="Image (new)"
     />
 
   <gocept:pagelet
