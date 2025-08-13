@@ -437,4 +437,9 @@
     template="imageupload.edit-images.pt"
     />
 
+  <interface
+    interface=".imageupload.IImageUploadImage"
+    type="zeit.cms.content.interfaces.IAddableContent"
+    />
+
 </configure>

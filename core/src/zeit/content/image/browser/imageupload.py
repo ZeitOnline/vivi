@@ -15,6 +15,16 @@ import zeit.content.image.image
 import zeit.content.image.interfaces
 
 
+# This is just a dummy to get into the addcentral sidebar
+class IImageUploadImage(zeit.content.image.interfaces.IImageGroup):
+    pass
+
+
+IImageUploadImage.setTaggedValue('zeit.cms.addform', 'upload-images')
+IImageUploadImage.setTaggedValue('zeit.cms.title', _('Image (new)'))
+IImageUploadImage.setTaggedValue('zeit.cms.type', None)
+
+
 @zope.interface.implementer(zeit.cms.browser.interfaces.IHideContextViews)
 class UploadForm(zeit.cms.browser.view.Base, zeit.content.image.browser.form.CreateImageMixin):
     title = _('Upload images')

@@ -320,3 +320,16 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
         images = tuple(x for x in folder.values() if 'tmp' in x.uniqueId or '-bild' in x.uniqueId)
         assert len(images) == 0
         assert b.url.endswith('/repository/online/2007/01/')
+
+
+class AddCentralImageUploadTest(zeit.content.image.testing.SeleniumTestCase):
+    def test_new_image_upload_is_present(self):
+        s = self.selenium
+        self.open('/')
+
+        s.waitForElementPresent('sidebar.form.type_')
+
+        # successful submit
+        s.select('sidebar.form.type_', 'Image (new)')
+        s.click('name=sidebar.form.actions.add')
+        s.waitForLocation('*/@@upload-images?')
