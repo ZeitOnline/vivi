@@ -1788,6 +1788,11 @@ msgstr ""
 msgid "Reloading"
 msgstr ""
 
+#: zeit/content/article/edit/browser/teaserimage-display-widget.pt:1
+#: zeit/content/image/browser/form.py:83
+msgid "Add image"
+msgstr ""
+
 #: zeit/content/article/edit/browser/timestamp.pt:2
 msgid "Current timestamp:"
 msgstr ""
@@ -3414,10 +3419,6 @@ msgstr ""
 
 #: zeit/content/image/browser/form.py:54
 msgid "Image was resized, ${size} exceeds ${max_size}"
-msgstr ""
-
-#: zeit/content/image/browser/form.py:83
-msgid "Add image"
 msgstr ""
 
 #: zeit/content/image/browser/image.py:49

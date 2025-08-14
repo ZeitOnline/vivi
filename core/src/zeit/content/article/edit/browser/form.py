@@ -321,6 +321,16 @@ class TeaserForms(zeit.edit.browser.form.FoldableFormGroup):
     title = _('Teaser')
 
 
+class TeaserImageDisplayWidget(zeit.cms.browser.widget.DropObjectDisplayWidget):
+    def __init__(self, context, request):
+        super().__init__(context, None, request)
+
+    def __call__(self):
+        return self.template() + zope.app.pagetemplate.ViewPageTemplateFile(
+            'teaserimage-display-widget.pt'
+        )(self)
+
+
 class TeaserImage(zeit.edit.browser.form.InlineForm):
     legend = _('')
     prefix = 'teaser-image'
@@ -345,6 +355,11 @@ class TeaserImage(zeit.edit.browser.form.InlineForm):
                 ].custom_widget = zeit.cms.browser.widget.ColorpickerWidget
         except TypeError:
             self.form_fields = self.form_fields.omit('fill_color')
+
+        is_checked_out = zeit.cms.checkout.interfaces.ILocalContent.providedBy(self.context)
+        self.form_fields['image'].custom_widget = (
+            None if is_checked_out else TeaserImageDisplayWidget
+        )
         super().setUpWidgets(*args, **kw)
         self.widgets['image'].add_type = IImageGroup
         self.widgets['image'].add_view = '@@upload-images'
