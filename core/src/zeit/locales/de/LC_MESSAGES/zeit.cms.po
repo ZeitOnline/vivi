@@ -3335,6 +3335,11 @@ msgstr "Bildergruppe"
 msgid "File list"
 msgstr "Dateiliste"
 
+#: zeit/content/image/browser/configure.zcml:422
+#: zeit/content/image/browser/imageupload.py:24
+msgid "Image (new)"
+msgstr "Bild (neu)"
+
 #: zeit/content/image/browser/copyright.pt:5
 msgid "Set copyright for all images in ${object-unique-id}"
 msgstr "Copyright für alle Bilder in »${object-unique-id}« ändern"

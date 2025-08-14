@@ -3392,6 +3392,11 @@ msgstr ""
 msgid "File list"
 msgstr ""
 
+#: zeit/content/image/browser/configure.zcml:422
+#: zeit/content/image/browser/imageupload.py:24
+msgid "Image (new)"
+msgstr ""
+
 #: zeit/content/image/browser/copyright.pt:5
 msgid "Set copyright for all images in ${object-unique-id}"
 msgstr ""
