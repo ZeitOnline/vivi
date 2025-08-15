@@ -615,6 +615,16 @@
   background-position: 2px -1106px;
 }
 
+.type-article .rte-toolbar > a[href='upload_image'] {
+  background-position: 4px -712px;
+  color: transparent;
+}
+
+.type-article .rte-toolbar > a[href='upload_image']:hover,
+.type-article .rte-toolbar > a.active[href='upload_image'] {
+  background-position: 4px -742px;
+}
+
 .type-article .rte-toolbar > a[href='formatBlock/p'] {
   background-position: -2px -1106px;
   color: transparent;

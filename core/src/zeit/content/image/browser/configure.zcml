@@ -426,6 +426,7 @@
     class=".imageupload.UploadForm"
     permission="zeit.AddContent"
     template="imageupload.upload-images.pt"
+    menu="zeit-add-menu" title="Image (new)"
     />
 
   <gocept:pagelet
@@ -435,6 +436,11 @@
     class=".imageupload.EditForm"
     permission="zeit.RenameContent"
     template="imageupload.edit-images.pt"
+    />
+
+  <interface
+    interface=".imageupload.IImageUploadImage"
+    type="zeit.cms.content.interfaces.IAddableContent"
     />
 
 </configure>

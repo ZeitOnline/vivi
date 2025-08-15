@@ -1748,6 +1748,11 @@ msgstr "Veröffentlichen"
 msgid "Reloading"
 msgstr "lade neu"
 
+#: zeit/content/article/edit/browser/teaserimage-display-widget.pt:1
+#: zeit/content/image/browser/form.py:83
+msgid "Add image"
+msgstr "Bild hinzufügen"
+
 #: zeit/content/article/edit/browser/timestamp.pt:2
 msgid "Current timestamp:"
 msgstr "Sichtbares Datum des Artikels:  "
@@ -3330,6 +3335,11 @@ msgstr "Bildergruppe"
 msgid "File list"
 msgstr "Dateiliste"
 
+#: zeit/content/image/browser/configure.zcml:422
+#: zeit/content/image/browser/imageupload.py:24
+msgid "Image (new)"
+msgstr "Bild (neu)"
+
 #: zeit/content/image/browser/copyright.pt:5
 msgid "Set copyright for all images in ${object-unique-id}"
 msgstr "Copyright für alle Bilder in »${object-unique-id}« ändern"
@@ -3358,10 +3368,6 @@ msgstr "Quelle"
 #: zeit/content/image/browser/form.py:54
 msgid "Image was resized, ${size} exceeds ${max_size}"
 msgstr "Das Bild wurde von ${size} auf ${max_size} verkleinert."
-
-#: zeit/content/image/browser/form.py:83
-msgid "Add image"
-msgstr "Bild hinzufügen"
 
 #: zeit/content/image/browser/image.py:49
 msgid "View image"
