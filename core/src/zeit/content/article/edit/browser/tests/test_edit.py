@@ -288,6 +288,16 @@ class TestTextEditing(zeit.content.article.edit.browser.testing.EditorTestCase):
     def test_click_in_paragraph_starts_editing_and_places_cursor_exactly_there(self):
         pass
 
+    def test_toolbar_has_upload_image_button(self):
+        s = self.selenium
+        self.create('')
+        s.click('css=.block.type-p .editable')
+        toolbar = 'css=.block.type-p.editing .rte-toolbar'
+        s.waitForElementPresent(toolbar)
+        s.click('css=.rte-toolbar a[href="upload_image"]')
+        s.selectWindow(self.selenium.getAllWindowIds()[1])
+        self.assertEndsWith('@@upload-images', s.getLocation())
+
 
 @unittest.skip('Sending arrow keys does not work')
 class TestEditingMultipleParagraphs(zeit.content.article.edit.browser.testing.EditorTestCase):
