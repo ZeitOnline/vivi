@@ -196,3 +196,44 @@ class TestCreateAudioObjects(zeit.mediaservice.testing.SQLTestCase):
 
         entries = self.get_log_entries(volume)
         assert entries == ('Found 1 and created 0 premium audio objects',)
+
+    def test_mediaservice_skips_checked_out_articles(self):
+        self.create_volume_content('2025', '01', 'article02')
+        self.create_volume_content('2025', '01', 'article03')
+        volume = self.repository['2025']['01']['ausgabe']
+        article = self.repository['2025']['01']['article02']
+        article_uuid = zeit.cms.content.interfaces.IUUID(article).shortened
+
+        # Let's lock article02
+        lock_storage = zope.component.getUtility(zope.app.locking.interfaces.ILockStorage)
+        lock_storage.setLock(
+            article,
+            zeit.cms.locking.locking.LockInfo(
+                article, 'some_other_principal', pendulum.now('UTC').add(minutes=2)
+            ),
+        )
+
+        # Create audio objects
+        zeit.mediaservice.mediaservice.create_audio_objects(volume.uniqueId)
+        transaction.commit()
+
+        # Audio object for article02 is created, but not referenced in the article
+        article = self.repository['2025']['01']['article02']
+        assert not zeit.content.audio.interfaces.IAudioReferences(article).items
+        assert zeit.cms.interfaces.ICMSContent(
+            f'http://xml.zeit.de/premium/audio/2025/01/{article_uuid}'
+        )
+
+        # article01 and article03 are fine
+        for i in (1, 3):
+            article = self.repository['2025']['01'][f'article0{i}']
+            audio = zeit.content.audio.interfaces.IAudioReferences(article).items[0]
+            assert audio
+
+        entries = self.get_log_entries(volume)
+        assert entries == (
+            'Found 0 and created 3 premium audio objects',
+            'Audio objects created for the following articles: http://xml.zeit.de/2025/01/article01'
+            + ', http://xml.zeit.de/2025/01/article02, http://xml.zeit.de/2025/01/article03',
+            'Could not check out the following articles: http://xml.zeit.de/2025/01/article02',
+        )

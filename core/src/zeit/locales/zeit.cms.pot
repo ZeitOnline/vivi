@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Wed Aug 13 10:09:52 2025\n"
+"POT-Creation-Date: Fri Aug 15 16:59:12 2025\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -168,7 +168,7 @@ msgstr ""
 
 #: zeit/cms/browser/form.py:296
 #: zeit/cms/repository/browser/file.py:94
-#: zeit/content/article/edit/browser/form.py:481
+#: zeit/content/article/edit/browser/form.py:497
 #: zeit/content/article/edit/browser/push.py:52
 #: zeit/content/article/edit/browser/reference.py:51
 #: zeit/content/cp/browser/view.py:11
@@ -538,7 +538,7 @@ msgstr ""
 
 #: zeit/cms/content/browser/form.py:35
 #: zeit/content/article/browser/form.py:34
-#: zeit/content/article/edit/browser/form.py:390
+#: zeit/content/article/edit/browser/form.py:406
 #: zeit/content/cp/browser/form.py:59
 #: zeit/content/link/browser/form.py:39
 #: zeit/content/video/browser/video.py:70
@@ -552,7 +552,7 @@ msgid "Authors"
 msgstr ""
 
 #: zeit/cms/content/browser/form.py:43
-#: zeit/content/article/edit/browser/form.py:457
+#: zeit/content/article/edit/browser/form.py:473
 #: zeit/content/cp/browser/form.py:72
 msgid "Run in channel"
 msgstr ""
@@ -1593,7 +1593,7 @@ msgid "Adplace block"
 msgstr ""
 
 #: zeit/content/article/edit/audio.py:22
-#: zeit/content/article/edit/browser/form.py:488
+#: zeit/content/article/edit/browser/form.py:504
 #: zeit/content/audio/audio.py:72
 #: zeit/content/audio/browser/configure.zcml:6
 #: zeit/content/audio/browser/form.py:18
@@ -1676,15 +1676,15 @@ msgstr ""
 msgid "Interred"
 msgstr ""
 
-#: zeit/content/article/edit/browser/form.py:406
+#: zeit/content/article/edit/browser/form.py:422
 msgid "Product management"
 msgstr ""
 
-#: zeit/content/article/edit/browser/form.py:414
+#: zeit/content/article/edit/browser/form.py:430
 msgid "Interactive"
 msgstr ""
 
-#: zeit/content/article/edit/browser/form.py:420
+#: zeit/content/article/edit/browser/form.py:436
 msgid "Access control"
 msgstr ""
 
@@ -3495,11 +3495,11 @@ msgstr ""
 msgid "CopyrightPurchaseReport"
 msgstr ""
 
-#: zeit/content/image/browser/imageupload.py:21
+#: zeit/content/image/browser/imageupload.py:30
 msgid "Upload images"
 msgstr ""
 
-#: zeit/content/image/browser/imageupload.py:73
+#: zeit/content/image/browser/imageupload.py:81
 msgid "Edit images"
 msgstr ""
 
@@ -4438,6 +4438,10 @@ msgstr ""
 
 #: zeit/mediaservice/mediaservice.py:34
 msgid "Audio objects created for the following articles: ${articles}"
+msgstr ""
+
+#: zeit/mediaservice/mediaservice.py:41
+msgid "Could not check out the following articles: ${articles}"
 msgstr ""
 
 #: zeit/push/browser/banner-retract.pt:9

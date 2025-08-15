@@ -36,6 +36,13 @@ def create_audio_objects(volume_uniqueid):
                 mapping={'articles': ', '.join(articles['created'])},
             )
         )
+    if articles['checkout_error']:
+        log.log(
+            _(
+                'Could not check out the following articles: ${articles}',
+                mapping={'articles': ', '.join(articles['checkout_error'])},
+            )
+        )
 
 
 class MediaService:
@@ -63,6 +70,7 @@ class MediaService:
     def _create_audio_objects(self, folder, audios):
         articles_created = set()
         articles_existing = set()
+        articles_checkout_error = set()
         for mediasync_id, audio_info in audios.items():
             articles = self._get_articles(mediasync_id)
             if not articles:
@@ -84,10 +92,17 @@ class MediaService:
                     articles_existing.add(article.uniqueId)
 
                 if not IAudioReferences(article).get_by_type('premium'):
-                    with checked_out(article, raise_if_error=True) as co:
-                        references = IAudioReferences(co)
-                        references.add(folder[article_uuid.shortened])
-        return {'created': sorted(articles_created), 'existing_count': len(articles_existing)}
+                    try:
+                        with checked_out(article, raise_if_error=True) as co:
+                            references = IAudioReferences(co)
+                            references.add(folder[article_uuid.shortened])
+                    except zeit.cms.checkout.interfaces.CheckinCheckoutError as err:
+                        articles_checkout_error.add(article.uniqueId)
+        return {
+            'created': sorted(articles_created),
+            'existing_count': len(articles_existing),
+            'checkout_error': sorted(articles_checkout_error),
+        }
 
     def create_audio_object(self, mediasync_id, audio_info):
         audio = zeit.content.audio.audio.Audio()
