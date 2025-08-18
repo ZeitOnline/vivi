@@ -43,6 +43,24 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
         img = next(x for x in folder.values() if 'tmp' in x.uniqueId)
         assert b.url.endswith(f'/2007/01/@@edit-images?files={img.__name__}&from=Somalia')
 
+    def test_does_not_redirect_if_files_field_is_not_in_request(self):
+        b = self.browser
+        b.open('/repository/online/2007/01/Somalia/@@upload-images')
+        b.getForm(name='imageupload').submit()
+        self.assertEndsWith('/2007/01/Somalia/@@upload-images', b.url)
+        self.assertIn('Please upload at least one image', b.contents)
+        self.assertEqual('200 Ok', b.headers['status'])
+
+    def test_does_not_redirect_if_no_image_present(self):
+        b = self.browser
+        b.open('/repository/online/2007/01/Somalia/@@upload-images')
+        # We have to hand-craft our POST request, because
+        # Testbrowser does not support submitting an empty form field
+        b.post(b.getForm(name='imageupload').action, 'files=')
+        self.assertEndsWith('/2007/01/Somalia/@@upload-images', b.url)
+        self.assertIn('Please upload at least one image', b.contents)
+        self.assertEqual('200 Ok', b.headers['status'])
+
     def test_redirects_after_upload_in_folder(self):
         b = self.browser
         b.open('/repository/online/2007/01/@@upload-images')
