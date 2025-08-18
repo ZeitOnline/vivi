@@ -447,6 +447,7 @@ zeit.content.article.Editable = gocept.Class.extend({
             <a title='fett [Cmd/Strg+b]' rel='command' href='bold'>B</a>\
             <a title='kursiv [Cmd/Strg+i]' rel='command' href='italic'>I</a>\
             <a title='Zwischenüberschrift [Cmd/Strg+h]' rel='command' href='formatBlock/h3'>H3</a>\
+            <a title='Bild' rel='method' href='upload_image'>IMG</a>\
             <a title='Link [Cmd/Strg+l]' rel='method' href='insert_link'>A</a>\
             <a title='Link entfernen [Cmd/Strg+u]' rel='command' href='unlink'>A</a>\
             <a title='Liste' rel='command' href='insertunorderedlist'>UL</a>\
@@ -873,6 +874,10 @@ zeit.content.article.Editable = gocept.Class.extend({
                 console.log(e);
             }
         }
+    },
+
+    upload_image: function() {
+        window.open(window.context_url + '/@@upload-images', '_blank');
     },
 
     insert_link: function() {

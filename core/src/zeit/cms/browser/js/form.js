@@ -283,6 +283,13 @@ zeit.cms.InlineForm = zeit.cms.SubPageForm.extend({
         });
         self.bind(self.container, 'mouseup', function(event) {
             self.mouse_down = false;
+            // Clicking on an image upload button in an article that is
+            // not checked out should not trigger a submit
+            // FIXME: This is dirty
+            if (document.body.className.includes('location-repository') &&
+                event.target.getAttribute('href') == "@@upload-images") {
+                return;
+            }
             if (!self.is_input(event.target) &&
                 self.delay_submit) {
                 self.fire_submit();

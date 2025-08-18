@@ -89,6 +89,21 @@ class ImageForm(zeit.content.article.edit.browser.testing.BrowserTestCase):
     # XXX Need test for removal of color picker through removal of image
     # reference
 
+    def test_teaser_image_uses_new_image_upload(self):
+        article = zeit.content.article.testing.create_article()
+        self.repository['article'] = article
+        b = self.browser
+        b.open('http://localhost/++skin++vivi/repository/article/@@checkout')
+        b.open('@@edit.form.teaser-image')
+        self.assertEndsWith('/article/@@upload-images', b.getLink('Add').url)
+
+    def test_teaser_image_also_links_new_image_upload_when_checked_in(self):
+        article = zeit.content.article.testing.create_article()
+        self.repository['article'] = article
+        b = self.browser
+        b.open('http://localhost/++skin++vivi/repository/article/@@edit.form.teaser-image')
+        self.assertEndsWith('/article/@@upload-images', b.getLink('Add image').url)
+
 
 class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
     def test_display_mode_and_variant_name_should_be_editable(self):

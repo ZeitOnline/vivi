@@ -3,6 +3,18 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.158.0 (2025-08-16)
+--------------------
+
+- WCM-939: Link new image upload form
+
+- WCM-1055: Skip locked articles when referencing premium audio objects
+
+
+FIX:
+- WCM-977: Fix german template entries and update translation files
+
+
 7.157.0 (2025-08-12)
 --------------------
 
