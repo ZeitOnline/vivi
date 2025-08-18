@@ -660,7 +660,7 @@ class FollowingsPayloadTest(zeit.workflow.testing.FunctionalTestCase):
         expected_uuid = zeit.cms.content.interfaces.IUUID(cp).shortened
 
         data = zeit.workflow.testing.publish_json(article, 'followings')
-        self.assertEqual(data['parent_uuid'], expected_uuid)
+        self.assertEqual(data['parent_uuids'][0], expected_uuid)
         self.assertEqual(data['created'], date.isoformat())
 
     def test_followings_series(self):
@@ -673,7 +673,41 @@ class FollowingsPayloadTest(zeit.workflow.testing.FunctionalTestCase):
         expected_uuid = zeit.cms.content.interfaces.IUUID(cp).shortened
 
         data = zeit.workflow.testing.publish_json(article, 'followings')
-        self.assertEqual(data['parent_uuid'], expected_uuid)
+        self.assertEqual(data['parent_uuids'][0], expected_uuid)
+        self.assertEqual(data['created'], date.isoformat())
+
+    def test_followings_author(self):
+        author = zeit.content.author.author.Author()
+        author.firstname = 'Mark-Uwe'
+        author.lastname = 'Kling'
+        self.repository['author'] = author
+        article = ICMSContent('http://xml.zeit.de/online/2022/08/trockenheit')
+        article.authorships = [article.authorships.create(self.repository['author'])]
+        expected_uuid = zeit.cms.content.interfaces.IUUID(self.repository['author']).shortened
+        data = zeit.workflow.testing.publish_json(article, 'followings')
+        self.assertEqual(data['parent_uuids'][0], expected_uuid)
+
+    def test_followings_series_author_combination(self):
+        author = zeit.content.author.author.Author()
+        author.firstname = 'Mark-Uwe'
+        author.lastname = 'Kling'
+        self.repository['author'] = author
+        article = ICMSContent('http://xml.zeit.de/online/2022/08/kaenguru-comics-folge-448')
+        article.authorships = [article.authorships.create(self.repository['author'])]
+        self.repository['serie'] = zeit.cms.repository.folder.Folder()
+        self.repository['serie']['chefsache'] = zeit.content.cp.centerpage.CenterPage()
+        cp = self.repository['serie']['chefsache']
+        date = zeit.cms.workflow.interfaces.IPublishInfo(article).date_first_released
+
+        expected_series_uuid = zeit.cms.content.interfaces.IUUID(cp).shortened
+        expected_author_uuid = zeit.cms.content.interfaces.IUUID(
+            self.repository['author']
+        ).shortened
+
+        data = zeit.workflow.testing.publish_json(article, 'followings')
+        self.assertEqual(len(data['parent_uuids']), 2)
+        self.assertIn(expected_series_uuid, data['parent_uuids'])
+        self.assertIn(expected_author_uuid, data['parent_uuids'])
         self.assertEqual(data['created'], date.isoformat())
 
     def test_followings_no_series(self):
