@@ -3499,7 +3499,11 @@ msgstr ""
 msgid "Upload images"
 msgstr ""
 
-#: zeit/content/image/browser/imageupload.py:81
+#: zeit/content/image/browser/imageupload.py:54
+msgid "Please upload at least one image"
+msgstr ""
+
+#: zeit/content/image/browser/imageupload.py:85
 msgid "Edit images"
 msgstr ""
 

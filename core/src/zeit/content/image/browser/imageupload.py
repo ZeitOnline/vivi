@@ -49,7 +49,11 @@ class UploadForm(zeit.cms.browser.view.Base, zeit.content.image.browser.form.Cre
         if not in_folder:
             target = target.__parent__
 
-        files = self.request.form['files']
+        files = self.request.form.get('files', None)
+        if not files:
+            self.send_message(_('Please upload at least one image'), type='error')
+            return super().__call__()
+
         if not isinstance(files, Iterable):
             files = (files,)
 
