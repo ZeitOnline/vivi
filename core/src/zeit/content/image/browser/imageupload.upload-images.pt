@@ -10,7 +10,11 @@
     <p><button class="imageupload__submit" i18n:translate="">Upload</button></p>
     <template class="imageupload__template">
         <li>
-            <img><span class="filename"></span><progress max=100 value=0></progress><span class="error"></span><button i18n:translate="">Remove</button>
+            <img/>
+            <span class="filename"></span>
+            <progress max=100 value=0></progress>
+            <button i18n:translate="">Remove</button>
+            <span class="error"></span>
         </li>
     </template>
   </form>
