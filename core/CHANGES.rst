@@ -3,6 +3,16 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.159.0 (2025-08-19)
+--------------------
+
+- WCM-1056: Add preview feed url and secret to authenticate against ops keycloak and medienservice
+
+- WCM-977: Translate image upload form
+
+- WCM-990: Redirect to image if only one was uploaded
+
+
 7.158.0 (2025-08-16)
 --------------------
 
