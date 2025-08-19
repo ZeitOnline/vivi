@@ -3442,7 +3442,11 @@ msgstr "Urheberrecht Bezahl Bericht"
 msgid "Upload images"
 msgstr "Neue Bilder hochladen"
 
-#: zeit/content/image/browser/imageupload.py:81
+#: zeit/content/image/browser/imageupload.py:54
+msgid "Please upload at least one image"
+msgstr "Bitte mindestens eine Datei hochladen"
+
+#: zeit/content/image/browser/imageupload.py:85
 msgid "Edit images"
 msgstr "Bilder bearbeiten"
 
