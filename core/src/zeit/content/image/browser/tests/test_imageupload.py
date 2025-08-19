@@ -204,6 +204,24 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
         b.getForm(name='imageupload').submit()
         assert b.getControl(name='name[0]').value == 'Somalia-bild'
 
+    def test_editimages_redirects_to_single_image(self):
+        b = self.browser
+        b.open('/repository/online/2007/01/Somalia/@@upload-images')
+        file_input = b.getControl(name='files')
+        add_file_multi(
+            file_input,
+            [
+                (
+                    fixture_bytes('new-hampshire-450x200.jpg'),
+                    'new-hampshire-450x200.jpg',
+                    'image/jpg',
+                ),
+            ],
+        )
+        b.getForm(name='imageupload').submit()
+        b.getForm(name='edit-images').submit()
+        self.assertEndsWith('/repository/online/2007/01/Somalia-bild/@@variant.html', b.url)
+
     def test_editimages_correctly_shows_xmp_data(self):
         b = self.browser
         b.open('/repository/online/2007/01/@@upload-images')

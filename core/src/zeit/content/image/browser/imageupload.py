@@ -119,7 +119,12 @@ class EditForm(zeit.cms.browser.view.Base):
                     imagegroup
                 ).renameable = False
             index += 1
-        self.redirect(self.url(name=''), status=303)
+
+        if index == 1:
+            url = self.url(self.context[self.request.form['name[0]']], name='@@variant.html')
+        else:
+            url = self.url(name='')
+        self.redirect(url, status=303)
 
     def rows(self):
         from_name = self.request.form.get('from', None)
