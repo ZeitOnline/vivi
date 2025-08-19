@@ -8,6 +8,11 @@
     </label>
     <ul class="imageupload__gallery"></ul>
     <p><button class="imageupload__submit" i18n:translate="">Upload</button></p>
+    <template class="imageupload__template">
+        <li>
+            <img><span class="filename"></span><progress max=100 value=0></progress><span class="error"></span><button i18n:translate="">Remove</button>
+        </li>
+    </template>
   </form>
   <script>
   class ImageUpload {
@@ -75,8 +80,8 @@
     }
 
     addFile(file) {
-      const li = document.createElement('li')
-      li.innerHTML = `<img><span class="filename">${file.name}</span><progress max=100 value=0></progress><span class="error"></span><button>Remove</button>`
+      const li = this.#form.querySelector('.imageupload__template').content.cloneNode(true).firstElementChild
+      li.querySelector('.filename').textContent = file.name
       let reader = new FileReader()
       reader.readAsDataURL(file)
       reader.onloadend = () => li.querySelector('img').src = reader.result
