@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Fri Aug 15 16:59:12 2025\n"
+"POT-Creation-Date: Wed Aug 20 09:47:19 2025\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -79,9 +79,8 @@ msgstr "Zuerst veröffentlicht am"
 #: zeit/cms/browser/action-menu-item-with-lightbox.pt:8
 #: zeit/cms/browser/action-menu-item.pt:2
 #: zeit/cms/browser/action-menu-item.pt:11 zeit/cms/browser/globalmenuitem.pt:5
-#: zeit/cms/browser/lightbox.pt:2 zeit/cms/browser/main_template.pt:49
-#: zeit/cms/browser/main_template.pt:187 zeit/cms/browser/main_template.pt:210
-#: zeit/cms/browser/main_template.pt:228
+#: zeit/cms/browser/lightbox.pt:2 zeit/cms/browser/main_template.pt:187
+#: zeit/cms/browser/main_template.pt:210 zeit/cms/browser/main_template.pt:228
 #: zeit/cms/browser/menu-context-actions.pt:8
 #: zeit/cms/browser/menu-context-actions.pt:16
 #: zeit/cms/browser/menu-context-views.pt:8 zeit/cms/browser/sourceedit.pt:16
@@ -138,6 +137,7 @@ msgid "Add new..."
 msgstr "Hinzufügen…"
 
 #: zeit/cms/browser/form.py:250 zeit/content/article/edit/browser/workflow.pt:4
+#: zeit/content/image/browser/imageupload.edit-images.pt:13
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -200,6 +200,7 @@ msgstr "Autor"
 #: zeit/content/author/interfaces.py:36 zeit/content/cp/interfaces.py:190
 #: zeit/content/cp/interfaces.py:293 zeit/content/cp/interfaces.py:416
 #: zeit/content/cp/interfaces.py:465 zeit/content/gallery/interfaces.py:91
+#: zeit/content/image/browser/imageupload.edit-images.pt:4
 #: zeit/content/infobox/interfaces.py:21 zeit/content/modules/interfaces.py:169
 #: zeit/content/rawxml/interfaces.py:18 zeit/content/text/interfaces.py:65
 #: zeit/content/video/browser/object-details-body.pt:24
@@ -1608,6 +1609,7 @@ msgid "No content referenced."
 msgstr "Kein Inhalt referenziert."
 
 #: zeit/content/article/edit/browser/form.py:112
+#: zeit/content/image/browser/imageupload.edit-images.pt:4
 msgid "Filename"
 msgstr "Dateiname"
 
@@ -2964,6 +2966,7 @@ msgid "Titel"
 msgstr "Überschrift"
 
 #: zeit/content/cp/interfaces.py:126
+#: zeit/content/image/browser/imageupload.edit-images.pt:4
 msgid "Description"
 msgstr "Beschreibung"
 
@@ -3438,6 +3441,15 @@ msgstr "Veröffentlichungsdatum"
 msgid "CopyrightPurchaseReport"
 msgstr "Urheberrecht Bezahl Bericht"
 
+#: zeit/content/image/browser/imageupload.edit-images.pt:4
+msgid "Copyright"
+msgstr "Copyrights"
+
+#: zeit/content/image/browser/imageupload.edit-images.pt:13
+#: zeit/content/image/browser/imageupload.upload-images.pt:10
+msgid "Upload"
+msgstr "Hochladen"
+
 #: zeit/content/image/browser/imageupload.py:30
 msgid "Upload images"
 msgstr "Neue Bilder hochladen"
@@ -3446,9 +3458,17 @@ msgstr "Neue Bilder hochladen"
 msgid "Please upload at least one image"
 msgstr "Bitte mindestens eine Datei hochladen"
 
-#: zeit/content/image/browser/imageupload.py:85
+#: zeit/content/image/browser/imageupload.py:87
 msgid "Edit images"
 msgstr "Bilder bearbeiten"
+
+#: zeit/content/image/browser/imageupload.upload-images.pt:6
+msgid "Upload one or multiple images"
+msgstr "Ein oder mehrere Bilder hochladen"
+
+#: zeit/content/image/browser/imageupload.upload-images.pt:7
+msgid "Select files"
+msgstr "Datei(en) auswählen"
 
 #: zeit/content/image/browser/interfaces.py:10
 msgid "The uploaded image could not be identified."

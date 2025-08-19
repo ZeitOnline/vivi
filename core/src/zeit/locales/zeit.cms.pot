@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Fri Aug 15 16:59:12 2025\n"
+"POT-Creation-Date: Wed Aug 20 09:47:19 2025\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -86,7 +86,6 @@ msgstr ""
 #: zeit/cms/browser/action-menu-item.pt:11
 #: zeit/cms/browser/globalmenuitem.pt:5
 #: zeit/cms/browser/lightbox.pt:2
-#: zeit/cms/browser/main_template.pt:49
 #: zeit/cms/browser/main_template.pt:187
 #: zeit/cms/browser/main_template.pt:210
 #: zeit/cms/browser/main_template.pt:228
@@ -151,6 +150,7 @@ msgstr ""
 
 #: zeit/cms/browser/form.py:250
 #: zeit/content/article/edit/browser/workflow.pt:4
+#: zeit/content/image/browser/imageupload.edit-images.pt:13
 msgid "Cancel"
 msgstr ""
 
@@ -227,6 +227,7 @@ msgstr ""
 #: zeit/content/cp/interfaces.py:416
 #: zeit/content/cp/interfaces.py:465
 #: zeit/content/gallery/interfaces.py:91
+#: zeit/content/image/browser/imageupload.edit-images.pt:4
 #: zeit/content/infobox/interfaces.py:21
 #: zeit/content/modules/interfaces.py:169
 #: zeit/content/rawxml/interfaces.py:18
@@ -1642,6 +1643,7 @@ msgid "No content referenced."
 msgstr ""
 
 #: zeit/content/article/edit/browser/form.py:112
+#: zeit/content/image/browser/imageupload.edit-images.pt:4
 msgid "Filename"
 msgstr ""
 
@@ -3024,6 +3026,7 @@ msgid "Titel"
 msgstr ""
 
 #: zeit/content/cp/interfaces.py:126
+#: zeit/content/image/browser/imageupload.edit-images.pt:4
 msgid "Description"
 msgstr ""
 
@@ -3495,6 +3498,15 @@ msgstr ""
 msgid "CopyrightPurchaseReport"
 msgstr ""
 
+#: zeit/content/image/browser/imageupload.edit-images.pt:4
+msgid "Copyright"
+msgstr ""
+
+#: zeit/content/image/browser/imageupload.edit-images.pt:13
+#: zeit/content/image/browser/imageupload.upload-images.pt:10
+msgid "Upload"
+msgstr ""
+
 #: zeit/content/image/browser/imageupload.py:30
 msgid "Upload images"
 msgstr ""
@@ -3503,8 +3515,16 @@ msgstr ""
 msgid "Please upload at least one image"
 msgstr ""
 
-#: zeit/content/image/browser/imageupload.py:85
+#: zeit/content/image/browser/imageupload.py:87
 msgid "Edit images"
+msgstr ""
+
+#: zeit/content/image/browser/imageupload.upload-images.pt:6
+msgid "Upload one or multiple images"
+msgstr ""
+
+#: zeit/content/image/browser/imageupload.upload-images.pt:7
+msgid "Select files"
 msgstr ""
 
 #: zeit/content/image/browser/interfaces.py:10

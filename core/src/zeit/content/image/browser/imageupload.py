@@ -66,6 +66,8 @@ class UploadForm(zeit.cms.browser.view.Base, zeit.content.image.browser.form.Cre
         if not in_folder:
             params['from'] = self.context.__name__
         url = self.url(target, '@@edit-images') + '?' + urllib.parse.urlencode(params, doseq=True)
+        if self.request.getHeader('X-Requested-With') == 'XMLHttpRequest':
+            return url
         self.redirect(url, status=303)
 
     def _upload_imagegroup(self, file, parent):
