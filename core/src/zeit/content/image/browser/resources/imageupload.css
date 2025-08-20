@@ -15,6 +15,11 @@
   flex: 1 0 10em;
 }
 
+.imageupload__drop p,
+.imageupload__drop span {
+  margin: 1em 0.5em;
+}
+
 .imageupload__button {
   background: linear-gradient(0deg, #f1f4f9 50%, var(--button-gradient-color, #dee1e6) 94%) repeat scroll 0 0 transparent;
   border-radius: 2px 2px 2px 2px;
@@ -42,7 +47,7 @@
 }
 
 .imageupload__gallery {
-  margin-top: 10px;
+  margin: 0 0 0 -1em;
   padding: 0;
 }
 
