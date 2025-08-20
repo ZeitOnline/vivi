@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.161.0 (2025-08-20)
+--------------------
+
+- WCM-976: Don't suggest already taken file name in editimages
+
+
 7.160.0 (2025-08-20)
 --------------------
 
