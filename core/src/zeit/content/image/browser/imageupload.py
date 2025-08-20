@@ -144,6 +144,9 @@ class EditForm(zeit.cms.browser.view.Base):
 
             meta = imggroup[imggroup.master_image].getXMPMetadata()
 
+            if not from_name and meta['title'] is not None:
+                from_name = zeit.cms.interfaces.normalize_filename(meta['title'])
+
             if from_name:
                 while True:
                     suffix = ''
@@ -153,10 +156,8 @@ class EditForm(zeit.cms.browser.view.Base):
                         suffix = f'-{name_index}'
                     name = f'{from_name}-bild{suffix}'
                     name_index += 1
-                    if not self.context.get(name):
+                    if name not in self.context:
                         break
-            elif meta['title'] is not None:
-                name = zeit.cms.interfaces.normalize_filename(meta['title']) + '-bild'
             else:
                 name = ''
 
