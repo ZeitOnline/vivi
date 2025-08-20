@@ -10,4 +10,9 @@
    factory=".connection.from_product_config"
    />
 
+   <utility
+   provides="zeit.mediaservice.interfaces.IKeycloak"
+   factory=".connection.keycloak_from_product_config"
+   />
+
 </configure>

@@ -1,4 +1,6 @@
+import requests
 import requests_mock
+import zope.component
 
 import zeit.mediaservice.testing
 
@@ -235,3 +237,24 @@ class TestImportAudios(zeit.mediaservice.testing.FunctionalTestCase):
             )
             audios = mediaservice.get_audio_infos(year=2025, volume=28)
             assert not audios
+
+
+class TestKeycloak(zeit.mediaservice.testing.FunctionalTestCase):
+    def test_keycloak_returns_auth_header(self):
+        mocker = requests_mock.Mocker()
+        mocker.post(
+            'https://discovery-url.foo/protocol/openid-connect/token',
+            json={'access_token': 'thumbsup'},
+        )
+        with mocker:
+            keycloak = zope.component.getUtility(zeit.mediaservice.interfaces.IKeycloak)
+            auth_header = keycloak.authenticate()
+            self.assertEqual(auth_header, {'Authorization': 'Bearer thumbsup'})
+
+    def test_keycloak_raises_for_status(self):
+        mocker = requests_mock.Mocker()
+        mocker.post('https://discovery-url.foo/protocol/openid-connect/token', status_code=503)
+        with mocker:
+            with self.assertRaises(requests.exceptions.RequestException):
+                keycloak = zope.component.getUtility(zeit.mediaservice.interfaces.IKeycloak)
+                keycloak.authenticate()

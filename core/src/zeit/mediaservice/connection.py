@@ -65,3 +65,31 @@ class Connection:
 def from_product_config():
     conf = zeit.cms.config.package('zeit.mediaservice')
     return Connection(conf['feed-url'])
+
+
+class Keycloak:
+    def __init__(self, client_id, client_secret, discovery_url):
+        self.client_id = client_id
+        self.client_secret = client_secret
+        self.discovery_url = discovery_url
+
+    def authenticate(self):
+        url = f'{self.discovery_url}/protocol/openid-connect/token'
+        response = requests.post(
+            url,
+            data={'grant_type': 'client_credentials'},
+            auth=(self.client_id, self.client_secret),
+        )
+        if not response.ok:
+            response.raise_for_status()
+        return {'Authorization': 'Bearer ' + response.json()['access_token']}
+
+
+@zope.interface.implementer(zeit.mediaservice.interfaces.IKeycloak)
+def keycloak_from_product_config():
+    conf = zeit.cms.config.package('zeit.mediaservice')
+    return Keycloak(
+        conf['client-id'],
+        conf['client-secret'],
+        conf['discovery-url'],
+    )

@@ -6,6 +6,9 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
     {
         'medienservice-folder': 'premium',
         'audio-folder': 'audio',
+        'client-id': 'client-id',
+        'client-secret': 'client-secret',
+        'discovery-url': 'https://discovery-url.foo',
     },
     bases=zeit.content.article.testing.CONFIG_LAYER,
 )
