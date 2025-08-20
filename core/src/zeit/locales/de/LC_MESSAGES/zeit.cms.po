@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Wed Aug 20 10:07:09 2025\n"
+"POT-Creation-Date: Wed Aug 20 10:47:06 2025\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -326,7 +326,7 @@ msgstr ""
 
 #: zeit/cms/browser/tree.pt:19
 #: zeit/content/article/edit/browser/recension-list.pt:19
-#: zeit/content/image/browser/imageupload.upload-images.pt:13
+#: zeit/content/image/browser/imageupload.upload-images.pt:16
 msgid "Remove"
 msgstr "Entfernen"
 
@@ -2967,7 +2967,6 @@ msgid "Titel"
 msgstr "Überschrift"
 
 #: zeit/content/cp/interfaces.py:126
-#: zeit/content/image/browser/imageupload.edit-images.pt:4
 msgid "Description"
 msgstr "Beschreibung"
 
@@ -3441,6 +3440,10 @@ msgstr "Veröffentlichungsdatum"
 #: zeit/content/image/browser/imagegroup.py:371
 msgid "CopyrightPurchaseReport"
 msgstr "Urheberrecht Bezahl Bericht"
+
+#: zeit/content/image/browser/imageupload.edit-images.pt:4
+msgid "Caption"
+msgstr "Bildunterschrift"
 
 #: zeit/content/image/browser/imageupload.edit-images.pt:4
 msgid "Copyright"
@@ -5022,9 +5025,6 @@ msgstr "mit Info"
 
 #~ msgid "Publication of ${count} objects"
 #~ msgstr "Sammelveröffentlichung von ${count} Objekten"
-
-#~ msgid "Caption"
-#~ msgstr "Bildunterschrift"
 
 #~ msgid "Alt-Text"
 #~ msgstr "Alternativtext"

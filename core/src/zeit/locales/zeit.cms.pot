@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Wed Aug 20 10:07:09 2025\n"
+"POT-Creation-Date: Wed Aug 20 10:47:06 2025\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -353,7 +353,7 @@ msgstr ""
 
 #: zeit/cms/browser/tree.pt:19
 #: zeit/content/article/edit/browser/recension-list.pt:19
-#: zeit/content/image/browser/imageupload.upload-images.pt:13
+#: zeit/content/image/browser/imageupload.upload-images.pt:16
 msgid "Remove"
 msgstr ""
 
@@ -3027,7 +3027,6 @@ msgid "Titel"
 msgstr ""
 
 #: zeit/content/cp/interfaces.py:126
-#: zeit/content/image/browser/imageupload.edit-images.pt:4
 msgid "Description"
 msgstr ""
 
@@ -3497,6 +3496,10 @@ msgstr ""
 
 #: zeit/content/image/browser/imagegroup.py:371
 msgid "CopyrightPurchaseReport"
+msgstr ""
+
+#: zeit/content/image/browser/imageupload.edit-images.pt:4
+msgid "Caption"
 msgstr ""
 
 #: zeit/content/image/browser/imageupload.edit-images.pt:4
