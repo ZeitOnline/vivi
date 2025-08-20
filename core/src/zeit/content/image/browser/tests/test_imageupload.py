@@ -240,6 +240,46 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
         b.getForm(name='edit-images').submit()
         self.assertEndsWith('/repository/online/2007/01/Somalia-bild/@@variant.html', b.url)
 
+    def test_editimages_correctly_names_single_image_for_article_that_clashes_with_existing_image(
+        self,
+    ):
+        self.repository['online']['2007']['01']['Somalia-bild'] = (
+            zeit.content.image.imagegroup.ImageGroup()
+        )
+        b = self.browser
+        b.open('/repository/online/2007/01/Somalia/@@upload-images')
+        file_input = b.getControl(name='files')
+        add_file_multi(
+            file_input,
+            [
+                (
+                    fixture_bytes('new-hampshire-450x200.jpg'),
+                    'new-hampshire-450x200.jpg',
+                    'image/jpg',
+                ),
+            ],
+        )
+        b.getForm(name='imageupload').submit()
+        assert b.getControl(name='name[0]').value == 'Somalia-bild-2'
+
+    def test_editimages_correctly_names_single_image_that_clashes_with_existing_image(self):
+        self.repository['cycling-bel-renewi-bild'] = zeit.content.image.imagegroup.ImageGroup()
+        b = self.browser
+        b.open('/repository/@@upload-images')
+        file_input = b.getControl(name='files')
+        add_file_multi(
+            file_input,
+            [
+                (
+                    fixture_bytes('gettyimages-2168232879-150x100.jpg'),
+                    'gettyimages-2168232879-150x100.jpg',
+                    'image/jpg',
+                ),
+            ],
+        )
+        b.getForm(name='imageupload').submit()
+        assert b.getControl(name='name[0]').value == 'cycling-bel-renewi-bild-2'
+
     def test_editimages_correctly_shows_xmp_data(self):
         b = self.browser
         b.open('/repository/online/2007/01/@@upload-images')
