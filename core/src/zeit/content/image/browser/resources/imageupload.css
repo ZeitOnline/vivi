@@ -6,8 +6,85 @@
 }
 
 .imageupload__input {
+  display: none;
+}
+
+.imageupload__drop {
+  border: 1px dashed #a6cc17;
   background-color: #f1f4f9;
-  flex: 1;
+  flex: 1 0 10em;
+}
+
+.imageupload__drop p,
+.imageupload__drop span {
+  margin: 1em 0.5em;
+}
+
+.imageupload__button {
+  background: linear-gradient(0deg, #f1f4f9 50%, var(--button-gradient-color, #dee1e6) 94%) repeat scroll 0 0 transparent;
+  border-radius: 2px 2px 2px 2px;
+  border: 1px solid #c1c1c1;
+  box-shadow: 0px 0px 0px rgb(0, 0, 0);
+  color: rgb(0, 0, 0);
+  cursor: pointer;
+  font-family: arial, serif;
+  font-size: 12px;
+  padding: 4px 6px;
+  text-decoration: none;
+  text-indent: 0;
+  text-shadow: 0px 0px 5px rgb(255, 255, 255);
+  white-space: inherit;
+}
+
+.imageupload__button:hover {
+  --button-gradient-color: #d2d4d9;
+  border-color: #a6a6a6;
+}
+
+.imageupload__button--add {
+  background: url('/fanstatic/zeit.cms/icons/icons_sprites.png') no-repeat scroll 6px -113px , linear-gradient(0deg, #f1f4f9 50%, var(--button-gradient-color, #dee1e6) 94%) repeat scroll 0 0 transparent;
+  padding-left: 18px;
+}
+
+.imageupload__gallery {
+  margin: 0 0 0 -1em;
+  padding: 0;
+}
+
+.imageupload__gallery li {
+  display: inline-flex;
+  flex-direction: column;
+  width: 150px;
+  list-style: none;
+  margin: 1em;
+}
+
+.imageupload__gallery img {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  object-position: center center;
+}
+
+.imageupload__filename {
+  overflow-wrap: anywhere;
+}
+
+.imageupload__gallery progress {
+  display: none;
+  width: auto;
+}
+
+.imageupload--uploading progress {
+  display: initial;
+}
+
+.imageupload__error {
+  color: red;
+}
+
+.imageupload__button--remove {
+  margin-left: auto;
 }
 
 .edit-image-table {
