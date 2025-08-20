@@ -4,17 +4,17 @@
     <label class="imageupload__drop">
       <input type="file" class="imageupload__input" multiple accept="image/*" name="files">
       <p i18n:translate="">Upload one or multiple images</p>
-      <span class="imageupload__button" i18n:translate="">Select files</span>
+      <span class="imageupload__button imageupload__button--add" i18n:translate="">Select files</span>
     </label>
     <ul class="imageupload__gallery"></ul>
-    <p><button class="imageupload__submit" i18n:translate="">Upload</button></p>
+    <p><button class="imageupload__button imageupload__button--submit" i18n:translate="">Upload</button></p>
     <template class="imageupload__template">
         <li>
             <img/>
-            <span class="filename"></span>
+            <span class="imageupload__filename"></span>
             <progress max=100 value=0></progress>
-            <button i18n:translate="">Remove</button>
-            <span class="error"></span>
+            <button class="imageupload__button imageupload__button--remove" i18n:translate="">Remove</button>
+            <span class="imageupload__error"></span>
         </li>
     </template>
   </form>
@@ -29,7 +29,7 @@
       this.#form = form
       this.#dropArea = form.querySelector('.imageupload__drop')
       this.#gallery = form.querySelector('.imageupload__gallery')
-      this.#submitButton = form.querySelector('.imageupload__submit')
+      this.#submitButton = form.querySelector('.imageupload__button--submit')
 
       this.#dropArea.addEventListener('dragenter', this, false)
       this.#dropArea.addEventListener('dragover', this, false)
@@ -63,17 +63,13 @@
           break;
         case 'click':
           if (e.target == this.#submitButton) {
-              // Submit button
               e.preventDefault()
               this.uploadFiles()
-          } else if (e.target.tagName == 'BUTTON') {
-              // Remove button
+          } else if (e.target.classList.contains('imageupload__button--remove')) {
               const li = e.target.closest('li')
               this.removeFile(li)
           }
           break;
-        default:
-          throw e
       }
     }
 
@@ -85,7 +81,7 @@
 
     addFile(file) {
       const li = this.#form.querySelector('.imageupload__template').content.cloneNode(true).firstElementChild
-      li.querySelector('.filename').textContent = file.name
+      li.querySelector('.imageupload__filename').textContent = file.name
       let reader = new FileReader()
       reader.readAsDataURL(file)
       reader.onloadend = () => li.querySelector('img').src = reader.result
@@ -98,11 +94,11 @@
     }
 
     uploadFiles() {
-      this.#form.classList.add('uploading')
+      this.#form.classList.add('imageupload--uploading')
       this.#submitButton.disabled = true
       let uploads = []
       for (let li of this.#gallery.childNodes) {
-        let errorSpan = li.querySelector('.error')
+        let errorSpan = li.querySelector('.imageupload__error')
         errorSpan.textContent = ''
         uploads.push(this.uploadFile(li.file, progress => li.querySelector('progress').value = progress).catch(error => {
             errorSpan.textContent = error
@@ -112,8 +108,10 @@
       Promise.all(uploads).then(results => {
         let url = results[0] + results.slice(1).map(url => '&files=' + new URL(url).searchParams.get('files')).join("")
         window.location = url
+      }, e => {
+        // Swallow exception since we already displayed it at the li
       }).finally(() => {
-        this.#form.classList.remove('uploading')
+        this.#form.classList.remove('imageupload--uploading')
         this.#submitButton.disabled = false
       });
     }
