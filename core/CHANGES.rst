@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.160.0 (2025-08-20)
+--------------------
+
+- WCM-976: Better error handling for new imageupload
+
+
 7.159.0 (2025-08-19)
 --------------------
 
