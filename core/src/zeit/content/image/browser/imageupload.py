@@ -158,17 +158,21 @@ class EditForm(zeit.cms.browser.view.Base):
 
             meta = imggroup[imggroup.master_image].getXMPMetadata()
 
-            if not from_name and meta['title'] is not None:
-                from_name = zeit.cms.interfaces.normalize_filename(meta['title'])
-
+            name_base = None
             if from_name:
+                name_base = from_name
+            elif meta['title'] is not None:
+                name_base = zeit.cms.interfaces.normalize_filename(meta['title'])
+
+            if name_base:
                 while True:
                     suffix = ''
-                    if len(filenames) >= 10:
-                        suffix = f'-{name_index:02}'
-                    elif name_index > 1 or len(filenames) > 1:
-                        suffix = f'-{name_index}'
-                    name = f'{from_name}-bild{suffix}'
+                    if from_name:
+                        if len(filenames) >= 10:
+                            suffix = f'-{name_index:02}'
+                        elif name_index > 1 or len(filenames) > 1:
+                            suffix = f'-{name_index}'
+                    name = f'{name_base}-bild{suffix}'
                     name_index += 1
                     if name not in self.context:
                         break
