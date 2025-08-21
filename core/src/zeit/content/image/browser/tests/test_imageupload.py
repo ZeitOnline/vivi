@@ -393,6 +393,61 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
         b.getForm(name='imageupload').submit()
         self.assertTrue('required' in b.getControl(name='name[0]')._elem.attrs)
 
+    def test_editimages_shows_error_on_used_file_name(self):
+        self.repository['online']['2007']['01']['Somalia-bild'] = (
+            zeit.content.image.imagegroup.ImageGroup()
+        )
+        b = self.browser
+        b.open('/repository/online/2007/01/Somalia/@@upload-images')
+        file_input = b.getControl(name='files')
+        add_file_multi(
+            file_input,
+            [
+                (
+                    fixture_bytes('new-hampshire-450x200.jpg'),
+                    'new-hampshire-450x200.jpg',
+                    'image/jpg',
+                ),
+            ],
+        )
+        b.getForm(name='imageupload').submit()
+        b.getControl(name='name[0]').value = 'Somalia-bild'
+        b.getForm(name='edit-images').submit()
+        self.assertEqual(b.getControl(name='name[0]').value, 'Somalia-bild')
+        self.assertEllipsis(
+            '...<span class="error">File name is already in use</span>...', b.contents
+        )
+
+    def test_editimages_shows_error_on_duplicate_file_name(self):
+        b = self.browser
+        b.open('/repository/online/2007/01/Somalia/@@upload-images')
+
+        file_input = b.getControl(name='files')
+        add_file_multi(
+            file_input,
+            [
+                (
+                    fixture_bytes('new-hampshire-450x200.jpg'),
+                    'new-hampshire-450x200.jpg',
+                    'image/jpg',
+                ),
+                (
+                    fixture_bytes('new-hampshire-450x200.jpg'),
+                    'new-hampshire-450x200.jpg',
+                    'image/jpg',
+                ),
+            ],
+        )
+        b.getForm(name='imageupload').submit()
+        b.getControl(name='name[0]').value = 'Somalia-bild'
+        b.getControl(name='name[1]').value = 'Somalia-bild'
+        b.getForm(name='edit-images').submit()
+        self.assertEqual(b.getControl(name='name[0]').value, 'Somalia-bild')
+        self.assertEqual(b.getControl(name='name[1]').value, 'Somalia-bild')
+        self.assertEllipsis(
+            '...<span class="error">File name is already in use</span>...', b.contents
+        )
+
     def test_editimages_deletes_files_on_cancel(self):
         b = self.browser
         b.open('/repository/online/2007/01/Somalia/@@upload-images')

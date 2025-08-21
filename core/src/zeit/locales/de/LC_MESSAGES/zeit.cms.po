@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Wed Aug 20 10:47:06 2025\n"
+"POT-Creation-Date: Thu Aug 21 10:27:44 2025\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -137,7 +137,7 @@ msgid "Add new..."
 msgstr "Hinzufügen…"
 
 #: zeit/cms/browser/form.py:250 zeit/content/article/edit/browser/workflow.pt:4
-#: zeit/content/image/browser/imageupload.edit-images.pt:13
+#: zeit/content/image/browser/imageupload.edit-images.pt:18
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -3449,7 +3449,7 @@ msgstr "Bildunterschrift"
 msgid "Copyright"
 msgstr "Copyrights"
 
-#: zeit/content/image/browser/imageupload.edit-images.pt:13
+#: zeit/content/image/browser/imageupload.edit-images.pt:18
 #: zeit/content/image/browser/imageupload.upload-images.pt:10
 msgid "Upload"
 msgstr "Hochladen"
@@ -3465,6 +3465,10 @@ msgstr "Bitte mindestens eine Datei hochladen"
 #: zeit/content/image/browser/imageupload.py:87
 msgid "Edit images"
 msgstr "Bilder bearbeiten"
+
+#: zeit/content/image/browser/imageupload.py:115
+msgid "File name is already in use"
+msgstr "Dateiname ist bereits belegt"
 
 #: zeit/content/image/browser/imageupload.upload-images.pt:6
 msgid "Upload one or multiple images"
