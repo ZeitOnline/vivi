@@ -1,4 +1,5 @@
 from collections.abc import Iterable
+import collections
 import urllib.parse
 import uuid
 
@@ -80,6 +81,69 @@ class UploadForm(zeit.cms.browser.view.Base, zeit.content.image.browser.form.Cre
         parent[name] = imagegroup
         imagegroup[image.__name__] = image
         return name
+
+
+def get_image_name(base_name, pos, others):
+    if others == 0:
+        suffix = ''
+    elif others < 9:
+        suffix = f'-{pos}'
+    else:
+        suffix = f'-{pos:02}'
+    return base_name + '-bild' + suffix
+
+
+class ImageName:
+    def __init__(self, provider, base_name, pos):
+        self.provider = provider
+        self.base_name = base_name
+        self.pos = pos
+
+    def __str__(self):
+        total_count = self.provider.total_counts[self.base_name]
+        return get_image_name(self.base_name, self.pos, total_count - 1)
+
+
+class ImageNameProvider:
+    """A helper class for producing image names for given base names (for example article names).
+    This correctly counts existing images and new images to add and generates unique file names.
+
+    ImageNameProvider.get returns a dynamic ImageName object that can be converted to str.
+    Through that, an ImageName object can also consider images that were added after it.
+
+    ImageNameProvider does not handle holes in image name sequences.
+    For example, if article-bild-1 and article-bild-3 exist, suggested names for images for article
+    would be article-bild-2, article-bild-3 and so on.
+    """
+
+    def __init__(self, container):
+        self.container = container
+        self.container_counts = collections.Counter()
+        self.total_counts = collections.Counter()
+
+    def _init_from_container(self, base_name):
+        # Two digits
+        if get_image_name(base_name, 1, 9) in self.container:
+            count = 1
+            while get_image_name(base_name, count + 1, 9) in self.container:
+                count += 1
+        # One digit
+        elif get_image_name(base_name, 1, 1) in self.container:
+            count = 1
+            while get_image_name(base_name, count + 1, 1) in self.container:
+                count += 1
+        # No digit
+        elif get_image_name(base_name, 1, 0) in self.container:
+            count = 1
+        else:
+            count = 0
+        self.total_counts[base_name] = self.container_counts[base_name] = count
+
+    def get(self, base_name):
+        if base_name not in self.total_counts:
+            self._init_from_container(base_name)
+        self.total_counts[base_name] += 1
+        return ImageName(self, base_name, self.total_counts[base_name])
 
 
 @zope.interface.implementer(zeit.cms.browser.interfaces.IHideContextViews)

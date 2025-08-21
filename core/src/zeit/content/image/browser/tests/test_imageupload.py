@@ -1,7 +1,9 @@
 import re
+import unittest
 
 import webtest.forms
 
+from zeit.content.image.browser.imageupload import ImageNameProvider
 from zeit.content.image.testing import fixture_bytes
 import zeit.cms.browser.interfaces
 import zeit.cms.interfaces
@@ -536,3 +538,55 @@ class AddMenuImageUploadTest(zeit.content.image.testing.BrowserTestCase):
         assert (
             'http://localhost:8080/++skin++vivi/repository/online/2007/01/@@upload-images' == b.url
         )
+
+
+class ImageNameProviderTest(unittest.TestCase):
+    def test_correctly_names_only_image(self):
+        provider = ImageNameProvider({})
+        name = provider.get('base-name')
+        self.assertEqual(str(name), 'base-name-bild')
+
+    def test_correctly_names_two_images(self):
+        provider = ImageNameProvider({})
+        name1 = provider.get('base-name')
+        name2 = provider.get('base-name')
+        self.assertEqual(str(name1), 'base-name-bild-1')
+        self.assertEqual(str(name2), 'base-name-bild-2')
+
+    def test_correctly_names_eleven_images(self):
+        provider = ImageNameProvider({})
+        names = tuple(
+            (provider.get('base-name'), suffix)
+            for suffix in ('01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11')
+        )
+        for name, suffix in names:
+            self.assertEqual(str(name), 'base-name-bild-' + suffix)
+
+    def test_correctly_names_image_with_one_in_context(self):
+        provider = ImageNameProvider({'base-name-bild': None})
+        name = provider.get('base-name')
+        self.assertEqual(str(name), 'base-name-bild-2')
+
+    def test_correctly_names_image_with_two_in_context(self):
+        provider = ImageNameProvider({'base-name-bild-1': None, 'base-name-bild-2': None})
+        name = provider.get('base-name')
+        self.assertEqual(str(name), 'base-name-bild-3')
+
+    def test_correctly_names_image_with_eleven_in_context(self):
+        provider = ImageNameProvider(
+            {
+                'base-name-bild-01': None,
+                'base-name-bild-02': None,
+                'base-name-bild-03': None,
+                'base-name-bild-04': None,
+                'base-name-bild-05': None,
+                'base-name-bild-06': None,
+                'base-name-bild-07': None,
+                'base-name-bild-08': None,
+                'base-name-bild-09': None,
+                'base-name-bild-10': None,
+                'base-name-bild-11': None,
+            }
+        )
+        name = provider.get('base-name')
+        self.assertEqual(str(name), 'base-name-bild-12')
