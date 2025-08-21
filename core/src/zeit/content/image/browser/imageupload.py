@@ -121,8 +121,9 @@ class EditForm(zeit.cms.browser.view.Base):
         for file in self._files:
             tmp_name = file['tmp_name']
             name = file['target_name']
-            if name != tmp_name:
-                renamer.renameItem(tmp_name, name)
+            # Since tmp_name ends with '.tmp', and target_name is normalized
+            # (which replaces the '.' with '-'), the two always differ.
+            renamer.renameItem(tmp_name, name)
             with zeit.cms.checkout.helper.checked_out(
                 self.context[name], temporary=False, raise_if_error=True
             ) as imagegroup:
