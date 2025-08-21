@@ -1,6 +1,7 @@
 import os.path
 
 import gocept.form.grouped
+import zope.app.form.browser
 import zope.app.pagetemplate
 import zope.component
 import zope.formlib.form
