@@ -87,10 +87,12 @@ class EditForm(zeit.cms.browser.view.Base):
     title = _('Edit images')
 
     _files = ()
+    _errors = {}
 
     def __call__(self):
+        self._errors = {}
         if self.request.method == 'POST':
-            self._files = self._parse_post_request()
+            self._files = tuple(self._parse_post_request())
             if 'cancel' in self.request.form:
                 return self.handle_cancel()
             return self.handle_submit()
@@ -105,8 +107,18 @@ class EditForm(zeit.cms.browser.view.Base):
 
     def handle_submit(self):
         renamer = zope.copypastemove.interfaces.IContainerItemRenamer(self.context)
-        files = tuple(self._files)
-        for file in files:
+        taken_names = set()
+        for file in self._files:
+            if (file['name'] != file['cur_name'] and file['name'] in self.context) or (
+                file['name'] in taken_names
+            ):
+                self._errors[file['cur_name']] = _('File name is already in use')
+            taken_names.add(file['name'])
+
+        if self._errors:
+            return super().__call__()
+
+        for file in self._files:
             cur_name = file['cur_name']
             name = file['name']
             if name != cur_name:
@@ -128,8 +140,8 @@ class EditForm(zeit.cms.browser.view.Base):
                     imagegroup
                 ).renameable = False
 
-        if len(files) == 1:
-            url = self.url(self.context[files[0]['name']], name='@@variant.html')
+        if len(self._files) == 1:
+            url = self.url(self.context[self._files[0]['name']], name='@@variant.html')
         else:
             url = self.url(name='')
         self.redirect(url, status=303)
@@ -187,4 +199,7 @@ class EditForm(zeit.cms.browser.view.Base):
             index += 1
 
     def rows(self):
-        return self._files
+        for file in self._files:
+            res = dict(file)
+            res['error'] = self._errors.get(file['cur_name'], False)
+            yield res
