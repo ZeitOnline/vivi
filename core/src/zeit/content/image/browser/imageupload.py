@@ -93,7 +93,7 @@ class EditForm(zeit.cms.browser.view.Base):
             self._files = self._parse_post_request()
             if 'cancel' in self.request.form:
                 return self.handle_cancel()
-            return self.handle_post()
+            return self.handle_submit()
 
         self._files = self._parse_get_request()
         return super().__call__()
@@ -103,7 +103,7 @@ class EditForm(zeit.cms.browser.view.Base):
             del self.context[file['cur_name']]
         self.redirect(self.url(name=''), status=303)
 
-    def handle_post(self):
+    def handle_submit(self):
         renamer = zope.copypastemove.interfaces.IContainerItemRenamer(self.context)
         files = tuple(self._files)
         for file in files:
