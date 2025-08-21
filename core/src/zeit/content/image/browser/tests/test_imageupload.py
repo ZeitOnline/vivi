@@ -238,7 +238,7 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
         )
         b.getForm(name='imageupload').submit()
         b.getForm(name='edit-images').submit()
-        self.assertEndsWith('/repository/online/2007/01/Somalia-bild/@@variant.html', b.url)
+        self.assertEndsWith('/repository/online/2007/01/somalia-bild/@@variant.html', b.url)
 
     def test_editimages_correctly_names_single_image_for_article_that_clashes_with_existing_image(
         self,
@@ -374,7 +374,7 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
         self.assertTrue('required' in b.getControl(name='target_name[0]')._elem.attrs)
 
     def test_editimages_shows_error_on_used_file_name(self):
-        self.repository['online']['2007']['01']['Somalia-bild'] = (
+        self.repository['online']['2007']['01']['somalia-bild'] = (
             zeit.content.image.imagegroup.ImageGroup()
         )
         b = self.browser
@@ -393,7 +393,7 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
         b.getForm(name='imageupload').submit()
         b.getControl(name='target_name[0]').value = 'Somalia-bild'
         b.getForm(name='edit-images').submit()
-        self.assertEqual(b.getControl(name='target_name[0]').value, 'Somalia-bild')
+        self.assertEqual(b.getControl(name='target_name[0]').value, 'somalia-bild')
         self.assertEllipsis(
             '...<span class="error">File name is already in use</span>...', b.contents
         )
@@ -422,8 +422,8 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
         b.getControl(name='target_name[0]').value = 'Somalia-bild'
         b.getControl(name='target_name[1]').value = 'Somalia-bild'
         b.getForm(name='edit-images').submit()
-        self.assertEqual(b.getControl(name='target_name[0]').value, 'Somalia-bild')
-        self.assertEqual(b.getControl(name='target_name[1]').value, 'Somalia-bild')
+        self.assertEqual(b.getControl(name='target_name[0]').value, 'somalia-bild')
+        self.assertEqual(b.getControl(name='target_name[1]').value, 'somalia-bild')
         self.assertEllipsis(
             '...<span class="error">File name is already in use</span>...', b.contents
         )
