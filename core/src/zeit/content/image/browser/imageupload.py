@@ -102,27 +102,28 @@ class EditForm(zeit.cms.browser.view.Base):
 
     def handle_cancel(self):
         for file in self._files:
-            del self.context[file['cur_name']]
+            del self.context[file['tmp_name']]
         self.redirect(self.url(name=''), status=303)
 
     def handle_submit(self):
         renamer = zope.copypastemove.interfaces.IContainerItemRenamer(self.context)
         taken_names = set()
         for file in self._files:
-            if (file['name'] != file['cur_name'] and file['name'] in self.context) or (
-                file['name'] in taken_names
-            ):
-                self._errors[file['cur_name']] = _('File name is already in use')
-            taken_names.add(file['name'])
+            if (
+                file['target_name'] != file['tmp_name'] and file['target_name'] in self.context
+            ) or (file['target_name'] in taken_names):
+                self._errors[file['tmp_name']] = _('File name is already in use')
+            taken_names.add(file['target_name'])
 
         if self._errors:
             return super().__call__()
 
         for file in self._files:
-            cur_name = file['cur_name']
-            name = file['name']
-            if name != cur_name:
-                renamer.renameItem(cur_name, name)
+            tmp_name = file['tmp_name']
+            name = file['target_name']
+            # Since tmp_name ends with '.tmp', and target_name is normalized
+            # (which replaces the '.' with '-'), the two always differ.
+            renamer.renameItem(tmp_name, name)
             with zeit.cms.checkout.helper.checked_out(
                 self.context[name], temporary=False, raise_if_error=True
             ) as imagegroup:
@@ -141,7 +142,7 @@ class EditForm(zeit.cms.browser.view.Base):
                 ).renameable = False
 
         if len(self._files) == 1:
-            url = self.url(self.context[self._files[0]['name']], name='@@variant.html')
+            url = self.url(self.context[self._files[0]['target_name']], name='@@variant.html')
         else:
             url = self.url(name='')
         self.redirect(url, status=303)
@@ -152,8 +153,8 @@ class EditForm(zeit.cms.browser.view.Base):
         if isinstance(filenames, str):
             filenames = (filenames,)
         name_index = 1
-        for name in filenames:
-            imggroup = self.context[name]
+        for tmp_name in filenames:
+            imggroup = self.context[tmp_name]
 
             meta = imggroup[imggroup.master_image].getXMPMetadata()
 
@@ -175,8 +176,8 @@ class EditForm(zeit.cms.browser.view.Base):
                 name = ''
 
             yield {
-                'cur_name': imggroup.__name__,
-                'name': name,
+                'tmp_name': tmp_name,
+                'target_name': name,
                 'title': meta['title'],
                 'copyright': meta['copyright'],
                 'caption': meta['caption'],
@@ -185,21 +186,23 @@ class EditForm(zeit.cms.browser.view.Base):
 
     def _parse_post_request(self):
         index = 0
-        while f'cur_name[{index}]' in self.request.form:
-            cur_name = self.request.form[f'cur_name[{index}]']
-            name = self.request.form[f'name[{index}]']
+        while f'tmp_name[{index}]' in self.request.form:
+            tmp_name = self.request.form[f'tmp_name[{index}]']
+            target_name = zeit.cms.interfaces.normalize_filename(
+                self.request.form[f'target_name[{index}]']
+            )
             yield {
-                'cur_name': cur_name,
-                'name': name,
+                'tmp_name': tmp_name,
+                'target_name': target_name,
                 'title': self.request.form[f'title[{index}]'],
                 'copyright': self.request.form[f'copyright[{index}]'],
                 'caption': self.request.form[f'caption[{index}]'],
-                'thumbnail': self.url(self.context[cur_name], 'thumbnail'),
+                'thumbnail': self.url(self.context[tmp_name], 'thumbnail'),
             }
             index += 1
 
     def rows(self):
         for file in self._files:
             res = dict(file)
-            res['error'] = self._errors.get(file['cur_name'], False)
+            res['error'] = self._errors.get(file['tmp_name'], False)
             yield res

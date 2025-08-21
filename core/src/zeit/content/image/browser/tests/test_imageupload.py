@@ -220,7 +220,7 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
             ],
         )
         b.getForm(name='imageupload').submit()
-        assert b.getControl(name='name[0]').value == 'Somalia-bild'
+        assert b.getControl(name='target_name[0]').value == 'Somalia-bild'
 
     def test_editimages_redirects_to_single_image(self):
         b = self.browser
@@ -238,7 +238,7 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
         )
         b.getForm(name='imageupload').submit()
         b.getForm(name='edit-images').submit()
-        self.assertEndsWith('/repository/online/2007/01/Somalia-bild/@@variant.html', b.url)
+        self.assertEndsWith('/repository/online/2007/01/somalia-bild/@@variant.html', b.url)
 
     def test_editimages_correctly_names_single_image_for_article_that_clashes_with_existing_image(
         self,
@@ -260,7 +260,7 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
             ],
         )
         b.getForm(name='imageupload').submit()
-        assert b.getControl(name='name[0]').value == 'Somalia-bild-2'
+        assert b.getControl(name='target_name[0]').value == 'Somalia-bild-2'
 
     def test_editimages_correctly_names_single_image_that_clashes_with_existing_image(self):
         self.repository['cycling-bel-renewi-bild'] = zeit.content.image.imagegroup.ImageGroup()
@@ -278,7 +278,7 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
             ],
         )
         b.getForm(name='imageupload').submit()
-        assert b.getControl(name='name[0]').value == 'cycling-bel-renewi-bild-2'
+        assert b.getControl(name='target_name[0]').value == 'cycling-bel-renewi-bild-2'
 
     def test_editimages_correctly_shows_xmp_data(self):
         b = self.browser
@@ -295,7 +295,7 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
             ],
         )
         b.getForm(name='imageupload').submit()
-        assert b.getControl(name='name[0]').value == 'cycling-bel-renewi-bild'
+        assert b.getControl(name='target_name[0]').value == 'cycling-bel-renewi-bild'
         assert b.getControl(name='copyright[0]').value == 'DAVID PINTENS/Belga/AFP via Getty Images'
         assert (
             b.getControl(name='caption[0]').value
@@ -307,7 +307,7 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
     def test_editimages_correctly_names_image_without_xmp(self):
         b = self.browser
         b.open('/repository/2007/03/@@edit-images?files=group')
-        assert b.getControl(name='name[0]').value == ''
+        assert b.getControl(name='target_name[0]').value == ''
 
     def test_editimages_correctly_names_multiple_images(self):
         b = self.browser
@@ -325,8 +325,8 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
             ],
         )
         b.getForm(name='imageupload').submit()
-        assert b.getControl(name='name[0]').value == 'Somalia-bild-1'
-        assert b.getControl(name='name[1]').value == 'Somalia-bild-2'
+        assert b.getControl(name='target_name[0]').value == 'Somalia-bild-1'
+        assert b.getControl(name='target_name[1]').value == 'Somalia-bild-2'
 
     def test_editimages_correctly_names_many_images(self):
         b = self.browser
@@ -352,29 +352,9 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
             ],
         )
         b.getForm(name='imageupload').submit()
-        assert b.getControl(name='name[0]').value == 'Somalia-bild-01'
-        assert b.getControl(name='name[1]').value == 'Somalia-bild-02'
-        assert b.getControl(name='name[9]').value == 'Somalia-bild-10'
-
-    def test_editimages_can_handle_non_renaming(self):
-        b = self.browser
-        b.open('/repository/online/2007/01/Somalia/@@upload-images')
-        file_input = b.getControl(name='files')
-        add_file_multi(
-            file_input,
-            [
-                (
-                    fixture_bytes('new-hampshire-450x200.jpg'),
-                    'new-hampshire-450x200.jpg',
-                    'image/jpg',
-                ),
-            ],
-        )
-        b.getForm(name='imageupload').submit()
-        filename = b.getControl(name='cur_name[0]').value
-        b.getControl(name='name[0]').value = filename
-        b.getForm(name='edit-images').submit()
-        assert zeit.cms.interfaces.ICMSContent(f'http://xml.zeit.de/online/2007/01/{filename}')
+        assert b.getControl(name='target_name[0]').value == 'Somalia-bild-01'
+        assert b.getControl(name='target_name[1]').value == 'Somalia-bild-02'
+        assert b.getControl(name='target_name[9]').value == 'Somalia-bild-10'
 
     def test_empty_file_name_raises_error(self):
         b = self.browser
@@ -391,10 +371,10 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
             ],
         )
         b.getForm(name='imageupload').submit()
-        self.assertTrue('required' in b.getControl(name='name[0]')._elem.attrs)
+        self.assertTrue('required' in b.getControl(name='target_name[0]')._elem.attrs)
 
     def test_editimages_shows_error_on_used_file_name(self):
-        self.repository['online']['2007']['01']['Somalia-bild'] = (
+        self.repository['online']['2007']['01']['somalia-bild'] = (
             zeit.content.image.imagegroup.ImageGroup()
         )
         b = self.browser
@@ -411,9 +391,9 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
             ],
         )
         b.getForm(name='imageupload').submit()
-        b.getControl(name='name[0]').value = 'Somalia-bild'
+        b.getControl(name='target_name[0]').value = 'Somalia-bild'
         b.getForm(name='edit-images').submit()
-        self.assertEqual(b.getControl(name='name[0]').value, 'Somalia-bild')
+        self.assertEqual(b.getControl(name='target_name[0]').value, 'somalia-bild')
         self.assertEllipsis(
             '...<span class="error">File name is already in use</span>...', b.contents
         )
@@ -439,11 +419,11 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
             ],
         )
         b.getForm(name='imageupload').submit()
-        b.getControl(name='name[0]').value = 'Somalia-bild'
-        b.getControl(name='name[1]').value = 'Somalia-bild'
+        b.getControl(name='target_name[0]').value = 'Somalia-bild'
+        b.getControl(name='target_name[1]').value = 'Somalia-bild'
         b.getForm(name='edit-images').submit()
-        self.assertEqual(b.getControl(name='name[0]').value, 'Somalia-bild')
-        self.assertEqual(b.getControl(name='name[1]').value, 'Somalia-bild')
+        self.assertEqual(b.getControl(name='target_name[0]').value, 'somalia-bild')
+        self.assertEqual(b.getControl(name='target_name[1]').value, 'somalia-bild')
         self.assertEllipsis(
             '...<span class="error">File name is already in use</span>...', b.contents
         )
@@ -468,6 +448,27 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
         images = tuple(x for x in folder.values() if 'tmp' in x.uniqueId or '-bild' in x.uniqueId)
         assert len(images) == 0
         assert b.url.endswith('/repository/online/2007/01/')
+
+    def test_editimages_normalizes_user_input_file_name(self):
+        b = self.browser
+        b.open('/repository/online/2007/01/Somalia/@@upload-images')
+        file_input = b.getControl(name='files')
+        add_file_multi(
+            file_input,
+            [
+                (
+                    fixture_bytes('new-hampshire-450x200.jpg'),
+                    'new-hampshire-450x200.jpg',
+                    'image/jpg',
+                ),
+            ],
+        )
+        b.getForm(name='imageupload').submit()
+        b.getControl(name='target_name[0]').value = 'this is not normal(ized)'
+        b.getForm(name='edit-images').submit()
+        assert zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/online/2007/01/this-is-not-normal-ized'
+        )
 
 
 class AddCentralImageUploadTest(zeit.content.image.testing.SeleniumTestCase):
