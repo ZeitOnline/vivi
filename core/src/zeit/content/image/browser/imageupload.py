@@ -86,26 +86,29 @@ class UploadForm(zeit.cms.browser.view.Base, zeit.content.image.browser.form.Cre
 class EditForm(zeit.cms.browser.view.Base):
     title = _('Edit images')
 
+    _files = ()
+
     def __call__(self):
         if self.request.method == 'POST':
+            self._files = self._parse_post_request()
             if 'cancel' in self.request.form:
                 return self.handle_cancel()
             return self.handle_post()
+
+        self._files = self._parse_get_request()
         return super().__call__()
 
     def handle_cancel(self):
-        index = 0
-        while f'cur_name[{index}]' in self.request.form:
-            del self.context[self.request.form[f'cur_name[{index}]']]
-            index += 1
+        for file in self._files:
+            del self.context[file['cur_name']]
         self.redirect(self.url(name=''), status=303)
 
     def handle_post(self):
-        index = 0
         renamer = zope.copypastemove.interfaces.IContainerItemRenamer(self.context)
-        while f'cur_name[{index}]' in self.request.form:
-            cur_name = self.request.form[f'cur_name[{index}]']
-            name = self.request.form[f'name[{index}]']
+        files = tuple(self._files)
+        for file in files:
+            cur_name = file['cur_name']
+            name = file['name']
             if name != cur_name:
                 renamer.renameItem(cur_name, name)
             with zeit.cms.checkout.helper.checked_out(
@@ -115,29 +118,27 @@ class EditForm(zeit.cms.browser.view.Base):
                 metadata.copyright = (
                     None,
                     'Andere',
-                    self.request.form[f'copyright[{index}]'],
+                    file['copyright'],
                     None,
                     False,
                 )
-                metadata.title = self.request.form[f'title[{index}]']
-                metadata.caption = self.request.form[f'caption[{index}]']
+                metadata.title = file['title']
+                metadata.caption = file['caption']
                 zeit.cms.repository.interfaces.IAutomaticallyRenameable(
                     imagegroup
                 ).renameable = False
-            index += 1
 
-        if index == 1:
-            url = self.url(self.context[self.request.form['name[0]']], name='@@variant.html')
+        if len(files) == 1:
+            url = self.url(self.context[files[0]['name']], name='@@variant.html')
         else:
             url = self.url(name='')
         self.redirect(url, status=303)
 
-    def rows(self):
+    def _parse_get_request(self):
         from_name = self.request.form.get('from', None)
         filenames = self.request.form.get('files', ())
         if isinstance(filenames, str):
             filenames = (filenames,)
-        result = []
         name_index = 1
         for name in filenames:
             imggroup = self.context[name]
@@ -161,14 +162,29 @@ class EditForm(zeit.cms.browser.view.Base):
             else:
                 name = ''
 
-            result.append(
-                {
-                    'cur_name': imggroup.__name__,
-                    'name': name,
-                    'title': meta['title'],
-                    'copyright': meta['copyright'],
-                    'caption': meta['caption'],
-                    'thumbnail': self.url(imggroup, 'thumbnail'),
-                }
-            )
-        return result
+            yield {
+                'cur_name': imggroup.__name__,
+                'name': name,
+                'title': meta['title'],
+                'copyright': meta['copyright'],
+                'caption': meta['caption'],
+                'thumbnail': self.url(imggroup, 'thumbnail'),
+            }
+
+    def _parse_post_request(self):
+        index = 0
+        while f'cur_name[{index}]' in self.request.form:
+            cur_name = self.request.form[f'cur_name[{index}]']
+            name = self.request.form[f'name[{index}]']
+            yield {
+                'cur_name': cur_name,
+                'name': name,
+                'title': self.request.form[f'title[{index}]'],
+                'copyright': self.request.form[f'copyright[{index}]'],
+                'caption': self.request.form[f'caption[{index}]'],
+                'thumbnail': self.url(self.context[cur_name], 'thumbnail'),
+            }
+            index += 1
+
+    def rows(self):
+        return self._files
