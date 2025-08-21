@@ -161,7 +161,7 @@ class EditForm(zeit.cms.browser.view.Base):
                 return self.handle_cancel()
             return self.handle_submit()
 
-        self._files = self._parse_get_request()
+        self._files = tuple(self._parse_get_request())
         return super().__call__()
 
     def handle_cancel(self):
@@ -216,7 +216,8 @@ class EditForm(zeit.cms.browser.view.Base):
         filenames = self.request.form.get('files', ())
         if isinstance(filenames, str):
             filenames = (filenames,)
-        name_index = 1
+
+        name_provider = ImageNameProvider(self.context)
         for tmp_name in filenames:
             imggroup = self.context[tmp_name]
 
@@ -229,17 +230,7 @@ class EditForm(zeit.cms.browser.view.Base):
                 name_base = zeit.cms.interfaces.normalize_filename(meta['title'])
 
             if name_base:
-                while True:
-                    suffix = ''
-                    if from_name:
-                        if len(filenames) >= 10:
-                            suffix = f'-{name_index:02}'
-                        elif name_index > 1 or len(filenames) > 1:
-                            suffix = f'-{name_index}'
-                    name = f'{name_base}-bild{suffix}'
-                    name_index += 1
-                    if name not in self.context:
-                        break
+                name = name_provider.get(name_base)
             else:
                 name = ''
 
