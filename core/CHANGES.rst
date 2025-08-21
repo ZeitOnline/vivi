@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.162.0 (2025-08-21)
+--------------------
+
+- WCM-1065: Show a nice error message for duplicate file names in new image upload
+
+- WCM-1040: Rewrite image upload with JavaScript
+
+
 7.161.0 (2025-08-20)
 --------------------
 
