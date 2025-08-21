@@ -4,6 +4,7 @@ from selenium.webdriver.common.keys import Keys
 import transaction
 import zope.security.management
 
+from zeit.content.image.testing import add_file_multi, fixture_bytes
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.sources
 import zeit.cms.testing
@@ -103,6 +104,49 @@ class ImageForm(zeit.content.article.edit.browser.testing.BrowserTestCase):
         b = self.browser
         b.open('http://localhost/++skin++vivi/repository/article/@@edit.form.teaser-image')
         self.assertEndsWith('/article/@@upload-images', b.getLink('Add image').url)
+
+    def test_teaser_image_upload_does_not_use_temporary_filename_of_new_article(self):
+        b = self.browser
+        b.open('/repository/@@zeit.content.article.Add')
+        b.open('@@edit.form.teaser-image')
+        b.getLink('Add').click()
+        file_input = b.getControl(name='files')
+        add_file_multi(
+            file_input,
+            [
+                (
+                    fixture_bytes('new-hampshire-450x200.jpg'),
+                    'new-hampshire-450x200.jpg',
+                    'image/jpg',
+                )
+            ],
+        )
+        b.getForm(name='imageupload').submit()
+        img_name = b.getControl(name='tmp_name[0]').value
+        self.assertEndsWith(f'/repository/@@edit-images?files={img_name}', b.url)
+
+    def test_teaser_image_upload_uses_new_filename_of_new_article(self):
+        b = self.browser
+        b.open('/repository/@@zeit.content.article.Add')
+        article = zeit.cms.workingcopy.interfaces.IWorkingcopy(None)[b.url.split('/')[6]]
+        zeit.cms.repository.interfaces.IAutomaticallyRenameable(
+            article
+        ).rename_to = 'possibly-the-new-name'
+        b.open('@@edit.form.teaser-image')
+        b.getLink('Add').click()
+        file_input = b.getControl(name='files')
+        add_file_multi(
+            file_input,
+            [
+                (
+                    fixture_bytes('new-hampshire-450x200.jpg'),
+                    'new-hampshire-450x200.jpg',
+                    'image/jpg',
+                )
+            ],
+        )
+        b.getForm(name='imageupload').submit()
+        self.assertEndsWith('&from=possibly-the-new-name', b.url)
 
 
 class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
