@@ -469,6 +469,27 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
         assert len(images) == 0
         assert b.url.endswith('/repository/online/2007/01/')
 
+    def test_editimages_normalizes_user_input_file_name(self):
+        b = self.browser
+        b.open('/repository/online/2007/01/Somalia/@@upload-images')
+        file_input = b.getControl(name='files')
+        add_file_multi(
+            file_input,
+            [
+                (
+                    fixture_bytes('new-hampshire-450x200.jpg'),
+                    'new-hampshire-450x200.jpg',
+                    'image/jpg',
+                ),
+            ],
+        )
+        b.getForm(name='imageupload').submit()
+        b.getControl(name='target_name[0]').value = 'this is not normal(ized)'
+        b.getForm(name='edit-images').submit()
+        assert zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/online/2007/01/this-is-not-normal-ized'
+        )
+
 
 class AddCentralImageUploadTest(zeit.content.image.testing.SeleniumTestCase):
     def test_new_image_upload_is_present(self):

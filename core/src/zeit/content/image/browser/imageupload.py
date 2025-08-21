@@ -187,9 +187,12 @@ class EditForm(zeit.cms.browser.view.Base):
         index = 0
         while f'tmp_name[{index}]' in self.request.form:
             tmp_name = self.request.form[f'tmp_name[{index}]']
+            target_name = zeit.cms.interfaces.normalize_filename(
+                self.request.form[f'target_name[{index}]']
+            )
             yield {
                 'tmp_name': tmp_name,
-                'target_name': self.request.form[f'target_name[{index}]'],
+                'target_name': target_name,
                 'title': self.request.form[f'title[{index}]'],
                 'copyright': self.request.form[f'copyright[{index}]'],
                 'caption': self.request.form[f'caption[{index}]'],
