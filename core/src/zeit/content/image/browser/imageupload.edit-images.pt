@@ -4,7 +4,12 @@
       <tr><th></th><th i18n:translate="">Filename</th><th i18n:translate="">Copyright</th><th i18n:translate="">Title</th><th i18n:translate="">Caption</th></tr>
       <tr tal:repeat="item view/rows">
         <td><img tal:attributes="src item/thumbnail"><input type="hidden" tal:attributes="value item/cur_name; name string:cur_name[${repeat/item/index}]" /></td>
-        <td><input tal:attributes="value item/name; name string:name[${repeat/item/index}]" required="required"></td>
+        <td>
+            <input tal:attributes="value item/name; name string:name[${repeat/item/index}]" required="required">
+            <div class="error" tal:condition="item/error">
+                <span class="error" tal:content="item/error"></span>
+            </div>
+        </td>
         <td><input tal:attributes="value item/copyright; name string:copyright[${repeat/item/index}]"></td>
         <td><textarea tal:content="item/title" tal:attributes="name string:title[${repeat/item/index}]"></textarea></td>
         <td><textarea tal:content="item/caption" tal:attributes="name string:caption[${repeat/item/index}]"></textarea></td>
