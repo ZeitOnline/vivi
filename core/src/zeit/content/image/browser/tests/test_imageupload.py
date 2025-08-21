@@ -328,6 +328,29 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
         assert b.getControl(name='target_name[0]').value == 'cycling-bel-renewi-bild'
         assert b.getControl(name='target_name[1]').value == ''
 
+    def test_editimages_correctly_names_multiple_images_with_same_xmp(self):
+        b = self.browser
+        b.open('/repository/online/2007/01/@@upload-images')
+        file_input = b.getControl(name='files')
+        add_file_multi(
+            file_input,
+            [
+                (
+                    fixture_bytes('gettyimages-2168232879-150x100.jpg'),
+                    'gettyimages-2168232879-150x100.jpg',
+                    'image/jpg',
+                ),
+                (
+                    fixture_bytes('gettyimages-2168232879-150x100.jpg'),
+                    'gettyimages-2168232879-150x100.jpg',
+                    'image/jpg',
+                ),
+            ],
+        )
+        b.getForm(name='imageupload').submit()
+        assert b.getControl(name='target_name[0]').value == 'cycling-bel-renewi-bild-1'
+        assert b.getControl(name='target_name[1]').value == 'cycling-bel-renewi-bild-2'
+
     def test_editimages_correctly_names_multiple_images(self):
         b = self.browser
         b.open('/repository/online/2007/01/Somalia/@@upload-images')
