@@ -3,6 +3,7 @@ import os.path
 
 import gocept.httpserverlayer.static
 import gocept.selenium
+import webtest.forms
 import zope.component
 
 import zeit.cms.repository.interfaces
@@ -88,6 +89,15 @@ def create_image_group_with_master_image(file_name=None):
     fh.close()
     repository['group'][group.master_image] = image
     return repository['group']
+
+
+# zope.testbrowser.browser.Control.add_file cannot yet handle multiple file inputs as implemented by
+# https://github.com/Pylons/webtest/commit/d1dbc25f53a031d03112cb1e44f4a060cf3665cd
+def add_file_multi(control, files):
+    control._form[control.name] = [
+        webtest.forms.Upload(filename, file, content_type)
+        for (file, filename, content_type) in files
+    ]
 
 
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):

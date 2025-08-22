@@ -65,7 +65,14 @@ class UploadForm(zeit.cms.browser.view.Base, zeit.content.image.browser.form.Cre
 
         params = {'files': results}
         if not in_folder:
-            params['from'] = self.context.__name__
+            renameable = zeit.cms.repository.interfaces.IAutomaticallyRenameable(self.context)
+            if renameable.renameable:
+                # This is a new article, so don't use it's (temporary name)
+                if renameable.rename_to:
+                    # … unless the user already gave it a name
+                    params['from'] = renameable.rename_to
+            else:
+                params['from'] = self.context.__name__
         url = self.url(target, '@@edit-images') + '?' + urllib.parse.urlencode(params, doseq=True)
         if self.request.getHeader('X-Requested-With') == 'XMLHttpRequest':
             return url

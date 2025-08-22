@@ -1,22 +1,11 @@
 import re
 import unittest
 
-import webtest.forms
-
 from zeit.content.image.browser.imageupload import ImageNameProvider
-from zeit.content.image.testing import fixture_bytes
+from zeit.content.image.testing import add_file_multi, fixture_bytes
 import zeit.cms.browser.interfaces
 import zeit.cms.interfaces
 import zeit.content.image.testing
-
-
-# zope.testbrowser.browser.Control.add_file cannot yet handle multiple file inputs as implemented by
-# https://github.com/Pylons/webtest/commit/d1dbc25f53a031d03112cb1e44f4a060cf3665cd
-def add_file_multi(control, files):
-    control._form[control.name] = [
-        webtest.forms.Upload(filename, file, content_type)
-        for (file, filename, content_type) in files
-    ]
 
 
 class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
