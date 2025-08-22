@@ -17,4 +17,12 @@
     </table>
     <p><button i18n:translate="">Upload</button><button name="cancel" i18n:translate="">Cancel</button></p>
   </form>
+  <script>
+      // Mimic core/src/zeit/content/article/edit/browser/resources/filename.js
+      document.querySelector('form[name="edit-images"]').addEventListener('change', e => {
+          if (e.target.name.startsWith('target_name[')) {
+            e.target.value = zeit.cms.normalize_filename(e.target.value)
+          }
+      })
+  </script>
 </tal:block>
