@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.164.0 (2025-08-22)
+--------------------
+
+- WCM-1070: Normalize image file names on the client
+
+
 7.163.0 (2025-08-21)
 --------------------
 
