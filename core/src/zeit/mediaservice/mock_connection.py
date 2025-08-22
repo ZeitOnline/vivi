@@ -20,3 +20,9 @@ class MockConnection:
                 'duration': None,
             },
         }
+
+
+@zope.interface.implementer(zeit.mediaservice.interfaces.IKeycloak)
+class MockKeycloak:
+    def authenticate(self):
+        return {'Authorization': 'Bearer mock_token'}
