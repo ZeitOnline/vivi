@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.165.0 (2025-08-22)
+--------------------
+
+- WCM-1071: Use XMP tags from one file only for that file's name, not for all following files
+
+
 7.164.0 (2025-08-22)
 --------------------
 
