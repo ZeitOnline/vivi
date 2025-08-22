@@ -1,7 +1,9 @@
 import re
+import unittest
 
 import webtest.forms
 
+from zeit.content.image.browser.imageupload import ImageNameProvider
 from zeit.content.image.testing import fixture_bytes
 import zeit.cms.browser.interfaces
 import zeit.cms.interfaces
@@ -309,6 +311,48 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
         b.open('/repository/2007/03/@@edit-images?files=group')
         assert b.getControl(name='target_name[0]').value == ''
 
+    def test_editimages_correctly_names_image_without_xmp_after_image_with_xmp(self):
+        b = self.browser
+        b.open('/repository/online/2007/01/@@upload-images')
+        file_input = b.getControl(name='files')
+        add_file_multi(
+            file_input,
+            [
+                (
+                    fixture_bytes('gettyimages-2168232879-150x100.jpg'),
+                    'gettyimages-2168232879-150x100.jpg',
+                    'image/jpg',
+                ),
+                (fixture_bytes('opernball.jpg'), 'opernball.jpg', 'image/jpg'),
+            ],
+        )
+        b.getForm(name='imageupload').submit()
+        assert b.getControl(name='target_name[0]').value == 'cycling-bel-renewi-bild'
+        assert b.getControl(name='target_name[1]').value == ''
+
+    def test_editimages_correctly_names_multiple_images_with_same_xmp(self):
+        b = self.browser
+        b.open('/repository/online/2007/01/@@upload-images')
+        file_input = b.getControl(name='files')
+        add_file_multi(
+            file_input,
+            [
+                (
+                    fixture_bytes('gettyimages-2168232879-150x100.jpg'),
+                    'gettyimages-2168232879-150x100.jpg',
+                    'image/jpg',
+                ),
+                (
+                    fixture_bytes('gettyimages-2168232879-150x100.jpg'),
+                    'gettyimages-2168232879-150x100.jpg',
+                    'image/jpg',
+                ),
+            ],
+        )
+        b.getForm(name='imageupload').submit()
+        assert b.getControl(name='target_name[0]').value == 'cycling-bel-renewi-bild-1'
+        assert b.getControl(name='target_name[1]').value == 'cycling-bel-renewi-bild-2'
+
     def test_editimages_correctly_names_multiple_images(self):
         b = self.browser
         b.open('/repository/online/2007/01/Somalia/@@upload-images')
@@ -494,3 +538,55 @@ class AddMenuImageUploadTest(zeit.content.image.testing.BrowserTestCase):
         assert (
             'http://localhost:8080/++skin++vivi/repository/online/2007/01/@@upload-images' == b.url
         )
+
+
+class ImageNameProviderTest(unittest.TestCase):
+    def test_correctly_names_only_image(self):
+        provider = ImageNameProvider({})
+        name = provider.get('base-name')
+        self.assertEqual(str(name), 'base-name-bild')
+
+    def test_correctly_names_two_images(self):
+        provider = ImageNameProvider({})
+        name1 = provider.get('base-name')
+        name2 = provider.get('base-name')
+        self.assertEqual(str(name1), 'base-name-bild-1')
+        self.assertEqual(str(name2), 'base-name-bild-2')
+
+    def test_correctly_names_eleven_images(self):
+        provider = ImageNameProvider({})
+        names = tuple(
+            (provider.get('base-name'), suffix)
+            for suffix in ('01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11')
+        )
+        for name, suffix in names:
+            self.assertEqual(str(name), 'base-name-bild-' + suffix)
+
+    def test_correctly_names_image_with_one_in_context(self):
+        provider = ImageNameProvider({'base-name-bild': None})
+        name = provider.get('base-name')
+        self.assertEqual(str(name), 'base-name-bild-2')
+
+    def test_correctly_names_image_with_two_in_context(self):
+        provider = ImageNameProvider({'base-name-bild-1': None, 'base-name-bild-2': None})
+        name = provider.get('base-name')
+        self.assertEqual(str(name), 'base-name-bild-3')
+
+    def test_correctly_names_image_with_eleven_in_context(self):
+        provider = ImageNameProvider(
+            {
+                'base-name-bild-01': None,
+                'base-name-bild-02': None,
+                'base-name-bild-03': None,
+                'base-name-bild-04': None,
+                'base-name-bild-05': None,
+                'base-name-bild-06': None,
+                'base-name-bild-07': None,
+                'base-name-bild-08': None,
+                'base-name-bild-09': None,
+                'base-name-bild-10': None,
+                'base-name-bild-11': None,
+            }
+        )
+        name = provider.get('base-name')
+        self.assertEqual(str(name), 'base-name-bild-12')

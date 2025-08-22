@@ -1,4 +1,5 @@
 from collections.abc import Iterable
+import collections
 import urllib.parse
 import uuid
 
@@ -82,6 +83,69 @@ class UploadForm(zeit.cms.browser.view.Base, zeit.content.image.browser.form.Cre
         return name
 
 
+def get_image_name(base_name, pos, others):
+    if others == 0:
+        suffix = ''
+    elif others < 9:
+        suffix = f'-{pos}'
+    else:
+        suffix = f'-{pos:02}'
+    return base_name + '-bild' + suffix
+
+
+class ImageName:
+    def __init__(self, provider, base_name, pos):
+        self.provider = provider
+        self.base_name = base_name
+        self.pos = pos
+
+    def __str__(self):
+        total_count = self.provider.total_counts[self.base_name]
+        return get_image_name(self.base_name, self.pos, total_count - 1)
+
+
+class ImageNameProvider:
+    """A helper class for producing image names for given base names (for example article names).
+    This correctly counts existing images and new images to add and generates unique file names.
+
+    ImageNameProvider.get returns a dynamic ImageName object that can be converted to str.
+    Through that, an ImageName object can also consider images that were added after it.
+
+    ImageNameProvider does not handle holes in image name sequences.
+    For example, if article-bild-1 and article-bild-3 exist, suggested names for images for article
+    would be article-bild-2, article-bild-3 and so on.
+    """
+
+    def __init__(self, container):
+        self.container = container
+        self.container_counts = collections.Counter()
+        self.total_counts = collections.Counter()
+
+    def _init_from_container(self, base_name):
+        # Two digits
+        if get_image_name(base_name, 1, 9) in self.container:
+            count = 1
+            while get_image_name(base_name, count + 1, 9) in self.container:
+                count += 1
+        # One digit
+        elif get_image_name(base_name, 1, 1) in self.container:
+            count = 1
+            while get_image_name(base_name, count + 1, 1) in self.container:
+                count += 1
+        # No digit
+        elif get_image_name(base_name, 1, 0) in self.container:
+            count = 1
+        else:
+            count = 0
+        self.total_counts[base_name] = self.container_counts[base_name] = count
+
+    def get(self, base_name):
+        if base_name not in self.total_counts:
+            self._init_from_container(base_name)
+        self.total_counts[base_name] += 1
+        return ImageName(self, base_name, self.total_counts[base_name])
+
+
 @zope.interface.implementer(zeit.cms.browser.interfaces.IHideContextViews)
 class EditForm(zeit.cms.browser.view.Base):
     title = _('Edit images')
@@ -97,7 +161,7 @@ class EditForm(zeit.cms.browser.view.Base):
                 return self.handle_cancel()
             return self.handle_submit()
 
-        self._files = self._parse_get_request()
+        self._files = tuple(self._parse_get_request())
         return super().__call__()
 
     def handle_cancel(self):
@@ -152,26 +216,21 @@ class EditForm(zeit.cms.browser.view.Base):
         filenames = self.request.form.get('files', ())
         if isinstance(filenames, str):
             filenames = (filenames,)
-        name_index = 1
+
+        name_provider = ImageNameProvider(self.context)
         for tmp_name in filenames:
             imggroup = self.context[tmp_name]
 
             meta = imggroup[imggroup.master_image].getXMPMetadata()
 
-            if not from_name and meta['title'] is not None:
-                from_name = zeit.cms.interfaces.normalize_filename(meta['title'])
-
+            name_base = None
             if from_name:
-                while True:
-                    suffix = ''
-                    if len(filenames) >= 10:
-                        suffix = f'-{name_index:02}'
-                    elif name_index > 1 or len(filenames) > 1:
-                        suffix = f'-{name_index}'
-                    name = f'{from_name}-bild{suffix}'
-                    name_index += 1
-                    if name not in self.context:
-                        break
+                name_base = from_name
+            elif meta['title'] is not None:
+                name_base = zeit.cms.interfaces.normalize_filename(meta['title'])
+
+            if name_base:
+                name = name_provider.get(name_base)
             else:
                 name = ''
 
