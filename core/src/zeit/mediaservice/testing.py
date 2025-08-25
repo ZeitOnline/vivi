@@ -18,3 +18,4 @@ ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
 
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
     layer = ZOPE_LAYER
+    preview_feed_url = 'https://preview-feed-url.foo/issue'
