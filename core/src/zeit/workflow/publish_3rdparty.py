@@ -497,19 +497,31 @@ class Followings(grok.Adapter, IgnoreMixin):
     grok.context(zeit.content.article.interfaces.IArticle)
     grok.name('followings')
 
-    def publish_json(self):
-        if self.ignore():
-            return None
+    def get_series_uuids(self):
         if self.context.serie is None or self.context.serie.url is None:
-            return None
+            return []
         series_content = zeit.cms.interfaces.ICMSContent(
             f'{zeit.cms.interfaces.ID_NAMESPACE}serie/{self.context.serie.url}'
         )
-        series = zeit.cms.content.interfaces.IUUID(series_content).shortened
+        return [zeit.cms.content.interfaces.IUUID(series_content).shortened]
+
+    def get_author_uuids(self):
+        return [
+            zeit.cms.content.interfaces.IUUID(author.target).shortened
+            for author in self.context.authorships
+        ]
+
+    def publish_json(self):
+        if self.ignore():
+            return None
+        series_uuids = self.get_series_uuids()
+        author_uuids = self.get_author_uuids()
+        if not series_uuids and not author_uuids:
+            return None
         created = zeit.cms.workflow.interfaces.IPublishInfo(
             self.context
         ).date_first_released.isoformat()
-        return {'parent_uuid': series, 'created': created}
+        return {'parent_uuids': [*series_uuids, *author_uuids], 'created': created}
 
     def retract_json(self):
         return {}
