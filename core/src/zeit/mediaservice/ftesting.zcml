@@ -15,4 +15,9 @@
    factory="zeit.mediaservice.mock_connection.MockConnection"
    />
 
+<utility
+   provides="zeit.mediaservice.interfaces.IKeycloak"
+   factory="zeit.mediaservice.mock_connection.MockKeycloak"
+   />
+
 </configure>

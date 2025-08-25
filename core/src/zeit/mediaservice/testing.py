@@ -7,6 +7,9 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
     {
         'medienservice-folder': 'premium',
         'audio-folder': 'audio',
+        'client-id': 'client-id',
+        'client-secret': 'client-secret',
+        'discovery-url': 'https://discovery-url.foo',
     },
     bases=zeit.content.article.testing.CONFIG_LAYER,
 )
@@ -23,6 +26,7 @@ SQL_CONNECTOR_LAYER = zeit.connector.testing.SQLDatabaseLayer(SQL_ZOPE_LAYER)
 
 class SQLTestCase(zeit.connector.testing.TestCase):
     layer = SQL_CONNECTOR_LAYER
+    preview_feed_url = 'https://preview-feed-url.foo/issue'
 
 
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):

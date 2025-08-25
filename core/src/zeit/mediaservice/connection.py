@@ -11,14 +11,19 @@ class Connection:
         self.feed_url = feed_url
 
     def get_audio_infos(self, year, volume):
+        result = {}
+        keycloak = zope.component.getUtility(zeit.mediaservice.interfaces.IKeycloak)
+        auth_header = keycloak.authenticate()
+        if not auth_header:
+            return result
         response = requests.get(
             self.feed_url,
             params={'year': year, 'number': volume},
+            headers=auth_header,
             timeout=2,
         )
         data = response.json()
-        result = {}
-        volumes = data['dataFeedElement']
+        volumes = data.get('dataFeedElement', None)
         if not volumes:
             return result
         for part_of_volume in volumes[0]['item'].get('hasPart', []):
@@ -64,4 +69,37 @@ class Connection:
 @zope.interface.implementer(zeit.mediaservice.interfaces.IConnection)
 def from_product_config():
     conf = zeit.cms.config.package('zeit.mediaservice')
-    return Connection(conf['feed-url'])
+    return Connection(conf['preview-feed-url'])
+
+
+class Keycloak:
+    def __init__(self, client_id, client_secret, discovery_url):
+        self.client_id = client_id
+        self.client_secret = client_secret
+        self.discovery_url = discovery_url
+
+    def authenticate(self):
+        try:
+            url = f'{self.discovery_url}/protocol/openid-connect/token'
+            response = requests.post(
+                url,
+                data={'grant_type': 'client_credentials'},
+                auth=(self.client_id, self.client_secret),
+            )
+            if not response.ok:
+                response.raise_for_status()
+        except requests.exceptions.RequestException as err:
+            current_span = opentelemetry.trace.get_current_span()
+            current_span.record_exception(err)
+            return None
+        return {'Authorization': 'Bearer ' + response.json()['access_token']}
+
+
+@zope.interface.implementer(zeit.mediaservice.interfaces.IKeycloak)
+def keycloak_from_product_config():
+    conf = zeit.cms.config.package('zeit.mediaservice')
+    return Keycloak(
+        conf['client-id'],
+        conf['client-secret'],
+        conf['discovery-url'],
+    )
