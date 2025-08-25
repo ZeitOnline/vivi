@@ -27,6 +27,7 @@ SQL_CONNECTOR_LAYER = zeit.connector.testing.SQLDatabaseLayer(bases=(SQL_ZOPE_LA
 
 class SQLTestCase(zeit.connector.testing.TestCase):
     layer = SQL_CONNECTOR_LAYER
+    preview_feed_url = 'https://preview-feed-url.foo/issue'
 
 
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
