@@ -4,6 +4,7 @@ import logging
 import pendulum
 import transaction
 
+from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import zeit.cms.testing
 import zeit.cms.workflow
 import zeit.workflow.testing
@@ -15,8 +16,8 @@ class TimeBasedEndToEndTest(zeit.workflow.testing.SQLTestCase):
     def setUp(self):
         super().setUp()
 
-        self.add_resource('testcontent')
-        self.content = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/testing/testcontent')
+        self.repository['testcontent'] = ExampleContentType()
+        self.content = self.repository['testcontent']
         info = zeit.cms.workflow.interfaces.IPublishInfo(self.content)
         info.urgent = True
 
@@ -83,7 +84,7 @@ class TimeBasedEndToEndTest(zeit.workflow.testing.SQLTestCase):
         transaction.commit()
 
         until = pendulum.now('UTC').add(minutes=1)
-        self.connector.lock(self.content.uniqueId, 'someone', until)
+        self.repository.connector.lock(self.content.uniqueId, 'someone', until)
         _retract_scheduled_content()
         self.assertTrue(zeit.cms.workflow.interfaces.IPublishInfo(self.content).published)
         self.assertEllipsis(f'...Skip ... {self.content.uniqueId}...', self.log.getvalue())

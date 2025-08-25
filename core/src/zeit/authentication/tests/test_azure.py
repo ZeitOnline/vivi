@@ -6,7 +6,7 @@ import pytest
 import transaction
 import zope.component
 
-from zeit.cms.testing import vault_read
+from zeit.cms.testing.utils import vault_read
 import zeit.authentication.azure
 import zeit.authentication.oidc
 import zeit.authentication.testing

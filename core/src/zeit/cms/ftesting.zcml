@@ -22,7 +22,7 @@
 
   <include package="zeit.connector" file="service.zcml" />
   <subscriber
-    handler="zeit.cms.testing.reset_connector"
+    handler="zeit.cms.testing.mock.reset_connector"
     for="zeit.cms.testing.ResetMocks" />
 
   <subscriber

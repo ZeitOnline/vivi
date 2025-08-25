@@ -26,7 +26,7 @@ class FakeObjectLog(dict):
         return super().__setitem__(key, FakeLogItem())
 
 
-class ObjectLog(zeit.objectlog.testing.SQLTestCase):
+class ObjectLog(zeit.objectlog.testing.FunctionalTestCase):
     def setUp(self):
         super().setUp()
         self.content = zeit.objectlog.testing.Content()
