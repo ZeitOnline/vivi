@@ -161,7 +161,7 @@ class RequestHandler(gocept.httpserverlayer.custom.RequestHandler):
         self.wfile.write(b'')
 
 
-HTTP_LAYER = gocept.httpserverlayer.custom.Layer(RequestHandler, name='HTTPLayer', module=__name__)
+HTTP_LAYER = zeit.cms.testing.HTTPLayer(RequestHandler)
 
 
 class HTTPErrorTest(unittest.TestCase):

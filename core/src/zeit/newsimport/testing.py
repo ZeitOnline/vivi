@@ -4,7 +4,6 @@ import json
 import logging
 import os.path
 
-import plone.testing
 import requests_mock
 import zope.component
 
@@ -36,18 +35,15 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
         'nextline-url': 'http://dpa_api_test.com',
         'dpa-rubric-config-source': f'file://{HERE}/tests/data/products.xml',
     },
-    bases=(zeit.retresco.testing.CONFIG_LAYER,),
+    bases=zeit.retresco.testing.CONFIG_LAYER,
 )
 # NOTE author config layer is included in article config layer
 # NOTE article config layer is included in retresco config layer
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(config_file='ftesting.zcml', bases=(CONFIG_LAYER,))
-ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER, zeit.retresco.testhelper.TMS_MOCK_LAYER))
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER)
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer((ZCML_LAYER, zeit.retresco.testhelper.TMS_MOCK_LAYER))
 
 
-class DPALayer(plone.testing.Layer):
-    name = 'DPALayer'
-    module = None
-
+class DPALayer(zeit.cms.testing.Layer):
     url = 'http://dpa_api_test.com'
 
     def setUp(self):
@@ -71,17 +67,14 @@ class DPALayer(plone.testing.Layer):
         self['entries'] = copy.deepcopy(DPA_ENTRIES)
 
 
-DPA_LAYER = DPALayer(name='DPALayer', bases=(ZOPE_LAYER,))
+DPA_LAYER = DPALayer(ZOPE_LAYER)
 
 
 class FunctionalAPITestCase(zeit.cms.testing.FunctionalTestCase):
     layer = DPA_LAYER
 
 
-class DPAMockLayer(plone.testing.Layer):
-    name = 'DPAMockLayer'
-    module = None
-
+class DPAMockLayer(zeit.cms.testing.Layer):
     image = asset_path('urn_newsml_dpa.com_20090101_220202-99-942804-v3-s2048.jpeg')
 
     def setUp(self):
@@ -129,8 +122,8 @@ class DPAMockLayer(plone.testing.Layer):
         self['dpa_mock'].reset_mock()
 
 
-DPA_MOCK_LAYER = DPAMockLayer(name='DPAMockLayer', bases=(ZOPE_LAYER,))
-CELERY_LAYER = zeit.cms.testing.CeleryWorkerLayer(name='CeleryLayer', bases=(DPA_MOCK_LAYER,))
+DPA_MOCK_LAYER = DPAMockLayer(ZOPE_LAYER)
+CELERY_LAYER = zeit.cms.testing.CeleryWorkerLayer(DPA_MOCK_LAYER)
 CELERY_LAYER.queues += ('search',)
 
 

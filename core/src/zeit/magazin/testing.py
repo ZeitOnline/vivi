@@ -1,4 +1,3 @@
-import plone.testing
 import zope.component
 import zope.interface
 
@@ -14,14 +13,12 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
     patches={'zeit.cms': {'zmo-preview-prefix': 'http://localhost/zmo-preview-prefix'}},
     bases=(zeit.content.article.testing.CONFIG_LAYER, zeit.content.link.testing.CONFIG_LAYER),
 )
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER,))
-ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
-PUSH_LAYER = zeit.push.testing.UrbanairshipTemplateLayer(
-    name='UrbanairshipTemplateLayer', bases=(ZOPE_LAYER,)
-)
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER)
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
+PUSH_LAYER = zeit.push.testing.UrbanairshipTemplateLayer(ZOPE_LAYER)
 
 
-class Layer(plone.testing.Layer):
+class Layer(zeit.cms.testing.Layer):
     defaultBases = (PUSH_LAYER,)
 
     def testSetUp(self):
@@ -34,7 +31,7 @@ class Layer(plone.testing.Layer):
 
 
 LAYER = Layer()
-WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(LAYER,))
+WSGI_LAYER = zeit.cms.testing.WSGILayer(LAYER)
 
 
 class BrowserTestCase(zeit.cms.testing.BrowserTestCase):

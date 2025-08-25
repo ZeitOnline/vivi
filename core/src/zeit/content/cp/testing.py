@@ -2,8 +2,6 @@ from unittest import mock
 import importlib.resources
 import re
 
-import gocept.selenium
-import plone.testing
 import transaction
 import zope.component
 import zope.interface
@@ -51,11 +49,11 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
         zeit.content.text.testing.CONFIG_LAYER,
     ),
 )
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER,))
-ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER)
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
 
 
-class CPTemplateLayer(plone.testing.Layer):
+class CPTemplateLayer(zeit.cms.testing.Layer):
     # BBB We have too many tests that use lead/informatives. Rewriting them
     # to create their own areas is too time-consuming to do at once.
 
@@ -78,8 +76,8 @@ class CPTemplateLayer(plone.testing.Layer):
 CP_TEMPLATE_LAYER = CPTemplateLayer()
 
 
-LAYER = plone.testing.Layer(
-    name='Layer', bases=(CP_TEMPLATE_LAYER, zeit.retresco.testhelper.ELASTICSEARCH_MOCK_LAYER)
+LAYER = zeit.cms.testing.Layer(
+    (CP_TEMPLATE_LAYER, zeit.retresco.testhelper.ELASTICSEARCH_MOCK_LAYER)
 )
 
 
@@ -134,12 +132,9 @@ class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
         return cp
 
 
-WSGI_LAYER = zeit.cms.testing.WSGILayer(name='WSGILayer', bases=(LAYER,))
-HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(name='HTTPLayer', bases=(WSGI_LAYER,))
-WD_LAYER = zeit.cms.testing.WebdriverLayer(name='WebdriverLayer', bases=(HTTP_LAYER,))
-WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(
-    name='WebdriverSeleneseLayer', bases=(WD_LAYER,)
-)
+WSGI_LAYER = zeit.cms.testing.WSGILayer(LAYER)
+HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(WSGI_LAYER)
+WEBDRIVER_LAYER = zeit.cms.testing.WebdriverLayer(HTTP_LAYER)
 
 
 class BrowserTestCase(zeit.cms.testing.BrowserTestCase):

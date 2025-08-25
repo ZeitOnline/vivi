@@ -63,11 +63,11 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
         'retry-delay-seconds': '0',
         'max-retries': '1',
     },
-    bases=(zeit.content.article.testing.CONFIG_LAYER,),
+    bases=zeit.content.article.testing.CONFIG_LAYER,
 )
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer('ftesting.zcml', bases=(CONFIG_LAYER,))
-ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
-WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(ZOPE_LAYER,))
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER)
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
+WSGI_LAYER = zeit.cms.testing.WSGILayer(ZOPE_LAYER)
 
 
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):

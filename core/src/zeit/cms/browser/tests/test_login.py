@@ -4,7 +4,6 @@ import urllib.parse
 
 from zope.pluggableauth.plugins.principalfolder import InternalPrincipal, PrincipalFolder
 import jwt
-import plone.testing
 import zope.authentication.interfaces
 import zope.component
 import zope.pluggableauth.authentication
@@ -15,7 +14,7 @@ import zeit.cms.generation.install
 import zeit.cms.testing
 
 
-class LoginFormLayer(plone.testing.Layer):
+class LoginFormLayer(zeit.cms.testing.Layer):
     defaultBases = (zeit.cms.testing.WSGI_LAYER,)
 
     def setUp(self):
