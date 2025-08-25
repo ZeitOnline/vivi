@@ -16,7 +16,7 @@ on:
 
 jobs:
   build:
-    uses: zeitonline/gh-action-workflows/.github/workflows/nightwatch-build.yaml@73d5c70ed05f2b903e98cd65726a3b66b81c626d # 2.4.1
+    uses: zeitonline/gh-action-workflows/.github/workflows/nightwatch-build.yaml@46b696216ed1e1e4b945cfacb2f7f2a27e3e2a78 # 2.4.2
     secrets: inherit
     with:
       versions: smoketest/k8s/base/versions
