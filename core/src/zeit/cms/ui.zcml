@@ -3,6 +3,7 @@
   xmlns:meta="http://namespaces.zope.org/meta"
   xmlns:browser="http://namespaces.zope.org/browser"
   xmlns:grok="http://namespaces.zope.org/grok"
+  xmlns:monkey="http://namespaces.plone.org/monkey"
   xmlns:i18n="http://namespaces.zope.org/i18n"
   i18n_domain="zope"
   >
@@ -25,6 +26,13 @@
   <include package="zeit.cms" file="application.zcml" />
   <include package="zeit.cms" file="menu.zcml" />
 
+  <include package="collective.monkeypatcher" />
+  <monkey:patch
+    description="Allow TAL code inside title tags after python/cpython#135310"
+    class="zope.tal.htmltalparser.HTMLTALParser"
+    original="RCDATA_CONTENT_ELEMENTS"
+    replacement=".tal_patch.RCDATA_CONTENT_ELEMENTS"
+    preservedoc="False"/>
   <include package="zope.app.pagetemplate" />
   <include package="zope.app.publication" file="meta.zcml" />
   <include package="zope.app.publication" />
