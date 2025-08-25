@@ -6,6 +6,7 @@
         "before 8am on wednesday"
     ],
     "enabledManagers": [
+        "custom.regex",
         "github-actions",
         "pep621",
         "pre-commit",
@@ -17,6 +18,17 @@
         "schedule": ["before 8am on wednesday"],
         "commitMessageAction": "Update dependencies"
     },
+    "customManagers": [
+        {
+            "description": "Update python version",
+            "customType": "regex",
+            "fileMatch": ["pyproject.toml"],
+            "matchStrings": ["requires-python = \"==(?<currentValue>[^\"]*)\""],
+            "datasourceTemplate": "github-tags",
+            "depNameTemplate": "python/cpython",
+            "extractVersionTemplate": "^v?(?<version>.+)$"
+        }
+    ],
     "pre-commit": {
         "enabled": true
     },
