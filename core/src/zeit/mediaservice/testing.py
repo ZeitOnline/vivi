@@ -6,6 +6,9 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
     {
         'medienservice-folder': 'premium',
         'audio-folder': 'audio',
+        'client-id': 'client-id',
+        'client-secret': 'client-secret',
+        'discovery-url': 'https://discovery-url.foo',
     },
     bases=zeit.content.article.testing.CONFIG_LAYER,
 )
@@ -15,3 +18,4 @@ ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
 
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
     layer = ZOPE_LAYER
+    preview_feed_url = 'https://preview-feed-url.foo/issue'

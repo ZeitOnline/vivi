@@ -1,4 +1,5 @@
 import requests_mock
+import zope.component
 
 import zeit.mediaservice.testing
 
@@ -176,11 +177,13 @@ NO_PARTS = {
 class TestImportAudios(zeit.mediaservice.testing.FunctionalTestCase):
     def test_get_audio_infos(self):
         mocker = requests_mock.Mocker()
-        mocker.get('https://medien.zeit.de/feeds/die-zeit/issue?year=2025&number=1', json=DATA)
+        mocker.get(
+            f'{self.preview_feed_url}?year=2025&number=1',
+            json=DATA,
+            headers={'Authorization': 'Bearer mock_token'},
+        )
         with mocker:
-            mediaservice = zeit.mediaservice.connection.Connection(
-                'https://medien.zeit.de/feeds/die-zeit/issue'
-            )
+            mediaservice = zeit.mediaservice.connection.Connection(self.preview_feed_url)
             audios = mediaservice.get_audio_infos(year=2025, volume=1)
             assert audios == {
                 1064677: {
@@ -192,12 +195,12 @@ class TestImportAudios(zeit.mediaservice.testing.FunctionalTestCase):
     def test_ignores_invalid_entries(self):
         mocker = requests_mock.Mocker()
         mocker.get(
-            'https://medien.zeit.de/feeds/die-zeit/issue?year=2025&number=11', json=BROKEN_DATA
+            f'{self.preview_feed_url}?year=2025&number=11',
+            json=BROKEN_DATA,
+            headers={'Authorization': 'Bearer mock_token'},
         )
         with mocker:
-            mediaservice = zeit.mediaservice.connection.Connection(
-                'https://medien.zeit.de/feeds/die-zeit/issue'
-            )
+            mediaservice = zeit.mediaservice.connection.Connection(self.preview_feed_url)
             audios = mediaservice.get_audio_infos(year=2025, volume=11)
             assert audios == {
                 3: {
@@ -217,21 +220,86 @@ class TestImportAudios(zeit.mediaservice.testing.FunctionalTestCase):
     def test_dont_fail_on_missing_volume(self):
         mocker = requests_mock.Mocker()
         mocker.get(
-            'https://medien.zeit.de/feeds/die-zeit/issue?year=2025&number=500', json=NO_VOLUME
+            f'{self.preview_feed_url}?year=2025&number=500',
+            json=NO_VOLUME,
+            headers={'Authorization': 'Bearer mock_token'},
         )
         with mocker:
-            mediaservice = zeit.mediaservice.connection.Connection(
-                'https://medien.zeit.de/feeds/die-zeit/issue'
-            )
+            mediaservice = zeit.mediaservice.connection.Connection(self.preview_feed_url)
             audios = mediaservice.get_audio_infos(year=2025, volume=500)
             assert not audios
 
     def test_dont_fail_on_volume_with_no_parts(self):
         mocker = requests_mock.Mocker()
-        mocker.get('https://medien.zeit.de/feeds/die-zeit/issue?year=2025&number=28', json=NO_PARTS)
+        mocker.get(
+            f'{self.preview_feed_url}?year=2025&number=28',
+            json=NO_PARTS,
+            headers={'Authorization': 'Bearer mock_token'},
+        )
         with mocker:
-            mediaservice = zeit.mediaservice.connection.Connection(
-                'https://medien.zeit.de/feeds/die-zeit/issue'
-            )
+            mediaservice = zeit.mediaservice.connection.Connection(self.preview_feed_url)
             audios = mediaservice.get_audio_infos(year=2025, volume=28)
             assert not audios
+
+    def test_get_audio_infos_from_preview_feed(self):
+        mocker = requests_mock.Mocker()
+        mocker.get(
+            f'{self.preview_feed_url}?year=2025&number=1',
+            json=DATA,
+            headers={'Authorization': 'Bearer mock_token'},
+        )
+        with mocker:
+            mediaservice = zeit.mediaservice.connection.Connection(self.preview_feed_url)
+            audios = mediaservice.get_audio_infos(year=2025, volume=1)
+            assert audios == {
+                1064677: {
+                    'url': 'https://media-delivery.zeit.de/715e31fd-edaf-436a-a42e-30546ba35319.mp3',
+                    'duration': 282,
+                }
+            }
+
+
+class TestKeycloak(zeit.mediaservice.testing.FunctionalTestCase):
+    def setUp(self):
+        gsm = zope.component.getGlobalSiteManager()
+        self.keycloak = zeit.mediaservice.connection.Keycloak(
+            'client_id', 'client_secret', 'https://discovery-url.foo'
+        )
+        gsm.registerUtility(self.keycloak, zeit.mediaservice.interfaces.IKeycloak)
+        super().setUp()
+
+    def tearDown(self):
+        gsm = zope.component.getGlobalSiteManager()
+        gsm.unregisterUtility(self.keycloak, zeit.mediaservice.interfaces.IKeycloak)
+        super().tearDown()
+
+    def test_keycloak_returns_auth_header(self):
+        mocker = requests_mock.Mocker()
+        mocker.post(
+            'https://discovery-url.foo/protocol/openid-connect/token',
+            json={'access_token': 'thumbsup'},
+        )
+        with mocker:
+            keycloak = zope.component.getUtility(zeit.mediaservice.interfaces.IKeycloak)
+            auth_header = keycloak.authenticate()
+            self.assertEqual(auth_header, {'Authorization': 'Bearer thumbsup'})
+
+    def test_keycloak_raises_for_status(self):
+        mocker = requests_mock.Mocker()
+        mocker.post('https://discovery-url.foo/protocol/openid-connect/token', status_code=503)
+        with mocker:
+            keycloak = zope.component.getUtility(zeit.mediaservice.interfaces.IKeycloak)
+            self.assertFalse(keycloak.authenticate())
+
+    def test_get_audio_infos_does_not_break_on_missing_auth_token(self):
+        mocker = requests_mock.Mocker()
+        mocker.get(
+            f'{self.preview_feed_url}?year=2025&number=1',
+            json=DATA,
+            headers={'Authorization': 'Bearer mock_token'},
+        )
+        mocker.post('https://discovery-url.foo/protocol/openid-connect/token', status_code=503)
+        with mocker:
+            mediaservice = zeit.mediaservice.connection.Connection(self.preview_feed_url)
+            audios = mediaservice.get_audio_infos(year=2025, volume=1)
+            self.assertFalse(audios)
