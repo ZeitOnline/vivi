@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.168.0 (2025-08-26)
+--------------------
+
+- WCM-1058: Define a fallback order for ambiguous print_page column
+
+
 7.167.0 (2025-08-26)
 --------------------
 
