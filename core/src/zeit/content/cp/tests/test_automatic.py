@@ -1005,5 +1005,5 @@ AND published=true...
         self.area.automatic_type = 'custom'
         self.area.query = (('ressort', 'eq', 'International', 'Nahost'),)
         IRenderedArea(self.area).values()
-        query = '...ORDER BY date_last_published_semantic desc...'
+        query = '...ORDER BY date_last_published_semantic DESC...'
         self.assertEllipsis(query, self.connector.search_args[0])
