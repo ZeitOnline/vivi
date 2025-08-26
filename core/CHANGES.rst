@@ -3,6 +3,16 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.166.0 (2025-08-26)
+--------------------
+
+- WCM-1072: Don't use a new article's (temporary) name for image file names
+
+
+MAINT:
+- Update Python from 3.13.5 to 3.13.6
+
+
 7.165.0 (2025-08-22)
 --------------------
 
