@@ -5,21 +5,22 @@ import urllib.parse
 import requests
 
 import zeit.cms.testing
+import zeit.cms.testing.docker
 
 
 HERE = importlib.resources.files(__package__)
 
 
 class BQEmulatorLayer(zeit.cms.testing.Layer):
-    defaultBases = (zeit.cms.testing.DOCKER_LAYER,)
+    defaultBases = (zeit.cms.testing.docker.LAYER,)
 
     container_image = 'ghcr.io/goccy/bigquery-emulator:0.6.6'
 
     def setUp(self):
-        port = zeit.cms.testing.get_random_port()
+        port = zeit.cms.testing.docker.get_random_port()
         project = 'vivi-test'
         dataset = 'export'
-        self['bq_container'] = zeit.cms.testing.DOCKER_LAYER.run_container(
+        self['bq_container'] = zeit.cms.testing.docker.LAYER.run_container(
             self.container_image,
             command=(
                 f'bigquery-emulator --project={project} '

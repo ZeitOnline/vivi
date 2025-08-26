@@ -42,7 +42,7 @@ class TestMediaService(zeit.mediaservice.testing.FunctionalTestCase):
         assert not articles['created']
 
 
-class TestCreateAudioObjects(zeit.mediaservice.testing.SQLTestCase):
+class TestCreateAudioObjects(zeit.mediaservice.testing.FunctionalTestCase):
     def setUp(self):
         super().setUp()
         self.create_volume(2025, 1)

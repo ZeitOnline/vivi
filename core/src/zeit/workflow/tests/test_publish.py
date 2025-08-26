@@ -18,7 +18,7 @@ from zeit.cms.content.interfaces import IUUID
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.related.interfaces import IRelatedContent
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
-from zeit.cms.testing import CommitExceptionDataManager
+from zeit.cms.testing.transaction import CommitExceptionDataManager
 from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
 import zeit.cms.config
 import zeit.cms.related.interfaces

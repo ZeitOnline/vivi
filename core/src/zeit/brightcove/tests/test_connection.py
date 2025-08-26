@@ -4,7 +4,7 @@ import unittest
 import pytest
 import requests.exceptions
 
-from zeit.cms.testing import vault_read
+from zeit.cms.testing.utils import vault_read
 import zeit.brightcove.connection
 
 

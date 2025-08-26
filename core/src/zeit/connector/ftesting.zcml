@@ -5,7 +5,7 @@
   <include package="zeit.cms" file="ftesting-securitypolicy.zcml" />
   <utility factory="zeit.cms.tracing.default_tracer" />
   <subscriber
-    handler="zeit.cms.testing.reset_connector"
+    handler="zeit.cms.testing.mock.reset_connector"
     for="zeit.cms.testing.ResetMocks" />
 
   <include package="zeit.connector" />

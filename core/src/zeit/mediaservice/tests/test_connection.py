@@ -173,7 +173,7 @@ NO_PARTS = {
 }
 
 
-class TestImportAudios(zeit.mediaservice.testing.SQLTestCase):
+class TestImportAudios(zeit.mediaservice.testing.FunctionalTestCase):
     def test_get_audio_infos(self):
         mocker = requests_mock.Mocker()
         mocker.get('https://medien.zeit.de/feeds/die-zeit/issue?year=2025&number=1', json=DATA)
