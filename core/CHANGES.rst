@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.167.0 (2025-08-26)
+--------------------
+
+- WCM-1056: Use medienservice preview_feed and authenticate via ops keycloak to do it
+
+
 7.166.0 (2025-08-26)
 --------------------
 
