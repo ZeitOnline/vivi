@@ -4,6 +4,7 @@
   "commitMessagePrefix": "MAINT: ",
   "schedule": ["before 8am on wednesday"],
   "enabledManagers": [
+    "custom.regex",
     "github-actions",
     "pep621",
     "pre-commit",
@@ -18,6 +19,18 @@
   "pre-commit": {
     "enabled": true
   },
+  "customManagers": [
+    {
+      "description": "Update commented VERSION variables",
+      "customType": "regex",
+      "fileMatch": ["^.github/workflows/.*"],
+      "matchStrings": [
+        "#\\s?renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?( extractVersion=(?<extractVersion>.+?))?\\s[^:]*: \"(?<currentValue>[^\"]*)\""
+      ],
+      "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver-coerced{{/if}}",
+      "extractVersionTemplate": "{{#if extractVersion}}{{{extractVersion}}}{{else}}^(?<version>.+)${{/if}}"
+    }
+  ],
   "packageRules": [
     {
       "groupName": "All minor github-actions changes",
