@@ -148,18 +148,23 @@ SQL_CONFIG_LAYER = SQLConfigLayer(package='zeit.connector')
 
 
 class SQLIsolationLayer(Layer):
+    def __init__(self, connector=None):
+        super().__init__()
+        self.connector = connector  # Used by content-storage-api
+
     def setUp(self):
-        connector = zope.component.queryUtility(zeit.connector.interfaces.IConnector)
-        if not isinstance(connector, zeit.connector.postgresql.Connector):
+        if self.connector is None:
+            self.connector = zope.component.queryUtility(zeit.connector.interfaces.IConnector)
+        if not isinstance(self.connector, zeit.connector.postgresql.Connector):
             return
 
-        self['sql_connection'] = connector.engine.connect()
+        self['sql_connection'] = self.connector.engine.connect()
 
         # Configure sqlalchemy session to use only this specific connection,
         # and to use savepoints instead of full commits. Thus it joins the
         # transaction that we start in testSetUp() and roll back in testTearDown()
         # See "Joining a Session into an External Transaction" in the sqlalchemy doc
-        connector.session.configure(
+        self.connector.session.configure(
             bind=self['sql_connection'], join_transaction_mode='create_savepoint'
         )
 
