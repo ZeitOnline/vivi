@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.170.0 (2025-08-27)
+--------------------
+
+- WCM-1066: Use combined index for volume year+number instead of two separate ones
+
+
 7.169.0 (2025-08-27)
 --------------------
 
