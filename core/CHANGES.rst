@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.172.0 (2025-08-27)
+--------------------
+
+MAINT:
+- Make connector configurable in sql isolation layer, for storage-api tests
+
+
 7.171.0 (2025-08-27)
 --------------------
 
