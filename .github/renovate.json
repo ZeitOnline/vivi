@@ -1,46 +1,32 @@
 {
-    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-    "dependencyDashboard": true,
-    "commitMessagePrefix": "MAINT: ",
-    "schedule": [
-        "before 8am on wednesday"
-    ],
-    "enabledManagers": [
-        "custom.regex",
-        "github-actions",
-        "pep621",
-        "pre-commit",
-        "dockerfile",
-        "kustomize"
-    ],
-    "lockFileMaintenance": {
-        "enabled": true,
-        "schedule": ["before 8am on wednesday"],
-        "commitMessageAction": "Update dependencies"
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "dependencyDashboard": true,
+  "commitMessagePrefix": "MAINT: ",
+  "schedule": ["before 8am on wednesday"],
+  "enabledManagers": [
+    "github-actions",
+    "pep621",
+    "pre-commit",
+    "dockerfile",
+    "kustomize"
+  ],
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": ["before 8am on wednesday"],
+    "commitMessageAction": "Update dependencies"
+  },
+  "pre-commit": {
+    "enabled": true
+  },
+  "packageRules": [
+    {
+      "groupName": "All minor github-actions changes",
+      "matchManagers": ["github-actions"],
+      "matchUpdateTypes": ["minor", "patch"]
     },
-    "customManagers": [
-        {
-            "description": "Update python version",
-            "customType": "regex",
-            "fileMatch": ["pyproject.toml"],
-            "matchStrings": ["requires-python = \"==(?<currentValue>[^\"]*)\""],
-            "datasourceTemplate": "github-tags",
-            "depNameTemplate": "python/cpython",
-            "extractVersionTemplate": "^v?(?<version>.+)$"
-        }
-    ],
-    "pre-commit": {
-        "enabled": true
-    },
-    "packageRules": [
-        {
-            "groupName": "All minor github-actions changes",
-            "matchManagers": ["github-actions"],
-            "matchUpdateTypes": ["minor", "patch"]
-        },
-        {
-            "groupName": "All pre-commit changes",
-            "matchManagers": ["pre-commit"]
-        }
-    ]
+    {
+      "groupName": "All pre-commit changes",
+      "matchManagers": ["pre-commit"]
+    }
+  ]
 }
