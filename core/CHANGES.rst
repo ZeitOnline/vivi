@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.171.0 (2025-08-27)
+--------------------
+
+MAINT:
+- Relax python constraint, causes too much issues in various toolchains
+
+
 7.170.0 (2025-08-27)
 --------------------
 
