@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.169.0 (2025-08-27)
+--------------------
+
+- WCM-934: Stabilize MDB drag-drop heuristics
+
+
 7.168.0 (2025-08-26)
 --------------------
 
