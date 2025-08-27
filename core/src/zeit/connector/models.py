@@ -237,6 +237,11 @@ class Content(
                     sqlalchemy.func.idate_part('hour', cls.date_first_released),
                     name='date_first_released_kpi_shard',
                 ),
+                cls.Index(
+                    'volume_year',
+                    'volume_number',
+                    name='volume_year_number',
+                ),
             )
             + tuple(
                 cls.Index(getattr(cls, column).desc().nulls_last())
@@ -272,8 +277,6 @@ class Content(
                     'series',
                     'sub_ressort',
                     'video_type',
-                    'volume_number',
-                    'volume_year',
                     'vgwort_private_token',
                     'vgwort_reported_error',
                     'vgwort_reported_on',
