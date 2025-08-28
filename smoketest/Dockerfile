@@ -8,6 +8,10 @@ ENV UV_NO_MANAGED_PYTHON=1 \
     UV_FROZEN=1 \
     UV_INDEX_PYPI_ZON_USERNAME="oauth2accesstoken"
 
+RUN apt-get -y update &&  \ 
+    apt-get install --no-install-recommends libgdk-pixbuf-xlib-2.0-0 && \
+    rm -rf /var/lib/apt/lists/*
+
 WORKDIR /app
 RUN groupadd --gid=10000 app && \
     useradd --uid=10000 --gid=app --no-user-group \
