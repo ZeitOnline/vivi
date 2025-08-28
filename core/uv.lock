@@ -2541,7 +2541,7 @@ wheels = [
 
 [[package]]
 name = "vivi-core"
-version = "7.169.0.dev0"
+version = "7.170.0.dev0"
 source = { editable = "." }
 dependencies = [
     { name = "beautifulsoup4" },
