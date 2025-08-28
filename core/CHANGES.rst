@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.173.0 (2025-08-28)
+--------------------
+
+- ENG-344: send author to publisher in followings
+
+
 7.172.0 (2025-08-27)
 --------------------
 
