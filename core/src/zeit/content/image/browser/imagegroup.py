@@ -39,6 +39,7 @@ class FormBase:
     form_fields = zope.formlib.form.FormFields(
         zeit.content.image.interfaces.IImageGroup,
         zeit.content.image.interfaces.IImageMetadata,
+        zeit.cms.content.interfaces.IMemo,
     ).omit('acquire_metadata', 'variants')
 
 
