@@ -210,7 +210,7 @@ test-zon = [
     "gocept.jasmine==0.7+py3.2",  # https://github.com/ZeitOnline/gocept.jasmine
     "gocept.jslint==3.0+importlib",  # https://github.com/ZeitOnline/gocept.jslint/tree/pkgresources
     "gocept.selenium==7.1+importlib.2",  # https://github.com/ZeitOnline/gocept.selenium
-    "pytest-remove-stale-bytecode==6.1+importlib",  # https://github.com/ZeitOnline/pytest-remove-stale-bytecode/tree/pkgresources
+    "pytest-remove-stale-bytecode==6.1+importlib.2",  # https://github.com/ZeitOnline/pytest-remove-stale-bytecode/tree/pkgresources
 ]
 ui-zon = [
     "gocept.fckeditor==2.6.4.1.post3+py3.3",  # https://github.com/ZeitOnline/gocept.fckeditor/tree/py3
