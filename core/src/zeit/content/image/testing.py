@@ -6,6 +6,7 @@ import gocept.selenium
 import webtest.forms
 import zope.component
 
+from zeit.cms.repository.folder import Folder
 import zeit.cms.repository.interfaces
 import zeit.cms.testcontenttype.testcontenttype
 import zeit.cms.testing
@@ -26,7 +27,7 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
     },
     bases=zeit.cms.testing.CONFIG_LAYER,
 )
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER)
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=CONFIG_LAYER, features=['zeit.connector.sql'])
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
 WSGI_LAYER = zeit.cms.testing.WSGILayer(ZOPE_LAYER)
 HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(WSGI_LAYER)
@@ -64,18 +65,17 @@ def create_image_group():
     return group
 
 
-def create_image_group_with_master_image(file_name=None):
+def create_image_group_with_master_image(filename=None):
     repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
-    if file_name is None:
-        file_name = 'DSC00109_2.JPG'
-        fh = repository['2006'][file_name].open()
+    if filename is None:
+        filename = 'DSC00109_2.JPG'
+        repository['2006'] = Folder()
+        image = create_local_image(filename, 'zeit.connector', 'testcontent/2006')
+        repository['2006'][filename] = image
+        fh = repository['2006'][filename].open()
     else:
-        file_name = str(file_name)
-        try:
-            fh = zeit.cms.interfaces.ICMSContent(file_name).open()
-        except TypeError:
-            fh = open(file_name, 'rb')
-    extension = os.path.splitext(file_name)[-1].lower()
+        fh = open(filename, 'rb')
+    extension = os.path.splitext(filename)[-1].lower()
 
     group = zeit.content.image.imagegroup.ImageGroup()
     group.master_images = (('desktop', 'master-image' + extension),)
