@@ -213,6 +213,7 @@ test-zon = [
     "pytest-remove-stale-bytecode==6.1+importlib.2",  # https://github.com/ZeitOnline/pytest-remove-stale-bytecode/tree/pkgresources
 ]
 ui-zon = [
+    "fanstatic==1.6+importlib",  # https://github.com/ZeitOnline/fanstatic
     "gocept.fckeditor==2.6.4.1.post3+py3.3",  # https://github.com/ZeitOnline/gocept.fckeditor/tree/py3
     "gocept.mochikit==1.4.2.5+py3",  # https://github.com/ZeitOnline/gocept.mochikit
     "js.jqueryui==1.10.3+tooltip.2",  # https://github.com/ZeitOnline/js.jqueryui
