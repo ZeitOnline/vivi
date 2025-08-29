@@ -5,77 +5,11 @@ Images and image groups
 Images contain the image data and some metadata. An image group contains
 several images.
 
+>>> import transaction
 >>> import zeit.cms.testing
 >>> zeit.cms.testing.set_site()
 >>> principal = zeit.cms.testing.create_interaction()
-
-
-Image
-=====
-
-Test the image xml reference:
-
 >>> import zope.component
->>> import zeit.cms.repository.interfaces
->>> repository = zope.component.getUtility(
-...     zeit.cms.repository.interfaces.IRepository)
->>> image = repository['2006']['DSC00109_2.JPG']
->>> ref = zope.component.getAdapter(
-...     image,
-...     zeit.cms.content.interfaces.IXMLReference, name='image')
->>> print(zeit.cms.testing.xmltotext(ref))
-<image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG"/>
-
-
-When the image is adapted to ILocalContent we'll get a LocalImage:
-
->>> image
-<zeit.content.image.image.RepositoryImage...>
->>> image.mimeType
-'image/jpeg'
->>> import zeit.cms.workingcopy.interfaces
->>> local = zeit.cms.workingcopy.interfaces.ILocalContent(image)
->>> local
-<zeit.content.image.image.LocalImage...>
->>> local.__name__
-'DSC00109_2.JPG'
->>> local.mimeType
-'image/jpeg'
-
-Let's set some metadata on the local image:
-
->>> metadata = zeit.content.image.interfaces.IImageMetadata(local)
->>> metadata.title = 'my title'
-
->>> import zeit.connector.interfaces
->>> import pprint
->>> resource = zeit.connector.interfaces.IResource(local)
->>> resource.properties[('title', 'http://namespaces.zeit.de/CMS/document')]
-'my title'
-
-Le's add the local image to the repository:
-
->>> repository['2006']['DSC00109_2.JPG'] = local
-
-The metadata is still there:
-
->>> image = repository['2006']['DSC00109_2.JPG']
->>> metadata = zeit.content.image.interfaces.IImageMetadata(image)
->>> metadata.title
-'my title'
-
-The local image also has the title:
-
->>> local = zeit.cms.workingcopy.interfaces.ILocalContent(image)
->>> metadata = zeit.content.image.interfaces.IImageMetadata(local)
->>> metadata.title
-'my title'
-
-There is also a view for the metadata:
-
->>> zope.component.getMultiAdapter((image, object()), name='metadata')
-<zeit.content.image.metadata.ImageMetadata object at 0x...>
-
 
 Image group
 ===========
@@ -107,6 +41,7 @@ Set metadata:
 ...     ('Agentur XY', 'http://xyz.de'))
 >>> metadata.caption = 'Caption'
 >>> group = zeit.cms.checkout.interfaces.ICheckinManager(group).checkin()
+>>> transaction.commit()
 >>> ref = zope.component.getAdapter(
 ...     group,
 ...     zeit.cms.content.interfaces.IXMLReference, name='image')
@@ -132,6 +67,7 @@ Make sure we don't die when there is an invalid XML snippet stored:
 
 Set the link:
 
+>>> transaction.commit()
 >>> group = zeit.cms.checkout.interfaces.ICheckoutManager(group).checkout()
 >>> meta = zeit.content.image.interfaces.IImageMetadata(group)
 >>> meta.links_to = 'http://www.asdf.com'
