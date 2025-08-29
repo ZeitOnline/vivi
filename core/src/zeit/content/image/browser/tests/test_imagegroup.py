@@ -74,6 +74,13 @@ class ImageGroupGhostTest(zeit.content.image.testing.BrowserTestCase, ImageGroup
 
 
 class ImageGroupBrowserTest(zeit.content.image.testing.BrowserTestCase, ImageGroupHelperMixin):
+    def test_write_memo(self):
+        self.add_imagegroup()
+        self.browser.getControl('Memo').value = 'a minor note'
+        self.save_imagegroup()
+        group = self.repository['imagegroup']
+        self.assertEqual('a minor note', zeit.cms.content.interfaces.IMemo(group).memo)
+
     def test_resize_too_large_images_before_upload_width(self):
         self.add_imagegroup()
         self.upload_primary_image('shoppingmeile_4001x2251px.jpg')
@@ -273,6 +280,10 @@ class ThumbnailTest(zeit.content.image.testing.FunctionalTestCase):
 
 
 class ThumbnailBrowserTest(zeit.content.image.testing.BrowserTestCase, ImageGroupHelperMixin):
+    def setUp(self):
+        super().setUp()
+        zeit.content.image.testing.create_image_group_with_master_image()
+
     def test_thumbnail_source_is_created_on_add(self):
         self.add_imagegroup()
         self.upload_primary_image('http://xml.zeit.de/2006/DSC00109_2.JPG')

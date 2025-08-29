@@ -1,3 +1,5 @@
+import transaction
+
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.content.reference import ReferenceProperty
 from zeit.cms.interfaces import ICMSContent
@@ -10,7 +12,9 @@ import zeit.content.image.testing
 class ImageReferenceTest(zeit.content.image.testing.FunctionalTestCase):
     def setUp(self):
         super().setUp()
+        zeit.content.image.testing.create_image_group_with_master_image()
         ExampleContentType.images = ReferenceProperty('.body.image', 'image')
+        self.repository['testcontent'] = ExampleContentType()
 
     def tearDown(self):
         del ExampleContentType.images
@@ -32,6 +36,7 @@ class ImageReferenceTest(zeit.content.image.testing.FunctionalTestCase):
         image = ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')
         with checked_out(image) as co:
             IImageMetadata(co).origin = 'originalorigin'
+        transaction.commit()
         content = self.repository['testcontent']
         ref = content.images.create(image)
         content.images = (ref,)
