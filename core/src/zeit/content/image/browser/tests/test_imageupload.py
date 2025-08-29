@@ -1,8 +1,12 @@
 import re
 import unittest
 
+from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.content.image.browser.imageupload import ImageNameProvider
-from zeit.content.image.testing import add_file_multi, fixture_bytes
+from zeit.content.image.testing import (
+    add_file_multi,
+    fixture_bytes,
+)
 import zeit.cms.browser.interfaces
 import zeit.cms.interfaces
 import zeit.content.image.testing
@@ -294,8 +298,19 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
         assert b.getControl(name='title[0]').value == 'CYCLING-BEL-RENEWI'
 
     def test_editimages_correctly_names_image_without_xmp(self):
+        group = zeit.content.image.imagegroup.ImageGroup()
+        group.master_images = (
+            (
+                'desktop',
+                'master-image.jpg',
+            ),
+        )
+        self.repository['group'] = group
+        self.repository['group']['master-image.jpg'] = (
+            zeit.content.image.testing.create_local_image('obama-clinton-120x120.jpg')
+        )
         b = self.browser
-        b.open('/repository/2007/03/@@edit-images?files=group')
+        b.open('/repository/@@edit-images?files=group')
         assert b.getControl(name='target_name[0]').value == ''
 
     def test_editimages_correctly_names_image_without_xmp_after_image_with_xmp(self):
@@ -514,13 +529,11 @@ class AddCentralImageUploadTest(zeit.content.image.testing.SeleniumTestCase):
 class AddMenuImageUploadTest(zeit.content.image.testing.BrowserTestCase):
     def test_new_image_upload_is_present(self):
         b = self.browser
-        b.open('http://localhost:8080/++skin++vivi/repository/online/2007/01/')
+        b.open('http://localhost:8081/++skin++vivi/repository/')
         menu = b.getControl(name='add_menu')
         menu.displayValue = ['Image (new)']
         b.open(menu.value[0])
-        assert (
-            'http://localhost:8080/++skin++vivi/repository/online/2007/01/@@upload-images' == b.url
-        )
+        assert 'http://localhost:8081/++skin++vivi/repository/@@upload-images' == b.url
 
 
 class ImageNameProviderTest(unittest.TestCase):

@@ -315,9 +315,7 @@ class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
                 wl.get('Testtag3'),
             )
             co.authorships = [co.authorships.create(self.repository['author'])]
-            group = create_image_group_with_master_image(
-                file_name='http://xml.zeit.de/2016/DSC00109_2.PNG'
-            )
+            group = create_image_group_with_master_image()
             zeit.content.image.interfaces.IImages(co).image = group
 
         article = ICMSContent('http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept')

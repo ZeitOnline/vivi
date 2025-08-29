@@ -289,6 +289,10 @@ class ThumbnailTest(zeit.content.image.testing.FunctionalTestCase):
 
 
 class ThumbnailBrowserTest(zeit.content.image.testing.BrowserTestCase, ImageGroupHelperMixin):
+    def setUp(self):
+        super().setUp()
+        zeit.content.image.testing.create_image_group_with_master_image()
+
     def test_thumbnail_source_is_created_on_add(self):
         self.add_imagegroup()
         self.upload_primary_image('http://xml.zeit.de/2006/DSC00109_2.JPG')

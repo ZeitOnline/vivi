@@ -1,3 +1,4 @@
+import transaction
 import zope.component
 
 from zeit.cms.content.interfaces import IXMLReference
@@ -8,6 +9,10 @@ import zeit.content.image.testing
 
 
 class ImageMetadataTest(zeit.content.image.testing.FunctionalTestCase):
+    def setUp(self):
+        super().setUp()
+        zeit.content.image.testing.create_image_group_with_master_image()
+
     def set_copyright(self, value):
         image = ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')
         with zeit.cms.checkout.helper.checked_out(image) as co:
@@ -44,9 +49,11 @@ class ImageMetadataTest(zeit.content.image.testing.FunctionalTestCase):
         # Tuple of pairs
         image = self.set_copyright((('foo', 'bar'),))
         self.assertEqual(('foo', None, None, 'bar', False), IImageMetadata(image).copyright)
+        transaction.commit()
         # Tuple of triples
         image = self.set_copyright((('foo', 'bar', True),))
         self.assertEqual(('foo', None, None, 'bar', True), IImageMetadata(image).copyright)
+        transaction.commit()
         # Tuple of quintuples
         image = self.set_copyright((('foo', 'bar', 'baz', 'qux', True),))
         self.assertEqual(('foo', 'bar', 'baz', 'qux', True), IImageMetadata(image).copyright)
