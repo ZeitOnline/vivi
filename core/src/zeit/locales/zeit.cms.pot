@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Thu Aug 21 10:27:44 2025\n"
+"POT-Creation-Date: Fri Aug 29 16:11:19 2025\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -167,13 +167,13 @@ msgid "Edit"
 msgstr ""
 
 #: zeit/cms/browser/form.py:296
-#: zeit/cms/repository/browser/file.py:94
+#: zeit/cms/repository/browser/file.py:95
 #: zeit/content/article/edit/browser/form.py:497
 #: zeit/content/article/edit/browser/push.py:52
 #: zeit/content/article/edit/browser/reference.py:51
 #: zeit/content/cp/browser/view.py:11
-#: zeit/content/image/browser/form.py:101
-#: zeit/content/image/browser/imagegroup.py:322
+#: zeit/content/image/browser/form.py:102
+#: zeit/content/image/browser/imagegroup.py:323
 #: zeit/edit/browser/form.py:65
 #: zeit/edit/browser/view.py:103
 #: zeit/seo/browser/form.py:31
@@ -240,10 +240,10 @@ msgstr ""
 
 #: zeit/cms/browser/listing.py:263
 #: zeit/cms/interfaces.py:103
-#: zeit/cms/repository/browser/file.py:30
+#: zeit/cms/repository/browser/file.py:31
 #: zeit/cms/repository/browser/file_details.pt:2
 #: zeit/content/dynamicfolder/browser/folder.py:25
-#: zeit/content/image/browser/imagegroup.py:210
+#: zeit/content/image/browser/imagegroup.py:211
 #: zeit/content/image/browser/interfaces.py:32
 msgid "File name"
 msgstr ""
@@ -530,7 +530,7 @@ msgstr ""
 #: zeit/cms/content/browser/form.py:23
 #: zeit/content/cp/browser/form.py:18
 #: zeit/content/gallery/browser/form.py:28
-#: zeit/content/image/browser/form.py:23
+#: zeit/content/image/browser/form.py:19
 #: zeit/content/infobox/browser/form.py:25
 #: zeit/content/infobox/browser/form.py:87
 #: zeit/content/video/browser/video.py:60
@@ -798,6 +798,7 @@ msgid "Update last semantic change"
 msgstr ""
 
 #: zeit/cms/content/interfaces.py:480
+#: zeit/content/image/browser/form.py:17
 msgid "Memo"
 msgstr ""
 
@@ -1153,27 +1154,27 @@ msgstr ""
 msgid "folder_cannot_be_deleted_warning"
 msgstr ""
 
-#: zeit/cms/repository/browser/file.py:26
+#: zeit/cms/repository/browser/file.py:27
 msgid "View file"
 msgstr ""
 
-#: zeit/cms/repository/browser/file.py:32
+#: zeit/cms/repository/browser/file.py:33
 msgid "Upload new file"
 msgstr ""
 
-#: zeit/cms/repository/browser/file.py:43
+#: zeit/cms/repository/browser/file.py:44
 msgid "Form input is not a file object"
 msgstr ""
 
-#: zeit/cms/repository/browser/file.py:73
+#: zeit/cms/repository/browser/file.py:74
 msgid "Add file"
 msgstr ""
 
-#: zeit/cms/repository/browser/file.py:89
+#: zeit/cms/repository/browser/file.py:90
 msgid "Edit file"
 msgstr ""
 
-#: zeit/cms/repository/browser/file.py:97
+#: zeit/cms/repository/browser/file.py:98
 msgid "Your changes have been saved."
 msgstr ""
 
@@ -1792,7 +1793,7 @@ msgid "Reloading"
 msgstr ""
 
 #: zeit/content/article/edit/browser/teaserimage-display-widget.pt:1
-#: zeit/content/image/browser/form.py:83
+#: zeit/content/image/browser/form.py:84
 msgid "Add image"
 msgstr ""
 
@@ -1862,7 +1863,7 @@ msgstr ""
 #: zeit/content/cp/interfaces.py:302
 #: zeit/content/cp/interfaces.py:633
 #: zeit/content/image/browser/configure.zcml:269
-#: zeit/content/image/browser/imagegroup.py:220
+#: zeit/content/image/browser/imagegroup.py:221
 #: zeit/content/image/image.py:189
 #: zeit/content/portraitbox/interfaces.py:16
 #: zeit/wysiwyg/browser/resources/reference/image.pt:17
@@ -2904,7 +2905,7 @@ msgid "Checking out"
 msgstr ""
 
 #: zeit/content/cp/browser/workflow.py:33
-#: zeit/content/image/browser/imagegroup.py:69
+#: zeit/content/image/browser/imagegroup.py:70
 #: zeit/workflow/browser/form.py:141
 #: zeit/workflow/browser/form.py:167
 msgid "Settings"
@@ -3313,7 +3314,7 @@ msgid "Edit gallery entry"
 msgstr ""
 
 #: zeit/content/gallery/browser/overview.pt:16
-#: zeit/content/image/browser/form.py:93
+#: zeit/content/image/browser/form.py:94
 msgid "Edit image"
 msgstr ""
 
@@ -3386,7 +3387,7 @@ msgid "Image (single)"
 msgstr ""
 
 #: zeit/content/image/browser/configure.zcml:202
-#: zeit/content/image/browser/imagegroup.py:204
+#: zeit/content/image/browser/imagegroup.py:205
 #: zeit/content/image/interfaces.py:403
 msgid "Image group"
 msgstr ""
@@ -3396,7 +3397,7 @@ msgid "File list"
 msgstr ""
 
 #: zeit/content/image/browser/configure.zcml:422
-#: zeit/content/image/browser/imageupload.py:24
+#: zeit/content/image/browser/imageupload.py:25
 msgid "Image (new)"
 msgstr ""
 
@@ -3416,16 +3417,16 @@ msgstr ""
 msgid "Copyright changed for: ${changes}"
 msgstr ""
 
-#: zeit/content/image/browser/form.py:18
-#: zeit/content/image/browser/imagegroup.py:235
+#: zeit/content/image/browser/form.py:22
+#: zeit/content/image/browser/imagegroup.py:236
 msgid "Image data"
 msgstr ""
 
-#: zeit/content/image/browser/form.py:26
+#: zeit/content/image/browser/form.py:27
 msgid "Image source"
 msgstr ""
 
-#: zeit/content/image/browser/form.py:54
+#: zeit/content/image/browser/form.py:55
 msgid "Image was resized, ${size} exceeds ${max_size}"
 msgstr ""
 
@@ -3434,7 +3435,7 @@ msgid "View image"
 msgstr ""
 
 #: zeit/content/image/browser/image_view.pt:10
-#: zeit/content/image/browser/imagegroup.py:216
+#: zeit/content/image/browser/imagegroup.py:217
 msgid "Dimensions"
 msgstr ""
 
@@ -3454,47 +3455,47 @@ msgstr ""
 msgid "Links to: ${link} rel=\"nofollow\""
 msgstr ""
 
-#: zeit/content/image/browser/imagegroup.py:51
+#: zeit/content/image/browser/imagegroup.py:52
 msgid "Add image group"
 msgstr ""
 
-#: zeit/content/image/browser/imagegroup.py:164
+#: zeit/content/image/browser/imagegroup.py:165
 msgid "Add motif"
 msgstr ""
 
-#: zeit/content/image/browser/imagegroup.py:172
+#: zeit/content/image/browser/imagegroup.py:173
 msgid "Edit image group"
 msgstr ""
 
-#: zeit/content/image/browser/imagegroup.py:177
+#: zeit/content/image/browser/imagegroup.py:178
 msgid "Add viewport to master image mapping"
 msgstr ""
 
-#: zeit/content/image/browser/imagegroup.py:182
+#: zeit/content/image/browser/imagegroup.py:183
 msgid "Image group metadata"
 msgstr ""
 
-#: zeit/content/image/browser/imagegroup.py:198
+#: zeit/content/image/browser/imagegroup.py:199
 msgid "Master image"
 msgstr ""
 
-#: zeit/content/image/browser/imagegroup.py:342
+#: zeit/content/image/browser/imagegroup.py:343
 msgid "copyright infos"
 msgstr ""
 
-#: zeit/content/image/browser/imagegroup.py:342
+#: zeit/content/image/browser/imagegroup.py:343
 msgid "image_number"
 msgstr ""
 
-#: zeit/content/image/browser/imagegroup.py:342
+#: zeit/content/image/browser/imagegroup.py:343
 msgid "internal link"
 msgstr ""
 
-#: zeit/content/image/browser/imagegroup.py:342
+#: zeit/content/image/browser/imagegroup.py:343
 msgid "publish_date"
 msgstr ""
 
-#: zeit/content/image/browser/imagegroup.py:371
+#: zeit/content/image/browser/imagegroup.py:372
 msgid "CopyrightPurchaseReport"
 msgstr ""
 
@@ -3511,19 +3512,19 @@ msgstr ""
 msgid "Upload"
 msgstr ""
 
-#: zeit/content/image/browser/imageupload.py:30
+#: zeit/content/image/browser/imageupload.py:31
 msgid "Upload images"
 msgstr ""
 
-#: zeit/content/image/browser/imageupload.py:54
+#: zeit/content/image/browser/imageupload.py:55
 msgid "Please upload at least one image"
 msgstr ""
 
-#: zeit/content/image/browser/imageupload.py:87
+#: zeit/content/image/browser/imageupload.py:158
 msgid "Edit images"
 msgstr ""
 
-#: zeit/content/image/browser/imageupload.py:115
+#: zeit/content/image/browser/imageupload.py:186
 msgid "File name is already in use"
 msgstr ""
 

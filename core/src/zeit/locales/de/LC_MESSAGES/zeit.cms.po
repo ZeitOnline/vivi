@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Thu Aug 21 10:27:44 2025\n"
+"POT-Creation-Date: Fri Aug 29 16:11:19 2025\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -22,7 +22,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.6\n"
+"X-Generator: Poedit 3.7\n"
 
 #: zeit/addcentral/sidebar.pt:10 zeit/addcentral/sidebar.py:39
 #: zeit/cms/browser/form.py:223 zeit/cms/menu.zcml:17 zeit/cms/menu.zcml:24
@@ -151,12 +151,12 @@ msgstr "Abbrechen"
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: zeit/cms/browser/form.py:296 zeit/cms/repository/browser/file.py:94
+#: zeit/cms/browser/form.py:296 zeit/cms/repository/browser/file.py:95
 #: zeit/content/article/edit/browser/form.py:497
 #: zeit/content/article/edit/browser/push.py:52
 #: zeit/content/article/edit/browser/reference.py:51
-#: zeit/content/cp/browser/view.py:11 zeit/content/image/browser/form.py:101
-#: zeit/content/image/browser/imagegroup.py:322 zeit/edit/browser/form.py:65
+#: zeit/content/cp/browser/view.py:11 zeit/content/image/browser/form.py:102
+#: zeit/content/image/browser/imagegroup.py:323 zeit/edit/browser/form.py:65
 #: zeit/edit/browser/view.py:103 zeit/seo/browser/form.py:31
 msgid "Apply"
 msgstr "Speichern"
@@ -209,10 +209,10 @@ msgid "Title"
 msgstr "Titel"
 
 #: zeit/cms/browser/listing.py:263 zeit/cms/interfaces.py:103
-#: zeit/cms/repository/browser/file.py:30
+#: zeit/cms/repository/browser/file.py:31
 #: zeit/cms/repository/browser/file_details.pt:2
 #: zeit/content/dynamicfolder/browser/folder.py:25
-#: zeit/content/image/browser/imagegroup.py:210
+#: zeit/content/image/browser/imagegroup.py:211
 #: zeit/content/image/browser/interfaces.py:32
 msgid "File name"
 msgstr "Dateiname"
@@ -503,7 +503,7 @@ msgstr "Kopf"
 
 #: zeit/cms/content/browser/form.py:23 zeit/content/cp/browser/form.py:18
 #: zeit/content/gallery/browser/form.py:28
-#: zeit/content/image/browser/form.py:23
+#: zeit/content/image/browser/form.py:19
 #: zeit/content/infobox/browser/form.py:25
 #: zeit/content/infobox/browser/form.py:87
 #: zeit/content/video/browser/video.py:60
@@ -761,7 +761,7 @@ msgstr "Letzte inhaltliche Änderung"
 msgid "Update last semantic change"
 msgstr "Datum / Uhrzeit aktualisieren"
 
-#: zeit/cms/content/interfaces.py:480
+#: zeit/cms/content/interfaces.py:480 zeit/content/image/browser/form.py:17
 msgid "Memo"
 msgstr "Memo"
 
@@ -1129,27 +1129,27 @@ msgstr ""
 "Der Ordner kann nicht gelöscht werden, da er entweder publizierte Inhalte "
 "oder andere Ordner enthält."
 
-#: zeit/cms/repository/browser/file.py:26
+#: zeit/cms/repository/browser/file.py:27
 msgid "View file"
 msgstr "Datei anzeigen"
 
-#: zeit/cms/repository/browser/file.py:32
+#: zeit/cms/repository/browser/file.py:33
 msgid "Upload new file"
 msgstr "Neue Datei hochladen"
 
-#: zeit/cms/repository/browser/file.py:43
+#: zeit/cms/repository/browser/file.py:44
 msgid "Form input is not a file object"
 msgstr "Keine gültige Datei"
 
-#: zeit/cms/repository/browser/file.py:73
+#: zeit/cms/repository/browser/file.py:74
 msgid "Add file"
 msgstr "Datei hinzufügen"
 
-#: zeit/cms/repository/browser/file.py:89
+#: zeit/cms/repository/browser/file.py:90
 msgid "Edit file"
 msgstr "Datei bearbeiten"
 
-#: zeit/cms/repository/browser/file.py:97
+#: zeit/cms/repository/browser/file.py:98
 msgid "Your changes have been saved."
 msgstr "Ihre Änderungen wurden gespeichert."
 
@@ -1752,7 +1752,7 @@ msgid "Reloading"
 msgstr "lade neu"
 
 #: zeit/content/article/edit/browser/teaserimage-display-widget.pt:1
-#: zeit/content/image/browser/form.py:83
+#: zeit/content/image/browser/form.py:84
 msgid "Add image"
 msgstr "Bild hinzufügen"
 
@@ -1819,7 +1819,7 @@ msgstr "Easy-Embed"
 #: zeit/content/article/interfaces.py:65 zeit/content/cp/interfaces.py:128
 #: zeit/content/cp/interfaces.py:302 zeit/content/cp/interfaces.py:633
 #: zeit/content/image/browser/configure.zcml:269
-#: zeit/content/image/browser/imagegroup.py:220 zeit/content/image/image.py:189
+#: zeit/content/image/browser/imagegroup.py:221 zeit/content/image/image.py:189
 #: zeit/content/portraitbox/interfaces.py:16
 #: zeit/wysiwyg/browser/resources/reference/image.pt:17
 msgid "Image"
@@ -2847,7 +2847,7 @@ msgid "Checking out"
 msgstr "Auschecken"
 
 #: zeit/content/cp/browser/workflow.py:33
-#: zeit/content/image/browser/imagegroup.py:69
+#: zeit/content/image/browser/imagegroup.py:70
 #: zeit/workflow/browser/form.py:141 zeit/workflow/browser/form.py:167
 msgid "Settings"
 msgstr "Einstellungen"
@@ -3251,7 +3251,7 @@ msgid "Edit gallery entry"
 msgstr "Bildergalerie-Eintrag bearbeiten"
 
 #: zeit/content/gallery/browser/overview.pt:16
-#: zeit/content/image/browser/form.py:93
+#: zeit/content/image/browser/form.py:94
 msgid "Edit image"
 msgstr "Bild bearbeiten"
 
@@ -3329,7 +3329,7 @@ msgid "Image (single)"
 msgstr "Einzelbild"
 
 #: zeit/content/image/browser/configure.zcml:202
-#: zeit/content/image/browser/imagegroup.py:204
+#: zeit/content/image/browser/imagegroup.py:205
 #: zeit/content/image/interfaces.py:403
 msgid "Image group"
 msgstr "Bildergruppe"
@@ -3339,7 +3339,7 @@ msgid "File list"
 msgstr "Dateiliste"
 
 #: zeit/content/image/browser/configure.zcml:422
-#: zeit/content/image/browser/imageupload.py:24
+#: zeit/content/image/browser/imageupload.py:25
 msgid "Image (new)"
 msgstr "Bild (neu)"
 
@@ -3359,16 +3359,16 @@ msgstr "Copyright setzen"
 msgid "Copyright changed for: ${changes}"
 msgstr "Copyright geändert für: ${changes}."
 
-#: zeit/content/image/browser/form.py:18
-#: zeit/content/image/browser/imagegroup.py:235
+#: zeit/content/image/browser/form.py:22
+#: zeit/content/image/browser/imagegroup.py:236
 msgid "Image data"
 msgstr "Bilddaten"
 
-#: zeit/content/image/browser/form.py:26
+#: zeit/content/image/browser/form.py:27
 msgid "Image source"
 msgstr "Quelle"
 
-#: zeit/content/image/browser/form.py:54
+#: zeit/content/image/browser/form.py:55
 msgid "Image was resized, ${size} exceeds ${max_size}"
 msgstr "Das Bild wurde von ${size} auf ${max_size} verkleinert."
 
@@ -3377,7 +3377,7 @@ msgid "View image"
 msgstr "Bild zeigen"
 
 #: zeit/content/image/browser/image_view.pt:10
-#: zeit/content/image/browser/imagegroup.py:216
+#: zeit/content/image/browser/imagegroup.py:217
 msgid "Dimensions"
 msgstr "Ausmaße"
 
@@ -3397,47 +3397,47 @@ msgstr "Bildunterschrift: ${caption}"
 msgid "Links to: ${link} rel=\"nofollow\""
 msgstr "Verlinkt nach: ${link} (nofollow)"
 
-#: zeit/content/image/browser/imagegroup.py:51
+#: zeit/content/image/browser/imagegroup.py:52
 msgid "Add image group"
 msgstr "Bildergruppe hinzufügen"
 
-#: zeit/content/image/browser/imagegroup.py:164
+#: zeit/content/image/browser/imagegroup.py:165
 msgid "Add motif"
 msgstr "Datei für weiteres Motiv wählen"
 
-#: zeit/content/image/browser/imagegroup.py:172
+#: zeit/content/image/browser/imagegroup.py:173
 msgid "Edit image group"
 msgstr "Bildergruppe bearbeiten"
 
-#: zeit/content/image/browser/imagegroup.py:177
+#: zeit/content/image/browser/imagegroup.py:178
 msgid "Add viewport to master image mapping"
 msgstr "Bild hinzufügen"
 
-#: zeit/content/image/browser/imagegroup.py:182
+#: zeit/content/image/browser/imagegroup.py:183
 msgid "Image group metadata"
 msgstr "Metadaten der Bildergruppe"
 
-#: zeit/content/image/browser/imagegroup.py:198
+#: zeit/content/image/browser/imagegroup.py:199
 msgid "Master image"
 msgstr "Hauptbild"
 
-#: zeit/content/image/browser/imagegroup.py:342
+#: zeit/content/image/browser/imagegroup.py:343
 msgid "copyright infos"
 msgstr "Copyright Informationen"
 
-#: zeit/content/image/browser/imagegroup.py:342
+#: zeit/content/image/browser/imagegroup.py:343
 msgid "image_number"
 msgstr "Bild Nummer"
 
-#: zeit/content/image/browser/imagegroup.py:342
+#: zeit/content/image/browser/imagegroup.py:343
 msgid "internal link"
 msgstr "Vivi-Link"
 
-#: zeit/content/image/browser/imagegroup.py:342
+#: zeit/content/image/browser/imagegroup.py:343
 msgid "publish_date"
 msgstr "Veröffentlichungsdatum"
 
-#: zeit/content/image/browser/imagegroup.py:371
+#: zeit/content/image/browser/imagegroup.py:372
 msgid "CopyrightPurchaseReport"
 msgstr "Urheberrecht Bezahl Bericht"
 
@@ -3454,19 +3454,19 @@ msgstr "Copyrights"
 msgid "Upload"
 msgstr "Hochladen"
 
-#: zeit/content/image/browser/imageupload.py:30
+#: zeit/content/image/browser/imageupload.py:31
 msgid "Upload images"
 msgstr "Neue Bilder hochladen"
 
-#: zeit/content/image/browser/imageupload.py:54
+#: zeit/content/image/browser/imageupload.py:55
 msgid "Please upload at least one image"
 msgstr "Bitte mindestens eine Datei hochladen"
 
-#: zeit/content/image/browser/imageupload.py:87
+#: zeit/content/image/browser/imageupload.py:158
 msgid "Edit images"
 msgstr "Bilder bearbeiten"
 
-#: zeit/content/image/browser/imageupload.py:115
+#: zeit/content/image/browser/imageupload.py:186
 msgid "File name is already in use"
 msgstr "Dateiname ist bereits belegt"
 
