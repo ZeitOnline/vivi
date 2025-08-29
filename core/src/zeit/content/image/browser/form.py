@@ -14,13 +14,14 @@ import zeit.edit.browser.form
 
 class ImageFormBase(zeit.cms.repository.browser.file.FormBase):
     field_groups = (
+        gocept.form.grouped.Fields(_('Memo'), ('memo',), css_class='column-left image-form'),
+        gocept.form.grouped.RemainingFields(
+            _('Texts'), css_class='column-right image-form wide-widgets'
+        ),
         gocept.form.grouped.Fields(
             _('Image data'),
             ('__name__', 'references', 'display_type'),
             css_class='column-left image-form',
-        ),
-        gocept.form.grouped.RemainingFields(
-            _('Texts'), css_class='column-right image-form wide-widgets'
         ),
         gocept.form.grouped.Fields(
             _('Image source'),
@@ -29,9 +30,9 @@ class ImageFormBase(zeit.cms.repository.browser.file.FormBase):
         ),
     )
 
-    form_fields = zope.formlib.form.FormFields(zeit.content.image.interfaces.IImageMetadata).omit(
-        'acquire_metadata', 'origin'
-    )
+    form_fields = zope.formlib.form.FormFields(
+        zeit.content.image.interfaces.IImageMetadata, zeit.cms.content.interfaces.IMemo
+    ).omit('acquire_metadata', 'origin')
 
     def __init__(self, *args, **kw):
         self.form_fields['blob'].custom_widget = zeit.cms.repository.browser.file.BlobWidget
