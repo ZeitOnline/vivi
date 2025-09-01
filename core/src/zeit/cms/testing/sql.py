@@ -101,7 +101,7 @@ class GCSServerLayer(Layer):
     bucket = 'vivi-test'
 
     def setUp(self):
-        self['gcs_storage'] = gcp_storage_emulator.storage.Storage(use_memory_fs=True)
+        self['gcs_storage'] = gcsemulator.StackableMemoryStorage()
         gcp_storage_emulator.handlers.buckets.create_bucket(self.bucket, self['gcs_storage'])
         self['gcs_server'] = gcp_storage_emulator.server.APIThread(
             'localhost', 0, self['gcs_storage']
@@ -113,7 +113,10 @@ class GCSServerLayer(Layer):
         os.environ['STORAGE_EMULATOR_HOST'] = 'http://localhost:%s' % port
 
     def testSetUp(self):
-        self['gcs_storage'].wipe(keep_buckets=True)
+        self['gcs_storage'].stack_push()
+
+    def testTearDown(self):
+        self['gcs_storage'].stack_pop()
 
     def tearDown(self):
         self['gcs_server'].join(timeout=1)

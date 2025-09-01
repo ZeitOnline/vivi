@@ -12,7 +12,9 @@ from gcp_storage_emulator.handlers.objects import (
     _make_object_resource,
     _patch,
 )
+import fs.multifs
 import gcp_storage_emulator.server
+import gcp_storage_emulator.storage
 
 
 def batch(request, response, storage, *args, **kwargs):
@@ -118,3 +120,38 @@ gcp_storage_emulator.server.BATCH_HANDLERS += (
         settings.API_ENDPOINT
     ),
 )
+
+
+class StackableMemoryStorage(gcp_storage_emulator.storage.Storage):
+    """Storage that uses a stack of in-memory FS objects,
+    writes go into the last entry, reads fall back to previous entries if not
+    found in the last entry. This allows undoing a whole set of writes in one go.
+
+    XXX Note that deletions do NOT stack properly with this implementation.
+    Instead of marking deleted in the last stack entry, it will delete the
+    file in the entry where it was last written. I hope we can get away with that.
+    """
+
+    def __init__(self):
+        self._fs = fs.multifs.MultiFS()
+        self.stack_push()
+        self._read_config_from_file()
+
+    def stack_push(self):
+        fs = self._fs
+        stack = list(fs.iterate_fs())
+        fs.add_fs(str(len(stack)), 'mem://', write=True)
+
+    def stack_pop(self):
+        fs = self._fs
+        stack = list(fs.iterate_fs())
+        name = str(len(stack) - 1)
+        # The inverse of add_fs()
+        del fs._filesystems[name]
+        fs._sort_index -= 1
+        fs._resort()
+        previous = str(len(stack) - 2)
+        fs._write_fs_name = previous
+        fs._write_fs = fs.get_fs(previous)
+        # Re-populate our other fields from the fs state
+        self._read_config_from_file()
