@@ -43,7 +43,7 @@ def fixture_bytes(filename, package=None, folder=None):
     return f.read_bytes()
 
 
-def create_local_image(filename, package=None, folder=None):
+def create_local_image(filename='opernball.jpg', package=None, folder=None):
     image = zeit.content.image.image.LocalImage()
     with image.open('w') as out:
         out.write(fixture_bytes(filename, package, folder))
