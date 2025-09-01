@@ -4,7 +4,6 @@ import time
 from gcp_storage_emulator.server import create_server as create_gcp_server
 from sqlalchemy import text as sql
 from sqlalchemy.exc import OperationalError
-import requests
 import sqlalchemy
 import transaction
 import zope.component
@@ -111,7 +110,7 @@ class GCSServerLayer(Layer):
         os.environ['STORAGE_EMULATOR_HOST'] = 'http://localhost:%s' % port
 
     def testSetUp(self):
-        requests.get(os.environ['STORAGE_EMULATOR_HOST'] + '/wipe?keep-buckets=True')
+        self['gcp_server'].wipe(keep_buckets=True)
 
     def tearDown(self):
         self['gcp_server'].stop()
