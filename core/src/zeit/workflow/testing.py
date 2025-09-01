@@ -28,7 +28,7 @@ WSGI_LAYER = zeit.cms.testing.WSGILayer(CELERY_LAYER)
 HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(WSGI_LAYER)
 WEBDRIVER_LAYER = zeit.cms.testing.WebdriverLayer(HTTP_LAYER)
 
-SQL_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER, features=['zeit.connector.sql'])
+SQL_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER, features=['zeit.connector.sql.zope'])
 SQL_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(SQL_ZCML_LAYER)
 
 CONTENT_LAYER = zeit.cms.testing.AdditionalZCMLLayer(
