@@ -148,6 +148,7 @@ test = [
     "celery >= 5.0",
     "cssselect",
     "docker",
+    "fs",
     "gcp-storage-emulator",
     "gocept.httpserverlayer>=1.4.0.dev0",
     "gocept.jasmine",
