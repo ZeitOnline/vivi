@@ -9,15 +9,15 @@ import zeit.content.image.testing
 
 
 class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
-    def test_article_has_images_upload_form(self):
+    def test_content_can_access_images_upload_form(self):
         b = self.browser
-        b.open('/repository/online/2007/01/Somalia/@@upload-images')
+        b.open('/repository/testcontent/@@upload-images')
         # The "context views/actions" menu is hidden for this view
         self.assertNotEllipsis('...Checkout...', b.contents)
 
     def test_redirects_after_upload(self):
         b = self.browser
-        b.open('/repository/online/2007/01/Somalia/@@upload-images')
+        b.open('/repository/testcontent/@@upload-images')
         file_input = b.getControl(name='files')
         add_file_multi(
             file_input,
@@ -30,31 +30,31 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
             ],
         )
         b.getForm(name='imageupload').submit()
-        folder = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01')
+        folder = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/')
         img = next(x for x in folder.values() if 'tmp' in x.uniqueId)
-        assert b.url.endswith(f'/2007/01/@@edit-images?files={img.__name__}&from=Somalia')
+        assert b.url.endswith(f'/@@edit-images?files={img.__name__}&from=testcontent')
 
     def test_does_not_redirect_if_files_field_is_not_in_request(self):
         b = self.browser
-        b.open('/repository/online/2007/01/Somalia/@@upload-images')
+        b.open('/repository/testcontent/@@upload-images')
         b.getForm(name='imageupload').submit()
-        self.assertEndsWith('/2007/01/Somalia/@@upload-images', b.url)
+        self.assertEndsWith('/testcontent/@@upload-images', b.url)
         self.assertIn('Please upload at least one image', b.contents)
         self.assertEqual('200 Ok', b.headers['status'])
 
     def test_does_not_redirect_if_no_image_present(self):
         b = self.browser
-        b.open('/repository/online/2007/01/Somalia/@@upload-images')
+        b.open('/repository/testcontent/@@upload-images')
         # We have to hand-craft our POST request, because
         # Testbrowser does not support submitting an empty form field
         b.post(b.getForm(name='imageupload').action, 'files=')
-        self.assertEndsWith('/2007/01/Somalia/@@upload-images', b.url)
+        self.assertEndsWith('/testcontent/@@upload-images', b.url)
         self.assertIn('Please upload at least one image', b.contents)
         self.assertEqual('200 Ok', b.headers['status'])
 
     def test_redirects_after_upload_in_folder(self):
         b = self.browser
-        b.open('/repository/online/2007/01/@@upload-images')
+        b.open('/repository/@@upload-images')
         file_input = b.getControl(name='files')
         add_file_multi(
             file_input,
@@ -67,13 +67,13 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
             ],
         )
         b.getForm(name='imageupload').submit()
-        folder = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01')
+        folder = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/')
         img = next(x for x in folder.values() if 'tmp' in x.uniqueId)
-        assert b.url.endswith(f'/2007/01/@@edit-images?files={img.__name__}')
+        assert b.url.endswith(f'/@@edit-images?files={img.__name__}')
 
     def test_can_upload_image(self):
         b = self.browser
-        b.open('/repository/online/2007/01/Somalia/@@upload-images')
+        b.open('/repository/testcontent/@@upload-images')
         file_input = b.getControl(name='files')
         add_file_multi(
             file_input,
@@ -86,13 +86,13 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
             ],
         )
         b.getForm(name='imageupload').submit()
-        folder = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01')
+        folder = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/')
         img = next(x for x in folder.values() if 'tmp' in x.uniqueId)
         assert zeit.content.image.interfaces.IImageGroup.providedBy(img)
 
     def test_can_upload_image_from_folder(self):
         b = self.browser
-        b.open('/repository/online/2007/01/@@upload-images')
+        b.open('/repository/@@upload-images')
         file_input = b.getControl(name='files')
         add_file_multi(
             file_input,
@@ -105,13 +105,13 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
             ],
         )
         b.getForm(name='imageupload').submit()
-        folder = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01')
+        folder = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/')
         img = next(x for x in folder.values() if 'tmp' in x.uniqueId)
         assert zeit.content.image.interfaces.IImageGroup.providedBy(img)
 
     def test_can_upload_multiple_images(self):
         b = self.browser
-        b.open('/repository/online/2007/01/Somalia/@@upload-images')
+        b.open('/repository/testcontent/@@upload-images')
         file_input = b.getControl(name='files')
         add_file_multi(
             file_input,
@@ -125,7 +125,7 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
             ],
         )
         b.getForm(name='imageupload').submit()
-        folder = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01')
+        folder = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/')
         images = tuple(x for x in folder.values() if 'tmp' in x.uniqueId)
         assert len(images) == 2
         for img in images:
@@ -133,7 +133,7 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
 
     def test_redirects_after_multi_upload(self):
         b = self.browser
-        b.open('/repository/online/2007/01/Somalia/@@upload-images')
+        b.open('/repository/testcontent/@@upload-images')
         file_input = b.getControl(name='files')
         add_file_multi(
             file_input,
@@ -147,17 +147,17 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
             ],
         )
         b.getForm(name='imageupload').submit()
-        folder = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01')
+        folder = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/')
         images = tuple(x for x in folder.values() if 'tmp' in x.uniqueId)
         # We don't know the exact order of the url params
-        assert '/2007/01/@@edit-images?files=' in b.url
+        assert '/@@edit-images?files=' in b.url
         assert re.search('[&?]files=' + re.escape(images[0].__name__) + '(&|$)', b.url)
         assert re.search('[&?]files=' + re.escape(images[1].__name__) + '(&|$)', b.url)
-        assert re.search('[&?]from=Somalia(&|$)', b.url)
+        assert re.search('[&?]from=testcontent(&|$)', b.url)
 
     def test_huge_image_is_resized(self):
         b = self.browser
-        b.open('/repository/online/2007/01/Somalia/@@upload-images')
+        b.open('/repository/testcontent/@@upload-images')
         file_input = b.getControl(name='files')
         add_file_multi(
             file_input,
@@ -170,13 +170,13 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
             ],
         )
         b.getForm(name='imageupload').submit()
-        folder = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01')
+        folder = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/')
         img = next(x for x in folder.values() if 'tmp' in x.uniqueId)
         self.assertEqual((2250, 4000), img[img.master_image].getImageSize())
 
     def test_imagegroup_is_automatically_renameable(self):
         b = self.browser
-        b.open('/repository/online/2007/01/Somalia/@@upload-images')
+        b.open('/repository/testcontent/@@upload-images')
         file_input = b.getControl(name='files')
         add_file_multi(
             file_input,
@@ -189,7 +189,7 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
             ],
         )
         b.getForm(name='imageupload').submit()
-        folder = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01')
+        folder = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/')
         img = next(x for x in folder.values() if 'tmp' in x.uniqueId)
         self.assertTrue(zeit.cms.repository.interfaces.IAutomaticallyRenameable(img).renameable)
         self.assertFalse(zeit.cms.repository.interfaces.IAutomaticallyRenameable(img).rename_to)
@@ -198,7 +198,7 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
 
     def test_editimages_correctly_names_single_image(self):
         b = self.browser
-        b.open('/repository/online/2007/01/Somalia/@@upload-images')
+        b.open('/repository/testcontent/@@upload-images')
         file_input = b.getControl(name='files')
         add_file_multi(
             file_input,
@@ -211,11 +211,11 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
             ],
         )
         b.getForm(name='imageupload').submit()
-        assert b.getControl(name='target_name[0]').value == 'Somalia-bild'
+        assert b.getControl(name='target_name[0]').value == 'testcontent-bild'
 
     def test_editimages_redirects_to_single_image(self):
         b = self.browser
-        b.open('/repository/online/2007/01/Somalia/@@upload-images')
+        b.open('/repository/testcontent/@@upload-images')
         file_input = b.getControl(name='files')
         add_file_multi(
             file_input,
@@ -229,16 +229,14 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
         )
         b.getForm(name='imageupload').submit()
         b.getForm(name='edit-images').submit()
-        self.assertEndsWith('/repository/online/2007/01/somalia-bild/@@variant.html', b.url)
+        self.assertEndsWith('/repository/testcontent-bild/@@variant.html', b.url)
 
-    def test_editimages_correctly_names_single_image_for_article_that_clashes_with_existing_image(
+    def test_editimages_correctly_names_single_image_for_content_that_clashes_with_existing_image(
         self,
     ):
-        self.repository['online']['2007']['01']['Somalia-bild'] = (
-            zeit.content.image.imagegroup.ImageGroup()
-        )
+        self.repository['testcontent-bild'] = zeit.content.image.imagegroup.ImageGroup()
         b = self.browser
-        b.open('/repository/online/2007/01/Somalia/@@upload-images')
+        b.open('/repository/testcontent/@@upload-images')
         file_input = b.getControl(name='files')
         add_file_multi(
             file_input,
@@ -251,7 +249,7 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
             ],
         )
         b.getForm(name='imageupload').submit()
-        assert b.getControl(name='target_name[0]').value == 'Somalia-bild-2'
+        assert b.getControl(name='target_name[0]').value == 'testcontent-bild-2'
 
     def test_editimages_correctly_names_single_image_that_clashes_with_existing_image(self):
         self.repository['cycling-bel-renewi-bild'] = zeit.content.image.imagegroup.ImageGroup()
@@ -273,7 +271,7 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
 
     def test_editimages_correctly_shows_xmp_data(self):
         b = self.browser
-        b.open('/repository/online/2007/01/@@upload-images')
+        b.open('/repository/@@upload-images')
         file_input = b.getControl(name='files')
         add_file_multi(
             file_input,
@@ -302,7 +300,7 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
 
     def test_editimages_correctly_names_image_without_xmp_after_image_with_xmp(self):
         b = self.browser
-        b.open('/repository/online/2007/01/@@upload-images')
+        b.open('/repository/@@upload-images')
         file_input = b.getControl(name='files')
         add_file_multi(
             file_input,
@@ -321,7 +319,7 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
 
     def test_editimages_correctly_names_multiple_images_with_same_xmp(self):
         b = self.browser
-        b.open('/repository/online/2007/01/@@upload-images')
+        b.open('/repository/@@upload-images')
         file_input = b.getControl(name='files')
         add_file_multi(
             file_input,
@@ -344,7 +342,7 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
 
     def test_editimages_correctly_names_multiple_images(self):
         b = self.browser
-        b.open('/repository/online/2007/01/Somalia/@@upload-images')
+        b.open('/repository/testcontent/@@upload-images')
         file_input = b.getControl(name='files')
         add_file_multi(
             file_input,
@@ -358,12 +356,12 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
             ],
         )
         b.getForm(name='imageupload').submit()
-        assert b.getControl(name='target_name[0]').value == 'Somalia-bild-1'
-        assert b.getControl(name='target_name[1]').value == 'Somalia-bild-2'
+        assert b.getControl(name='target_name[0]').value == 'testcontent-bild-1'
+        assert b.getControl(name='target_name[1]').value == 'testcontent-bild-2'
 
     def test_editimages_correctly_names_many_images(self):
         b = self.browser
-        b.open('/repository/online/2007/01/Somalia/@@upload-images')
+        b.open('/repository/testcontent/@@upload-images')
         file_input = b.getControl(name='files')
         add_file_multi(
             file_input,
@@ -385,13 +383,13 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
             ],
         )
         b.getForm(name='imageupload').submit()
-        assert b.getControl(name='target_name[0]').value == 'Somalia-bild-01'
-        assert b.getControl(name='target_name[1]').value == 'Somalia-bild-02'
-        assert b.getControl(name='target_name[9]').value == 'Somalia-bild-10'
+        assert b.getControl(name='target_name[0]').value == 'testcontent-bild-01'
+        assert b.getControl(name='target_name[1]').value == 'testcontent-bild-02'
+        assert b.getControl(name='target_name[9]').value == 'testcontent-bild-10'
 
     def test_empty_file_name_raises_error(self):
         b = self.browser
-        b.open('/repository/online/2007/01/Somalia/@@upload-images')
+        b.open('/repository/testcontent/@@upload-images')
         file_input = b.getControl(name='files')
         add_file_multi(
             file_input,
@@ -407,11 +405,9 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
         self.assertTrue('required' in b.getControl(name='target_name[0]')._elem.attrs)
 
     def test_editimages_shows_error_on_used_file_name(self):
-        self.repository['online']['2007']['01']['somalia-bild'] = (
-            zeit.content.image.imagegroup.ImageGroup()
-        )
+        self.repository['testcontent-bild'] = zeit.content.image.imagegroup.ImageGroup()
         b = self.browser
-        b.open('/repository/online/2007/01/Somalia/@@upload-images')
+        b.open('/repository/testcontent/@@upload-images')
         file_input = b.getControl(name='files')
         add_file_multi(
             file_input,
@@ -424,16 +420,16 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
             ],
         )
         b.getForm(name='imageupload').submit()
-        b.getControl(name='target_name[0]').value = 'Somalia-bild'
+        b.getControl(name='target_name[0]').value = 'testcontent-bild'
         b.getForm(name='edit-images').submit()
-        self.assertEqual(b.getControl(name='target_name[0]').value, 'somalia-bild')
+        self.assertEqual(b.getControl(name='target_name[0]').value, 'testcontent-bild')
         self.assertEllipsis(
             '...<span class="error">File name is already in use</span>...', b.contents
         )
 
     def test_editimages_shows_error_on_duplicate_file_name(self):
         b = self.browser
-        b.open('/repository/online/2007/01/Somalia/@@upload-images')
+        b.open('/repository/testcontent/@@upload-images')
 
         file_input = b.getControl(name='files')
         add_file_multi(
@@ -452,18 +448,18 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
             ],
         )
         b.getForm(name='imageupload').submit()
-        b.getControl(name='target_name[0]').value = 'Somalia-bild'
-        b.getControl(name='target_name[1]').value = 'Somalia-bild'
+        b.getControl(name='target_name[0]').value = 'testcontent-bild'
+        b.getControl(name='target_name[1]').value = 'testcontent-bild'
         b.getForm(name='edit-images').submit()
-        self.assertEqual(b.getControl(name='target_name[0]').value, 'somalia-bild')
-        self.assertEqual(b.getControl(name='target_name[1]').value, 'somalia-bild')
+        self.assertEqual(b.getControl(name='target_name[0]').value, 'testcontent-bild')
+        self.assertEqual(b.getControl(name='target_name[1]').value, 'testcontent-bild')
         self.assertEllipsis(
             '...<span class="error">File name is already in use</span>...', b.contents
         )
 
     def test_editimages_deletes_files_on_cancel(self):
         b = self.browser
-        b.open('/repository/online/2007/01/Somalia/@@upload-images')
+        b.open('/repository/testcontent/@@upload-images')
         file_input = b.getControl(name='files')
         add_file_multi(
             file_input,
@@ -477,14 +473,14 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
         )
         b.getForm(name='imageupload').submit()
         b.getForm(name='edit-images').getControl(name='cancel').click()
-        folder = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01')
+        folder = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/')
         images = tuple(x for x in folder.values() if 'tmp' in x.uniqueId or '-bild' in x.uniqueId)
         assert len(images) == 0
-        assert b.url.endswith('/repository/online/2007/01/')
+        assert b.url.endswith('/repository/')
 
     def test_editimages_normalizes_user_input_file_name(self):
         b = self.browser
-        b.open('/repository/online/2007/01/Somalia/@@upload-images')
+        b.open('/repository/@@upload-images')
         file_input = b.getControl(name='files')
         add_file_multi(
             file_input,
@@ -499,9 +495,7 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
         b.getForm(name='imageupload').submit()
         b.getControl(name='target_name[0]').value = 'this is not normal(ized)'
         b.getForm(name='edit-images').submit()
-        assert zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/online/2007/01/this-is-not-normal-ized'
-        )
+        assert zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/this-is-not-normal-ized')
 
 
 class AddCentralImageUploadTest(zeit.content.image.testing.SeleniumTestCase):
