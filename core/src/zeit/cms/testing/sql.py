@@ -1,9 +1,9 @@
 import os
 import time
 
-from gcp_storage_emulator.server import create_server as create_gcp_server
 from sqlalchemy import text as sql
 from sqlalchemy.exc import OperationalError
+import gcp_storage_emulator.server
 import sqlalchemy
 import transaction
 import zope.component
@@ -101,19 +101,22 @@ class GCSServerLayer(Layer):
     bucket = 'vivi-test'
 
     def setUp(self):
-        self['gcp_server'] = create_gcp_server(
-            'localhost', 0, in_memory=True, default_bucket=self.bucket
+        self['gcp_storage'] = gcp_storage_emulator.storage.Storage(use_memory_fs=True)
+        gcp_storage_emulator.handlers.buckets.create_bucket(self.bucket, self['gcp_storage'])
+        self['gcp_server'] = gcp_storage_emulator.server.APIThread(
+            'localhost', 0, self['gcp_storage']
         )
         self['gcp_server'].start()
-        _, port = self['gcp_server']._api._httpd.socket.getsockname()
+        self['gcp_server'].is_running.wait()
+        _, port = self['gcp_server']._httpd.socket.getsockname()
         # Evaluated automatically by google.cloud.storage.Client
         os.environ['STORAGE_EMULATOR_HOST'] = 'http://localhost:%s' % port
 
     def testSetUp(self):
-        self['gcp_server'].wipe(keep_buckets=True)
+        self['gcp_storage'].wipe(keep_buckets=True)
 
     def tearDown(self):
-        self['gcp_server'].stop()
+        self['gcp_server'].join(timeout=1)
         del self['gcp_server']
 
 
