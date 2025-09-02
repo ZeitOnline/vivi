@@ -22,9 +22,6 @@ class FormTest(zeit.content.author.testing.BrowserTestCase):
         self.patch.stop()
         super().tearDown()
 
-    def open(self, tail):
-        self.browser.open('http://localhost/++skin++vivi' + tail)
-
     def add_william(self, browser=None, vgwort_id='12345'):
         b = self.browser if browser is None else browser
         b.getControl('Firstname').value = 'William'
@@ -74,7 +71,7 @@ class FormTest(zeit.content.author.testing.BrowserTestCase):
         # authors is a configurable path and X the first character of the
         # lastname (uppercased).
         b = self.browser
-        self.open('/@@zeit.content.author.add_contextfree')
+        b.open('/@@zeit.content.author.add_contextfree')
         self.assertNotIn('File name', b.contents)
         self.add_william()
         self.assertEqual(
@@ -96,7 +93,7 @@ class FormTest(zeit.content.author.testing.BrowserTestCase):
 
     def test_folder_name_validation(self):
         b = self.browser
-        self.open('/@@zeit.content.author.add_contextfree')
+        b.open('/@@zeit.content.author.add_contextfree')
         self.assertNotIn('File name', b.contents)
         self.add_joerg()
         self.assertEqual(
@@ -107,9 +104,9 @@ class FormTest(zeit.content.author.testing.BrowserTestCase):
 
     def test_folder_listing_after_adding_author(self):
         b = self.browser
-        self.open('/@@zeit.content.author.add_contextfree')
+        b.open('/@@zeit.content.author.add_contextfree')
         self.add_william()
-        self.open('/repository/foo/bar/authors/S/William_Shakespeare/')
+        b.open('/repository/foo/bar/authors/S/William_Shakespeare/')
         self.assertEllipsis(
             """...
             <td>
@@ -122,7 +119,7 @@ class FormTest(zeit.content.author.testing.BrowserTestCase):
     @unittest.skip('needs to use Selenium to control ObjectSequenceWidget')
     def test_security_smoke_test(self):
         b = self.browser
-        self.open('/repository/testcontent')
+        b.open('/repository/testcontent')
         b.getLink('Checkout').click()
         b.getControl('Add Authors', index=0).click()
 
@@ -161,8 +158,9 @@ class FormTest(zeit.content.author.testing.BrowserTestCase):
         self.assertEqual('answer', b.getControl('Das treibt mich an').value)
 
     def test_edit_form_does_not_show_firstname_lastname_as_display_name(self):
-        self.open('/@@zeit.content.author.add_contextfree')
+        b = self.browser
+        b.open('/@@zeit.content.author.add_contextfree')
         self.add_william()
-        self.open('/repository/foo/bar/authors/S/William_Shakespeare/index/@@checkout')
+        b.open('/repository/foo/bar/authors/S/William_Shakespeare/index/@@checkout')
         b = self.browser
         self.assertEqual('', b.getControl('Display name').value)
