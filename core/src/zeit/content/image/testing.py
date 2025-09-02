@@ -7,6 +7,7 @@ import webtest.forms
 import zope.component
 
 import zeit.cms.repository.interfaces
+import zeit.cms.testcontenttype.testcontenttype
 import zeit.cms.testing
 import zeit.content.image.image
 import zeit.content.image.imagegroup

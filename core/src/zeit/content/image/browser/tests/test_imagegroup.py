@@ -210,6 +210,15 @@ class ImageGroupBrowserTest(zeit.content.image.testing.BrowserTestCase, ImageGro
         self.save_imagegroup()
         self.assertEllipsis('...Unsupported image type...', self.browser.contents)
 
+    def test_new_image_upload_is_not_present_for_imagegroup(self):
+        self.add_imagegroup()
+        self.upload_primary_image('shoppingmeile_2251x4001px.jpg')
+        self.save_imagegroup()
+        b = self.browser
+        b.open('http://localhost/++skin++vivi/repository/imagegroup/@@view.html')
+        menu = b.getControl(name='add_menu')
+        self.assertNotIn('Image (new)', menu.displayOptions)
+
 
 class ImageGroupWebdriverTest(zeit.content.image.testing.SeleniumTestCase):
     def setUp(self):

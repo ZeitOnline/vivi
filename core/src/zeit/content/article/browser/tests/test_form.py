@@ -185,3 +185,9 @@ class DefaultView(zeit.content.article.testing.BrowserTestCase):
         b = self.browser
         b.open('http://localhost/++skin++vivi/repository/online/2007/01/Somalia/@@checkout')
         self.assertEllipsis('...<div id="cp-content">...', b.contents)
+
+    def test_article_can_access_images_upload_form(self):
+        b = self.browser
+        b.open('/repository/online/2007/01/Somalia/@@upload-images')
+        # The "context views/actions" menu is hidden for this view
+        self.assertNotEllipsis('...Checkout...', b.contents)

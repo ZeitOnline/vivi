@@ -426,6 +426,12 @@
     class=".imageupload.UploadForm"
     permission="zeit.AddContent"
     template="imageupload.upload-images.pt"
+    />
+
+  <browser:menuItem
+    for="zeit.cms.repository.interfaces.IFolder"
+    action="@@upload-images"
+    permission="zeit.AddContent"
     menu="zeit-add-menu" title="Image (new)"
     />
 
