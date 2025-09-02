@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.174.0 (2025-09-02)
+--------------------
+
+- WCM-1001: memo field for images
+
+
 7.173.0 (2025-08-28)
 --------------------
 
