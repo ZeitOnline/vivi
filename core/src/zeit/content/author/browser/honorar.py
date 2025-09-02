@@ -170,21 +170,21 @@ class HonorarReports(zeit.cms.browser.view.Base):
             )
         )
         content_authors = {
-            x[1]: x[0].replace('http://xml.zeit.de', 'https://www.zeit.de', 1) for x in result
+            x[2]: x[0].replace('http://xml.zeit.de', 'https://www.zeit.de', 1) for x in result
         }
 
         csv_rows = io.StringIO()
         for item in hdok_authors_deleted:
-            deleted = item['geloeschtGCID']
-            replaced = item['refGCID']
+            deleted = str(item['geloeschtGCID'])
+            replaced = str(item['refGCID'])
             if deleted not in content_authors:
                 continue
             csv_rows.write(
                 ';'.join(
                     [
-                        str(deleted),
+                        deleted,
                         content_authors[deleted],
-                        str(replaced),
+                        replaced,
                         content_authors.get(replaced, ''),
                     ]
                 )

@@ -151,8 +151,8 @@ class ReportInvalidGCIDs(zeit.content.author.testing.BrowserTestCase):
 class CSVRendering(zeit.retresco.testing.FunctionalTestCase):
     def test_invalid_gcids_api_request_builds_correct_csv_report(self):
         self.repository.connector.search_result = [
-            ('http://xml.zeit.de/autoren/P/Sophia_Phildius/index', 123),
-            ('http://xml.zeit.de/autoren/M/Yasmine_MBarek/index', 10055333),
+            ('http://xml.zeit.de/autoren/P/Sophia_Phildius/index', '123'),
+            ('http://xml.zeit.de/autoren/M/Yasmine_MBarek/index', '10055333'),
         ]
         api = zope.component.getUtility(zeit.content.author.interfaces.IHonorar)
         api.invalid_gcids.return_value = [
