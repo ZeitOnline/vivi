@@ -285,7 +285,12 @@ class Content(
         )
 
     id = mapped_column(Uuid(as_uuid=False), primary_key=True)
-    type = mapped_column(Unicode, nullable=False, server_default='unknown')
+    type = mapped_column(
+        Unicode,
+        nullable=False,
+        server_default='unknown',
+        info={'namespace': 'meta', 'name': 'type'},
+    )
     is_collection = mapped_column(Boolean, nullable=False, server_default='false')
 
     body = mapped_column(UnicodeText)

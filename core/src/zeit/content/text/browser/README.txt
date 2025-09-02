@@ -6,7 +6,7 @@ Add a new text:
 >>> import zeit.cms.testing
 >>> browser = zeit.cms.testing.Browser(layer['wsgi_app'])
 >>> browser.login('user', 'userpw')
->>> browser.open('http://localhost/++skin++cms/repository/2006')
+>>> browser.open('/repository')
 >>> menu = browser.getControl(name='add_menu')
 >>> menu.displayValue = ['Plain text']
 >>> browser.open(menu.value[0])
@@ -74,8 +74,7 @@ MIME type is editable:
 
 Verify the metdata preview:
 
->>> browser.open('http://localhost/++skin++cms/repository/2006/'
-...              'render.xslt/metadata_preview')
+>>> browser.open('/repository/render.xslt/metadata_preview')
 >>> print(browser.contents)
   <div...
     <p>
@@ -86,8 +85,8 @@ Verify the metdata preview:
 
 We have a special icon:
 
->>> browser.open('http://localhost/++skin++cms/repository/2006/')
+>>> browser.open('/repository')
 >>> print(browser.contents)
 <?xml...
-       <img src="http://localhost/++skin++cms/@@/zeit-content-text-interfaces-IText-zmi_icon.png" alt="Text" width="20" height="20" border="0" />
+       <img src="http://localhost/++skin++vivi/@@/zeit-content-text-interfaces-IText-zmi_icon.png" alt="Text" width="20" height="20" border="0" />
        ...

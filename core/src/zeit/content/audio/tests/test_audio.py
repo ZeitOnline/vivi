@@ -6,6 +6,7 @@ from zeit.cms.checkout.helper import checked_out
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
 from zeit.content.audio.interfaces import Podcast, PodcastSource
 from zeit.content.audio.testing import AudioBuilder, FunctionalTestCase
+from zeit.content.image.testing import create_local_image
 import zeit.cms.content.interfaces
 import zeit.cms.content.sources
 import zeit.cms.interfaces
@@ -31,7 +32,7 @@ class PodcastSourceTest(FunctionalTestCase):
             '1234',
             'A podcast of cat jokes',
             'e5ded8',
-            'http://xml.zeit.de/2006/DSC00109_2.JPG',
+            'http://xml.zeit.de/pawdcast-image',
             distribution_channels,
             'https://feeds.example.com/aRDC72E_',
             True,
@@ -51,15 +52,17 @@ class PodcastSourceTest(FunctionalTestCase):
         self.assertEqual((), audio.authorships)
 
     def test_get_podcast_image(self):
+        self.repository['pawdcast-image'] = create_local_image()
+
         audio = AudioBuilder().build()
         images = zeit.content.image.interfaces.IImages(audio)
-        assert images.image.uniqueId == 'http://xml.zeit.de/2006/DSC00109_2.JPG'
+        assert images.image.uniqueId == 'http://xml.zeit.de/pawdcast-image'
         assert images.fill_color == 'e5ded8', (
             'Fill color should match color audio/tests/fixtures/podcasts.xml'
         )
         podcast = zeit.content.audio.interfaces.IPodcastEpisodeInfo(audio).podcast
         images = zeit.content.image.interfaces.IImages(podcast)
-        assert images.image.uniqueId == 'http://xml.zeit.de/2006/DSC00109_2.JPG'
+        assert images.image.uniqueId == 'http://xml.zeit.de/pawdcast-image'
         assert images.fill_color == 'e5ded8', (
             'Fill color should match color audio/tests/fixtures/podcasts.xml'
         )
@@ -88,17 +91,14 @@ class WorkflowTest(FunctionalTestCase):
 class SpeechTest(FunctionalTestCase):
     def setUp(self):
         super().setUp()
-        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
-        uuid = zeit.cms.content.interfaces.IUUID(article).shortened
-        AudioBuilder().with_audio_type('tts').with_article_uuid(uuid).build()
+        self.uuid = zeit.cms.content.interfaces.IUUID(self.repository['testcontent']).shortened
+        AudioBuilder().with_audio_type('tts').with_article_uuid(self.uuid).build()
 
     def test_create_tts_audio(self):
-        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
-        uuid = zeit.cms.content.interfaces.IUUID(article)
         audio = self.repository['audio']
         speechinfo = zeit.content.audio.interfaces.ISpeechInfo(audio)
         self.assertEqual(audio.audio_type, 'tts')
-        self.assertEqual(speechinfo.article_uuid, uuid.shortened)
+        self.assertEqual(speechinfo.article_uuid, self.uuid)
         self.assertEqual(speechinfo.preview_url, 'https://example-preview-url.bert')
         self.assertTrue(speechinfo.checksum, '123foo')
 

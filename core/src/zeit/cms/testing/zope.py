@@ -19,6 +19,7 @@ import zope.component.hooks
 import zope.processlifetime
 import zope.security.testing
 
+import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.wsgi
 
@@ -272,8 +273,15 @@ class ZopeLayer(Layer):
     def setUp(self):
         zope.event.notify(zope.processlifetime.DatabaseOpened(self['zodbDB-layer']))
         transaction.commit()
-        with self.rootFolder(self['zodbDB-layer']):
-            pass
+        with self.rootFolder(self['zodbDB-layer']) as root:
+            with site(root):
+                repository = zope.component.queryUtility(zeit.cms.repository.interfaces.IRepository)
+                typ = zope.component.queryUtility(
+                    zeit.cms.interfaces.ITypeDeclaration, name='testcontenttype'
+                )
+                # Skip for e.g. zeit.connector, zeit.securitypolicy.
+                if repository is not None and typ is not None:
+                    repository['testcontent'] = typ.factory()
         self['rootFolder'] = self.rootFolder
 
     def tearDown(self):

@@ -15,23 +15,23 @@ def test_display_mode(display_mode):
 
 class AnimationTest(zeit.content.animation.testing.FunctionalTestCase):
     def test_article_reference(self):
-        article = self.article
+        article = self.repository['article']
         animation = zeit.content.animation.animation.Animation()
         animation.article = article
         assert animation.title == article.title
 
     def test_image_references(self):
-        image = ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')
-        image2 = ICMSContent('http://xml.zeit.de/2006/DSC00109_3.JPG')
-        article = self.article
+        image1 = ICMSContent('http://xml.zeit.de/image1')
+        image2 = ICMSContent('http://xml.zeit.de/image2')
+        article = self.repository['article']
         animation = zeit.content.animation.animation.Animation()
         animation.article = article
-        animation.images = (image, image2)
+        animation.images = (image1, image2)
         assert len(animation.xml.findall('body/image')) == 2
-        assert animation.xml.find('body/image').get('type') == 'JPG'
+        assert animation.xml.find('body/image').get('type') == 'jpeg'
 
     def test_genre_attribute(self):
-        article = self.article
+        article = self.repository['article']
         animation = zeit.content.animation.animation.Animation()
         animation.article = article
         assert animation.genre == article.genre

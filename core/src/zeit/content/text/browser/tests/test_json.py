@@ -9,7 +9,7 @@ import zeit.content.text.testing
 class JSONBrowserTest(zeit.content.text.testing.BrowserTestCase):
     def test_add_json(self):
         b = self.browser
-        b.open('http://localhost/++skin++cms/repository/2006')
+        b.open('/repository')
         menu = b.getControl(name='add_menu')
         menu.displayValue = ['JSON file']
         b.open(menu.value[0])
@@ -35,7 +35,7 @@ class JSONValidationTest(zeit.content.text.testing.BrowserTestCase):
     def test_validate_against_schema(self):
         self.repository['foo'] = zeit.content.text.json.JSON()
         browser = self.browser
-        browser.open('http://localhost/++skin++cms/repository/foo')
+        browser.open('/repository/foo')
         browser.getLink('Checkout').click()
         self.assertEllipsis('...Validate...', browser.contents)
         browser.getControl('Content').value = '"{urn:uuid:d995ba5a}"'
@@ -51,7 +51,7 @@ class JSONValidationTest(zeit.content.text.testing.BrowserTestCase):
     def test_validation_error_results_in_checkin_error(self):
         self.repository['foo'] = zeit.content.text.json.JSON()
         browser = self.browser
-        browser.open('http://localhost/++skin++cms/repository/foo')
+        browser.open('/repository/foo')
         browser.getLink('Checkout').click()
         browser.getControl('Content').value = '"{uuid:d995ba5a}"'
         browser.getControl('Apply').click()

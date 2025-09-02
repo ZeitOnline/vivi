@@ -30,7 +30,7 @@ WSGI_LAYER = zeit.cms.testing.WSGILayer(ZOPE_LAYER)
 
 SQL_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     config_file='ftesting-mock.zcml',
-    features=['zeit.connector.sql'],
+    features=['zeit.connector.sql.zope'],
     bases=CONFIG_LAYER,
 )
 SQL_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(SQL_ZCML_LAYER)

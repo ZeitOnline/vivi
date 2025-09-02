@@ -38,14 +38,16 @@ takes precedence:
 
 The author image group is stored using the IImages interface.
 
+>>> from zeit.content.image.testing import create_image_group
+>>> repository['image'] = create_image_group()
 >>> images = zeit.content.image.interfaces.IImages(shakespeare)
->>> images.image = repository['2007']['03']['group']
+>>> images.image = repository['image']
 >>> repository['shakespeare'] = shakespeare
 >>> shakespeare = repository['shakespeare']
 >>> print(zeit.cms.testing.xmltotext(shakespeare.xml))
 <author...>
   ...
-  <image_group base-id="http://xml.zeit.de/2007/03/group" type="jpg"/>
+  <image_group base-id="http://xml.zeit.de/image" type="jpg"/>
 </author>
 
 Using authors
@@ -53,12 +55,14 @@ Using authors
 
 The field authorships on ICommonMetadata is used to store authors.
 
->>> import zope.lifecycleevent
 >>> from zeit.cms.content.interfaces import ICommonMetadata
+>>> import transaction
+>>> import zope.lifecycleevent
 >>> with zeit.cms.checkout.helper.checked_out(repository['testcontent']) as co:
 ...     co.authorships = [co.authorships.create(shakespeare)]
 ...     zope.lifecycleevent.modified(co, zope.lifecycleevent.Attributes(
 ...         ICommonMetadata, 'authorships'))
+>>> transaction.commit()
 >>> print(zeit.cms.testing.xmltotext(repository['testcontent'].xml))
 <testtype>
   <head>
@@ -75,6 +79,7 @@ Changes to author objects are propagated to content on checkin:
 ...     co.lastname = 'Otherwise'
 >>> with zeit.cms.checkout.helper.checked_out(repository['testcontent']):
 ...     pass
+>>> transaction.commit()
 
 
 Publishing
@@ -84,6 +89,7 @@ Authors are published along with the articles that reference them:
 
 >>> with zeit.cms.checkout.helper.checked_out(repository['testcontent']) as co:
 ...     co.authorships = [co.authorships.create(repository['shakespeare'])]
+>>> transaction.commit()
 
 >>> import zeit.cms.workflow.interfaces
 >>> zeit.cms.workflow.interfaces.IPublicationDependencies(

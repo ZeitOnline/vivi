@@ -1,7 +1,6 @@
 # coding: utf-8
 import importlib.resources
 
-import transaction
 import zope.component
 
 from zeit.cms.repository.unknown import PersistentUnknownResource
@@ -12,7 +11,9 @@ import zeit.cms.testing
 import zeit.content.cp.testing
 
 
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(zeit.content.cp.testing.CONFIG_LAYER)
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
+    zeit.content.cp.testing.CONFIG_LAYER, features=['zeit.connector.sql.zope']
+)
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
 
 
@@ -24,13 +25,17 @@ class DynamicLayer(zeit.cms.testing.Layer):
         self.path = path
         self.files = files
 
-    def testSetUp(self):
-        with zeit.cms.testing.site(self['zodbApp']):
-            repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
-            repository['dynamicfolder'] = create_dynamic_folder(
-                __package__ + ':' + self.path, self.files
-            )
-            transaction.commit()
+    def setUp(self):
+        self['gcs_storage'].stack_push()
+        with self['rootFolder'](self['zodbDB-layer']) as root:
+            with zeit.cms.testing.site(root):
+                repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
+                repository['dynamicfolder'] = create_dynamic_folder(
+                    __package__ + ':' + self.path, self.files
+                )
+
+    def tearDown(self):
+        self['gcs_storage'].stack_pop()
 
 
 def create_dynamic_folder(package, files):

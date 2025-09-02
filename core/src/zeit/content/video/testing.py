@@ -9,7 +9,7 @@ import zeit.push.testing
 
 
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer({}, bases=zeit.push.testing.CONFIG_LAYER)
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER)
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER, features=['zeit.connector.sql.zope'])
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
 PUSH_LAYER = zeit.push.testing.UrbanairshipTemplateLayer(ZOPE_LAYER)
 
@@ -52,14 +52,14 @@ def FunctionalDocFileSuite(*args, **kw):
 
 
 def video_factory(self):
-    from zeit.content.image.testing import create_image_group_with_master_image
+    from zeit.content.image.testing import create_image_group
     from zeit.content.video.video import Video
 
     with zeit.cms.testing.site(self.getRootFolder()):
         with zeit.cms.testing.interaction():
             video = Video()
             img = zeit.content.image.interfaces.IImages(video)
-            img.image = create_image_group_with_master_image()
+            img.image = create_image_group()
             yield video
             self.repository['video'] = video
     yield self.repository['video']

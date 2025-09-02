@@ -4,7 +4,7 @@ import zeit.content.markup.testing
 class MarkupTest(zeit.content.markup.testing.BrowserTestCase):
     def test_add_markup(self):
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/online/2007/01/')
+        b.open('/repository')
         menu = b.getControl(name='add_menu')
         menu.displayValue = ['Markup']
         b.open(menu.value[0])
@@ -32,7 +32,7 @@ class MarkupTest(zeit.content.markup.testing.BrowserTestCase):
         self.test_add_markup()
         b = self.browser
         for md, html in self.smoke:
-            b.open('http://localhost/repository/online/2007/01/test-markdown/@@checkout')
+            b.open('/repository/test-markdown/@@checkout')
             b.getControl('Markdown content').value = md
             b.getControl('Apply').click()
             self.assertNotIn('There were errors', b.contents)

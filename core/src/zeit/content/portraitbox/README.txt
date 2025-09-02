@@ -34,9 +34,11 @@ True
 
 Set data:
 
+>>> import zeit.content.image.testing
 >>> pb.name = 'Hans Wurst'
 >>> pb.text = '<p><strong>Hans Wurst</strong> wursted hansig.</p>'
->>> pb.image = repository['2006']['DSC00109_2.JPG']
+>>> repository['image'] = zeit.content.image.testing.create_local_image()
+>>> pb.image = repository['image']
 >>> print(zeit.cms.testing.xmltotext(pb.xml))
 <container layout="artbox" label="portrait">
   <block>
@@ -45,7 +47,7 @@ Set data:
       <p>
       <strong>Hans Wurst</strong> wursted hansig.</p>
     </text>
-    <image ...src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG"/>
+    <image ...src="http://xml.zeit.de/image" type="jpeg"/>
   </block>
 </container>
 
