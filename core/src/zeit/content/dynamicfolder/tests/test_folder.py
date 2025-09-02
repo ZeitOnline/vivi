@@ -103,6 +103,7 @@ class TestDynamicFolder(zeit.content.dynamicfolder.testing.FunctionalTestCase):
         self.assertEqual('Xanten', self.folder['xanten'].title)
         with checked_out(self.folder['xanten']) as co:
             co.title = 'foo'
+        transaction.commit()
         self.assertEqual('foo', self.folder['xanten'].title)
 
     def test_unconfigured_folder_does_not_break_due_to_missing_config(self):
@@ -213,6 +214,7 @@ class TestDynamicFolder(zeit.content.dynamicfolder.testing.FunctionalTestCase):
         with checked_out(self.folder['xanten']) as co:
             self.assertEqual('seo-title', zeit.seo.interfaces.ISEO(co).html_title)
             zeit.seo.interfaces.ISEO(co).html_title = 'changed'
+        transaction.commit()
         self.assertEqual('changed', zeit.seo.interfaces.ISEO(self.folder['xanten']).html_title)
 
     def test_does_not_break_on_erroneous_config(self):
@@ -275,6 +277,7 @@ class MaterializeDynamicFolder(zeit.cms.testing.FunctionalTestCase):
         )
         with checked_out(self.folder['wahlergebnis-kiel-wahlkreis-5-live']) as co:
             co.title = 'foo'
+        transaction.commit()
         self.assertEqual('foo', self.folder['wahlergebnis-kiel-wahlkreis-5-live'].title)
         self.assertTrue(
             DFinterfaces.IMaterializedContent.providedBy(
@@ -333,6 +336,7 @@ class MaterializeDynamicFolder(zeit.cms.testing.FunctionalTestCase):
         transaction.commit()
         with checked_out(self.folder['wahlergebnis-kiel-wahlkreis-5-live']) as co:
             co.title = 'foo'
+        transaction.commit()
         self.assertEqual('foo', self.folder['wahlergebnis-kiel-wahlkreis-5-live'].title)
         zeit.content.dynamicfolder.materialize.materialize_content(self.folder)
         transaction.commit()
@@ -349,6 +353,7 @@ class MaterializeDynamicFolder(zeit.cms.testing.FunctionalTestCase):
         self.repository['dynamicfolder']['config.xml'] = self.repository['data']['config.xml']
         with checked_out(self.folder) as co:
             co.config_file = self.repository['dynamicfolder']['config.xml']
+        transaction.commit()
         zeit.content.dynamicfolder.materialize.materialize_content(self.folder)
         del self.repository['dynamicfolder']['config.xml']
         transaction.commit()

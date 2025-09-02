@@ -1,5 +1,6 @@
 import string
 
+import transaction
 import zope.event
 import zope.lifecycleevent
 
@@ -26,6 +27,7 @@ class MarkupTest(zeit.content.markup.testing.FunctionalTestCase):
             co.authorships = [co.authorships.create(self.repository['author'])]
             co.title = 'bah'
             co.text = '<h1>baz</h1>'
+        transaction.commit()
 
         self.assertEqual('bah', self.repository['markup'].title)
         self.assertEqual('Ursula', self.repository['markup'].authorships[0].target.firstname)
@@ -37,7 +39,7 @@ class MarkupTest(zeit.content.markup.testing.FunctionalTestCase):
         self.repository['markup'] = markup
         with checked_out(self.repository['markup']) as co:
             co.text = ' '.join(string.ascii_lowercase)
-
+        transaction.commit()
         self.assertEqual('a b c d e f g h i j ...', self.repository['markup'].teaserText)
 
     def test_teaser_text_shows_nothing_if_text_is_missing(self):
@@ -50,5 +52,5 @@ class MarkupTest(zeit.content.markup.testing.FunctionalTestCase):
         self.repository['markup'] = markup
         with checked_out(self.repository['markup']) as co:
             co.text = 'a b'
-
+        transaction.commit()
         self.assertEqual('a b', self.repository['markup'].teaserText)

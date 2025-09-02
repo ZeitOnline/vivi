@@ -10,7 +10,7 @@ class EmbedBrowserTest(zeit.content.text.testing.BrowserTestCase):
 
     def test_add_embed(self):
         b = self.browser
-        b.open('http://localhost/++skin++cms/repository/2006')
+        b.open('/repository')
         menu = b.getControl(name='add_menu')
         menu.displayValue = ['Embed']
         b.open(menu.value[0])
@@ -29,12 +29,12 @@ class EmbedBrowserTest(zeit.content.text.testing.BrowserTestCase):
 
     def test_special_permission_is_required_to_add_embed_via_addcentral(self):
         b = self.browser
-        b.open('http://localhost/++skin++vivi/@@addcentral')
+        b.open('/@@addcentral')
         self.assertIn('Embed', b.getControl('Type').displayOptions)
 
         b = zeit.cms.testing.Browser(self.layer['wsgi_app'])
         b.login('user', 'userpw')
-        b.open('http://localhost/++skin++vivi/@@addcentral')
+        b.open('/@@addcentral')
         self.assertNotIn('Embed', b.getControl('Type').displayOptions)
 
     def test_special_permission_is_required_to_edit_embed(self):
@@ -42,13 +42,13 @@ class EmbedBrowserTest(zeit.content.text.testing.BrowserTestCase):
         embed.text = ''
         self.repository['embed'] = embed
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/embed')
+        b.open('/repository/embed')
         with self.assertNothingRaised():
             b.getLink('Checkout')
 
         b = zeit.cms.testing.Browser(self.layer['wsgi_app'])
         b.login('user', 'userpw')
-        b.open('http://localhost/++skin++vivi/repository/embed')
+        b.open('/repository/embed')
         with self.assertRaises(LinkNotFoundError):
             b.getLink('Checkout')
 
@@ -57,7 +57,7 @@ class EmbedBrowserTest(zeit.content.text.testing.BrowserTestCase):
         embed.text = ''
         self.repository['embed'] = embed
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/embed')
+        b.open('/repository/embed')
         b.getLink('Checkout').click()
         b.getLink('Edit embed parameters').click()
         b.getControl('Contains thirdparty code').displayValue = ['yes']

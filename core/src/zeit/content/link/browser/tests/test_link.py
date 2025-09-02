@@ -1,3 +1,4 @@
+from zeit.content.image.testing import create_image_group
 import zeit.cms.config
 import zeit.content.link.link
 import zeit.content.link.testing
@@ -9,11 +10,14 @@ class TestForm(zeit.content.link.testing.BrowserTestCase):
         link.ressort = 'Politik'
         link.teaserTitle = 'gocept homepage'
         link.url = 'http://gocept.com'
-        self.repository['online']['2007']['01']['gocept.link'] = link
+        self.repository['gocept.link'] = link
 
     def test_adding_link_stores_values(self):
+        with zeit.cms.testing.site(self.getRootFolder()):
+            self.repository['image'] = create_image_group()
+
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/2006/')
+        b.open('/repository')
         menu = b.getControl(name='add_menu')
         menu.displayValue = ['Link']
         b.open(menu.value[0])
@@ -22,7 +26,7 @@ class TestForm(zeit.content.link.testing.BrowserTestCase):
         b.getControl('Ressort', index=0).displayValue = ['Leben']
         b.getControl('Link address').value = 'http://gocept.com'
         b.getControl('HTTP Status Code').displayValue = ['307']
-        b.getControl(name='form.image').value = 'http://xml.zeit.de/2007/03/group'
+        b.getControl(name='form.image').value = 'http://xml.zeit.de/image'
         b.getControl(name='form.actions.add').click()
         self.assertFalse('There were errors' in b.contents)
         b.getLink('Source').click()
@@ -34,18 +38,18 @@ class TestForm(zeit.content.link.testing.BrowserTestCase):
             """
         <link...
         <head>...
-            <image base-id="http://xml.zeit.de/2007/03/group" type="jpg"/>...
+            <image base-id="http://xml.zeit.de/image" type="jpg"/>...
          """,
             xml,
         )
         b.getLink('Checkin').click()
         self.assertFalse('There were errors' in b.contents)
-        self.assertTrue('/2006/gocept.link' in b.url)
+        self.assertTrue('gocept.link' in b.url)
 
     def test_checks_for_invalid_hostnames(self):
         zeit.cms.config.set('zeit.cms', 'invalid-link-targets', 'example.com other.com')
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/2006/')
+        b.open('/repository')
         menu = b.getControl(name='add_menu')
         menu.displayValue = ['Link']
         b.open(menu.value[0])

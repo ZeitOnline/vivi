@@ -11,7 +11,7 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
     },
     bases=zeit.push.testing.CONFIG_LAYER,
 )
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER)
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER, features=['zeit.connector.sql.zope'])
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
 PUSH_LAYER = zeit.push.testing.UrbanairshipTemplateLayer(ZOPE_LAYER)
 LAYER = zeit.cms.testing.Layer(PUSH_LAYER)

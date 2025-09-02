@@ -22,16 +22,11 @@ class AuthorTest(zeit.content.author.testing.FunctionalTestCase):
     def test_author_exists(self):
         Author = zeit.content.author.author.Author
         self.assertFalse(Author.exists('William', 'Shakespeare'))
-        ((_, query, *_),) = self.repository.connector.search_dav_args
-        self.assertEllipsis(
-            """(:and
-(:eq "http://namespaces.zeit.de/CMS/meta" "type" "author")
-(:eq "http://namespaces.zeit.de/CMS/author" "firstname" "William")
-(:eq "http://namespaces.zeit.de/CMS/author" "lastname" "Shakespeare"))""",
-            query._render(),
-        )
 
-        self.repository.connector.search_result = ['http://xml.zeit.de/exists']
+        author = Author()
+        author.firstname = 'William'
+        author.lastname = 'Shakespeare'
+        self.repository['shakespeare'] = author
         self.assertTrue(Author.exists('William', 'Shakespeare'))
 
     def test_author_id_is_not_too_big_validation(self):

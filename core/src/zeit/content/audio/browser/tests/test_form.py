@@ -4,7 +4,7 @@ import zeit.content.image.testing
 
 class TestAudioForm(zeit.content.audio.testing.BrowserTestCase):
     def add_podcast_audio(self):
-        self.browser.open('/repository/online/2007/01')
+        self.browser.open('/repository')
         menu = self.browser.getControl(name='add_menu')
         menu.displayValue = ['Audio']
         self.browser.open(menu.value[0])
@@ -53,7 +53,7 @@ class TestAudioForm(zeit.content.audio.testing.BrowserTestCase):
         )
 
     def test_add_tts_audio(self):
-        self.browser.open('/repository/online/2007/01')
+        self.browser.open('/repository')
         menu = self.browser.getControl(name='add_menu')
         menu.displayValue = ['Audio']
         self.browser.open(menu.value[0])
@@ -64,7 +64,7 @@ class TestAudioForm(zeit.content.audio.testing.BrowserTestCase):
         self.browser.getControl('Duration').value = 123
         # TTS specific fields
         self.browser.getControl(label='URL', index=2).value = 'http://preview-example.com/cats.mp3'
-        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/testcontent')
         uuid = zeit.cms.content.interfaces.IUUID(article)
         self.browser.getControl('Article uuid').value = uuid.id
         self.browser.getControl('Checksum').value = '123foo'
@@ -72,7 +72,7 @@ class TestAudioForm(zeit.content.audio.testing.BrowserTestCase):
         assert 'There were errors' not in self.browser.contents
 
     def test_add_custom_audio(self):
-        self.browser.open('/repository/online/2007/01')
+        self.browser.open('/repository')
         menu = self.browser.getControl(name='add_menu')
         menu.displayValue = ['Audio']
         self.browser.open(menu.value[0])

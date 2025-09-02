@@ -2,6 +2,7 @@
 from unittest import mock
 
 import pendulum
+import transaction
 import zope.component
 
 import zeit.content.author.author
@@ -148,12 +149,16 @@ class ReportInvalidGCIDs(zeit.content.author.testing.BrowserTestCase):
             self.assertEllipsis('some csv', b.contents)
 
 
-class CSVRendering(zeit.retresco.testing.FunctionalTestCase):
+class CSVRendering(zeit.content.author.testing.FunctionalTestCase):
     def test_invalid_gcids_api_request_builds_correct_csv_report(self):
-        self.repository.connector.search_result = [
-            ('http://xml.zeit.de/autoren/P/Sophia_Phildius/index', '123'),
-            ('http://xml.zeit.de/autoren/M/Yasmine_MBarek/index', '10055333'),
-        ]
+        a1 = zeit.content.author.author.Author()
+        a1.hdok_id = 123
+        self.repository['a1'] = a1
+        a2 = zeit.content.author.author.Author()
+        a2.hdok_id = 10055333
+        self.repository['a2'] = a2
+        transaction.commit()
+
         api = zope.component.getUtility(zeit.content.author.interfaces.IHonorar)
         api.invalid_gcids.return_value = [
             {
@@ -187,11 +192,11 @@ class CSVRendering(zeit.retresco.testing.FunctionalTestCase):
                 'ts': '03/03/2023 17:35:56',
             },
         ]
+
         csv = honorar.HonorarReports.report_invalid_gcid(self)
         expected = (
             'Geloeschte HDok-ID;Vivi-Autorenobjekt zu geloeschter HDok-ID;ggf.'
-            ' gueltige HDok-ID;ggf. gueltiges Vivi-Autorenobjekt\n123;'
-            'https://www.zeit.de/autoren/P/Sophia_Phildius/index;321;\n'
+            ' gueltige HDok-ID;ggf. gueltiges Vivi-Autorenobjekt\n'
+            '123;https://www.zeit.de/a1;321;\n'
         )
         self.assertEqual(csv, expected)
-        self.assertNotIn('"hdok_id" ""', self.repository.connector.search_dav_args[0][1]._render())

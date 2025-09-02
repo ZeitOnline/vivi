@@ -7,9 +7,17 @@ Create a testbrowser first:
 >>> browser = Browser(layer['wsgi_app'])
 >>> browser.login('user', 'userpw')
 
+>>> import zope.component
+>>> import zeit.cms.repository.interfaces
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
+>>> repository = zope.component.getUtility(
+...     zeit.cms.repository.interfaces.IRepository)
+>>> repository['image'] = zeit.content.image.testing.create_local_image()
+
 Lets create a portraitbox:
 
->>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
+>>> browser.open('http://localhost/++skin++cms/repository')
 >>> menu = browser.getControl(name='add_menu')
 >>> menu.displayValue = ['Portraitbox']
 >>> browser.open(menu.value[0])
@@ -26,8 +34,7 @@ The infobox has a name and html content:
 
 Reference an image:
 
->>> browser.getControl('Image').value = (
-...     'http://xml.zeit.de/2006/DSC00109_2.JPG')
+>>> browser.getControl('Image').value = 'http://xml.zeit.de/image'
 
 Finnaly add the portraitbox:
 
@@ -55,7 +62,7 @@ Verify the source:
 <container... layout="artbox" label="portrait">
   <block>
     <title...>Hans Wurst</title>
-    <image ...src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG"/>
+    <image ...src="http://xml.zeit.de/image" type="jpeg"/>
     <text>
       <p><strong>HW</strong> is in da house</p>
     </text>
@@ -73,9 +80,9 @@ Hans Wurst – View source code
 Make sure there is a metadata preview:
 
 >>> browser.url
-'http://localhost/++skin++cms/repository/online/2007/01/Wurst-Hans/...'
+'http://localhost/++skin++cms/repository/Wurst-Hans/...'
 >>> browser.open(
-...     'http://localhost/++skin++cms/repository/online/2007/01/'
+...     'http://localhost/++skin++cms/repository/'
 ...     'Wurst-Hans/@@metadata_preview')
 >>> print(browser.contents)
  <div class="contextViewsAndActions">
@@ -87,7 +94,7 @@ Make sure there is a metadata preview:
 Make sure an box has a default view:
 
 >>> browser.open(
-...     'http://localhost/++skin++cms/repository/online/2007/01/Wurst-Hans')
+...     'http://localhost/++skin++cms/repository/Wurst-Hans')
 >>> print(browser.contents)
 <?xml ...
     <title> Hans Wurst – View portraitbox </title>
@@ -121,9 +128,9 @@ Setup
 For the portraitbox the default browsing location is `/personen` if the folder
 exists. Currently it doesn't exist:
 
->>> obj = repository['online']['2007']['01']
+>>> obj = repository['testcontent']
 >>> get_location(obj)
-'http://xml.zeit.de/online/2007/01'
+'http://xml.zeit.de/'
 
 Create the personen folder:
 
@@ -135,13 +142,8 @@ The location is the `/personen` folder now:
 >>> get_location(obj)
 'http://xml.zeit.de/personen'
 
-For other objects than folders we of course also get the personen folder:
-
->>> get_location(obj['Somalia'])
-'http://xml.zeit.de/personen'
-
 >>> import zope.security.proxy
 >>> ref = zeit.content.portraitbox.interfaces.IPortraitboxReference(
-...     zope.security.proxy.ProxyFactory(repository['testcontent']))
+...     zope.security.proxy.ProxyFactory(obj))
 >>> get_location(ref)
 'http://xml.zeit.de/personen'

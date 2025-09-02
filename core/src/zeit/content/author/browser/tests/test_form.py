@@ -40,7 +40,7 @@ class FormTest(zeit.content.author.testing.BrowserTestCase):
     def test_add_form(self):
         b = zeit.cms.testing.Browser(self.layer['wsgi_app'])
         b.login('producer', 'producerpw')
-        b.open('http://localhost/++skin++vivi/repository/online/2007/01')
+        b.open('/repository')
         menu = b.getControl(name='add_menu')
         menu.displayValue = ['Author']
         b.open(menu.value[0])
@@ -133,7 +133,7 @@ class FormTest(zeit.content.author.testing.BrowserTestCase):
     def test_invalid_vgwort_code_shows_error_message(self):
         b = zeit.cms.testing.Browser(self.layer['wsgi_app'])
         b.login('producer', 'producerpw')
-        b.open('http://localhost/++skin++vivi/repository/online/2007/01')
+        b.open('/repository')
         menu = b.getControl(name='add_menu')
         menu.displayValue = ['Author']
         b.open(menu.value[0])
@@ -146,7 +146,7 @@ class FormTest(zeit.content.author.testing.BrowserTestCase):
     def test_stores_biography_questions(self):
         b = zeit.cms.testing.Browser(self.layer['wsgi_app'])
         b.login('producer', 'producerpw')
-        b.open('http://localhost/++skin++vivi/repository/online/2007/01')
+        b.open('/repository')
         menu = b.getControl(name='add_menu')
         menu.displayValue = ['Author']
         b.open(menu.value[0])

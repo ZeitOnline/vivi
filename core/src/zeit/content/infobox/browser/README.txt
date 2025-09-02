@@ -8,7 +8,7 @@ Infobox
 
 Lets create an infobox:
 
->>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
+>>> browser.open('http://localhost/++skin++cms/repository')
 >>> menu = browser.getControl(name='add_menu')
 >>> menu.displayValue = ['Infobox']
 >>> browser.open(menu.value[0])
@@ -84,9 +84,9 @@ Let's check it in:
 Make sure there is a metadata preview:
 
 >>> browser.url
-'http://localhost/++skin++cms/repository/online/2007/01/infobox/@@view.html'
+'http://localhost/++skin++cms/repository/infobox/@@view.html'
 >>> browser.open(
-...     'http://localhost/++skin++cms/repository/online/2007/01/'
+...     'http://localhost/++skin++cms/repository/'
 ...     'infobox/@@metadata_preview')
 >>> print(browser.contents)
  <div class="contextViewsAndActions">
@@ -98,7 +98,7 @@ Make sure there is a metadata preview:
 Make sure an infobox has a default view:
 
 >>> browser.open(
-...     'http://localhost/++skin++cms/repository/online/2007/01/infobox')
+...     'http://localhost/++skin++cms/repository/infobox')
 >>> print(browser.contents)
 <?xml ...
     <title> Altersvorsorge – View infobox </title>
