@@ -146,6 +146,14 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
         self.assertEqual(res.id, unique_id)
         self.assertEqual('{urn:uuid:%s}' % props.id, uuid)
 
+    def test_search_for_type_uses_column(self):
+        res = self.get_resource('foo', b'mybody')
+        self.connector.add(res)
+        TYPE = SearchVar('type', f'{NS}meta')
+        result = self.connector.search([TYPE], TYPE == 'testing')
+        unique_id, uuid = next(result)
+        self.assertEqual(res.id, unique_id)
+
     def test_search_by_sql_applies_query(self):
         res = self.add_resource('one', type='article')
         self.add_resource('two', type='centerpage')
@@ -483,6 +491,7 @@ class ColumnDeclarationTest(zeit.connector.testing.TestCase):
             (ns.replace(Content.NS, ''), name)
             for name, ns in zeit.cms.content.dav.PROPERTY_REGISTRY.keys()
         }
+        declared.add(('meta', 'type'))  # yay special cases
         for column in Content._columns_with_name('always'):
             ns = column.info['namespace']
             name = column.info['name']
