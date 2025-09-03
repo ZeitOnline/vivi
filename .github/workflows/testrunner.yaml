@@ -49,7 +49,7 @@ jobs:
           # Has been added manually (both the key in vivi-deployment and
           # the GHA secret in vivi)
           ssh-key: ${{secrets.DEPLOY_KEY_DEPLOYMENT}}
-      - uses: ZeitOnline/gh-action-baseproject@4743a3673ac263f36b4d2206eb4342c4c44a38e6 # v0.12.0
+      - uses: ZeitOnline/gh-action-baseproject@4a35b6f8614aab8320249d6778ed6d2edd4a40c3 # v0.13.0
         with:
           project_name: ${{env.project}}
           environment: staging
@@ -69,7 +69,7 @@ jobs:
         with:
           # renovate: datasource=github-tags depName=python/cpython extractVersion=^v?(?<version>.+)$
           python-version: "3.13.7"
-      - uses: astral-sh/setup-uv@4959332f0f014c5280e7eac8b70c90cb574c9f9b  # v6.6.0
+      - uses: astral-sh/setup-uv@557e51de59eb14aaaba2ed9621916900a91d50c6  # v6.6.1
         with:
           version: ${{env.UV_VERSION}}
           enable-cache: true
