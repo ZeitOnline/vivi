@@ -1,7 +1,6 @@
 import re
 import unittest
 
-from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.content.image.browser.imageupload import ImageNameProvider
 from zeit.content.image.testing import (
     add_file_multi,
@@ -529,11 +528,11 @@ class AddCentralImageUploadTest(zeit.content.image.testing.SeleniumTestCase):
 class AddMenuImageUploadTest(zeit.content.image.testing.BrowserTestCase):
     def test_new_image_upload_is_present(self):
         b = self.browser
-        b.open('http://localhost:8081/++skin++vivi/repository/')
+        b.open('/repository')
         menu = b.getControl(name='add_menu')
         menu.displayValue = ['Image (new)']
         b.open(menu.value[0])
-        assert 'http://localhost:8081/++skin++vivi/repository/@@upload-images' == b.url
+        assert 'http://localhost/++skin++vivi/repository/@@upload-images' == b.url
 
 
 class ImageNameProviderTest(unittest.TestCase):

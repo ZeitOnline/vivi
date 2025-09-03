@@ -13,9 +13,7 @@ import zeit.cms.testing
 
 class ESResultToCSV(zeit.content.image.testing.FunctionalTestCase):
     def test_csv_list_is_generated_from_result_set(self):
-        from zeit.content.image.testing import create_image_group_with_master_image
-
-        group = create_image_group_with_master_image()
+        group = self.repository['imagegroup']
         zeit.cms.workflow.interfaces.IPublish(group).publish()
         with zeit.cms.checkout.helper.checked_out(group) as co:
             IImageMetadata(co).copyright = ('Fotograf Eins', 'Agentur Eins', None, None, 0)
@@ -34,7 +32,7 @@ class ESResultToCSV(zeit.content.image.testing.FunctionalTestCase):
                     dfr.to_datetime_string(),
                     'master-image.jpg',
                     'Fotograf Eins/Agentur Eins/None/None/0',
-                    'https://vivi.zeit.de/repository/group',
+                    'https://vivi.zeit.de/repository/imagegroup',
                 ],
             ]
             self.assertEqual(csv_list, expected)

@@ -9,12 +9,8 @@ import zeit.content.image.testing
 
 
 class ImageMetadataTest(zeit.content.image.testing.FunctionalTestCase):
-    def setUp(self):
-        super().setUp()
-        zeit.content.image.testing.create_image_group_with_master_image()
-
     def set_copyright(self, value):
-        image = ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')
+        image = ICMSContent('http://xml.zeit.de/image1')
         with zeit.cms.checkout.helper.checked_out(image) as co:
             metadata = IImageMetadata(co)
             metadata.copyright = value
@@ -25,13 +21,13 @@ class ImageMetadataTest(zeit.content.image.testing.FunctionalTestCase):
         ref = zope.component.getAdapter(image, IXMLReference, name='image')
         self.assertEllipsis(
             """\
-<image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG"/>
+<image src="http://xml.zeit.de/image1" type="jpeg"/>
 """,
             zeit.cms.testing.xmltotext(ref),
         )
 
     def test_related_reference_to_image_does_not_overwrite_href(self):
-        image = ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')
+        image = ICMSContent('http://xml.zeit.de/imagegroup')
         node = zope.component.getAdapter(
             image, zeit.cms.content.interfaces.IXMLReference, name='related'
         )

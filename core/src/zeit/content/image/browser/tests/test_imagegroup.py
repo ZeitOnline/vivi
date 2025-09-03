@@ -5,9 +5,9 @@ import zeit.content.image.testing
 
 
 class ImageGroupHelperMixin:
-    def add_imagegroup(self, filename='imagegroup', fill_copyright=True):
+    def add_imagegroup(self, filename='imagegroup2', fill_copyright=True):
         b = self.browser
-        b.open('http://localhost/++skin++cms/repository/')
+        b.open('/repository/')
         menu = b.getControl(name='add_menu')
         menu.displayValue = ['Image group']
         b.open(menu.value[0])
@@ -78,7 +78,7 @@ class ImageGroupBrowserTest(zeit.content.image.testing.BrowserTestCase, ImageGro
         self.add_imagegroup()
         self.browser.getControl('Memo').value = 'a minor note'
         self.save_imagegroup()
-        group = self.repository['imagegroup']
+        group = self.repository['imagegroup2']
         self.assertEqual('a minor note', zeit.cms.content.interfaces.IMemo(group).memo)
 
     def test_resize_too_large_images_before_upload_width(self):
@@ -86,7 +86,7 @@ class ImageGroupBrowserTest(zeit.content.image.testing.BrowserTestCase, ImageGro
         self.upload_primary_image('shoppingmeile_4001x2251px.jpg')
         self.save_imagegroup()
         img = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/imagegroup/shoppingmeile-4001x2251px.jpg'
+            'http://xml.zeit.de/imagegroup2/shoppingmeile-4001x2251px.jpg'
         )
         self.assertEqual((4000, 2250), img.getImageSize())
 
@@ -95,7 +95,7 @@ class ImageGroupBrowserTest(zeit.content.image.testing.BrowserTestCase, ImageGro
         self.upload_primary_image('shoppingmeile_2251x4001px.jpg')
         self.save_imagegroup()
         img = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/imagegroup/shoppingmeile-2251x4001px.jpg'
+            'http://xml.zeit.de/imagegroup2/shoppingmeile-2251x4001px.jpg'
         )
         self.assertEqual((2250, 4000), img.getImageSize())
 
@@ -106,7 +106,7 @@ class ImageGroupBrowserTest(zeit.content.image.testing.BrowserTestCase, ImageGro
         self.upload_secondary_image('shoppingmeile_2251x4001px.jpg')
         self.save_imagegroup()
         img = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/imagegroup/shoppingmeile-2251x4001px.jpg'
+            'http://xml.zeit.de/imagegroup2/shoppingmeile-2251x4001px.jpg'
         )
         self.assertEqual((2250, 4000), img.getImageSize())
 
@@ -117,14 +117,10 @@ class ImageGroupBrowserTest(zeit.content.image.testing.BrowserTestCase, ImageGro
         self.assertEqual('image/jpeg', b.headers['Content-Type'])
 
     def test_primary_master_image_is_marked_for_desktop_viewport(self):
-        self.add_imagegroup()
-        self.upload_primary_image('opernball.jpg')
-        self.save_imagegroup()
-
         group = self.repository['imagegroup']
         self.assertEqual(1, len(group.master_images))
         self.assertEqual('desktop', group.master_images[0][0])
-        self.assertEqual('opernball.jpg', group.master_images[0][1])
+        self.assertEqual('master-image.jpg', group.master_images[0][1])
 
     def test_secondary_master_image_is_marked_for_mobile_viewport(self):
         self.add_imagegroup()
@@ -133,7 +129,7 @@ class ImageGroupBrowserTest(zeit.content.image.testing.BrowserTestCase, ImageGro
         self.upload_secondary_image('new-hampshire-artikel.jpg')
         self.save_imagegroup()
 
-        group = self.repository['imagegroup']
+        group = self.repository['imagegroup2']
         self.assertEqual(2, len(group.master_images))
         self.assertEqual('mobile', group.master_images[1][0])
         self.assertEqual('new-hampshire-artikel.jpg', group.master_images[1][1])
@@ -146,7 +142,7 @@ class ImageGroupBrowserTest(zeit.content.image.testing.BrowserTestCase, ImageGro
         self.upload_secondary_image('new-hampshire-artikel.jpg')
         self.upload_tertiary_image('obama-clinton-120x120.jpg')
         self.save_imagegroup()
-        group = self.repository['imagegroup']
+        group = self.repository['imagegroup2']
         self.assertEqual(2, len(group.master_images))
         self.assertEqual(3, len(group.keys()))
         self.assertIn('obama-clinton-120x120.jpg', group.keys())
@@ -166,20 +162,20 @@ class ImageGroupBrowserTest(zeit.content.image.testing.BrowserTestCase, ImageGro
         self.save_imagegroup()
         b = self.browser
         self.assertEndsWith('@@view.html', b.url)
-        b.open('http://localhost/++skin++vivi/repository/imagegroup')
+        b.open('/repository/imagegroup2')
         self.assertEndsWith('@@view.html', b.url)
 
     def test_display_type_imagegroup_shows_edit_tab(self):
         self.add_imagegroup()
         self.set_display_type('Bildergruppe')
         self.save_imagegroup()
-        self.assertEllipsis('...repository/imagegroup/@@variant.html...', self.browser.contents)
+        self.assertEllipsis('...repository/imagegroup2/@@variant.html...', self.browser.contents)
 
     def test_display_type_infographic_hides_edit_tab(self):
         self.add_imagegroup()
         self.set_display_type('Infografik')
         self.save_imagegroup()
-        self.assertNotEllipsis('...repository/imagegroup/@@variant.html...', self.browser.contents)
+        self.assertNotEllipsis('...repository/imagegroup2/@@variant.html...', self.browser.contents)
 
     def test_prefills_external_id_from_image_filename(self):
         b = self.browser
@@ -190,7 +186,7 @@ class ImageGroupBrowserTest(zeit.content.image.testing.BrowserTestCase, ImageGro
             'dpa Picture-Alliance-90999280-HighRes.jpg',
         )
         self.save_imagegroup()
-        group = self.repository['imagegroup']
+        group = self.repository['imagegroup2']
         self.assertEqual(
             '90999280', zeit.content.image.interfaces.IImageMetadata(group).external_id
         )
@@ -201,7 +197,7 @@ class ImageGroupBrowserTest(zeit.content.image.testing.BrowserTestCase, ImageGro
             fixture_bytes('new-hampshire-artikel.jpg'), 'image/jpeg', 'föö.jpg'.encode('utf-8')
         )
         self.save_imagegroup()
-        group = self.repository['imagegroup']
+        group = self.repository['imagegroup2']
         self.assertEqual(['foeoe.jpg'], list(group.keys()))
 
     def test_group_rejects_unsupported_mime_types_on_upload(self):
@@ -221,15 +217,11 @@ class ImageGroupBrowserTest(zeit.content.image.testing.BrowserTestCase, ImageGro
 
 
 class ImageGroupWebdriverTest(zeit.content.image.testing.SeleniumTestCase):
-    def setUp(self):
-        super().setUp()
-        create_image_group_with_master_image()
-
     def test_visibility_of_origin_field_depends_on_display_type(self):
         sel = self.selenium
         origin = 'css=.fieldname-origin'
         display_type = r'css=#form\.display_type'
-        sel.open('/repository/group/@@checkout')
+        sel.open('/repository/imagegroup/@@checkout')
 
         sel.select(display_type, 'label=Infografik')
         sel.assertVisible(origin)
@@ -239,14 +231,14 @@ class ImageGroupWebdriverTest(zeit.content.image.testing.SeleniumTestCase):
 
     def test_origin_field_is_hidden_in_read_only_mode_if_not_infographic(self):
         sel = self.selenium
-        sel.open('/repository/group/@@metadata.html')
+        sel.open('/repository/imagegroup/@@metadata.html')
         sel.assertNotVisible('css=.fieldname-origin')
 
     def test_photographer_is_shown_if_company_is_chosen(self):
         sel = self.selenium
         photographer = r'css=#form\.copyright\.combination_00'
         company = r'css=#form\.copyright\.combination_01'
-        sel.open('/repository/group/@@checkout')
+        sel.open('/repository/imagegroup/@@checkout')
 
         sel.assertVisible(photographer)
         sel.select(company, 'label=dpa')
@@ -259,7 +251,7 @@ class ImageGroupWebdriverTest(zeit.content.image.testing.SeleniumTestCase):
         sel = self.selenium
         freetext = r'css=#form\.copyright\.combination_02'
         company = r'css=#form\.copyright\.combination_01'
-        sel.open('/repository/group/@@checkout')
+        sel.open('/repository/imagegroup/@@checkout')
 
         sel.assertNotVisible(freetext)
         sel.select(company, 'label=dpa')
@@ -274,7 +266,7 @@ class ThumbnailTest(zeit.content.image.testing.FunctionalTestCase):
         from zeit.content.image.browser.imagegroup import Thumbnail
 
         super().setUp()
-        self.group = create_image_group_with_master_image()
+        self.group = self.repository['imagegroup']
         self.thumbnail = Thumbnail()
         self.thumbnail.context = self.group
 
@@ -289,25 +281,21 @@ class ThumbnailTest(zeit.content.image.testing.FunctionalTestCase):
 
 
 class ThumbnailBrowserTest(zeit.content.image.testing.BrowserTestCase, ImageGroupHelperMixin):
-    def setUp(self):
-        super().setUp()
-        zeit.content.image.testing.create_image_group_with_master_image()
-
     def test_thumbnail_source_is_created_on_add(self):
         self.add_imagegroup()
-        self.upload_primary_image('http://xml.zeit.de/2006/DSC00109_2.JPG')
+        self.upload_primary_image('shoppingmeile_4001x2251px.jpg')
         self.save_imagegroup()
-        group = self.repository['imagegroup']
-        self.assertIn('thumbnail-source-dsc00109-2.jpg', group)
+        group = self.repository['imagegroup2']
+        self.assertIn('thumbnail-source-shoppingmeile-4001x2251px.jpg', group)
 
     def test_thumbnail_images_are_hidden_in_content_listing(self):
         self.add_imagegroup()
-        self.upload_primary_image('http://xml.zeit.de/2006/DSC00109_2.JPG')
+        self.upload_primary_image('shoppingmeile_4001x2251px.jpg')
         self.save_imagegroup()
         b = self.browser
-        b.open('http://localhost/++skin++cms/repository/imagegroup/view.html')
+        b.open('/repository/imagegroup2/view.html')
         self.assertEqual(
-            ['dsc00109-2.jpg', 'thumbnail-source-dsc00109-2.jpg'],
-            [x.__name__ for x in self.repository['imagegroup'].values()],
+            ['shoppingmeile-4001x2251px.jpg', 'thumbnail-source-shoppingmeile-4001x2251px.jpg'],
+            [x.__name__ for x in self.repository['imagegroup2'].values()],
         )
-        self.assertNotIn('thumbnail-source-DSC00109_2.JPG', b.contents)
+        self.assertNotIn('thumbnail-source-shoppingmeile-4001x2251px.jpg', b.contents)

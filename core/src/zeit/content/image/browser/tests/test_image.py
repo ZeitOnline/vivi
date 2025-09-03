@@ -12,20 +12,14 @@ class TestDelete(zeit.content.image.testing.BrowserTestCase):
 
     """
 
-    def setUp(self):
-        super().setUp()
-        zeit.content.image.testing.create_image_group_with_master_image()
-
     def test_delete_message_in_repository(self):
-        self.browser.open(
-            'http://localhost/++skin++vivi/repository/2006/DSC00109_2.JPG/@@delete.html'
-        )
+        self.browser.open('/repository/image1/@@delete.html')
         self.assertEllipsis(
             '...Do you really want to delete the object from the folder...', self.browser.contents
         )
 
     def test_delete_message_in_workingcopy(self):
-        self.browser.open('http://localhost/++skin++vivi/repository/2006/DSC00109_2.JPG/@@checkout')
+        self.browser.open('/repository/image1/@@checkout')
         self.browser.open('@@delete.html')
         self.assertEllipsis(
             '...Do you really want to delete your workingcopy?...', self.browser.contents
@@ -35,7 +29,7 @@ class TestDelete(zeit.content.image.testing.BrowserTestCase):
 class TestImage(zeit.content.image.testing.BrowserTestCase):
     def test_normalizes_filename_on_upload(self):
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/')
+        b.open('/repository/')
         menu = b.getControl(name='add_menu')
         menu.displayValue = ['Image (single)']
         b.open(menu.value[0])
@@ -51,7 +45,7 @@ class TestImage(zeit.content.image.testing.BrowserTestCase):
 
     def test_rejects_unsupported_mime_types_on_upload(self):
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/')
+        b.open('/repository/')
         menu = b.getControl(name='add_menu')
         menu.displayValue = ['Image (single)']
         b.open(menu.value[0])
@@ -67,7 +61,7 @@ class TestImage(zeit.content.image.testing.BrowserTestCase):
 
     def test_resizes_too_large_image_on_upload_width(self):
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/')
+        b.open('/repository/')
         menu = b.getControl(name='add_menu')
         menu.displayValue = ['Image (single)']
         b.open(menu.value[0])
@@ -84,7 +78,7 @@ class TestImage(zeit.content.image.testing.BrowserTestCase):
 
     def test_resizes_too_large_image_on_upload_height(self):
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/')
+        b.open('/repository/')
         menu = b.getControl(name='add_menu')
         menu.displayValue = ['Image (single)']
         b.open(menu.value[0])

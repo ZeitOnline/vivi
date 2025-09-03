@@ -136,6 +136,7 @@ class VariantJsonAPI(zeit.cms.testing.FunctionalTestCase):
 
     def test_delete_removes_variant_config_from_group(self):
         self.request('delete', '/repository/group/variants/square')
+        transaction.commit()
         self.assertEqual({}, self.group.variants)
 
     def test_delete_for_variant_without_config_succeeds_anyway(self):

@@ -29,10 +29,6 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
 )
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER, features=['zeit.connector.sql.zope'])
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
-WSGI_LAYER = zeit.cms.testing.WSGILayer(ZOPE_LAYER)
-HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(WSGI_LAYER)
-HTTP_STATIC_LAYER = gocept.httpserverlayer.static.Layer(name='HTTPStaticLayer', bases=(HTTP_LAYER,))
-WEBDRIVER_LAYER = zeit.cms.testing.WebdriverLayer(HTTP_LAYER)
 
 
 def fixture_bytes(filename, package=None, folder=None):
@@ -97,8 +93,31 @@ def add_file_multi(control, files):
     ]
 
 
+class FixtureLayer(zeit.cms.testing.Layer):
+    def setUp(self):
+        self['gcs_storage'].stack_push()
+        with self['rootFolder'](self['zodbDB-layer']) as root:
+            with zeit.cms.testing.site(root):
+                repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
+                repository['image1'] = create_local_image()
+                group = zeit.content.image.imagegroup.ImageGroup()
+                group.master_images = (('desktop', 'master-image.jpg'),)
+                repository['imagegroup'] = group
+                repository['imagegroup'][group.master_image] = create_local_image()
+
+    def tearDown(self):
+        self['gcs_storage'].stack_pop()
+
+
+LAYER = FixtureLayer(ZOPE_LAYER)
+WSGI_LAYER = zeit.cms.testing.WSGILayer(LAYER)
+HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(WSGI_LAYER)
+HTTP_STATIC_LAYER = gocept.httpserverlayer.static.Layer(name='HTTPStaticLayer', bases=(HTTP_LAYER,))
+WEBDRIVER_LAYER = zeit.cms.testing.WebdriverLayer(HTTP_LAYER)
+
+
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
-    layer = ZOPE_LAYER
+    layer = LAYER
 
 
 class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
