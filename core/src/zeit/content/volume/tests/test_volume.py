@@ -274,13 +274,13 @@ class TestVolumeAccessQueries(zeit.content.volume.testing.SQLTestCase):
         self.repository[volume_year][volume_number][name] = article
         return self.repository[volume_year][volume_number][name]
 
-    def test_all_content_via_storage_returns_ICMS_content(self):
+    def test_all_content_via_storage_returns_content(self):
         volume = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2025/01/ausgabe')
         query = volume._query_content_for_current_volume()
         result = list(self.repository.search(query))
         self.assertEqual(
-            [volume, zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2025/01/article01')],
-            result,
+            ['http://xml.zeit.de/2025/01/article01', volume.uniqueId],
+            sorted(x.uniqueId for x in result),
         )
 
     def test_all_content_via_storage_returns_only_volume(self):
