@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Fri Aug 29 16:11:19 2025\n"
+"POT-Creation-Date: Thu Sep  4 14:42:01 2025\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -137,7 +137,6 @@ msgid "Add new..."
 msgstr "Hinzufügen…"
 
 #: zeit/cms/browser/form.py:250 zeit/content/article/edit/browser/workflow.pt:4
-#: zeit/content/image/browser/imageupload.edit-images.pt:18
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -3338,8 +3337,8 @@ msgstr "Bildergruppe"
 msgid "File list"
 msgstr "Dateiliste"
 
-#: zeit/content/image/browser/configure.zcml:422
-#: zeit/content/image/browser/imageupload.py:25
+#: zeit/content/image/browser/configure.zcml:431
+#: zeit/content/image/browser/imageupload.py:28
 msgid "Image (new)"
 msgstr "Bild (neu)"
 
@@ -3449,24 +3448,36 @@ msgstr "Bildunterschrift"
 msgid "Copyright"
 msgstr "Copyrights"
 
-#: zeit/content/image/browser/imageupload.edit-images.pt:18
+#: zeit/content/image/browser/imageupload.edit-images.pt:19
 #: zeit/content/image/browser/imageupload.upload-images.pt:10
 msgid "Upload"
 msgstr "Hochladen"
 
-#: zeit/content/image/browser/imageupload.py:31
+#: zeit/content/image/browser/imageupload.edit-images.pt:20
+msgid "Upload and publish"
+msgstr "Speichern & veröffentlichen"
+
+#: zeit/content/image/browser/imageupload.edit-images.pt:21
+msgid "Upload and open"
+msgstr "Speichern & öffnen"
+
+#: zeit/content/image/browser/imageupload.edit-images.pt:24
+msgid "Remove images"
+msgstr "Bilder löschen"
+
+#: zeit/content/image/browser/imageupload.py:34
 msgid "Upload images"
 msgstr "Neue Bilder hochladen"
 
-#: zeit/content/image/browser/imageupload.py:55
+#: zeit/content/image/browser/imageupload.py:58
 msgid "Please upload at least one image"
 msgstr "Bitte mindestens eine Datei hochladen"
 
-#: zeit/content/image/browser/imageupload.py:158
+#: zeit/content/image/browser/imageupload.py:161
 msgid "Edit images"
 msgstr "Bilder bearbeiten"
 
-#: zeit/content/image/browser/imageupload.py:186
+#: zeit/content/image/browser/imageupload.py:197
 msgid "File name is already in use"
 msgstr "Dateiname ist bereits belegt"
 
