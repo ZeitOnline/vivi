@@ -1,4 +1,3 @@
-import gocept.form.interfaces
 import zope.interface
 import zope.interface.common.mapping
 import zope.publisher.interfaces.browser
@@ -55,7 +54,6 @@ class ICMSTestingSkin(
 class ICMSSkin(
     ICMSStyles,
     ICMSLayer,
-    gocept.form.interfaces.IJSValidationLayer,
     zope.publisher.interfaces.browser.IDefaultBrowserLayer,
 ):
     """CMS skin"""
