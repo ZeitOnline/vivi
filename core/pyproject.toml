@@ -224,6 +224,8 @@ ui-zon = [
     "zc.queue==3.0+importlib",  # https://github.com/ZeitOnline/zc.queue
     "zc.table==1.1+importlib.1",  # https://github.com/ZeitOnline/zc.table
     "zc.set==1.0+importlib",  # https://github.com/ZeitOnline/zc.set
+    "zc.sourcefactory==2.1+importlib",  # https://github.com/ZeitOnline/zc.sourcef
+    "zc.table==1.1+importlib.1",  # https://github.com/ZeitOnline/zc.table
 ]
 
 [dependency-groups]
