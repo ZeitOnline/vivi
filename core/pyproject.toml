@@ -203,6 +203,7 @@ deploy = [
 ]
 
 zon = [
+    "gocept.cache==6.1+importlib",  # https://github.com/ZeitOnline/gocept.cache/tree/importlib
     "zope.app.locking==3.5.0+py3.1",  # https://github.com/ZeitOnline/zope.app.locking
     "zope.xmlpickle==4.0.0+py3k2",  # https://github.com/ZeitOnline/zope.xmlpickle/tree/py3
 ]
