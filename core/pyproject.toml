@@ -222,7 +222,7 @@ ui-zon = [
     "z3c.traverser==2.0.0+notests",  # https://github.com/ZeitOnline/z3c.traverser
     "zc.datetimewidget==0.8.0+py3.5",  # https://github.com/ZeitOnline/zc.datetimewidget
     "zc.queue==3.0+importlib",  # https://github.com/ZeitOnline/zc.queue
-
+    "zc.table==1.1+importlib.1",  # https://github.com/ZeitOnline/zc.table
 ]
 
 [dependency-groups]

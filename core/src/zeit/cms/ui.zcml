@@ -95,7 +95,6 @@
   <include package="zope.app.locking"/>
   <include package="zope.app.keyreference"/>
 
-  <include package="zc.resourcelibrary" file="meta.zcml"/>
   <include package="zc.form" />
   <include package="zc.table" />
   <includeOverrides package="zc.datetimewidget" file="overrides.zcml"/>
