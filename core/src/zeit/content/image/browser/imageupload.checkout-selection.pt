@@ -1,0 +1,63 @@
+<tal:block i18n:domain="zeit.cms">
+  <h2 i18n:translate="">Images uploaded successfully!</h2>
+  <p i18n:translate="">Select the images you want to checkout for editing:</p>
+
+  <div>
+      <button class="imageupload__button" type="button" onclick="selectAll()" i18n:translate="">Select All</button>
+      <button class="imageupload__button" type="button" onclick="selectNone()" i18n:translate="">Select None</button>
+  </div>
+
+  <form method="post" action="" class="checkout-selection-form">
+    <div class="image-selection-grid">
+      <div tal:repeat="image view/uploaded_images" class="image-card">
+        <img tal:attributes="src image/thumbnail_url"/>
+        <div>
+          <label>
+            <input type="checkbox" tal:attributes="value image/name" name="selected_images" checked="checked" />
+            <span tal:content="image/name">image-name</span>
+          </label>
+        </div>
+        <div>
+          <a class="imageupload__button" tal:attributes="href image/edit_url" target="_blank" i18n:translate="">edit</a>
+          <a class="imageupload__button" tal:attributes="href image/view_url" target="_blank" i18n:translate="">View</a>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <button class="imageupload__button--edit" type="submit" i18n:translate="">Checkout selected images</button>
+      <a class="imageupload__button" tal:attributes="href view/folder_url" i18n:translate="">Go to folder</a>
+    </div>
+  </form>
+
+  <script>
+    function selectAll() {
+      const checkboxes = document.querySelectorAll('input[name="selected_images"]');
+      checkboxes.forEach(cb => cb.checked = true);
+    }
+
+    function selectNone() {
+      const checkboxes = document.querySelectorAll('input[name="selected_images"]');
+      checkboxes.forEach(cb => cb.checked = false);
+    }
+
+    document.querySelector('.checkout-selection-form').addEventListener('submit', function(e) {
+      const selected = document.querySelectorAll('input[name="selected_images"]:checked');
+      if (selected.length === 0) {
+        e.preventDefault();
+        alert('Please select at least one image to checkout.');
+        return false;
+      }
+
+      const submitBtn = this.querySelector('button[type="submit"]');
+      const originalText = submitBtn.textContent;
+      submitBtn.textContent = 'Processing...';
+      submitBtn.disabled = true;
+
+      setTimeout(() => {
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+      }, 5000);
+    });
+  </script>
+</tal:block>

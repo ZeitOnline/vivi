@@ -18,7 +18,7 @@
     <p>
       <button i18n:translate="">Upload</button>
       <button name="publish" id="publishButton" i18n:translate="">Upload and publish</button>
-      <button name="open" id="openButton" i18n:translate="" tal:condition="python:len(view._files) == 1">Upload and open</button>
+      <button name="open" id="openButton" i18n:translate="">Upload and open</button>
     </p>
     <p>
       <button name="cancel" i18n:translate="">Remove images</button>
