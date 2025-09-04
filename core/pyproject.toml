@@ -222,6 +222,8 @@ ui-zon = [
     "z3c.menu.simple==0.6.0+py3.6",  # https://github.com/ZeitOnline/z3c.menu.simple
     "z3c.traverser==2.0.0+notests",  # https://github.com/ZeitOnline/z3c.traverser
     "zc.datetimewidget==0.8.0+py3.4",  # https://github.com/ZeitOnline/zc.datetimewidget
+    "zc.queue==3.0+importlib",  # https://github.com/ZeitOnline/zc.queue
+
 ]
 
 [dependency-groups]
