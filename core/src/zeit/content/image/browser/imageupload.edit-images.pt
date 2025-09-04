@@ -15,7 +15,14 @@
         <td><textarea tal:content="item/caption" tal:attributes="name string:caption[${repeat/item/index}]"></textarea></td>
       </tr>
     </table>
-    <p><button i18n:translate="">Upload</button><button name="cancel" i18n:translate="">Cancel</button></p>
+    <p>
+      <button i18n:translate="">Upload</button>
+      <button name="publish" id="publishButton" i18n:translate="">Upload and publish</button>
+      <button name="open" id="openButton" i18n:translate="" tal:condition="python:len(view._files) == 1">Upload and open</button>
+    </p>
+    <p>
+      <button name="cancel" i18n:translate="">Remove images</button>
+    </p>
   </form>
   <script>
       // Mimic core/src/zeit/content/article/edit/browser/resources/filename.js
@@ -23,6 +30,51 @@
           if (e.target.name.startsWith('target_name[')) {
             e.target.value = zeit.cms.normalize_filename(e.target.value)
           }
+      })
+
+      document.getElementById('openButton')?.addEventListener('click', e => {
+        e.preventDefault()
+        return new Promise((resolve, reject) => {
+          const xhr = new XMLHttpRequest()
+          var form = document.querySelector('form[name="edit-images"]')
+          xhr.open('POST', form.action, true)
+          xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest')
+
+          xhr.onload = function() {
+            if (xhr.status === 200) {
+              window.location.href = xhr.responseText
+              resolve()
+            } else {
+              reject()
+            }
+          }
+
+          const formData = new FormData(form)
+          formData.append('open', true)
+          xhr.send(formData)
+        })
+      })
+      document.getElementById('publishButton').addEventListener('click', e => {
+        e.preventDefault()
+        return new Promise((resolve, reject) => {
+          const xhr = new XMLHttpRequest()
+          var form = document.querySelector('form[name="edit-images"]')
+          xhr.open('POST', form.action, true)
+          xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest')
+
+          xhr.onload = function() {
+            if (xhr.status === 200) {
+              window.location.href = xhr.responseText
+              resolve()
+            } else {
+              reject()
+            }
+          }
+
+          const formData = new FormData(form)
+          formData.append('publish', true)
+          xhr.send(formData)
+        })
       })
   </script>
 </tal:block>

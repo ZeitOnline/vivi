@@ -3,10 +3,13 @@ import collections
 import urllib.parse
 import uuid
 
+import pendulum
 import zope.formlib.form
 import zope.formlib.widgets
 
+from zeit.cms.content.interfaces import ISemanticChange
 from zeit.cms.i18n import MessageFactory as _
+from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
 import zeit.cms.browser.form
 import zeit.cms.browser.view
 import zeit.cms.interfaces
@@ -176,6 +179,14 @@ class EditForm(zeit.cms.browser.view.Base):
             del self.context[file['tmp_name']]
         self.redirect(self.url(name=''), status=303)
 
+    def prepare_publish(self, image):
+        info = IPublishInfo(image)
+        info.date_last_published_semantic = pendulum.now('UTC')
+        info.corrected = True
+        info.edited = True
+        semantic = ISemanticChange(image)
+        semantic.last_semantic_change = info.date_last_published_semantic
+
     def handle_submit(self):
         renamer = zope.copypastemove.interfaces.IContainerItemRenamer(self.context)
         taken_names = set()
@@ -189,6 +200,7 @@ class EditForm(zeit.cms.browser.view.Base):
         if self._errors:
             return super().__call__()
 
+        publish = self.request.form.get('publish', None) == 'true'
         for file in self._files:
             tmp_name = file['tmp_name']
             name = file['target_name']
@@ -211,11 +223,21 @@ class EditForm(zeit.cms.browser.view.Base):
                 zeit.cms.repository.interfaces.IAutomaticallyRenameable(
                     imagegroup
                 ).renameable = False
+                if publish:
+                    self.prepare_publish(imagegroup)
+            if publish:
+                IPublish(self.context[name]).publish(background=False)
 
         if len(self._files) == 1:
-            url = self.url(self.context[self._files[0]['target_name']], name='@@variant.html')
+            route = '@@variant.html'
+            if self.request.form.get('open', None) == 'true':
+                route = '@@checkout?came_from=variant.html'
+            url = self.url(self.context[self._files[0]['target_name']], name=route)
         else:
             url = self.url(name='')
+
+        if self.request.getHeader('X-Requested-With') == 'XMLHttpRequest':
+            return url
         self.redirect(url, status=303)
 
     def _parse_get_request(self):

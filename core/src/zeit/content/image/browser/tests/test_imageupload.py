@@ -1,6 +1,7 @@
 import re
 import unittest
 
+from zeit.cms.workflow.interfaces import IPublishInfo
 from zeit.content.image.browser.imageupload import ImageNameProvider
 from zeit.content.image.testing import (
     add_file_multi,
@@ -8,6 +9,8 @@ from zeit.content.image.testing import (
 )
 import zeit.cms.browser.interfaces
 import zeit.cms.interfaces
+import zeit.cms.workflow.interfaces
+import zeit.cms.workingcopy.interfaces
 import zeit.content.image.testing
 
 
@@ -397,6 +400,9 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
             ],
         )
         b.getForm(name='imageupload').submit()
+        with self.assertRaises(LookupError):
+            # you can only edit single images after upload
+            b.getControl(name='open')
         assert b.getControl(name='target_name[0]').value == 'testcontent-bild-01'
         assert b.getControl(name='target_name[1]').value == 'testcontent-bild-02'
         assert b.getControl(name='target_name[9]').value == 'testcontent-bild-10'
@@ -510,6 +516,70 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
         b.getControl(name='target_name[0]').value = 'this is not normal(ized)'
         b.getForm(name='edit-images').submit()
         assert zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/this-is-not-normal-ized')
+
+    def test_publish_images_after_upload(self):
+        b = self.browser
+        b.open('/repository/testcontent/@@upload-images')
+        file_input = b.getControl(name='files')
+        add_file_multi(
+            file_input,
+            [
+                (fixture_bytes('opernball.jpg'), 'opernball.jpg', 'image/jpg'),
+                (fixture_bytes('opernball.jpg'), 'opernball.jpg', 'image/jpg'),
+            ],
+        )
+        b.getForm(name='imageupload').submit()
+        form = b.getForm(name='edit-images')
+        tmp_name_1 = b.getControl(name='tmp_name[0]').value
+        tmp_name_2 = b.getControl(name='tmp_name[1]').value
+
+        form_data = (
+            f'tmp_name[0]={tmp_name_1}&'
+            f'target_name[0]=testcontent-bild-1=&'
+            f'title[0]=testcontent-bild-1&'
+            f'copyright[0]=""&'
+            f'caption[0]=""&'
+            f'tmp_name[1]={tmp_name_2}&'
+            f'target_name[1]=testcontent-bild-2=&'
+            f'title[1]=testcontent-bild-2&'
+            f'copyright[1]=""&'
+            f'caption[1]=""&'
+            f'publish=true'
+        )
+
+        b.addHeader('X-Requested-With', 'XMLHttpRequest')
+        b.post(form.action, form_data)
+        self.assertTrue(IPublishInfo(self.repository['testcontent-bild-1']).published)
+        self.assertTrue(IPublishInfo(self.repository['testcontent-bild-2']).published)
+
+    def test_checkout_single_image_after_upload(self):
+        b = self.browser
+        b.open('/repository/testcontent/@@upload-images')
+        file_input = b.getControl(name='files')
+        add_file_multi(
+            file_input,
+            [
+                (fixture_bytes('opernball.jpg'), 'opernball.jpg', 'image/jpg'),
+            ],
+        )
+        b.getForm(name='imageupload').submit()
+        form = b.getForm(name='edit-images')
+        tmp_name = b.getControl(name='tmp_name[0]').value
+
+        form_data = (
+            f'tmp_name[0]={tmp_name}&'
+            f'target_name[0]=testcontent-bild=&'
+            f'title[0]=testcontent-bild&'
+            f'copyright[0]=""&'
+            f'caption[0]=""&'
+            f'open=true'
+        )
+
+        b.addHeader('X-Requested-With', 'XMLHttpRequest')
+        b.post(form.action, form_data)
+        self.assertEndsWith(
+            '/repository/testcontent-bild/@@checkout?came_from=variant.html', b.contents
+        )
 
 
 class AddCentralImageUploadTest(zeit.content.image.testing.SeleniumTestCase):
