@@ -1,3 +1,4 @@
+import transaction
 import zope.component
 
 from zeit.cms.content.interfaces import IXMLReference
@@ -9,7 +10,7 @@ import zeit.content.image.testing
 
 class ImageMetadataTest(zeit.content.image.testing.FunctionalTestCase):
     def set_copyright(self, value):
-        image = ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')
+        image = ICMSContent('http://xml.zeit.de/image1')
         with zeit.cms.checkout.helper.checked_out(image) as co:
             metadata = IImageMetadata(co)
             metadata.copyright = value
@@ -20,13 +21,13 @@ class ImageMetadataTest(zeit.content.image.testing.FunctionalTestCase):
         ref = zope.component.getAdapter(image, IXMLReference, name='image')
         self.assertEllipsis(
             """\
-<image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG"/>
+<image src="http://xml.zeit.de/image1" type="jpeg"/>
 """,
             zeit.cms.testing.xmltotext(ref),
         )
 
     def test_related_reference_to_image_does_not_overwrite_href(self):
-        image = ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')
+        image = ICMSContent('http://xml.zeit.de/imagegroup')
         node = zope.component.getAdapter(
             image, zeit.cms.content.interfaces.IXMLReference, name='related'
         )
@@ -44,9 +45,11 @@ class ImageMetadataTest(zeit.content.image.testing.FunctionalTestCase):
         # Tuple of pairs
         image = self.set_copyright((('foo', 'bar'),))
         self.assertEqual(('foo', None, None, 'bar', False), IImageMetadata(image).copyright)
+        transaction.commit()
         # Tuple of triples
         image = self.set_copyright((('foo', 'bar', True),))
         self.assertEqual(('foo', None, None, 'bar', True), IImageMetadata(image).copyright)
+        transaction.commit()
         # Tuple of quintuples
         image = self.set_copyright((('foo', 'bar', 'baz', 'qux', True),))
         self.assertEqual(('foo', 'bar', 'baz', 'qux', True), IImageMetadata(image).copyright)

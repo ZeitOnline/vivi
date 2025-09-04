@@ -6,6 +6,7 @@ import gocept.selenium
 import webtest.forms
 import zope.component
 
+from zeit.cms.repository.folder import Folder
 import zeit.cms.repository.interfaces
 import zeit.cms.testcontenttype.testcontenttype
 import zeit.cms.testing
@@ -26,12 +27,8 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
     },
     bases=zeit.cms.testing.CONFIG_LAYER,
 )
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER)
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER, features=['zeit.connector.sql.zope'])
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
-WSGI_LAYER = zeit.cms.testing.WSGILayer(ZOPE_LAYER)
-HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(WSGI_LAYER)
-HTTP_STATIC_LAYER = gocept.httpserverlayer.static.Layer(name='HTTPStaticLayer', bases=(HTTP_LAYER,))
-WEBDRIVER_LAYER = zeit.cms.testing.WebdriverLayer(HTTP_LAYER)
 
 
 def fixture_bytes(filename, package=None, folder=None):
@@ -64,18 +61,17 @@ def create_image_group():
     return group
 
 
-def create_image_group_with_master_image(file_name=None):
+def create_image_group_with_master_image(filename=None):
     repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
-    if file_name is None:
-        file_name = 'DSC00109_2.JPG'
-        fh = repository['2006'][file_name].open()
+    if filename is None:
+        filename = 'DSC00109_2.JPG'
+        repository['2006'] = Folder()
+        image = create_local_image(filename, 'zeit.connector', 'testcontent/2006')
+        repository['2006'][filename] = image
+        fh = repository['2006'][filename].open()
     else:
-        file_name = str(file_name)
-        try:
-            fh = zeit.cms.interfaces.ICMSContent(file_name).open()
-        except TypeError:
-            fh = open(file_name, 'rb')
-    extension = os.path.splitext(file_name)[-1].lower()
+        fh = open(filename, 'rb')
+    extension = os.path.splitext(filename)[-1].lower()
 
     group = zeit.content.image.imagegroup.ImageGroup()
     group.master_images = (('desktop', 'master-image' + extension),)
@@ -97,8 +93,31 @@ def add_file_multi(control, files):
     ]
 
 
+class FixtureLayer(zeit.cms.testing.Layer):
+    def setUp(self):
+        self['gcs_storage'].stack_push()
+        with self['rootFolder'](self['zodbDB-layer']) as root:
+            with zeit.cms.testing.site(root):
+                repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
+                repository['image1'] = create_local_image()
+                group = zeit.content.image.imagegroup.ImageGroup()
+                group.master_images = (('desktop', 'master-image.jpg'),)
+                repository['imagegroup'] = group
+                repository['imagegroup'][group.master_image] = create_local_image()
+
+    def tearDown(self):
+        self['gcs_storage'].stack_pop()
+
+
+LAYER = FixtureLayer(ZOPE_LAYER)
+WSGI_LAYER = zeit.cms.testing.WSGILayer(LAYER)
+HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(WSGI_LAYER)
+HTTP_STATIC_LAYER = gocept.httpserverlayer.static.Layer(name='HTTPStaticLayer', bases=(HTTP_LAYER,))
+WEBDRIVER_LAYER = zeit.cms.testing.WebdriverLayer(HTTP_LAYER)
+
+
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
-    layer = ZOPE_LAYER
+    layer = LAYER
 
 
 class BrowserTestCase(zeit.cms.testing.BrowserTestCase):

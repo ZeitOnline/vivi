@@ -13,7 +13,8 @@ group:
 ...     browser.getControl(name='form.master_image_blobs.0.').add_file(
 ...         fixture_bytes(name), 'image/jpg', name)
 
->>> browser.open('http://localhost/++skin++cms/repository/2006/')
+>>> browser.open('http://localhost/++skin++cms/repository')
+>>> browser.open('http://localhost/++skin++cms/repository/')
 >>> menu = browser.getControl(name='add_menu')
 >>> menu.displayValue = ['Image group']
 >>> url = menu.value[0]
@@ -57,7 +58,7 @@ It is marked as master image:
 >>> import zeit.cms.repository.interfaces
 >>> repository = zope.component.getUtility(
 ...     zeit.cms.repository.interfaces.IRepository)
->>> group = repository['2006']['opernball']
+>>> group = repository['opernball']
 >>> image = group['opernball.jpg']
 >>> zeit.content.image.interfaces.IMasterImage.providedBy(image)
 True

@@ -2,7 +2,11 @@ import pytest
 import zope.component
 
 from zeit.cms.checkout.helper import checked_out
-from zeit.content.image.testing import create_image_group, create_local_image
+from zeit.content.image.testing import (
+    create_image_group,
+    create_image_group_with_master_image,
+    create_local_image,
+)
 import zeit.cms.checkout.interfaces
 import zeit.cms.interfaces
 import zeit.content.image.image
@@ -46,6 +50,7 @@ class TestImageMetadataAcquisition(zeit.content.image.testing.FunctionalTestCase
 
 class TestImageXMLReference(zeit.content.image.testing.FunctionalTestCase):
     def test_master_image_without_filename_extension_sets_mime_as_type(self):
+        create_image_group_with_master_image()
         image = zeit.content.image.image.LocalImage()
         with image.open('w') as out:
             with self.repository['2006']['DSC00109_2.JPG'].open() as fh:

@@ -13,15 +13,13 @@ class TestDelete(zeit.content.image.testing.BrowserTestCase):
     """
 
     def test_delete_message_in_repository(self):
-        self.browser.open(
-            'http://localhost/++skin++vivi/repository/2006/DSC00109_2.JPG/@@delete.html'
-        )
+        self.browser.open('/repository/image1/@@delete.html')
         self.assertEllipsis(
             '...Do you really want to delete the object from the folder...', self.browser.contents
         )
 
     def test_delete_message_in_workingcopy(self):
-        self.browser.open('http://localhost/++skin++vivi/repository/2006/DSC00109_2.JPG/@@checkout')
+        self.browser.open('/repository/image1/@@checkout')
         self.browser.open('@@delete.html')
         self.assertEllipsis(
             '...Do you really want to delete your workingcopy?...', self.browser.contents
@@ -31,7 +29,7 @@ class TestDelete(zeit.content.image.testing.BrowserTestCase):
 class TestImage(zeit.content.image.testing.BrowserTestCase):
     def test_normalizes_filename_on_upload(self):
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/2006/')
+        b.open('/repository/')
         menu = b.getControl(name='add_menu')
         menu.displayValue = ['Image (single)']
         b.open(menu.value[0])
@@ -47,7 +45,7 @@ class TestImage(zeit.content.image.testing.BrowserTestCase):
 
     def test_rejects_unsupported_mime_types_on_upload(self):
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/2006/')
+        b.open('/repository/')
         menu = b.getControl(name='add_menu')
         menu.displayValue = ['Image (single)']
         b.open(menu.value[0])
@@ -63,7 +61,7 @@ class TestImage(zeit.content.image.testing.BrowserTestCase):
 
     def test_resizes_too_large_image_on_upload_width(self):
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/2006/')
+        b.open('/repository/')
         menu = b.getControl(name='add_menu')
         menu.displayValue = ['Image (single)']
         b.open(menu.value[0])
@@ -75,12 +73,12 @@ class TestImage(zeit.content.image.testing.BrowserTestCase):
             fixture_bytes('shoppingmeile_2251x4001px.jpg'), 'image/jpeg', 'föö.jpg'.encode('utf-8')
         )
         b.getControl(name='form.actions.add').click()
-        img = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2006/foeoe.jpg')
+        img = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/foeoe.jpg')
         self.assertEqual((2250, 4000), img.getImageSize())
 
     def test_resizes_too_large_image_on_upload_height(self):
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/2006/')
+        b.open('/repository/')
         menu = b.getControl(name='add_menu')
         menu.displayValue = ['Image (single)']
         b.open(menu.value[0])
@@ -92,5 +90,5 @@ class TestImage(zeit.content.image.testing.BrowserTestCase):
             fixture_bytes('shoppingmeile_4001x2251px.jpg'), 'image/jpeg', 'bär.jpg'.encode('utf-8')
         )
         b.getControl(name='form.actions.add').click()
-        img = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2006/baer.jpg')
+        img = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/baer.jpg')
         self.assertEqual((4000, 2250), img.getImageSize())
