@@ -400,9 +400,6 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
             ],
         )
         b.getForm(name='imageupload').submit()
-        with self.assertRaises(LookupError):
-            # you can only edit single images after upload
-            b.getControl(name='open')
         assert b.getControl(name='target_name[0]').value == 'testcontent-bild-01'
         assert b.getControl(name='target_name[1]').value == 'testcontent-bild-02'
         assert b.getControl(name='target_name[9]').value == 'testcontent-bild-10'
@@ -580,6 +577,88 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
         self.assertEndsWith(
             '/repository/testcontent-bild/@@checkout?came_from=variant.html', b.contents
         )
+
+    def test_checkout_multiple_images_after_upload(self):
+        b = self.browser
+        b.open('/repository/testcontent/@@upload-images')
+        file_input = b.getControl(name='files')
+        add_file_multi(
+            file_input,
+            [
+                (fixture_bytes('opernball.jpg'), 'opernball.jpg', 'image/jpg'),
+                (
+                    fixture_bytes('new-hampshire-450x200.jpg'),
+                    'new-hampshire-450x200.jpg',
+                    'image/jpg',
+                ),
+            ],
+        )
+        b.getForm(name='imageupload').submit()
+        form = b.getForm(name='edit-images')
+        tmp_name_1 = b.getControl(name='tmp_name[0]').value
+        tmp_name_2 = b.getControl(name='tmp_name[1]').value
+
+        form_data = (
+            f'tmp_name[0]={tmp_name_1}&'
+            f'target_name[0]=testcontent-bild-1=&'
+            f'title[0]=testcontent-bild-1&'
+            f'copyright[0]=""&'
+            f'caption[0]=""&'
+            f'tmp_name[1]={tmp_name_2}&'
+            f'target_name[1]=testcontent-bild-2=&'
+            f'title[1]=testcontent-bild-2&'
+            f'copyright[1]=""&'
+            f'caption[1]=""&'
+            f'open=true'
+        )
+
+        b.addHeader('X-Requested-With', 'XMLHttpRequest')
+        b.post(form.action, form_data)
+        self.assertEndsWith(
+            '/repository/@@checkout-selection?images=testcontent-bild-1&images=testcontent-bild-2',
+            b.contents,
+        )
+
+    def test_checkout_selection_page_redirect(self):
+        b = self.browser
+        b.open('/repository/testcontent/@@upload-images')
+        file_input = b.getControl(name='files')
+        add_file_multi(
+            file_input,
+            [
+                (fixture_bytes('opernball.jpg'), 'opernball.jpg', 'image/jpg'),
+                (
+                    fixture_bytes('new-hampshire-450x200.jpg'),
+                    'new-hampshire-450x200.jpg',
+                    'image/jpg',
+                ),
+            ],
+        )
+        b.getForm(name='imageupload').submit()
+        form = b.getForm(name='edit-images')
+        tmp_name_1 = b.getControl(name='tmp_name[0]').value
+        tmp_name_2 = b.getControl(name='tmp_name[1]').value
+
+        form_data = (
+            f'tmp_name[0]={tmp_name_1}&'
+            f'target_name[0]=testcontent-bild-1=&'
+            f'title[0]=testcontent-bild-1&'
+            f'copyright[0]=""&'
+            f'caption[0]=""&'
+            f'tmp_name[1]={tmp_name_2}&'
+            f'target_name[1]=testcontent-bild-2=&'
+            f'title[1]=testcontent-bild-2&'
+            f'copyright[1]=""&'
+            f'caption[1]=""&'
+            f'open=true'
+        )
+
+        b.addHeader('X-Requested-With', 'XMLHttpRequest')
+        b.post(form.action, form_data)
+        # Should redirect to checkout selection page with image names
+        self.assertIn('/repository/@@checkout-selection', b.contents)
+        self.assertIn('images=testcontent-bild-1', b.contents)
+        self.assertIn('images=testcontent-bild-2', b.contents)
 
 
 class AddCentralImageUploadTest(zeit.content.image.testing.SeleniumTestCase):
