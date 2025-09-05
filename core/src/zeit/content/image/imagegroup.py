@@ -17,6 +17,7 @@ import zope.lifecycleevent
 import zope.location.interfaces
 import zope.security.proxy
 
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.image.interfaces import IMAGE_NAMESPACE, VIEWPORT_SOURCE
 import zeit.cms.content.dav
@@ -555,7 +556,11 @@ class Thumbnails(grok.Adapter):
             return None
         if self.source_image_name(master_image) in self.context:
             return self.context[self.source_image_name(master_image)]
-        if master_image.getImageSize()[0] <= self.THUMBNAIL_WIDTH:
+        if FEATURE_TOGGLES.find('column_read_wcm_56'):
+            width = master_image.width
+        else:
+            width = master_image.getImageSize()[0]
+        if width <= self.THUMBNAIL_WIDTH:
             return master_image
         lockable = zope.app.locking.interfaces.ILockable(self.context, None)
         # XXX 1. mod_dav does not allow LOCK of a member in a locked collection

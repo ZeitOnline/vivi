@@ -7,6 +7,7 @@ import zope.component
 import zope.file.download
 import zope.publisher.interfaces
 
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.image.interfaces import INFOGRAPHIC_DISPLAY_TYPE
 import zeit.cms.browser.interfaces
@@ -57,10 +58,14 @@ class ImageView(zeit.cms.browser.view.Base):
 
     @property
     def width(self):
+        if FEATURE_TOGGLES.find('column_read_wcm_56'):
+            return self.context.width
         return self.context.getImageSize()[0]
 
     @property
     def height(self):
+        if FEATURE_TOGGLES.find('column_read_wcm_56'):
+            return self.context.height
         return self.context.getImageSize()[1]
 
     @property
