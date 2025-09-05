@@ -7,7 +7,7 @@
       <button class="imageupload__button" type="button" onclick="selectNone()" i18n:translate="">Select None</button>
   </div>
 
-  <form method="post" action="" class="checkout-selection-form">
+  <form method="post" action="" name="checkout-images" class="checkout-selection-form">
     <div class="image-selection-grid">
       <div tal:repeat="image view/uploaded_images" class="image-card">
         <img tal:attributes="src image/thumbnail_url"/>
