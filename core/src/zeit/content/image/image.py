@@ -13,6 +13,7 @@ import zope.interface
 import zope.location.interfaces
 import zope.security.proxy
 
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
@@ -81,6 +82,18 @@ class BaseImage:
     def __init__(self, uniqueId=None):
         super().__init__(uniqueId)
 
+    _mime_type = zeit.cms.content.dav.DAVProperty(
+        zeit.content.image.interfaces.IImage['mime_type'],
+        zeit.content.image.interfaces.IMAGE_NAMESPACE,
+        'mime_type',
+    )
+
+    zeit.cms.content.dav.mapProperties(
+        zeit.content.image.interfaces.IImage,
+        zeit.content.image.interfaces.IMAGE_NAMESPACE,
+        ('width', 'height'),
+    )
+
     @contextmanager
     def as_pil(self):
         with self.open() as f:
@@ -89,6 +102,15 @@ class BaseImage:
 
     @property
     def mimeType(self):
+        if FEATURE_TOGGLES.find('column_read_wcm_56'):
+            return self._mime_type
+        return self.getMimeType()
+
+    @mimeType.setter
+    def mimeType(self, value):
+        self._mime_type = value
+
+    def getMimeType(self):
         with self.open() as f:
             head = f.read(261)
         file_type = filetype.guess_mime(head) or ''
@@ -107,6 +129,8 @@ class BaseImage:
     @property
     def ratio(self):
         try:
+            if FEATURE_TOGGLES.find('column_read_wcm_56'):
+                return float(self.width) / float(self.height)
             width, height = self.getImageSize()
             return float(width) / float(height)
         except Exception:
