@@ -1,6 +1,7 @@
 import gocept.form.grouped
 import zope.formlib.form
 
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.image.transform import ImageTransform
 import zeit.cms.browser.form
@@ -75,6 +76,9 @@ class CreateImageMixin:
         image = self._reduceToMaxImageSize(image)
         if name:
             image.__name__ = zeit.cms.interfaces.normalize_filename(name)
+        if FEATURE_TOGGLES.find('column_write_wcm_56'):
+            image.mimeType = image.getMimeType()
+            (image.width, image.height) = image.getImageSize()
         return image
 
 
