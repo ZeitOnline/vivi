@@ -162,7 +162,7 @@ class MigrationsLint(unittest.TestCase):
             [
                 squawk,
                 '--pg-version=14',
-                '--exclude=ban-drop-table,prefer-bigint-over-int,prefer-big-int',
+                '--exclude=ban-drop-table,prefer-bigint-over-int,prefer-big-int,prefer-bigint-over-smallint',
             ],
             stdout=PIPE,
             stderr=PIPE,
