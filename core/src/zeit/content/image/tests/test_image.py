@@ -2,6 +2,7 @@ import pytest
 import zope.component
 
 from zeit.cms.checkout.helper import checked_out
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.content.image.testing import (
     create_image_group,
     create_image_group_with_master_image,
@@ -71,6 +72,23 @@ class TestImageMIMEType(zeit.content.image.testing.FunctionalTestCase):
             props = zeit.connector.interfaces.IWebDAVProperties(co)
             props[('getcontenttype', 'DAV:')] = 'image/png'
         self.assertEqual('image/jpeg', self.repository['image'].mimeType)
+
+
+class TestImageProperties(zeit.content.image.testing.FunctionalTestCase):
+    def test_image_properties_are_set(self):
+        FEATURE_TOGGLES.set('column_read_wcm_56')
+        FEATURE_TOGGLES.set('column_write_wcm_56')
+        image = create_local_image('opernball.jpg')
+        image.mimeType = 'image/jpeg'
+        image.width = 119
+        image.height = 160
+        self.repository['image'] = image
+        image = self.repository['image']
+        self.assertEqual('image/jpeg', image.mimeType)
+        self.assertEqual((119, 160), image.getImageSize())
+        self.assertEqual(119, image.width)
+        self.assertEqual(160, image.height)
+        self.assertEqual(119 / 160, image.ratio)
 
 
 @pytest.mark.parametrize(
