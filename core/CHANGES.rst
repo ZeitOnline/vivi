@@ -10,7 +10,7 @@ vivi.core 7.175.0 (2025-09-04)
 
 - WCM-1079: Display new imageupload add menu in folder but not in imagegroup file list
 
-- WCM-1096: Correctly search for type in the `type` column, not `unsorted`
+- WCM-1096: Correctly search for type in the type column, not unsorted
 
 
 7.174.0 (2025-09-02)
