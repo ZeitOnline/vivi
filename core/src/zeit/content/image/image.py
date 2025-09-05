@@ -15,6 +15,7 @@ import zope.interface
 import zope.location.interfaces
 import zope.security.proxy
 
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.image import embedded
 import zeit.cms.content.interfaces
@@ -33,6 +34,24 @@ class BaseImage:
     def __init__(self, uniqueId=None):
         super().__init__(uniqueId)
 
+    _mime_type = zeit.cms.content.dav.DAVProperty(
+        zeit.content.image.interfaces.IImage['mime_type'],
+        zeit.content.image.interfaces.IMAGE_NAMESPACE,
+        'mime_type',
+    )
+
+    _width = zeit.cms.content.dav.DAVProperty(
+        zeit.content.image.interfaces.IImage['width'],
+        zeit.content.image.interfaces.IMAGE_NAMESPACE,
+        'width',
+    )
+
+    _height = zeit.cms.content.dav.DAVProperty(
+        zeit.content.image.interfaces.IImage['height'],
+        zeit.content.image.interfaces.IMAGE_NAMESPACE,
+        'height',
+    )
+
     @contextmanager
     def as_pil(self, keep_metadata=False):
         with self.open() as f:
@@ -45,6 +64,15 @@ class BaseImage:
 
     @property
     def mimeType(self):
+        if FEATURE_TOGGLES.find('column_read_wcm_56'):
+            return self._mime_type
+        return self.getMimeType()
+
+    @mimeType.setter
+    def mimeType(self, value):
+        self._mime_type = value
+
+    def getMimeType(self):
         with self.open() as f:
             head = f.read(261)
         file_type = filetype.guess_mime(head) or ''
@@ -89,6 +117,25 @@ class BaseImage:
             profile = ImageCms.ImageCmsProfile(icc_data)
             metadata['icc_profile'] = embedded.icc(profile)
         return metadata
+    @property
+    def width(self):
+        if FEATURE_TOGGLES.find('column_read_wcm_56'):
+            return self._width
+        return self.getImageSize()[0]
+
+    @width.setter
+    def width(self, value):
+        self._width = value
+
+    @property
+    def height(self):
+        if FEATURE_TOGGLES.find('column_read_wcm_56'):
+            return self._height
+        return self.getImageSize()[1]
+
+    @height.setter
+    def height(self, value):
+        self._height = value
 
     def getImageSize(self):
         with self.as_pil() as img:
@@ -105,6 +152,10 @@ class BaseImage:
     @property
     def ratio(self):
         try:
+            # Use only if width and height are available in storage,
+            # otherwise getImageSize is called twice
+            if FEATURE_TOGGLES.find('column_read_wcm_56'):
+                return float(self.width) / float(self.height)
             width, height = self.getImageSize()
             return float(width) / float(height)
         except Exception:
