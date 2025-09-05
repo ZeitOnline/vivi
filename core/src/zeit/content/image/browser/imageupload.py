@@ -3,13 +3,11 @@ import collections
 import urllib.parse
 import uuid
 
-import pendulum
 import zope.formlib.form
 import zope.formlib.widgets
 
-from zeit.cms.content.interfaces import ISemanticChange
 from zeit.cms.i18n import MessageFactory as _
-from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
+from zeit.cms.workflow.interfaces import IPublish
 import zeit.cms.browser.form
 import zeit.cms.browser.view
 import zeit.cms.interfaces
@@ -179,14 +177,6 @@ class EditForm(zeit.cms.browser.view.Base):
             del self.context[file['tmp_name']]
         self.redirect(self.url(name=''), status=303)
 
-    def prepare_publish(self, image):
-        info = IPublishInfo(image)
-        info.date_last_published_semantic = pendulum.now('UTC')
-        info.corrected = True
-        info.edited = True
-        semantic = ISemanticChange(image)
-        semantic.last_semantic_change = info.date_last_published_semantic
-
     def handle_submit(self):
         renamer = zope.copypastemove.interfaces.IContainerItemRenamer(self.context)
         taken_names = set()
@@ -200,7 +190,6 @@ class EditForm(zeit.cms.browser.view.Base):
         if self._errors:
             return super().__call__()
 
-        publish = self.request.form.get('publish', None) == 'true'
         for file in self._files:
             tmp_name = file['tmp_name']
             name = file['target_name']
@@ -223,40 +212,28 @@ class EditForm(zeit.cms.browser.view.Base):
                 zeit.cms.repository.interfaces.IAutomaticallyRenameable(
                     imagegroup
                 ).renameable = False
-                if publish:
-                    self.prepare_publish(imagegroup)
-            if publish:
-                IPublish(self.context[name]).publish(background=False)
 
-        open_images = self.request.form.get('open', None) == 'true'
+            if 'publish' in self.request.form:
+                IPublish(self.context[name]).publish()
 
-        if self.request.getHeader('X-Requested-With') == 'XMLHttpRequest' and open_images:
+        if 'open' in self.request.form:
             # For multiple images, redirect to selection page instead of trying popups
             # which will be blocked anyway
             if len(self._files) > 1:
                 image_names = [file['target_name'] for file in self._files]
                 selection_url = self.url(self.context, '@@checkout-selection')
                 selection_url += '?' + urllib.parse.urlencode({'images': image_names}, doseq=True)
-                return selection_url
+                url = selection_url
             else:
-                # Single image - return checkout URL for popup
-                checkout_url = self.url(
+                url = self.url(
                     self.context[self._files[0]['target_name']],
                     name='@@checkout?came_from=variant.html',
                 )
-                return checkout_url
-        elif len(self._files) == 1 and open_images:
-            url = self.url(
-                self.context[self._files[0]['target_name']],
-                name='@@checkout?came_from=variant.html',
-            )
         elif len(self._files) == 1:
             url = self.url(self.context[self._files[0]['target_name']], name='@@variant.html')
         else:
             url = self.url(name='')
 
-        if self.request.getHeader('X-Requested-With') == 'XMLHttpRequest':
-            return url
         self.redirect(url, status=303)
 
     def _parse_get_request(self):
