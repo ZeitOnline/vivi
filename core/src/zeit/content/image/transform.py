@@ -205,7 +205,10 @@ class ImageTransform:
         image_times = zeit.cms.workflow.interfaces.IModified(self.context, None)
         if image_times and image_times.date_last_modified:
             thumb_times = zeit.cms.workflow.interfaces.IModified(image)
+
             thumb_times.date_last_modified = image_times.date_last_modified
+        (image.width, image.height) = pil_image.size
+        image.mimeType = image.getMimeType()
         return image
 
 
