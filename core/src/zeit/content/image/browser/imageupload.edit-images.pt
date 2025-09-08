@@ -17,8 +17,8 @@
     </table>
     <p>
       <button i18n:translate="">Upload</button>
-      <button name="publish" i18n:translate="">Upload and publish</button>
-      <button name="open" i18n:translate="">Upload and open</button>
+      <button name="upload_and_publish" i18n:translate="">Upload and publish</button>
+      <button name="upload_and_open" i18n:translate="">Upload and open</button>
     </p>
     <p>
       <button name="cancel" i18n:translate="">Remove images</button>

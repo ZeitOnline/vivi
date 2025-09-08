@@ -213,16 +213,15 @@ class EditForm(zeit.cms.browser.view.Base):
                     imagegroup
                 ).renameable = False
 
-            if 'publish' in self.request.form:
+            if 'upload_and_publish' in self.request.form:
                 IPublish(self.context[name]).publish()
 
-        if 'open' in self.request.form:
+        if 'upload_and_open' in self.request.form:
             if len(self._files) > 1:
                 image_urls = []
                 for file in self._files:
                     image_url = self.url(self.context[file['target_name']], '@@variant.html')
                     image_urls.append(image_url)
-                self.request.response.setHeader('Content-Type', 'text/html')
                 return self._open_multiple_images(image_urls)
             else:
                 url = self.url(
@@ -292,8 +291,11 @@ class EditForm(zeit.cms.browser.view.Base):
             yield res
 
     def _open_multiple_images(self, urls):
-        """Render a page that opens multiple image URLs with delays,
-        first image will reuse the current window, rest will open in new tabs"""
+        """Render a page that opens multiple image URLs with delays
+        which avoid noisy zodb transaction errors,
+        first image will reuse the current window,
+        rest will open in new tabs"""
+        self.request.response.setHeader('Content-Type', 'text/html')
         first_url = urls[0]
         remaining_urls_js = ', '.join(f'"{url}"' for url in urls[1:])
 
@@ -301,12 +303,11 @@ class EditForm(zeit.cms.browser.view.Base):
         <!DOCTYPE html>
         <html>
         <head>
-            <title>Opening images...</title>
+            <title>Bilder werden geöffnet...</title>
             <meta charset="utf-8">
         </head>
         <body>
-            <h2>Opening {len(urls)} images...</h2>
-            <p>Please disable popup blocker if tabs don't open automatically.</p>
+            <p>Bitte Pop-ups zulassen, wenn keine neuen Tabs geöffnet werden.</p>
             <script>
                 const remainingUrls = [{remaining_urls_js}];
 

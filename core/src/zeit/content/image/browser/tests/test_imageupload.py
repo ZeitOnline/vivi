@@ -526,26 +526,8 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
             ],
         )
         b.getForm(name='imageupload').submit()
-        form = b.getForm(name='edit-images')
-        tmp_name_1 = b.getControl(name='tmp_name[0]').value
-        tmp_name_2 = b.getControl(name='tmp_name[1]').value
+        b.getForm(name='edit-images').getControl(name='upload_and_publish').click()
 
-        form_data = (
-            f'tmp_name[0]={tmp_name_1}&'
-            f'target_name[0]=testcontent-bild-1=&'
-            f'title[0]=testcontent-bild-1&'
-            f'copyright[0]=""&'
-            f'caption[0]=""&'
-            f'tmp_name[1]={tmp_name_2}&'
-            f'target_name[1]=testcontent-bild-2=&'
-            f'title[1]=testcontent-bild-2&'
-            f'copyright[1]=""&'
-            f'caption[1]=""&'
-            f'publish=true'
-        )
-
-        b.addHeader('X-Requested-With', 'XMLHttpRequest')
-        b.post(form.action, form_data)
         self.assertTrue(IPublishInfo(self.repository['testcontent-bild-1']).published)
         self.assertTrue(IPublishInfo(self.repository['testcontent-bild-2']).published)
 
@@ -562,7 +544,7 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
         b.getForm(name='imageupload').submit()
         b.getForm(name='edit-images')
         b.getControl(name='target_name[0]').value == 'testcontent-bild'
-        b.getForm(name='edit-images').getControl(name='open').click()
+        b.getForm(name='edit-images').getControl(name='upload_and_open').click()
 
         self.assertEndsWith('/repository/testcontent-bild/@@variant.html', b.url)
 
@@ -584,7 +566,7 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
         b.getForm(name='imageupload').submit()
         b.getControl(name='target_name[0]').value = 'testcontent-bild-1'
         b.getControl(name='target_name[1]').value = 'testcontent-bild-2'
-        b.getForm(name='edit-images').getControl(name='open').click()
+        b.getForm(name='edit-images').getControl(name='upload_and_open').click()
         self.assertEllipsis(
             '...http://localhost/++skin++vivi/repository/testcontent-bild-2/@@variant.html...'
             'http://localhost/++skin++vivi/repository/testcontent-bild-1/@@variant.html...',
