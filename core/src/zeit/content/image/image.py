@@ -103,7 +103,9 @@ class BaseImage:
     @property
     def mimeType(self):
         if FEATURE_TOGGLES.find('column_read_wcm_56'):
-            return self._mime_type
+            # not available during upload
+            if self._mime_type:
+                return self._mime_type
         return self.getMimeType()
 
     @mimeType.setter
