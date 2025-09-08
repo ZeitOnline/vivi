@@ -14,7 +14,9 @@ import zeit.edit.browser.form
 
 class ImageFormBase(zeit.cms.repository.browser.file.FormBase):
     field_groups = (
-        gocept.form.grouped.Fields(_('Memo'), ('memo',), css_class='column-left image-form'),
+        gocept.form.grouped.Fields(
+            _('Memo'), ('memo',), css_class='column-left image-form wide-widgets'
+        ),
         gocept.form.grouped.RemainingFields(
             _('Texts'), css_class='column-right image-form wide-widgets'
         ),
