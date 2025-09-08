@@ -88,10 +88,16 @@ class BaseImage:
         'mime_type',
     )
 
-    zeit.cms.content.dav.mapProperties(
-        zeit.content.image.interfaces.IImage,
+    _width = zeit.cms.content.dav.DAVProperty(
+        zeit.content.image.interfaces.IImage['width'],
         zeit.content.image.interfaces.IMAGE_NAMESPACE,
-        ('width', 'height'),
+        'width',
+    )
+
+    _height = zeit.cms.content.dav.DAVProperty(
+        zeit.content.image.interfaces.IImage['height'],
+        zeit.content.image.interfaces.IMAGE_NAMESPACE,
+        'height',
     )
 
     @contextmanager
@@ -119,6 +125,30 @@ class BaseImage:
         if not file_type.startswith('image/'):
             return ''
         return file_type
+
+    @property
+    def width(self):
+        if FEATURE_TOGGLES.find('column_read_wcm_56'):
+            # not available during upload
+            if self._width:
+                return self._width
+        return self.getImageSize()[0]
+
+    @width.setter
+    def width(self, value):
+        self._width = value
+
+    @property
+    def height(self):
+        if FEATURE_TOGGLES.find('column_read_wcm_56'):
+            # not available during upload
+            if self._height:
+                return self._height
+        return self.getImageSize()[1]
+
+    @height.setter
+    def height(self, value):
+        self._height = value
 
     def getImageSize(self):
         with self.as_pil() as img:
