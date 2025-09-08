@@ -549,7 +549,7 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
         self.assertTrue(IPublishInfo(self.repository['testcontent-bild-1']).published)
         self.assertTrue(IPublishInfo(self.repository['testcontent-bild-2']).published)
 
-    def test_checkout_single_image_after_upload(self):
+    def test_open_single_image_after_upload(self):
         b = self.browser
         b.open('/repository/testcontent/@@upload-images')
         file_input = b.getControl(name='files')
@@ -564,9 +564,9 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
         b.getControl(name='target_name[0]').value == 'testcontent-bild'
         b.getForm(name='edit-images').getControl(name='open').click()
 
-        self.assertEndsWith('/workingcopy/zope.user/testcontent-bild/@@edit.html', b.url)
+        self.assertEndsWith('/repository/testcontent-bild/@@variant.html', b.url)
 
-    def test_checkout_multiple_images_after_upload(self):
+    def test_open_multiple_images_after_upload(self):
         b = self.browser
         b.open('/repository/testcontent/@@upload-images')
         file_input = b.getControl(name='files')
@@ -585,9 +585,10 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
         b.getControl(name='target_name[0]').value = 'testcontent-bild-1'
         b.getControl(name='target_name[1]').value = 'testcontent-bild-2'
         b.getForm(name='edit-images').getControl(name='open').click()
-        self.assertEqual(
-            ['testcontent-bild-1', 'testcontent-bild-2'],
-            b.getForm(name='checkout-images').getControl(name='selected_images').value,
+        self.assertEllipsis(
+            '...http://localhost/++skin++vivi/repository/testcontent-bild-2/@@variant.html...'
+            'http://localhost/++skin++vivi/repository/testcontent-bild-1/@@variant.html...',
+            b.contents,
         )
 
 

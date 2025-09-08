@@ -444,15 +444,6 @@
     template="imageupload.edit-images.pt"
     />
 
-  <gocept:pagelet
-    name="checkout-selection"
-    for="zeit.cms.repository.interfaces.ICollection"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    class=".imageupload.CheckoutSelectionView"
-    permission="zeit.RenameContent"
-    template="imageupload.checkout-selection.pt"
-    />
-
   <interface
     interface=".imageupload.IImageUploadImage"
     type="zeit.cms.content.interfaces.IAddableContent"

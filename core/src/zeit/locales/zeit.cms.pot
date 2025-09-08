@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Thu Sep  4 17:34:12 2025\n"
+"POT-Creation-Date: Mon Sep  8 12:35:34 2025\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -186,7 +186,6 @@ msgstr ""
 #: zeit/content/article/browser/configure.zcml:27
 #: zeit/content/author/browser/form.py:109
 #: zeit/content/image/browser/configure.zcml:38
-#: zeit/content/image/browser/imageupload.checkout-selection.pt:17
 #: zeit/content/rawxml/browser/configure.zcml:37
 #: zeit/content/text/browser/configure.zcml:37
 msgid "View"
@@ -3285,7 +3284,6 @@ msgstr ""
 
 #: zeit/content/gallery/browser/details.pt:9
 #: zeit/content/image/browser/image-details.pt:8
-#: zeit/content/image/browser/imageupload.checkout-selection.pt:16
 #: zeit/content/image/browser/reference-details.pt:13
 #: zeit/content/video/browser/object-details-body.pt:8
 #: zeit/content/volume/browser/reference-details.pt:6
@@ -3398,7 +3396,7 @@ msgid "File list"
 msgstr ""
 
 #: zeit/content/image/browser/configure.zcml:431
-#: zeit/content/image/browser/imageupload.py:28
+#: zeit/content/image/browser/imageupload.py:26
 msgid "Image (new)"
 msgstr ""
 
@@ -3500,30 +3498,6 @@ msgstr ""
 msgid "CopyrightPurchaseReport"
 msgstr ""
 
-#: zeit/content/image/browser/imageupload.checkout-selection.pt:2
-msgid "Images uploaded successfully!"
-msgstr ""
-
-#: zeit/content/image/browser/imageupload.checkout-selection.pt:3
-msgid "Select the images you want to checkout for editing:"
-msgstr ""
-
-#: zeit/content/image/browser/imageupload.checkout-selection.pt:24
-msgid "Select All"
-msgstr ""
-
-#: zeit/content/image/browser/imageupload.checkout-selection.pt:25
-msgid "Select None"
-msgstr ""
-
-#: zeit/content/image/browser/imageupload.checkout-selection.pt:29
-msgid "Checkout selected images"
-msgstr ""
-
-#: zeit/content/image/browser/imageupload.checkout-selection.pt:30
-msgid "Go to folder"
-msgstr ""
-
 #: zeit/content/image/browser/imageupload.edit-images.pt:4
 msgid "Caption"
 msgstr ""
@@ -3549,28 +3523,20 @@ msgstr ""
 msgid "Remove images"
 msgstr ""
 
-#: zeit/content/image/browser/imageupload.py:34
+#: zeit/content/image/browser/imageupload.py:32
 msgid "Upload images"
 msgstr ""
 
-#: zeit/content/image/browser/imageupload.py:58
+#: zeit/content/image/browser/imageupload.py:56
 msgid "Please upload at least one image"
 msgstr ""
 
-#: zeit/content/image/browser/imageupload.py:161
+#: zeit/content/image/browser/imageupload.py:159
 msgid "Edit images"
 msgstr ""
 
-#: zeit/content/image/browser/imageupload.py:197
+#: zeit/content/image/browser/imageupload.py:187
 msgid "File name is already in use"
-msgstr ""
-
-#: zeit/content/image/browser/imageupload.py:322
-msgid "Select images to checkout"
-msgstr ""
-
-#: zeit/content/image/browser/imageupload.py:348
-msgid "No images selected"
 msgstr ""
 
 #: zeit/content/image/browser/imageupload.upload-images.pt:6

@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Thu Sep  4 17:34:12 2025\n"
+"POT-Creation-Date: Mon Sep  8 12:35:34 2025\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -166,7 +166,6 @@ msgstr "Speichern"
 #: zeit/content/article/browser/configure.zcml:27
 #: zeit/content/author/browser/form.py:109
 #: zeit/content/image/browser/configure.zcml:38
-#: zeit/content/image/browser/imageupload.checkout-selection.pt:17
 #: zeit/content/rawxml/browser/configure.zcml:37
 #: zeit/content/text/browser/configure.zcml:37
 msgid "View"
@@ -3222,7 +3221,6 @@ msgstr "Bearbeiten"
 
 #: zeit/content/gallery/browser/details.pt:9
 #: zeit/content/image/browser/image-details.pt:8
-#: zeit/content/image/browser/imageupload.checkout-selection.pt:16
 #: zeit/content/image/browser/reference-details.pt:13
 #: zeit/content/video/browser/object-details-body.pt:8
 #: zeit/content/volume/browser/reference-details.pt:6
@@ -3340,7 +3338,7 @@ msgid "File list"
 msgstr "Dateiliste"
 
 #: zeit/content/image/browser/configure.zcml:431
-#: zeit/content/image/browser/imageupload.py:28
+#: zeit/content/image/browser/imageupload.py:26
 msgid "Image (new)"
 msgstr "Bild (neu)"
 
@@ -3442,31 +3440,6 @@ msgstr "Veröffentlichungsdatum"
 msgid "CopyrightPurchaseReport"
 msgstr "Urheberrecht Bezahl Bericht"
 
-#: zeit/content/image/browser/imageupload.checkout-selection.pt:2
-msgid "Images uploaded successfully!"
-msgstr "Bilder erfolgreich hochgeladen!"
-
-#: zeit/content/image/browser/imageupload.checkout-selection.pt:3
-msgid "Select the images you want to checkout for editing:"
-msgstr ""
-"Wählen Sie die Bilder aus, die Sie für die Bearbeitung auschecken möchten:"
-
-#: zeit/content/image/browser/imageupload.checkout-selection.pt:24
-msgid "Select All"
-msgstr "Alle auswählen"
-
-#: zeit/content/image/browser/imageupload.checkout-selection.pt:25
-msgid "Select None"
-msgstr "Nichts auswählen"
-
-#: zeit/content/image/browser/imageupload.checkout-selection.pt:29
-msgid "Checkout selected images"
-msgstr "Ausgewählte Bilder bearbeiten"
-
-#: zeit/content/image/browser/imageupload.checkout-selection.pt:30
-msgid "Go to folder"
-msgstr "Zum Ordner gehen"
-
 #: zeit/content/image/browser/imageupload.edit-images.pt:4
 msgid "Caption"
 msgstr "Bildunterschrift"
@@ -3492,29 +3465,21 @@ msgstr "Speichern & öffnen"
 msgid "Remove images"
 msgstr "Bilder löschen"
 
-#: zeit/content/image/browser/imageupload.py:34
+#: zeit/content/image/browser/imageupload.py:32
 msgid "Upload images"
 msgstr "Neue Bilder hochladen"
 
-#: zeit/content/image/browser/imageupload.py:58
+#: zeit/content/image/browser/imageupload.py:56
 msgid "Please upload at least one image"
 msgstr "Bitte mindestens eine Datei hochladen"
 
-#: zeit/content/image/browser/imageupload.py:161
+#: zeit/content/image/browser/imageupload.py:159
 msgid "Edit images"
 msgstr "Bilder bearbeiten"
 
-#: zeit/content/image/browser/imageupload.py:197
+#: zeit/content/image/browser/imageupload.py:187
 msgid "File name is already in use"
 msgstr "Dateiname ist bereits belegt"
-
-#: zeit/content/image/browser/imageupload.py:322
-msgid "Select images to checkout"
-msgstr "Bilder zur weiteren Bearbeitung ausschicken"
-
-#: zeit/content/image/browser/imageupload.py:348
-msgid "No images selected"
-msgstr "Keine Bilder ausgewählt"
 
 #: zeit/content/image/browser/imageupload.upload-images.pt:6
 msgid "Upload one or multiple images"
@@ -4922,6 +4887,31 @@ msgstr "Format"
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:53
 msgid "with info"
 msgstr "mit Info"
+
+#~ msgid "Images uploaded successfully!"
+#~ msgstr "Bilder erfolgreich hochgeladen!"
+
+#~ msgid "Select the images you want to checkout for editing:"
+#~ msgstr ""
+#~ "Wählen Sie die Bilder aus, die Sie für die Bearbeitung auschecken möchten:"
+
+#~ msgid "Select All"
+#~ msgstr "Alle auswählen"
+
+#~ msgid "Select None"
+#~ msgstr "Nichts auswählen"
+
+#~ msgid "Checkout selected images"
+#~ msgstr "Ausgewählte Bilder bearbeiten"
+
+#~ msgid "Go to folder"
+#~ msgstr "Zum Ordner gehen"
+
+#~ msgid "Select images to checkout"
+#~ msgstr "Bilder zur weiteren Bearbeitung ausschicken"
+
+#~ msgid "No images selected"
+#~ msgstr "Keine Bilder ausgewählt"
 
 #~ msgid "Podcastblock"
 #~ msgstr "Podcastblock"

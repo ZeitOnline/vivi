@@ -217,17 +217,17 @@ class EditForm(zeit.cms.browser.view.Base):
                 IPublish(self.context[name]).publish()
 
         if 'open' in self.request.form:
-            # For multiple images, redirect to selection page instead of trying popups
-            # which will be blocked anyway
             if len(self._files) > 1:
-                image_names = [file['target_name'] for file in self._files]
-                selection_url = self.url(self.context, '@@checkout-selection')
-                selection_url += '?' + urllib.parse.urlencode({'images': image_names}, doseq=True)
-                url = selection_url
+                image_urls = []
+                for file in self._files:
+                    image_url = self.url(self.context[file['target_name']], '@@variant.html')
+                    image_urls.append(image_url)
+                self.request.response.setHeader('Content-Type', 'text/html')
+                return self._open_multiple_images(image_urls)
             else:
                 url = self.url(
                     self.context[self._files[0]['target_name']],
-                    name='@@checkout?came_from=variant.html',
+                    name='@@variant.html',
                 )
         elif len(self._files) == 1:
             url = self.url(self.context[self._files[0]['target_name']], name='@@variant.html')
@@ -291,122 +291,44 @@ class EditForm(zeit.cms.browser.view.Base):
             res['error'] = self._errors.get(file['tmp_name'], False)
             yield res
 
+    def _open_multiple_images(self, urls):
+        """Render a page that opens multiple image URLs with delays,
+        first image will reuse the current window, rest will open in new tabs"""
+        first_url = urls[0]
+        remaining_urls_js = ', '.join(f'"{url}"' for url in urls[1:])
 
-@zope.interface.implementer(zeit.cms.browser.interfaces.IHideContextViews)
-class CheckoutSelectionView(zeit.cms.browser.view.Base):
-    """View that shows uploaded images and allows user to select which ones to checkout.
-    The simple reason is that opening all images for editing is probably blocked
-    by the browser but selecting on image after another and explicitly open them for
-    editing is fine though!"""
-
-    title = _('Select images to checkout')
-
-    def __call__(self):
-        if self.request.method == 'POST':
-            return self.handle_checkout()
-        return super().__call__()
-
-    def handle_checkout(self):
-        selected_images = self.request.form.get('selected_images', [])
-        if isinstance(selected_images, str):
-            selected_images = [selected_images]
-
-        checkout_urls = []
-        for image_name in selected_images:
-            if image_name in self.context:
-                image = self.context[image_name]
-                checkout_url = self.url(image, '@@checkout?came_from=variant.html')
-                checkout_urls.append(checkout_url)
-
-        if checkout_urls:
-            if len(checkout_urls) == 1:
-                return self.redirect(checkout_urls[0])
-            else:
-                self.request.response.setHeader('Content-Type', 'text/html')
-                return self._render_multi_checkout_page(checkout_urls)
-        else:
-            self.send_message(_('No images selected'), type='info')
-            return super().__call__()
-
-    def _render_multi_checkout_page(self, urls):
-        """Render a page that opens multiple checkout URLs"""
-        urls_js = ', '.join(f'"{url}"' for url in urls)
         return f"""
         <!DOCTYPE html>
         <html>
         <head>
-            <title>Opening images for checkout...</title>
+            <title>Opening images...</title>
             <meta charset="utf-8">
         </head>
         <body>
-            <h2>Opening {len(urls)} images for checkout...</h2>
-            <p>If popups are blocked, use the links below:</p>
-            <ul>
-                {
-            ''.join(
-                f'<li><a href="{url}" target="_blank">Open {url.split("/")[-2]}</a></li>'
-                for url in urls
-            )
-        }
-            </ul>
-            <p><a href="{self.url(self.context)}">Return to folder</a></p>
+            <h2>Opening {len(urls)} images...</h2>
+            <p>Please disable popup blocker if tabs don't open automatically.</p>
             <script>
-                const urls = [{urls_js}];
-                let opened = 0;
+                const remainingUrls = [{remaining_urls_js}];
 
-                // Open URLs with 100ms delay between each to avoid database conflicts
-                function openUrlsWithDelay(urls, index = 0) {{
+                function openRemainingUrls(urls, index = 0) {{
                     if (index >= urls.length) {{
-                        if (opened === 0) {{
-                            alert('Popup blocker prevented opening tabs. ' +
-                                  'Please use the links above.');
-                        }}
-                        // Redirect to folder after a short delay
-                        setTimeout(() => {{
-                            window.location.href = '{self.url(self.context)}';
-                        }}, 2000);
+                        window.location.href = '{first_url}';
                         return;
                     }}
 
                     try {{
                         window.open(urls[index], '_blank');
-                        opened++;
                     }} catch(e) {{
                         console.log('Failed to open:', urls[index]);
                     }}
 
-                    // Wait 100ms before opening the next tab
                     setTimeout(() => {{
-                        openUrlsWithDelay(urls, index + 1);
+                        openRemainingUrls(urls, index + 1);
                     }}, 100);
                 }}
 
-                openUrlsWithDelay(urls);
+                openRemainingUrls(remainingUrls);
             </script>
         </body>
         </html>
         """
-
-    def uploaded_images(self):
-        image_names = self.request.get('images', [])
-        if isinstance(image_names, str):
-            image_names = [image_names]
-
-        images = []
-        for name in image_names:
-            if name in self.context:
-                image = self.context[name]
-                images.append(
-                    {
-                        'name': name,
-                        'title': getattr(image, 'title', name),
-                        'uniqueId': image.uniqueId,
-                        'thumbnail_url': self.url(image, 'thumbnail'),
-                        'edit_url': self.url(image, '@@checkout?came_from=variant.html'),
-                        'view_url': self.url(image, '@@variant.html'),
-                    }
-                )
-        return images
-
-    def folder_url(self):
-        return self.url(self.context)
