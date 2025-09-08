@@ -1,5 +1,6 @@
 from collections.abc import Iterable
 import collections
+import os.path
 import urllib.parse
 import uuid
 
@@ -235,6 +236,9 @@ class EditForm(zeit.cms.browser.view.Base):
                 name_base = from_name
             elif meta['title'] is not None:
                 name_base = zeit.cms.interfaces.normalize_filename(meta['title'])
+            else:
+                filename = os.path.splitext(imggroup.master_image)[0]
+                name_base = zeit.cms.interfaces.normalize_filename(filename)
 
             if name_base:
                 name = name_provider.get(name_base)

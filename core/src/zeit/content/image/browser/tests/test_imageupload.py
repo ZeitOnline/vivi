@@ -310,7 +310,7 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
         )
         b = self.browser
         b.open('/repository/@@edit-images?files=group')
-        assert b.getControl(name='target_name[0]').value == ''
+        assert b.getControl(name='target_name[0]').value == 'master-image-bild'
 
     def test_editimages_correctly_names_image_without_xmp_after_image_with_xmp(self):
         b = self.browser
@@ -329,7 +329,7 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
         )
         b.getForm(name='imageupload').submit()
         assert b.getControl(name='target_name[0]').value == 'cycling-bel-renewi-bild'
-        assert b.getControl(name='target_name[1]').value == ''
+        assert b.getControl(name='target_name[1]').value == 'opernball-bild'
 
     def test_editimages_correctly_names_multiple_images_with_same_xmp(self):
         b = self.browser
