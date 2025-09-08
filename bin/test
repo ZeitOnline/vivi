@@ -7,6 +7,16 @@ source $DIR/configure-artifact-registry-auth
 
 COMMAND=$1
 case $COMMAND in
+    bdd)
+        shift
+
+        cd "$DIR/../smoketest"
+
+        export UV_INDEX_PYPI_ZON_USERNAME=oauth2accesstoken
+        export UV_INDEX_PYPI_ZON_PASSWORD=$GCLOUD_TOKEN
+
+        exec uv run behave "$@"
+        ;;
     smoke)
         shift
         if [[ "$1" != -* ]]; then
@@ -21,7 +31,7 @@ case $COMMAND in
         image=$(awk -F': ' '/^  newName:/ { print $2 }' \
                 < k8s/base/kustomization.yaml)
         docker buildx build --output type=docker $DOCKER_OPTS_PYPI_ZON \
-               --quiet --tag $image .
+               --tag $image .
         docker run --rm -it \
             -e VIVI_XMLRPC_PASSWORD=$(vault read -field password zon/v1/vivi/$environment/nightwatch) \
             -e TMS_PASSWORD=$(vault read -field password zon/v1/retresco/$environment/tms) \

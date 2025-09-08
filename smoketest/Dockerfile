@@ -25,7 +25,7 @@ USER root
 RUN playwright install --with-deps firefox
 USER app
 
-COPY *.py ./
+COPY / ./
 ENTRYPOINT ["pytest", "--tb=native"]
 
 # Security updates run last, to intentionally bust the docker cache.
