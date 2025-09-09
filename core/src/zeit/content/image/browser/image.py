@@ -56,11 +56,11 @@ class ImageView(zeit.cms.browser.view.Base):
 
     @property
     def width(self):
-        return self.context.getImageSize()[0]
+        return self.context.width
 
     @property
     def height(self):
-        return self.context.getImageSize()[1]
+        return self.context.height
 
     @property
     def copyright(self):
