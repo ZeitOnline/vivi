@@ -3,6 +3,16 @@ vivi.core changes
 
 .. towncrier release notes start
 
+vivi.core 7.177.0 (2025-09-09)
+------------------------------
+
+- WCM-1073: easier publish or open for edit after new image upload
+
+- WCM-1089: use filename as fallback name if title is not specified in metadata
+
+- WCM-1001: limit size of memo field to stay within its parent borders
+
+
 vivi.core 7.175.0 (2025-09-04)
 ------------------------------
 
