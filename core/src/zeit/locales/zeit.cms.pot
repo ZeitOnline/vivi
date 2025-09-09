@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Fri Aug 29 16:11:19 2025\n"
+"POT-Creation-Date: Mon Sep  8 12:35:34 2025\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -150,7 +150,6 @@ msgstr ""
 
 #: zeit/cms/browser/form.py:250
 #: zeit/content/article/edit/browser/workflow.pt:4
-#: zeit/content/image/browser/imageupload.edit-images.pt:18
 msgid "Cancel"
 msgstr ""
 
@@ -3396,8 +3395,8 @@ msgstr ""
 msgid "File list"
 msgstr ""
 
-#: zeit/content/image/browser/configure.zcml:422
-#: zeit/content/image/browser/imageupload.py:25
+#: zeit/content/image/browser/configure.zcml:431
+#: zeit/content/image/browser/imageupload.py:26
 msgid "Image (new)"
 msgstr ""
 
@@ -3507,24 +3506,36 @@ msgstr ""
 msgid "Copyright"
 msgstr ""
 
-#: zeit/content/image/browser/imageupload.edit-images.pt:18
+#: zeit/content/image/browser/imageupload.edit-images.pt:19
 #: zeit/content/image/browser/imageupload.upload-images.pt:10
 msgid "Upload"
 msgstr ""
 
-#: zeit/content/image/browser/imageupload.py:31
+#: zeit/content/image/browser/imageupload.edit-images.pt:20
+msgid "Upload and publish"
+msgstr ""
+
+#: zeit/content/image/browser/imageupload.edit-images.pt:21
+msgid "Upload and open"
+msgstr ""
+
+#: zeit/content/image/browser/imageupload.edit-images.pt:24
+msgid "Remove images"
+msgstr ""
+
+#: zeit/content/image/browser/imageupload.py:32
 msgid "Upload images"
 msgstr ""
 
-#: zeit/content/image/browser/imageupload.py:55
+#: zeit/content/image/browser/imageupload.py:56
 msgid "Please upload at least one image"
 msgstr ""
 
-#: zeit/content/image/browser/imageupload.py:158
+#: zeit/content/image/browser/imageupload.py:159
 msgid "Edit images"
 msgstr ""
 
-#: zeit/content/image/browser/imageupload.py:186
+#: zeit/content/image/browser/imageupload.py:187
 msgid "File name is already in use"
 msgstr ""
 

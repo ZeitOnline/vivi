@@ -7,6 +7,7 @@ import zope.formlib.form
 import zope.formlib.widgets
 
 from zeit.cms.i18n import MessageFactory as _
+from zeit.cms.workflow.interfaces import IPublish
 import zeit.cms.browser.form
 import zeit.cms.browser.view
 import zeit.cms.interfaces
@@ -212,10 +213,26 @@ class EditForm(zeit.cms.browser.view.Base):
                     imagegroup
                 ).renameable = False
 
-        if len(self._files) == 1:
+            if 'upload_and_publish' in self.request.form:
+                IPublish(self.context[name]).publish()
+
+        if 'upload_and_open' in self.request.form:
+            if len(self._files) > 1:
+                image_urls = []
+                for file in self._files:
+                    image_url = self.url(self.context[file['target_name']], '@@variant.html')
+                    image_urls.append(image_url)
+                return self._open_multiple_images(image_urls)
+            else:
+                url = self.url(
+                    self.context[self._files[0]['target_name']],
+                    name='@@variant.html',
+                )
+        elif len(self._files) == 1:
             url = self.url(self.context[self._files[0]['target_name']], name='@@variant.html')
         else:
             url = self.url(name='')
+
         self.redirect(url, status=303)
 
     def _parse_get_request(self):
@@ -272,3 +289,47 @@ class EditForm(zeit.cms.browser.view.Base):
             res = dict(file)
             res['error'] = self._errors.get(file['tmp_name'], False)
             yield res
+
+    def _open_multiple_images(self, urls):
+        """Render a page that opens multiple image URLs with delays
+        which avoid noisy zodb transaction errors,
+        first image will reuse the current window,
+        rest will open in new tabs"""
+        self.request.response.setHeader('Content-Type', 'text/html')
+        first_url = urls[0]
+        remaining_urls_js = ', '.join(f'"{url}"' for url in urls[1:])
+
+        return f"""
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Bilder werden geöffnet...</title>
+            <meta charset="utf-8">
+        </head>
+        <body>
+            <p>Bitte Pop-ups zulassen, wenn keine neuen Tabs geöffnet werden.</p>
+            <script>
+                const remainingUrls = [{remaining_urls_js}];
+
+                function openRemainingUrls(urls, index = 0) {{
+                    if (index >= urls.length) {{
+                        window.location.href = '{first_url}';
+                        return;
+                    }}
+
+                    try {{
+                        window.open(urls[index], '_blank');
+                    }} catch(e) {{
+                        console.log('Failed to open:', urls[index]);
+                    }}
+
+                    setTimeout(() => {{
+                        openRemainingUrls(urls, index + 1);
+                    }}, 100);
+                }}
+
+                openRemainingUrls(remainingUrls);
+            </script>
+        </body>
+        </html>
+        """

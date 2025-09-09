@@ -1,6 +1,7 @@
 import re
 import unittest
 
+from zeit.cms.workflow.interfaces import IPublishInfo
 from zeit.content.image.browser.imageupload import ImageNameProvider
 from zeit.content.image.testing import (
     add_file_multi,
@@ -8,6 +9,8 @@ from zeit.content.image.testing import (
 )
 import zeit.cms.browser.interfaces
 import zeit.cms.interfaces
+import zeit.cms.workflow.interfaces
+import zeit.cms.workingcopy.interfaces
 import zeit.content.image.testing
 
 
@@ -510,6 +513,65 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
         b.getControl(name='target_name[0]').value = 'this is not normal(ized)'
         b.getForm(name='edit-images').submit()
         assert zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/this-is-not-normal-ized')
+
+    def test_publish_images_after_upload(self):
+        b = self.browser
+        b.open('/repository/testcontent/@@upload-images')
+        file_input = b.getControl(name='files')
+        add_file_multi(
+            file_input,
+            [
+                (fixture_bytes('opernball.jpg'), 'opernball.jpg', 'image/jpg'),
+                (fixture_bytes('opernball.jpg'), 'opernball.jpg', 'image/jpg'),
+            ],
+        )
+        b.getForm(name='imageupload').submit()
+        b.getForm(name='edit-images').getControl(name='upload_and_publish').click()
+
+        self.assertTrue(IPublishInfo(self.repository['testcontent-bild-1']).published)
+        self.assertTrue(IPublishInfo(self.repository['testcontent-bild-2']).published)
+
+    def test_open_single_image_after_upload(self):
+        b = self.browser
+        b.open('/repository/testcontent/@@upload-images')
+        file_input = b.getControl(name='files')
+        add_file_multi(
+            file_input,
+            [
+                (fixture_bytes('opernball.jpg'), 'opernball.jpg', 'image/jpg'),
+            ],
+        )
+        b.getForm(name='imageupload').submit()
+        b.getForm(name='edit-images')
+        b.getControl(name='target_name[0]').value == 'testcontent-bild'
+        b.getForm(name='edit-images').getControl(name='upload_and_open').click()
+
+        self.assertEndsWith('/repository/testcontent-bild/@@variant.html', b.url)
+
+    def test_open_multiple_images_after_upload(self):
+        b = self.browser
+        b.open('/repository/testcontent/@@upload-images')
+        file_input = b.getControl(name='files')
+        add_file_multi(
+            file_input,
+            [
+                (fixture_bytes('opernball.jpg'), 'opernball.jpg', 'image/jpg'),
+                (
+                    fixture_bytes('new-hampshire-450x200.jpg'),
+                    'new-hampshire-450x200.jpg',
+                    'image/jpg',
+                ),
+            ],
+        )
+        b.getForm(name='imageupload').submit()
+        b.getControl(name='target_name[0]').value = 'testcontent-bild-1'
+        b.getControl(name='target_name[1]').value = 'testcontent-bild-2'
+        b.getForm(name='edit-images').getControl(name='upload_and_open').click()
+        self.assertEllipsis(
+            '...http://localhost/++skin++vivi/repository/testcontent-bild-2/@@variant.html...'
+            'http://localhost/++skin++vivi/repository/testcontent-bild-1/@@variant.html...',
+            b.contents,
+        )
 
 
 class AddCentralImageUploadTest(zeit.content.image.testing.SeleniumTestCase):
