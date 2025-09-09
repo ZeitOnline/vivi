@@ -623,7 +623,7 @@ MAINT:
 
 - WCM-839: add column for recipe titles
 
-- WCM-853: Remove `videotagesschau` article module
+- WCM-853: Remove videotagesschau article module
 
 
 7.93.0 (2025-05-05)
@@ -2037,7 +2037,7 @@ MAINT:
 ------------------
 
 MAINT:
-- MAINT: Remove feature toggle `disable_connector_body_checksum`
+- MAINT: Remove feature toggle disable_connector_body_checksum
 
 
 6.1.0 (2024-07-09)
@@ -2260,7 +2260,7 @@ FIX:
 5.170.0 (2024-05-16)
 --------------------
 
-- ZO-5382: Call Airship via publisher instead of zeit.push AfterPublishEvent (toggle: `push_airship_via_publisher`)
+- ZO-5382: Call Airship via publisher instead of zeit.push AfterPublishEvent (toggle: push_airship_via_publisher)
 
 
 5.169.0 (2024-05-16)
@@ -2416,7 +2416,7 @@ MAINT:
 
 - ZO-4613: remove video playlist content type
 
-- ZO-4983: Move summy attribute `avoid_create_summary` to non admin area
+- ZO-4983: Move summy attribute avoid_create_summary to non admin area
 
 - ZO-5089: Remove all but one twitter message option
 
@@ -2672,7 +2672,7 @@ FIX:
 
 - ZO-4801: Fix saving audio reference on article
 
-- ZO-4801: Display request errors that occur in JS forms (toggle: `inlineform_alert_error`)
+- ZO-4801: Display request errors that occur in JS forms (toggle: inlineform_alert_error)
 
 
 5.115.0 (2024-02-26)
@@ -2972,7 +2972,7 @@ FIX:
 5.74.0 (2023-12-04)
 -------------------
 
-- ZO-4293: `load` event is being triggered for both tabs therefore check which tab we are in before setting form
+- ZO-4293: load event is being triggered for both tabs therefore check which tab we are in before setting form
 
 
 5.73.0 (2023-12-01)
@@ -3168,7 +3168,7 @@ FIX:
 
 
 FIX:
-- ZO-1810: Remove `urn:uuid:` prefix before passing UUIDs to PostgreSQL
+- ZO-1810: Remove urn:uuid: prefix before passing UUIDs to PostgreSQL
 
 
 5.47.0 (2023-10-24)
@@ -3559,7 +3559,7 @@ MAINT:
 5.27.5 (2023-07-06)
 -------------------
 
-- ZO-3478: Introduce toggle `access_treat_free_as_dynamic`
+- ZO-3478: Introduce toggle access_treat_free_as_dynamic
 
 
 5.27.4 (2023-07-03)
@@ -3816,7 +3816,7 @@ FIX:
 5.22.17 (2023-02-21)
 --------------------
 
-- ZO-2132: Normalize quotes to angled instead of inch if toggle `normalize_quotes` is set
+- ZO-2132: Normalize quotes to angled instead of inch if toggle normalize_quotes is set
 
 
 5.22.16 (2023-02-20)
@@ -3953,7 +3953,7 @@ FIX:
 5.21.9 (2022-11-18)
 -------------------
 
-- ZO-2132: Normalize quotes to angled instead of inch if toggle `normalize_quotes` is set
+- ZO-2132: Normalize quotes to angled instead of inch if toggle normalize_quotes is set
 
 - ZO-2179: Prohibit writing the root object to IConnector
 
@@ -4203,7 +4203,7 @@ MAINT:
 
 - ZO-1629: Instrument sql connector for tracing
 
-- ZO-605: Include `consider_for_duplicate` checkbox in area form
+- ZO-605: Include consider_for_duplicate checkbox in area form
 
 
 5.18.0 (2022-07-27)
@@ -4218,7 +4218,7 @@ MAINT:
 
 - ZO-1576: Implement hostname denylist for link targets
 
-- ZO-605: Add `consider_for_dupes` flag to exclude area content from duplicate checking
+- ZO-605: Add consider_for_dupes flag to exclude area content from duplicate checking
 
 
 5.17.7 (2022-07-25)
@@ -4291,7 +4291,7 @@ MAINT:
 5.16.12 (2022-07-05)
 --------------------
 
-- ZO-1550: Remove `breaking_news` flag from facebook push data
+- ZO-1550: Remove breaking_news flag from facebook push data
 
 
 5.16.11 (2022-06-29)
@@ -4318,7 +4318,7 @@ FIX:
 
 - ZO-1351: Publish content to new publisher, if toggle enabled. For development purposes
 
-- ZO-1475: Remove obsolete `IArticle.is_amp` and `IEmbed.amp_code` fields
+- ZO-1475: Remove obsolete IArticle.is_amp and IEmbed.amp_code fields
 
 - ZO-1478: Update Pillow from version 6 to current 9
 
@@ -4364,7 +4364,7 @@ FIX:
 5.16.1 (2022-05-30)
 -------------------
 
-- ZO-1286: Use already existing `manual` queue for materialize
+- ZO-1286: Use already existing manual queue for materialize
 
 - ZO-1367: Store body of non-binary objects in SQL instead of GCS
 
@@ -4422,7 +4422,7 @@ FIX:
 
 - ZO-1339: Index TMS when workflow properties are edited while checked-in
 
-- ZO-339: Require special permission to check out embed objects (when feature toggle `add_content_permissions` is active)
+- ZO-339: Require special permission to check out embed objects (when feature toggle add_content_permissions is active)
 
 - ZO-38: Display entity type for tags
 
@@ -4435,7 +4435,7 @@ FIX:
 -------------------
 
 FIX:
-- FIX: Be liberal about `<image/>` in newsletter.xml config file
+- FIX: Be liberal about <image/> in newsletter.xml config file
 
 
 5.15.7 (2022-05-11)
@@ -4502,7 +4502,7 @@ FIX:
 
 
 MAINT:
-- Make `available` work for article template header and header color
+- Make available work for article template header and header color
 
 
 5.14.1 (2022-04-28)
@@ -4514,7 +4514,7 @@ MAINT:
 5.14.0 (2022-04-27)
 -------------------
 
-- ZO-1249: Support loading config files given as `http://xml.zeit.de` via connector
+- ZO-1249: Support loading config files given as http://xml.zeit.de via connector
 
 
 5.13.4 (2022-04-26)
@@ -4536,7 +4536,7 @@ MAINT:
 5.13.2 (2022-04-14)
 -------------------
 
-- ZO-121: Re-add `title` to ITopicpages results (mostly relevant for zeit.web)
+- ZO-121: Re-add title to ITopicpages results (mostly relevant for zeit.web)
 
 
 5.13.1 (2022-04-13)
@@ -4600,7 +4600,7 @@ FIX:
 5.11.3 (2022-03-21)
 -------------------
 
-- ZO-929: Add `genre` and `authorships` to articles via Add-URL
+- ZO-929: Add genre and authorships to articles via Add-URL
 
 
 MAINT:
@@ -4773,7 +4773,7 @@ MAINT:
 
 
 MAINT:
-- Clean up XML namespaces and objectify `pytype` on checkin
+- Clean up XML namespaces and objectify pytype on checkin
 
 
 5.5.0 (2021-11-30)
@@ -4978,7 +4978,7 @@ MAINT:
 
 - ZO-200: Support <rankedTags> in dynamicfolder templates
 
-- ZO-142: Fix `zopeshell myscript.py` handling
+- ZO-142: Fix zopeshell myscript.py handling
 
 
 4.63.0 (2021-09-02)
@@ -4988,7 +4988,7 @@ MAINT:
 
 - ZO-51: Implement "create linkobject" action
 
-- ZO-169: Support `is_news` attribute in products.xml
+- ZO-169: Support is_news attribute in products.xml
 
 
 4.62.0 (2021-08-31)
@@ -4996,7 +4996,7 @@ MAINT:
 
 - ZON-6764: Calculate uuid of dynamic folder content from uniqueId
 
-- ZO-142: Provide `@zeit.cms.cli.runner` that wraps `@gocept.runner`
+- ZO-142: Provide @zeit.cms.cli.runner that wraps @gocept.runner
   and retrieves the config file from argv instead of buildout injection
 
 
@@ -5027,7 +5027,7 @@ MAINT:
 4.60.3 (2021-08-18)
 -------------------
 
-- TOPIC-15: Preserve externally populated `kpi` fields during TMS indexing
+- TOPIC-15: Preserve externally populated kpi fields during TMS indexing
 
 
 4.60.2 (2021-08-05)
@@ -5164,7 +5164,7 @@ MAINT:
 4.56.0 (2021-06-28)
 -------------------
 
-- TOPIC-9: Provide access to TMS kpi data with `IKPI` adapter
+- TOPIC-9: Provide access to TMS kpi data with IKPI adapter
 
 
 4.55.0 (2021-06-23)
@@ -5191,7 +5191,7 @@ MAINT:
 4.54.0 (2021-06-16)
 -------------------
 
-- OPS-1984: Conform to real `Span` API in FakeTracer
+- OPS-1984: Conform to real Span API in FakeTracer
 
 
 4.53.3 (2021-06-07)
@@ -5254,7 +5254,7 @@ MAINT:
 
 - ZON-6637: Introduce JSON content object
 
-- ZON-6377: Fix rendering of teaser images with `fill_color=None` parameters
+- ZON-6377: Fix rendering of teaser images with fill_color=None parameters
 
 
 4.50.6 (2021-04-21)
@@ -5354,7 +5354,7 @@ MAINT:
 4.48.4 (2021-01-21)
 -------------------
 
-- STO-179: Remove overspecific `type` restriction from ES queries
+- STO-179: Remove overspecific type restriction from ES queries
 
 
 4.48.3 (2021-01-21)
@@ -5507,7 +5507,7 @@ MAINT:
 4.43.1 (2020-10-22)
 -------------------
 
-- ZON-5577: Set default for `force_mobile_images` to true
+- ZON-5577: Set default for force_mobile_images to true
 
 
 4.43.0 (2020-10-13)
@@ -5515,7 +5515,7 @@ MAINT:
 
 - ZETT-46: Add color theme selection to area settings
 
-- BEM-62: Remove obsolete `IArticle.is_instant_article`
+- BEM-62: Remove obsolete IArticle.is_instant_article
 
 - ZON-6149: Allow to specify imagegroup variants via query parameters
 
@@ -5594,13 +5594,13 @@ MAINT:
 
 - BUG-1283: Size of images in image gallery editor is max 500 px x 500 px
 
-- ZON-6108: Remove legacy ``type`` attribute from content editor line breaks
+- ZON-6108: Remove legacy type attribute from content editor line breaks
 
 
 4.39.1 (2020-08-06)
 -------------------
 
-- BUG-1273: Handle toplevel `br` nodes that can appear when pasting content
+- BUG-1273: Handle toplevel br nodes that can appear when pasting content
 
 
 4.39.0 (2020-08-05)
@@ -5715,7 +5715,7 @@ MAINT:
 4.36.1 (2020-07-07)
 -------------------
 
-- FIX: Make `available` work for article modules
+- FIX: Make available work for article modules
 
 
 4.36.0 (2020-07-03)
@@ -5820,7 +5820,7 @@ MAINT:
 4.33.1 (2020-06-04)
 -------------------
 
-- ZON-5861: Remove `commentsAPIv2` property from `ICommonMetadata`
+- ZON-5861: Remove commentsAPIv2 property from ICommonMetadata
 
 - BUG-1216: Allow referencing gallery objects in article topicbox module
 
@@ -5911,7 +5911,7 @@ MAINT:
 -------------------
 
 - MAINT: Don't break when running test in zeit.web, when pytest option
-  `--visible` will be added by both vivi.core and zeit.web
+  --visible will be added by both vivi.core and zeit.web
 
 
 4.31.2 (2020-05-05)
@@ -5941,7 +5941,7 @@ MAINT:
 4.30.2 (2020-04-28)
 -------------------
 
-- BUG-1234: Ignore `DeleteProperty` in tms reindex
+- BUG-1234: Ignore DeleteProperty in tms reindex
 
 
 4.30.1 (2020-04-27)
@@ -6003,7 +6003,7 @@ MAINT:
 -------------------
 
 - ZON-5635: Put importing video images behind feature toggle
-  ``video_import_images``
+  video_import_images
 
 
 4.26.2 (2020-03-09)
@@ -6150,7 +6150,7 @@ MAINT:
 4.25.0 (2019-12-16)
 -------------------
 
-- ZON-5560: Implement `Animation` content type
+- ZON-5560: Implement Animation content type
 
 - ZON-5590: Remove z3c.conditionalviews
 
@@ -6193,7 +6193,7 @@ MAINT:
 - ZON-5603: Replace suds with zeep as our SOAP client library
 
 - ZON-5615: Require special permission to add embed objects,
-  set feature toggle `add_content_permissions` to enable
+  set feature toggle add_content_permissions to enable
 
 - ZON-5615: Removed inline code entry from rawtext module
 
@@ -6227,7 +6227,7 @@ MAINT:
 
 - ZON-5614: Make social embed labels and texts more explainable
 
-- ZON-5472: Add `IAuthor.show_letterbox_link` field
+- ZON-5472: Add IAuthor.show_letterbox_link field
 
 
 4.21.7 (2019-11-15)
@@ -6239,7 +6239,7 @@ MAINT:
 4.21.6 (2019-11-15)
 -------------------
 
-- MAINT: Add feature toggle `tms_enrich_on_checkin` so we can disable
+- MAINT: Add feature toggle tms_enrich_on_checkin so we can disable
   it in overload situations
 
 
@@ -6249,7 +6249,7 @@ MAINT:
 - OPS-1133: Modify DAV cache conflict resolution rules
   to avoid deleting cache entries (doing that was definitely correct,
   but it caused thundering herd issues e.g. for often-used folders)
-  Set feature toggle `dav_cache_delete_property_on_conflict` (or `childname`)
+  Set feature toggle dav_cache_delete_property_on_conflict (or childname)
   to revert to the previous behaviour.
 
 
@@ -6307,7 +6307,7 @@ MAINT:
 4.20.2 (2019-10-29)
 -------------------
 
-- MAINT: Put article image `animation` behind feature toggle `article_image_animation`
+- MAINT: Put article image animation behind feature toggle article_image_animation
 
 
 4.20.1 (2019-10-25)
@@ -6331,7 +6331,7 @@ MAINT:
 4.18.0 (2019-10-22)
 -------------------
 
-- ZON-5464: Add `animation` field to article image module
+- ZON-5464: Add animation field to article image module
 
 - OPS-1133: Add diagnostics to DAV cache conflict resolution
 
@@ -6438,7 +6438,7 @@ MAINT:
 
 - ZON-5483: Allow configuring which authorship roles to report to vgwort
 
-- FIX: Don't break when creating a volume without a `centerpage` setting
+- FIX: Don't break when creating a volume without a centerpage setting
 
 - MAINT: Don't show supertitle in volume toc
 
@@ -6446,9 +6446,9 @@ MAINT:
 4.14.0 (2019-09-05)
 -------------------
 
-- ZON-5453: Add dropdown with `IConsentInfo.has_thirdparty` to embed form
+- ZON-5453: Add dropdown with IConsentInfo.has_thirdparty to embed form
 
-- ZON-5447: Add multiselect with `IConsentInfo.thirdparty_vendors` to embed form
+- ZON-5447: Add multiselect with IConsentInfo.thirdparty_vendors to embed form
 
 
 4.13.0 (2019-09-04)
@@ -6458,7 +6458,7 @@ MAINT:
 
 - MAINT: Move runtime feature toggle source here from zeit.web
 
-- MAINT: Put `agencies` field on article UI behind feature toggle
+- MAINT: Put agencies field on article UI behind feature toggle
 
 
 4.12.2 (2019-09-04)
@@ -6476,9 +6476,9 @@ MAINT:
 4.12.0 (2019-08-29)
 -------------------
 
-- ZON-5432: Add value `Agentur` to `IAuthor.status` source;
-  add `ICommonMetadata.agencies` field;
-  add `IAuthor.initials` field
+- ZON-5432: Add value Agentur to IAuthor.status source;
+  add ICommonMetadata.agencies field;
+  add IAuthor.initials field
 
 
 4.11.1 (2019-08-27)
@@ -6496,7 +6496,7 @@ MAINT:
 4.10.0 (2019-08-26)
 -------------------
 
-- ZON-5376: Add `IArticle.prevent_ligatus_indexing` property
+- ZON-5376: Add IArticle.prevent_ligatus_indexing property
 
 
 4.9.4 (2019-08-09)
@@ -6570,7 +6570,7 @@ MAINT:
 
 - IR-95: Add hdok id to ICommonMetadata.authorships XML reference
 
-- IR-41: Add `has_audio` field to the checked-out admin form
+- IR-41: Add has_audio field to the checked-out admin form
 
 
 4.8.0 (2019-07-25)
@@ -6630,7 +6630,7 @@ MAINT:
 4.5.4 (2019-07-05)
 ------------------
 
-- BUG-1096: Allow storing `False` for embed parameters with default=True
+- BUG-1096: Allow storing False for embed parameters with default=True
 
 
 4.5.3 (2019-07-04)
@@ -6656,7 +6656,7 @@ MAINT:
 
 - IR-66: Retry webhook on errors
 
-- IR-67: Add `locked` flag to workflow info that prevents publishing
+- IR-67: Add locked flag to workflow info that prevents publishing
 
 
 4.4.1 (2019-07-03)
@@ -6691,9 +6691,9 @@ MAINT:
 4.1.0 (2019-06-03)
 ------------------
 
-- IR-77: Add `mdb_id` field to images
+- IR-77: Add mdb_id field to images
 
-- IR-77: Add `setup_timebased_jobs` xmlrpc method
+- IR-77: Add setup_timebased_jobs xmlrpc method
 
 - PERF: Determine image mime type only on demand, not always upfront on resolve
 
