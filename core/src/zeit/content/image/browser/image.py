@@ -115,13 +115,9 @@ class Scaled:
 
     @cachedproperty
     def scaled(self):
-        try:
-            transform = zeit.content.image.interfaces.ITransform(self.context)
-        except TypeError:
-            image = self.context
-        else:
-            image = self._resize(transform)
-            image.__name__ = self.__name__
+        transform = zeit.content.image.interfaces.ITransform(self.context)
+        image = self._resize(transform)
+        image.__name__ = self.__name__
         image_view = zope.component.getMultiAdapter((image, self.request), name='raw')
         return image_view
 
