@@ -64,6 +64,14 @@ class UploadForm(zeit.cms.browser.view.Base, zeit.content.image.browser.form.Cre
 
         results = []
         for file in files:
+            try:
+                zeit.content.image.browser.interfaces.is_image(file)
+            except zope.schema.ValidationError as e:
+                if self.request.getHeader('X-Requested-With') != 'XMLHttpRequest':
+                    raise
+                self.request.response.setStatus(400)
+                return zope.i18n.translate(e.doc(), context=self.request)
+
             result = self._upload_imagegroup(file, target)
             results.append(result)
 
