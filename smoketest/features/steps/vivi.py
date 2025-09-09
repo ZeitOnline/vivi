@@ -10,14 +10,14 @@ def step_go_to_hp(context):
 @when('we have valid credentials')
 def step_valid_creds(context):
     context.username = 'admin'
-    context.passwort = 'admin'
+    context.password = 'admin'
 
 
 @when('we log in')
 def step_login(context):
-    context.page.get_by_role('input', name='login').value = context.username
-    context.page.get_by_role('input', name='password').value = context.password
-    context.page.get_by_role('input', name='SUBMIT').click()
+    context.page.get_by_role('textbox', name='Benutzername').fill(context.username)
+    context.page.get_by_role('textbox', name='Passwort').fill(context.password)
+    context.page.get_by_role('button', name='Anmelden').click()
 
 
 @then('we see the authenticated homepage')
