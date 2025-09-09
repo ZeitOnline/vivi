@@ -5,6 +5,8 @@ import gocept.httpserverlayer.static
 import gocept.selenium
 import webtest.forms
 import zope.component
+import zope.event
+import zope.lifecycleevent
 
 import zeit.cms.repository.interfaces
 import zeit.cms.testcontenttype.testcontenttype

@@ -5,13 +5,16 @@ import urllib.parse
 
 from PIL import ImageCms
 import filetype
+import grokcore.component as grok
 import lxml.builder
 import lxml.etree
 import PIL.Image
 import requests
 import zope.cachedescriptors.property
 import zope.component
+import zope.event
 import zope.interface
+import zope.lifecycleevent
 import zope.location.interfaces
 import zope.security.proxy
 
@@ -268,3 +271,10 @@ def get_remote_image(url, timeout=2):
                 assert len(chunk) > DOWNLOAD_CHUNK_SIZE / 2
             fh.write(chunk)
     return image
+
+
+@grok.subscribe(zeit.content.image.interfaces.IImage, zope.lifecycleevent.IObjectCreatedEvent)
+def update_image_properties(context, event):
+    if FEATURE_TOGGLES.find('column_write_wcm_56'):
+        context.mimeType = context.getMimeType()
+        (context.width, context.height) = context.getImageSize()

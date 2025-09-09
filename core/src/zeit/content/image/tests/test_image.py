@@ -1,6 +1,9 @@
 import zope.component
+import zope.event
+import zope.lifecycleevent
 
 from zeit.cms.checkout.helper import checked_out
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.content.image.testing import create_image
 import zeit.cms.checkout.interfaces
 import zeit.cms.interfaces
@@ -62,3 +65,15 @@ class TestImageMIMEType(zeit.content.image.testing.FunctionalTestCase):
             props = zeit.connector.interfaces.IWebDAVProperties(co)
             props[('getcontenttype', 'DAV:')] = 'image/png'
         self.assertEqual('image/jpeg', self.repository['image'].mimeType)
+
+
+class TestImageProperties(zeit.content.image.testing.FunctionalTestCase):
+    def test_create_image_sets_properties(self):
+        FEATURE_TOGGLES.set('column_read_wcm_56')
+        FEATURE_TOGGLES.set('column_write_wcm_56')
+        image = zeit.content.image.testing.create_image()
+        self.repository['image-with-properties'] = image
+        image = self.repository['image-with-properties']
+        self.assertEqual('image/jpeg', image.mimeType)
+        self.assertEqual(119, image.width)
+        self.assertEqual(160, image.height)
