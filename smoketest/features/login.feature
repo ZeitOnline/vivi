@@ -1,6 +1,8 @@
-Feature: showing off behave
+Feature: Login
 
-  Scenario: run a simple test
-     Given we have behave installed
-      When we implement a test
-      Then behave will test it for us!
+  Scenario: Login and redirect to main page
+     Given we are on the homepage
+      When we have valid credentials
+      And we log in
+      Then we see the authenticated homepage
+      And we see our login name and logout button

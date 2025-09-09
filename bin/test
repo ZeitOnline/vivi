@@ -1,80 +1,84 @@
 #!/bin/bash
 
 set -e
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 source $DIR/configure-artifact-registry-auth
 
 COMMAND=$1
 case $COMMAND in
-    bdd)
-        shift
+playwright)
+  shift
+  cd "$DIR/../smoketest"
+  exec uv run playwright install
+  ;;
+bdd)
+  shift
 
-        cd "$DIR/../smoketest"
+  cd "$DIR/../smoketest"
 
-        export UV_INDEX_PYPI_ZON_USERNAME=oauth2accesstoken
-        export UV_INDEX_PYPI_ZON_PASSWORD=$GCLOUD_TOKEN
+  export UV_INDEX_PYPI_ZON_USERNAME=oauth2accesstoken
+  export UV_INDEX_PYPI_ZON_PASSWORD=$GCLOUD_TOKEN
 
-        exec uv run behave "$@"
-        ;;
-    smoke)
-        shift
-        if [[ "$1" != -* ]]; then
-            environment=$1
-            shift
-        else
-            environment="staging"
-        fi
+  exec uv run behave "$@"
+  ;;
+smoke)
+  shift
+  if [[ "$1" != -* ]]; then
+    environment=$1
+    shift
+  else
+    environment="staging"
+  fi
 
-        cd "$DIR/../smoketest"
+  cd "$DIR/../smoketest"
 
-        image=$(awk -F': ' '/^  newName:/ { print $2 }' \
-                < k8s/base/kustomization.yaml)
-        docker buildx build --output type=docker $DOCKER_OPTS_PYPI_ZON \
-               --tag $image .
-        docker run --rm -it \
-            -e VIVI_XMLRPC_PASSWORD=$(vault read -field password zon/v1/vivi/$environment/nightwatch) \
-            -e TMS_PASSWORD=$(vault read -field password zon/v1/retresco/$environment/tms) \
-            -e OIDC_CLIENT_ID=edge-www \
-            -e OIDC_CLIENT_SECRET=$(vault read -field client_secret zon/v1/keycloak/production/zeit-online/edge-www) \
-            -e AD_CLIENT_ID=$(vault read -field client_id zon/v1/azure/activedirectory/oidc/$environment/vivi) \
-            -e AD_CLIENT_SECRET=$(vault read -field client_secret zon/v1/azure/activedirectory/oidc/$environment/vivi) \
-            -e AD_REFRESH_TOKEN=$(vault read -field refresh_token zon/v1/azure/activedirectory/oidc/$environment/vivi) \
-            $image \
-            --nightwatch-environment=$environment "$@"
-        ;;
-    local)
-        shift
-        if [[ "$1" != -* ]]; then
-            environment=$1
-            shift
-        else
-            environment="staging"
-        fi
+  image=$(awk -F': ' '/^  newName:/ { print $2 }' \
+    <k8s/base/kustomization.yaml)
+  docker buildx build --output type=docker $DOCKER_OPTS_PYPI_ZON \
+    --tag $image .
+  docker run --rm -it \
+    -e VIVI_XMLRPC_PASSWORD=$(vault read -field password zon/v1/vivi/$environment/nightwatch) \
+    -e TMS_PASSWORD=$(vault read -field password zon/v1/retresco/$environment/tms) \
+    -e OIDC_CLIENT_ID=edge-www \
+    -e OIDC_CLIENT_SECRET=$(vault read -field client_secret zon/v1/keycloak/production/zeit-online/edge-www) \
+    -e AD_CLIENT_ID=$(vault read -field client_id zon/v1/azure/activedirectory/oidc/$environment/vivi) \
+    -e AD_CLIENT_SECRET=$(vault read -field client_secret zon/v1/azure/activedirectory/oidc/$environment/vivi) \
+    -e AD_REFRESH_TOKEN=$(vault read -field refresh_token zon/v1/azure/activedirectory/oidc/$environment/vivi) \
+    $image \
+    --nightwatch-environment=$environment "$@"
+  ;;
+local)
+  shift
+  if [[ "$1" != -* ]]; then
+    environment=$1
+    shift
+  else
+    environment="staging"
+  fi
 
-        cd "$DIR/../smoketest"
+  cd "$DIR/../smoketest"
 
-        if ! [ -x "$(command -v yq)" ]; then
-            echo 'Error: yq is not installed, install with: brew install yq.' >&2
-            exit 1
-        fi
+  if ! [ -x "$(command -v yq)" ]; then
+    echo 'Error: yq is not installed, install with: brew install yq.' >&2
+    exit 1
+  fi
 
-        while IFS=$'\t' read -r envName vaultName vaultPath _; do
-            export $envName=$(vault read -field $vaultName $vaultPath);
-        done < <(yq -re '.spec.data[] | [.secretKey, .remoteRef.property, .remoteRef.key] | @tsv' k8s/base/secrets.yaml)
-        export VIVI_XMLRPC_PASSWORD=$(vault read -field password zon/v1/vivi/$environment/nightwatch)
-        export TMS_PASSWORD=$(vault read -field password zon/v1/retresco/$environment/tms)
-        export OIDC_CLIENT_SECRET=$(vault read -field client_secret zon/v1/keycloak/production/zeit-online/edge-www)
-        export OIDC_CLIENT_ID=edge-www
+  while IFS=$'\t' read -r envName vaultName vaultPath _; do
+    export $envName=$(vault read -field $vaultName $vaultPath)
+  done < <(yq -re '.spec.data[] | [.secretKey, .remoteRef.property, .remoteRef.key] | @tsv' k8s/base/secrets.yaml)
+  export VIVI_XMLRPC_PASSWORD=$(vault read -field password zon/v1/vivi/$environment/nightwatch)
+  export TMS_PASSWORD=$(vault read -field password zon/v1/retresco/$environment/tms)
+  export OIDC_CLIENT_SECRET=$(vault read -field client_secret zon/v1/keycloak/production/zeit-online/edge-www)
+  export OIDC_CLIENT_ID=edge-www
 
+  export UV_INDEX_PYPI_ZON_USERNAME=oauth2accesstoken
+  export UV_INDEX_PYPI_ZON_PASSWORD=$GCLOUD_TOKEN
 
-        export UV_INDEX_PYPI_ZON_USERNAME=oauth2accesstoken
-        export UV_INDEX_PYPI_ZON_PASSWORD=$GCLOUD_TOKEN
-
-        exec uv run pytest -c none --tb=native --nightwatch-environment=$environment "$@"
-        ;;
-    *)
-        echo "Unrecognized command: $COMMAND"
-        exit 1
-    ;;
+  exec uv run pytest -c none --tb=native --nightwatch-environment=$environment "$@"
+  ;;
+*)
+  echo "Unrecognized command: $COMMAND"
+  exit 1
+  ;;
 esac
