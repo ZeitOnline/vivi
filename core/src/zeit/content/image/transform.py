@@ -224,22 +224,22 @@ def persistent_thumbnail_factory(context):
     else:
         height = None
 
-    thumbnail_container = zeit.content.image.interfaces.IThumbnailFolder(context)
-    image_name = context.__name__
-    if image_name not in thumbnail_container:
+    container = zeit.content.image.interfaces.IThumbnailFolder(context)
+    name = context.__name__
+    if name not in container:
         transform = zeit.content.image.interfaces.ITransform(context)
-        thumbnail = transform.resize(width, height)
+        image = transform.resize(width, height)
 
-        thumbnail_properties = zeit.connector.interfaces.IWebDAVWriteProperties(thumbnail)
-        image_properties = zeit.connector.interfaces.IWebDAVReadProperties(context)
-        for (name, namespace), value in image_properties.items():
-            if namespace != 'DAV:':
-                thumbnail_properties[(name, namespace)] = value
-        thumbnail_properties.pop(zeit.connector.interfaces.UUID_PROPERTY, None)
+        properties = zeit.connector.interfaces.IWebDAVWriteProperties(image)
+        source = zeit.connector.interfaces.IWebDAVReadProperties(context)
+        for (key, ns), value in source.items():
+            if ns != 'DAV:':
+                properties[(key, ns)] = value
+        properties.pop(zeit.connector.interfaces.UUID_PROPERTY, None)
 
-        thumbnail_container[image_name] = thumbnail
+        container[name] = image
 
-    return thumbnail_container[image_name]
+    return container[name]
 
 
 THUMBNAIL_FOLDER_NAME = 'thumbnails'
