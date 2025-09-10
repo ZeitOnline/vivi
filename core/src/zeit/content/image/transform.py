@@ -206,6 +206,7 @@ class ImageTransform:
         if image_times and image_times.date_last_modified:
             thumb_times = zeit.cms.workflow.interfaces.IModified(image)
             thumb_times.date_last_modified = image_times.date_last_modified
+        zope.event.notify(zope.lifecycleevent.ObjectCreatedEvent(image))
         return image
 
 
