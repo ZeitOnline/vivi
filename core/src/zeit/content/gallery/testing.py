@@ -14,7 +14,6 @@ HERE = importlib.resources.files(__package__)
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
     {
         'scale-source': f'file://{HERE}/scales.xml',
-        'ticket-secret': 'All work and no play makes jack a dull boy',
         'gallery-types-url': f'file://{HERE}/gallery-types.xml',
     },
     bases=(zeit.crop.testing.CONFIG_LAYER, zeit.push.testing.CONFIG_LAYER),
