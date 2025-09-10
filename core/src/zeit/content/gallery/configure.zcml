@@ -5,6 +5,10 @@
   <grok:grok package="." exclude="browser" />
 
   <adapter factory=".gallery.galleryentry_factory" />
+  <adapter
+    for="zeit.content.image.interfaces.IImageGroup"
+    factory=".gallery.galleryentry_factory"
+    />
   <adapter factory=".gallery.get_visible_entry_count_for_gallery"
            provides=".interfaces.IVisibleEntryCount" />
   <adapter factory=".gallery.EntryXMLRepresentation" />

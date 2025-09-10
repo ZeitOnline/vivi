@@ -13,6 +13,7 @@ Create a  browser first:
 For creating a gallery we need a folder containing images:
 
 >>> from zeit.cms.repository.folder import Folder
+>>> from zeit.content.image.testing import create_image_group_with_master_image
 >>> from zeit.content.image.testing import create_local_image
 >>> import zeit.cms.repository
 >>> import zope.component
@@ -23,9 +24,9 @@ For creating a gallery we need a folder containing images:
 
 Add some images to the folder:
 
->>> for i in range(1, 6):
+>>> for i in range(1, 5):
 ...     folder[f'{i:02d}.jpg'] = create_local_image(f'{i:02d}.jpg', 'zeit.content.gallery.browser', 'testdata')
-
+>>> folder['05'] = create_image_group_with_master_image()
 
 Adding gallery
 ==============
@@ -66,7 +67,7 @@ thumbnails of the images in the gallery together with the texts:
     ...
         <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/thumbnails/04.jpg/@@raw" alt="" height="50" width="50" border="0" />
     ...
-        <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/thumbnails/05.jpg/@@raw" alt="" height="50" width="50" border="0" />
+        <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/thumbnails/05/@@raw" alt="" height="28" width="50" border="0" />
     ...
 </table>...
 
@@ -147,7 +148,7 @@ So let's change the sorting:
     ...
         <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/thumbnails/04.jpg/@@raw" alt="" height="50" width="50" border="0" />
     ...
-        <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/thumbnails/05.jpg/@@raw" alt="" height="50" width="50" border="0" />
+        <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/thumbnails/05/@@raw" alt="" height="28" width="50" border="0" />
     ...
 </table>...
 
@@ -197,7 +198,7 @@ listed:
     ...
         <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/thumbnails/04.jpg/@@raw" alt="" height="50" width="50" border="0" />
     ...
-        <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/thumbnails/05.jpg/@@raw" alt="" height="50" width="50" border="0" />
+        <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/thumbnails/05/@@raw" alt="" height="28" width="50" border="0" />
     ...
 </table>...
 
@@ -282,7 +283,7 @@ There is also a metdata preview showing the images:
       <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/04.jpg/thumbnail" alt="" height="100" width="100" border="0" />
     </div>
     <div class="image-group-image-preview">
-      <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/05.jpg/thumbnail" alt="" height="100" width="100" border="0" />
+      <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/05/master-image.jpg/thumbnail" alt="" height="75" width="100" border="0" />
     </div>
     ...
 

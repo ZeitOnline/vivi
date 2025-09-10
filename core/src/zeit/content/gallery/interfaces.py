@@ -79,6 +79,12 @@ class IGallery(IReadGallery, IWriteGallery):
 class IGalleryEntry(zope.interface.Interface):
     """One image in the gallery."""
 
+    # XXX Imprecise, can be either IImage or IImageGroup, which we cannot
+    # express (easily). This does work anyway, because it is
+    # a) currently implemented without a field, and instead
+    # the object is set directly by the IGalleryEntry adapter
+    # b) only used for displaying a preview image, the adapter for which
+    # is available for both content types.
     image = zope.schema.Object(zeit.content.image.interfaces.IImage)
     thumbnail = zope.schema.Object(zeit.content.image.interfaces.IImage)
 
