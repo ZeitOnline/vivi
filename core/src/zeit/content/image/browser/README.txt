@@ -6,8 +6,17 @@ Create a browser first:
 
 >>> import zeit.cms.testing
 >>> zeit.cms.testing.set_site()
->>> import zeit.content.image.testing
->>> _ = zeit.content.image.testing.create_image_group()
+
+>>> filename = 'DSC00109_2.JPG'
+>>> import zope.component
+>>> import zeit.cms.repository.interfaces
+>>> from zeit.cms.repository.folder import Folder
+>>> repository = zope.component.getUtility(
+...     zeit.cms.repository.interfaces.IRepository)
+>>> repository['2006'] = Folder()
+>>> image = zeit.content.image.testing.create_local_image(filename, 'zeit.connector', 'testcontent/2006')
+>>> repository['2006'][filename] = image
+
 >>> browser = zeit.cms.testing.Browser(layer['wsgi_app'])
 >>> browser.login('user', 'userpw')
 
