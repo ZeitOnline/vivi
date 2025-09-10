@@ -623,6 +623,39 @@ class AddCentralImageUploadTest(zeit.content.image.testing.SeleniumTestCase):
         s.waitForLocation('*/@@upload-images?')
 
 
+class ImageUploadAndEditTest(zeit.content.image.testing.SeleniumTestCase):
+    def test_editimages_bulk_edit_fields(self):
+        s = self.selenium
+        self.open('/repository/@@edit-images?files=imagegroup&files=imagegroup-1')
+
+        s.assertElementPresent('name=bulk_edit_filename')
+        s.assertElementPresent('name=bulk_edit_copyright')
+        s.assertElementPresent('name=bulk_edit_title')
+        s.assertElementPresent('name=bulk_edit_caption')
+
+        s.click('name=bulk_edit_copyright')
+        if s.isPromptPresent():
+            alert = s.selenium.switch_to.alert
+            alert.send_keys('Test Copyright 2025')
+            alert.accept()
+
+        copyright1 = s.getValue('name=copyright[0]')
+        copyright2 = s.getValue('name=copyright[1]')
+        self.assertEqual(copyright1, 'Test Copyright 2025')
+        self.assertEqual(copyright2, 'Test Copyright 2025')
+
+        s.click('name=bulk_edit_filename')
+        if s.isPromptPresent():
+            alert = s.selenium.switch_to.alert
+            alert.send_keys('test-article')
+            alert.accept()
+
+        filename1 = s.getValue('name=target_name[0]')
+        filename2 = s.getValue('name=target_name[1]')
+        self.assertEqual(filename1, 'test-article-bild-01')
+        self.assertEqual(filename2, 'test-article-bild-02')
+
+
 class AddMenuImageUploadTest(zeit.content.image.testing.BrowserTestCase):
     def test_new_image_upload_is_present(self):
         b = self.browser

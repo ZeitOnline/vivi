@@ -100,10 +100,12 @@ class FixtureLayer(zeit.cms.testing.Layer):
             with zeit.cms.testing.site(root):
                 repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
                 repository['image1'] = create_local_image()
-                group = zeit.content.image.imagegroup.ImageGroup()
-                group.master_images = (('desktop', 'master-image.jpg'),)
-                repository['imagegroup'] = group
-                repository['imagegroup'][group.master_image] = create_local_image()
+                for i in range(0, 2):
+                    groupname = 'imagegroup' if i == 0 else f'imagegroup-{i}'
+                    group = zeit.content.image.imagegroup.ImageGroup()
+                    group.master_images = (('desktop', 'master-image.jpg'),)
+                    repository[groupname] = group
+                    repository[groupname][group.master_image] = create_local_image()
 
     def tearDown(self):
         self['gcs_storage'].stack_pop()
