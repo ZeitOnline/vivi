@@ -112,6 +112,15 @@
     permission="zeit.EditContent"
     />
 
+  <browser:viewlet
+    name="Upload"
+    for="zeit.content.gallery.interfaces.IGallery"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".overview.UploadMenuItem"
+    manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
+    permission="zope.View"
+    />
+
 
   <!-- Gallery entries -->
   <browser:page

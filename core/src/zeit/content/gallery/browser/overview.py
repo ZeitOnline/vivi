@@ -71,3 +71,14 @@ class SynchroniseMenuItem(zeit.cms.browser.menu.ActionMenuItem):
     title = _('Synchronise with image folder')
     action = '@@synchronise-with-image-folder'
     icon = '/@@/zeit.cms/icons/reload.png'
+
+
+class UploadMenuItem(zeit.cms.browser.menu.ActionMenuItem):
+    title = _('Upload')
+    icon = '/@@/zeit.content.gallery/upload-icon.png'
+
+    def get_url(self):
+        url = zope.component.getMultiAdapter(
+            (self.context.image_folder, self.request), name='absolute_url'
+        )
+        return f'{url}/@@upload-images'
