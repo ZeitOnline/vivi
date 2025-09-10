@@ -2,7 +2,6 @@ import gocept.form.grouped
 import zope.formlib.form
 
 from zeit.cms.i18n import MessageFactory as _
-from zeit.content.image.transform import ImageTransform
 import zeit.cms.browser.form
 import zeit.cms.config
 import zeit.cms.repository.browser.file
@@ -49,21 +48,21 @@ class ImageFormBase(zeit.cms.repository.browser.file.FormBase):
 
 class CreateImageMixin:
     def _reduceToMaxImageSize(self, image):
-        self.max_size = int(zeit.cms.config.get('zeit.content.image', 'max-image-size', 4000))
-        size = image.getImageSize()
-        largest = max(size)
-        if largest > self.max_size:
-            self.send_message(
-                _(
-                    'Image was resized, ${size} exceeds ${max_size}',
-                    mapping={'size': largest, 'max_size': self.max_size},
+        max_size = int(zeit.cms.config.get('zeit.content.image', 'max-image-size', 4000))
+        with image.as_pil(keep_metadata=True) as pil:
+            largest = max(pil.size)
+            if largest > max_size:
+                self.send_message(
+                    _(
+                        'Image was resized, ${size} exceeds ${max_size}',
+                        mapping={'size': largest, 'max_size': max_size},
+                    )
                 )
-            )
-            if size.index(largest) == 0:
-                resize = {'width': self.max_size}
-            else:
-                resize = {'height': self.max_size}
-            image = ImageTransform(image).resize(**resize)
+                zeit.content.image.transform.ImageTransform.create_thumbnail(
+                    pil, max_size, max_size
+                )
+                with image.open('w') as f:
+                    pil.save(f, pil.format)
         return image
 
     def create_image(self, blob, name=None, image=None):

@@ -28,28 +28,28 @@ class ImageTransform:
                 'Cannot transform image %s' % context.__name__
             )
 
-    def thumbnail(self, width, height, filter=PIL.Image.Resampling.LANCZOS):
-        image = self.image.copy()
-        image.thumbnail((width, height), filter)
-        return self._construct_image(image)
+    def thumbnail(self, width, height):
+        self.create_thumbnail(self.image, width, height)
+        return self._construct_image(self.image)
 
-    def resize(self, width=None, height=None, filter=PIL.Image.Resampling.LANCZOS):
-        if width is None and height is None:
-            raise TypeError('Need at least one of width and height.')
+    @staticmethod
+    def create_thumbnail(image: PIL.Image, width, height):
+        """Resize PIL.Image in-place, so that it is no larger than the given
+        width+height, while preserving the original aspect ratio."""
+        orig_width, orig_height = image.size
+        orig_ratio = orig_width / orig_height
+        target_ratio = width / height
+        if target_ratio >= orig_ratio:
+            width = height * orig_ratio
+        else:
+            height = width / orig_ratio
 
-        orig_width, orig_height = self.image.size
-        # keep image metadata
-        orig_exif = self.image.getexif()
-        orig_xmp = self.image.info.get('xmp')
-        # width and height need to be int rather than float,
-        # so we use // instead of / as division operator.
-        if width is None:
-            width = orig_width * height // orig_height
-        elif height is None:
-            height = orig_height * width // orig_width
-
-        image = self.image.resize((int(width), int(height)), filter)
-        return self._construct_image(image, exif=orig_exif, xmp=orig_xmp)
+        im = image.resize((int(width), int(height)), PIL.Image.Resampling.LANCZOS)
+        # Taken from Image.thumbnail(), to modify in-place.
+        image.im = im.im
+        image._size = im.size
+        image._mode = im.mode
+        image.readonly = 0
 
     def create_variant_image(self, variant, size=None, fill_color=None, format=None):
         """Create variant image from source image.
@@ -192,7 +192,7 @@ class ImageTransform:
             pil_image = pil_image.convert(self._color_mode)
         return pil_image
 
-    def _construct_image(self, pil_image, format=None, **params):
+    def _construct_image(self, pil_image, format=None):
         image = zeit.content.image.image.TemporaryImage()
         if not format:
             format = self.image.format
@@ -200,7 +200,7 @@ class ImageTransform:
         options = zeit.content.image.interfaces.ENCODER_PARAMETERS.find(format)
 
         with image.open('w') as f:
-            pil_image.save(f, format, **options, **params)
+            pil_image.save(f, format, **options)
         image.__parent__ = self.context
         image_times = zeit.cms.workflow.interfaces.IModified(self.context, None)
         if image_times and image_times.date_last_modified:
@@ -213,22 +213,14 @@ class ImageTransform:
 @zope.interface.implementer(zeit.content.image.interfaces.IPersistentThumbnail)
 def persistent_thumbnail_factory(context):
     config = zeit.cms.config.package('zeit.content.image')
-    width = config.get('thumbnail-width', 50)
-    if width:
-        width = int(width)
-    else:
-        width = None
-    height = config.get('thumbnail-height')
-    if height:
-        height = int(height)
-    else:
-        height = None
+    width = int(config.get('thumbnail-width', 50))
+    height = int(config.get('thumbnail-height', 50))
 
     container = zeit.content.image.interfaces.IThumbnailFolder(context)
     name = context.__name__
     if name not in container:
         transform = zeit.content.image.interfaces.ITransform(context)
-        image = transform.resize(width, height)
+        image = transform.thumbnail(width, height)
 
         properties = zeit.connector.interfaces.IWebDAVWriteProperties(image)
         source = zeit.connector.interfaces.IWebDAVReadProperties(context)

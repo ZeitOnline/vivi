@@ -287,6 +287,9 @@ class CreateVariantImageTest(zeit.content.image.testing.FunctionalTestCase):
         img.thumbnail((200, 200))
         img.save(highquality, 'JPEG', quality=75)
         highquality.seek(0)
-        configured = transform.thumbnail(200, 200)
+        square = zeit.content.image.variant.Variant(
+            id='square', aspect_ratio='1:1', focus_x=0.5, focus_y=0.5, zoom=0
+        )
+        configured = transform.create_variant_image(square, size=(200, 200))
 
         self.assertLess(len(configured.open().read()), len(highquality.read()))

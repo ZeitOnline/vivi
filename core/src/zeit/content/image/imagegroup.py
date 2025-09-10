@@ -537,7 +537,7 @@ class Thumbnails(grok.Adapter):
 
     NAME = 'thumbnails'
     SOURCE_IMAGE_PREFIX = 'thumbnail-source'
-    THUMBNAIL_WIDTH = 1000
+    THUMBNAIL_SIZE = 1000
 
     def __getitem__(self, key):
         master_image = self.master_image(key)
@@ -555,7 +555,7 @@ class Thumbnails(grok.Adapter):
             return None
         if self.source_image_name(master_image) in self.context:
             return self.context[self.source_image_name(master_image)]
-        if master_image.getImageSize()[0] <= self.THUMBNAIL_WIDTH:
+        if master_image.getImageSize()[0] <= self.THUMBNAIL_SIZE:
             return master_image
         lockable = zope.app.locking.interfaces.ILockable(self.context, None)
         # XXX 1. mod_dav does not allow LOCK of a member in a locked collection
@@ -569,8 +569,8 @@ class Thumbnails(grok.Adapter):
             return master_image
 
     def _create_source_image(self, master_image):
-        image = zeit.content.image.interfaces.ITransform(master_image).resize(
-            width=self.THUMBNAIL_WIDTH
+        image = zeit.content.image.interfaces.ITransform(master_image).thumbnail(
+            self.THUMBNAIL_SIZE, self.THUMBNAIL_SIZE
         )
         self.context[self.source_image_name(master_image)] = image
         return self.context[self.source_image_name(master_image)]

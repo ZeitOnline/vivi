@@ -82,10 +82,17 @@ class BaseImage:
         super().__init__(uniqueId)
 
     @contextmanager
-    def as_pil(self):
+    def as_pil(self, keep_metadata=False):
         with self.open() as f:
-            with PIL.Image.open(f) as pil:
-                yield pil
+            pil = PIL.Image.open(f)
+            pil.load()
+        with pil as pil:
+            if keep_metadata:
+                pil.encoderinfo = {
+                    'exif': pil.getexif(),
+                    'xmp': pil.info.get('xmp'),
+                }
+            yield pil
 
     @property
     def mimeType(self):
