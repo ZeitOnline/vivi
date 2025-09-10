@@ -337,7 +337,18 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
                         'last_modified_by': 'zope.user',
                         'title': 'mytitle',
                     },
-                    'image': {'caption': 'mycaption'},
+                    'image': {
+                        'caption': 'mycaption',
+                        'master_images': '<pickle>\n'
+                        '  <tuple>\n'
+                        '    <tuple>\n'
+                        '      <unicode>desktop</unicode>\n'
+                        '      '
+                        '<unicode>master-image.jpg</unicode>\n'
+                        '    </tuple>\n'
+                        '  </tuple>\n'
+                        '</pickle>',
+                    },
                     'meta': {'type': 'image-group'},
                     'body': {
                         'title': 'mytitle',
@@ -346,11 +357,11 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
                     'tagging': {},
                     'vivi': {
                         'cms_icon': ('/@@/zeit-content-image-interfaces-IImageGroup-zmi_icon.png'),
-                        'cms_preview_url': '/repository/image-group/thumbnail',
+                        'cms_preview_url': '/repository/group/thumbnail',
                         'publish_status': 'not-published',
                     },
                 },
-                'url': '/image-group',
+                'url': '/group',
                 'title': 'mytitle',
                 'teaser': 'mycaption',
             },
