@@ -4,8 +4,10 @@ import os.path
 import urllib.parse
 import uuid
 
+import zope.event
 import zope.formlib.form
 import zope.formlib.widgets
+import zope.lifecycleevent
 
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import IPublish
@@ -87,6 +89,7 @@ class UploadForm(zeit.cms.browser.view.Base, zeit.content.image.browser.form.Cre
         imagegroup.master_images = ((viewport, image.__name__),)
         name = f'{uuid.uuid4()}.tmp'
         zeit.cms.repository.interfaces.IAutomaticallyRenameable(imagegroup).renameable = True
+        zope.event.notify(zope.lifecycleevent.ObjectCreatedEvent(imagegroup))
         parent[name] = imagegroup
         imagegroup[image.__name__] = image
         return name

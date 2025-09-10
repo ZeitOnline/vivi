@@ -202,6 +202,30 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
         b.getForm(name='edit-images').submit()
         assert not zeit.cms.repository.interfaces.IAutomaticallyRenameable(img).renameable
 
+    def test_upload_sets_timestamps(self):
+        b = self.browser
+        b.open('/repository/testcontent/@@upload-images')
+        file_input = b.getControl(name='files')
+        add_file_multi(
+            file_input,
+            [
+                (
+                    fixture_bytes('new-hampshire-450x200.jpg'),
+                    'new-hampshire-450x200.jpg',
+                    'image/jpg',
+                )
+            ],
+        )
+        b.getForm(name='imageupload').submit()
+        folder = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/')
+        group = next(x for x in folder.values() if 'tmp' in x.uniqueId)
+        assert zeit.content.image.interfaces.IImageGroup.providedBy(group)
+        self.assertTrue(zeit.cms.content.interfaces.ISemanticChange(group).last_semantic_change)
+        self.assertTrue(zeit.cms.workflow.interfaces.IModified(group).date_created)
+        img = group[group.master_image]
+        self.assertTrue(zeit.cms.content.interfaces.ISemanticChange(img).last_semantic_change)
+        self.assertTrue(zeit.cms.workflow.interfaces.IModified(img).date_created)
+
     def test_editimages_correctly_names_single_image(self):
         b = self.browser
         b.open('/repository/testcontent/@@upload-images')

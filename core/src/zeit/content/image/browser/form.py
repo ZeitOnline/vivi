@@ -75,6 +75,7 @@ class CreateImageMixin:
         image = self._reduceToMaxImageSize(image)
         if name:
             image.__name__ = zeit.cms.interfaces.normalize_filename(name)
+        zope.event.notify(zope.lifecycleevent.ObjectCreatedEvent(image))
         return image
 
 
