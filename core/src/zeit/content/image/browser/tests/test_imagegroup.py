@@ -245,7 +245,7 @@ class ImageGroupWebdriverTest(zeit.content.image.testing.SeleniumTestCase):
         sel = self.selenium
         origin = 'css=.fieldname-origin'
         display_type = r'css=#form\.display_type'
-        sel.open('/repository/imagegroup/@@checkout')
+        sel.open('/repository/group/@@checkout')
 
         sel.select(display_type, 'label=Infografik')
         sel.assertVisible(origin)
@@ -255,14 +255,14 @@ class ImageGroupWebdriverTest(zeit.content.image.testing.SeleniumTestCase):
 
     def test_origin_field_is_hidden_in_read_only_mode_if_not_infographic(self):
         sel = self.selenium
-        sel.open('/repository/imagegroup/@@metadata.html')
+        sel.open('/repository/group/@@metadata.html')
         sel.assertNotVisible('css=.fieldname-origin')
 
     def test_photographer_is_shown_if_company_is_chosen(self):
         sel = self.selenium
         photographer = r'css=#form\.copyright\.combination_00'
         company = r'css=#form\.copyright\.combination_01'
-        sel.open('/repository/imagegroup/@@checkout')
+        sel.open('/repository/group/@@checkout')
 
         sel.assertVisible(photographer)
         sel.select(company, 'label=dpa')
@@ -275,7 +275,7 @@ class ImageGroupWebdriverTest(zeit.content.image.testing.SeleniumTestCase):
         sel = self.selenium
         freetext = r'css=#form\.copyright\.combination_02'
         company = r'css=#form\.copyright\.combination_01'
-        sel.open('/repository/imagegroup/@@checkout')
+        sel.open('/repository/group/@@checkout')
 
         sel.assertNotVisible(freetext)
         sel.select(company, 'label=dpa')

@@ -7,13 +7,13 @@ import zeit.content.image.testing
 class ImageDetails(zeit.content.image.testing.SeleniumTestCase):
     def test_clicking_button_shows_details_pane(self):
         zeit.content.image.testing.create_image_group()
-        image = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')
+        image = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/group/master-image.jpg')
         with zeit.cms.checkout.helper.checked_out(image) as co:
             meta = zeit.content.image.interfaces.IImageMetadata(co)
             meta.caption = 'foo'
 
         s = self.selenium
-        self.open('/repository/2006/DSC00109_2.JPG/@@wrap?view=object-details')
+        self.open('/repository/group/master-image.jpg/@@wrap?view=object-details')
         s.assertNotVisible('css=.picture_information')
         self.execute('window.jQuery(document).trigger_fragment_ready();')
         s.click('css=.toggle_infos')
