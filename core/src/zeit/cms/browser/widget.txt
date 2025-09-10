@@ -318,7 +318,7 @@ We have a special Datetime widget, which provides buttons for selecting future d
   showsTime: true
 });
 </script>...
-<input type="button" value="1M" class="month"
+<input type="button" value="1M" class="one-month"
     onclick="javascript:var date = new Date();
         date.setMonth(date.getMonth() + 1);
         $('field.').value = date.print('%Y-%m-%d %H:%M:%S');
