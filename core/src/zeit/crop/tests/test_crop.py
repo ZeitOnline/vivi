@@ -185,26 +185,26 @@ class TestCrop(zeit.crop.testing.FunctionalTestCase):
 
     def test_border_on_grayscale_image(self):
         self.group = zeit.content.image.testing.create_image_group(
-            'grayscale.jpg', __package__, 'testdata'
+            'grayscale.jpg', package=__package__, folder='testdata'
         )
         # The following used to fail with TypeError: an integer is required
         crop = zeit.crop.interfaces.ICropper(self.group)
         crop.crop(200, 200, 0, 0, 200, 200, border=(127, 127, 127))
 
     def test_cmyk_converted_to_rgb(self):
-        self.group = create_image_group('cmyk.jpg', __package__, 'testdata')
+        self.group = create_image_group('cmyk.jpg', package=__package__, folder='testdata')
         crop = zeit.crop.interfaces.ICropper(self.group)
         image = crop.crop(200, 200, 0, 0, 200, 200, border=(127, 127, 127))
         self.assertEqual('RGB', image.mode)
 
     def test_palette_converted_to_rgb(self):
-        self.group = create_image_group('palette.gif', __package__, 'testdata')
+        self.group = create_image_group('palette.gif', package=__package__, folder='testdata')
         crop = zeit.crop.interfaces.ICropper(self.group)
         image = crop.crop(200, 200, 0, 0, 200, 200, border=(127, 127, 127))
         self.assertEqual('RGB', image.mode)
 
     def test_png_converted_to_rgba(self):
-        self.group = create_image_group('transparent.png', __package__, 'testdata')
+        self.group = create_image_group('transparent.png', package=__package__, folder='testdata')
         crop = zeit.crop.interfaces.ICropper(self.group)
         image = crop.crop(200, 200, 0, 0, 200, 200, border=(127, 127, 127))
         self.assertEqual('RGBA', image.mode)

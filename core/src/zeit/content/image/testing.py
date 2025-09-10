@@ -48,13 +48,16 @@ def create_local_image(filename='opernball.jpg', package=None, folder=None):
 
 
 def create_image_group(
-    filename='DSC00109_2.JPG', package='zeit.connector', folder='testcontent/2006'
+    filename='DSC00109_2.JPG',
+    groupname='group',
+    package='zeit.connector',
+    folder='testcontent/2006',
 ):
     repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
     group = zeit.content.image.imagegroup.ImageGroup()
     extension = os.path.splitext(filename)[-1].lower()
     group.master_images = (('desktop', 'master-image' + extension),)
-    repository['group'] = group
+    repository[groupname] = group
 
     image = create_local_image(filename, package, folder)
     repository[filename] = image
@@ -65,8 +68,8 @@ def create_image_group(
         out.write(fh.read())
     fh.close()
     zope.event.notify(zope.lifecycleevent.ObjectCreatedEvent(image))
-    repository['group'][group.master_image] = image
-    return repository['group']
+    repository[groupname][group.master_image] = image
+    return repository[groupname]
 
 
 # zope.testbrowser.browser.Control.add_file cannot yet handle multiple file inputs as implemented by
@@ -85,12 +88,7 @@ class FixtureLayer(zeit.cms.testing.Layer):
             with zeit.cms.testing.site(root):
                 repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
                 repository['image1'] = create_local_image()
-                for i in range(0, 2):
-                    groupname = 'imagegroup' if i == 0 else f'imagegroup-{i}'
-                    group = zeit.content.image.imagegroup.ImageGroup()
-                    group.master_images = (('desktop', 'master-image.jpg'),)
-                    repository[groupname] = group
-                    repository[groupname][group.master_image] = create_local_image()
+                create_image_group(filename='opernball.jpg', package=None, folder=None)
 
     def tearDown(self):
         self['gcs_storage'].stack_pop()

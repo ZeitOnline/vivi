@@ -179,7 +179,7 @@ class CreateVariantImageTest(zeit.content.image.testing.FunctionalTestCase):
         # Create image group with b/w image that is equal to the image which is
         # generated during setUp
         self.group = zeit.content.image.testing.create_image_group(
-            'Black-White.PNG', 'zeit.content.image', 'tests'
+            'Black-White.PNG', package='zeit.content.image', folder='tests'
         )
 
         # Set zoom < 1, which would usually result in cropping,
