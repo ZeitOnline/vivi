@@ -164,24 +164,47 @@ wheels = [
 
 [[package]]
 name = "cffi"
-version = "1.17.1"
+version = "2.0.0"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
 dependencies = [
-    { name = "pycparser" },
+    { name = "pycparser", marker = "implementation_name != 'PyPy'" },
 ]
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/cffi/cffi-1.17.1.tar.gz", hash = "sha256:1c39c6016c32bc48dd54561950ebd6836e1670f2ae46128f67cf49e789c52824" }
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/cffi/cffi-2.0.0.tar.gz", hash = "sha256:44d1b5909021139fe36001ae048dbdde8214afa20200eda0f64c068cac5d5529" }
 wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/cffi/cffi-1.17.1-cp313-cp313-macosx_10_13_x86_64.whl", hash = "sha256:f3a2b4222ce6b60e2e8b337bb9596923045681d71e5a082783484d845390938e" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/cffi/cffi-1.17.1-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:0984a4925a435b1da406122d4d7968dd861c1385afe3b45ba82b750f229811e2" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/cffi/cffi-1.17.1-cp313-cp313-manylinux_2_12_i686.manylinux2010_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:d01b12eeeb4427d3110de311e1774046ad344f5b1a7403101878976ecd7a10f3" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/cffi/cffi-1.17.1-cp313-cp313-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:706510fe141c86a69c8ddc029c7910003a17353970cff3b904ff0686a5927683" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/cffi/cffi-1.17.1-cp313-cp313-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:de55b766c7aa2e2a3092c51e0483d700341182f08e67c63630d5b6f200bb28e5" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/cffi/cffi-1.17.1-cp313-cp313-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:c59d6e989d07460165cc5ad3c61f9fd8f1b4796eacbd81cee78957842b834af4" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/cffi/cffi-1.17.1-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:dd398dbc6773384a17fe0d3e7eeb8d1a21c2200473ee6806bb5e6a8e62bb73dd" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/cffi/cffi-1.17.1-cp313-cp313-musllinux_1_1_aarch64.whl", hash = "sha256:3edc8d958eb099c634dace3c7e16560ae474aa3803a5df240542b305d14e14ed" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/cffi/cffi-1.17.1-cp313-cp313-musllinux_1_1_x86_64.whl", hash = "sha256:72e72408cad3d5419375fc87d289076ee319835bdfa2caad331e377589aebba9" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/cffi/cffi-1.17.1-cp313-cp313-win32.whl", hash = "sha256:e03eab0a8677fa80d646b5ddece1cbeaf556c313dcfac435ba11f107ba117b5d" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/cffi/cffi-1.17.1-cp313-cp313-win_amd64.whl", hash = "sha256:f6a16c31041f09ead72d69f583767292f750d24913dadacf5756b966aacb3f1a" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/cffi/cffi-2.0.0-cp313-cp313-macosx_10_13_x86_64.whl", hash = "sha256:00bdf7acc5f795150faa6957054fbbca2439db2f775ce831222b66f192f03beb" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/cffi/cffi-2.0.0-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:45d5e886156860dc35862657e1494b9bae8dfa63bf56796f2fb56e1679fc0bca" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/cffi/cffi-2.0.0-cp313-cp313-manylinux1_i686.manylinux2014_i686.manylinux_2_17_i686.manylinux_2_5_i686.whl", hash = "sha256:07b271772c100085dd28b74fa0cd81c8fb1a3ba18b21e03d7c27f3436a10606b" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/cffi/cffi-2.0.0-cp313-cp313-manylinux2014_aarch64.manylinux_2_17_aarch64.whl", hash = "sha256:d48a880098c96020b02d5a1f7d9251308510ce8858940e6fa99ece33f610838b" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/cffi/cffi-2.0.0-cp313-cp313-manylinux2014_ppc64le.manylinux_2_17_ppc64le.whl", hash = "sha256:f93fd8e5c8c0a4aa1f424d6173f14a892044054871c771f8566e4008eaa359d2" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/cffi/cffi-2.0.0-cp313-cp313-manylinux2014_s390x.manylinux_2_17_s390x.whl", hash = "sha256:dd4f05f54a52fb558f1ba9f528228066954fee3ebe629fc1660d874d040ae5a3" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/cffi/cffi-2.0.0-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.whl", hash = "sha256:c8d3b5532fc71b7a77c09192b4a5a200ea992702734a2e9279a37f2478236f26" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/cffi/cffi-2.0.0-cp313-cp313-musllinux_1_2_aarch64.whl", hash = "sha256:d9b29c1f0ae438d5ee9acb31cadee00a58c46cc9c0b2f9038c6b0b3470877a8c" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/cffi/cffi-2.0.0-cp313-cp313-musllinux_1_2_x86_64.whl", hash = "sha256:6d50360be4546678fc1b79ffe7a66265e28667840010348dd69a314145807a1b" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/cffi/cffi-2.0.0-cp313-cp313-win32.whl", hash = "sha256:74a03b9698e198d47562765773b4a8309919089150a0bb17d829ad7b44b60d27" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/cffi/cffi-2.0.0-cp313-cp313-win_amd64.whl", hash = "sha256:19f705ada2530c1167abacb171925dd886168931e0a7b78f5bffcae5c6b5be75" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/cffi/cffi-2.0.0-cp313-cp313-win_arm64.whl", hash = "sha256:256f80b80ca3853f90c21b23ee78cd008713787b1b1e93eae9f3d6a7134abd91" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/cffi/cffi-2.0.0-cp314-cp314-macosx_10_13_x86_64.whl", hash = "sha256:fc33c5141b55ed366cfaad382df24fe7dcbc686de5be719b207bb248e3053dc5" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/cffi/cffi-2.0.0-cp314-cp314-macosx_11_0_arm64.whl", hash = "sha256:c654de545946e0db659b3400168c9ad31b5d29593291482c43e3564effbcee13" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/cffi/cffi-2.0.0-cp314-cp314-manylinux2014_aarch64.manylinux_2_17_aarch64.whl", hash = "sha256:24b6f81f1983e6df8db3adc38562c83f7d4a0c36162885ec7f7b77c7dcbec97b" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/cffi/cffi-2.0.0-cp314-cp314-manylinux2014_ppc64le.manylinux_2_17_ppc64le.whl", hash = "sha256:12873ca6cb9b0f0d3a0da705d6086fe911591737a59f28b7936bdfed27c0d47c" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/cffi/cffi-2.0.0-cp314-cp314-manylinux2014_s390x.manylinux_2_17_s390x.whl", hash = "sha256:d9b97165e8aed9272a6bb17c01e3cc5871a594a446ebedc996e2397a1c1ea8ef" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/cffi/cffi-2.0.0-cp314-cp314-manylinux2014_x86_64.manylinux_2_17_x86_64.whl", hash = "sha256:afb8db5439b81cf9c9d0c80404b60c3cc9c3add93e114dcae767f1477cb53775" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/cffi/cffi-2.0.0-cp314-cp314-musllinux_1_2_aarch64.whl", hash = "sha256:737fe7d37e1a1bffe70bd5754ea763a62a066dc5913ca57e957824b72a85e205" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/cffi/cffi-2.0.0-cp314-cp314-musllinux_1_2_x86_64.whl", hash = "sha256:38100abb9d1b1435bc4cc340bb4489635dc2f0da7456590877030c9b3d40b0c1" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/cffi/cffi-2.0.0-cp314-cp314-win32.whl", hash = "sha256:087067fa8953339c723661eda6b54bc98c5625757ea62e95eb4898ad5e776e9f" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/cffi/cffi-2.0.0-cp314-cp314-win_amd64.whl", hash = "sha256:203a48d1fb583fc7d78a4c6655692963b860a417c0528492a6bc21f1aaefab25" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/cffi/cffi-2.0.0-cp314-cp314-win_arm64.whl", hash = "sha256:dbd5c7a25a7cb98f5ca55d258b103a2054f859a46ae11aaf23134f9cc0d356ad" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/cffi/cffi-2.0.0-cp314-cp314t-macosx_10_13_x86_64.whl", hash = "sha256:9a67fc9e8eb39039280526379fb3a70023d77caec1852002b4da7e8b270c4dd9" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/cffi/cffi-2.0.0-cp314-cp314t-macosx_11_0_arm64.whl", hash = "sha256:7a66c7204d8869299919db4d5069a82f1561581af12b11b3c9f48c584eb8743d" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/cffi/cffi-2.0.0-cp314-cp314t-manylinux2014_aarch64.manylinux_2_17_aarch64.whl", hash = "sha256:7cc09976e8b56f8cebd752f7113ad07752461f48a58cbba644139015ac24954c" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/cffi/cffi-2.0.0-cp314-cp314t-manylinux2014_ppc64le.manylinux_2_17_ppc64le.whl", hash = "sha256:92b68146a71df78564e4ef48af17551a5ddd142e5190cdf2c5624d0c3ff5b2e8" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/cffi/cffi-2.0.0-cp314-cp314t-manylinux2014_s390x.manylinux_2_17_s390x.whl", hash = "sha256:b1e74d11748e7e98e2f426ab176d4ed720a64412b6a15054378afdb71e0f37dc" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/cffi/cffi-2.0.0-cp314-cp314t-manylinux2014_x86_64.manylinux_2_17_x86_64.whl", hash = "sha256:28a3a209b96630bca57cce802da70c266eb08c6e97e5afd61a75611ee6c64592" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/cffi/cffi-2.0.0-cp314-cp314t-musllinux_1_2_aarch64.whl", hash = "sha256:7553fb2090d71822f02c629afe6042c299edf91ba1bf94951165613553984512" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/cffi/cffi-2.0.0-cp314-cp314t-musllinux_1_2_x86_64.whl", hash = "sha256:6c6c373cfc5c83a975506110d17457138c8c63016b563cc9ed6e056a82f13ce4" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/cffi/cffi-2.0.0-cp314-cp314t-win32.whl", hash = "sha256:1fc9ea04857caf665289b7a75923f2c6ed559b8298a1b8c49e59f7dd95c8481e" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/cffi/cffi-2.0.0-cp314-cp314t-win_amd64.whl", hash = "sha256:d68b6cef7827e8641e8ef16f4494edda8b36104d79773a334beaa1e3521430f6" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/cffi/cffi-2.0.0-cp314-cp314t-win_arm64.whl", hash = "sha256:0a1527a803f0a659de1af2e1fd700213caba79377e27e4693648c2923da066f9" },
 ]
 
 [[package]]
@@ -565,30 +588,25 @@ sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi
 
 [[package]]
 name = "gocept-cache"
-version = "6.0"
+version = "6.1+importlib"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
 dependencies = [
     { name = "decorator" },
-    { name = "setuptools" },
     { name = "transaction" },
     { name = "zope-testing" },
 ]
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/gocept-cache/gocept_cache-6.0.tar.gz", hash = "sha256:98630c8292eec68d9b24ac1924fa4f22f1071ef274997f188965a0aafd38d8f1" }
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/gocept-cache/gocept_cache-6.1+importlib.tar.gz", hash = "sha256:db77bacef4ac73f24ed765cdf2752d87e7d00fd8abe932ecaabf93c87220705b" }
 wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/gocept-cache/gocept_cache-6.0-py3-none-any.whl", hash = "sha256:8e33665162875e2e07103a6dd80e46ec21be9d4ab651802d87642feb4b63e7e3" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/gocept-cache/gocept_cache-6.1+importlib-py3-none-any.whl", hash = "sha256:5726700cb9ebe0f1a603c23da638edaa93ee738b0b54e31fbf211ac2feeca5b4" },
 ]
 
 [[package]]
 name = "gocept-fckeditor"
-version = "2.6.4.1.post3+py3.3"
+version = "2.6.4.1+importlib"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
-dependencies = [
-    { name = "setuptools" },
-    { name = "zc-resourcelibrary" },
-]
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/gocept-fckeditor/gocept_fckeditor-2.6.4.1.post3+py3.3.tar.gz", hash = "sha256:1ed8cc87ecdb360145b2a5995a07266104e1839c007fcb75707d8b1cbd3859c3" }
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/gocept-fckeditor/gocept_fckeditor-2.6.4.1+importlib.tar.gz", hash = "sha256:c45a6ccc55bf3d60d4cb77e9eadc9e530a03c9df37a30224a7313c3d28cdfc04" }
 wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/gocept-fckeditor/gocept.fckeditor-2.6.4.1.post3+py3.3-py3-none-any.whl", hash = "sha256:3707b74a2f5a233367cfbefa737325affd38604e208fd39f6e247ac47cf974eb" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/gocept-fckeditor/gocept_fckeditor-2.6.4.1+importlib-py3-none-any.whl", hash = "sha256:f45624e314d7d45c97b8a91094213de82a2fef0049e22440c4e257088ccaa718" },
 ]
 
 [package.optional-dependencies]
@@ -598,20 +616,17 @@ fanstatic = [
 
 [[package]]
 name = "gocept-form"
-version = "0.8.0+py3"
+version = "0.8.0+py3.1"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
 dependencies = [
-    { name = "gocept-mochikit" },
-    { name = "setuptools" },
-    { name = "zc-resourcelibrary" },
     { name = "zope-component" },
     { name = "zope-contentprovider" },
     { name = "zope-interface" },
     { name = "zope-viewlet" },
 ]
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/gocept-form/gocept_form-0.8.0+py3.tar.gz", hash = "sha256:28d80fc2acdbabe03fd53fdfc793187d15930c8f20c74acbae64e8a1a5c1535a" }
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/gocept-form/gocept_form-0.8.0+py3.1.tar.gz", hash = "sha256:59fad42331683a813f2e6375bf35f6e4f725855b36700cbcafc41696619496a8" }
 wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/gocept-form/gocept.form-0.8.0+py3-py3-none-any.whl", hash = "sha256:b843d5a91797d679a3e8eeb4c4eb851b7c0ad3803981e25c60707f3ef91b1a1b" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/gocept-form/gocept_form-0.8.0+py3.1-py3-none-any.whl", hash = "sha256:ad796f376ce5e797346115ac90d35dd959e34d121443006404e33d6de25db2af" },
 ]
 
 [package.optional-dependencies]
@@ -635,16 +650,18 @@ wheels = [
 
 [[package]]
 name = "gocept-jasmine"
-version = "0.7+py3.2"
+version = "0.7+py3.4"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
 dependencies = [
     { name = "fanstatic" },
     { name = "gocept-selenium" },
     { name = "jasmine-core" },
     { name = "plone-testing" },
-    { name = "setuptools" },
 ]
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/gocept-jasmine/gocept.jasmine-0.7+py3.2.tar.gz", hash = "sha256:ddfd21020ce2aac578ea0a8dcd43c89816d2f923951846aeff4daee64247d803" }
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/gocept-jasmine/gocept_jasmine-0.7+py3.4.tar.gz", hash = "sha256:862c2792faa7e068373d13f56d6b72603860aca67983d9a63a604abbfa93ed46" }
+wheels = [
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/gocept-jasmine/gocept_jasmine-0.7+py3.4-py3-none-any.whl", hash = "sha256:b46c571e3498e632ef38ebc181a7b5ad37167df1a7fbeb41892bd88898316b49" },
+]
 
 [[package]]
 name = "gocept-jslint"
@@ -656,25 +673,10 @@ wheels = [
 ]
 
 [[package]]
-name = "gocept-mochikit"
-version = "1.4.2.5+py3"
-source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
-dependencies = [
-    { name = "setuptools" },
-    { name = "zc-resourcelibrary" },
-    { name = "zope-viewlet" },
-]
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/gocept-mochikit/gocept_mochikit-1.4.2.5+py3.tar.gz", hash = "sha256:a1f416ccac5ebe4f3f5e3c3123ee32320257795663d4c5e7fa58eade7a6c3ade" }
-wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/gocept-mochikit/gocept.mochikit-1.4.2.5+py3-py3-none-any.whl", hash = "sha256:eb3fc333fae166791b4fdb866c5fa0b9fc4fdc3e27dc55676c21a0addbe81160" },
-]
-
-[[package]]
 name = "gocept-pagelet"
-version = "2.0"
+version = "2.1+importlib"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
 dependencies = [
-    { name = "setuptools" },
     { name = "z3c-pagelet" },
     { name = "z3c-template" },
     { name = "zope-browsermenu" },
@@ -684,9 +686,9 @@ dependencies = [
     { name = "zope-publisher" },
     { name = "zope-viewlet" },
 ]
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/gocept-pagelet/gocept.pagelet-2.0.tar.gz", hash = "sha256:9be6b40f948c6cdee4e5af91d5c707cc375142a327ecb6f610d9aa5315f0578d" }
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/gocept-pagelet/gocept_pagelet-2.1+importlib.tar.gz", hash = "sha256:de2d44a8c52cc1043d779a486ac272ded3754c765c934e8b4e856bda6aab4904" }
 wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/gocept-pagelet/gocept.pagelet-2.0-py2.py3-none-any.whl", hash = "sha256:7ef7da8967266e8028d4a9be61bfa778d1cfb7ccf18562a6059b49f928a549d6" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/gocept-pagelet/gocept_pagelet-2.1+importlib-py2.py3-none-any.whl", hash = "sha256:e8596031ed188190cfed17cfb31246ff85a8fc3fefc40714ed00587cd11e480f" },
 ]
 
 [[package]]
@@ -756,7 +758,7 @@ wheels = [
 
 [[package]]
 name = "google-cloud-bigquery"
-version = "3.36.0"
+version = "3.37.0"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
 dependencies = [
     { name = "google-api-core", extra = ["grpc"] },
@@ -767,9 +769,9 @@ dependencies = [
     { name = "python-dateutil" },
     { name = "requests" },
 ]
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/google-cloud-bigquery/google_cloud_bigquery-3.36.0.tar.gz", hash = "sha256:519d7a16be2119dca1ea8871e6dd45f971a8382c337cbe045319543b9e743bdd" }
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/google-cloud-bigquery/google_cloud_bigquery-3.37.0.tar.gz", hash = "sha256:4f8fe63f5b8d43abc99ce60b660d3ef3f63f22aabf69f4fe24a1b450ef82ed97" }
 wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/google-cloud-bigquery/google_cloud_bigquery-3.36.0-py3-none-any.whl", hash = "sha256:0cfbad09999907600fd0618794491db10000d98911ec7768ac6041cb9a0257dd" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/google-cloud-bigquery/google_cloud_bigquery-3.37.0-py3-none-any.whl", hash = "sha256:f006611bcc83b3c071964a723953e918b699e574eb8614ba564ae3cdef148ee1" },
 ]
 
 [[package]]
@@ -1155,14 +1157,14 @@ wheels = [
 
 [[package]]
 name = "jsonschema-specifications"
-version = "2025.4.1"
+version = "2025.9.1"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
 dependencies = [
     { name = "referencing" },
 ]
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/jsonschema-specifications/jsonschema_specifications-2025.4.1.tar.gz", hash = "sha256:630159c9f4dbea161a6a2205c3011cc4f18ff381b189fff48bb39b9bf26ae608" }
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/jsonschema-specifications/jsonschema_specifications-2025.9.1.tar.gz", hash = "sha256:b540987f239e745613c7a9176f3edb72b832a4ac465cf02712288397832b5e8d" }
 wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/jsonschema-specifications/jsonschema_specifications-2025.4.1-py3-none-any.whl", hash = "sha256:4653bffbd6584f7de83a67e0d620ef16900b390ddc7939d56684d6c81e33f1af" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/jsonschema-specifications/jsonschema_specifications-2025.9.1-py3-none-any.whl", hash = "sha256:98802fee3a11ee76ecaca44429fda8a41bff98b00a0f2838151b113f210cc6fe" },
 ]
 
 [[package]]
@@ -1259,11 +1261,11 @@ wheels = [
 
 [[package]]
 name = "markdown"
-version = "3.8.2"
+version = "3.9"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/markdown/markdown-3.8.2.tar.gz", hash = "sha256:247b9a70dd12e27f67431ce62523e675b866d254f900c4fe75ce3dda62237c45" }
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/markdown/markdown-3.9.tar.gz", hash = "sha256:d2900fe1782bd33bdbbd56859defef70c2e78fc46668f8eb9df3128138f2cb6a" }
 wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/markdown/markdown-3.8.2-py3-none-any.whl", hash = "sha256:5c83764dbd4e00bdd94d85a19b8d55ccca20fe35b2e678a1422b380324dd5f24" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/markdown/markdown-3.9-py3-none-any.whl", hash = "sha256:9f4d91ed810864ea88a6f32c07ba8bee1346c0cc1f6b1f9f6c822f2a9667d280" },
 ]
 
 [[package]]
@@ -1912,11 +1914,11 @@ wheels = [
 
 [[package]]
 name = "pycparser"
-version = "2.22"
+version = "2.23"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/pycparser/pycparser-2.22.tar.gz", hash = "sha256:491c8be9c040f5390f5bf44a5b07752bd07f56edf992381b05c701439eec10f6" }
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/pycparser/pycparser-2.23.tar.gz", hash = "sha256:78816d4f24add8f10a06d6f05b4d424ad9e96cfebf68a4ddc99c65c0720d00c2" }
 wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/pycparser/pycparser-2.22-py3-none-any.whl", hash = "sha256:c3702b6d3dd8c7abc1afa565d7e63d53a1d0bd86cdc24edd75470f4de499cfcc" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/pycparser/pycparser-2.23-py3-none-any.whl", hash = "sha256:e5c6e8d3fbad53479cab09ac03729e0a9faf2bee3db8208a550daf5af81a5934" },
 ]
 
 [[package]]
@@ -2005,7 +2007,7 @@ wheels = [
 
 [[package]]
 name = "pytest"
-version = "8.4.1"
+version = "8.4.2"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
 dependencies = [
     { name = "colorama", marker = "sys_platform == 'win32'" },
@@ -2014,23 +2016,23 @@ dependencies = [
     { name = "pluggy" },
     { name = "pygments" },
 ]
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/pytest/pytest-8.4.1.tar.gz", hash = "sha256:7c67fd69174877359ed9371ec3af8a3d2b04741818c51e5e99cc1742251fa93c" }
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/pytest/pytest-8.4.2.tar.gz", hash = "sha256:86c0d0b93306b961d58d62a4db4879f27fe25513d4b969df351abdddb3c30e01" }
 wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/pytest/pytest-8.4.1-py3-none-any.whl", hash = "sha256:539c70ba6fcead8e78eebbf1115e8b589e7565830d7d006a8723f19ac8a0afb7" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/pytest/pytest-8.4.2-py3-none-any.whl", hash = "sha256:872f880de3fc3a5bdc88a11b39c9710c3497a547cfa9320bc3c5e62fbf272e79" },
 ]
 
 [[package]]
 name = "pytest-cov"
-version = "6.2.1"
+version = "7.0.0"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
 dependencies = [
     { name = "coverage" },
     { name = "pluggy" },
     { name = "pytest" },
 ]
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/pytest-cov/pytest_cov-6.2.1.tar.gz", hash = "sha256:25cc6cc0a5358204b8108ecedc51a9b57b34cc6b8c967cc2c01a4e00d8a67da2" }
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/pytest-cov/pytest_cov-7.0.0.tar.gz", hash = "sha256:33c97eda2e049a0c5298e91f519302a1334c26ac65c1a483d6206fd458361af1" }
 wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/pytest-cov/pytest_cov-6.2.1-py3-none-any.whl", hash = "sha256:f5bc4c23f42f1cdd23c70b1dab1bbaef4fc505ba950d53e0081d0730dd7e86d5" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/pytest-cov/pytest_cov-7.0.0-py3-none-any.whl", hash = "sha256:3b8e9558b16cc1479da72058bdecf8073661c7f57f7d3c5f22a1c23507f2d861" },
 ]
 
 [[package]]
@@ -2669,7 +2671,7 @@ wheels = [
 
 [[package]]
 name = "vivi-core"
-version = "7.175.0.dev0"
+version = "7.178.0.dev0"
 source = { editable = "." }
 dependencies = [
     { name = "beautifulsoup4" },
@@ -2679,7 +2681,6 @@ dependencies = [
     { name = "elasticsearch" },
     { name = "filetype" },
     { name = "gocept-cache" },
-    { name = "gocept-form", extra = ["formlib"] },
     { name = "google-cloud-storage" },
     { name = "greenlet" },
     { name = "grokcore-component" },
@@ -2820,6 +2821,7 @@ ui = [
     { name = "docutils" },
     { name = "fanstatic" },
     { name = "gocept-fckeditor", extra = ["fanstatic"] },
+    { name = "gocept-form", extra = ["formlib"] },
     { name = "gocept-pagelet" },
     { name = "js-backbone" },
     { name = "js-cropper" },
@@ -2875,15 +2877,20 @@ ui = [
 ui-zon = [
     { name = "fanstatic" },
     { name = "gocept-fckeditor" },
-    { name = "gocept-mochikit" },
+    { name = "gocept-form" },
+    { name = "gocept-pagelet" },
     { name = "js-jqueryui" },
     { name = "z3c-menu-simple" },
     { name = "z3c-noop" },
     { name = "z3c-traverser" },
     { name = "zc-datetimewidget" },
+    { name = "zc-queue" },
+    { name = "zc-set" },
+    { name = "zc-sourcefactory" },
+    { name = "zc-table" },
 ]
 zon = [
-    { name = "gocept-form" },
+    { name = "gocept-cache" },
     { name = "zope-app-locking" },
     { name = "zope-xmlpickle" },
 ]
@@ -2918,17 +2925,18 @@ requires-dist = [
     { name = "fs", marker = "extra == 'test'" },
     { name = "gcp-storage-emulator", marker = "extra == 'test'" },
     { name = "gocept-cache", specifier = ">=2.1" },
-    { name = "gocept-fckeditor", marker = "extra == 'ui-zon'", specifier = "==2.6.4.1.post3+py3.3" },
+    { name = "gocept-cache", marker = "extra == 'zon'", specifier = "==6.1+importlib" },
+    { name = "gocept-fckeditor", marker = "extra == 'ui-zon'", specifier = "==2.6.4.1+importlib" },
     { name = "gocept-fckeditor", extras = ["fanstatic"], marker = "extra == 'ui'" },
-    { name = "gocept-form", marker = "extra == 'zon'", specifier = "==0.8.0+py3" },
-    { name = "gocept-form", extras = ["formlib"], specifier = ">=0.7.5" },
+    { name = "gocept-form", marker = "extra == 'ui-zon'", specifier = "==0.8.0+py3.1" },
+    { name = "gocept-form", extras = ["formlib"], marker = "extra == 'ui'", specifier = ">=0.7.5" },
     { name = "gocept-httpserverlayer", marker = "extra == 'test'", specifier = ">=1.4.0.dev0" },
     { name = "gocept-jasmine", marker = "extra == 'test'" },
-    { name = "gocept-jasmine", marker = "extra == 'test-zon'", specifier = "==0.7+py3.2" },
+    { name = "gocept-jasmine", marker = "extra == 'test-zon'", specifier = "==0.7+py3.4" },
     { name = "gocept-jslint", marker = "extra == 'test'", specifier = ">=0.2" },
     { name = "gocept-jslint", marker = "extra == 'test-zon'", specifier = "==3.0+importlib" },
-    { name = "gocept-mochikit", marker = "extra == 'ui-zon'", specifier = "==1.4.2.5+py3" },
     { name = "gocept-pagelet", marker = "extra == 'ui'" },
+    { name = "gocept-pagelet", marker = "extra == 'ui-zon'", specifier = "==2.1+importlib" },
     { name = "gocept-selenium", marker = "extra == 'test'" },
     { name = "gocept-selenium", marker = "extra == 'test-zon'", specifier = "==7.1+importlib.2" },
     { name = "gocept-testing", marker = "extra == 'test'", specifier = ">=1.4.0.dev0" },
@@ -3014,18 +3022,22 @@ requires-dist = [
     { name = "z3c-celery", specifier = ">=1.2.0.dev0" },
     { name = "z3c-flashmessage", marker = "extra == 'ui'" },
     { name = "z3c-menu-simple", marker = "extra == 'ui'", specifier = ">=0.5.1" },
-    { name = "z3c-menu-simple", marker = "extra == 'ui-zon'", specifier = "==0.6.0+py3.3" },
+    { name = "z3c-menu-simple", marker = "extra == 'ui-zon'", specifier = "==0.6.0+py3.6" },
     { name = "z3c-noop", marker = "extra == 'ui'" },
     { name = "z3c-noop", marker = "extra == 'ui-zon'", specifier = "==1.0+py3.3" },
     { name = "z3c-traverser" },
     { name = "z3c-traverser", marker = "extra == 'ui-zon'", specifier = "==2.0.0+notests" },
     { name = "zc-datetimewidget", marker = "extra == 'ui'" },
-    { name = "zc-datetimewidget", marker = "extra == 'ui-zon'", specifier = "==0.8.0+py3.2" },
+    { name = "zc-datetimewidget", marker = "extra == 'ui-zon'", specifier = "==0.8.0+py3.5" },
     { name = "zc-form" },
     { name = "zc-queue" },
+    { name = "zc-queue", marker = "extra == 'ui-zon'", specifier = "==3.0+importlib" },
     { name = "zc-set" },
+    { name = "zc-set", marker = "extra == 'ui-zon'", specifier = "==1.0+importlib" },
     { name = "zc-sourcefactory" },
+    { name = "zc-sourcefactory", marker = "extra == 'ui-zon'", specifier = "==2.1+importlib" },
     { name = "zc-table", marker = "extra == 'ui'" },
+    { name = "zc-table", marker = "extra == 'ui-zon'", specifier = "==1.1+importlib.1" },
     { name = "zconfig", marker = "extra == 'ui'" },
     { name = "zeep", marker = "extra == 'ui'" },
     { name = "zodb" },
@@ -3303,34 +3315,21 @@ wheels = [
 ]
 
 [[package]]
-name = "z3c-i18n"
-version = "0.1.2"
-source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
-dependencies = [
-    { name = "setuptools" },
-    { name = "zope-component" },
-    { name = "zope-i18n" },
-    { name = "zope-i18nmessageid" },
-    { name = "zope-interface" },
-    { name = "zope-schema" },
-]
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/z3c-i18n/z3c.i18n-0.1.2.tar.gz", hash = "sha256:5c0298b44e0953eb2eec81dbcfe5f9a4c78a07e2e2498590b4f94847c15ed589" }
-
-[[package]]
 name = "z3c-menu-simple"
-version = "0.6.0+py3.3"
+version = "0.6.0+py3.6"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
 dependencies = [
-    { name = "setuptools" },
-    { name = "z3c-i18n" },
-    { name = "zope-app-component" },
-    { name = "zope-app-publisher" },
+    { name = "zope-browsermenu" },
     { name = "zope-browserpage" },
+    { name = "zope-component" },
     { name = "zope-schema" },
     { name = "zope-traversing" },
     { name = "zope-viewlet" },
 ]
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/z3c-menu-simple/z3c.menu.simple-0.6.0+py3.3.tar.gz", hash = "sha256:15db892a1b98f989cedeae8d74895f1cd11d8e9e4a956a321b2a27d4d3e5c8a0" }
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/z3c-menu-simple/z3c_menu_simple-0.6.0+py3.6.tar.gz", hash = "sha256:23bc77a881c8ec7d6b294820aff35eb024c8c0ef5e033eb3b535589d019ded19" }
+wheels = [
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/z3c-menu-simple/z3c_menu_simple-0.6.0+py3.6-py3-none-any.whl", hash = "sha256:53bdf54b9356bb2cade5576cec178da2e7024441467d8ee60cbe8b67b2d0fa7f" },
+]
 
 [[package]]
 name = "z3c-noop"
@@ -3406,13 +3405,10 @@ wheels = [
 
 [[package]]
 name = "zc-datetimewidget"
-version = "0.8.0+py3.2"
+version = "0.8.0+py3.5"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
 dependencies = [
     { name = "pytz" },
-    { name = "setuptools" },
-    { name = "zc-i18n" },
-    { name = "zc-resourcelibrary" },
     { name = "zope-component" },
     { name = "zope-datetime" },
     { name = "zope-formlib" },
@@ -3420,9 +3416,9 @@ dependencies = [
     { name = "zope-publisher" },
     { name = "zope-schema" },
 ]
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zc-datetimewidget/zc_datetimewidget-0.8.0+py3.2.tar.gz", hash = "sha256:eb3a53fe6b3488b5f91564e3497bef42857ab5d6ab6b4d05ec56265c220ce537" }
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zc-datetimewidget/zc_datetimewidget-0.8.0+py3.5.tar.gz", hash = "sha256:cde3ba23bb1af6bbf16349d2b5197793d5a2bbe930647345a1ac79f64f94cfa9" }
 wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zc-datetimewidget/zc.datetimewidget-0.8.0+py3.2-py3-none-any.whl", hash = "sha256:49208b348634613c1067180b8d3cfae67efccd34322e3d3221bf81af84579163" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zc-datetimewidget/zc_datetimewidget-0.8.0+py3.5-py3-none-any.whl", hash = "sha256:c35bfdae6fc8842897697082bee3b6e0e1f7be8acada795e3e2c8dbafcdb71c8" },
 ]
 
 [[package]]
@@ -3451,18 +3447,6 @@ wheels = [
 ]
 
 [[package]]
-name = "zc-i18n"
-version = "0.7.0"
-source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
-dependencies = [
-    { name = "setuptools" },
-    { name = "zope-i18n" },
-    { name = "zope-i18nmessageid" },
-    { name = "zope-interface" },
-]
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zc-i18n/zc.i18n-0.7.0.tar.gz", hash = "sha256:b3dcb3912ac0cf64b03f9578998e6db329da83bb563ddc067b10e1aa2d230f16" }
-
-[[package]]
 name = "zc-lockfile"
 version = "3.0.post1"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
@@ -3476,62 +3460,36 @@ wheels = [
 
 [[package]]
 name = "zc-queue"
-version = "2.0.0"
+version = "3.0+importlib"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
 dependencies = [
     { name = "persistent" },
-    { name = "setuptools" },
     { name = "zodb" },
     { name = "zope-interface" },
 ]
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zc-queue/zc.queue-2.0.0.tar.gz", hash = "sha256:fe12171e05b177506b97666507659dc4bb3babd74869dc6000291baefe1a8940" }
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zc-queue/zc_queue-3.0+importlib.tar.gz", hash = "sha256:64821eed0de8c3417e16d766aded27767ebe6bb49405b49f8b166f03e58bc0fa" }
 wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zc-queue/zc.queue-2.0.0-py2.py3-none-any.whl", hash = "sha256:6c492e4fc7440b01693f52c0b22e23e4d7dbe5f6eb40fec06e8e54231e4f4f3a" },
-]
-
-[[package]]
-name = "zc-resourcelibrary"
-version = "2.1.0"
-source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
-dependencies = [
-    { name = "setuptools" },
-    { name = "zope-browserpage" },
-    { name = "zope-browserresource" },
-    { name = "zope-component" },
-    { name = "zope-configuration" },
-    { name = "zope-interface" },
-    { name = "zope-publisher" },
-    { name = "zope-security" },
-    { name = "zope-site" },
-    { name = "zope-tales" },
-    { name = "zope-traversing" },
-]
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zc-resourcelibrary/zc.resourcelibrary-2.1.0.tar.gz", hash = "sha256:08726465303f6da9adea4e6922435e2a25046524cb2bfae345bd19692a2d9ee6" }
-wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zc-resourcelibrary/zc.resourcelibrary-2.1.0-py2.py3-none-any.whl", hash = "sha256:eec3cbcd15590d763dcf5a207941251598b8c65bf4a33c2521e18cc16741bec8" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zc-queue/zc.queue-3.0+importlib-py3-none-any.whl", hash = "sha256:c20fe4a80d0b50e66ee38d9d2ed3634c6993ed591c2b821ea2e7bb472ace0a9a" },
 ]
 
 [[package]]
 name = "zc-set"
-version = "0.2"
+version = "1.0+importlib"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
 dependencies = [
     { name = "persistent" },
-    { name = "setuptools" },
 ]
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zc-set/zc.set-0.2.tar.gz", hash = "sha256:72a8ab65f1b351effae9324db85008dc36e29ad7704983b01c5948bb7f5b7a9a" }
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zc-set/zc_set-1.0+importlib.tar.gz", hash = "sha256:216b51d7f80447a43c38b77abdecf674f1a878d8c2f017b10f2ac13806308dda" }
 wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zc-set/zc.set-0.2-py2.py3-none-any.whl", hash = "sha256:da51bca6ffa3cf4dbe968eff6fbcd0eff1c06154acefd53006a1b366fd45ec51" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zc-set/zc.set-0.2-py3-none-any.whl", hash = "sha256:08a7fa1a4abd26ca36cc4739970e8d703a2165c874bacb243229f838a906df70" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zc-set/zc_set-1.0+importlib-py3-none-any.whl", hash = "sha256:ec9cc0356c40f545f719950a55a8361377c7f9677e63d0854cddabc6da512357" },
 ]
 
 [[package]]
 name = "zc-sourcefactory"
-version = "2.0"
+version = "2.1+importlib"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
 dependencies = [
     { name = "persistent" },
-    { name = "setuptools" },
     { name = "zodb" },
     { name = "zope-browser" },
     { name = "zope-component" },
@@ -3542,18 +3500,16 @@ dependencies = [
     { name = "zope-publisher" },
     { name = "zope-schema" },
 ]
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zc-sourcefactory/zc.sourcefactory-2.0.tar.gz", hash = "sha256:d9e536cac13e98fbffafba474733d072b8d0d941642b7d4f5b150b07b8dc3ba2" }
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zc-sourcefactory/zc_sourcefactory-2.1+importlib.tar.gz", hash = "sha256:60d73fe5cd464c1bf59137738677bdc0e133831052f153a969504030b1ddd7a6" }
 wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zc-sourcefactory/zc.sourcefactory-2.0-py3-none-any.whl", hash = "sha256:9c8c96ec01dd34dddad7119c2d2a1a6ff36f89fdf905eb134a1f891f6437c168" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zc-sourcefactory/zc_sourcefactory-2.1+importlib-py3-none-any.whl", hash = "sha256:2eb4248381d4bdeff29f46cf030343acdabaf8e5bfbdad190c03c4be706d5ba2" },
 ]
 
 [[package]]
 name = "zc-table"
-version = "1.0"
+version = "1.1+importlib.1"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
 dependencies = [
-    { name = "setuptools" },
-    { name = "zc-resourcelibrary" },
     { name = "zope-browserpage" },
     { name = "zope-cachedescriptors" },
     { name = "zope-component" },
@@ -3562,9 +3518,9 @@ dependencies = [
     { name = "zope-interface" },
     { name = "zope-schema" },
 ]
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zc-table/zc.table-1.0.tar.gz", hash = "sha256:200d3462fcc1896cc6a355302816093ea7770e522c8b2555f228da2177b3d3bc" }
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zc-table/zc_table-1.1+importlib.1.tar.gz", hash = "sha256:77d19a10bf0949972579a954d313f9256b21c7a8baf4b7a84245ca14d8cfa96c" }
 wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zc-table/zc.table-1.0-py3-none-any.whl", hash = "sha256:93dedd1ac814f6df6befd489ecd85b233ce3111b323f0916de19625043d33bbc" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zc-table/zc_table-1.1+importlib.1-py3-none-any.whl", hash = "sha256:43246a1e2eb4196c875b2bbaf0f4e5d7ea8d5a25fa988d1c4fb098a16fa645bb" },
 ]
 
 [[package]]
@@ -3795,7 +3751,7 @@ wheels = [
 
 [[package]]
 name = "zope-app-container"
-version = "5.0"
+version = "5.1"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
 dependencies = [
     { name = "setuptools" },
@@ -3818,9 +3774,9 @@ dependencies = [
     { name = "zope-size" },
     { name = "zope-traversing" },
 ]
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zope-app-container/zope.app.container-5.0.tar.gz", hash = "sha256:dae0a7d3412ab98094a7a685275d7c65422d91d0a7631676e6bf52261db81672" }
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zope-app-container/zope_app_container-5.1.tar.gz", hash = "sha256:ebd0151c3055dd6bff65feff06561370e9e44cb9e7c8ba5882639e237ef9f499" }
 wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zope-app-container/zope.app.container-5.0-py3-none-any.whl", hash = "sha256:2ebb18ae13e346abc2fc1be8bfba37fb6ed7f06bb7817711bf8948296a688ab7" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zope-app-container/zope_app_container-5.1-py3-none-any.whl", hash = "sha256:550e74bda9dcfab8d95b66dddbe5741c23454b030f78d3073006b6e7255f96bd" },
 ]
 
 [[package]]
@@ -4320,7 +4276,7 @@ wheels = [
 
 [[package]]
 name = "zope-component"
-version = "6.0"
+version = "6.1"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
 dependencies = [
     { name = "setuptools" },
@@ -4328,9 +4284,9 @@ dependencies = [
     { name = "zope-hookable" },
     { name = "zope-interface" },
 ]
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zope-component/zope.component-6.0.tar.gz", hash = "sha256:9a0a0472ad201b94b4fe6741ce9ac2c30b8bb22c516077bf03692dec4dfb6906" }
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zope-component/zope_component-6.1.tar.gz", hash = "sha256:79b807f29d82576e59d82187239549d5715759ab797b60a5bd69cc36e0449c09" }
 wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zope-component/zope.component-6.0-py3-none-any.whl", hash = "sha256:96d0a04db39643caf2dfaec152340f3e914df1dc3fa32fbb913782620dc6c3c6" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zope-component/zope_component-6.1-py3-none-any.whl", hash = "sha256:948905a3bf78b548d9f3d9cbf19ef7d1cfe1a9d73f5bce46215af3659f7735a7" },
 ]
 
 [package.optional-dependencies]
