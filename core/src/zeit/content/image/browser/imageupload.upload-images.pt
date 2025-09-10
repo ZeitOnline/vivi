@@ -106,8 +106,10 @@
         }))
       }
       Promise.all(uploads).then(results => {
+        let current = new URL(window.location.href);
+        let query = current.search.replace('?', '&');
         let url = results[0] + results.slice(1).map(url => '&files=' + new URL(url).searchParams.get('files')).join("")
-        window.location = url
+        window.location = url + query;
       }, e => {
         // Swallow exception since we already displayed it at the li
       }).finally(() => {

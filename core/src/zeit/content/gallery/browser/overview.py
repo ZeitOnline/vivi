@@ -1,3 +1,5 @@
+from urllib.parse import urlencode
+
 import zope.app.form.browser.interfaces
 import zope.cachedescriptors.property
 import zope.component
@@ -67,28 +69,21 @@ class Synchronise(zeit.cms.browser.view.Base):
         return url
 
 
-class UploadImage(zeit.cms.browser.view.JSON):
-    def json(self):
-        view = zope.component.getMultiAdapter(
-            (self.context.image_folder, self.request), name='zeit.content.image.Add'
-        )
-        view.checkout = False
-        view()
-        result = {}
-        if view.errors:
-            if len(view.errors) == 1 and view.errors[0].field_name == 'blob':
-                # That was not an image.
-                self.request.response.setStatus(415)
-                result['error'] = 'NotAnImage'
-            else:
-                # Okay, something else.
-                self.request.response.setStatus(500)
-        else:
-            self.request.response.setStatus(201)  # Created
-        return result
-
-
 class SynchroniseMenuItem(zeit.cms.browser.menu.ActionMenuItem):
     title = _('Synchronise with image folder')
     action = '@@synchronise-with-image-folder'
     icon = '/@@/zeit.cms/icons/reload.png'
+
+
+class UploadMenuItem(zeit.cms.browser.view.Base, zeit.cms.browser.menu.ActionMenuItem):
+    title = _('Upload images')
+    icon = '/@@/zeit.content.gallery/upload-icon.png'
+
+    def get_url(self):
+        url = self.url(self.context.image_folder, '@@upload-images') + '?'
+        return url + urlencode(
+            {
+                'from': self.context.__name__,
+                'return_url': self.url(self.context, SynchroniseMenuItem.action),
+            }
+        )

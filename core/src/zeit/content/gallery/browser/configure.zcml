@@ -112,25 +112,12 @@
     permission="zeit.EditContent"
     />
 
-
-  <!-- upload -->
-
   <browser:viewlet
     name="Upload"
     for="zeit.content.gallery.interfaces.IGallery"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    template="upload.pt"
+    class=".overview.UploadMenuItem"
     manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
-    permission="zeit.EditContent"
-    weight="0"
-    selected="0"
-    />
-
-  <browser:page
-    for="zeit.content.gallery.interfaces.IGallery"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="upload-image"
-    class=".overview.UploadImage"
     permission="zeit.EditContent"
     />
 

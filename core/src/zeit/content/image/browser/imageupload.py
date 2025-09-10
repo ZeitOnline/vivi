@@ -171,6 +171,7 @@ class EditForm(zeit.cms.browser.view.Base):
             self._files = tuple(self._parse_post_request())
             if 'cancel' in self.request.form:
                 return self.handle_cancel()
+            self._parse_query_string()
             return self.handle_submit()
 
         self._files = tuple(self._parse_get_request())
@@ -232,12 +233,21 @@ class EditForm(zeit.cms.browser.view.Base):
                     self.context[self._files[0]['target_name']],
                     name='@@variant.html',
                 )
+        elif 'return_url' in self.request.form:
+            url = self.request.form['return_url']
         elif len(self._files) == 1:
             url = self.url(self.context[self._files[0]['target_name']], name='@@variant.html')
         else:
             url = self.url(name='')
 
         self.redirect(url, status=303)
+
+    def _parse_query_string(self):
+        # XXX zope.publisher.browser.BrowserRequest.processInputs() does not
+        # parse query string for POST requests, so we have to do that here.
+        items = urllib.parse.parse_qsl(self.request._environ['QUERY_STRING'])
+        for key, item in items:
+            self.request._BrowserRequest__processItem(key, item)
 
     def _parse_get_request(self):
         from_name = self.request.form.get('from', None)

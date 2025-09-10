@@ -216,7 +216,7 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
         matching_images = self._entries_container.xpath('block/image')
         new_id = None
         for image in matching_images:
-            src = image.get('src')
+            src = image.get('src') or image.get('base-id')
             if src.startswith('/cms/work/'):
                 new_id = src.replace('/cms/work/', 'http://xml.zeit.de/')
             elif src.startswith('http://xml.zeit.de/'):
