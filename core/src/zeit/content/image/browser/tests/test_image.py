@@ -1,4 +1,5 @@
 # coding: utf-8
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.content.image.testing import fixture_bytes
 import zeit.content.image.testing
 
@@ -92,3 +93,27 @@ class TestImage(zeit.content.image.testing.BrowserTestCase):
         b.getControl(name='form.actions.add').click()
         img = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/baer.jpg')
         self.assertEqual((4000, 2250), img.getImageSize())
+
+    def test_image_upload_sets_size_and_mime_type(self):
+        FEATURE_TOGGLES.set('column_read_wcm_56')
+        FEATURE_TOGGLES.set('column_write_wcm_56')
+
+        b = self.browser
+        b.open('/repository/')
+        menu = b.getControl(name='add_menu')
+        menu.displayValue = ['Image (single)']
+        b.open(menu.value[0])
+        b.getControl(name='form.copyright.combination_00').value = 'DIE ZEIT'
+        b.getControl(name='form.copyright.combination_01').displayValue = ['dpa']
+        b.getControl(name='form.copyright.combination_03').value = 'http://www.zeit.de/'
+
+        b.getControl(name='form.blob').add_file(
+            fixture_bytes('new-hampshire-artikel.jpg'), 'image/jpeg', 'föö.jpg'.encode('utf-8')
+        )
+        b.getControl(name='form.actions.add').click()
+        self.assertIn('/foeoe.jpg/@@edit.html', b.url)
+        image = self.repository['foeoe.jpg']
+        self.assertEqual(410, image.width)
+        self.assertEqual(244, image.height)
+        self.assertEqual('image/jpeg', image.mimeType)
+        self.assertEqual('image/jpeg', image._mime_type)

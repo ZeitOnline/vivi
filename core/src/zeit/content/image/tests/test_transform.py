@@ -6,6 +6,7 @@ import PIL.ExifTags
 import PIL.Image
 import PIL.ImageDraw
 
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.content.image.variant import Variant
 import zeit.content.image.interfaces
 import zeit.content.image.testing
@@ -312,3 +313,17 @@ class CreateVariantImageTest(zeit.content.image.testing.FunctionalTestCase):
         self.assertEqual(resized_pil_image.info['xmp'], b'xmp-sample')
         self.assertEqual(resized_exif[PIL.ExifTags.Base.Make], 'Make')
         self.assertEqual(resized_exif[PIL.ExifTags.Base.Model], 'Model')
+
+    def test_thumbnail_has_image_properties(self):
+        FEATURE_TOGGLES.set('column_read_wcm_56')
+        FEATURE_TOGGLES.set('column_write_wcm_56')
+        group = zeit.content.image.testing.create_image_group_with_master_image()
+        transform = zeit.content.image.interfaces.ITransform(group['master-image.jpg'])
+        highquality = io.BytesIO()
+        img = transform.image.copy()
+        img.thumbnail((200, 200))
+        img.save(highquality, 'JPEG', quality=75)
+        thumbnail = self.repository['group']['thumbnail-source-master-image.jpg']
+        self.assertEqual(thumbnail.width, thumbnail._width)
+        self.assertEqual(thumbnail.height, thumbnail._height)
+        self.assertEqual(thumbnail.mimeType, thumbnail._mime_type)
