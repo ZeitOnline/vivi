@@ -222,6 +222,9 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
         assert zeit.content.image.interfaces.IImageGroup.providedBy(group)
         self.assertTrue(zeit.cms.content.interfaces.ISemanticChange(group).last_semantic_change)
         self.assertTrue(zeit.cms.workflow.interfaces.IModified(group).date_created)
+        img = group[group.master_image]
+        self.assertTrue(zeit.cms.content.interfaces.ISemanticChange(img).last_semantic_change)
+        self.assertTrue(zeit.cms.workflow.interfaces.IModified(img).date_created)
 
     def test_editimages_correctly_names_single_image(self):
         b = self.browser
