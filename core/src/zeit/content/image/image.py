@@ -69,19 +69,16 @@ class BaseImage:
     def mimeType(self):
         if FEATURE_TOGGLES.find('column_read_wcm_56'):
             return self._mime_type
-        return self.getMimeType()
-
-    @mimeType.setter
-    def mimeType(self, value):
-        self._mime_type = value
-
-    def getMimeType(self):
         with self.open() as f:
             head = f.read(261)
         file_type = filetype.guess_mime(head) or ''
         if not file_type.startswith('image/'):
             return ''
         return file_type
+
+    @mimeType.setter
+    def mimeType(self, value):
+        self._mime_type = value
 
     @property
     def width(self):
@@ -239,5 +236,7 @@ def get_remote_image(url, timeout=2):
 @grok.subscribe(zeit.content.image.interfaces.IImage, zope.lifecycleevent.IObjectCreatedEvent)
 def update_image_properties(context, event):
     if FEATURE_TOGGLES.find('column_write_wcm_56'):
-        context.mimeType = context.getMimeType()
-        (context.width, context.height) = context.getImageSize()
+        with context.open() as f:
+            pil = PIL.Image.open(f)
+            context.mimeType = PIL.Image.MIME[pil.format]
+            (context.width, context.height) = pil.size
