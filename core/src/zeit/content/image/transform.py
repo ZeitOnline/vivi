@@ -5,6 +5,7 @@ import zope.component
 import zope.interface
 import zope.security.proxy
 
+from zeit.cms.content.sources import FEATURE_TOGGLES
 import zeit.cms.config
 import zeit.cms.repository.folder
 import zeit.cms.workflow.interfaces
@@ -206,7 +207,11 @@ class ImageTransform:
         if image_times and image_times.date_last_modified:
             thumb_times = zeit.cms.workflow.interfaces.IModified(image)
             thumb_times.date_last_modified = image_times.date_last_modified
-        zope.event.notify(zope.lifecycleevent.ObjectCreatedEvent(image))
+        # Duplicated from z.c.image.image.update_image_properties, to avoid
+        # parsing the PIL data *again*.
+        if FEATURE_TOGGLES.find('column_write_wcm_56'):
+            (image.width, image.height) = pil_image.size
+            image.mimeType = PIL.Image.MIME[format]
         return image
 
 
