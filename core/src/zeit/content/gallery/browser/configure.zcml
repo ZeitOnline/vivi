@@ -13,6 +13,8 @@
 
   <adapter factory=".gallery.gallery_browse_location" />
   <adapter factory=".gallery.gallery_folder_browse_location" />
+  <adapter factory=".gallery.gallery_upload_target" />
+  <adapter factory=".gallery.gallery_upload_return_url" />
 
   <browser:page
     for="..interfaces.IGallery"
@@ -108,6 +110,15 @@
     for="..interfaces.IGallery"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     class=".overview.SynchroniseMenuItem"
+    manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
+    permission="zeit.EditContent"
+    />
+
+  <browser:viewlet
+    name="upload-images"
+    for="zeit.content.gallery.interfaces.IGallery"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".overview.UploadMenuItem"
     manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
     permission="zeit.EditContent"
     />

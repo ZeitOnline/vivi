@@ -29,6 +29,10 @@ class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
     layer = ZOPE_LAYER
 
 
+class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
+    layer = WSGI_LAYER
+
+
 def add_image(folder, filename, name=None):
     if name is None:
         name = filename

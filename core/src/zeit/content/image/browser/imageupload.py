@@ -248,6 +248,10 @@ class EditForm(zeit.cms.browser.view.Base):
             if 'upload_and_publish' in self.request.form:
                 IPublish(self.folder[name]).publish()
 
+        return_url = zope.component.queryMultiAdapter(
+            (self.context, self.request), zeit.content.image.browser.interfaces.IUploadReturnURL
+        )
+
         if 'upload_and_open' in self.request.form:
             if len(self._files) > 1:
                 image_urls = []
@@ -260,6 +264,8 @@ class EditForm(zeit.cms.browser.view.Base):
                     self.folder[self._files[0]['target_name']],
                     name='@@variant.html',
                 )
+        elif return_url is not None:
+            url = return_url
         elif len(self._files) == 1:
             url = self.url(self.folder[self._files[0]['target_name']], name='@@variant.html')
         else:

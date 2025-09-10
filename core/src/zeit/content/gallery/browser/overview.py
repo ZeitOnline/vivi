@@ -71,3 +71,9 @@ class SynchroniseMenuItem(zeit.cms.browser.menu.ActionMenuItem):
     title = _('Synchronise with image folder')
     action = '@@synchronise-with-image-folder'
     icon = '/@@/zeit.cms/icons/reload.png'
+
+
+class UploadMenuItem(zeit.cms.browser.menu.ActionMenuItem):
+    title = _('Upload Images')
+    action = '@@upload-images'
+    icon = '/@@/zeit.content.gallery/upload-icon.png'

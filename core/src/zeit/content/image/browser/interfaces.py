@@ -80,3 +80,7 @@ class IUploadTarget(zope.interface.Interface):
 
 class IUploadBaseName(zope.interface.Interface):
     pass
+
+
+class IUploadReturnURL(zope.interface.Interface):
+    pass
