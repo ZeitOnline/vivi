@@ -184,7 +184,7 @@ class ImageTransform:
     @property
     def _color_mode(self):
         # XXX This is a rather crude heuristic.
-        return 'RGBA' if self.context.format == 'PNG' else 'RGB'
+        return 'RGBA' if self.image.format == 'PNG' else 'RGB'
 
     def _enable_alpha_channel(self, pil_image):
         """Enable alpha channel for PNG images by converting to RGBA."""
@@ -195,7 +195,7 @@ class ImageTransform:
     def _construct_image(self, pil_image, format=None, **params):
         image = zeit.content.image.image.TemporaryImage()
         if not format:
-            format = self.context.format
+            format = self.image.format
 
         options = zeit.content.image.interfaces.ENCODER_PARAMETERS.find(format)
 
