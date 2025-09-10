@@ -129,7 +129,8 @@ Images whose names have no extension at all will be ignored:
 If there is no image in the image group the ``type`` will be an empty string:
 
 >>> for name in group:
-...     del group[name]
+...     if not name.startswith('thumbnail'):
+...         del group[name]
 >>> ref = zope.component.getAdapter(
 ...     group,
 ...     zeit.cms.content.interfaces.IXMLReference, name='image')
