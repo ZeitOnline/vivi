@@ -215,7 +215,7 @@ test-zon = [
 ]
 ui-zon = [
     "fanstatic==1.6+importlib",  # https://github.com/ZeitOnline/fanstatic
-    "gocept.fckeditor==2.6.4.1+importlib",  # https://github.com/ZeitOnline/gocept.fckeditor/tree/py3
+    "gocept.fckeditor==2.6.4.1.post3+py3.3",  # https://github.com/ZeitOnline/gocept.fckeditor/tree/py3
     "gocept.form==0.8.0+py3.1",  # https://github.com/ZeitOnline/gocept.form
     "gocept.pagelet==2.1+importlib",  # https://github.com/ZeitOnline/gocept.pagelet
     "js.jqueryui==1.10.3+tooltip.2",  # https://github.com/ZeitOnline/js.jqueryui
