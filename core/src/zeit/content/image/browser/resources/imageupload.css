@@ -15,6 +15,10 @@
   flex: 1 0 10em;
 }
 
+.imageupload__drop--active {
+  border-style: solid;
+}
+
 .imageupload__drop p,
 .imageupload__drop span {
   margin: 1em 0.5em;
