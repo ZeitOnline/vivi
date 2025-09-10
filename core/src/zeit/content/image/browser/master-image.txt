@@ -84,17 +84,18 @@ False
 Selecting the master image
 ++++++++++++++++++++++++++
 
-It is possible to select the master image of an image group:
+Image group has multiple images now
+>>> from zeit.content.image.testing import create_local_image
+>>> group = repository['opernball']
+>>> group['obama-clinton-120x120.jpg'] = create_local_image('obama-clinton-120x120.jpg')
 
->>> browser.open('http://localhost/++skin++cms/repository/image-group')
+It is possible to select the master image of an image group:
+>>> browser.open('http://localhost/++skin++cms/repository/opernball')
 >>> browser.getLink('Checkout').click()
 >>> browser.getControl('Image file').displayValue
-['(nothing selected)']
+['opernball.jpg']
 >>> browser.getControl('Image file').displayOptions
-['(nothing selected)',
- 'new-hampshire-450x200.jpg',
- 'new-hampshire-artikel.jpg',
- 'obama-clinton-120x120.jpg']
+['obama-clinton-120x120.jpg', 'opernball.jpg']
 >>> browser.getControl('Image file').displayValue = ['obama']
 >>> browser.getControl('Viewport').displayValue = ['viewport-desktop']
 >>> browser.getControl(name='form.copyright.combination_00').value = (
