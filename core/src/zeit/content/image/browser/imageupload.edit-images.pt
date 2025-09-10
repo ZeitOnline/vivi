@@ -3,16 +3,16 @@
     <table class="edit-image-table">
       <tr>
         <th></th>
-        <th i18n:translate="">Filename
+        <th><span i18n:translate="">Filename</span>
           <button name="bulk_edit_filename" type="button" class="bulk-edit" data-field="filename" >Alle ändern</button>
         </th>
-        <th i18n:translate="">Copyright
+        <th><span i18n:translate="">Copyright</span>
           <button name="bulk_edit_copyright" type="button" class="bulk-edit" data-field="copyright" >Alle ändern</button>
         </th>
-        <th i18n:translate="">Title
+        <th><span i18n:translate="">Title</span>
           <button name="bulk_edit_title" type="button" class="bulk-edit" data-field="title" >Alle ändern</button>
         </th>
-        <th i18n:translate="">Caption
+        <th><span i18n:translate="">Caption</span>
           <button name="bulk_edit_caption" type="button" class="bulk-edit" data-field="caption" >Alle ändern</button>
         </th>
       </tr>

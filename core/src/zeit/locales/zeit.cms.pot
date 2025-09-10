@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Mon Sep  8 12:35:34 2025\n"
+"POT-Creation-Date: Wed Sep 10 15:21:28 2025\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -171,7 +171,7 @@ msgstr ""
 #: zeit/content/article/edit/browser/push.py:52
 #: zeit/content/article/edit/browser/reference.py:51
 #: zeit/content/cp/browser/view.py:11
-#: zeit/content/image/browser/form.py:102
+#: zeit/content/image/browser/form.py:104
 #: zeit/content/image/browser/imagegroup.py:323
 #: zeit/edit/browser/form.py:65
 #: zeit/edit/browser/view.py:103
@@ -226,7 +226,7 @@ msgstr ""
 #: zeit/content/cp/interfaces.py:416
 #: zeit/content/cp/interfaces.py:465
 #: zeit/content/gallery/interfaces.py:91
-#: zeit/content/image/browser/imageupload.edit-images.pt:4
+#: zeit/content/image/browser/imageupload.edit-images.pt:12
 #: zeit/content/infobox/interfaces.py:21
 #: zeit/content/modules/interfaces.py:169
 #: zeit/content/rawxml/interfaces.py:18
@@ -529,7 +529,7 @@ msgstr ""
 #: zeit/cms/content/browser/form.py:23
 #: zeit/content/cp/browser/form.py:18
 #: zeit/content/gallery/browser/form.py:28
-#: zeit/content/image/browser/form.py:19
+#: zeit/content/image/browser/form.py:21
 #: zeit/content/infobox/browser/form.py:25
 #: zeit/content/infobox/browser/form.py:87
 #: zeit/content/video/browser/video.py:60
@@ -797,7 +797,7 @@ msgid "Update last semantic change"
 msgstr ""
 
 #: zeit/cms/content/interfaces.py:480
-#: zeit/content/image/browser/form.py:17
+#: zeit/content/image/browser/form.py:18
 msgid "Memo"
 msgstr ""
 
@@ -1644,7 +1644,7 @@ msgid "No content referenced."
 msgstr ""
 
 #: zeit/content/article/edit/browser/form.py:112
-#: zeit/content/image/browser/imageupload.edit-images.pt:4
+#: zeit/content/image/browser/imageupload.edit-images.pt:6
 msgid "Filename"
 msgstr ""
 
@@ -1792,7 +1792,7 @@ msgid "Reloading"
 msgstr ""
 
 #: zeit/content/article/edit/browser/teaserimage-display-widget.pt:1
-#: zeit/content/image/browser/form.py:84
+#: zeit/content/image/browser/form.py:86
 msgid "Add image"
 msgstr ""
 
@@ -3313,7 +3313,7 @@ msgid "Edit gallery entry"
 msgstr ""
 
 #: zeit/content/gallery/browser/overview.pt:16
-#: zeit/content/image/browser/form.py:94
+#: zeit/content/image/browser/form.py:96
 msgid "Edit image"
 msgstr ""
 
@@ -3396,7 +3396,7 @@ msgid "File list"
 msgstr ""
 
 #: zeit/content/image/browser/configure.zcml:431
-#: zeit/content/image/browser/imageupload.py:26
+#: zeit/content/image/browser/imageupload.py:27
 msgid "Image (new)"
 msgstr ""
 
@@ -3416,16 +3416,16 @@ msgstr ""
 msgid "Copyright changed for: ${changes}"
 msgstr ""
 
-#: zeit/content/image/browser/form.py:22
+#: zeit/content/image/browser/form.py:24
 #: zeit/content/image/browser/imagegroup.py:236
 msgid "Image data"
 msgstr ""
 
-#: zeit/content/image/browser/form.py:27
+#: zeit/content/image/browser/form.py:29
 msgid "Image source"
 msgstr ""
 
-#: zeit/content/image/browser/form.py:55
+#: zeit/content/image/browser/form.py:57
 msgid "Image was resized, ${size} exceeds ${max_size}"
 msgstr ""
 
@@ -3498,44 +3498,44 @@ msgstr ""
 msgid "CopyrightPurchaseReport"
 msgstr ""
 
-#: zeit/content/image/browser/imageupload.edit-images.pt:4
-msgid "Caption"
-msgstr ""
-
-#: zeit/content/image/browser/imageupload.edit-images.pt:4
+#: zeit/content/image/browser/imageupload.edit-images.pt:9
 msgid "Copyright"
 msgstr ""
 
-#: zeit/content/image/browser/imageupload.edit-images.pt:19
+#: zeit/content/image/browser/imageupload.edit-images.pt:15
+msgid "Caption"
+msgstr ""
+
+#: zeit/content/image/browser/imageupload.edit-images.pt:33
 #: zeit/content/image/browser/imageupload.upload-images.pt:10
 msgid "Upload"
 msgstr ""
 
-#: zeit/content/image/browser/imageupload.edit-images.pt:20
+#: zeit/content/image/browser/imageupload.edit-images.pt:34
 msgid "Upload and publish"
 msgstr ""
 
-#: zeit/content/image/browser/imageupload.edit-images.pt:21
+#: zeit/content/image/browser/imageupload.edit-images.pt:35
 msgid "Upload and open"
 msgstr ""
 
-#: zeit/content/image/browser/imageupload.edit-images.pt:24
+#: zeit/content/image/browser/imageupload.edit-images.pt:38
 msgid "Remove images"
 msgstr ""
 
-#: zeit/content/image/browser/imageupload.py:32
+#: zeit/content/image/browser/imageupload.py:33
 msgid "Upload images"
 msgstr ""
 
-#: zeit/content/image/browser/imageupload.py:56
+#: zeit/content/image/browser/imageupload.py:57
 msgid "Please upload at least one image"
 msgstr ""
 
-#: zeit/content/image/browser/imageupload.py:159
+#: zeit/content/image/browser/imageupload.py:160
 msgid "Edit images"
 msgstr ""
 
-#: zeit/content/image/browser/imageupload.py:187
+#: zeit/content/image/browser/imageupload.py:188
 msgid "File name is already in use"
 msgstr ""
 
