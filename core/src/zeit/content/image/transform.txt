@@ -105,11 +105,8 @@ The persistent thumbnail is an image itself:
 
 >>> persistent_thumbnail
 <zeit.content.image.image.RepositoryImage...>
-
-It always has 50x50 as bounding box so far:
-
 >>> persistent_thumbnail.getImageSize()
-(50, 38)
+(50, 37)
 
 It is contained in the folder `thumbnails` with the same name as the image:
 
@@ -139,16 +136,6 @@ config:
 We need to delete the persistent thumbnail as thumbnails are not automatically
 invalidated:
 
->>> del persistent_thumbnail.__parent__[persistent_thumbnail.__name__]
->>> persistent_thumbnail = zeit.content.image.interfaces.IPersistentThumbnail(
-...     image)
->>> persistent_thumbnail.getImageSize()
-(200, 150)
-
-
-To use the resize method it must be specified in the config:
-
->>> config['thumbnail-method'] = 'resize'
 >>> del persistent_thumbnail.__parent__[persistent_thumbnail.__name__]
 >>> persistent_thumbnail = zeit.content.image.interfaces.IPersistentThumbnail(
 ...     image)

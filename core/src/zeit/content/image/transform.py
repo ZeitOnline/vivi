@@ -213,13 +213,12 @@ class ImageTransform:
 @zope.interface.implementer(zeit.content.image.interfaces.IPersistentThumbnail)
 def persistent_thumbnail_factory(context):
     config = zeit.cms.config.package('zeit.content.image')
-    method_name = config.get('thumbnail-method', 'thumbnail')
     width = config.get('thumbnail-width', 50)
     if width:
         width = int(width)
     else:
         width = None
-    height = config.get('thumbnail-height', 50)
+    height = config.get('thumbnail-height')
     if height:
         height = int(height)
     else:
@@ -229,8 +228,7 @@ def persistent_thumbnail_factory(context):
     image_name = context.__name__
     if image_name not in thumbnail_container:
         transform = zeit.content.image.interfaces.ITransform(context)
-        method = getattr(transform, method_name)
-        thumbnail = method(width, height)
+        thumbnail = transform.resize(width, height)
 
         thumbnail_properties = zeit.connector.interfaces.IWebDAVWriteProperties(thumbnail)
         image_properties = zeit.connector.interfaces.IWebDAVReadProperties(context)
