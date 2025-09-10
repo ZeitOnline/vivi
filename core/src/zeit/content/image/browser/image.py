@@ -2,7 +2,6 @@ import importlib.resources
 
 from zope.browserpage import ViewPageTemplateFile
 from zope.cachedescriptors.property import Lazy as cachedproperty
-import PIL.Image
 import zope.component
 import zope.file.download
 import zope.publisher.interfaces
@@ -105,8 +104,6 @@ class ReferenceDetailsBody(ImageView):
 
 
 class Scaled:
-    filter = PIL.Image.Resampling.LANCZOS
-
     def __call__(self):
         return self.scaled()
 
@@ -122,7 +119,7 @@ class Scaled:
         return image_view
 
     def _resize(self, transform):
-        return transform.thumbnail(self.width, self.height, self.filter)
+        return transform.thumbnail(self.width, self.height)
 
 
 class Preview(Scaled):
