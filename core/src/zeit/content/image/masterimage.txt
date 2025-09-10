@@ -10,7 +10,7 @@ adapted to IMasterImage to get the master image:
 
 >>> import zeit.content.image.interfaces
 >>> import zeit.content.image.testing
->>> group = zeit.content.image.testing.create_image_group_with_master_image()
+>>> group = zeit.content.image.testing.create_image_group()
 >>> image = zeit.content.image.interfaces.IMasterImage(group)
 >>> image
 <zeit.content.image.image.RepositoryImage...>

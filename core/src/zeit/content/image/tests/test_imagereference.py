@@ -12,7 +12,7 @@ import zeit.content.image.testing
 class ImageReferenceTest(zeit.content.image.testing.FunctionalTestCase):
     def setUp(self):
         super().setUp()
-        zeit.content.image.testing.create_image_group_with_master_image()
+        zeit.content.image.testing.create_image_group()
         ExampleContentType.images = ReferenceProperty('.body.image', 'image')
         self.repository['testcontent'] = ExampleContentType()
 
@@ -21,7 +21,7 @@ class ImageReferenceTest(zeit.content.image.testing.FunctionalTestCase):
         super().tearDown()
 
     def test_local_values_override_original_ones(self):
-        image = ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')
+        image = ICMSContent('http://xml.zeit.de/DSC00109_2.JPG')
         content = self.repository['testcontent']
         ref = content.images.create(image)
         content.images = (ref,)
@@ -33,7 +33,7 @@ class ImageReferenceTest(zeit.content.image.testing.FunctionalTestCase):
         self.assertEqual('localcaption', ref.caption)
 
     def test_not_overridable_values_are_always_proxied_to_target(self):
-        image = ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')
+        image = ICMSContent('http://xml.zeit.de/DSC00109_2.JPG')
         with checked_out(image) as co:
             IImageMetadata(co).origin = 'originalorigin'
         transaction.commit()
@@ -47,7 +47,7 @@ class ImageReferenceTest(zeit.content.image.testing.FunctionalTestCase):
         self.assertEqual('updatedorigin', ref.origin)
 
     def test_empty_local_values_leave_original_ones_alone(self):
-        image = ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')
+        image = ICMSContent('http://xml.zeit.de/DSC00109_2.JPG')
         with checked_out(image) as co:
             IImageMetadata(co).title = 'originaltitle'
             IImageMetadata(co).caption = 'originalcaption'
@@ -60,7 +60,7 @@ class ImageReferenceTest(zeit.content.image.testing.FunctionalTestCase):
         self.assertEqual('originalcaption', ref.caption)
 
     def test_setting_local_value_none_yields_none(self):
-        image = ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')
+        image = ICMSContent('http://xml.zeit.de/DSC00109_2.JPG')
         content = self.repository['testcontent']
         ref = content.images.create(image)
         content.images = (ref,)
@@ -74,7 +74,7 @@ class ImageReferenceTest(zeit.content.image.testing.FunctionalTestCase):
         self.assertEqual('', ref.caption)
 
     def test_colorpicker_should_generate_proper_xml(self):
-        image = ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')
+        image = ICMSContent('http://xml.zeit.de/DSC00109_2.JPG')
         content = self.repository['testcontent']
         img = zeit.content.image.interfaces.IImages(content)
         img.image = image

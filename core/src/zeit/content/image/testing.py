@@ -6,7 +6,6 @@ import gocept.selenium
 import webtest.forms
 import zope.component
 
-from zeit.cms.repository.folder import Folder
 import zeit.cms.repository.interfaces
 import zeit.cms.testcontenttype.testcontenttype
 import zeit.cms.testing
@@ -48,38 +47,24 @@ def create_local_image(filename='opernball.jpg', package=None, folder=None):
     return image
 
 
-def create_image_group():
+def create_image_group(
+    filename='DSC00109_2.JPG', package='zeit.connector', folder='testcontent/2006'
+):
     repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
-    repository['image-group'] = zeit.content.image.imagegroup.ImageGroup()
-    group = repository['image-group']
-    for filename in (
-        'new-hampshire-450x200.jpg',
-        'new-hampshire-artikel.jpg',
-        'obama-clinton-120x120.jpg',
-    ):
-        group[filename] = create_local_image(filename)
-    return group
-
-
-def create_image_group_with_master_image(filename=None):
-    repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
-    if filename is None:
-        filename = 'DSC00109_2.JPG'
-        repository['2006'] = Folder()
-        image = create_local_image(filename, 'zeit.connector', 'testcontent/2006')
-        repository['2006'][filename] = image
-        fh = repository['2006'][filename].open()
-    else:
-        fh = open(filename, 'rb')
-    extension = os.path.splitext(filename)[-1].lower()
-
     group = zeit.content.image.imagegroup.ImageGroup()
+    extension = os.path.splitext(filename)[-1].lower()
     group.master_images = (('desktop', 'master-image' + extension),)
     repository['group'] = group
+
+    image = create_local_image(filename, package, folder)
+    repository[filename] = image
+
+    fh = repository[filename].open()
     image = zeit.content.image.image.LocalImage()
     with image.open('w') as out:
         out.write(fh.read())
     fh.close()
+    zope.event.notify(zope.lifecycleevent.ObjectCreatedEvent(image))
     repository['group'][group.master_image] = image
     return repository['group']
 

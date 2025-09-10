@@ -4,7 +4,7 @@ import io
 import PIL.ExifTags
 import PIL.Image
 
-from zeit.content.image.testing import create_image_group_with_master_image, fixture_bytes
+from zeit.content.image.testing import create_image_group, fixture_bytes
 import zeit.cms.interfaces
 import zeit.content.image.testing
 
@@ -135,7 +135,7 @@ class ImageGroupBrowserTest(zeit.content.image.testing.BrowserTestCase, ImageGro
         self.assertEqual((2250, 4000), img.getImageSize())
 
     def test_traversing_thumbnail_yields_images(self):
-        create_image_group_with_master_image()
+        create_image_group()
         b = self.browser
         b.open('http://localhost/++skin++vivi/repository/group/thumbnails/square/@@raw')
         self.assertEqual('image/jpeg', b.headers['Content-Type'])

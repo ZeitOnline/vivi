@@ -35,6 +35,5 @@ After assigning an image group it contained images are returned:
 >>> browser.handleErrors = False
 >>> browser.reload()
 >>> pprint.pprint(json.loads(browser.contents))
-{'images': ['http://xml.zeit.de/image-group/new-hampshire-450x....jpg',
-            'http://xml.zeit.de/image-group/new-hampshire-artikel.jpg',
-            'http://xml.zeit.de/image-group/obama-clinton-120x....jpg']}
+{'images': ['http://xml.zeit.de/group/master-image.jpg',
+            'http://xml.zeit.de/group/thumbnail-source-master-image.jpg']}

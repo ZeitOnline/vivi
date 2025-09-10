@@ -1,5 +1,4 @@
 from pprint import pformat
-import importlib.resources
 import io
 
 import PIL.ExifTags
@@ -179,8 +178,8 @@ class CreateVariantImageTest(zeit.content.image.testing.FunctionalTestCase):
         """Apply no cropping to use the default variant image as master in UI."""
         # Create image group with b/w image that is equal to the image which is
         # generated during setUp
-        self.group = zeit.content.image.testing.create_image_group_with_master_image(
-            importlib.resources.files(__package__) / 'Black-White.PNG'
+        self.group = zeit.content.image.testing.create_image_group(
+            'Black-White.PNG', 'zeit.content.image', 'tests'
         )
 
         # Set zoom < 1, which would usually result in cropping,
@@ -280,7 +279,7 @@ class CreateVariantImageTest(zeit.content.image.testing.FunctionalTestCase):
         self.assertEqual((8, 8), image.getImageSize())
 
     def test_encoder_parameters_are_configurable(self):
-        group = zeit.content.image.testing.create_image_group_with_master_image()
+        group = zeit.content.image.testing.create_image_group()
         transform = zeit.content.image.interfaces.ITransform(group['master-image.jpg'])
         highquality = io.BytesIO()
         img = transform.image.copy()
