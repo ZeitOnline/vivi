@@ -48,8 +48,7 @@
           e.stopPropagation()
           break;
         case 'drop':
-          const {files} = e.dataTransfer
-          this.handleFiles(files)
+          this.handleDrop(e.dataTransfer)
         case 'dragleave':
           this.#dropArea.classList.remove('imageupload__drop--active')
           e.preventDefault()
@@ -74,19 +73,35 @@
       }
     }
 
+    handleDrop(dataTransfer) {
+      if (dataTransfer.files.length) {
+          this.handleFiles(dataTransfer.files)
+      } else {
+          try {
+            for (const {mdb_id, thumb, file_name} of zeit.content.image.parse_mdb_drop(dataTransfer)) {
+                this.addFile('mdb:' + mdb_id, file_name, Promise.resolve(thumb))
+            }
+          } catch (error) {
+            alert(error)
+          }
+      }
+    }
+
     handleFiles(files) {
         for (let file of files) {
-            this.addFile(file)
+            this.addFile(file, file.name, new Promise(resolve => {
+              let reader = new FileReader()
+              reader.readAsDataURL(file)
+              reader.onloadend = () => resolve(reader.result)
+            }))
         }
     }
 
-    addFile(file) {
+    addFile(file, file_name, thumbnail_promise) {
       const li = this.#form.querySelector('.imageupload__template').content.cloneNode(true).firstElementChild
-      li.querySelector('.imageupload__filename').textContent = file.name
-      let reader = new FileReader()
-      reader.readAsDataURL(file)
-      reader.onloadend = () => li.querySelector('img').src = reader.result
+      li.querySelector('.imageupload__filename').textContent = file_name
       li.file = file
+      thumbnail_promise.then(thumb => li.querySelector('img').src = thumb)
       this.#gallery.appendChild(li)
     }
 
