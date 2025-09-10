@@ -43,7 +43,7 @@
     handleEvent(e) {
       switch (e.type) {
         case 'dragenter':
-          this.highlight(true);
+          this.#dropArea.classList.add('imageupload__drop--active')
           e.preventDefault()
           e.stopPropagation()
           break;
@@ -51,6 +51,7 @@
           const {files} = e.dataTransfer
           this.handleFiles(files)
         case 'dragleave':
+          this.#dropArea.classList.remove('imageupload__drop--active')
           e.preventDefault()
           e.stopPropagation()
           break;
