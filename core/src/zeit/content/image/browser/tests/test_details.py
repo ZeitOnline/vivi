@@ -6,7 +6,7 @@ import zeit.content.image.testing
 
 class ImageDetails(zeit.content.image.testing.SeleniumTestCase):
     def test_clicking_button_shows_details_pane(self):
-        zeit.content.image.testing.create_image_group_with_master_image()
+        zeit.content.image.testing.create_image_group()
         image = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')
         with zeit.cms.checkout.helper.checked_out(image) as co:
             meta = zeit.content.image.interfaces.IImageMetadata(co)

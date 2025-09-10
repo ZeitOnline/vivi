@@ -8,7 +8,7 @@ or alike.
 >>> import zeit.cms.testing
 >>> zeit.cms.testing.set_site()
 >>> import zeit.content.image.testing
->>> _ = zeit.content.image.testing.create_image_group_with_master_image()
+>>> _ = zeit.content.image.testing.create_image_group()
 
 
 Resizing
@@ -25,12 +25,12 @@ thumbnails a bounding box is defined in which the image is placed into.
 >>> import zeit.content.image.interfaces
 >>> repository = zope.component.getUtility(
 ...     zeit.cms.repository.interfaces.IRepository)
->>> image = repository['2006']['DSC00109_2.JPG']
+>>> image = repository['group']['master-image.jpg']
 >>> import zeit.cms.checkout.helper
 >>> p = zeit.cms.testing.create_interaction()
 >>> with zeit.cms.checkout.helper.checked_out(image):
 ...     pass
->>> image = repository['2006']['DSC00109_2.JPG']
+>>> image = repository['group']['master-image.jpg']
 >>> transform = zeit.content.image.interfaces.ITransform(image)
 >>> import zope.interface.verify
 >>> zope.interface.verify.verifyObject(
@@ -59,9 +59,9 @@ The persistent thumbnail is an image itself:
 It is contained in the folder `thumbnails` with the same name as the image:
 
 >>> image.uniqueId
-'http://xml.zeit.de/2006/DSC00109_2.JPG'
+'http://xml.zeit.de/group/master-image.jpg'
 >>> persistent_thumbnail.uniqueId
-'http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG'
+'http://xml.zeit.de/group/thumbnails/master-image.jpg'
 
 
 When adapting again, no new thumbnail is created but the one in the repository

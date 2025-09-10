@@ -7,7 +7,7 @@ Create a browser first:
 >>> import zeit.cms.testing
 >>> zeit.cms.testing.set_site()
 >>> import zeit.content.image.testing
->>> _ = zeit.content.image.testing.create_image_group_with_master_image()
+>>> _ = zeit.content.image.testing.create_image_group()
 >>> browser = zeit.cms.testing.Browser(layer['wsgi_app'])
 >>> browser.login('user', 'userpw')
 
