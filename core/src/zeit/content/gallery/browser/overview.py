@@ -1,3 +1,5 @@
+from urllib.parse import urlencode
+
 import zope.app.form.browser.interfaces
 import zope.cachedescriptors.property
 import zope.component
@@ -73,12 +75,15 @@ class SynchroniseMenuItem(zeit.cms.browser.menu.ActionMenuItem):
     icon = '/@@/zeit.cms/icons/reload.png'
 
 
-class UploadMenuItem(zeit.cms.browser.menu.ActionMenuItem):
-    title = _('Upload')
+class UploadMenuItem(zeit.cms.browser.view.Base, zeit.cms.browser.menu.ActionMenuItem):
+    title = _('Upload images')
     icon = '/@@/zeit.content.gallery/upload-icon.png'
 
     def get_url(self):
-        url = zope.component.getMultiAdapter(
-            (self.context.image_folder, self.request), name='absolute_url'
+        url = self.url(self.context.image_folder, '@@upload-images') + '?'
+        return url + urlencode(
+            {
+                'from': self.context.__name__,
+                'return_url': self.url(self.context, SynchroniseMenuItem.action),
+            }
         )
-        return f'{url}/@@upload-images'
