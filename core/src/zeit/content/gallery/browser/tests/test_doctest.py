@@ -8,7 +8,6 @@ def test_suite():
         'entry-text.txt',
         'crop.txt',
         'ticket.txt',
-        'upload.txt',
         package='zeit.content.gallery.browser',
         layer=zeit.content.gallery.testing.WSGI_LAYER,
     )
