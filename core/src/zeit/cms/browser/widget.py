@@ -497,20 +497,20 @@ class DatetimeWidget(zc.datetimewidget.datetimewidget.DatetimeWidget):
 
     def __call__(self):
         html = super().__call__()
-        week = DATETIME_WIDGET_ADDITIONAL % {
-            'field': self.name,
-            'label': '1W',
-            'css_class': 'week',
-            'increase': 'date.setDate(date.getDate() + 7)',
-        }
         month = DATETIME_WIDGET_ADDITIONAL % {
             'field': self.name,
             'label': '1M',
-            'css_class': 'month',
+            'css_class': 'one-month',
             'increase': 'date.setMonth(date.getMonth() + 1)',
         }
+        three = DATETIME_WIDGET_ADDITIONAL % {
+            'field': self.name,
+            'label': '3M',
+            'css_class': 'three-month',
+            'increase': 'date.setMonth(date.getMonth() + 3)',
+        }
         infty = DATETIME_WIDGET_INFTY % {'field': self.name}
-        return '<div class="dateTimeWidget">' + html + week + month + infty + '</div>'
+        return '<div class="dateTimeWidget">' + html + month + three + infty + '</div>'
 
     def _configuration(self):
         conf = super()._configuration()
