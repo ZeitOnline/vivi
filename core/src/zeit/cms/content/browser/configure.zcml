@@ -112,4 +112,11 @@
     permission="zope.Public"
     />
 
+  <browser:page
+    for="zope.location.interfaces.ISite"
+    name="find-content"
+    class=".content.API"
+    permission="zope.View"
+    />
+
 </configure>
