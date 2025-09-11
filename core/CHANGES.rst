@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+vivi.core 7.179.0 (2025-09-11)
+------------------------------
+
+- WCM-1108: Implement json API to look up uuid by vivi-url
+
+
 vivi.core 7.178.0 (2025-09-11)
 ------------------------------
 
