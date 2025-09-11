@@ -3,6 +3,16 @@ vivi.core changes
 
 .. towncrier release notes start
 
+vivi.core 7.178.0 (2025-09-11)
+------------------------------
+
+- WCM-1094: Switch button for 1 week to 3 months in date picker
+
+- WCM-1105: Set timestamps in bulk image upload
+
+- WCM-1102: Only allow the usual image formats in new image upload
+
+
 vivi.core 7.177.0 (2025-09-09)
 ------------------------------
 
