@@ -94,51 +94,51 @@
           this.#dropArea.classList.add('imageupload__drop--active')
           e.preventDefault()
           e.stopPropagation()
-          break;
+          break
         case 'drop':
           this.handleDrop(e.dataTransfer)
         case 'dragleave':
           this.#dropArea.classList.remove('imageupload__drop--active')
           e.preventDefault()
           e.stopPropagation()
-          break;
+          break
         case 'dragover':
           e.preventDefault()
           e.stopPropagation()
-          break;
+          break
         case 'change':
           this.handleFiles(e.currentTarget.files)
-          break;
+          break
         case 'click':
           if (e.target == this.#submitButton) {
-              e.preventDefault()
-              this.uploadFiles()
+            e.preventDefault()
+            this.uploadFiles()
           } else if (e.target.classList.contains('imageupload__button--remove')) {
-              const li = e.target.closest('li')
-              this.removeFile(li)
+            const li = e.target.closest('li')
+            this.removeFile(li)
           }
-          break;
+          break
       }
     }
 
     handleDrop(dataTransfer) {
       if (dataTransfer.files.length) {
-          this.handleFiles(dataTransfer.files)
+        this.handleFiles(dataTransfer.files)
       } else {
-          try {
-            for (const {mdb_id, thumb, file_name} of zeit.content.image.parse_mdb_drop(dataTransfer)) {
-                this.addFile(new MDBFile(mdb_id, file_name, thumb))
-            }
-          } catch (error) {
-            alert(error)
+        try {
+          for (const {mdb_id, thumb, file_name} of zeit.content.image.parse_mdb_drop(dataTransfer)) {
+            this.addFile(new MDBFile(mdb_id, file_name, thumb))
           }
+        } catch (error) {
+          alert(error)
+        }
       }
     }
 
     handleFiles(files) {
-        for (let file of files) {
-            this.addFile(new UserFile(file))
-        }
+      for (let file of files) {
+        this.addFile(new UserFile(file))
+      }
     }
 
     addFile(file, file_name, thumbnail_promise) {
@@ -150,7 +150,7 @@
     }
 
     removeFile(li) {
-        li.remove()
+      li.remove()
     }
 
     uploadFiles() {
@@ -161,8 +161,8 @@
         let errorSpan = li.querySelector('.imageupload__error')
         errorSpan.textContent = ''
         uploads.push(this.uploadFile(li.upload_data, progress => li.querySelector('progress').value = progress).catch(error => {
-            errorSpan.textContent = error
-            throw error
+          errorSpan.textContent = error
+          throw error
         }))
       }
       Promise.all(uploads).then(results => {
