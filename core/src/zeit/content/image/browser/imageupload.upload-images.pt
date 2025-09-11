@@ -2,7 +2,7 @@
   <form name="imageupload" enctype="multipart/form-data" class="imageupload" method="POST" tal:attributes="action view/action">
     <label class="imageupload__drop">
       <input type="file" class="imageupload__input" multiple tal:attributes="accept view/accepted_mime_types" name="files">
-      <p i18n:translate="">Upload one or multiple images</p>
+      <p i18n:translate="">Drag and drop image from local computer or InterRed MDB</p>
       <span class="imageupload__button imageupload__button--add" i18n:translate="">Select files</span>
     </label>
     <p>
