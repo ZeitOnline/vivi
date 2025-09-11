@@ -5,6 +5,13 @@
       <p i18n:translate="">Upload one or multiple images</p>
       <span class="imageupload__button imageupload__button--add" i18n:translate="">Select files</span>
     </label>
+    <p>
+      <label for="mdb_ids" i18n:translate="">
+        Import via ID from InterRed MDB
+      </label>
+      <input class="imageupload__mdb-ids" type="text" name="mdb_ids" placeholder="12345, 67890, 24680">
+      <button class="imageupload__button imageupload__button--add-mdb-ids">→</button>
+    </p>
     <ul class="imageupload__gallery"></ul>
     <p><button class="imageupload__button imageupload__button--submit" i18n:translate="">Upload</button></p>
     <template class="imageupload__template">
@@ -83,6 +90,7 @@
       this.#dropArea.addEventListener('dragleave', this, false)
       this.#dropArea.addEventListener('drop', this, false)
       form.querySelector('[type="file"]').addEventListener('change', this, false)
+      form.querySelector('.imageupload__button--add-mdb-ids').addEventListener('click', this, false)
       this.#gallery.addEventListener('click', this, false)
       this.#submitButton.addEventListener('click', this, false)
     }
@@ -106,7 +114,7 @@
           e.stopPropagation()
           break
         case 'change':
-          this.handleFiles(e.currentTarget.files)
+          this.handleFiles(e.target.files)
           break
         case 'click':
           if (e.target == this.#submitButton) {
@@ -115,9 +123,26 @@
           } else if (e.target.classList.contains('imageupload__button--remove')) {
             const li = e.target.closest('li')
             this.removeFile(li)
+          } else if (e.target.classList.contains('imageupload__button--add-mdb-ids')) {
+            e.preventDefault()
+            this.handleMdbInput(this.#form.querySelector('.imageupload__mdb-ids'))
           }
           break
       }
+    }
+
+    async handleMdbInput(input) {
+      const newValues = []
+      const ids = input.value.split(/\s*,\s*/).filter(s => s)
+      for (let id of ids) {
+        try {
+          const metadata = await zeit.content.image.get_mdb_metadata(id)
+          this.addFile(new MDBFile(metadata['mdb_id'], metadata['filename'], ""))
+        } catch(e) {
+          newValues.push(id)
+        }
+      }
+      input.value = newValues.join(', ')
     }
 
     handleDrop(dataTransfer) {

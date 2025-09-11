@@ -3,6 +3,7 @@ import re
 import unittest
 import urllib
 
+from selenium.webdriver.common.keys import Keys
 import zope.component
 
 from zeit.cms.workflow.interfaces import IPublishInfo
@@ -656,6 +657,21 @@ class ImageUploadSeleniumTest(zeit.content.image.testing.SeleniumTestCase):
         self.selenium.assertText('css=.imageupload__gallery .imageupload__filename', 'image.jpg')
         self.selenium.click('css=.imageupload__button--submit')
         self.selenium.waitForLocation('*/repository/@@edit-images?files=*')
+
+    def test_enter_mdb_id(self):
+        s = self.selenium
+        zope.component.getGlobalSiteManager().registerUtility(zeit.content.image.mdb.FakeMDB())
+        self.open('/repository/@@upload-images')
+        s.type('css=.imageupload__mdb-ids', '12345')
+        s.keyPress('css=.imageupload__mdb-ids', Keys.RETURN)
+        s.waitForElementPresent('css=.imageupload__gallery li')
+        s.assertText(
+            'css=.imageupload__gallery .imageupload__filename',
+            'MDB2752_4ed1cf12e4.IRZEITDEV_14L.jpg',  # FIXME: We don't get the nice name yet
+        )
+        s.assertValue('css=.imageupload__mdb-ids', '')
+        s.click('css=.imageupload__button--submit')
+        s.waitForLocation('*/repository/@@edit-images?files=*')
 
 
 class AddCentralImageUploadTest(zeit.content.image.testing.SeleniumTestCase):
