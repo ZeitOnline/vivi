@@ -2,9 +2,9 @@ import zeit.cms.testing
 
 
 class ContentAPI(zeit.cms.testing.ZeitCmsBrowserTestCase):
-    def test_serializes_source_to_json(self):
+    def test_serializes_uuid_to_json(self):
         self.browser.open(
-            'http://localhost/@@find-content?url=https://vivi.zeit.de/repository/testcontent/@@view.html'
+            'http://localhost/@@find_content?url=https://vivi.zeit.de/repository/testcontent/@@view.html'
         )
         self.assert_json(
             {

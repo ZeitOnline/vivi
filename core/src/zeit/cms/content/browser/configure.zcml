@@ -114,7 +114,7 @@
 
   <browser:page
     for="zope.location.interfaces.ISite"
-    name="find-content"
+    name="find_content"
     class=".content.API"
     permission="zope.View"
     />
