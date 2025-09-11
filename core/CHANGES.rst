@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+vivi.core 7.180.0 (2025-09-11)
+------------------------------
+
+- WCM-1108: Fix authentication, it is handled in ingress
+
+
 vivi.core 7.179.0 (2025-09-11)
 ------------------------------
 
