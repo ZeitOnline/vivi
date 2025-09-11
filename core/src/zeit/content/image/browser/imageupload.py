@@ -42,6 +42,9 @@ class UploadForm(zeit.cms.browser.view.Base, zeit.content.image.browser.form.Cre
     def action(self):
         return self.url(self.context, '@@upload-images')
 
+    def accepted_mime_types(self):
+        return ','.join(zeit.content.image.interfaces.AVAILABLE_MIME_TYPES)
+
     def from_name(self):
         return self.context.__name__
 
