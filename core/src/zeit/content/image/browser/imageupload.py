@@ -46,41 +46,64 @@ class UploadForm(zeit.cms.browser.view.Base, zeit.content.image.browser.form.Cre
         return self.context.__name__
 
     def handle_post(self):
-        # Since self.context is potentially checked out, we cannot rely on self.context.__parent__
-        target = zeit.cms.interfaces.ICMSContent(self.context.uniqueId)
-
-        in_folder = zeit.cms.repository.interfaces.IFolder.providedBy(target)
-        # If we upload in a folder, we don't want to go up
-        if not in_folder:
-            target = target.__parent__
-
         files = self.request.form.get('files', None)
         if not files:
-            self.send_message(_('Please upload at least one image'), type='error')
-            return super().__call__()
+            return self._report_user_error(_('Please upload at least one image'))
 
         if not isinstance(files, Iterable):
             files = (files,)
 
-        results = []
-        for file in files:
-            result = self._upload_imagegroup(file, target)
-            results.append(result)
+        try:
+            for file in files:
+                zeit.content.image.browser.interfaces.is_image(file)
+        except zope.schema.ValidationError as e:
+            return self._report_user_error(e.doc())
 
-        params = {'files': results}
-        if not in_folder:
-            renameable = zeit.cms.repository.interfaces.IAutomaticallyRenameable(self.context)
-            if renameable.renameable:
-                # This is a new article, so don't use it's (temporary name)
-                if renameable.rename_to:
-                    # … unless the user already gave it a name
-                    params['from'] = renameable.rename_to
-            else:
-                params['from'] = self.context.__name__
+        (target, origin) = self._get_upload_target_and_origin()
+
+        params = {'files': tuple(self._upload_imagegroup(file, target) for file in files)}
+        if origin is not None:
+            params['from'] = origin
+
         url = self.url(target, '@@edit-images') + '?' + urllib.parse.urlencode(params, doseq=True)
-        if self.request.getHeader('X-Requested-With') == 'XMLHttpRequest':
+        if self._is_xhr_request():
             return url
         self.redirect(url, status=303)
+
+    def _is_xhr_request(self):
+        return self.request.getHeader('X-Requested-With') == 'XMLHttpRequest'
+
+    def _report_user_error(self, error_message):
+        self.request.response.setStatus(400)
+        if self._is_xhr_request():
+            return zope.i18n.translate(error_message, context=self.request)
+        else:
+            self.send_message(error_message, type='error')
+            return super().__call__()
+
+    def _get_upload_target_and_origin(self):
+        """Determine the target (folder) for the images,
+        the name of the origin of the upload process,
+        and whether it can be used for naming the images."""
+
+        if zeit.cms.repository.interfaces.IFolder.providedBy(self.context):
+            # A folder is a valid upload target and not useful for naming the image files
+            return (self.context, None)
+
+        # The process was not initiated in a folder, so target the parent
+        # Since self.context is potentially checked out, we cannot rely on self.context.__parent__
+        target = zeit.cms.interfaces.ICMSContent(self.context.uniqueId).__parent__
+
+        # Use the origin object's name as base for the image names
+        origin = self.context.__name__
+
+        renameable = zeit.cms.repository.interfaces.IAutomaticallyRenameable(self.context)
+        if renameable.renameable:
+            # This is a new article, so don't use its (temporary) file name.
+            # Instead, take the new target name as given by the user (if available).
+            origin = renameable.rename_to
+
+        return (target, origin)
 
     def _upload_imagegroup(self, file, parent):
         imagegroup = zeit.content.image.imagegroup.ImageGroup()

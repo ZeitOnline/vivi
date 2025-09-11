@@ -106,6 +106,7 @@
         }))
       }
       Promise.all(uploads).then(results => {
+        if (!results.length) { return; }
         let url = results[0] + results.slice(1).map(url => '&files=' + new URL(url).searchParams.get('files')).join("")
         window.location = url
       }, e => {

@@ -1,5 +1,6 @@
 import re
 import unittest
+import urllib
 
 from zeit.cms.workflow.interfaces import IPublishInfo
 from zeit.content.image.browser.imageupload import ImageNameProvider
@@ -43,20 +44,20 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
     def test_does_not_redirect_if_files_field_is_not_in_request(self):
         b = self.browser
         b.open('/repository/testcontent/@@upload-images')
-        b.getForm(name='imageupload').submit()
-        self.assertEndsWith('/testcontent/@@upload-images', b.url)
-        self.assertIn('Please upload at least one image', b.contents)
-        self.assertEqual('200 Ok', b.headers['status'])
+        with self.assertRaises(urllib.error.HTTPError):
+            b.getForm(name='imageupload').submit()
+            self.assertEndsWith('/testcontent/@@upload-images', b.url)
+            self.assertIn('Please upload at least one image', b.contents)
 
     def test_does_not_redirect_if_no_image_present(self):
         b = self.browser
         b.open('/repository/testcontent/@@upload-images')
-        # We have to hand-craft our POST request, because
-        # Testbrowser does not support submitting an empty form field
-        b.post(b.getForm(name='imageupload').action, 'files=')
-        self.assertEndsWith('/testcontent/@@upload-images', b.url)
-        self.assertIn('Please upload at least one image', b.contents)
-        self.assertEqual('200 Ok', b.headers['status'])
+        with self.assertRaises(urllib.error.HTTPError):
+            # We have to hand-craft our POST request, because
+            # Testbrowser does not support submitting an empty form field
+            b.post(b.getForm(name='imageupload').action, 'files=')
+            self.assertEndsWith('/testcontent/@@upload-images', b.url)
+            self.assertIn('Please upload at least one image', b.contents)
 
     def test_redirects_after_upload_in_folder(self):
         b = self.browser
@@ -95,6 +96,17 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
         folder = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/')
         img = next(x for x in folder.values() if 'tmp' in x.uniqueId)
         assert zeit.content.image.interfaces.IImageGroup.providedBy(img)
+
+    def test_rejects_unsupported_mime_types(self):
+        b = self.browser
+        b.open('/repository/testcontent/@@upload-images')
+        file_input = b.getControl(name='files')
+        add_file_multi(
+            file_input,
+            [(fixture_bytes('berlin-polizei.webp'), 'foo.webp', 'image/webp')],
+        )
+        with self.assertRaises(urllib.error.HTTPError):
+            b.getForm(name='imageupload').submit()
 
     def test_can_upload_image_from_folder(self):
         b = self.browser
