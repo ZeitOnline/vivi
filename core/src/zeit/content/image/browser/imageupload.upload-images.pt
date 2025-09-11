@@ -19,6 +19,54 @@
     </template>
   </form>
   <script>
+  class UserFile {
+    #file
+
+    constructor(file) {
+      this.#file = file
+    }
+
+    data() {
+      return this.#file
+    }
+
+    filename() {
+      return this.#file.name
+    }
+
+    async thumbnail() {
+      return new Promise(resolve => {
+        let reader = new FileReader()
+        reader.readAsDataURL(this.#file)
+        reader.onloadend = () => resolve(reader.result)
+      });
+    }
+  }
+
+  class MDBFile {
+    #id
+    #filename
+    #thumbnail
+
+    constructor(id, filename, thumbnail) {
+      this.#id = id
+      this.#filename = filename
+      this.#thumbnail = thumbnail
+    }
+
+    data() {
+      return 'mdb:' + this.#id
+    }
+
+    filename() {
+      return this.#filename
+    }
+
+    async thumbnail() {
+      return this.#thumbnail
+    }
+  }
+
   class ImageUpload {
     #form
     #dropArea
@@ -79,7 +127,7 @@
       } else {
           try {
             for (const {mdb_id, thumb, file_name} of zeit.content.image.parse_mdb_drop(dataTransfer)) {
-                this.addFile('mdb:' + mdb_id, file_name, Promise.resolve(thumb))
+                this.addFile(new MDBFile(mdb_id, file_name, thumb))
             }
           } catch (error) {
             alert(error)
@@ -89,19 +137,15 @@
 
     handleFiles(files) {
         for (let file of files) {
-            this.addFile(file, file.name, new Promise(resolve => {
-              let reader = new FileReader()
-              reader.readAsDataURL(file)
-              reader.onloadend = () => resolve(reader.result)
-            }))
+            this.addFile(new UserFile(file))
         }
     }
 
     addFile(file, file_name, thumbnail_promise) {
       const li = this.#form.querySelector('.imageupload__template').content.cloneNode(true).firstElementChild
-      li.querySelector('.imageupload__filename').textContent = file_name
-      li.file = file
-      thumbnail_promise.then(thumb => li.querySelector('img').src = thumb)
+      li.querySelector('.imageupload__filename').textContent = file.filename()
+      li.upload_data = file.data()
+      file.thumbnail().then(thumbnail => li.querySelector('img').src = thumbnail)
       this.#gallery.appendChild(li)
     }
 
@@ -116,7 +160,7 @@
       for (let li of this.#gallery.childNodes) {
         let errorSpan = li.querySelector('.imageupload__error')
         errorSpan.textContent = ''
-        uploads.push(this.uploadFile(li.file, progress => li.querySelector('progress').value = progress).catch(error => {
+        uploads.push(this.uploadFile(li.upload_data, progress => li.querySelector('progress').value = progress).catch(error => {
             errorSpan.textContent = error
             throw error
         }))
