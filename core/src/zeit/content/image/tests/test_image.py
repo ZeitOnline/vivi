@@ -3,7 +3,6 @@ import zope.component
 from zeit.cms.checkout.helper import checked_out
 from zeit.content.image.testing import (
     create_image_group,
-    create_local_image,
 )
 import zeit.cms.checkout.interfaces
 import zeit.cms.interfaces
@@ -64,8 +63,7 @@ class TestImageXMLReference(zeit.content.image.testing.FunctionalTestCase):
 
 class TestImageMIMEType(zeit.content.image.testing.FunctionalTestCase):
     def test_ignores_stored_dav_mime_type(self):
-        self.repository['image'] = create_local_image('opernball.jpg')
-        with checked_out(self.repository['image']) as co:
+        with checked_out(self.repository['image1']) as co:
             props = zeit.connector.interfaces.IWebDAVProperties(co)
             props[('getcontenttype', 'DAV:')] = 'image/png'
-        self.assertEqual('image/jpeg', self.repository['image'].mimeType)
+        self.assertEqual('image/jpeg', self.repository['image1'].mimeType)
