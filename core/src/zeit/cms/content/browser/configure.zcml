@@ -116,7 +116,7 @@
     for="zope.location.interfaces.ISite"
     name="find_content"
     class=".content.API"
-    permission="zope.View"
+    permission="zope.Public"
     />
 
 </configure>
