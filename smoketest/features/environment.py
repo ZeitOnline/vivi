@@ -11,7 +11,7 @@ def after_scenario(context, scenario):
 
 def before_all(context):
     context.playwright = sync_playwright().start()
-    context.browser = context.playwright.chromium.launch()
+    context.browser = context.playwright.chromium.launch(headless=False)
 
 
 def after_all(context):
