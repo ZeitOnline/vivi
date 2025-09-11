@@ -39,58 +39,6 @@ True
 >>> transform
 <zeit.content.image.transform.ImageTransform...>
 
-The transform's `thumbnail` method creates thumbnails and returns a new IImage
-object:
-
->>> thumb = transform.thumbnail(100, 100)
->>> thumb
-<zeit.content.image.image.TemporaryImage...>
-
-Note that the thumbnail method doesn't exactly sacle to the given width/height
-but uses this as a bounding box:
-
->>> thumb.getImageSize()
-(100, 75)
-
-It is possible to pass the filter for scaling:
-
->>> import PIL.Image
->>> transform.thumbnail(100, 100, PIL.Image.Resampling.NEAREST)
-<zeit.content.image.image.TemporaryImage...>
-
-Simple resize
-+++++++++++++
-
-For resizing the new width and/or hight might be given.
-
->>> resized = transform.resize(100, 100)
->>> resized.getImageSize()
-(100, 100)
-
-If one is ommitted the other is calculated so that the aspect ratio is kept.
-
->>> resized = transform.resize(width=100)
->>> resized.getImageSize()
-(100, 75)
->>> resized = transform.resize(height=100)
->>> resized.getImageSize()
-(133, 100)
-
-
-If neither width nor height is passed a TypeError is raised:
-
->>> transform.resize()
-Traceback (most recent call last):
-    ...
-TypeError: Need at least one of width and height.
-
-
-It is possible to pass the filter for scaling:
-
->>> import PIL.Image
->>> transform.resize(100, 100, PIL.Image.Resampling.NEAREST)
-<zeit.content.image.image.TemporaryImage...>
-
 
 Persistent Thumbnails
 =====================
@@ -105,11 +53,8 @@ The persistent thumbnail is an image itself:
 
 >>> persistent_thumbnail
 <zeit.content.image.image.RepositoryImage...>
-
-It always has 50x50 as bounding box so far:
-
 >>> persistent_thumbnail.getImageSize()
-(50, 38)
+(50, 37)
 
 It is contained in the folder `thumbnails` with the same name as the image:
 
@@ -126,8 +71,7 @@ is used:
 ...     image) == persistent_thumbnail
 True
 
-We can change the behaviour of persistent thumbnail generation via product
-config:
+We can change the thumbnail size via config:
 
 >>> config = {
 ...     'thumbnail-width': '200',
@@ -144,23 +88,3 @@ invalidated:
 ...     image)
 >>> persistent_thumbnail.getImageSize()
 (200, 150)
-
-
-To use the resize method it must be specified in the config:
-
->>> config['thumbnail-method'] = 'resize'
->>> del persistent_thumbnail.__parent__[persistent_thumbnail.__name__]
->>> persistent_thumbnail = zeit.content.image.interfaces.IPersistentThumbnail(
-...     image)
->>> persistent_thumbnail.getImageSize()
-(200, 200)
-
-It is possible to set width/height to an empty string, which will keep the
-aspect ratio:
-
->>> config['thumbnail-width'] = ''
->>> del persistent_thumbnail.__parent__[persistent_thumbnail.__name__]
->>> persistent_thumbnail = zeit.content.image.interfaces.IPersistentThumbnail(
-...     image)
->>> persistent_thumbnail.getImageSize()
-(266, 200)

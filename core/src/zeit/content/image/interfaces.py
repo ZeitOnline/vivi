@@ -1,5 +1,4 @@
 # coding: utf8
-import PIL.Image
 import zc.form.field
 import zc.form.interfaces
 import zc.sourcefactory.contextual
@@ -120,18 +119,10 @@ class IImage(
 
 
 class ITransform(zope.interface.Interface):
-    def thumbnail(width, height, filter=PIL.Image.Resampling.LANCZOS):
+    def thumbnail(width, height):
         """Create a thumbnail version of the image.
 
         returns IImage object.
-        """
-
-    def resize(width=None, height=None, filter=PIL.Image.Resampling.LANCZOS):
-        """Create a resized version of the image.
-
-        returns IImage object.
-        raises TypeError of both width and height are ommited.
-
         """
 
     def create_variant_image(variant, size=None, fill=None):

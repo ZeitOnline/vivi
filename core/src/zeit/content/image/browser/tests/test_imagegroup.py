@@ -1,4 +1,9 @@
 # coding: utf-8
+import io
+
+import PIL.ExifTags
+import PIL.Image
+
 from zeit.content.image.testing import create_image_group_with_master_image, fixture_bytes
 import zeit.cms.interfaces
 import zeit.content.image.testing
@@ -89,6 +94,25 @@ class ImageGroupBrowserTest(zeit.content.image.testing.BrowserTestCase, ImageGro
             'http://xml.zeit.de/imagegroup2/shoppingmeile-4001x2251px.jpg'
         )
         self.assertEqual((4000, 2250), img.getImageSize())
+
+    def test_resize_keeps_metadata(self):
+        image = PIL.Image.new('RGB', (4500, 1000))
+        exif = PIL.Image.Exif()
+        exif[PIL.ExifTags.Base.Make] = 'Make'
+        f = io.BytesIO()
+        image.save(f, 'jpeg', exif=exif.tobytes(), xmp=b'xmp-sample')
+        f.seek(0)
+
+        self.add_imagegroup()
+        self.browser.getControl(name='form.master_image_blobs.0.').add_file(
+            f, 'image/jpeg', 'example.jpg'
+        )
+        self.save_imagegroup()
+
+        img = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/imagegroup2/example.jpg')
+        with img.as_pil() as image:
+            self.assertEqual(image.info['xmp'], b'xmp-sample')
+            self.assertEqual(image.getexif()[PIL.ExifTags.Base.Make], 'Make')
 
     def test_resize_too_large_images_before_upload_height(self):
         self.add_imagegroup()
