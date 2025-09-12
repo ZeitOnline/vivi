@@ -3,7 +3,7 @@
 }
 
 .layout-hidden:hover {
-  opacity: 1;
+  opacity: 0.5;
 }
 
 .wysiwyg-header .swfupload {
