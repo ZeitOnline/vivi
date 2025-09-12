@@ -1,5 +1,8 @@
-def extract_metadata(xmp):
+def extract_metadata(metadata):
     result = {'title': None, 'copyright': None, 'caption': None}
+    if 'xmp' not in metadata:
+        return
+    xmp = metadata['xmp']
     if 'xapmeta' in xmp:
         data = xmp['xapmeta']
         data = data.get('RDF', {}).get('Description', {})
@@ -64,7 +67,7 @@ def flatten(data, parent=''):
         else:
             for x in data:
                 result.update(flatten(x, parent))
-    elif not data.strip():
+    elif not data:
         pass
     else:
         result[parent] = data

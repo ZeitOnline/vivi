@@ -2,6 +2,7 @@ from contextlib import contextmanager
 import os
 import urllib.parse
 
+from PIL.ExifTags import TAGS
 import filetype
 import lxml.builder
 import lxml.etree
@@ -38,10 +39,7 @@ class BaseImage:
             pil.load()
         with pil as pil:
             if keep_metadata:
-                pil.encoderinfo = {
-                    'exif': pil.getexif(),
-                    'xmp': pil.info.get('xmp'),
-                }
+                pil.encoderinfo = pil.info.copy()
             yield pil
 
     @property
@@ -53,17 +51,28 @@ class BaseImage:
             return ''
         return file_type
 
+    def _metadata(self, img):
+        """pil cannot handle everything, e.g. preserve photoshop metadata"""
+        metadata = img.info.copy() if isinstance(img.info, dict) else {}
+        # exif/xmp special encoding, which we handle next
+        metadata.pop('exif', None)
+        for tag_id, value in img.getexif().items():
+            tag_name = TAGS.get(tag_id, tag_id)
+            metadata[tag_name] = value
+        metadata['xmp'] = img.getxmp()
+        return metadata
+
     def getImageSize(self):
         with self.as_pil() as img:
             return img.size
 
     def getXMPMetadata(self):
         with self.as_pil() as img:
-            return zeit.content.image.xmp.extract_metadata(img.getxmp())
+            return zeit.content.image.xmp.extract_metadata(self._metadata(img))
 
     def getXMPFlattened(self):
         with self.as_pil() as img:
-            return zeit.content.image.xmp.flatten(img.getxmp())
+            return zeit.content.image.xmp.flatten(self._metadata(img))
 
     @property
     def ratio(self):
