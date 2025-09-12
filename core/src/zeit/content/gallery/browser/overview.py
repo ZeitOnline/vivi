@@ -25,7 +25,7 @@ class Overview(zeit.cms.browser.view.Base):
                     '__name__': entry.__name__,
                     'caption': entry.caption,
                     'css_class': ('layout-%s' % entry.layout) if entry.layout else '',
-                    'image': entry.image,
+                    'view_url': self.url(entry.image, '@@view.html'),
                     'text': self.get_text(entry),
                     'thumbnail': entry.thumbnail,
                     'title': entry.title,

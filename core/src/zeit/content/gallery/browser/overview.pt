@@ -19,7 +19,7 @@
                 <span class="action-title">Edit image</span>
             </a>
             <a title="Show image" class="show-image"
-                  tal:attributes="href string:${entry/image/@@absolute_url}/@@view.html"
+                  tal:attributes="href entry/view_url"
                   i18n:attributes="title"
                   i18n:translate="">
                     <span class="action-title">Show Image</span>
