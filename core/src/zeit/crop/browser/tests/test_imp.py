@@ -5,7 +5,6 @@ import json
 
 import PIL.Image
 import transaction
-import zope.app.file.image
 import zope.component
 import zope.component.hooks
 
@@ -119,15 +118,14 @@ class CropTest(TestBase):
         )
 
     def test_crop_size(self):
-        image_data = self.get_image_data()
-        self.assertEqual(('image/jpeg', 400, 200), zope.app.file.image.getImageInfo(image_data))
+        image = PIL.Image.open(BytesIO(self.get_image_data()))
+        self.assertEqual((400, 200), image.size)
 
     def test_crop_border(self):
-        image_data = self.get_image_data(border='#000000')
+        image = PIL.Image.open(BytesIO(self.get_image_data(border='#000000')))
         # A border does not change the image size, the border is *inside*
-        self.assertEqual(('image/jpeg', 400, 200), zope.app.file.image.getImageInfo(image_data))
+        self.assertEqual((400, 200), image.size)
 
-        image = PIL.Image.open(BytesIO(image_data))
         # Verify some pixels around the border, they're all black:
 
         self.looks_black(image, 0, 0)
