@@ -5,6 +5,8 @@ import gocept.httpserverlayer.static
 import gocept.selenium
 import webtest.forms
 import zope.component
+import zope.event
+import zope.lifecycleevent
 
 from zeit.cms.repository.folder import Folder
 import zeit.cms.repository.interfaces
@@ -80,6 +82,7 @@ def create_image_group_with_master_image(filename=None):
     with image.open('w') as out:
         out.write(fh.read())
     fh.close()
+    zope.event.notify(zope.lifecycleevent.ObjectCreatedEvent(image))
     repository['group'][group.master_image] = image
     return repository['group']
 
