@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+vivi.core 7.181.0 (2025-09-12)
+------------------------------
+
+- WCM-861: Add tab to list image xmp metadata
+
+
 vivi.core 7.180.0 (2025-09-11)
 ------------------------------
 
