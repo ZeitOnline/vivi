@@ -26,11 +26,6 @@ import zeit.workflow.interfaces
 import zeit.workflow.timebased
 
 
-# Kludgy way to make Pillow use lxml for XMP parsing.
-# Cannot use monkey:patch for unknown reason.
-PIL.Image.ElementTree = lxml.etree
-
-
 def extract_metadata_from_xmp(xmp):
     result = {'title': None, 'copyright': None, 'caption': None}
     if 'xapmeta' in xmp:

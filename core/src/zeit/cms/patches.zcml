@@ -39,4 +39,12 @@
     preserveOriginal="true"
     replacement=".redis_patch.create_context_without_strict" />
 
+  <monkey:patch
+    description="Kludgy way to make Pillow use lxml for XMP parsing"
+    module="PIL.Image"
+    original="ElementTree"
+    replacement="lxml.etree"
+    ignoreOriginal="true"
+    preservedoc="false" />
+
 </configure>
