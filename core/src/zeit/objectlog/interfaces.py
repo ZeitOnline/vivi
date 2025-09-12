@@ -1,4 +1,4 @@
-import zope.app.security.vocabulary
+import zope.authentication.principal
 import zope.configuration.fields
 import zope.interface
 import zope.schema
@@ -27,7 +27,7 @@ class ILogEntry(zope.interface.Interface):
         title='Principal',
         required=False,
         readonly=True,
-        source=zope.app.security.vocabulary.PrincipalSource(),
+        source=zope.authentication.principal.PrincipalSource(),
     )
 
     message = zope.configuration.fields.MessageID(title='Log message', readonly=True)

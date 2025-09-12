@@ -1,5 +1,4 @@
 import zc.form.field
-import zope.app.security.vocabulary
 import zope.interface
 import zope.interface.common.sequence
 import zope.schema

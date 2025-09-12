@@ -4,6 +4,7 @@ import random
 import struct
 import sys
 
+import zope.authentication.interfaces
 import zope.component
 import zope.interface
 import zope.publisher.interfaces.browser
@@ -29,7 +30,7 @@ class TicketTraverser:
         self.request = request
 
     def traverse(self, name, furtherPath):
-        auth = zope.component.getUtility(zope.app.security.interfaces.IAuthentication)
+        auth = zope.component.getUtility(zope.authentication.interfaces.IAuthentication)
         rnd, hash_, principal = unpack(name)
         if not get_hash(rnd, principal) == name:
             raise zope.security.interfaces.Unauthorized

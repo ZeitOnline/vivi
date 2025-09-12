@@ -1,5 +1,5 @@
 import grokcore.component as grok
-import zope.app.security.vocabulary
+import zope.authentication.principal
 import zope.interface
 import zope.schema
 
@@ -28,7 +28,7 @@ class IModified(zope.interface.Interface):
         title=_('Last modified by'),
         required=False,
         readonly=True,
-        source=zope.app.security.vocabulary.PrincipalSource(),
+        source=zope.authentication.principal.PrincipalSource(),
     )
 
     date_last_modified = zope.schema.Datetime(

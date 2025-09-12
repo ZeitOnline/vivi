@@ -4,7 +4,6 @@ import logging
 import zc.table.column
 import zc.table.table
 import zope.app.locking.interfaces
-import zope.app.security.interfaces
 import zope.component
 import zope.interface
 import zope.interface.common.idatetime
