@@ -409,6 +409,14 @@
     permission="zope.View"
     />
 
+  <!-- grant UI -->
+  <adapter
+    for="zope.authentication.interfaces.IAuthentication
+         zope.publisher.interfaces.browser.IBrowserRequest"
+    provides="zope.formlib.interfaces.ISourceQueryView"
+    factory=".login.AuthUtilitySearchView"
+    />
+
   <!-- testing -->
   <gocept:pagelet
     zcml:condition="have zeit.cms.testing"

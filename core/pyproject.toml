@@ -52,7 +52,6 @@ dependencies = [
     "zope.app.appsetup",
     "zope.app.keyreference",
     "zope.app.locking",
-    "zope.app.security",
     "zope.cachedescriptors",
     "zope.component",
     "zope.container>=3.8.1",
