@@ -1,5 +1,6 @@
 import gocept.form.grouped
 import zope.formlib.form
+import zope.formlib.widget
 
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.browser.form
@@ -64,7 +65,7 @@ class DisplayGallery(GalleryFormBase, zeit.cms.content.browser.form.CommonMetada
     title = _('View gallery metadata')
 
 
-class DisplayImageWidget(zope.app.form.browser.widget.DisplayWidget):
+class DisplayImageWidget(zope.formlib.widget.DisplayWidget):
     def __call__(self):
         if self._renderedValueSet():
             content = self._data

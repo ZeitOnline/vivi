@@ -6,9 +6,9 @@ import os
 import os.path
 import xml.sax.saxutils
 
+import filetype
 import gocept.cache.property
 import lxml.etree
-import zope.app.file.image
 import zope.interface
 
 from zeit.connector.interfaces import ID_NAMESPACE, DeleteProperty
@@ -243,11 +243,10 @@ class Connector:
         if os.path.isdir(path):
             return 'collection'
 
-        f = self._get_file(id)
-        data = f.read(200)
-        f.close()
-        content_type, width, height = zope.app.file.image.getImageInfo(data)
-        if content_type:
+        with self._get_file(id) as f:
+            head = f.read(261)
+        mime = filetype.guess_mime(head) or ''
+        if mime.startswith('image/'):
             return 'image'
         return 'unknown'
 

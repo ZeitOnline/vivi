@@ -1,4 +1,3 @@
-import zope.app.form.browser.textwidgets
 import zope.formlib.form
 
 from zeit.cms.i18n import MessageFactory as _

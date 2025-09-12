@@ -1,11 +1,11 @@
 import os.path
 
 import gocept.form.grouped
-import zope.app.form.browser
 import zope.app.pagetemplate
 import zope.component
 import zope.formlib.form
 import zope.formlib.interfaces
+import zope.formlib.textwidgets
 import zope.interface
 import zope.security.proxy
 
@@ -33,7 +33,7 @@ class IFileEditSchema(zope.interface.Interface):
     blob = zope.schema.Object(zope.interface.Interface, title=_('Upload new file'))
 
 
-class BlobWidget(zope.app.form.browser.FileWidget):
+class BlobWidget(zope.formlib.textwidgets.FileWidget):
     def _toFieldValue(self, input):
         if input is None or input == '':
             return self.context.missing_value

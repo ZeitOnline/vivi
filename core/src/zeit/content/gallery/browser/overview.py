@@ -1,4 +1,4 @@
-import zope.app.form.browser.interfaces
+import zope.browser.interfaces
 import zope.cachedescriptors.property
 import zope.component
 import zope.i18n
@@ -53,7 +53,7 @@ class Overview(zeit.cms.browser.view.Base):
     @zope.cachedescriptors.property.Lazy
     def layout_terms(self):
         return zope.component.getMultiAdapter(
-            (self.layout_source, self.request), zope.app.form.browser.interfaces.ITerms
+            (self.layout_source, self.request), zope.browser.interfaces.ITerms
         )
 
 

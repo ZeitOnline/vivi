@@ -1,5 +1,5 @@
 import zc.sourcefactory.contextual
-import zope.app.form.browser.interfaces
+import zope.browser.interfaces
 import zope.i18n
 import zope.interface.common.idatetime
 
@@ -21,7 +21,7 @@ class LogEntrySource(zc.sourcefactory.contextual.BasicContextualSourceFactory):
         else:
             p_source = zeit.objectlog.interfaces.ILogEntry['principal'].source
             principal_terms = zope.component.getMultiAdapter(
-                (p_source, request), zope.app.form.browser.interfaces.ITerms
+                (p_source, request), zope.browser.interfaces.ITerms
             )
             try:
                 principal = principal_terms.getTerm(value.principal).title

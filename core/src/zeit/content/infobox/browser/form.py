@@ -2,9 +2,9 @@ import copy
 
 import gocept.form.grouped
 import zc.form.browser.combinationwidget
-import zope.app.form.browser
 import zope.cachedescriptors.property
 import zope.formlib.form
+import zope.formlib.sequencewidget
 
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.browser.form
@@ -40,7 +40,7 @@ class FormBase:
         if not self.for_display:
             contents = copy.copy(self.form_fields['contents'])
             contents.custom_widget = lambda context, request: (
-                zope.app.form.browser.TupleSequenceWidget(
+                zope.formlib.sequencewidget.TupleSequenceWidget(
                     context,
                     zeit.content.infobox.interfaces.IInfobox['contents'],
                     request,

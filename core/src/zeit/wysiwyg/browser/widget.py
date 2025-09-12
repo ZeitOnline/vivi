@@ -1,5 +1,5 @@
 import gocept.fckeditor.resources
-import zope.app.form.browser.textwidgets
+import zope.formlib.textwidgets
 
 import zeit.cms.browser.view
 
@@ -20,7 +20,7 @@ fckeditor.ReplaceTextarea();
 """
 
 
-class FckEditorWidget(zope.app.form.browser.textwidgets.TextAreaWidget):
+class FckEditorWidget(zope.formlib.textwidgets.TextAreaWidget):
     def __call__(self, *args, **kw):
         gocept.fckeditor.resources.fckeditor.need()
         data = {

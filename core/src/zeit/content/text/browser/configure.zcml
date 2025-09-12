@@ -176,7 +176,7 @@
       for="zeit.content.text.interfaces.Code
            zeit.cms.browser.interfaces.ICMSLayer"
       provides="zope.formlib.interfaces.IDisplayWidget"
-      factory="zope.app.form.browser.textwidgets.BytesDisplayWidget"
+      factory="zope.formlib.textwidgets.BytesDisplayWidget"
       permission="zope.Public"
       />
 
