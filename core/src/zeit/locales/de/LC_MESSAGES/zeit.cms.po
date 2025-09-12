@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Wed Sep 10 15:21:28 2025\n"
+"POT-Creation-Date: Fri Sep 12 15:38:55 2025\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -502,7 +502,7 @@ msgstr "Kopf"
 
 #: zeit/cms/content/browser/form.py:23 zeit/content/cp/browser/form.py:18
 #: zeit/content/gallery/browser/form.py:28
-#: zeit/content/image/browser/form.py:21
+#: zeit/content/image/browser/form.py:20
 #: zeit/content/infobox/browser/form.py:25
 #: zeit/content/infobox/browser/form.py:87
 #: zeit/content/video/browser/video.py:60
@@ -760,7 +760,7 @@ msgstr "Letzte inhaltliche Änderung"
 msgid "Update last semantic change"
 msgstr "Datum / Uhrzeit aktualisieren"
 
-#: zeit/cms/content/interfaces.py:480 zeit/content/image/browser/form.py:18
+#: zeit/cms/content/interfaces.py:480 zeit/content/image/browser/form.py:17
 msgid "Memo"
 msgstr "Memo"
 
@@ -1818,7 +1818,7 @@ msgstr "Easy-Embed"
 #: zeit/content/article/interfaces.py:65 zeit/content/cp/interfaces.py:128
 #: zeit/content/cp/interfaces.py:302 zeit/content/cp/interfaces.py:633
 #: zeit/content/image/browser/configure.zcml:269
-#: zeit/content/image/browser/imagegroup.py:221 zeit/content/image/image.py:189
+#: zeit/content/image/browser/imagegroup.py:221 zeit/content/image/image.py:196
 #: zeit/content/portraitbox/interfaces.py:16
 #: zeit/wysiwyg/browser/resources/reference/image.pt:17
 msgid "Image"
@@ -1883,7 +1883,7 @@ msgstr "Fade-In"
 
 #: zeit/content/article/edit/interfaces.py:157
 #: zeit/content/article/interfaces.py:66 zeit/content/cp/interfaces.py:303
-#: zeit/content/cp/interfaces.py:634 zeit/content/image/interfaces.py:404
+#: zeit/content/cp/interfaces.py:634 zeit/content/image/interfaces.py:395
 #: zeit/push/interfaces.py:222
 msgid "Drag an image group here"
 msgstr "Ziehen Sie Bilder hierher, um sie zu verknüpfen"
@@ -2044,7 +2044,7 @@ msgid "related-api"
 msgstr "Related-API"
 
 #: zeit/content/article/edit/interfaces.py:519
-#: zeit/content/image/interfaces.py:67
+#: zeit/content/image/interfaces.py:66
 #: zeit/content/link/browser/configure.zcml:8
 #: zeit/content/link/browser/form.py:47 zeit/content/link/link.py:52
 msgid "Link"
@@ -3229,7 +3229,7 @@ msgstr "bearbeiten"
 
 #: zeit/content/gallery/browser/details.pt:24
 #: zeit/content/image/browser/image-details.pt:21
-#: zeit/content/image/interfaces.py:89
+#: zeit/content/image/interfaces.py:88
 msgid "Image sub text"
 msgstr "Bildunterschrift"
 
@@ -3329,7 +3329,7 @@ msgstr "Einzelbild"
 
 #: zeit/content/image/browser/configure.zcml:202
 #: zeit/content/image/browser/imagegroup.py:205
-#: zeit/content/image/interfaces.py:403
+#: zeit/content/image/interfaces.py:394
 msgid "Image group"
 msgstr "Bildergruppe"
 
@@ -3338,7 +3338,7 @@ msgid "File list"
 msgstr "Dateiliste"
 
 #: zeit/content/image/browser/configure.zcml:431
-#: zeit/content/image/browser/imageupload.py:27
+#: zeit/content/image/browser/imageupload.py:29
 msgid "Image (new)"
 msgstr "Bild (neu)"
 
@@ -3358,20 +3358,20 @@ msgstr "Copyright setzen"
 msgid "Copyright changed for: ${changes}"
 msgstr "Copyright geändert für: ${changes}."
 
-#: zeit/content/image/browser/form.py:24
+#: zeit/content/image/browser/form.py:23
 #: zeit/content/image/browser/imagegroup.py:236
 msgid "Image data"
 msgstr "Bilddaten"
 
-#: zeit/content/image/browser/form.py:29
+#: zeit/content/image/browser/form.py:28
 msgid "Image source"
 msgstr "Quelle"
 
-#: zeit/content/image/browser/form.py:57
+#: zeit/content/image/browser/form.py:56
 msgid "Image was resized, ${size} exceeds ${max_size}"
 msgstr "Das Bild wurde von ${size} auf ${max_size} verkleinert."
 
-#: zeit/content/image/browser/image.py:49
+#: zeit/content/image/browser/image.py:48
 msgid "View image"
 msgstr "Bild zeigen"
 
@@ -3440,6 +3440,13 @@ msgstr "Veröffentlichungsdatum"
 msgid "CopyrightPurchaseReport"
 msgstr "Urheberrecht Bezahl Bericht"
 
+#: zeit/content/image/browser/imageupload.edit-images.pt:7
+#: zeit/content/image/browser/imageupload.edit-images.pt:10
+#: zeit/content/image/browser/imageupload.edit-images.pt:13
+#: zeit/content/image/browser/imageupload.edit-images.pt:16
+msgid "Edit all"
+msgstr "Alle ändern"
+
 #: zeit/content/image/browser/imageupload.edit-images.pt:9
 msgid "Copyright"
 msgstr "Copyrights"
@@ -3465,19 +3472,19 @@ msgstr "Speichern & öffnen"
 msgid "Remove images"
 msgstr "Bilder löschen"
 
-#: zeit/content/image/browser/imageupload.py:33
+#: zeit/content/image/browser/imageupload.py:35
 msgid "Upload images"
 msgstr "Neue Bilder hochladen"
 
-#: zeit/content/image/browser/imageupload.py:57
+#: zeit/content/image/browser/imageupload.py:51
 msgid "Please upload at least one image"
 msgstr "Bitte mindestens eine Datei hochladen"
 
-#: zeit/content/image/browser/imageupload.py:160
+#: zeit/content/image/browser/imageupload.py:186
 msgid "Edit images"
 msgstr "Bilder bearbeiten"
 
-#: zeit/content/image/browser/imageupload.py:188
+#: zeit/content/image/browser/imageupload.py:214
 msgid "File name is already in use"
 msgstr "Dateiname ist bereits belegt"
 
@@ -3542,112 +3549,112 @@ msgstr ""
 msgid "Image Group"
 msgstr "Bildergruppe"
 
-#: zeit/content/image/interfaces.py:51
+#: zeit/content/image/interfaces.py:50
 msgid "Image title"
 msgstr "Bildtitel"
 
-#: zeit/content/image/interfaces.py:53
+#: zeit/content/image/interfaces.py:52
 msgid "Origin"
 msgstr "Anmerkung"
 
-#: zeit/content/image/interfaces.py:57
+#: zeit/content/image/interfaces.py:56
 msgid "Photographer"
 msgstr "Fotograf"
 
-#: zeit/content/image/interfaces.py:59
+#: zeit/content/image/interfaces.py:58
 msgid "Image company"
 msgstr "Agentur"
 
-#: zeit/content/image/interfaces.py:62
+#: zeit/content/image/interfaces.py:61
 msgid "Copyright freetext"
 msgstr "Copyright (Freitext)"
 
-#: zeit/content/image/interfaces.py:63
+#: zeit/content/image/interfaces.py:62
 msgid "Copyright holder that is not part of image company list"
 msgstr "keine der bekannten Agenturen"
 
-#: zeit/content/image/interfaces.py:67
+#: zeit/content/image/interfaces.py:66
 msgid "Link to copyright holder"
 msgstr "Link zum Copyright-Inhaber"
 
-#: zeit/content/image/interfaces.py:69 zeit/content/image/interfaces.py:95
+#: zeit/content/image/interfaces.py:68 zeit/content/image/interfaces.py:94
 #: zeit/content/link/interfaces.py:26
 msgid "set nofollow"
 msgstr "rel=\"nofollow\" setzen"
 
-#: zeit/content/image/interfaces.py:72
+#: zeit/content/image/interfaces.py:71
 msgid "Copyrights"
 msgstr "Copyrights"
 
-#: zeit/content/image/interfaces.py:76
+#: zeit/content/image/interfaces.py:75
 msgid "Single purchase"
 msgstr "Einzelkauf"
 
-#: zeit/content/image/interfaces.py:78
+#: zeit/content/image/interfaces.py:77
 msgid "External company ID"
 msgstr "Bild-ID der Agentur"
 
-#: zeit/content/image/interfaces.py:80
+#: zeit/content/image/interfaces.py:79
 msgid "InterRed MDB ID"
 msgstr "MDB-ID"
 
-#: zeit/content/image/interfaces.py:83
+#: zeit/content/image/interfaces.py:82
 msgid "Alternative text"
 msgstr "ALT-Text"
 
-#: zeit/content/image/interfaces.py:84
+#: zeit/content/image/interfaces.py:83
 msgid "Enter a textual description of the image"
 msgstr "Geben Sie eine Beschreibung des Bildes ein."
 
-#: zeit/content/image/interfaces.py:92
+#: zeit/content/image/interfaces.py:91
 msgid "Enter a URL this image should link to."
 msgstr "Geben Sie eine URL ein, auf die das Bild verlinken soll."
 
-#: zeit/content/image/interfaces.py:92
+#: zeit/content/image/interfaces.py:91
 msgid "Links to"
 msgstr "Verlinkt nach"
 
-#: zeit/content/image/interfaces.py:183
+#: zeit/content/image/interfaces.py:174
 msgid "viewport-desktop"
 msgstr "Desktop"
 
-#: zeit/content/image/interfaces.py:184
+#: zeit/content/image/interfaces.py:175
 msgid "viewport-mobile"
 msgstr "Mobil"
 
-#: zeit/content/image/interfaces.py:192
+#: zeit/content/image/interfaces.py:183
 msgid "Viewport was used multiple times"
 msgstr "Dieselbe Anzeige wurde mehrfach ausgewählt"
 
-#: zeit/content/image/interfaces.py:196
+#: zeit/content/image/interfaces.py:187
 msgid "Image was used multiple times"
 msgstr "Dasselbe Bild wurde mehrfach ausgewählt."
 
-#: zeit/content/image/interfaces.py:232
+#: zeit/content/image/interfaces.py:223
 msgid "File name of image group"
 msgstr "Dateiname der Bildergruppe"
 
-#: zeit/content/image/interfaces.py:240
+#: zeit/content/image/interfaces.py:231
 msgid "Mapping of viewport to master image"
 msgstr "Motive"
 
-#: zeit/content/image/interfaces.py:247
+#: zeit/content/image/interfaces.py:238
 msgid "Viewport"
 msgstr "Anzeige"
 
-#: zeit/content/image/interfaces.py:248
+#: zeit/content/image/interfaces.py:239
 msgid "Image file"
 msgstr "Datei"
 
-#: zeit/content/image/interfaces.py:253
+#: zeit/content/image/interfaces.py:244
 msgid "Setting for variants"
 msgstr "Einstellungen"
 
-#: zeit/content/image/interfaces.py:256
+#: zeit/content/image/interfaces.py:247
 msgid "Display Type"
 msgstr "Typ"
 
-#: zeit/content/image/interfaces.py:392
+#: zeit/content/image/interfaces.py:383
 msgid "Alpha channel fill color"
 msgstr "Hintergrundfarbe"
 

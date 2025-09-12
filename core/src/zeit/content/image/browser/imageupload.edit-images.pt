@@ -4,16 +4,16 @@
       <tr>
         <th></th>
         <th><span i18n:translate="">Filename</span>
-          <button name="bulk_edit_filename" type="button" class="bulk-edit" data-field="filename" >Alle ändern</button>
+          <button name="bulk_edit_filename" type="button" class="bulk-edit" data-field="filename" i18n:translate="">Edit all</button>
         </th>
         <th><span i18n:translate="">Copyright</span>
-          <button name="bulk_edit_copyright" type="button" class="bulk-edit" data-field="copyright" >Alle ändern</button>
+          <button name="bulk_edit_copyright" type="button" class="bulk-edit" data-field="copyright" i18n:translate="">Edit all</button>
         </th>
         <th><span i18n:translate="">Title</span>
-          <button name="bulk_edit_title" type="button" class="bulk-edit" data-field="title" >Alle ändern</button>
+          <button name="bulk_edit_title" type="button" class="bulk-edit" data-field="title" i18n:translate="">Edit all</button>
         </th>
         <th><span i18n:translate="">Caption</span>
-          <button name="bulk_edit_caption" type="button" class="bulk-edit" data-field="caption" >Alle ändern</button>
+          <button name="bulk_edit_caption" type="button" class="bulk-edit" data-field="caption" i18n:translate="">Edit all</button>
         </th>
       </tr>
       <tr tal:repeat="item view/rows">
