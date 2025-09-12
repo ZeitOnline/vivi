@@ -4,7 +4,7 @@ import zeit.content.image.xmp
 
 
 @pytest.mark.parametrize(
-    'data',
+    'xmp',
     [
         {
             'xapmeta': {
@@ -638,8 +638,9 @@ import zeit.content.image.xmp
         },
     ],
 )
-def test_editimages_extracts_metadata(data):
-    result = zeit.content.image.xmp.extract_metadata(data)
+def test_editimages_extracts_metadata(xmp):
+    metadata = {'xmp': xmp}
+    result = zeit.content.image.xmp.extract_metadata(metadata)
     assert result['copyright']
     assert result['title']
     assert result['caption']
