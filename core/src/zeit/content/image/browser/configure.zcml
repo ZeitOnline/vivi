@@ -417,6 +417,22 @@
     permission="zope.View"
     />
 
+  <gocept:pagelet
+    for="zeit.content.image.interfaces.IImage"
+    name="xmp.html"
+    class=".xmp.Listing"
+    template="xmp.pt"
+    permission="zope.View"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    />
+  <browser:menuItem
+    for="zeit.content.image.interfaces.IImage"
+    action="@@xmp.html"
+    permission="zope.View"
+    menu="zeit-context-views" title="XMP Metadata"
+    filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
+    />
+
   <!-- image upload -->
 
   <gocept:pagelet

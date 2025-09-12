@@ -639,7 +639,7 @@ import zeit.content.image.xmp
     ],
 )
 def test_editimages_extracts_metadata(data):
-    result = zeit.content.image.xmp.extract_metadata_from_xmp(data)
+    result = zeit.content.image.xmp.extract_metadata(data)
     assert result['copyright']
     assert result['title']
     assert result['caption']

@@ -112,6 +112,9 @@ class IImage(
     def getXMPMetadata():
         """return dict of title, copyright, caption as defined in the XMP metadata"""
 
+    def getXMPFlattened():
+        """return flattenend dict of XMP data, using prefixed keys to show nesting"""
+
     format = zope.interface.Attribute(
         'Our mimeType formatted as a PIL-compatible format (e.g. JPEG, PNG)'
     )

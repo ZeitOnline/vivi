@@ -14,7 +14,6 @@ import zope.location.interfaces
 import zope.security.proxy
 
 from zeit.cms.i18n import MessageFactory as _
-from zeit.content.image.xmp import extract_metadata_from_xmp
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.repository.file
@@ -23,6 +22,7 @@ import zeit.cms.util
 import zeit.cms.workingcopy.interfaces
 import zeit.content.image.imagegroup
 import zeit.content.image.interfaces
+import zeit.content.image.xmp
 import zeit.workflow.interfaces
 import zeit.workflow.timebased
 
@@ -52,7 +52,11 @@ class BaseImage:
 
     def getXMPMetadata(self):
         with self.as_pil() as img:
-            return extract_metadata_from_xmp(img.getxmp())
+            return zeit.content.image.xmp.extract_metadata(img.getxmp())
+
+    def getXMPFlattened(self):
+        with self.as_pil() as img:
+            return zeit.content.image.xmp.flatten(img.getxmp())
 
     @property
     def ratio(self):

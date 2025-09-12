@@ -1,4 +1,4 @@
-def extract_metadata_from_xmp(xmp):
+def extract_metadata(xmp):
     result = {'title': None, 'copyright': None, 'caption': None}
     if 'xapmeta' in xmp:
         data = xmp['xapmeta']
@@ -41,4 +41,32 @@ def extract_metadata_from_xmp(xmp):
             del result['credit']
         if 'creator' in result:
             del result['creator']
+    return result
+
+
+def flatten(data, parent=''):
+    """Kludgy heuristics to try to flatten the nested XMP/RDF structure into
+    a single key-value dict."""
+    result = {}
+
+    if isinstance(data, dict):
+        for key, value in data.items():
+            if key in ['about', 'lang']:
+                continue
+            if key in ['RDF', 'Description', 'Seq', 'Bag', 'Alt', 'li']:
+                key = parent
+            else:
+                key = f'{parent}:{key}' if parent else key
+            result.update(flatten(value, key))
+    elif isinstance(data, list):
+        if isinstance(data[0], str):
+            result[parent] = ', '.join(data)
+        else:
+            for x in data:
+                result.update(flatten(x, parent))
+    elif not data.strip():
+        pass
+    else:
+        result[parent] = data
+
     return result
