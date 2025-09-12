@@ -157,10 +157,10 @@ The `logs` property is contrainted with a source:
 
 Verify the titles:
 
->>> import zope.app.form.browser.interfaces
+>>> import zope.browser.interfaces
 >>> terms = zope.component.getMultiAdapter(
 ...     (source, request),
-...     zope.app.form.browser.interfaces.ITerms)
+...     zope.browser.interfaces.ITerms)
 >>> term = terms.getTerm(list(source)[0])
 >>> zope.i18n.translate(term.title)
 '2008 4 19  10:12:17  [System]: Foo'

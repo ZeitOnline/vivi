@@ -4,6 +4,7 @@ import pygments.lexers
 import rapidjson
 import zope.component
 import zope.formlib.form
+import zope.formlib.interfaces
 import zope.formlib.textwidgets
 import zope.formlib.widget
 import zope.interface
@@ -40,7 +41,7 @@ class JSONInputWidget(zope.formlib.textwidgets.TextAreaWidget):
         try:
             rapidjson.loads(value, parse_mode=rapidjson.PM_COMMENTS)
         except Exception as e:
-            raise zope.app.form.interfaces.ConversionError(e)
+            raise zope.formlib.interfaces.ConversionError(e)
         return value
 
 

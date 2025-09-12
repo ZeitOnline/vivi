@@ -11,16 +11,15 @@ import markdown
 import markdownify
 import pypandoc
 import zc.datetimewidget.datetimewidget
-import zope.app.form.browser
-import zope.app.form.browser.sequencewidget
-import zope.app.form.browser.widget
-import zope.app.form.interfaces
 import zope.app.pagetemplate
 import zope.cachedescriptors.property
 import zope.component
+import zope.formlib.boolwidgets
 import zope.formlib.interfaces
 import zope.formlib.itemswidgets
+import zope.formlib.sequencewidget
 import zope.formlib.textwidgets
+import zope.formlib.widget
 import zope.i18n
 import zope.interface
 import zope.schema
@@ -37,7 +36,7 @@ import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 
 
-class ObjectReferenceWidget(zope.app.form.browser.widget.SimpleInputWidget):
+class ObjectReferenceWidget(zope.formlib.widget.SimpleInputWidget):
     """DEPRECATED, superceeded by DropObjectWidget"""
 
     _missing = ''
@@ -55,11 +54,11 @@ class ObjectReferenceWidget(zope.app.form.browser.widget.SimpleInputWidget):
             return self.context.missing_value
         content = zeit.cms.interfaces.ICMSContent(input, None)
         if content is None:
-            raise zope.app.form.interfaces.ConversionError(_('The object could not be found.'))
+            raise zope.formlib.interfaces.ConversionError(_('The object could not be found.'))
         try:
             self.context.validate(content)
         except zope.schema.ValidationError as e:
-            self._error = zope.app.form.interfaces.WidgetInputError(
+            self._error = zope.formlib.interfaces.WidgetInputError(
                 self.context.__name__, self.label, e
             )
             raise self._error
@@ -121,7 +120,7 @@ class ObjectReferenceWidget(zope.app.form.browser.widget.SimpleInputWidget):
         return workflow.render()
 
 
-class ObjectReferenceSequenceWidget(zope.app.form.browser.sequencewidget.SequenceWidget):
+class ObjectReferenceSequenceWidget(zope.formlib.sequencewidget.SequenceWidget):
     """DEPRECATED, superceeded by ObjectSequenceWidget"""
 
     def __call__(self):
@@ -133,7 +132,7 @@ class ObjectReferenceSequenceWidget(zope.app.form.browser.sequencewidget.Sequenc
         return ''.join(result)
 
 
-class ObjectReferenceDisplayWidget(zope.app.form.browser.widget.DisplayWidget):
+class ObjectReferenceDisplayWidget(zope.formlib.widget.DisplayWidget):
     """DEPRECATED, superceeded by DropObjectDisplayWidget"""
 
     def __init__(self, context, source, request):
@@ -153,9 +152,7 @@ class ObjectReferenceDisplayWidget(zope.app.form.browser.widget.DisplayWidget):
         )
         link_id = 'link.%s' % time.time()
 
-        link = zope.app.form.browser.widget.renderElement(
-            'a', href=url, id=link_id, contents=value.uniqueId
-        )
+        link = zope.formlib.widget.renderElement('a', href=url, id=link_id, contents=value.uniqueId)
         script = (
             '<script language="javascript">\n    new zeit.cms.LinkToolTip("%s")\n</script>'
         ) % link_id
@@ -173,10 +170,10 @@ class ObjectReferenceDisplayWidget(zope.app.form.browser.widget.DisplayWidget):
     zope.schema.interfaces.IObject,
     zope.publisher.interfaces.browser.IBrowserRequest,
 )
-@zope.interface.implementer(zope.app.form.interfaces.IInputWidget)
+@zope.interface.implementer(zope.formlib.interfaces.IInputWidget)
 def objectWidgetMultiplexer(context, field, request):
     return zope.component.getMultiAdapter(
-        (context, field, field.schema, request), zope.app.form.interfaces.IInputWidget
+        (context, field, field.schema, request), zope.formlib.interfaces.IInputWidget
     )
 
 
@@ -185,10 +182,10 @@ def objectWidgetMultiplexer(context, field, request):
     zope.schema.interfaces.IObject,
     zope.publisher.interfaces.browser.IBrowserRequest,
 )
-@zope.interface.implementer(zope.app.form.interfaces.IDisplayWidget)
+@zope.interface.implementer(zope.formlib.interfaces.IDisplayWidget)
 def objectDisplayWidgetMultiplexer(context, field, request):
     return zope.component.getMultiAdapter(
-        (context, field, field.schema, request), zope.app.form.interfaces.IDisplayWidget
+        (context, field, field.schema, request), zope.formlib.interfaces.IDisplayWidget
     )
 
 
@@ -221,7 +218,7 @@ def find_commonmetadata(context):
     return None
 
 
-class ObjectSequenceWidget(zope.app.form.browser.widget.SimpleInputWidget, AddViewMixin):
+class ObjectSequenceWidget(zope.formlib.widget.SimpleInputWidget, AddViewMixin):
     template = zope.app.pagetemplate.ViewPageTemplateFile('objectsequence-edit-widget.pt')
 
     detail_view_name = '@@object-details'
@@ -258,7 +255,7 @@ class ObjectSequenceWidget(zope.app.form.browser.widget.SimpleInputWidget, AddVi
         """
         try:
             input_value = self._getCurrentValueHelper()
-        except zope.app.form.interfaces.InputErrors:
+        except zope.formlib.interfaces.InputErrors:
             items = []
             for entry in self._getFormInput(self._missing):
                 items.append({'uniqueId': entry})
@@ -313,7 +310,7 @@ class ObjectSequenceWidget(zope.app.form.browser.widget.SimpleInputWidget, AddVi
         return zope.i18n.translate(self.context.description, context=self.request)
 
 
-class ObjectSequenceDisplayWidget(zope.app.form.browser.widget.DisplayWidget):
+class ObjectSequenceDisplayWidget(zope.formlib.widget.DisplayWidget):
     template = zope.app.pagetemplate.ViewPageTemplateFile('objectsequence-display-widget.pt')
 
     detail_view_name = '@@object-details'
@@ -371,7 +368,7 @@ class WrongContentTypeError(zope.formlib.interfaces.ConversionError):
         super().__init__(msg)
 
 
-class DropObjectWidget(zope.app.form.browser.widget.SimpleInputWidget, AddViewMixin):
+class DropObjectWidget(zope.formlib.widget.SimpleInputWidget, AddViewMixin):
     template = zope.app.pagetemplate.ViewPageTemplateFile('dropobject-widget.pt')
 
     detail_view_name = '@@object-details'
@@ -572,7 +569,7 @@ class ConvertingRestructuredTextWidget(RestructuredTextWidget):
         return html2rst(value)
 
 
-class RestructuredTextDisplayWidget(zope.formlib.widgets.DisplayWidget):
+class RestructuredTextDisplayWidget(zope.formlib.widget.DisplayWidget):
     def __call__(self):
         value = super().__call__()
         return '<div class="rst-display-widget">%s</div>' % rst2html(value) if value else value
@@ -593,7 +590,7 @@ class AutocompleteWidget(zope.formlib.textwidgets.TextWidget):
         )
 
 
-class AutocompleteDisplayWidget(zope.formlib.widgets.DisplayWidget):
+class AutocompleteDisplayWidget(zope.formlib.widget.DisplayWidget):
     def __init__(self, context, source, request):
         super().__init__(context, request)
 

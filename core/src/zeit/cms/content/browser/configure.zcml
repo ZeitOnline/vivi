@@ -33,7 +33,7 @@
   <adapter
     for="zeit.cms.content.field.IXMLTree
     zeit.cms.browser.interfaces.ICMSLayer"
-    provides="zope.app.form.interfaces.IDisplayWidget"
+    provides="zope.formlib.interfaces.IDisplayWidget"
     factory=".widget.XMLTreeDisplayWidget"
     permission="zope.Public"
     />
@@ -58,7 +58,7 @@
   <view
     type="zeit.cms.browser.interfaces.ICMSLayer"
     for="zc.form.interfaces.ICombinationField"
-    provides="zope.app.form.interfaces.IInputWidget"
+    provides="zope.formlib.interfaces.IInputWidget"
     factory=".widget.CombinationWidget"
     permission="zope.Public"
     />
