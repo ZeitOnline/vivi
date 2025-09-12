@@ -1,1 +1,2 @@
 WCM-925: Replace zope.app.file with much more generic filetype package
+WCM-925: Remove zope.app.security
