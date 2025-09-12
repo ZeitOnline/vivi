@@ -305,7 +305,9 @@ class ImageGroupFromImageTest(zeit.content.image.testing.FunctionalTestCase):
 
     def test_image_group_from_none(self):
         repository = self.repository()
-        group = zeit.content.image.imagegroup.ImageGroup.from_image(repository, 'group', None)
+        group = zeit.content.image.imagegroup.ImageGroup()
+        repository['imagegroup'] = group
+        group = zeit.content.image.imagegroup.ImageGroup.from_image(repository, 'imagegroup', None)
         assert group.master_image is None
 
 
