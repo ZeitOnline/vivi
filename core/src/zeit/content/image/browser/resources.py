@@ -25,3 +25,4 @@ Resource(
 
 Resource('form.js', depends=[zeit.cms.browser.resources.base])
 Resource('mdb.js', depends=[zeit.cms.browser.resources.base])
+Resource('imageupload.js', depends=[zeit.cms.browser.resources.base])
