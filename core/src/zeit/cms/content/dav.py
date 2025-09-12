@@ -5,7 +5,7 @@ import sys
 import grokcore.component as grok
 import lxml.etree
 import pendulum
-import zope.app.security.interfaces
+import zope.authentication.interfaces
 import zope.component
 import zope.event
 import zope.proxy
@@ -212,7 +212,7 @@ class ChoicePropertyWithIterableSource:
 
 @zope.component.adapter(
     zope.schema.interfaces.IChoice,
-    zope.app.security.interfaces.IPrincipalSource,
+    zope.authentication.interfaces.IPrincipalSource,
     zeit.connector.interfaces.IWebDAVReadProperties,
     PropertyKey,
 )

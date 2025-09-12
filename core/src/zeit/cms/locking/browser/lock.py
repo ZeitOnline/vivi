@@ -1,6 +1,7 @@
 import json
 import logging
 
+import zope.authentication.interfaces
 import zope.cachedescriptors.property
 import zope.formlib.form
 import zope.i18n
@@ -106,11 +107,11 @@ def get_locking_indicator(context, request):
         title = _('Locked by you')
     elif locked:
         img = 'lock-closed'
-        authentication = zope.component.getUtility(zope.app.security.interfaces.IAuthentication)
+        authentication = zope.component.getUtility(zope.authentication.interfaces.IAuthentication)
         locker = lockable.locker()
         try:
             locker = authentication.getPrincipal(locker).title
-        except zope.app.security.interfaces.PrincipalLookupError:
+        except zope.authentication.interfaces.PrincipalLookupError:
             pass
         title = _('Locked by ${user}', mapping={'user': lockable.locker()})
     else:

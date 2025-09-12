@@ -276,9 +276,9 @@ Principal source
 The principal source is not iterable (for reason), but the principal id is a
 good and stable token, as well as the actual value:
 
->>> import zope.app.security.vocabulary
+>>> import zope.authentication.principal
 >>> field = zope.schema.Choice(
-...     source=zope.app.security.vocabulary.PrincipalSource())
+...     source=zope.authentication.principal.PrincipalSource())
 >>> converter = get_converter(field)
 >>> converter.fromProperty('zope.user')
 'zope.user'
