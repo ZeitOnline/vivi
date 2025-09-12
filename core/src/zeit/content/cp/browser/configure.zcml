@@ -287,7 +287,7 @@
     for="
     zeit.content.cp.field.DynamicCombination
     zope.publisher.interfaces.browser.IBrowserRequest"
-    provides="zope.app.form.browser.interfaces.IInputWidget"
+    provides="zope.formlib.interfaces.IInputWidget"
     factory=".area.DynamicCombinationWidget"
     permission="zope.Public"
     />

@@ -26,7 +26,7 @@
   <adapter
     for="zc.form.interfaces.IHTMLSnippet
     zope.publisher.interfaces.browser.IBrowserRequest"
-    provides="zope.app.form.browser.interfaces.IInputWidget"
+    provides="zope.formlib.interfaces.IInputWidget"
     factory=".widget.FckEditorWidget"
     permission="zope.Public"
     />

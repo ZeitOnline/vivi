@@ -5,12 +5,12 @@ import pygments
 import pygments.formatters
 import pygments.lexers
 import zc.form.browser.combinationwidget
-import zope.app.form.browser.interfaces
-import zope.app.form.browser.textwidgets
-import zope.app.form.browser.widget
-import zope.app.form.interfaces
 import zope.app.pagetemplate
+import zope.browser.interfaces
 import zope.component
+import zope.formlib.interfaces
+import zope.formlib.textwidgets
+import zope.formlib.widget
 import zope.formlib.widgets
 import zope.interface
 
@@ -18,12 +18,12 @@ import zeit.cms.content.interfaces
 import zeit.cms.content.sources
 
 
-class XMLTreeWidget(zope.app.form.browser.textwidgets.TextAreaWidget):
+class XMLTreeWidget(zope.formlib.textwidgets.TextAreaWidget):
     def _toFieldValue(self, input):
         try:
             return self.context.fromUnicode(input)
         except zope.schema.ValidationError as e:
-            raise zope.app.form.interfaces.ConversionError(e)
+            raise zope.formlib.interfaces.ConversionError(e)
 
     def _toFormValue(self, value):
         if value == self.context.missing_value:
@@ -39,7 +39,7 @@ class XMLTreeWidget(zope.app.form.browser.textwidgets.TextAreaWidget):
             return lxml.etree.tounicode(value, pretty_print=True).replace('\n', '\r\n')
 
 
-class XMLTreeDisplayWidget(zope.app.form.browser.widget.DisplayWidget):
+class XMLTreeDisplayWidget(zope.formlib.widget.DisplayWidget):
     def __call__(self):
         if self._renderedValueSet():
             content = self._data
@@ -76,7 +76,7 @@ class ParentChildDropdownUpdater:
         super().__init__(context, request)
         self.parent_source = self.parent_source(self.context)
         self.parent_terms = zope.component.getMultiAdapter(
-            (self.parent_source, request), zope.app.form.browser.interfaces.ITerms
+            (self.parent_source, request), zope.browser.interfaces.ITerms
         )
 
     def get_result(self, parent_token):
@@ -94,7 +94,7 @@ class ParentChildDropdownUpdater:
 
         source = self.child_source(fake)
         terms = zope.component.getMultiAdapter(
-            (source, self.request), zope.app.form.browser.interfaces.ITerms
+            (source, self.request), zope.browser.interfaces.ITerms
         )
         result = []
         for value in source:

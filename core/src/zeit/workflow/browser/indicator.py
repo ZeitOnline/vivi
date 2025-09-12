@@ -1,6 +1,6 @@
 import xml.sax.saxutils
 
-import zope.app.form.browser.interfaces
+import zope.browser.interfaces
 import zope.component
 import zope.i18n
 import zope.viewlet.viewlet
@@ -27,7 +27,7 @@ class ContentStatus(zope.viewlet.viewlet.ViewletBase):
             if value is None:
                 value = False
             terms = zope.component.getMultiAdapter(
-                (field.vocabulary, self.request), zope.app.form.browser.interfaces.ITerms
+                (field.vocabulary, self.request), zope.browser.interfaces.ITerms
             )
             term = terms.getTerm(value)
             value_title = term.title

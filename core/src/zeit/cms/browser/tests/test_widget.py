@@ -9,18 +9,27 @@ from selenium.webdriver.common.keys import Keys
 import zope.configuration.xmlconfig
 import zope.formlib.interfaces
 import zope.interface
+import zope.publisher.browser
+import zope.schema
 import zope.schema.interfaces
+import zope.security.management
 
 from zeit.cms.browser.widget import (
+    ConvertingRestructuredTextWidget,
+    DropObjectWidget,
     DurationDisplayWidget,
+    MarkdownWidget,
     ObjectSequenceDisplayWidget,
     ObjectSequenceWidget,
     ReferenceSequenceWidget,
+    RestructuredTextWidget,
 )
+from zeit.cms.checkout.helper import checked_out
 from zeit.cms.content.field import DurationField
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
+import zeit.cms.content.contentsource
 import zeit.cms.content.interfaces
 import zeit.cms.content.reference
 import zeit.cms.content.sources
@@ -35,9 +44,6 @@ class TestObjectDetails(zeit.cms.testing.ZeitCmsBrowserTestCase):
 
     @contextlib.contextmanager
     def get_content(self):
-        from zeit.cms.checkout.helper import checked_out
-        import zeit.cms.interfaces
-
         content = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/testcontent')
         with checked_out(content) as co:
             yield co
@@ -81,10 +87,6 @@ class TestObjectDetailsJavascript(zeit.cms.testing.SeleniumTestCase):
 
 class TestObjectSequenceWidget(zeit.cms.testing.ZeitCmsTestCase):
     def test_to_form_value_ignores_non_cms_content(self):
-        import zope.interface
-
-        import zeit.cms.interfaces
-
         context = mock.Mock()
         context.__name__ = 'name'
         widget = ObjectSequenceWidget(context, mock.Mock(), mock.Mock())
@@ -138,33 +140,21 @@ class TestObjectSequenceWidgetIntegration(
     zeit.cms.testing.ZeitCmsTestCase, zeit.cms.testing.BrowserAssertions
 ):
     def setUp(self):
-        import zope.security.management
-
         super().setUp()
         zope.security.management.endInteraction()
 
     def get_field(self):
-        import zope.schema
-
-        import zeit.cms.content.contentsource
-
         return zope.schema.Tuple(
             value_type=zope.schema.Choice(source=zeit.cms.content.contentsource.cmsContentSource)
         )
 
     def get_widget(self, field=None):
-        import zope.app.form.browser.interfaces
-        import zope.interface
-        import zope.publisher.browser
-
-        import zeit.cms.browser.interfaces
-
         if field is None:
             field = self.get_field()
         request = zope.publisher.browser.TestRequest()
         zope.interface.alsoProvides(request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
         widget = zope.component.getMultiAdapter(
-            (field, request), zope.app.form.browser.interfaces.IInputWidget
+            (field, request), zope.formlib.interfaces.IInputWidget
         )
         widget.setRenderedValue(())
         return widget
@@ -174,22 +164,14 @@ class TestObjectSequenceWidgetIntegration(
         self.assertIsInstance(widget, ObjectSequenceWidget)
 
     def test_widget_should_not_be_available_without_search(self):
-        import zope.app.form.browser.interfaces
-        import zope.publisher.browser
-
         field = self.get_field()
         request = zope.publisher.browser.TestRequest()
         widget = zope.component.getMultiAdapter(
-            (field, request), zope.app.form.browser.interfaces.IInputWidget
+            (field, request), zope.formlib.interfaces.IInputWidget
         )
         self.assertNotIsInstance(widget, ObjectSequenceWidget)
 
     def test_widget_should_render_source_query_view_and_no_url_input(self):
-        import zope.component
-        import zope.publisher.interfaces.browser
-
-        import zeit.cms.content.interfaces
-
         adapter = mock.Mock()
         adapter.return_value = mock.Mock(return_value='mock')
         gsm = zope.component.getGlobalSiteManager()
@@ -223,8 +205,6 @@ class TestObjectSequenceWidgetIntegration(
         self.assertEllipsis('...name="field..url"...', result)
 
     def test_widget_should_render_add_view(self):
-        from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
-
         field = self.get_field()
         content = ExampleContentType()
         content.ressort = 'Politik'
@@ -591,50 +571,30 @@ class TestDropObjectWidgetAccept(zeit.cms.testing.SeleniumTestCase):
 
 class TestDropObjectWidgetIntegration(zeit.cms.testing.ZeitCmsTestCase):
     def setUp(self):
-        import zope.security.management
-
         super().setUp()
         zope.security.management.endInteraction()
 
     def get_choice(self):
-        import zope.schema
-
-        import zeit.cms.content.contentsource
-
         return zope.schema.Choice(source=zeit.cms.content.contentsource.cmsContentSource)
 
     def test_widget_should_be_available_with_search(self):
-        import zope.app.form.browser.interfaces
-        import zope.interface
-        import zope.publisher.browser
-
-        from zeit.cms.browser.widget import DropObjectWidget
-        import zeit.cms.browser.interfaces
-
         choice = self.get_choice()
         request = zope.publisher.browser.TestRequest()
         zope.interface.alsoProvides(request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
         widget = zope.component.getMultiAdapter(
-            (choice, request), zope.app.form.browser.interfaces.IInputWidget
+            (choice, request), zope.formlib.interfaces.IInputWidget
         )
         self.assertIsInstance(widget, DropObjectWidget)
 
     def test_widget_should_not_be_available_without_search(self):
-        import zope.app.form.browser.interfaces
-        import zope.publisher.browser
-
-        from zeit.cms.browser.widget import DropObjectWidget
-
         choice = self.get_choice()
         request = zope.publisher.browser.TestRequest()
         widget = zope.component.getMultiAdapter(
-            (choice, request), zope.app.form.browser.interfaces.IInputWidget
+            (choice, request), zope.formlib.interfaces.IInputWidget
         )
         self.assertNotIsInstance(widget, DropObjectWidget)
 
     def test_accepted_types_is_escaped_for_javascript(self):
-        from zeit.cms.browser.widget import DropObjectWidget
-
         choice = self.get_choice()
         ANY = None
         widget = DropObjectWidget(choice, choice.source, ANY)
@@ -688,7 +648,7 @@ class TestDropObjectWidgetIntegration(zeit.cms.testing.ZeitCmsTestCase):
         )
 
 
-class DropObjectWidget(zeit.cms.testing.ZeitCmsTestCase):
+class TestDropObjectWidget(zeit.cms.testing.ZeitCmsTestCase):
     def test_setting_invalid_uniqueId_should_raise(self):
         context = mock.Mock()
         context.__name__ = 'foo'
@@ -727,10 +687,6 @@ class DropObjectWidget(zeit.cms.testing.ZeitCmsTestCase):
 
 class TestObjectSequenceDisplayWidget(unittest.TestCase):
     def get_content(self):
-        import zope.interface
-
-        import zeit.cms.interfaces
-
         content = mock.Mock()
         zope.interface.alsoProvides(content, zeit.cms.interfaces.ICMSContent)
         return content
@@ -763,8 +719,6 @@ class TestObjectSequenceDisplayWidgetIntegration(
     zeit.cms.testing.ZeitCmsTestCase, zeit.cms.testing.BrowserAssertions
 ):
     def setUp(self):
-        import zope.security.management
-
         super().setUp()
         zope.security.management.endInteraction()
         setup_mydetails()
@@ -774,21 +728,11 @@ class TestObjectSequenceDisplayWidgetIntegration(
         super().tearDown()
 
     def get_field(self):
-        import zope.schema
-
-        import zeit.cms.content.contentsource
-
         return zope.schema.Tuple(
             value_type=zope.schema.Choice(source=zeit.cms.content.contentsource.cmsContentSource)
         )
 
     def get_widget(self):
-        import zope.formlib.interfaces
-        import zope.interface
-        import zope.publisher.browser
-
-        import zeit.cms.browser.interfaces
-
         field = self.get_field()
         request = zope.publisher.browser.TestRequest()
         zope.interface.alsoProvides(request, zeit.cms.browser.interfaces.ICMSSkin)
@@ -798,8 +742,6 @@ class TestObjectSequenceDisplayWidgetIntegration(
         return widget
 
     def get_content(self):
-        import zeit.cms.interfaces
-
         return zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/testcontent')
 
     def test_should_render_details_for_referenced_items(self):
@@ -824,8 +766,6 @@ class TestDropObjectDisplayWidgetIntegration(
     zeit.cms.testing.ZeitCmsTestCase, zeit.cms.testing.BrowserAssertions
 ):
     def setUp(self):
-        import zope.security.management
-
         super().setUp()
         zope.security.management.endInteraction()
         setup_mydetails()
@@ -835,19 +775,9 @@ class TestDropObjectDisplayWidgetIntegration(
         super().tearDown()
 
     def get_field(self):
-        import zope.schema
-
-        import zeit.cms.content.contentsource
-
         return zope.schema.Choice(source=zeit.cms.content.contentsource.cmsContentSource)
 
     def get_widget(self):
-        import zope.formlib.interfaces
-        import zope.interface
-        import zope.publisher.browser
-
-        import zeit.cms.browser.interfaces
-
         field = self.get_field()
         request = zope.publisher.browser.TestRequest()
         zope.interface.alsoProvides(request, zeit.cms.browser.interfaces.ICMSLayer)
@@ -857,8 +787,6 @@ class TestDropObjectDisplayWidgetIntegration(
         return widget
 
     def get_content(self):
-        import zeit.cms.interfaces
-
         return zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/testcontent')
 
     def test_should_render_details_for_referenced_item(self):
@@ -945,8 +873,6 @@ class TestReferenceSequenceWidget(zeit.cms.testing.ZeitCmsTestCase):
 class RestructuredTextWidgetTest(zeit.cms.testing.ZeitCmsTestCase):
     def setUp(self):
         super().setUp()
-        from zeit.cms.browser.widget import RestructuredTextWidget
-
         request = zope.publisher.browser.TestRequest(skin=zeit.cms.browser.interfaces.ICMSSkin)
         field = zope.schema.Text()
         field.__name__ = 'foo'
@@ -1009,8 +935,6 @@ class RestructuredTextWidgetJavascriptTest(zeit.cms.testing.SeleniumTestCase):
 class ConvertingRestructuredTextWidgetTest(zeit.cms.testing.ZeitCmsTestCase):
     def setUp(self):
         super().setUp()
-        from zeit.cms.browser.widget import ConvertingRestructuredTextWidget
-
         self.request = zope.publisher.browser.TestRequest(skin=zeit.cms.browser.interfaces.ICMSSkin)
         field = zope.schema.Text()
         field.__name__ = 'foo'
@@ -1034,8 +958,6 @@ class ConvertingRestructuredTextWidgetTest(zeit.cms.testing.ZeitCmsTestCase):
 class MarkdownWidgetTest(zeit.cms.testing.ZeitCmsTestCase):
     def setUp(self):
         super().setUp()
-        from zeit.cms.browser.widget import MarkdownWidget
-
         self.request = zope.publisher.browser.TestRequest(skin=zeit.cms.browser.interfaces.ICMSSkin)
         field = zope.schema.Text(required=False)
         field.__name__ = 'foo'
