@@ -4,7 +4,7 @@ import io
 import PIL.ExifTags
 import PIL.Image
 
-from zeit.content.image.testing import create_image_group_with_master_image, fixture_bytes
+from zeit.content.image.testing import create_image_group, fixture_bytes
 import zeit.cms.interfaces
 import zeit.content.image.testing
 
@@ -135,13 +135,13 @@ class ImageGroupBrowserTest(zeit.content.image.testing.BrowserTestCase, ImageGro
         self.assertEqual((2250, 4000), img.getImageSize())
 
     def test_traversing_thumbnail_yields_images(self):
-        create_image_group_with_master_image()
+        create_image_group()
         b = self.browser
         b.open('http://localhost/++skin++vivi/repository/group/thumbnails/square/@@raw')
         self.assertEqual('image/jpeg', b.headers['Content-Type'])
 
     def test_primary_master_image_is_marked_for_desktop_viewport(self):
-        group = self.repository['imagegroup']
+        group = self.repository['group']
         self.assertEqual(1, len(group.master_images))
         self.assertEqual('desktop', group.master_images[0][0])
         self.assertEqual('master-image.jpg', group.master_images[0][1])
@@ -177,7 +177,7 @@ class ImageGroupBrowserTest(zeit.content.image.testing.BrowserTestCase, ImageGro
         self.save_imagegroup()
         b = self.browser
         self.assertEndsWith('@@variant.html', b.url)
-        b.open('http://localhost/++skin++vivi/repository/imagegroup')
+        b.open('http://localhost/++skin++vivi/repository/group')
         self.assertEndsWith('@@variant.html', b.url)
 
     def test_display_type_infographic_uses_view_html_by_default(self):
@@ -231,11 +231,8 @@ class ImageGroupBrowserTest(zeit.content.image.testing.BrowserTestCase, ImageGro
         self.assertEllipsis('...Unsupported image type...', self.browser.contents)
 
     def test_new_image_upload_is_not_present_for_imagegroup(self):
-        self.add_imagegroup()
-        self.upload_primary_image('shoppingmeile_2251x4001px.jpg')
-        self.save_imagegroup()
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/imagegroup/@@view.html')
+        b.open('http://localhost/++skin++vivi/repository/group/@@view.html')
         menu = b.getControl(name='add_menu')
         self.assertNotIn('Image (new)', menu.displayOptions)
 
@@ -290,7 +287,7 @@ class ThumbnailTest(zeit.content.image.testing.FunctionalTestCase):
         from zeit.content.image.browser.imagegroup import Thumbnail
 
         super().setUp()
-        self.group = self.repository['imagegroup']
+        self.group = self.repository['group']
         self.thumbnail = Thumbnail()
         self.thumbnail.context = self.group
 

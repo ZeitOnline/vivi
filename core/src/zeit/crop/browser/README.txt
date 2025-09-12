@@ -7,7 +7,7 @@ Setup
 >>> import zeit.cms.testing
 >>> import zeit.content.image.testing
 >>> with zeit.cms.testing.site(getRootFolder()):
-...      grp = zeit.content.image.testing.create_image_group_with_master_image()
+...      grp = zeit.content.image.testing.create_image_group()
 ...      grp = zeit.content.image.testing.create_image_group()
 >>> browser = zeit.cms.testing.Browser(layer['wsgi_app'])
 >>> browser.login('user', 'userpw')

@@ -8,7 +8,7 @@ import zope.lifecycleevent
 
 from zeit.cms.workflow.interfaces import IPublicationDependencies
 from zeit.content.image import imagegroup
-from zeit.content.image.testing import create_image_group_with_master_image, create_local_image
+from zeit.content.image.testing import create_image_group, create_local_image
 import zeit.cms.repository.interfaces
 import zeit.content.image.testing
 
@@ -16,7 +16,7 @@ import zeit.content.image.testing
 class ImageGroupTest(zeit.content.image.testing.FunctionalTestCase):
     def setUp(self):
         super().setUp()
-        self.group = create_image_group_with_master_image()
+        self.group = create_image_group()
         self.request = zope.publisher.browser.TestRequest(
             skin=zeit.cms.browser.interfaces.ICMSLayer
         )
@@ -305,7 +305,9 @@ class ImageGroupFromImageTest(zeit.content.image.testing.FunctionalTestCase):
 
     def test_image_group_from_none(self):
         repository = self.repository()
-        group = zeit.content.image.imagegroup.ImageGroup.from_image(repository, 'group', None)
+        group = zeit.content.image.imagegroup.ImageGroup()
+        repository['imagegroup'] = group
+        group = zeit.content.image.imagegroup.ImageGroup.from_image(repository, 'imagegroup', None)
         assert group.master_image is None
 
 
@@ -321,7 +323,7 @@ class ImageGroupFromImage(zeit.content.image.testing.BrowserTestCase):
 class ExternalIDTest(zeit.content.image.testing.FunctionalTestCase):
     def setUp(self):
         super().setUp()
-        self.group = create_image_group_with_master_image()
+        self.group = create_image_group()
 
     def search(self, filename):
         context = mock.Mock()
@@ -352,7 +354,7 @@ class ThumbnailsTest(zeit.content.image.testing.FunctionalTestCase):
         from ..imagegroup import Thumbnails
 
         super().setUp()
-        self.group = create_image_group_with_master_image()
+        self.group = create_image_group()
         self.thumbnails = Thumbnails(self.group)
 
     def test_uses_master_image_for_thumbnails(self):

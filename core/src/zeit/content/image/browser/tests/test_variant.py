@@ -9,7 +9,7 @@ import requests
 import transaction
 import zope.component
 
-from zeit.content.image.testing import create_image_group_with_master_image
+from zeit.content.image.testing import create_image_group
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
 import zeit.content.image.interfaces
@@ -28,7 +28,7 @@ class VariantJsonAPI(zeit.cms.testing.FunctionalTestCase):
 
     def setUp(self):
         super().setUp()
-        self.group = create_image_group_with_master_image()
+        self.group = create_image_group()
         self.group.variants = {'square': {'focus_x': 0.5, 'focus_y': 0.5, 'zoom': 1.0}}
         transaction.commit()
 

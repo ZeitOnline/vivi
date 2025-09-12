@@ -41,7 +41,7 @@ class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
         self.open_imp()
 
     def create_group(self):
-        zeit.content.image.testing.create_image_group_with_master_image()
+        zeit.content.image.testing.create_image_group()
 
     def open_imp(self):
         self.open('/repository/group/@@imp.html')

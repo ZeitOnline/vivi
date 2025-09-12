@@ -262,7 +262,7 @@ class TestDownloadTeasers(zeit.brightcove.testing.StaticBrowserTestCase):
         assert img.image.master_image == 'obama-clinton-120x120.jpg'
 
     def test_update_teaser_image_preserves_override(self):
-        from zeit.content.image.testing import create_image_group_with_master_image
+        from zeit.content.image.testing import create_image_group
 
         src = 'http://{0.layer[http_address]}/testdata/opernball.jpg'.format(self)
         # video is created via BC import
@@ -270,7 +270,7 @@ class TestDownloadTeasers(zeit.brightcove.testing.StaticBrowserTestCase):
         bc.data['images']['poster']['src'] = src
         import_video(bc)
         # editor replaces automatically created video still with custom imagegroup
-        self.repository['foo-video_still'] = create_image_group_with_master_image()
+        self.repository['foo-video_still'] = create_image_group()
         video = self.repository['video']['2017-05']['myvid']
         img = zeit.content.image.interfaces.IImages(video)
         img.image = self.repository['foo-video_still']

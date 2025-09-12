@@ -27,7 +27,7 @@ class ImageMetadataTest(zeit.content.image.testing.FunctionalTestCase):
         )
 
     def test_related_reference_to_image_does_not_overwrite_href(self):
-        image = ICMSContent('http://xml.zeit.de/imagegroup')
+        image = ICMSContent('http://xml.zeit.de/group')
         node = zope.component.getAdapter(
             image, zeit.cms.content.interfaces.IXMLReference, name='related'
         )
@@ -35,7 +35,7 @@ class ImageMetadataTest(zeit.content.image.testing.FunctionalTestCase):
 
     def test_related_reference_to_imagegroup_does_not_overwrite_href(self):
         group = zeit.content.image.testing.create_image_group()
-        image = group['new-hampshire-450x200.jpg']
+        image = group['master-image.jpg']
         node = zope.component.getAdapter(
             image, zeit.cms.content.interfaces.IXMLReference, name='related'
         )
