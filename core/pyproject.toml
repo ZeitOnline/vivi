@@ -50,7 +50,6 @@ dependencies = [
     "zodburi",
     "zope.annotation",
     "zope.app.appsetup",
-    "zope.app.folder",
     "zope.app.keyreference",
     "zope.app.locking",
     "zope.app.security",
