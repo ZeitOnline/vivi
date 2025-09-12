@@ -43,18 +43,8 @@
 }
 
 
-table.gallery .image-column {
-  text-align: center;
-  width: 10em;
-  vertical-align: top;
-}
-
 table.gallery td {
   padding-bottom: 1.5em;
-}
-
-table.gallery tr.layout-hidden {
-  display:none;
 }
 
 table.gallery td div.handle {
@@ -77,20 +67,11 @@ table.gallery td div.box div.image {
   float:left;
 }
 
-table.gallery td div.box div.content {
-}
-
 table.gallery .caption {
   padding-bottom: 1em;
 }
 
-.gallery-show-image-link:before {
-  content: "[";
-}
 
-.gallery-show-image-link:after {
-  content: "]";
-}
 
 .handle a {
   display:block;
@@ -103,10 +84,6 @@ table.gallery .caption {
 
 table.gallery a.edit-image {
   background-image: url("editimage.png");
- }
-
-table.gallery a.cut-image {
-  background-image: url("cropimage.png");
  }
 
 table.gallery a.show-image {
