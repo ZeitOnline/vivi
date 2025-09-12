@@ -3,26 +3,26 @@ vivi.core changes
 
 .. towncrier release notes start
 
-vivi.core 7.181.0 (2025-09-12)
-------------------------------
+7.181.0 (2025-09-12)
+--------------------
 
 - WCM-861: Add tab to list image xmp metadata
 
 
-vivi.core 7.180.0 (2025-09-11)
-------------------------------
+7.180.0 (2025-09-11)
+--------------------
 
 - WCM-1108: Fix authentication, it is handled in ingress
 
 
-vivi.core 7.179.0 (2025-09-11)
-------------------------------
+7.179.0 (2025-09-11)
+--------------------
 
 - WCM-1108: Implement json API to look up uuid by vivi-url
 
 
-vivi.core 7.178.0 (2025-09-11)
-------------------------------
+7.178.0 (2025-09-11)
+--------------------
 
 - WCM-1094: Switch button for 1 week to 3 months in date picker
 
@@ -31,8 +31,8 @@ vivi.core 7.178.0 (2025-09-11)
 - WCM-1102: Only allow the usual image formats in new image upload
 
 
-vivi.core 7.177.0 (2025-09-09)
-------------------------------
+7.177.0 (2025-09-09)
+--------------------
 
 - WCM-1073: easier publish or open for edit after new image upload
 
@@ -41,8 +41,8 @@ vivi.core 7.177.0 (2025-09-09)
 - WCM-1001: limit size of memo field to stay within its parent borders
 
 
-vivi.core 7.175.0 (2025-09-04)
-------------------------------
+7.175.0 (2025-09-04)
+--------------------
 
 - WCM-836: Make storage-based hdok report actually work
 
