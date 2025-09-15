@@ -139,6 +139,8 @@ class BaseImage:
         self._height = value
 
     def getImageSize(self):
+        if FEATURE_TOGGLES.find('column_read_wcm_56'):
+            return (self.width, self.height)
         with self.as_pil() as img:
             return img.size
 
