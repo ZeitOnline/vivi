@@ -125,7 +125,7 @@ class ImageForm(zeit.content.article.edit.browser.testing.BrowserTestCase):
         )
         b.getForm(name='imageupload').submit()
         img_name = b.getControl(name='tmp_name[0]').value
-        self.assertEndsWith(f'/repository/@@edit-images?files={img_name}', b.url)
+        self.assertEndsWith(f'/@@edit-images?files={img_name}', b.url)
 
     def test_teaser_image_upload_uses_new_filename_of_new_article(self):
         b = self.browser
@@ -148,7 +148,7 @@ class ImageForm(zeit.content.article.edit.browser.testing.BrowserTestCase):
             ],
         )
         b.getForm(name='imageupload').submit()
-        self.assertEndsWith('&from=possibly-the-new-name', b.url)
+        self.assertEqual('possibly-the-new-name-bild', b.getControl(name='target_name[0]').value)
 
 
 class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):

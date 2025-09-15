@@ -12,25 +12,21 @@ Create a  browser first:
 
 For creating a gallery we need a folder containing images:
 
->>> from zeit.content.gallery.browser.testing import add_folder, add_image
->>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
->>> add_folder(browser, 'gallery')
->>> browser.url
-'http://localhost/++skin++cms/repository/online/2007/01/gallery/@@view.html'
+>>> from zeit.cms.repository.folder import Folder
+>>> from zeit.content.image.testing import create_image_group_with_master_image
+>>> from zeit.content.image.testing import create_local_image
+>>> import zeit.cms.repository
+>>> import zope.component
+>>> zeit.cms.testing.set_site()
+>>> repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
+>>> repository['online']['2007']['01']['gallery'] = Folder()
+>>> folder = repository['online']['2007']['01']['gallery']
 
 Add some images to the folder:
 
->>> add_image(browser, '01.jpg')
-'http://localhost/++skin++cms/repository/online/2007/01/gallery/01.jpg/@@view.html'
->>> add_image(browser, '02.jpg')
-'http://localhost/++skin++cms/repository/online/2007/01/gallery/02.jpg/@@view.html'
->>> add_image(browser, '03.jpg')
-'http://localhost/++skin++cms/repository/online/2007/01/gallery/03.jpg/@@view.html'
->>> add_image(browser, '04.jpg')
-'http://localhost/++skin++cms/repository/online/2007/01/gallery/04.jpg/@@view.html'
->>> add_image(browser, '05.jpg')
-'http://localhost/++skin++cms/repository/online/2007/01/gallery/05.jpg/@@view.html'
-
+>>> for i in range(1, 5):
+...     folder[f'{i:02d}.jpg'] = create_local_image(f'{i:02d}.jpg', 'zeit.content.gallery.browser', 'testdata')
+>>> folder['05'] = create_image_group_with_master_image()
 
 Adding gallery
 ==============
@@ -71,7 +67,7 @@ thumbnails of the images in the gallery together with the texts:
     ...
         <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/thumbnails/04.jpg/@@raw" alt="" height="50" width="50" border="0" />
     ...
-        <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/thumbnails/05.jpg/@@raw" alt="" height="50" width="50" border="0" />
+        <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/thumbnails/05/@@raw" alt="" height="28" width="50" border="0" />
     ...
 </table>...
 
@@ -152,7 +148,7 @@ So let's change the sorting:
     ...
         <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/thumbnails/04.jpg/@@raw" alt="" height="50" width="50" border="0" />
     ...
-        <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/thumbnails/05.jpg/@@raw" alt="" height="50" width="50" border="0" />
+        <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/thumbnails/05/@@raw" alt="" height="28" width="50" border="0" />
     ...
 </table>...
 
@@ -202,7 +198,7 @@ listed:
     ...
         <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/thumbnails/04.jpg/@@raw" alt="" height="50" width="50" border="0" />
     ...
-        <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/thumbnails/05.jpg/@@raw" alt="" height="50" width="50" border="0" />
+        <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/thumbnails/05/@@raw" alt="" height="28" width="50" border="0" />
     ...
 </table>...
 
@@ -287,7 +283,7 @@ There is also a metdata preview showing the images:
       <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/04.jpg/thumbnail" alt="" height="100" width="100" border="0" />
     </div>
     <div class="image-group-image-preview">
-      <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/05.jpg/thumbnail" alt="" height="100" width="100" border="0" />
+      <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/05/master-image.jpg/thumbnail" alt="" height="75" width="100" border="0" />
     </div>
     ...
 
@@ -310,10 +306,6 @@ The browsing location for an image gallery is
 /bilder/jahr/ausgab/bildergalerien.  We verify that in python so we need some
 setup:
 
->>> import zeit.cms.testing
->>> zeit.cms.testing.set_site()
->>> import zope.component
->>> import zeit.cms.repository.interfaces
 >>> import zeit.cms.browser.interfaces
 >>> import zeit.content.gallery.interfaces
 >>> repository = zope.component.getUtility(
@@ -342,11 +334,8 @@ image folder doesn't exist:
 
 Create the image folder:
 
->>> browser.open('http://localhost/++skin++cms/repository')
->>> add_folder(browser, 'bilder')
->>> add_folder(browser, '2008')
->>> add_folder(browser, '26')
->>> add_folder(browser, 'bildergalerien')
+>>> from zeit.cms.content.add import find_or_create_folder
+>>> _ = find_or_create_folder(*('bilder/2008/26/bildergalerien'.split('/')))
 
 We get the right location now:
 

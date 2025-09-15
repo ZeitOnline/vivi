@@ -469,7 +469,7 @@
 
   <gocept:pagelet
     name="edit-images"
-    for="zeit.cms.repository.interfaces.ICollection"
+    for="zeit.cms.interfaces.ICMSContent"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     class=".imageupload.EditForm"
     permission="zeit.RenameContent"
