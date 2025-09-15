@@ -28,6 +28,10 @@
   font-size: 17px;
 }
 
+.edit-image-table th {
+  font-weight: bold;
+}
+
 .fieldname-copyright--display td {
   padding-bottom: 0;
 }
@@ -50,4 +54,16 @@
    global to just remove it. */
 .field.fieldname-mdb_blob button {
   width: inherit;
+}
+
+.bulk-edit {
+  color: #aaa;
+  font-size: 11px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.bulk-edit:hover {
+  text-decoration: underline;
 }
