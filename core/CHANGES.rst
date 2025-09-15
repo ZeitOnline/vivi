@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.185.0 (2025-09-15)
+--------------------
+
+- WCM-861: Translate tab heading
+
+- WCM-978: update button style for bulk edit
+
+
 7.184.0 (2025-09-15)
 --------------------
 
