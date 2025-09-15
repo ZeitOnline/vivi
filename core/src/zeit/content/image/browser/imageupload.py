@@ -42,9 +42,6 @@ class UploadForm(zeit.cms.browser.view.Base, zeit.content.image.browser.form.Cre
     def action(self):
         return self.url(self.context, '@@upload-images')
 
-    def from_name(self):
-        return self.context.__name__
-
     def handle_post(self):
         files = self.request.form.get('files', None)
         if not files:

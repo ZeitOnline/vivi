@@ -1,6 +1,5 @@
 <tal:block i18n:domain="zeit.cms">
   <form name="imageupload" enctype="multipart/form-data" class="imageupload" method="POST" tal:attributes="action view/action">
-    <input type="hidden" name="from" tal:attributes="value view/from_name">
     <label class="imageupload__drop">
       <input type="file" class="imageupload__input" multiple accept="image/*" name="files">
       <p i18n:translate="">Upload one or multiple images</p>
