@@ -44,6 +44,7 @@ def create_local_image(filename='opernball.jpg', package=None, folder=None):
     with image.open('w') as out:
         out.write(fixture_bytes(filename, package, folder))
     image.__name__ = filename
+    zope.event.notify(zope.lifecycleevent.ObjectCreatedEvent(image))
     return image
 
 
