@@ -4,6 +4,7 @@ from zope.authentication.interfaces import IUnauthenticatedPrincipal
 import jwt
 import webob.cookies
 import zope.app.appsetup.product
+import zope.app.pagetemplate
 import zope.authentication.interfaces
 import zope.traversing.browser
 
@@ -146,3 +147,22 @@ class SimpleSerializer:
 
 SIMPLE_SERIALIZER = SimpleSerializer()
 EXPIRE_ON_BROWSER_CLOSE = None
+
+
+# Copied from zope.app.security.browser.auth
+class AuthUtilitySearchView:
+    template = zope.app.pagetemplate.ViewPageTemplateFile('authutilitysearchview.pt')
+    searchTitle = 'principals.zcml'
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    def render(self, name):
+        return self.template(title=self.searchTitle, name=name)
+
+    def results(self, name):
+        if (name + '.search') not in self.request:
+            return None
+        searchstring = self.request[name + '.searchstring']
+        return [principal.id for principal in self.context.getPrincipals(searchstring)]

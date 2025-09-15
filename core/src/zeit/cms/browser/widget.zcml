@@ -7,8 +7,8 @@
       for="zope.schema.interfaces.IFrozenSet
            zope.schema.interfaces.IIterableSource
            .interfaces.ICMSLayer"
-      provides="zope.app.form.browser.interfaces.ISimpleInputWidget"
-      factory="zope.app.form.browser.source.SourceMultiCheckBoxWidget"
+      provides="zope.formlib.interfaces.ISimpleInputWidget"
+      factory="zope.formlib.source.SourceMultiCheckBoxWidget"
       permission="zope.Public"
       />
 
@@ -16,7 +16,7 @@
     for="zope.schema.interfaces.IChoice
     zeit.cms.content.interfaces.ICMSContentSource
     zope.publisher.interfaces.browser.IBrowserRequest"
-    provides="zope.app.form.browser.interfaces.ISimpleInputWidget"
+    provides="zope.formlib.interfaces.ISimpleInputWidget"
     factory=".widget.ObjectReferenceWidget"
     permission="zope.Public"
     />
@@ -25,7 +25,7 @@
     for="zope.schema.interfaces.IChoice
     zeit.cms.content.interfaces.ICMSContentSource
     zope.publisher.interfaces.browser.IBrowserRequest"
-    provides="zope.app.form.interfaces.IDisplayWidget"
+    provides="zope.formlib.interfaces.IDisplayWidget"
     factory=".widget.ObjectReferenceDisplayWidget"
     permission="zope.Public"
     />
@@ -45,7 +45,7 @@
     zope.schema.interfaces.ITuple
     zeit.cms.content.interfaces.ICMSContentSource
     zope.publisher.interfaces.browser.IBrowserRequest"
-    provides="zope.app.form.browser.interfaces.ISimpleInputWidget"
+    provides="zope.formlib.interfaces.ISimpleInputWidget"
     factory=".widget.ObjectReferenceSequenceWidget"
     permission="zope.Public"
     />
@@ -55,8 +55,8 @@
     zope.schema.interfaces.ITuple
     zeit.cms.content.interfaces.ICMSContentSource
     zope.publisher.interfaces.browser.IBrowserRequest"
-    provides="zope.app.form.interfaces.IDisplayWidget"
-    factory="zope.app.form.browser.sequencewidget.SequenceDisplayWidget"
+    provides="zope.formlib.interfaces.IDisplayWidget"
+    factory="zope.formlib.sequencewidget.SequenceDisplayWidget"
     permission="zope.Public"
     />
 
@@ -67,7 +67,7 @@
     zope.schema.interfaces.IChoice
     zeit.cms.content.interfaces.ICMSContentSource
     .interfaces.IGlobalSearchLayer"
-    provides="zope.app.form.interfaces.IInputWidget"
+    provides="zope.formlib.interfaces.IInputWidget"
     factory=".widget.DropObjectWidget"
     permission="zope.Public"
     />
@@ -77,7 +77,7 @@
     zope.schema.interfaces.IChoice
     zeit.cms.content.interfaces.ICMSContentSource
     .interfaces.ICMSLayer"
-    provides="zope.app.form.interfaces.IDisplayWidget"
+    provides="zope.formlib.interfaces.IDisplayWidget"
     factory=".widget.DropObjectDisplayWidget"
     permission="zope.Public"
     />
@@ -89,7 +89,7 @@
     zope.schema.interfaces.IChoice
     zeit.cms.content.interfaces.AuthorSource
     .interfaces.IGlobalSearchLayer"
-    provides="zope.app.form.interfaces.IInputWidget"
+    provides="zope.formlib.interfaces.IInputWidget"
     factory=".widget.DropObjectWidget"
     permission="zope.Public"
     />
@@ -99,7 +99,7 @@
     zope.schema.interfaces.IChoice
     zeit.cms.content.interfaces.AuthorSource
     .interfaces.ICMSLayer"
-    provides="zope.app.form.interfaces.IDisplayWidget"
+    provides="zope.formlib.interfaces.IDisplayWidget"
     factory=".widget.DropObjectDisplayWidget"
     permission="zope.Public"
     />
@@ -111,7 +111,7 @@
     zeit.cms.content.interfaces.ReferenceField
     zeit.cms.content.interfaces.ICMSContentSource
     .interfaces.IGlobalSearchLayer"
-    provides="zope.app.form.interfaces.IInputWidget"
+    provides="zope.formlib.interfaces.IInputWidget"
     factory=".widget.ReferenceWidget"
     permission="zope.Public"
     />
@@ -121,7 +121,7 @@
     zeit.cms.content.interfaces.ReferenceField
     zeit.cms.content.interfaces.ICMSContentSource
     .interfaces.ICMSLayer"
-    provides="zope.app.form.interfaces.IDisplayWidget"
+    provides="zope.formlib.interfaces.IDisplayWidget"
     factory=".widget.DropObjectDisplayWidget"
     permission="zope.Public"
     />
@@ -133,7 +133,7 @@
     zope.schema.interfaces.ITuple
     zeit.cms.content.interfaces.ICMSContentSource
     .interfaces.IGlobalSearchLayer"
-    provides="zope.app.form.interfaces.IInputWidget"
+    provides="zope.formlib.interfaces.IInputWidget"
     factory=".widget.ObjectSequenceWidget"
     permission="zope.Public"
     />
@@ -143,7 +143,7 @@
     zope.schema.interfaces.ITuple
     zeit.cms.content.interfaces.ICMSContentSource
     .interfaces.ICMSLayer"
-    provides="zope.app.form.interfaces.IDisplayWidget"
+    provides="zope.formlib.interfaces.IDisplayWidget"
     factory=".widget.ObjectSequenceDisplayWidget"
     permission="zope.Public"
     />
@@ -153,7 +153,7 @@
     zope.schema.interfaces.ITuple
     zeit.cms.content.contentsource.IAutocompleteCMSContentSource
     .interfaces.ICMSLayer"
-    provides="zope.app.form.interfaces.IInputWidget"
+    provides="zope.formlib.interfaces.IInputWidget"
     factory=".widget.ObjectSequenceWidget"
     permission="zope.Public"
     />
@@ -216,7 +216,7 @@
   <adapter
     for="zope.schema.interfaces.IDatetime
     zeit.cms.browser.interfaces.ICMSLayer"
-    provides="zope.app.form.browser.interfaces.ISimpleInputWidget"
+    provides="zope.formlib.interfaces.ISimpleInputWidget"
     factory=".widget.DatetimeWidget"
     permission="zope.Public"
     />
@@ -226,7 +226,7 @@
   <adapter
       for="zope.schema.interfaces.IBool
            .interfaces.ICMSLayer"
-      provides="zope.app.form.browser.interfaces.ISimpleInputWidget"
+      provides="zope.formlib.interfaces.ISimpleInputWidget"
       factory=".widget.CheckBoxWidget"
       permission="zope.Public"
       />
@@ -234,7 +234,7 @@
   <adapter
       for="zope.schema.interfaces.IBool
            .interfaces.ICMSLayer"
-      provides="zope.app.form.interfaces.IDisplayWidget"
+      provides="zope.formlib.interfaces.IDisplayWidget"
       factory=".widget.CheckboxDisplayWidget"
       permission="zope.Public"
       />
@@ -264,7 +264,7 @@
   <adapter
       for="zeit.cms.content.field.Color
            .interfaces.ICMSLayer"
-      provides="zope.app.form.browser.interfaces.ISimpleInputWidget"
+      provides="zope.formlib.interfaces.ISimpleInputWidget"
       factory=".widget.ColorpickerWidget"
       permission="zope.Public"
       />
@@ -272,7 +272,7 @@
   <adapter
       for="zeit.cms.content.field.Color
            .interfaces.ICMSLayer"
-      provides="zope.app.form.interfaces.IDisplayWidget"
+      provides="zope.formlib.interfaces.IDisplayWidget"
       factory="zope.formlib.widgets.DisplayWidget"
       permission="zope.Public"
       />
@@ -280,7 +280,7 @@
   <adapter
       for="zeit.cms.content.field.Markdown
            .interfaces.ICMSLayer"
-      provides="zope.app.form.browser.interfaces.ISimpleInputWidget"
+      provides="zope.formlib.interfaces.ISimpleInputWidget"
       factory=".widget.MarkdownWidget"
       permission="zope.Public"
       />
@@ -288,7 +288,7 @@
   <adapter
       for="zeit.cms.content.field.Markdown
            .interfaces.ICMSLayer"
-      provides="zope.app.form.interfaces.IDisplayWidget"
+      provides="zope.formlib.interfaces.IDisplayWidget"
       factory="zeit.cms.browser.widget.MarkdownDisplayWidget"
       permission="zope.Public"
       />
@@ -305,7 +305,7 @@
   <adapter
       for=".manual.LinkField
            .interfaces.ICMSLayer"
-      provides="zope.app.form.interfaces.IDisplayWidget"
+      provides="zope.formlib.interfaces.IDisplayWidget"
       factory=".manual.LinkWidget"
       permission="zope.Public"
       />

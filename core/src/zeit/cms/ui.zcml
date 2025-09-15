@@ -25,6 +25,7 @@
   <include package="zope.publisher" file="meta.zcml" />
   <include package="zeit.cms" file="application.zcml" />
   <include package="zeit.cms" file="menu.zcml" />
+  <include package="zeit.cms" file="zopesecurity.zcml" />
 
   <include package="collective.monkeypatcher" />
   <monkey:patch
@@ -37,9 +38,6 @@
   <include package="zope.app.publication" file="meta.zcml" />
   <include package="zope.app.publication" />
   <include package="zope.app.publisher.xmlrpc" />
-  <!-- We should copy those two files instead, the package is archived -->
-  <include package="zope.app.security" file="globalmodules.zcml" />
-  <include package="zope.app.security" file="_protections.zcml" />
   <include package="zope.browsermenu" />
   <include package="zope.browserresource" />
   <include package="zope.copypastemove" />
@@ -86,7 +84,6 @@
   <!-- Grant UI -->
   <include package="zope.app.form.browser" file="meta.zcml" />
   <include package="zope.app.authentication"/>
-  <include package="zope.app.security.browser" />
 
   <include package="zope.app.tree"/>
   <include package="zope.app.preference" file="meta.zcml"/>

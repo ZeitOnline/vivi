@@ -1,0 +1,21 @@
+<tal:block i18n:domain="zope">
+	  <h4 tal:content="options/title" i18n:translate="">principals.zcml</h4>
+	  <div class="row">
+		    <div class="label" i18n:translate="">
+			      Search String
+		    </div>
+		    <div class="field">
+			      <input type="text" name="some.searchstring"
+			             tal:attributes="name string:${options/name}.searchstring"
+			      />
+		    </div>
+	  </div>
+	  <div class="row">
+		    <div class="field">
+			      <input type="submit" name="some.search" value="Search"
+			             tal:attributes="name string:${options/name}.search"
+			             i18n:attributes="value search-button"
+			      />
+		    </div>
+	  </div>
+</tal:block>

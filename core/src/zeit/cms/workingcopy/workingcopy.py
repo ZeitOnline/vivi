@@ -1,6 +1,6 @@
 import grokcore.component as grok
 import z3c.traverser.interfaces
-import zope.app.security.interfaces
+import zope.authentication.interfaces
 import zope.component
 import zope.container.btree
 import zope.interface
@@ -126,9 +126,9 @@ class WorkingcopyTraverser:
         self.request = request
 
     def publishTraverse(self, request, name):
-        auth = zope.component.getUtility(zope.app.security.interfaces.IAuthentication)
+        auth = zope.component.getUtility(zope.authentication.interfaces.IAuthentication)
         try:
             principal = auth.getPrincipal(name)
-        except zope.app.security.interfaces.PrincipalLookupError:
+        except zope.authentication.interfaces.PrincipalLookupError:
             raise zope.publisher.interfaces.NotFound(self.context, name, request)
         return zeit.cms.workingcopy.interfaces.IWorkingcopy(principal)

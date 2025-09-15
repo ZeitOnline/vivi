@@ -2,7 +2,7 @@
 
   <class class=".workingcopy.Workingcopy">
     <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
-    <require like_class="zope.app.folder.folder.Folder" />
+    <require like_class="zope.site.folder.Folder" />
     <require
         interface="zeit.cms.checkout.interfaces.IWorkingcopy"
         permission="zope.View" />
@@ -10,7 +10,7 @@
 
   <class class=".workingcopy.WorkingcopyLocation">
     <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
-    <require like_class="zope.app.folder.folder.Folder" />
+    <require like_class="zope.site.folder.Folder" />
   </class>
 
   <adapter factory=".workingcopy.principalAdapter" />
