@@ -38,10 +38,7 @@ class BaseImage:
             pil.load()
         with pil as pil:
             if keep_metadata:
-                pil.encoderinfo = {
-                    'exif': pil.getexif(),
-                    'xmp': pil.info.get('xmp'),
-                }
+                pil.encoderinfo = pil.info.copy()
             yield pil
 
     @property
