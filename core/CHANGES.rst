@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.184.0 (2025-09-15)
+--------------------
+
+- WCM-861: Implement metadata tab also for imagegroups
+
+
 7.183.0 (2025-09-15)
 --------------------
 
