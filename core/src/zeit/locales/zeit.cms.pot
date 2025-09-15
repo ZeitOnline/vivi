@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Mon Sep 15 14:16:12 2025\n"
+"POT-Creation-Date: Mon Sep 15 14:49:57 2025\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -3522,7 +3522,6 @@ msgid "Caption"
 msgstr ""
 
 #: zeit/content/image/browser/imageupload.edit-images.pt:33
-#: zeit/content/image/browser/imageupload.upload-images.pt:16
 msgid "Upload"
 msgstr ""
 
@@ -3564,6 +3563,10 @@ msgstr ""
 
 #: zeit/content/image/browser/imageupload.upload-images.pt:9
 msgid "Import via ID from InterRed MDB"
+msgstr ""
+
+#: zeit/content/image/browser/imageupload.upload-images.pt:16
+msgid "Select"
 msgstr ""
 
 #: zeit/content/image/browser/interfaces.py:10

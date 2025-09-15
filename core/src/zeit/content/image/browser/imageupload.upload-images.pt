@@ -13,7 +13,7 @@
       <button class="imageupload__button imageupload__button--add-mdb-ids">→</button>
     </p>
     <ul class="imageupload__gallery"></ul>
-    <p><button class="imageupload__button imageupload__button--submit" i18n:translate="">Upload</button></p>
+    <p><button class="imageupload__button imageupload__button--submit" i18n:translate="">Select</button></p>
     <template class="imageupload__template">
         <li>
             <img/>

@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Mon Sep 15 14:16:12 2025\n"
+"POT-Creation-Date: Mon Sep 15 14:49:57 2025\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -3464,7 +3464,6 @@ msgid "Caption"
 msgstr "Bildunterschrift"
 
 #: zeit/content/image/browser/imageupload.edit-images.pt:33
-#: zeit/content/image/browser/imageupload.upload-images.pt:16
 msgid "Upload"
 msgstr "Hochladen"
 
@@ -3507,6 +3506,10 @@ msgstr "Durchsuchen"
 #: zeit/content/image/browser/imageupload.upload-images.pt:9
 msgid "Import via ID from InterRed MDB"
 msgstr "Per ID aus der InterRed-MDB übernehmen"
+
+#: zeit/content/image/browser/imageupload.upload-images.pt:16
+msgid "Select"
+msgstr "Auswählen"
 
 #: zeit/content/image/browser/interfaces.py:10
 msgid "The uploaded image could not be identified."
