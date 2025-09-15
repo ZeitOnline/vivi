@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.182.0 (2025-09-15)
+--------------------
+
+- WCM-978: bulk edit metadata in image upload
+
+
 7.181.0 (2025-09-12)
 --------------------
 
