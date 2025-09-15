@@ -7,3 +7,6 @@ class TestXMPMetadataView(zeit.content.image.testing.BrowserTestCase):
         # so don't assert anything about that yet.
         self.browser.open('/repository/image1/@@xmp.html')
         self.assertEllipsis('...XMP Metadata...', self.browser.contents)
+
+        self.browser.open('/repository/imagegroup/@@xmp.html')
+        self.assertEllipsis('...XMP Metadata...', self.browser.contents)

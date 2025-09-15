@@ -33,5 +33,17 @@ class Listing(zeit.cms.browser.listing.Listing):
 
     @property
     def content(self):
-        with zope.security.proxy.getObject(self.context).as_pil() as pil:
-            return sorted(zeit.content.image.xmp.flatten(pil.getxmp()).items())
+        img = self._image
+        if img is None:
+            return ()
+        return sorted(img.getXMPFlattened().items())
+
+    @property
+    def _image(self):
+        return self.context
+
+
+class GroupListing(Listing):
+    @property
+    def _image(self):
+        return self.context.master_image_for_viewport('desktop')
