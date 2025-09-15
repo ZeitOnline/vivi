@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Mon Sep 15 10:58:38 2025\n"
+"POT-Creation-Date: Mon Sep 15 14:16:12 2025\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -325,7 +325,7 @@ msgstr ""
 
 #: zeit/cms/browser/tree.pt:19
 #: zeit/content/article/edit/browser/recension-list.pt:19
-#: zeit/content/image/browser/imageupload.upload-images.pt:16
+#: zeit/content/image/browser/imageupload.upload-images.pt:22
 msgid "Remove"
 msgstr "Entfernen"
 
@@ -3464,7 +3464,7 @@ msgid "Caption"
 msgstr "Bildunterschrift"
 
 #: zeit/content/image/browser/imageupload.edit-images.pt:33
-#: zeit/content/image/browser/imageupload.upload-images.pt:10
+#: zeit/content/image/browser/imageupload.upload-images.pt:16
 msgid "Upload"
 msgstr "Hochladen"
 
@@ -3488,21 +3488,25 @@ msgstr "Neue Bilder hochladen"
 msgid "Please upload at least one image"
 msgstr "Bitte mindestens eine Datei hochladen"
 
-#: zeit/content/image/browser/imageupload.py:186
+#: zeit/content/image/browser/imageupload.py:194
 msgid "Edit images"
 msgstr "Bilder bearbeiten"
 
-#: zeit/content/image/browser/imageupload.py:214
+#: zeit/content/image/browser/imageupload.py:222
 msgid "File name is already in use"
 msgstr "Dateiname ist bereits belegt"
 
-#: zeit/content/image/browser/imageupload.upload-images.pt:6
-msgid "Upload one or multiple images"
-msgstr "Ein oder mehrere Bilder hochladen"
+#: zeit/content/image/browser/imageupload.upload-images.pt:5
+msgid "Drag and drop image from local computer or InterRed MDB"
+msgstr "Bild hierher ziehen (vom eigenen Rechner oder aus der InterRed-MDB)"
 
-#: zeit/content/image/browser/imageupload.upload-images.pt:7
+#: zeit/content/image/browser/imageupload.upload-images.pt:6
 msgid "Select files"
-msgstr "Datei(en) auswählen"
+msgstr "Durchsuchen"
+
+#: zeit/content/image/browser/imageupload.upload-images.pt:9
+msgid "Import via ID from InterRed MDB"
+msgstr "Per ID aus der InterRed-MDB übernehmen"
 
 #: zeit/content/image/browser/interfaces.py:10
 msgid "The uploaded image could not be identified."
