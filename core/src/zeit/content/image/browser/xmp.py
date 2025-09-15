@@ -33,4 +33,17 @@ class Listing(zeit.cms.browser.listing.Listing):
 
     @property
     def content(self):
-        return sorted(self.context.getXMPFlattened().items())
+        img = self._image
+        if img is None:
+            return ()
+        return sorted(img.getXMPFlattened().items())
+
+    @property
+    def _image(self):
+        return self.context
+
+
+class GroupListing(Listing):
+    @property
+    def _image(self):
+        return self.context.master_image_for_viewport('desktop')
