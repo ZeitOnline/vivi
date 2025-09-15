@@ -1,19 +1,25 @@
+import zope.component
+
 import zeit.cms.checkout.helper
 import zeit.cms.interfaces
+import zeit.cms.repository.interfaces
 import zeit.content.image.interfaces
 import zeit.content.image.testing
 
 
 class ImageDetails(zeit.content.image.testing.SeleniumTestCase):
     def test_clicking_button_shows_details_pane(self):
-        zeit.content.image.testing.create_image_group()
-        image = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/group/master-image.jpg')
+        repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
+        repository['image-with-metadata'] = zeit.content.image.testing.create_local_image(
+            'gettyimages-2168232879-150x100.jpg'
+        )
+        image = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/image-with-metadata')
         with zeit.cms.checkout.helper.checked_out(image) as co:
             meta = zeit.content.image.interfaces.IImageMetadata(co)
             meta.caption = 'foo'
 
         s = self.selenium
-        self.open('/repository/group/master-image.jpg/@@wrap?view=object-details')
+        self.open('/repository/image-with-metadata/@@wrap?view=object-details')
         s.assertNotVisible('css=.picture_information')
         self.execute('window.jQuery(document).trigger_fragment_ready();')
         s.click('css=.toggle_infos')
