@@ -61,14 +61,6 @@ def create_image_group(
     repository[groupname] = group
 
     image = create_local_image(filename, package, folder)
-    repository[filename] = image
-
-    fh = repository[filename].open()
-    image = zeit.content.image.image.LocalImage()
-    with image.open('w') as out:
-        out.write(fh.read())
-    fh.close()
-    zope.event.notify(zope.lifecycleevent.ObjectCreatedEvent(image))
     repository[groupname][group.master_image] = image
     return repository[groupname]
 
@@ -88,7 +80,9 @@ class FixtureLayer(zeit.cms.testing.Layer):
         with self['rootFolder'](self['zodbDB-layer']) as root:
             with zeit.cms.testing.site(root):
                 repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
-                repository['image1'] = create_local_image()
+                repository['image'] = create_local_image(
+                    'DSC00109_2.JPG', package='zeit.connector', folder='testcontent/2006'
+                )
                 create_image_group(filename='opernball.jpg', package=None, folder=None)
 
     def tearDown(self):

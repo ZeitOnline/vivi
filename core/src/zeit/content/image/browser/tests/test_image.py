@@ -13,13 +13,13 @@ class TestDelete(zeit.content.image.testing.BrowserTestCase):
     """
 
     def test_delete_message_in_repository(self):
-        self.browser.open('/repository/image1/@@delete.html')
+        self.browser.open('/repository/image/@@delete.html')
         self.assertEllipsis(
             '...Do you really want to delete the object from the folder...', self.browser.contents
         )
 
     def test_delete_message_in_workingcopy(self):
-        self.browser.open('/repository/image1/@@checkout')
+        self.browser.open('/repository/image/@@checkout')
         self.browser.open('@@delete.html')
         self.assertEllipsis(
             '...Do you really want to delete your workingcopy?...', self.browser.contents

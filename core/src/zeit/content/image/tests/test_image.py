@@ -50,7 +50,7 @@ class TestImageXMLReference(zeit.content.image.testing.FunctionalTestCase):
         create_image_group()
         image = zeit.content.image.image.LocalImage()
         with image.open('w') as out:
-            with self.repository['DSC00109_2.JPG'].open() as fh:
+            with self.repository['image'].open() as fh:
                 out.write(fh.read())
         self.repository['example-image'] = image
         ref = zope.component.getAdapter(
@@ -63,7 +63,7 @@ class TestImageXMLReference(zeit.content.image.testing.FunctionalTestCase):
 
 class TestImageMIMEType(zeit.content.image.testing.FunctionalTestCase):
     def test_ignores_stored_dav_mime_type(self):
-        with checked_out(self.repository['image1']) as co:
+        with checked_out(self.repository['image']) as co:
             props = zeit.connector.interfaces.IWebDAVProperties(co)
             props[('getcontenttype', 'DAV:')] = 'image/png'
-        self.assertEqual('image/jpeg', self.repository['image1'].mimeType)
+        self.assertEqual('image/jpeg', self.repository['image'].mimeType)
