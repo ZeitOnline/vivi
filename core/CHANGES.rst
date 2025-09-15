@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.183.0 (2025-09-15)
+--------------------
+
+- WCM-925: Replace zope.app.file with much more generic filetype package
+  WCM-925: Remove zope.app.security
+
+
 7.182.0 (2025-09-15)
 --------------------
 
