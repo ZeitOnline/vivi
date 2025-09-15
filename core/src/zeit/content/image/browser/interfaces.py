@@ -72,3 +72,11 @@ class IPurchaseReport(zope.interface.Interface):
     date_end = zope.schema.Datetime(
         title=_('End'),
     )
+
+
+class IUploadTarget(zope.interface.Interface):
+    pass
+
+
+class IUploadBaseName(zope.interface.Interface):
+    pass
