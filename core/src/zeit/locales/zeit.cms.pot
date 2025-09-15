@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Fri Sep 12 15:38:55 2025\n"
+"POT-Creation-Date: Mon Sep 15 10:58:38 2025\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -195,15 +195,15 @@ msgstr ""
 msgid "Form"
 msgstr ""
 
-#: zeit/cms/browser/listing.py:252
+#: zeit/cms/browser/listing.py:251
 msgid "Directory listing"
 msgstr ""
 
-#: zeit/cms/browser/listing.py:255
+#: zeit/cms/browser/listing.py:254
 msgid "There are no objects in this folder."
 msgstr ""
 
-#: zeit/cms/browser/listing.py:261
+#: zeit/cms/browser/listing.py:260
 #: zeit/content/article/edit/interfaces.py:244
 #: zeit/content/article/interfaces.py:185
 #: zeit/content/author/author.py:134
@@ -211,7 +211,7 @@ msgstr ""
 msgid "Author"
 msgstr ""
 
-#: zeit/cms/browser/listing.py:262
+#: zeit/cms/browser/listing.py:261
 #: zeit/cms/content/interfaces.py:157
 #: zeit/cms/retractlog/browser/retractlog.py:22
 #: zeit/cms/retractlog/interfaces.py:25
@@ -237,7 +237,7 @@ msgstr ""
 msgid "Title"
 msgstr ""
 
-#: zeit/cms/browser/listing.py:263
+#: zeit/cms/browser/listing.py:262
 #: zeit/cms/interfaces.py:103
 #: zeit/cms/repository/browser/file.py:31
 #: zeit/cms/repository/browser/file_details.pt:2
@@ -247,11 +247,11 @@ msgstr ""
 msgid "File name"
 msgstr ""
 
-#: zeit/cms/browser/listing.py:264
+#: zeit/cms/browser/listing.py:263
 msgid "Modified"
 msgstr ""
 
-#: zeit/cms/browser/listing.py:265
+#: zeit/cms/browser/listing.py:264
 #: zeit/cms/content/interfaces.py:85
 #: zeit/cms/content/interfaces.py:489
 #: zeit/content/volume/browser/toc-listing.pt:25
@@ -260,7 +260,7 @@ msgstr ""
 msgid "Ressort"
 msgstr ""
 
-#: zeit/cms/browser/listing.py:266
+#: zeit/cms/browser/listing.py:265
 #: zeit/cms/content/interfaces.py:82
 msgid "Page"
 msgstr ""
@@ -360,20 +360,20 @@ msgstr ""
 msgid "Logout"
 msgstr ""
 
-#: zeit/cms/browser/widget.py:58
+#: zeit/cms/browser/widget.py:57
 msgid "The object could not be found."
 msgstr ""
 
-#: zeit/cms/browser/widget.py:359
+#: zeit/cms/browser/widget.py:356
 #: zeit/cms/repository/browser/repository.py:166
 msgid "The object '${id}' could not be found."
 msgstr ""
 
-#: zeit/cms/browser/widget.py:366
+#: zeit/cms/browser/widget.py:363
 msgid "'${id}' does not have an accepted type (${types})."
 msgstr ""
 
-#: zeit/cms/browser/widget.py:619
+#: zeit/cms/browser/widget.py:616
 msgid "Type to find entries ..."
 msgstr ""
 
@@ -528,7 +528,7 @@ msgstr ""
 
 #: zeit/cms/content/browser/form.py:23
 #: zeit/content/cp/browser/form.py:18
-#: zeit/content/gallery/browser/form.py:28
+#: zeit/content/gallery/browser/form.py:29
 #: zeit/content/image/browser/form.py:20
 #: zeit/content/infobox/browser/form.py:25
 #: zeit/content/infobox/browser/form.py:87
@@ -562,7 +562,7 @@ msgstr ""
 #: zeit/content/article/browser/form.py:32
 #: zeit/content/article/edit/browser/recension.py:68
 #: zeit/content/author/browser/form.py:51
-#: zeit/content/gallery/browser/form.py:46
+#: zeit/content/gallery/browser/form.py:47
 msgid "misc."
 msgstr ""
 
@@ -870,47 +870,47 @@ msgstr ""
 msgid "Locked until"
 msgstr ""
 
-#: zeit/cms/locking/browser/lock.py:32
+#: zeit/cms/locking/browser/lock.py:33
 msgid "Locks"
 msgstr ""
 
-#: zeit/cms/locking/browser/lock.py:51
+#: zeit/cms/locking/browser/lock.py:52
 msgid "Steal lock"
 msgstr ""
 
-#: zeit/cms/locking/browser/lock.py:57
+#: zeit/cms/locking/browser/lock.py:58
 msgid "The lock on \"${name}\" has been stolen from \"${old_locker}\"."
 msgstr ""
 
-#: zeit/cms/locking/browser/lock.py:63
+#: zeit/cms/locking/browser/lock.py:64
 msgid "Lock"
 msgstr ""
 
-#: zeit/cms/locking/browser/lock.py:66
+#: zeit/cms/locking/browser/lock.py:67
 msgid "\"${name}\" has been locked."
 msgstr ""
 
-#: zeit/cms/locking/browser/lock.py:68
+#: zeit/cms/locking/browser/lock.py:69
 msgid "Unlock"
 msgstr ""
 
-#: zeit/cms/locking/browser/lock.py:72
+#: zeit/cms/locking/browser/lock.py:73
 msgid "\"${name}\" has been unlocked."
 msgstr ""
 
-#: zeit/cms/locking/browser/lock.py:81
+#: zeit/cms/locking/browser/lock.py:82
 msgid "Manage lock"
 msgstr ""
 
-#: zeit/cms/locking/browser/lock.py:106
+#: zeit/cms/locking/browser/lock.py:107
 msgid "Locked by you"
 msgstr ""
 
-#: zeit/cms/locking/browser/lock.py:115
+#: zeit/cms/locking/browser/lock.py:116
 msgid "Locked by ${user}"
 msgstr ""
 
-#: zeit/cms/locking/browser/lock.py:118
+#: zeit/cms/locking/browser/lock.py:119
 msgid "Not locked"
 msgstr ""
 
@@ -1246,10 +1246,12 @@ msgstr ""
 
 #: zeit/cms/repository/browser/property.py:31
 #: zeit/content/cp/interfaces.py:192
+#: zeit/content/image/browser/xmp.py:29
 msgid "Name"
 msgstr ""
 
 #: zeit/cms/repository/browser/property.py:32
+#: zeit/content/image/browser/xmp.py:30
 msgid "Value"
 msgstr ""
 
@@ -1863,7 +1865,7 @@ msgstr ""
 #: zeit/content/cp/interfaces.py:633
 #: zeit/content/image/browser/configure.zcml:269
 #: zeit/content/image/browser/imagegroup.py:221
-#: zeit/content/image/image.py:196
+#: zeit/content/image/image.py:150
 #: zeit/content/portraitbox/interfaces.py:16
 #: zeit/wysiwyg/browser/resources/reference/image.pt:17
 msgid "Image"
@@ -1932,7 +1934,7 @@ msgstr ""
 #: zeit/content/article/interfaces.py:66
 #: zeit/content/cp/interfaces.py:303
 #: zeit/content/cp/interfaces.py:634
-#: zeit/content/image/interfaces.py:395
+#: zeit/content/image/interfaces.py:398
 #: zeit/push/interfaces.py:222
 msgid "Drag an image group here"
 msgstr ""
@@ -3296,19 +3298,19 @@ msgstr ""
 msgid "Image sub text"
 msgstr ""
 
-#: zeit/content/gallery/browser/form.py:54
+#: zeit/content/gallery/browser/form.py:55
 msgid "Add gallery"
 msgstr ""
 
-#: zeit/content/gallery/browser/form.py:60
+#: zeit/content/gallery/browser/form.py:61
 msgid "Edit gallery"
 msgstr ""
 
-#: zeit/content/gallery/browser/form.py:64
+#: zeit/content/gallery/browser/form.py:65
 msgid "View gallery metadata"
 msgstr ""
 
-#: zeit/content/gallery/browser/form.py:81
+#: zeit/content/gallery/browser/form.py:82
 msgid "Edit gallery entry"
 msgstr ""
 
@@ -3387,7 +3389,7 @@ msgstr ""
 
 #: zeit/content/image/browser/configure.zcml:202
 #: zeit/content/image/browser/imagegroup.py:205
-#: zeit/content/image/interfaces.py:394
+#: zeit/content/image/interfaces.py:397
 msgid "Image group"
 msgstr ""
 
@@ -3395,7 +3397,13 @@ msgstr ""
 msgid "File list"
 msgstr ""
 
-#: zeit/content/image/browser/configure.zcml:431
+#: zeit/content/image/browser/configure.zcml:428
+#: zeit/content/image/browser/configure.zcml:444
+#: zeit/content/image/browser/xmp.py:24
+msgid "XMP Metadata"
+msgstr ""
+
+#: zeit/content/image/browser/configure.zcml:463
 #: zeit/content/image/browser/imageupload.py:29
 msgid "Image (new)"
 msgstr ""
@@ -3599,6 +3607,10 @@ msgstr ""
 msgid "The action you were trying to do could not be finished because the resource has no valid content."
 msgstr ""
 
+#: zeit/content/image/browser/xmp.pt:5
+msgid "Extracted automatically, cannot be edited."
+msgstr ""
+
 #: zeit/content/image/imagegroup.py:389
 msgid "Image Group"
 msgstr ""
@@ -3669,47 +3681,47 @@ msgstr ""
 msgid "Links to"
 msgstr ""
 
-#: zeit/content/image/interfaces.py:174
+#: zeit/content/image/interfaces.py:177
 msgid "viewport-desktop"
 msgstr ""
 
-#: zeit/content/image/interfaces.py:175
+#: zeit/content/image/interfaces.py:178
 msgid "viewport-mobile"
 msgstr ""
 
-#: zeit/content/image/interfaces.py:183
+#: zeit/content/image/interfaces.py:186
 msgid "Viewport was used multiple times"
 msgstr ""
 
-#: zeit/content/image/interfaces.py:187
+#: zeit/content/image/interfaces.py:190
 msgid "Image was used multiple times"
 msgstr ""
 
-#: zeit/content/image/interfaces.py:223
+#: zeit/content/image/interfaces.py:226
 msgid "File name of image group"
 msgstr ""
 
-#: zeit/content/image/interfaces.py:231
+#: zeit/content/image/interfaces.py:234
 msgid "Mapping of viewport to master image"
 msgstr ""
 
-#: zeit/content/image/interfaces.py:238
+#: zeit/content/image/interfaces.py:241
 msgid "Viewport"
 msgstr ""
 
-#: zeit/content/image/interfaces.py:239
+#: zeit/content/image/interfaces.py:242
 msgid "Image file"
 msgstr ""
 
-#: zeit/content/image/interfaces.py:244
+#: zeit/content/image/interfaces.py:247
 msgid "Setting for variants"
 msgstr ""
 
-#: zeit/content/image/interfaces.py:247
+#: zeit/content/image/interfaces.py:250
 msgid "Display Type"
 msgstr ""
 
-#: zeit/content/image/interfaces.py:383
+#: zeit/content/image/interfaces.py:386
 msgid "Alpha channel fill color"
 msgstr ""
 
@@ -4038,28 +4050,28 @@ msgstr ""
 msgid "View embed"
 msgstr ""
 
-#: zeit/content/text/browser/form.py:15
+#: zeit/content/text/browser/form.py:14
 msgid "Add plain text"
 msgstr ""
 
-#: zeit/content/text/browser/form.py:20
+#: zeit/content/text/browser/form.py:19
 #: zeit/content/text/browser/jinja.py:18
 msgid "Edit plain text"
 msgstr ""
 
-#: zeit/content/text/browser/form.py:24
+#: zeit/content/text/browser/form.py:23
 msgid "View plain text"
 msgstr ""
 
-#: zeit/content/text/browser/json.py:25
+#: zeit/content/text/browser/json.py:26
 msgid "Add JSON file"
 msgstr ""
 
-#: zeit/content/text/browser/json.py:30
+#: zeit/content/text/browser/json.py:31
 msgid "Edit JSON file"
 msgstr ""
 
-#: zeit/content/text/browser/json.py:34
+#: zeit/content/text/browser/json.py:35
 msgid "View JSON file"
 msgstr ""
 
@@ -4234,12 +4246,12 @@ msgid "toc rows"
 msgstr ""
 
 #: zeit/content/volume/browser/toc_listing.py:43
-#: zeit/workflow/interfaces.py:63
+#: zeit/workflow/interfaces.py:62
 msgid "Urgent"
 msgstr ""
 
 #: zeit/content/volume/browser/toc_listing.py:45
-#: zeit/workflow/interfaces.py:57
+#: zeit/workflow/interfaces.py:56
 msgid "status-seo-optimized"
 msgstr ""
 
@@ -4780,34 +4792,34 @@ msgstr ""
 msgid "Publish anyway"
 msgstr ""
 
-#: zeit/workflow/interfaces.py:24
+#: zeit/workflow/interfaces.py:23
 msgid "From"
 msgstr ""
 
-#: zeit/workflow/interfaces.py:25
+#: zeit/workflow/interfaces.py:24
 msgid "To"
 msgstr ""
 
-#: zeit/workflow/interfaces.py:27
+#: zeit/workflow/interfaces.py:26
 msgid "Publication period"
 msgstr ""
 
-#: zeit/workflow/interfaces.py:28
+#: zeit/workflow/interfaces.py:27
 #. Default: "Leave empty for no constraint."
 msgid "workflow-publication-period-description"
 msgstr ""
 
-#: zeit/workflow/interfaces.py:45
+#: zeit/workflow/interfaces.py:44
 #. Default: "Edited"
 msgid "status-edited"
 msgstr ""
 
-#: zeit/workflow/interfaces.py:51
+#: zeit/workflow/interfaces.py:50
 #. Default: "Corrected"
 msgid "status-corrected"
 msgstr ""
 
-#: zeit/workflow/interfaces.py:64
+#: zeit/workflow/interfaces.py:63
 msgid "Select for newsflashs or on a weekend to publish without setting corrected/refined/etc."
 msgstr ""
 
