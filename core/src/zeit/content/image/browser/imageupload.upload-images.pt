@@ -169,7 +169,11 @@
       const li = this.#form.querySelector('.imageupload__template').content.cloneNode(true).firstElementChild
       li.querySelector('.imageupload__filename').textContent = file.filename()
       li.upload_data = file.data()
-      file.thumbnail().then(thumbnail => li.querySelector('img').src = thumbnail)
+      file.thumbnail().then(thumbnail => {
+        const img = li.querySelector('img')
+        img.onerror = () => img.src = '/fanstatic/zeit.cms/preview_not_available.png'
+        img.src = thumbnail
+      })
       this.#gallery.appendChild(li)
     }
 
