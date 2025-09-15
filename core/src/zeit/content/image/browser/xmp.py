@@ -33,5 +33,4 @@ class Listing(zeit.cms.browser.listing.Listing):
 
     @property
     def content(self):
-        with zope.security.proxy.getObject(self.context).as_pil() as pil:
-            return sorted(zeit.content.image.xmp.flatten(pil.getxmp()).items())
+        return sorted(self.context.getXMPFlattened().items())
