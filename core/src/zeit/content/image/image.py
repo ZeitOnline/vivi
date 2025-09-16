@@ -270,6 +270,7 @@ def get_remote_image(url, timeout=2):
                 first_chunk = False
                 assert len(chunk) > DOWNLOAD_CHUNK_SIZE / 2
             fh.write(chunk)
+    zope.event.notify(zope.lifecycleevent.ObjectCreatedEvent(image))
     return image
 
 

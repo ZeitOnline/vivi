@@ -1,10 +1,12 @@
+import importlib.resources
+
+import requests_mock
 import zope.component
 import zope.event
 import zope.lifecycleevent
 
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.content.sources import FEATURE_TOGGLES
-from zeit.content.image.testing import create_image
 import zeit.cms.checkout.interfaces
 import zeit.cms.interfaces
 import zeit.content.image.image
@@ -77,3 +79,25 @@ class TestImageProperties(zeit.content.image.testing.FunctionalTestCase):
         self.assertEqual('image/jpeg', image.mimeType)
         self.assertEqual(119, image.width)
         self.assertEqual(160, image.height)
+
+    def test_create_image_from_remote_sets_properties(self):
+        FEATURE_TOGGLES.set('column_read_wcm_56')
+        FEATURE_TOGGLES.set('column_write_wcm_56')
+
+        def callback(*args):
+            image = (
+                importlib.resources.files('zeit.connector') / 'testcontent/2006' / 'DSC00109_2.JPG'
+            )
+            with open(image, 'rb') as fd:
+                image_bytes = fd.read()
+            return image_bytes
+
+        rmock = requests_mock.Mocker()
+        rmock.register_uri('GET', 'https://example.test/image', content=callback)
+        with rmock:
+            image = zeit.content.image.image.get_remote_image('https://example.test/image')
+        self.repository['image-with-properties'] = image
+        image = self.repository['image-with-properties']
+        self.assertEqual('image/jpeg', image.mimeType)
+        self.assertEqual(2048, image.width)
+        self.assertEqual(1536, image.height)
