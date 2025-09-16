@@ -37,14 +37,7 @@ def add_image(folder, filename, name=None):
     if name is None:
         name = filename
 
-    filename = str((importlib.resources.files(__package__) / 'browser/testdata' / filename))
-
-    image = zeit.content.image.image.LocalImage()
-    image.__name__ = name
-    with image.open('w') as img:
-        with open(filename, 'rb') as f:
-            img.write(f.read())
-
+    image = zeit.content.image.testing.create_image(filename, __package__, 'browser/testdata')
     metadata = zeit.content.image.interfaces.IImageMetadata(image)
     metadata.copyright = (('DIE ZEIT', 'http://www.zeit.de'),)
     metadata.caption = 'Nice image'

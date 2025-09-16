@@ -19,8 +19,8 @@ class FixtureLayer(zeit.cms.testing.Layer):
             with zeit.cms.testing.site(root):
                 repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
                 repository['article'] = zeit.content.article.testing.create_article()
-                repository['image1'] = zeit.content.image.testing.create_local_image()
-                repository['image2'] = zeit.content.image.testing.create_local_image()
+                repository['image1'] = zeit.content.image.testing.create_image()
+                repository['image2'] = zeit.content.image.testing.create_image()
 
     def tearDown(self):
         self['gcs_storage'].stack_pop()

@@ -1,11 +1,6 @@
 import zope.component
 
 from zeit.cms.checkout.helper import checked_out
-from zeit.content.image.testing import (
-    create_image_group,
-    create_image_group_with_master_image,
-    create_local_image,
-)
 import zeit.cms.checkout.interfaces
 import zeit.cms.interfaces
 import zeit.content.image.image
@@ -15,18 +10,14 @@ import zeit.content.image.testing
 class TestImageMetadataAcquisition(zeit.content.image.testing.FunctionalTestCase):
     def setUp(self):
         super().setUp()
-        self.group_id = create_image_group().uniqueId
+        self.group = self.repository['group']
         with zeit.cms.checkout.helper.checked_out(self.group) as co:
             metadata = zeit.content.image.interfaces.IImageMetadata(co)
             metadata.title = 'Title'
 
     @property
-    def group(self):
-        return zeit.cms.interfaces.ICMSContent(self.group_id)
-
-    @property
     def img(self):
-        return self.group['new-hampshire-450x200.jpg']
+        return self.group['master-image.jpg']
 
     def test_acquired_in_repository(self):
         metadata = zeit.content.image.interfaces.IImageMetadata(self.img)
@@ -49,14 +40,8 @@ class TestImageMetadataAcquisition(zeit.content.image.testing.FunctionalTestCase
 
 class TestImageXMLReference(zeit.content.image.testing.FunctionalTestCase):
     def test_master_image_without_filename_extension_sets_mime_as_type(self):
-        create_image_group_with_master_image()
-        image = zeit.content.image.image.LocalImage()
-        with image.open('w') as out:
-            with self.repository['2006']['DSC00109_2.JPG'].open() as fh:
-                out.write(fh.read())
-        self.repository['example-image'] = image
         ref = zope.component.getAdapter(
-            self.repository['example-image'],
+            self.repository['image'],
             zeit.cms.content.interfaces.IXMLReference,
             name='image',
         )
@@ -65,7 +50,6 @@ class TestImageXMLReference(zeit.content.image.testing.FunctionalTestCase):
 
 class TestImageMIMEType(zeit.content.image.testing.FunctionalTestCase):
     def test_ignores_stored_dav_mime_type(self):
-        self.repository['image'] = create_local_image('opernball.jpg')
         with checked_out(self.repository['image']) as co:
             props = zeit.connector.interfaces.IWebDAVProperties(co)
             props[('getcontenttype', 'DAV:')] = 'image/png'

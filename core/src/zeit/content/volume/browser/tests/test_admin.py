@@ -67,7 +67,7 @@ class VolumeAdminBrowserTest(zeit.content.volume.testing.BrowserTestCase):
         infobox_reference._validate = mock.Mock()
         infobox_reference.references = self.repository['infobox']
         if 'image' not in self.repository:
-            self.repository['image'] = zeit.content.image.testing.create_local_image(
+            self.repository['image'] = zeit.content.image.testing.create_image(
                 'obama-clinton-120x120.jpg'
             )
         image_reference = body.create_item('image', 3)

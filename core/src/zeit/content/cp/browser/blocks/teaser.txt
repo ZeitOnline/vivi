@@ -153,7 +153,7 @@ The 450x200 image is used now:
 >>> browser.open(contents_url)
 >>> print(browser.contents)
 <div ... class="teaser-contents action-content-droppable leader"...>
-  <img...src="http://localhost/++skin++cms/repository/image-group/thumbnails/450x200/@@raw"...
+  <img...src="http://localhost/++skin++cms/repository/group/thumbnails/450x200/@@raw"...
   <div class="teaser-list">
     <div class="teaser">
       <div class="supertitle"></div>
@@ -165,13 +165,13 @@ When the image is not an image group, it will be just used:
 ...     with zeit.cms.testing.interaction('zope.user'):
 ...         with zeit.cms.checkout.helper.checked_out(test_content) as co:
 ...             zeit.content.image.interfaces.IImages(co).image = (
-...                 group['obama-clinton-120x120.jpg'])
+...                 group['master-image.jpg'])
 >>> browser.getLink('Edit block properties', index=0).click()
 >>> click_link(browser, 'Großer Teaser')
 >>> browser.open(contents_url)
 >>> print(browser.contents)
 <div ... class="teaser-contents action-content-droppable leader"...>
-  <img...src="http://localhost/++skin++cms/repository/image-group/obama-clinton-120x120.jpg/@@raw"...
+  <img...src="http://localhost/++skin++cms/repository/group/master-image.jpg/@@raw"...
   <div class="teaser-list">
     <div class="teaser">
       <div class="supertitle"></div>

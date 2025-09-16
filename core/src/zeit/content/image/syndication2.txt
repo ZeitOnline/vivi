@@ -20,7 +20,7 @@ appears on the image as well:
 >>> repository = zope.component.getUtility(
 ...     zeit.cms.repository.interfaces.IRepository)
 >>> content = repository['testcontent']
->>> group = zeit.content.image.testing.create_image_group()
+>>> group = repository['group']
 
 >>> workflow = zeit.workflow.interfaces.ITimeBasedPublishing(group)
 >>> workflow.release_period = (pendulum.datetime(2008, 1, 6),

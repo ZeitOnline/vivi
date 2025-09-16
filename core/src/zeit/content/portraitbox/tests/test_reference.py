@@ -3,7 +3,7 @@ from unittest import mock
 import zope.security
 import zope.security.proxy
 
-from zeit.content.image.testing import create_local_image
+from zeit.content.image.testing import create_image
 from zeit.content.portraitbox.interfaces import IPortraitboxReference
 from zeit.content.portraitbox.portraitbox import Portraitbox
 from zeit.content.portraitbox.reference import PortraitboxReference
@@ -23,7 +23,7 @@ class ReferenceTest(zeit.content.portraitbox.testing.FunctionalTestCase):
         self.assertNothingRaised(zope.security.canWrite, ref_proxied, 'portraitbox')
 
     def test_content_has_portraitbox(self):
-        self.repository['image'] = create_local_image()
+        self.repository['image'] = create_image()
         pb = Portraitbox()
         pb.name = 'Everyone'
         pb.text = '<p><strong>Everyone</strong> wants cookies.</p>'

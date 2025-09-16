@@ -13,7 +13,7 @@ from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.tagging.tag import Tag
 from zeit.cms.workflow.interfaces import IPublish, IPublisher, IPublishInfo
-from zeit.content.image.testing import create_image_group_with_master_image
+from zeit.content.image.testing import create_image_group
 import zeit.cms.related.interfaces
 import zeit.cms.tagging.interfaces
 import zeit.cms.testing
@@ -315,7 +315,7 @@ class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
                 wl.get('Testtag3'),
             )
             co.authorships = [co.authorships.create(self.repository['author'])]
-            group = create_image_group_with_master_image()
+            group = create_image_group()
             zeit.content.image.interfaces.IImages(co).image = group
 
         article = ICMSContent('http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept')

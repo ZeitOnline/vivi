@@ -13,8 +13,8 @@ Create a  browser first:
 For creating a gallery we need a folder containing images:
 
 >>> from zeit.cms.repository.folder import Folder
->>> from zeit.content.image.testing import create_image_group_with_master_image
->>> from zeit.content.image.testing import create_local_image
+>>> from zeit.content.image.testing import create_image_group
+>>> from zeit.content.image.testing import create_image
 >>> import zeit.cms.repository
 >>> import zope.component
 >>> zeit.cms.testing.set_site()
@@ -25,8 +25,8 @@ For creating a gallery we need a folder containing images:
 Add some images to the folder:
 
 >>> for i in range(1, 5):
-...     folder[f'{i:02d}.jpg'] = create_local_image(f'{i:02d}.jpg', 'zeit.content.gallery.browser', 'testdata')
->>> folder['05'] = create_image_group_with_master_image()
+...     folder[f'{i:02d}.jpg'] = create_image(f'{i:02d}.jpg', 'zeit.content.gallery.browser', 'testdata')
+>>> folder['05'] = create_image_group()
 
 Adding gallery
 ==============
