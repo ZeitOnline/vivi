@@ -119,7 +119,6 @@ ui = [
     "zope.app.exception",
     "zope.app.locales",
     "zope.app.pagetemplate",
-    "zope.app.principalannotation",
     "zope.app.publication",
     "zope.app.publisher",
     "zope.app.tree",

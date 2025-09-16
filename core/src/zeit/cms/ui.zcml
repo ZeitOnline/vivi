@@ -80,7 +80,6 @@
   <include package="zope.pluggableauth" />
   <include package="zope.app.exception.browser" />
   <include package="zope.principalregistry" />
-  <include package="zope.app.principalannotation" />
 
   <!-- Grant UI -->
   <!-- Disable ZMI support, so we don't need zope.app.form -->
@@ -98,6 +97,7 @@
     factory="zope.app.authentication.browser.schemasearch.QuerySchemaSearchView"
     />
 
+  <include package="zope.principalannotation" />
   <include package="zope.app.tree"/>
 
   <include package="zope.app.locking"/>
