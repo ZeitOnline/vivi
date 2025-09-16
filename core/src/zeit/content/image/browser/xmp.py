@@ -36,7 +36,7 @@ class Listing(zeit.cms.browser.listing.Listing):
         img = self._image
         if img is None:
             return ()
-        return sorted(img.getXMPFlattened().items())
+        return sorted(img.embedded_metadata_flattened().items())
 
     @property
     def _image(self):
