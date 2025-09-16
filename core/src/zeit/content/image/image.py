@@ -101,9 +101,9 @@ class BaseImage:
         with self.as_pil() as img:
             return img.size
 
-    def getXMPMetadata(self):
+    def embedded_metadata(self):
         with self.as_pil() as img:
-            return zeit.content.image.xmp.extract_metadata(img.getxmp())
+            return self._metadata(img)
 
     def embedded_metadata_flattened(self):
         with self.as_pil() as img:
