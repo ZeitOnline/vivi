@@ -21,7 +21,7 @@ class MetadataColumn(GetterColumn):
 
 
 class Listing(zeit.cms.browser.listing.Listing):
-    title = _('XMP Metadata')
+    title = _('Embedded Metadata')
     filter_interface = None
     css_class = 'contentListing hasMetadata'
 
