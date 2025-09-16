@@ -294,9 +294,9 @@ class ThumbnailTest(zeit.content.image.testing.FunctionalTestCase):
         self.assertEqual(self.group['master-image.jpg'], self.thumbnail._find_image())
 
     def test_uses_materialized_image_if_present(self):
-        from zeit.content.image.testing import create_local_image
+        from zeit.content.image.testing import create_image
 
-        self.group['image-540x304.jpg'] = create_local_image('obama-clinton-120x120.jpg')
+        self.group['image-540x304.jpg'] = create_image('obama-clinton-120x120.jpg')
         self.assertEqual(self.group['image-540x304.jpg'], self.thumbnail._find_image())
 
 

@@ -232,9 +232,7 @@ class CreateVariantImageTest(zeit.content.image.testing.FunctionalTestCase):
         self.assertEqual([0.1, 0.2, 0.3, 0.4], sorted(factors))
 
     def test_variant_fill_color_is_ignored_if_image_has_no_alpha(self):
-        img = zeit.content.image.testing.create_local_image(
-            'Opaque.PNG', 'zeit.content.image', 'tests'
-        )
+        img = zeit.content.image.testing.create_image('Opaque.PNG', 'zeit.content.image', 'tests')
         transform = zeit.content.image.interfaces.ITransform(img)
         variant = Variant(id='square', focus_x=0.5, focus_y=0.5, zoom=1, aspect_ratio='1:1')
 
@@ -253,9 +251,7 @@ class CreateVariantImageTest(zeit.content.image.testing.FunctionalTestCase):
         )
 
     def test_variant_fill_color_is_applied_if_image_has_alpha_channel(self):
-        img = zeit.content.image.testing.create_local_image(
-            'Frame.PNG', 'zeit.content.image', 'tests'
-        )
+        img = zeit.content.image.testing.create_image('Frame.PNG', 'zeit.content.image', 'tests')
         transform = zeit.content.image.interfaces.ITransform(img)
         variant = Variant(id='square', focus_x=0.5, focus_y=0.5, zoom=1, aspect_ratio='1:1')
 

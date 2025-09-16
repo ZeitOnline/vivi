@@ -83,9 +83,9 @@ Selecting the master image
 ++++++++++++++++++++++++++
 
 Image group has multiple images now
->>> from zeit.content.image.testing import create_local_image
+>>> from zeit.content.image.testing import create_image
 >>> group = repository['opernball']
->>> group['obama-clinton-120x120.jpg'] = create_local_image('obama-clinton-120x120.jpg')
+>>> group['obama-clinton-120x120.jpg'] = create_image('obama-clinton-120x120.jpg')
 
 It is possible to select the master image of an image group:
 >>> browser.open('http://localhost/++skin++cms/repository/opernball')

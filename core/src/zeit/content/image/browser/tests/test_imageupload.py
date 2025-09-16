@@ -343,8 +343,8 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
             ),
         )
         self.repository['group'] = group
-        self.repository['group']['master-image.jpg'] = (
-            zeit.content.image.testing.create_local_image('obama-clinton-120x120.jpg')
+        self.repository['group']['master-image.jpg'] = zeit.content.image.testing.create_image(
+            'obama-clinton-120x120.jpg'
         )
         b = self.browser
         b.open('/repository/@@edit-images?files=group')

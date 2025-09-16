@@ -64,10 +64,8 @@ class ImageForm(zeit.content.article.edit.browser.testing.BrowserTestCase):
         article = zeit.content.article.testing.create_article()
 
         self.repository['image-group'] = zeit.content.image.imagegroup.ImageGroup()
-        self.repository['image-group']['DSC00109_2.PNG'] = (
-            zeit.content.image.testing.create_local_image(
-                'DSC00109_2.PNG', 'zeit.connector', 'testcontent/2016'
-            )
+        self.repository['image-group']['DSC00109_2.PNG'] = zeit.content.image.testing.create_image(
+            'DSC00109_2.PNG', 'zeit.connector', 'testcontent/2016'
         )
         zeit.content.image.interfaces.IImages(article).image = self.repository['image-group']
         self.repository['article'] = article

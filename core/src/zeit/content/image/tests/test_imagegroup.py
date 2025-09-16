@@ -9,7 +9,7 @@ import zope.lifecycleevent
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.workflow.interfaces import IPublicationDependencies
 from zeit.content.image import imagegroup
-from zeit.content.image.testing import create_local_image
+from zeit.content.image.testing import create_image
 import zeit.cms.repository.interfaces
 import zeit.content.image.testing
 
@@ -75,7 +75,7 @@ class ImageGroupTest(zeit.content.image.testing.FunctionalTestCase):
 
     def test_getitem_chooses_master_image_using_given_viewport(self):
         """Uses master-image for desktop and master-image-mobile for mobile."""
-        self.group['master-image-mobile.jpg'] = create_local_image('obama-clinton-120x120.jpg')
+        self.group['master-image-mobile.jpg'] = create_image('obama-clinton-120x120.jpg')
         with mock.patch(
             'zeit.content.image.imagegroup.ImageGroupBase.master_images',
             new_callable=mock.PropertyMock,
@@ -131,9 +131,7 @@ class ImageGroupTest(zeit.content.image.testing.FunctionalTestCase):
 
     def test_dav_content_with_same_name_is_preferred(self):
         self.assertEqual((1536, 1536), self.traverse('square').getImageSize())
-        self.group['square'] = zeit.content.image.testing.create_local_image(
-            'new-hampshire-450x200.jpg'
-        )
+        self.group['square'] = zeit.content.image.testing.create_image('new-hampshire-450x200.jpg')
         self.assertEqual((450, 200), self.traverse('square').getImageSize())
 
     def test_thumbnails_create_variants_from_smaller_master_image(self):
@@ -223,7 +221,7 @@ class ImageGroupTest(zeit.content.image.testing.FunctionalTestCase):
     def test_does_not_change_external_id_when_already_set(self):
         meta = zeit.content.image.interfaces.IImageMetadata(self.group)
         meta.external_id = '12345'
-        self.group['6789.jpg'] = create_local_image('opernball.jpg')
+        self.group['6789.jpg'] = create_image('opernball.jpg')
         zope.event.notify(zope.lifecycleevent.ObjectAddedEvent(self.traverse('6789.jpg')))
         self.assertEqual('12345', meta.external_id)
 
@@ -309,7 +307,7 @@ class ImageGroupFromImageTest(zeit.content.image.testing.FunctionalTestCase):
 
     def test_image_group_from_image(self):
         repository = self.repository()
-        local_image = create_local_image('opernball.jpg')
+        local_image = create_image('opernball.jpg')
         group = zeit.content.image.imagegroup.ImageGroup.from_image(
             repository, 'group', local_image
         )
@@ -325,8 +323,8 @@ class ImageGroupFromImageTest(zeit.content.image.testing.FunctionalTestCase):
 
 class ImageGroupFromImage(zeit.content.image.testing.BrowserTestCase):
     def test_image_group_from_image(self):
-        local_image = zeit.content.image.testing.create_local_image('opernball.jpg')
-        imagegroup.ImageGroup.from_image(self.repository, 'group', local_image)
+        image = zeit.content.image.testing.create_image('opernball.jpg')
+        imagegroup.ImageGroup.from_image(self.repository, 'group', image)
         b = self.browser
         b.handleErrors = False
         b.open('http://localhost/++skin++vivi/repository/group/@@metadata.html')
@@ -378,7 +376,7 @@ class ThumbnailsTest(zeit.content.image.testing.FunctionalTestCase):
         )
 
     def test_uses_image_defined_for_viewport_mobile_when_given(self):
-        self.group['master-image-mobile.jpg'] = create_local_image('obama-clinton-120x120.jpg')
+        self.group['master-image-mobile.jpg'] = create_image('obama-clinton-120x120.jpg')
         with mock.patch(
             'zeit.content.image.imagegroup.ImageGroupBase.master_images',
             new_callable=mock.PropertyMock,
@@ -398,7 +396,7 @@ class ThumbnailsTest(zeit.content.image.testing.FunctionalTestCase):
         self.assertIn('thumbnail-source-master-image.jpg', self.group.keys())
 
     def test_thumbnail_is_removed_on_delete(self):
-        self.group['second'] = create_local_image('new-hampshire-450x200.jpg')
+        self.group['second'] = create_image('new-hampshire-450x200.jpg')
         self.thumbnails.THUMBNAIL_WIDTH = 100
         self.thumbnails.source_image(self.group['second'])
         del self.group['second']

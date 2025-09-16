@@ -10,7 +10,7 @@ import zeit.content.image.testing
 class ImageDetails(zeit.content.image.testing.SeleniumTestCase):
     def test_clicking_button_shows_details_pane(self):
         repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
-        repository['image-with-metadata'] = zeit.content.image.testing.create_local_image(
+        repository['image-with-metadata'] = zeit.content.image.testing.create_image(
             'gettyimages-2168232879-150x100.jpg'
         )
         image = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/image-with-metadata')
