@@ -136,26 +136,30 @@ class StackableMemoryStorage(gcp_storage_emulator.storage.Storage):
         self._read_config_from_file()
 
     def stack_push(self):
-        fs = self._fs
-        stack = list(fs.iterate_fs())
-        fs.add_fs(str(len(stack)), StackableMemoryFS(), write=True)
+        self._fs.stack_push()
 
     def stack_pop(self):
-        fs = self._fs
-        stack = list(fs.iterate_fs())
-        name = str(len(stack) - 1)
-        # The inverse of add_fs()
-        del fs._filesystems[name]
-        fs._sort_index -= 1
-        fs._resort()
-        previous = str(len(stack) - 2)
-        fs._write_fs_name = previous
-        fs._write_fs = fs.get_fs(previous)
+        self._fs.stack_pop()
         # Re-populate our other fields from the fs state
         self._read_config_from_file()
 
 
 class StackableMultiFS(fs.multifs.MultiFS):
+    def stack_push(self):
+        stack = list(self.iterate_fs())
+        self.add_fs(str(len(stack)), StackableMemoryFS(), write=True)
+
+    def stack_pop(self):
+        stack = list(self.iterate_fs())
+        name = str(len(stack) - 1)
+        # The inverse of add_fs()
+        del self._filesystems[name]
+        self._sort_index -= 1
+        self._resort()
+        previous = str(len(stack) - 2)
+        self._write_fs_name = previous
+        self._write_fs = self.get_fs(previous)
+
     def _delegate(self, path):
         for _, sub in self.iterate_fs():
             if path in sub.deleted:
