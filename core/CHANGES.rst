@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.186.0 (2025-09-16)
+--------------------
+
+- WCM-916: Support IImageGroup inside IGallery
+  WCM-916: Wire up bulk image upload for IGallery
+
+
 7.185.0 (2025-09-15)
 --------------------
 
