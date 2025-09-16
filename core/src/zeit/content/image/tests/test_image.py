@@ -37,6 +37,13 @@ class TestImageMetadataAcquisition(zeit.content.image.testing.FunctionalTestCase
         metadata = zeit.content.image.interfaces.IImageMetadata(co)
         self.assertEqual(None, metadata.title)
 
+    def test_read_embedded_image_metadata(self):
+        image = create_local_image('gettyimages-2168232879-150x100.jpg')
+        metadata = image.embedded_metadata_flattened()
+        self.assertEqual(metadata['xmp:xmpmeta:Source'], 'AFP')
+        self.assertEqual(metadata['xmp:xmpmeta:Headline'], 'CYCLING-BEL-RENEWI')
+        self.assertEqual(metadata['xmp:xmpmeta:creator'], 'DAVID PINTENS')
+
 
 class TestImageXMLReference(zeit.content.image.testing.FunctionalTestCase):
     def test_master_image_without_filename_extension_sets_mime_as_type(self):

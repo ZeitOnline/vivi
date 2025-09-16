@@ -2,6 +2,8 @@ from contextlib import contextmanager
 import os
 import urllib.parse
 
+from PIL import IptcImagePlugin
+from PIL.ExifTags import TAGS
 import filetype
 import lxml.builder
 import lxml.etree
@@ -49,6 +51,24 @@ class BaseImage:
         if not file_type.startswith('image/'):
             return ''
         return file_type
+
+    @staticmethod
+    def _metadata(img):
+        """See https://de.wikipedia.org/wiki/IPTC-IIM-Standard for a list of available iptc tags"""
+        metadata = img.info.copy() if isinstance(img.info, dict) else {}
+        iptc_tags = {(2, 110): 'copyright', (2, 120): 'caption', (2, 105): 'title'}
+        iptc = IptcImagePlugin.getiptcinfo(img)
+        if isinstance(iptc, dict):
+            metadata['iptc'] = {}
+            for code, value in iptc.items():
+                tag_name = iptc_tags.get(code, code)
+                metadata['iptc'][tag_name] = value
+        metadata['exif'] = {}
+        for tag_id, value in img.getexif().items():
+            tag_name = TAGS.get(tag_id, tag_id)
+            metadata['exif'][tag_name] = value
+        metadata['xmp'] = img.getxmp()
+        return metadata
 
     def getImageSize(self):
         with self.as_pil() as img:
