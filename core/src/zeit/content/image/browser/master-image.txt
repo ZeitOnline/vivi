@@ -51,8 +51,6 @@ It is marked as master image:
 >>> import zeit.cms.testing
 >>> zeit.cms.testing.set_site()
 >>> principal = zeit.cms.testing.create_interaction()
->>> import zeit.content.image.testing
->>> group = zeit.content.image.testing.create_image_group()
 
 >>> import zope.component
 >>> import zeit.cms.repository.interfaces

@@ -2,21 +2,7 @@
 Image
 =====
 
-Create a browser first:
-
 >>> import zeit.cms.testing
->>> zeit.cms.testing.set_site()
-
->>> filename = 'DSC00109_2.JPG'
->>> import zope.component
->>> import zeit.cms.repository.interfaces
->>> from zeit.cms.repository.folder import Folder
->>> repository = zope.component.getUtility(
-...     zeit.cms.repository.interfaces.IRepository)
->>> repository['2006'] = Folder()
->>> image = zeit.content.image.testing.create_local_image(filename, 'zeit.connector', 'testcontent/2006')
->>> repository['2006'][filename] = image
-
 >>> browser = zeit.cms.testing.Browser(layer['wsgi_app'])
 >>> browser.login('user', 'userpw')
 
@@ -25,22 +11,22 @@ Listing
 
 There is an image in the repository. Get the listing:
 
->>> browser.open('http://localhost/++skin++cms/repository/2006')
+>>> browser.open('http://localhost/++skin++cms/repository')
 >>> print(browser.contents)
 <?xml ...
-  ...<span class="URL">http://localhost/.../DSC00109_2.JPG</span>...
+  ...<span class="URL">http://localhost/.../image</span>...
 
 
 Now we get the metadata preview:
 
->>> browser.open('http://localhost/++skin++cms/repository/2006/'
-...              'DSC00109_2.JPG/@@metadata_preview')
+>>> browser.open('http://localhost/++skin++cms/repository/'
+...              'image/@@metadata_preview')
 >>> print(browser.contents)
  <div class="contextViewsAndActions">
     <div class="context-views">
       ...
       <div class="image-metadata">
-        <img src=".../2006/DSC00109_2.JPG/metadata-preview" alt=""
+        <img src=".../image/metadata-preview" alt=""
                height="90" width="120" border="0" />
         <div>image/jpeg</div>
       <div>
@@ -58,7 +44,7 @@ We get the image itself just by accessing its url:
 >>> image = zeit.cms.testing.Browser(layer['wsgi_app'])
 >>> image.login('user', 'userpw')
 >>> image.open(
-...     'http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG/@@raw')
+...     'http://localhost/++skin++cms/repository/image/@@raw')
 >>> image.headers['content-type']
 'image/jpeg'
 >>> image.contents[:16]
@@ -68,14 +54,14 @@ We also have a preview version of an images. The preview is scaled down on the
 server:
 
 >>> image.open('http://localhost/++skin++cms/repository/'
-...            '2006/DSC00109_2.JPG/@@preview')
+...            'image/@@preview')
 >>> image.headers['content-type']
 'image/jpeg'
 
 And a thumbnail is also scaled on the server:
 
 >>> image.open('http://localhost/++skin++cms/repository/'
-...            '2006/DSC00109_2.JPG/thumbnail')
+...            'image/thumbnail')
 >>> image.headers['content-type']
 'image/jpeg'
 
@@ -127,7 +113,7 @@ Verify some values:
 Let's verify get the right file data back from the image:
 
 >>> image.open('http://localhost/++skin++cms/workingcopy/zope.user/'
-...            'DSC00109_2.JPG/@@raw')
+...            'image/@@raw')
 >>> test_data = open(test_file, 'rb')
 >>> image.contents == test_data.read()
 True
@@ -140,13 +126,13 @@ Check the image in again:
 
 We have uploaded a new image now. Let's have a look at the metadata screen:
 
->>> browser.open('http://localhost/++skin++cms/repository/2006/'
-...              'DSC00109_2.JPG/@@metadata_preview')
+>>> browser.open('http://localhost/++skin++cms/repository/'
+...              'image/@@metadata_preview')
 >>> print(browser.contents)
  <div class="contextViewsAndActions">
     <div class="context-views">...
     <div class="image-metadata">
-      <img src=".../2006/DSC00109_2.JPG/metadata-preview" alt=""
+      <img src=".../image/metadata-preview" alt=""
             height="90" width="66" border="0" />
       <div>image/jpeg</div>
       <div>
@@ -158,8 +144,8 @@ We have uploaded a new image now. Let's have a look at the metadata screen:
 
 When editing an image and not uploading a new image the old image is kept:
 
->>> browser.open('http://localhost/++skin++cms/repository/2006/'
-...              'DSC00109_2.JPG/@@view.html')
+>>> browser.open('http://localhost/++skin++cms/repository/'
+...              'image/@@view.html')
 >>> browser.getLink('Checkout').click()
 >>> browser.getControl(name='form.title').value = 'Opernball in Wien'
 >>> browser.getControl('Apply').click()
@@ -211,12 +197,12 @@ Dragging
 
 Try the drag pane:
 
->>> browser.open('http://localhost/++skin++cms/repository/2006/'
-...              'DSC00109_2.JPG/@@drag-pane.html')
+>>> browser.open('http://localhost/++skin++cms/repository/'
+...              'image/@@drag-pane.html')
 >>> print(browser.contents)
-  <img src="http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG/thumbnail" alt="" height="100" width="74" border="0" />
+  <img src="http://localhost/++skin++cms/repository/image/thumbnail" alt="" height="100" width="74" border="0" />
   <div class="Text">Opernball in Wien</div>
-  <div class="UniqueId">http://xml.zeit.de/2006/DSC00109_2.JPG</div>
+  <div class="UniqueId">http://xml.zeit.de/image</div>
 
 
 Adding
@@ -224,7 +210,7 @@ Adding
 
 Let's add an image:
 
->>> browser.open('http://localhost/++skin++cms/repository/2006/')
+>>> browser.open('http://localhost/++skin++cms/repository/')
 >>> menu = browser.getControl(name='add_menu')
 >>> menu.displayValue = ['Image (single)']
 >>> browser.open(menu.value[0])
@@ -278,13 +264,11 @@ shapes/resolutions.
 
 Lets create an image group:
 
->>> browser.open('http://localhost/++skin++cms/repository/2006/')
+>>> browser.open('http://localhost/++skin++cms/repository/')
 >>> menu = browser.getControl(name='add_menu')
 >>> menu.displayValue = ['Image group']
 >>> url = menu.value[0]
 >>> browser.open(menu.value[0])
->>> print(browser.title.strip())
-2006 – Add image group
 
 >>> def set_file_data(name, field):
 ...     test_file = os.path.join(
@@ -310,7 +294,7 @@ done directly in the repository:
 >>> browser.open('@@view.html')
 >>> hampshire_url = browser.url
 >>> hampshire_url
-'http://localhost/++skin++cms/repository/2006/new-hampshire/@@view.html'
+'http://localhost/++skin++cms/repository/new-hampshire/@@view.html'
 >>> print(browser.title.strip())
 New Hampshire – Image group
 
@@ -336,7 +320,7 @@ Set the file data:
 After adding the image we're back at the image group:
 
 >>> browser.url
-'http://localhost/++skin++cms/repository/2006/new-hampshire/@@variant.html'
+'http://localhost/++skin++cms/repository/new-hampshire/@@variant.html'
 
 So we can directly add the next image:
 
@@ -374,10 +358,10 @@ Let's have a look at the file list:
       450x200
     </td>
     <td>
-      <img src="http://localhost/++skin++cms/repository/2006/new-hampshire/new-hampshire-450x200.jpg/preview" alt="" height="350" width="600" border="0" />
+      <img src="http://localhost/++skin++cms/repository/new-hampshire/new-hampshire-450x200.jpg/preview" alt="" height="350" width="600" border="0" />
     </td>
     <td>
-      <span class="SearchableText"></span><span class="URL">http://localhost/++skin++cms/repository/2006/new-hampshire/new-hampshire-450x200.jpg</span><span class="uniqueId">http://xml.zeit.de/2006/new-hampshire/new-hampshire-450x200.jpg</span>
+      <span class="SearchableText"></span><span class="URL">http://localhost/++skin++cms/repository/new-hampshire/new-hampshire-450x200.jpg</span><span class="uniqueId">http://xml.zeit.de/new-hampshire/new-hampshire-450x200.jpg</span>
     </td>
   </tr>
   <tr class="even">
@@ -389,10 +373,10 @@ Let's have a look at the file list:
       410x244
     </td>
     <td>
-      <img src="http://localhost/++skin++cms/repository/2006/new-hampshire/new-hampshire-artikel.jpg/preview" alt="" height="350" width="600" border="0" />
+      <img src="http://localhost/++skin++cms/repository/new-hampshire/new-hampshire-artikel.jpg/preview" alt="" height="350" width="600" border="0" />
     </td>
     <td>
-      <span class="SearchableText"></span><span class="URL">http://localhost/++skin++cms/repository/2006/new-hampshire/new-hampshire-artikel.jpg</span><span class="uniqueId">http://xml.zeit.de/2006/new-hampshire/new-hampshire-artikel.jpg</span>
+      <span class="SearchableText"></span><span class="URL">http://localhost/++skin++cms/repository/new-hampshire/new-hampshire-artikel.jpg</span><span class="uniqueId">http://xml.zeit.de/new-hampshire/new-hampshire-artikel.jpg</span>
     </td>
   </tr>
   <tr class="odd">
@@ -404,10 +388,10 @@ Let's have a look at the file list:
       120x120
     </td>
     <td>
-      <img src="http://localhost/++skin++cms/repository/2006/new-hampshire/obama-clinton-120x120.jpg/preview" alt="" height="350" width="600" border="0" />
+      <img src="http://localhost/++skin++cms/repository/new-hampshire/obama-clinton-120x120.jpg/preview" alt="" height="350" width="600" border="0" />
     </td>
     <td>
-      <span class="SearchableText"></span><span class="URL">http://localhost/++skin++cms/repository/2006/new-hampshire/obama-clinton-120x120.jpg</span><span class="uniqueId">http://xml.zeit.de/2006/new-hampshire/obama-clinton-120x120.jpg</span>
+      <span class="SearchableText"></span><span class="URL">http://localhost/++skin++cms/repository/new-hampshire/obama-clinton-120x120.jpg</span><span class="uniqueId">http://xml.zeit.de/new-hampshire/obama-clinton-120x120.jpg</span>
     </td>
   </tr>
   ...
@@ -460,7 +444,7 @@ Checkin again:
 
 >>> browser.getLink('Checkin').click()
 >>> browser.url
-'http://localhost/++skin++cms/repository/2006/new-hampshire/@@view.html'
+'http://localhost/++skin++cms/repository/new-hampshire/@@view.html'
 
 Check the metadata view, to verify we have actually changed the alt text:
 
@@ -475,7 +459,7 @@ Check the metadata view, to verify we have actually changed the alt text:
 Make sure we have a metadata preview for repository image groups:
 
 >>> browser.open(
-...     'http://localhost/++skin++cms/repository/2006/'
+...     'http://localhost/++skin++cms/repository/'
 ...     'new-hampshire/@@metadata_preview')
 >>> print(browser.contents)
  <div class="contextViewsAndActions">
@@ -483,13 +467,13 @@ Make sure we have a metadata preview for repository image groups:
     ...
     <div>New Hampshire</div>
     <div class="image-group-image-preview">
-      <img src="http://localhost/++skin++cms/repository/2006/new-hampshire/new-hampshire-450x200.jpg/thumbnail" alt="" height="44" width="100" border="0" />
+      <img src="http://localhost/++skin++cms/repository/new-hampshire/new-hampshire-450x200.jpg/thumbnail" alt="" height="44" width="100" border="0" />
     </div>
     <div class="image-group-image-preview">
-      <img src="http://localhost/++skin++cms/repository/2006/new-hampshire/new-hampshire-artikel.jpg/thumbnail" alt="" height="59" width="100" border="0" />
+      <img src="http://localhost/++skin++cms/repository/new-hampshire/new-hampshire-artikel.jpg/thumbnail" alt="" height="59" width="100" border="0" />
     </div>
     <div class="image-group-image-preview">
-      <img src="http://localhost/++skin++cms/repository/2006/new-hampshire/obama-clinton-120x120.jpg/thumbnail" alt="" height="100" width="100" border="0" />
+      <img src="http://localhost/++skin++cms/repository/new-hampshire/obama-clinton-120x120.jpg/thumbnail" alt="" height="100" width="100" border="0" />
     </div>
     ...
 
@@ -497,18 +481,19 @@ Make sure the image group view doesn't break when there is some other object
 than an image in the image group:
 
 >>> from io import BytesIO
+>>> import transaction
 >>> import zope.component
 >>> import zeit.connector.interfaces
 >>> import zeit.connector.resource
+>>> zeit.cms.testing.set_site()
 >>> connector = zope.component.getUtility(
 ...     zeit.connector.interfaces.IConnector)
 >>> connector.add(zeit.connector.resource.Resource(
-...     'http://xml.zeit.de/2006/new-hampshire/foo',
+...     'http://xml.zeit.de/new-hampshire/foo',
 ...     'foo', 'strage-type', BytesIO(b'data')))
->>> import transaction
 >>> transaction.commit()
 
->>> browser.open('http://localhost/++skin++cms/repository/2006/new-hampshire')
+>>> browser.open('http://localhost/++skin++cms/repository/new-hampshire')
 >>> browser.getLink('File list').click()
 >>> print(browser.contents)
 <?xml ...
@@ -518,7 +503,7 @@ than an image in the image group:
     ...
 
 >>> browser.open(
-...     'http://localhost/++skin++cms/repository/2006/'
+...     'http://localhost/++skin++cms/repository/'
 ...     'new-hampshire/@@metadata_preview')
 >>> print(browser.contents)
  <div class="contextViewsAndActions">
@@ -532,24 +517,24 @@ The image group has a special drag pane which shows all the images:
 
 >>> browser.open(
 ...     'http://localhost/++skin++cms/'
-...     'repository/2006/new-hampshire/@@drag-pane.html')
+...     'repository/new-hampshire/@@drag-pane.html')
 >>> print(browser.contents)
-  <img src="http://localhost/++skin++cms/repository/2006/new-hampshire/new-hampshire-450x200.jpg/thumbnail" alt="" height="44" width="100" border="0" />
-  <img src="http://localhost/++skin++cms/repository/2006/new-hampshire/new-hampshire-artikel.jpg/thumbnail" alt="" height="59" width="100" border="0" />
-  <img src="http://localhost/++skin++cms/repository/2006/new-hampshire/obama-clinton-120x120.jpg/thumbnail" alt="" height="100" width="100" border="0" />
-  <img src="http://localhost/++skin++cms/repository/2006/new-hampshire/opernball.jpg/thumbnail" alt="" height="100" width="74" border="0" />
+  <img src="http://localhost/++skin++cms/repository/new-hampshire/new-hampshire-450x200.jpg/thumbnail" alt="" height="44" width="100" border="0" />
+  <img src="http://localhost/++skin++cms/repository/new-hampshire/new-hampshire-artikel.jpg/thumbnail" alt="" height="59" width="100" border="0" />
+  <img src="http://localhost/++skin++cms/repository/new-hampshire/obama-clinton-120x120.jpg/thumbnail" alt="" height="100" width="100" border="0" />
+  <img src="http://localhost/++skin++cms/repository/new-hampshire/opernball.jpg/thumbnail" alt="" height="100" width="74" border="0" />
   <div class="Text">New Hampshire</div>
-  <div class="UniqueId">http://xml.zeit.de/2006/new-hampshire</div>
+  <div class="UniqueId">http://xml.zeit.de/new-hampshire</div>
 
 
 It is possible to open the object browser on an image group (this used to
 break):
 
 >>> browser.open(
-...     'http://localhost/++skin++cms/repository/2006/new-hampshire/'
+...     'http://localhost/++skin++cms/repository/new-hampshire/'
 ...     '@@get_object_browser')
 >>> print(browser.contents)
- <h1>http://xml.zeit.de/2006/new-hampshire</h1>
+ <h1>http://xml.zeit.de/new-hampshire</h1>
  ...
 
 Image groups also have a thumbnail:
@@ -590,7 +575,7 @@ Headers and caching
 Images are sent with correct-type, length and last-modified headers:
 
 >>> image.open(
-...     'http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG/@@raw')
+...     'http://localhost/++skin++cms/repository/image/@@raw')
 >>> print(image.headers)
 Status: 200 Ok
 Content-Length: ...

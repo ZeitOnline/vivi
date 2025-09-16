@@ -5,7 +5,6 @@ from zeit.cms.content.reference import ReferenceProperty
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.content.image.interfaces import IImageMetadata
-from zeit.content.image.testing import create_local_image
 import zeit.content.image.interfaces
 import zeit.content.image.testing
 
@@ -14,7 +13,6 @@ class ImageReferenceTest(zeit.content.image.testing.FunctionalTestCase):
     def setUp(self):
         super().setUp()
         ExampleContentType.images = ReferenceProperty('.body.image', 'image')
-        self.repository['image'] = create_local_image()
 
     def tearDown(self):
         del ExampleContentType.images

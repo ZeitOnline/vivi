@@ -19,9 +19,9 @@ XML reference
 
 Create an image group first:
 
->>> import zeit.cms.checkout.interfaces
->>> import zeit.content.image.testing
->>> group = zeit.content.image.testing.create_image_group()
+>>> import zeit.cms.repository.interfaces
+>>> repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
+>>> group = repository['group']
 
 Reference the image via XML:
 
@@ -35,6 +35,7 @@ Reference the image via XML:
 
 Set metadata:
 
+>>> import zeit.cms.checkout.interfaces
 >>> group = zeit.cms.checkout.interfaces.ICheckoutManager(group).checkout()
 >>> metadata = zeit.content.image.interfaces.IImageMetadata(group)
 >>> metadata.copyright = (

@@ -31,6 +31,6 @@ class MDBImport(zeit.content.image.testing.BrowserTestCase, ImageGroupHelperMixi
         self.browser.getControl(name='form.mdb_id').value = '4711'
         self.browser.getControl(name='form.mdb_blob').value = '4711'
         self.save_imagegroup()
-        group = self.repository['group']
+        group = self.repository['imagegroup2']
         image = group.master_image_for_viewport('desktop')
         self.assertEqual((119, 160), image.getImageSize())

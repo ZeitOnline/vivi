@@ -279,7 +279,7 @@ class CreateVariantImageTest(zeit.content.image.testing.FunctionalTestCase):
         self.assertEqual((8, 8), image.getImageSize())
 
     def test_encoder_parameters_are_configurable(self):
-        group = zeit.content.image.testing.create_image_group()
+        group = self.repository['group']
         transform = zeit.content.image.interfaces.ITransform(group['master-image.jpg'])
         highquality = io.BytesIO()
         img = transform.image.copy()

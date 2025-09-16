@@ -83,7 +83,7 @@ class FixtureLayer(zeit.cms.testing.Layer):
                 repository['image'] = create_local_image(
                     'DSC00109_2.JPG', package='zeit.connector', folder='testcontent/2006'
                 )
-                create_image_group(filename='opernball.jpg', package=None, folder=None)
+                create_image_group()
 
     def tearDown(self):
         self['gcs_storage'].stack_pop()

@@ -34,7 +34,7 @@ class ImageMetadataTest(zeit.content.image.testing.FunctionalTestCase):
         self.assertEqual(image.uniqueId, node.get('href'))
 
     def test_related_reference_to_imagegroup_does_not_overwrite_href(self):
-        group = zeit.content.image.testing.create_image_group()
+        group = self.repository['group']
         image = group['master-image.jpg']
         node = zope.component.getAdapter(
             image, zeit.cms.content.interfaces.IXMLReference, name='related'
