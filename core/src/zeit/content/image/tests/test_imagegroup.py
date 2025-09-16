@@ -6,6 +6,7 @@ import PIL
 import zope.event
 import zope.lifecycleevent
 
+from zeit.cms.checkout.helper import checked_out
 from zeit.cms.workflow.interfaces import IPublicationDependencies
 from zeit.content.image import imagegroup
 from zeit.content.image.testing import create_local_image
@@ -187,6 +188,17 @@ class ImageGroupTest(zeit.content.image.testing.FunctionalTestCase):
             self.assertEqual(
                 'master-image.jpg', self.group.master_image_for_viewport('desktop').__name__
             )
+
+    def test_can_adapt_group_to_master_image(self):
+        image = zeit.content.image.interfaces.IMasterImage(self.repository['group'])
+        self.assertTrue(zeit.content.image.interfaces.IImage.providedBy(image))
+        self.assertTrue(zeit.content.image.interfaces.IMasterImage.providedBy(image))
+
+    def test_can_adapt_checked_out_group_to_master_image(self):
+        with checked_out(self.repository['group']) as group:
+            image = zeit.content.image.interfaces.IMasterImage(group)
+            self.assertTrue(zeit.content.image.interfaces.IImage.providedBy(image))
+            self.assertTrue(zeit.content.image.interfaces.IMasterImage.providedBy(image))
 
     def test_device_pixel_ratio_affects_image_size(self):
         self.assertEqual((600, 320), self.traverse('cinema__300x160__scale_2.0').getImageSize())
@@ -398,3 +410,17 @@ class ThumbnailsTest(zeit.content.image.testing.FunctionalTestCase):
         dependencies = IPublicationDependencies(self.group).get_dependencies()
         self.assertIn(self.group['master-image.jpg'], dependencies)
         self.assertNotIn(self.thumbnails.source_image(self.group['master-image.jpg']), dependencies)
+
+    def test_persistent_thumbnail_is_stored_in_thumbnail_folder(self):
+        image = self.repository['group']['master-image.jpg']
+        thumbnail = zeit.content.image.interfaces.IPersistentThumbnail(image)
+        self.assertTrue(zeit.content.image.interfaces.IImage.providedBy(thumbnail))
+        self.assertEqual((50, 37), thumbnail.getImageSize())
+        self.assertEqual('http://xml.zeit.de/group/thumbnails/master-image.jpg', thumbnail.uniqueId)
+
+    def test_persistent_thumbnail_size_can_be_configured(self):
+        zeit.cms.config.set('zeit.content.image', 'thumbnail-width', '200')
+        zeit.cms.config.set('zeit.content.image', 'thumbnail-height', '200')
+        image = self.repository['group']['master-image.jpg']
+        thumbnail = zeit.content.image.interfaces.IPersistentThumbnail(image)
+        self.assertEqual((200, 150), thumbnail.getImageSize())
