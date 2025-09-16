@@ -12,6 +12,8 @@ from gcp_storage_emulator.handlers.objects import (
     _make_object_resource,
     _patch,
 )
+import fs.errors
+import fs.memoryfs
 import fs.multifs
 import gcp_storage_emulator.server
 import gcp_storage_emulator.storage
@@ -124,23 +126,19 @@ gcp_storage_emulator.server.BATCH_HANDLERS += (
 
 class StackableMemoryStorage(gcp_storage_emulator.storage.Storage):
     """Storage that uses a stack of in-memory FS objects,
-    writes go into the last entry, reads fall back to previous entries if not
-    found in the last entry. This allows undoing a whole set of writes in one go.
-
-    XXX Note that deletions do NOT stack properly with this implementation.
-    Instead of marking deleted in the last stack entry, it will delete the
-    file in the entry where it was last written. I hope we can get away with that.
+    writes and deletes go into the last entry, reads fall back to previous entries
+    if not found in the last entry. This allows undoing a whole set of writes in one go.
     """
 
     def __init__(self):
-        self._fs = fs.multifs.MultiFS()
+        self._fs = StackableMultiFS()
         self.stack_push()
         self._read_config_from_file()
 
     def stack_push(self):
         fs = self._fs
         stack = list(fs.iterate_fs())
-        fs.add_fs(str(len(stack)), 'mem://', write=True)
+        fs.add_fs(str(len(stack)), StackableMemoryFS(), write=True)
 
     def stack_pop(self):
         fs = self._fs
@@ -155,3 +153,43 @@ class StackableMemoryStorage(gcp_storage_emulator.storage.Storage):
         fs._write_fs = fs.get_fs(previous)
         # Re-populate our other fields from the fs state
         self._read_config_from_file()
+
+
+class StackableMultiFS(fs.multifs.MultiFS):
+    def _delegate(self, path):
+        for _, sub in self.iterate_fs():
+            if path in sub.deleted:
+                return None
+            if sub.exists(path):
+                return sub
+        return None
+
+    def remove(self, path):
+        self.check()
+        self._delegate_required(path)
+        self.write_fs.remove(path)
+
+    def removedir(self, path):
+        self.check()
+        self._delegate_required(path)
+        self.write_fs.removedir(path)
+
+
+class StackableMemoryFS(fs.memoryfs.MemoryFS):
+    def __init__(self):
+        super().__init__()
+        self.deleted = set()
+
+    def remove(self, path):
+        try:
+            super().remove(path)
+        except fs.errors.ResourceNotFound:
+            pass
+        self.deleted.add(path)
+
+    def removedir(self, path):
+        try:
+            super().removedir(path)
+        except fs.errors.ResourceNotFound:
+            pass
+        self.deleted.add(path)
