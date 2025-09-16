@@ -52,6 +52,33 @@ class BaseImage:
             return ''
         return file_type
 
+    def _flatten(self, data, parent=''):
+        """Kludgy heuristics to try to flatten the nested XMP/RDF structure into
+        a single key-value dict."""
+        result = {}
+
+        if isinstance(data, dict):
+            for key, value in data.items():
+                if key in ['about', 'lang']:
+                    continue
+                if key in ['RDF', 'Description', 'Seq', 'Bag', 'Alt', 'li']:
+                    key = parent
+                else:
+                    key = f'{parent}:{key}' if parent else key
+                result.update(self._flatten(value, key))
+        elif isinstance(data, list):
+            if isinstance(data[0], str):
+                result[parent] = ', '.join(data)
+            else:
+                for x in data:
+                    result.update(self._flatten(x, parent))
+        elif isinstance(data, str) and not data.strip():
+            pass
+        else:
+            result[parent] = data
+
+        return result
+
     @staticmethod
     def _metadata(img):
         """See https://de.wikipedia.org/wiki/IPTC-IIM-Standard for a list of available iptc tags"""
@@ -78,9 +105,9 @@ class BaseImage:
         with self.as_pil() as img:
             return zeit.content.image.xmp.extract_metadata(img.getxmp())
 
-    def getXMPFlattened(self):
+    def embedded_metadata_flattened(self):
         with self.as_pil() as img:
-            return zeit.content.image.xmp.flatten(img.getxmp())
+            return self._flatten(self._metadata(img))
 
     @property
     def ratio(self):
