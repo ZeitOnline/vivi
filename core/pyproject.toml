@@ -115,12 +115,10 @@ ui = [
     "zconfig",
     "zeep",
     "zope.app.authentication",
-    "zope.app.basicskin",  # undeclared by zope.app.preference
     "zope.app.container",
     "zope.app.exception",
     "zope.app.locales",
     "zope.app.pagetemplate",
-    "zope.app.preference",
     "zope.app.principalannotation",
     "zope.app.publication",
     "zope.app.publisher",

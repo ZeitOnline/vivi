@@ -155,10 +155,6 @@ class IPanelState(zope.interface.Interface):
         """Unfold `pandel`."""
 
 
-class ICMSUserPreferences(zope.interface.Interface):
-    sidebarFolded = zope.schema.Bool(title='Sidebar folded?', default=False)
-
-
 class IDefaultBrowsingLocation(zope.interface.Interface):
     """Object representing the default browse location for object browser.
 

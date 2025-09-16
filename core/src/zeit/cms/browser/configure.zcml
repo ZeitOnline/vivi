@@ -325,15 +325,6 @@
      factory="z3c.flashmessage.receiver.GlobalMessageReceiver"
      />
 
-
-  <!-- preferences -->
-  <preferenceGroup
-    id="cms_preferences"
-    title="Zeit CMS User Preferences"
-    schema=".interfaces.ICMSUserPreferences"
-    category="true"
-    />
-
   <browser:page
     for="*"
     name="sidebar_folded"
