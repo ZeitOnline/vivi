@@ -118,7 +118,6 @@ ui = [
     "zope.app.basicskin",  # undeclared by zope.app.preference
     "zope.app.container",
     "zope.app.exception",
-    "zope.app.form>=3.6.0",
     "zope.app.locales",
     "zope.app.pagetemplate",
     "zope.app.preference",
