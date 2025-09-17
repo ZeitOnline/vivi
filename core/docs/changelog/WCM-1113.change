@@ -1,0 +1,1 @@
+WCM-1113: Use set instead of list for flashmessages, to reduce likelihood of conflicts

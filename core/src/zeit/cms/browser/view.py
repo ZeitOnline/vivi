@@ -2,8 +2,10 @@ import json
 
 import z3c.flashmessage.interfaces
 import zope.component
+import zope.i18nmessageid
 
 import zeit.cms.application
+import zeit.cms.browser.flashmessage
 
 
 class Base:
@@ -41,7 +43,9 @@ class Base:
         source = zope.component.getUtility(
             z3c.flashmessage.interfaces.IMessageSource, name='session'
         )
-        source.send(message, type)
+        if not isinstance(message, (str, zope.i18nmessageid.Message)):
+            message = str(message)
+        source.send(zeit.cms.browser.flashmessage.Message(message, type))
 
 
 class JSON(Base):
