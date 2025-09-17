@@ -56,3 +56,21 @@ class GalleryUI(zeit.content.gallery.testing.BrowserTestCase):
         self.assertTrue(IFolder.providedBy(folder))
         gallery = ICMSContent('http://xml.zeit.de/island')
         self.assertEqual(folder, gallery.image_folder)
+
+    def test_edit_text_as_markdown(self):
+        b = self.browser
+        b.open('/repository')
+        menu = b.getControl(name='add_menu')
+        menu.displayValue = ['Gallery']
+        b.open(menu.value[0])
+
+        b.getControl('File name').value = 'island'
+        b.getControl('Title').value = 'Auf den Spuren der Elfen'
+        b.getControl('Ressort', index=0).displayValue = ['Reisen']
+        b.getControl('Text', index=0).value = 'one\n\n*two* three'
+        b.getControl(name='form.actions.add').click()
+        self.assertNotEllipsis('...There were errors...', b.contents)
+        b.getLink('Checkin').click()
+
+        gallery = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/island')
+        self.assertEqual('<p>one</p>\n<p><em>two</em> three</p>', gallery.text)

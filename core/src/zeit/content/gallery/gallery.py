@@ -16,7 +16,6 @@ import zeit.cms.repository.interfaces
 import zeit.cms.type
 import zeit.content.gallery.interfaces
 import zeit.content.image.interfaces
-import zeit.wysiwyg.html
 
 
 # A gallery used to be a center page, that's why we initialize it with such a
@@ -48,6 +47,8 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
         zeit.content.gallery.interfaces.DAV_NAMESPACE,
         ('type',),
     )
+
+    text = zeit.cms.content.property.Structure('.body.text')
 
     @property
     def image_folder(self):
@@ -323,19 +324,6 @@ class EntryXMLRepresentation:
         if self.context.layout:
             node.set('layout', self.context.layout)
         return node
-
-
-@zope.component.adapter(zeit.content.gallery.interfaces.IGallery)
-class HTMLContent(zeit.wysiwyg.html.HTMLContentBase):
-    def get_tree(self):
-        # we can't express that 'body' is allowed for IGallery objects as a
-        # security declaration, since that would have to apply to the lxml element
-        body = zope.security.proxy.removeSecurityProxy(self.context).xml.find('body')
-        text = body.find('text')
-        if text is None:
-            text = E.text()
-            body.append(text)
-        return text
 
 
 @zope.component.adapter(

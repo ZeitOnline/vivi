@@ -8,7 +8,6 @@ import zeit.cms.content.interfaces
 import zeit.content.gallery.source
 import zeit.content.image.interfaces
 import zeit.crop.source
-import zeit.wysiwyg.interfaces
 
 
 DAV_NAMESPACE = 'http://namespaces.zeit.de/CMS/zeit.content.gallery'
@@ -48,6 +47,8 @@ class IReadGallery(
     zope.container.interfaces.IReadContainer,
 ):
     """Read methods for gallery."""
+
+    text = zeit.cms.content.field.Markdown(title=_('Text'), required=False)
 
 
 class IWriteGallery(zope.container.interfaces.IWriteContainer):

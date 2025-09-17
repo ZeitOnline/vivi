@@ -12,9 +12,6 @@
   <include package="zeit.content.image" />
   <include package="zeit.content.image.browser" />
 
-  <include package="zeit.wysiwyg" />
-  <include package="zeit.wysiwyg.browser" />
-
   <include package="zeit.crop" />
   <include package="zeit.crop.browser" />
 

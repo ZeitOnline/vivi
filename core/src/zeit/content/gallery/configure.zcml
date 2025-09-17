@@ -49,8 +49,6 @@
       />
   </class>
 
-  <adapter factory=".gallery.HTMLContent" />
-
   <!-- References -->
   <class class=".reference.GalleryReference" >
     <require interface=".interfaces.IGalleryReference"

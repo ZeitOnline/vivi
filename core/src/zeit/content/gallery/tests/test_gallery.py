@@ -1,6 +1,3 @@
-import unittest
-
-import lxml.builder
 import transaction
 import zope.component
 
@@ -8,24 +5,6 @@ from zeit.cms.repository.folder import Folder
 from zeit.cms.workflow.interfaces import IPublicationDependencies
 from zeit.content.image.testing import create_image
 import zeit.content.gallery.gallery
-
-
-class TestHTMLContent(unittest.TestCase):
-    def test_get_tree_should_append_text(self):
-        gallery = zeit.content.gallery.gallery.Gallery()
-        html = zeit.content.gallery.gallery.HTMLContent(gallery)
-        tree = html.get_tree()
-        self.assertEqual('text', tree.tag)
-        self.assertEqual(1, len(gallery.xml.findall('body/text')))
-
-    def test_get_tree_should_return_existing_text(self):
-        gallery = zeit.content.gallery.gallery.Gallery()
-        gallery.xml.find('body').append(lxml.builder.E.text('honk'))
-        html = zeit.content.gallery.gallery.HTMLContent(gallery)
-        tree = html.get_tree()
-        self.assertEqual('text', tree.tag)
-        self.assertEqual('honk', tree.text)
-        self.assertEqual(1, len(gallery.xml.findall('body/text')))
 
 
 class TestEntryMetadata(zeit.content.gallery.testing.FunctionalTestCase):
