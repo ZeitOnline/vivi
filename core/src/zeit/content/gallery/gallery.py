@@ -2,7 +2,6 @@ import xml.sax.saxutils
 
 from lxml.builder import E
 import grokcore.component as grok
-import lxml.etree
 import zope.component
 import zope.interface
 import zope.lifecycleevent
@@ -49,10 +48,6 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
         zeit.content.gallery.interfaces.DAV_NAMESPACE,
         ('type',),
     )
-
-    @property
-    def xml_source(self):
-        return lxml.etree.tostring(self.xml, 'UTF-8', xml_declaration=True, encoding=str)
 
     @property
     def image_folder(self):
