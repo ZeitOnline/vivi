@@ -227,14 +227,8 @@ def persistent_thumbnail_factory(context):
     if name not in container:
         transform = zeit.content.image.interfaces.ITransform(context)
         image = transform.thumbnail(width, height)
-
         properties = zeit.connector.interfaces.IWebDAVWriteProperties(image)
-        source = zeit.connector.interfaces.IWebDAVReadProperties(context)
-        for (key, ns), value in source.items():
-            if ns != 'DAV:':
-                properties[(key, ns)] = value
         properties.pop(zeit.connector.interfaces.UUID_PROPERTY, None)
-
         container[name] = image
 
     return container[name]
