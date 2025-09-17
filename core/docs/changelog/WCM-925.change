@@ -1,1 +1,0 @@
-WCM-925: Remove dependency on zope.app.form, grant UI does not actually use it

@@ -3,6 +3,18 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.187.0 (2025-09-17)
+--------------------
+
+- WCM-925: Remove dependency on zope.app.form, grant UI does not actually use it
+
+- WCM-998: Support InterRed's MDB in new image upload
+
+
+MAINT:
+- Refactor image and imagroup fixtures
+
+
 7.186.0 (2025-09-16)
 --------------------
 
