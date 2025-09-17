@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Mon Sep 15 14:49:57 2025\n"
+"POT-Creation-Date: Wed Sep 17 11:11:12 2025\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -127,18 +127,14 @@ msgstr ""
 msgid "View source"
 msgstr ""
 
-#: zeit/cms/browser/configure.zcml:330
-msgid "Zeit CMS User Preferences"
-msgstr ""
-
-#: zeit/cms/browser/configure.zcml:379
+#: zeit/cms/browser/configure.zcml:370
 #: zeit/cms/browser/object-details-body.pt:19
 #: zeit/cms/workingcopy/browser/configure.zcml:72
 #: zeit/content/video/browser/object-details-body.pt:10
 msgid "Preview"
 msgstr ""
 
-#: zeit/cms/browser/configure.zcml:388
+#: zeit/cms/browser/configure.zcml:379
 #: zeit/content/article/edit/browser/object-details-internallinks-heading.pt:20
 msgid "Live"
 msgstr ""
@@ -156,7 +152,7 @@ msgstr ""
 #: zeit/cms/browser/form.py:278
 #: zeit/cms/repository/browser/file.zcml:22
 #: zeit/content/article/edit/browser/recension-list.pt:29
-#: zeit/content/gallery/browser/configure.zcml:139
+#: zeit/content/gallery/browser/configure.zcml:128
 #: zeit/content/image/browser/configure.zcml:136
 #: zeit/content/image/browser/configure.zcml:337
 #: zeit/content/rawxml/browser/configure.zcml:22
@@ -225,7 +221,7 @@ msgstr ""
 #: zeit/content/cp/interfaces.py:293
 #: zeit/content/cp/interfaces.py:416
 #: zeit/content/cp/interfaces.py:465
-#: zeit/content/gallery/interfaces.py:91
+#: zeit/content/gallery/interfaces.py:97
 #: zeit/content/image/browser/imageupload.edit-images.pt:12
 #: zeit/content/infobox/interfaces.py:21
 #: zeit/content/modules/interfaces.py:169
@@ -1246,12 +1242,12 @@ msgstr ""
 
 #: zeit/cms/repository/browser/property.py:31
 #: zeit/content/cp/interfaces.py:192
-#: zeit/content/image/browser/xmp.py:29
+#: zeit/content/image/browser/embedded_metadata.py:28
 msgid "Name"
 msgstr ""
 
 #: zeit/cms/repository/browser/property.py:32
-#: zeit/content/image/browser/xmp.py:30
+#: zeit/content/image/browser/embedded_metadata.py:29
 msgid "Value"
 msgstr ""
 
@@ -1470,7 +1466,7 @@ msgstr ""
 #: zeit/content/audio/browser/configure.zcml:21
 #: zeit/content/cp/browser/configure.zcml:78
 #: zeit/content/dynamicfolder/browser/folder.py:18
-#: zeit/content/gallery/browser/configure.zcml:40
+#: zeit/content/gallery/browser/configure.zcml:42
 #: zeit/content/link/browser/configure.zcml:23
 #: zeit/content/markup/browser/configure.zcml:24
 #: zeit/content/volume/browser/configure.zcml:25
@@ -1480,7 +1476,7 @@ msgstr ""
 #: zeit/content/animation/browser/configure.zcml:34
 #: zeit/content/audio/browser/configure.zcml:34
 #: zeit/content/cp/browser/configure.zcml:45
-#: zeit/content/gallery/browser/configure.zcml:55
+#: zeit/content/gallery/browser/configure.zcml:57
 #: zeit/content/link/browser/configure.zcml:36
 #: zeit/content/markup/browser/configure.zcml:37
 #: zeit/content/volume/browser/configure.zcml:38
@@ -1539,7 +1535,7 @@ msgstr ""
 
 #: zeit/content/animation/interfaces.py:44
 #: zeit/content/article/edit/interfaces.py:573
-#: zeit/content/gallery/browser/configure.zcml:91
+#: zeit/content/gallery/browser/configure.zcml:93
 msgid "Images"
 msgstr ""
 
@@ -1865,7 +1861,7 @@ msgstr ""
 #: zeit/content/cp/interfaces.py:633
 #: zeit/content/image/browser/configure.zcml:269
 #: zeit/content/image/browser/imagegroup.py:221
-#: zeit/content/image/image.py:150
+#: zeit/content/image/image.py:193
 #: zeit/content/portraitbox/interfaces.py:16
 #: zeit/wysiwyg/browser/resources/reference/image.pt:17
 msgid "Image"
@@ -1910,7 +1906,7 @@ msgstr ""
 #: zeit/content/article/edit/interfaces.py:355
 #: zeit/content/article/edit/interfaces.py:385
 #: zeit/content/cp/interfaces.py:547
-#: zeit/content/gallery/interfaces.py:98
+#: zeit/content/gallery/interfaces.py:104
 #: zeit/wysiwyg/browser/resources/citation/dialog.pt:39
 #: zeit/wysiwyg/browser/resources/reference/image.pt:26
 #: zeit/wysiwyg/browser/resources/reference/portraitbox.pt:24
@@ -1956,7 +1952,7 @@ msgstr ""
 
 #: zeit/content/article/edit/interfaces.py:187
 #: zeit/content/article/edit/reference.py:74
-#: zeit/content/gallery/browser/configure.zcml:65
+#: zeit/content/gallery/browser/configure.zcml:67
 #: zeit/content/gallery/gallery.py:262
 msgid "Gallery"
 msgstr ""
@@ -2006,7 +2002,7 @@ msgid "First and last name"
 msgstr ""
 
 #: zeit/content/article/edit/interfaces.py:239
-#: zeit/content/gallery/interfaces.py:95
+#: zeit/content/gallery/interfaces.py:101
 #: zeit/content/infobox/interfaces.py:21
 #: zeit/content/portraitbox/interfaces.py:13
 #: zeit/wysiwyg/interfaces.py:10
@@ -2132,7 +2128,7 @@ msgid "Drag article/link here"
 msgstr ""
 
 #: zeit/content/article/edit/interfaces.py:582
-#: zeit/content/gallery/interfaces.py:102
+#: zeit/content/gallery/interfaces.py:108
 msgid "Image caption"
 msgstr ""
 
@@ -3280,7 +3276,7 @@ msgstr ""
 msgid "About to publish ${count} objects"
 msgstr ""
 
-#: zeit/content/gallery/browser/configure.zcml:175
+#: zeit/content/gallery/browser/configure.zcml:164
 msgid "Transform"
 msgstr ""
 
@@ -3339,12 +3335,12 @@ msgstr ""
 msgid "Image folder was synchronised."
 msgstr ""
 
-#: zeit/content/gallery/browser/overview.py:92
+#: zeit/content/gallery/browser/overview.py:71
 msgid "Synchronise with image folder"
 msgstr ""
 
-#: zeit/content/gallery/browser/upload.pt:2
-msgid "Upload images to gallery"
+#: zeit/content/gallery/browser/overview.py:77
+msgid "Upload Images"
 msgstr ""
 
 #: zeit/content/gallery/interfaces.py:33
@@ -3359,19 +3355,19 @@ msgstr ""
 msgid "Folder containing images to display in the gallery."
 msgstr ""
 
-#: zeit/content/gallery/interfaces.py:88
+#: zeit/content/gallery/interfaces.py:94
 msgid "Is a cropped image of"
 msgstr ""
 
-#: zeit/content/gallery/interfaces.py:103
+#: zeit/content/gallery/interfaces.py:109
 msgid "gallery-image-caption-description"
 msgstr ""
 
-#: zeit/content/gallery/interfaces.py:119
+#: zeit/content/gallery/interfaces.py:125
 msgid "Image gallery"
 msgstr ""
 
-#: zeit/content/gallery/interfaces.py:120
+#: zeit/content/gallery/interfaces.py:126
 msgid "Drag a gallery here"
 msgstr ""
 
@@ -3399,12 +3395,12 @@ msgstr ""
 
 #: zeit/content/image/browser/configure.zcml:428
 #: zeit/content/image/browser/configure.zcml:444
-#: zeit/content/image/browser/xmp.py:24
-msgid "XMP Metadata"
+#: zeit/content/image/browser/embedded_metadata.py:23
+msgid "Embedded Metadata"
 msgstr ""
 
 #: zeit/content/image/browser/configure.zcml:463
-#: zeit/content/image/browser/imageupload.py:29
+#: zeit/content/image/browser/imageupload.py:32
 msgid "Image (new)"
 msgstr ""
 
@@ -3422,6 +3418,10 @@ msgstr ""
 
 #: zeit/content/image/browser/copyright.py:39
 msgid "Copyright changed for: ${changes}"
+msgstr ""
+
+#: zeit/content/image/browser/embedded_metadata.pt:5
+msgid "Extracted automatically, cannot be edited."
 msgstr ""
 
 #: zeit/content/image/browser/form.py:23
@@ -3537,7 +3537,7 @@ msgstr ""
 msgid "Remove images"
 msgstr ""
 
-#: zeit/content/image/browser/imageupload.py:35
+#: zeit/content/image/browser/imageupload.py:38
 msgid "Upload images"
 msgstr ""
 
@@ -3545,11 +3545,11 @@ msgstr ""
 msgid "Please upload at least one image"
 msgstr ""
 
-#: zeit/content/image/browser/imageupload.py:194
+#: zeit/content/image/browser/imageupload.py:198
 msgid "Edit images"
 msgstr ""
 
-#: zeit/content/image/browser/imageupload.py:222
+#: zeit/content/image/browser/imageupload.py:230
 msgid "File name is already in use"
 msgstr ""
 
@@ -3612,10 +3612,6 @@ msgstr ""
 
 #: zeit/content/image/browser/processingerror.pt:6
 msgid "The action you were trying to do could not be finished because the resource has no valid content."
-msgstr ""
-
-#: zeit/content/image/browser/xmp.pt:5
-msgid "Extracted automatically, cannot be edited."
 msgstr ""
 
 #: zeit/content/image/imagegroup.py:389
