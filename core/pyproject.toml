@@ -115,6 +115,7 @@ ui = [
     "zconfig",
     "zeep",
     "zope.app.authentication",
+    "zope.app.basicskin",
     "zope.app.container",
     "zope.app.exception",
     "zope.app.locales",
