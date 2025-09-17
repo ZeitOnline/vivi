@@ -113,10 +113,3 @@ class EditEntry(zeit.cms.browser.form.EditForm):
             css_class='full-width wide-widgets',
         ),
     )
-
-    def setUpWidgets(self):
-        # XXX backwards compatibility only, should probably be removed at some
-        # point (see #8858)
-        if self.context.text is not None and self.context.text.getchildren():
-            self.form_fields += zope.formlib.form.FormFields(zeit.wysiwyg.interfaces.IHTMLContent)
-        super().setUpWidgets()

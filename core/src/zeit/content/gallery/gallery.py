@@ -343,12 +343,6 @@ class HTMLContent(zeit.wysiwyg.html.HTMLContentBase):
         return text
 
 
-@zope.component.adapter(zeit.content.gallery.interfaces.IGalleryEntry)
-class EntryHTMLContent(zeit.wysiwyg.html.HTMLContentBase):
-    def get_tree(self):
-        return self.context.text
-
-
 @zope.component.adapter(
     zeit.content.gallery.interfaces.IGalleryEntry, zope.lifecycleevent.IObjectModifiedEvent
 )
