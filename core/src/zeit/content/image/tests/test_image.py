@@ -101,3 +101,23 @@ class TestImageProperties(zeit.content.image.testing.FunctionalTestCase):
         self.assertEqual('image/jpeg', image.mimeType)
         self.assertEqual(2048, image.width)
         self.assertEqual(1536, image.height)
+
+    def test_update_image_updates_properties(self):
+        FEATURE_TOGGLES.set('column_read_wcm_56')
+        FEATURE_TOGGLES.set('column_write_wcm_56')
+        self.repository['image-with-properties'] = zeit.content.image.testing.create_image()
+        image = self.repository['image-with-properties']
+        self.assertEqual('image/jpeg', image.mimeType)
+        self.assertEqual(119, image.width)
+        self.assertEqual(160, image.height)
+        with checked_out(image) as co:
+            file = (
+                importlib.resources.files('zeit.connector') / 'testcontent/2006' / 'DSC00109_2.JPG'
+            )
+            with open(file, 'rb') as data:
+                with co.open('w') as f:
+                    f.write(data.read())
+        image = self.repository['image-with-properties']
+        self.assertEqual('image/jpeg', image.mimeType)
+        self.assertEqual(2048, image.width)
+        self.assertEqual(1536, image.height)

@@ -21,6 +21,7 @@ import zope.security.proxy
 from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.image import embedded
+import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.repository.file
@@ -275,8 +276,15 @@ def get_remote_image(url, timeout=2):
 
 
 @grok.subscribe(zeit.content.image.interfaces.IImage, zope.lifecycleevent.IObjectCreatedEvent)
-def update_image_properties(context, event):
+def set_image_properties(context, event):
     if FEATURE_TOGGLES.find('column_write_wcm_56'):
         with context.as_pil() as pil:
             context.mimeType = PIL.Image.MIME[pil.format]
             (context.width, context.height) = pil.size
+
+
+@grok.subscribe(
+    zeit.content.image.interfaces.IImage, zeit.cms.checkout.interfaces.IBeforeCheckinEvent
+)
+def update_image_properties(context, event):
+    return set_image_properties(context, event)
