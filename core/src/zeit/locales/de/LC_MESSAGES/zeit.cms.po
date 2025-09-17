@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Wed Sep 17 11:11:12 2025\n"
+"POT-Creation-Date: Wed Sep 17 13:38:05 2025\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -497,7 +497,7 @@ msgid "Head"
 msgstr "Kopf"
 
 #: zeit/cms/content/browser/form.py:23 zeit/content/cp/browser/form.py:18
-#: zeit/content/gallery/browser/form.py:29
+#: zeit/content/gallery/browser/form.py:31
 #: zeit/content/image/browser/form.py:20
 #: zeit/content/infobox/browser/form.py:25
 #: zeit/content/infobox/browser/form.py:87
@@ -527,7 +527,7 @@ msgstr "Automatisch platzieren"
 #: zeit/cms/content/browser/form.py:50 zeit/content/article/browser/form.py:32
 #: zeit/content/article/edit/browser/recension.py:68
 #: zeit/content/author/browser/form.py:51
-#: zeit/content/gallery/browser/form.py:47
+#: zeit/content/gallery/browser/form.py:49
 msgid "misc."
 msgstr "Sonstiges"
 
@@ -3231,19 +3231,19 @@ msgstr "bearbeiten"
 msgid "Image sub text"
 msgstr "Bildunterschrift"
 
-#: zeit/content/gallery/browser/form.py:55
+#: zeit/content/gallery/browser/form.py:57
 msgid "Add gallery"
 msgstr "Bildergalerie hinzufügen"
 
-#: zeit/content/gallery/browser/form.py:61
+#: zeit/content/gallery/browser/form.py:79
 msgid "Edit gallery"
 msgstr "Bildergalerie bearbeiten"
 
-#: zeit/content/gallery/browser/form.py:65
+#: zeit/content/gallery/browser/form.py:83
 msgid "View gallery metadata"
 msgstr "Metadaten der Bildergalerie ansehen"
 
-#: zeit/content/gallery/browser/form.py:82
+#: zeit/content/gallery/browser/form.py:100
 msgid "Edit gallery entry"
 msgstr "Bildergalerie-Eintrag bearbeiten"
 
@@ -3483,7 +3483,7 @@ msgstr "Bilder löschen"
 
 #: zeit/content/image/browser/imageupload.py:38
 msgid "Upload images"
-msgstr "Neue Bilder hochladen"
+msgstr "Bilder hochladen"
 
 #: zeit/content/image/browser/imageupload.py:51
 msgid "Please upload at least one image"
