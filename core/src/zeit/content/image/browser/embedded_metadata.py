@@ -4,7 +4,6 @@ import zope.interface
 
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.browser.listing
-import zeit.content.image.xmp
 
 
 @zope.interface.implementer(zc.table.interfaces.ISortableColumn)

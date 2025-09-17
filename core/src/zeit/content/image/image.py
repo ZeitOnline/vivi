@@ -24,7 +24,6 @@ import zeit.cms.util
 import zeit.cms.workingcopy.interfaces
 import zeit.content.image.imagegroup
 import zeit.content.image.interfaces
-import zeit.content.image.xmp
 import zeit.workflow.interfaces
 import zeit.workflow.timebased
 
