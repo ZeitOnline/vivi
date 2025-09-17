@@ -22,10 +22,10 @@ class Base(zeit.cms.browser.form.CharlimitMixin):
                 if self.request.form.get(field_name):
                     self._set_widget_required(widget.context.getName())
 
-    def _set_widget_required(self, name):
+    def _set_widget_required(self, name, required=True):
         field = self.widgets[name].context
         cloned = field.bind(field.context)
-        cloned.required = True
+        cloned.required = required
         self.widgets[name].context = cloned
 
 

@@ -1,4 +1,5 @@
 import gocept.form.grouped
+import zope.container.interfaces
 import zope.formlib.form
 import zope.formlib.widget
 
@@ -6,6 +7,7 @@ from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.browser.form
 import zeit.cms.content.browser.form
 import zeit.cms.interfaces
+import zeit.cms.repository.folder
 import zeit.content.gallery.gallery
 import zeit.content.gallery.interfaces
 import zeit.content.image.interfaces
@@ -55,6 +57,22 @@ class AddGallery(GalleryFormBase, zeit.cms.content.browser.form.CommonMetadataAd
     title = _('Add gallery')
     factory = zeit.content.gallery.gallery.Gallery
     next_view = 'overview.html'
+
+    def setUpWidgets(self, *args, **kw):
+        super().setUpWidgets(*args, **kw)
+        self._set_widget_required('image_folder', False)
+
+    def create(self, data):
+        context = super().create(data)
+        if not context.image_folder:
+            name = f'{context.__name__}-bilder'
+            parent = self.context
+            chooser = zope.container.interfaces.INameChooser(parent)
+            folder = zeit.cms.repository.folder.Folder()
+            name = chooser.chooseName(name, folder)
+            parent[name] = folder
+            context.image_folder = parent[name]
+        return context
 
 
 class EditGallery(GalleryFormBase, zeit.cms.content.browser.form.CommonMetadataEditForm):

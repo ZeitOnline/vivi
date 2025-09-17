@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Wed Sep 17 11:11:12 2025\n"
+"POT-Creation-Date: Wed Sep 17 13:38:05 2025\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -524,7 +524,7 @@ msgstr ""
 
 #: zeit/cms/content/browser/form.py:23
 #: zeit/content/cp/browser/form.py:18
-#: zeit/content/gallery/browser/form.py:29
+#: zeit/content/gallery/browser/form.py:31
 #: zeit/content/image/browser/form.py:20
 #: zeit/content/infobox/browser/form.py:25
 #: zeit/content/infobox/browser/form.py:87
@@ -558,7 +558,7 @@ msgstr ""
 #: zeit/content/article/browser/form.py:32
 #: zeit/content/article/edit/browser/recension.py:68
 #: zeit/content/author/browser/form.py:51
-#: zeit/content/gallery/browser/form.py:47
+#: zeit/content/gallery/browser/form.py:49
 msgid "misc."
 msgstr ""
 
@@ -3294,19 +3294,19 @@ msgstr ""
 msgid "Image sub text"
 msgstr ""
 
-#: zeit/content/gallery/browser/form.py:55
+#: zeit/content/gallery/browser/form.py:57
 msgid "Add gallery"
 msgstr ""
 
-#: zeit/content/gallery/browser/form.py:61
+#: zeit/content/gallery/browser/form.py:79
 msgid "Edit gallery"
 msgstr ""
 
-#: zeit/content/gallery/browser/form.py:65
+#: zeit/content/gallery/browser/form.py:83
 msgid "View gallery metadata"
 msgstr ""
 
-#: zeit/content/gallery/browser/form.py:82
+#: zeit/content/gallery/browser/form.py:100
 msgid "Edit gallery entry"
 msgstr ""
 
