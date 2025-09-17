@@ -31,20 +31,11 @@ The log can be accessed as utility:
 True
 
 
-Create an object for logging. Make it persistent to use the persistent
-KeyReference.
-
->>> from zeit.objectlog.testing import Content
-
-Instanciate and add to the database:
-
->>> content = Content()
->>> getRootFolder()['content'] = content
->>> import transaction
->>> transaction.commit()
-
 Log something for `content`:
 
+>>> import zeit.cms.repository.interfaces
+>>> repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
+>>> content = repository['testcontent']
 >>> log.log(content, 'Foo')
 
 Getting the log for `content` yields one log entry:
@@ -92,8 +83,10 @@ The order is oldest first:
 
 When we log to another object, the log is obviously seperated:
 
->>> content2 = Content()
->>> getRootFolder()['c2'] = content2
+>>> from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
+>>> import transaction
+>>> repository['content2'] = ExampleContentType()
+>>> content2 = repository['content2']
 >>> transaction.commit()
 >>> log.log(content2, "change")
 >>> result = list(log.get_log(content2))
@@ -101,11 +94,6 @@ When we log to another object, the log is obviously seperated:
 1
 >>> result[0].message
 'change'
-
-When an object is not adaptable to IKeyReference, it's log is always empty:
-
->>> list(log.get_log(object()))
-[]
 
 
 Adapting objects to log
@@ -217,7 +205,7 @@ that reduces the list of log entries to just the last two:
 >>> [entry.message for entry in content_log.logs]
 ['not-there-log', 'bling', 'bar', 'Foo']
 
->>> @zope.component.adapter(Content)
+>>> @zope.component.adapter(zeit.cms.interfaces.ICMSContent)
 ... @zope.interface.implementer(zeit.objectlog.interfaces.ILogProcessor)
 ... class Processor:
 ...     def __init__(self, context):

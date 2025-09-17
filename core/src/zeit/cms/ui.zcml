@@ -101,7 +101,6 @@
   <include package="zope.app.tree"/>
 
   <include package="zope.app.locking"/>
-  <include package="zope.app.keyreference"/>
 
   <include package="zc.form" />
   <include package="zc.table" />

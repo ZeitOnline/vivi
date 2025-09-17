@@ -1,5 +1,3 @@
-import persistent
-
 import zeit.cms.testing
 
 
@@ -11,7 +9,3 @@ ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
 
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
     layer = ZOPE_LAYER
-
-
-class Content(persistent.Persistent):
-    pass

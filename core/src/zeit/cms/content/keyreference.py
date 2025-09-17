@@ -1,49 +1,24 @@
 from functools import total_ordering
 
-import zope.app.keyreference.interfaces
-import zope.component
-import zope.interface
-
-import zeit.cms.interfaces
-
 
 @total_ordering
-@zope.component.adapter(zeit.cms.interfaces.ICMSContent)
-@zope.interface.implementer(zope.app.keyreference.interfaces.IKeyReference)
-class CMSContentKeyReference:
-    """An IKeyReference to cms objects."""
-
-    key_type_id = 'zeit.cms.content.keyreference'
-
+class CMSContentKeyReference:  # BBB keep until zeit.objectlog generation 2 ran
     def __init__(self, object):
-        if object.uniqueId is None:
-            raise zope.app.keyreference.interfaces.NotYet(object)
-        # Special cases that keep piling up, sigh.
-        renameable = zeit.cms.repository.interfaces.IAutomaticallyRenameable(object, None)
-        if renameable and renameable.renameable and renameable.rename_to:
-            parent = zeit.cms.interfaces.ICMSContent(object.uniqueId).__parent__
-            self.referenced_object = parent.uniqueId + renameable.rename_to
-        else:
-            self.referenced_object = object.uniqueId
-
-    def __call__(self):
-        return zeit.cms.interfaces.ICMSContent(self.referenced_object)
+        self.referenced_object = object.uniqueId
 
     def __hash__(self):
         return hash(self.referenced_object)
 
     def __eq__(self, other):
-        return self.referenced_object == other.referenced_object
+        if isinstance(other, type(self)):
+            return self.referenced_object == other.referenced_object
+        if isinstance(other, str):
+            return self.referenced_object == other
+        return False
 
     def __gt__(self, other):
-        if self.key_type_id > other.key_type_id:
-            return True
-        return self.referenced_object > other.referenced_object
-
-
-class UniqueIdKeyReference(CMSContentKeyReference):
-    def __init__(self, parent, name):
-        path = f'{parent.uniqueId}/'
-        if parent.uniqueId == zeit.cms.interfaces.ID_NAMESPACE:
-            path = parent.uniqueId
-        self.referenced_object = f'{path}{name}'
+        if isinstance(other, type(self)):
+            return self.referenced_object > other.referenced_object
+        if isinstance(other, str):
+            return self.referenced_object > other
+        return NotImplemented

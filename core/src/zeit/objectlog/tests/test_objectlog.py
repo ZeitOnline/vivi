@@ -8,7 +8,6 @@ import zope.component
 
 from zeit.cms.repository.folder import Folder
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
-import zeit.cms.content.reference
 import zeit.cms.interfaces
 import zeit.objectlog.interfaces
 import zeit.objectlog.objectlog
@@ -29,13 +28,11 @@ class FakeObjectLog(dict):
 class ObjectLog(zeit.objectlog.testing.FunctionalTestCase):
     def setUp(self):
         super().setUp()
-        self.content = zeit.objectlog.testing.Content()
-        self.getRootFolder()['content'] = self.content
-        transaction.commit()
+        self.content = self.repository['testcontent']
 
     def test_delete_removes_entries_of_object(self):
-        content2 = zeit.objectlog.testing.Content()
-        self.getRootFolder()['content2'] = content2
+        self.repository['content2'] = ExampleContentType()
+        content2 = self.repository['content2']
         transaction.commit()
         zeit.objectlog.interfaces.ILog(self.content).log('one')
         zeit.objectlog.interfaces.ILog(content2).log('two')
@@ -59,12 +56,9 @@ class ObjectLog(zeit.objectlog.testing.FunctionalTestCase):
         log.log('foo')
         original_log = list(zeit.objectlog.interfaces.ILog(content).get_log())
         self.repository['2025']['testcontent2'] = ExampleContentType()
-        ref = zeit.cms.content.keyreference.UniqueIdKeyReference(
-            self.repository['2025'], content.__name__
-        )
         content2 = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2025/testcontent2')
         log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
-        log.move(ref, content2)
+        log.move('http://xml.zeit.de/2025/testcontent', content2)
         changed_log = list(zeit.objectlog.interfaces.ILog(content2).get_log())
         self.assertEqual(len(original_log), len(changed_log))
         for old, copied in zip(original_log, changed_log):
