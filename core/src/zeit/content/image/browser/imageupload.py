@@ -295,7 +295,9 @@ class EditForm(zeit.cms.browser.view.Base):
         for tmp_name in filenames:
             imggroup = self.folder[tmp_name]
 
-            meta = imggroup[imggroup.master_image].getXMPMetadata()
+            meta = parse_fields_from_embedded_metadata(
+                imggroup[imggroup.master_image].embedded_metadata_flattened()
+            )
 
             name_base = None
             if from_name:
@@ -386,3 +388,29 @@ class EditForm(zeit.cms.browser.view.Base):
         </body>
         </html>
         """
+
+
+def parse_fields_from_embedded_metadata(metadata):
+    """Get title, copyright, caption from embedded metadata"""
+    key_mapping = {
+        'title': ['xmp:xmpmeta:Headline', 'xmp:xmpmeta:title:text'],
+        'caption': ['xmp:xmpmeta:description:text'],
+        'copyright': ['xmp:xmpmeta:creator', 'xmp:xmpmeta:Credit'],
+    }
+
+    def first_value(keys):
+        for key in keys:
+            if value := metadata.get(key):
+                return value
+        return None
+
+    result = {}
+    for field, keys in key_mapping.items():
+        if field == 'copyright':
+            # Join all present copyright values
+            values = [metadata.get(key) for key in keys if metadata.get(key)]
+            result[field] = '/'.join(str(v) for v in values) if values else None
+        else:
+            result[field] = first_value(keys)
+
+    return result

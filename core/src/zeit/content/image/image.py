@@ -2,6 +2,8 @@ from contextlib import contextmanager
 import os
 import urllib.parse
 
+from PIL import IptcImagePlugin
+from PIL.ExifTags import TAGS
 import filetype
 import lxml.builder
 import lxml.etree
@@ -22,7 +24,6 @@ import zeit.cms.util
 import zeit.cms.workingcopy.interfaces
 import zeit.content.image.imagegroup
 import zeit.content.image.interfaces
-import zeit.content.image.xmp
 import zeit.workflow.interfaces
 import zeit.workflow.timebased
 
@@ -38,10 +39,7 @@ class BaseImage:
             pil.load()
         with pil as pil:
             if keep_metadata:
-                pil.encoderinfo = {
-                    'exif': pil.getexif(),
-                    'xmp': pil.info.get('xmp'),
-                }
+                pil.encoderinfo = pil.info.copy()
             yield pil
 
     @property
@@ -53,17 +51,62 @@ class BaseImage:
             return ''
         return file_type
 
+    def _flatten(self, data, parent=''):
+        """Kludgy heuristics to try to flatten the nested XMP/RDF structure into
+        a single key-value dict."""
+        result = {}
+
+        if isinstance(data, dict):
+            for key, value in data.items():
+                if key in ['about', 'lang']:
+                    continue
+                if key in ['RDF', 'Description', 'Seq', 'Bag', 'Alt', 'li']:
+                    key = parent
+                else:
+                    key = f'{parent}:{key}' if parent else key
+                result.update(self._flatten(value, key))
+        elif isinstance(data, list):
+            if isinstance(data[0], str):
+                result[parent] = ', '.join(data)
+            else:
+                for x in data:
+                    result.update(self._flatten(x, parent))
+        elif isinstance(data, str) and not data.strip():
+            pass
+        else:
+            result[parent] = data
+
+        return result
+
+    @staticmethod
+    def _metadata(img):
+        """See https://de.wikipedia.org/wiki/IPTC-IIM-Standard for a list of available iptc tags"""
+        metadata = img.info.copy() if isinstance(img.info, dict) else {}
+        iptc_tags = {(2, 110): 'copyright', (2, 120): 'caption', (2, 105): 'title'}
+        iptc = IptcImagePlugin.getiptcinfo(img)
+        if isinstance(iptc, dict):
+            metadata['iptc'] = {}
+            for code, value in iptc.items():
+                tag_name = iptc_tags.get(code, code)
+                metadata['iptc'][tag_name] = value
+        metadata['exif'] = {}
+        for tag_id, value in img.getexif().items():
+            tag_name = TAGS.get(tag_id, tag_id)
+            metadata['exif'][tag_name] = value
+        metadata['xmp'] = img.getxmp()
+        return metadata
+
     def getImageSize(self):
         with self.as_pil() as img:
             return img.size
 
-    def getXMPMetadata(self):
+    def embedded_metadata(self):
         with self.as_pil() as img:
-            return zeit.content.image.xmp.extract_metadata(img.getxmp())
+            return self._metadata(img)
 
-    def getXMPFlattened(self):
+    def embedded_metadata_flattened(self):
         with self.as_pil() as img:
-            return zeit.content.image.xmp.flatten(img.getxmp())
+            return self._flatten(self._metadata(img))
 
     @property
     def ratio(self):

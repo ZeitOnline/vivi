@@ -419,33 +419,33 @@
 
   <gocept:pagelet
     for="zeit.content.image.interfaces.IImage"
-    name="xmp.html"
-    class=".xmp.Listing"
-    template="xmp.pt"
+    name="embedded_metadata.html"
+    class=".embedded_metadata.Listing"
+    template="embedded_metadata.pt"
     permission="zope.View"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     />
   <browser:menuItem
     for="zeit.content.image.interfaces.IImage"
-    action="@@xmp.html"
+    action="@@embedded_metadata.html"
     permission="zope.View"
-    menu="zeit-context-views" title="XMP Metadata"
+    menu="zeit-context-views" title="Embedded Metadata"
     filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
     />
 
   <gocept:pagelet
     for="zeit.content.image.interfaces.IImageGroup"
-    name="xmp.html"
-    class=".xmp.GroupListing"
-    template="xmp.pt"
+    name="embedded_metadata.html"
+    class=".embedded_metadata.GroupListing"
+    template="embedded_metadata.pt"
     permission="zope.View"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     />
   <browser:menuItem
     for="zeit.content.image.interfaces.IImageGroup"
-    action="@@xmp.html"
+    action="@@embedded_metadata.html"
     permission="zope.View"
-    menu="zeit-context-views" title="XMP Metadata"
+    menu="zeit-context-views" title="Embedded Metadata"
     filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
     />
 
