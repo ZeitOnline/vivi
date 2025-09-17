@@ -198,7 +198,8 @@ deploy = [
 
 zon = [
     "gocept.cache==6.1+importlib",  # https://github.com/ZeitOnline/gocept.cache/tree/importlib
-    "zope.app.locking==3.5.0+py3.1",  # https://github.com/ZeitOnline/zope.app.locking
+    "zope.app.locking==3.5.0+py3.2",  # https://github.com/ZeitOnline/zope.app.locking
+    "zope.file==2.1+importlib",  # https://github.com/ZeitOnline/zope.file
     "zope.xmlpickle==4.0.0+py3k2",  # https://github.com/ZeitOnline/zope.xmlpickle/tree/py3
 ]
 test-zon = [
@@ -222,6 +223,8 @@ ui-zon = [
     "zc.set==1.0+importlib",  # https://github.com/ZeitOnline/zc.set
     "zc.sourcefactory==2.1+importlib",  # https://github.com/ZeitOnline/zc.sourcef
     "zc.table==1.1+importlib.1",  # https://github.com/ZeitOnline/zc.table
+    "zope.app.exception==5.1+importlib",  # https://github.com/ZeitOnline/zope.app.exception
+    "zope.app.tree==5.0+importlib",  # https://github.com/ZeitOnline/zope.app.tree
 ]
 
 [dependency-groups]
