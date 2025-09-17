@@ -6,42 +6,9 @@
   opacity: 0.5;
 }
 
-.wysiwyg-header .swfupload {
-  float: right;
-}
-
 .gallery {
   clear: both;
 }
-
-
-.lightbox > .upload {
-  margin: 1em;
-  padding-left: 2em;
-  position: static;
-}
-
-.upload > .filename {
-  display: inline;
-}
-
-.upload.busy {
-  background-position: left center;
-  opacity: 1;
-}
-
-.upload > .progress {
-  float: left;
-  margin-right: 1em;
-  text-align: right;
-  width: 3em;
-}
-
-.upload > .progress:after {
-  content: "%";
-  padding-left: 0.25em;
-}
-
 
 table.gallery td {
   padding-bottom: 1.5em;
