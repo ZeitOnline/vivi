@@ -15,6 +15,16 @@
   flex: 1 0 10em;
 }
 
+.imageupload__drop--active {
+  border-style: solid;
+}
+
+.imageupload__button--add-mdb-ids {
+  font-size: 14px;
+  padding: 3px 4px;
+  line-height: 1;
+}
+
 .imageupload__drop p,
 .imageupload__drop span {
   margin: 1em 0.5em;

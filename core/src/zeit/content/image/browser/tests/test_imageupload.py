@@ -1,6 +1,10 @@
+import json
 import re
 import unittest
 import urllib
+
+from selenium.webdriver.common.keys import Keys
+import zope.component
 
 from zeit.cms.workflow.interfaces import IPublishInfo
 from zeit.content.image.browser.imageupload import ImageNameProvider
@@ -607,6 +611,66 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
             'http://localhost/++skin++vivi/repository/testcontent-bild-1/@@variant.html...',
             b.contents,
         )
+
+
+class ImageUploadSeleniumTest(zeit.content.image.testing.SeleniumTestCase):
+    def _fake_drop(self, drop_target, data):
+        self.execute(
+            """const event = document.createEvent("CustomEvent");
+            event.initCustomEvent("drop", true, true, null);
+            event.dataTransfer = new DataTransfer();
+            event.dataTransfer.setData("text/plain", """
+            + json.dumps(data)
+            + """);
+            document.querySelector("""
+            + json.dumps(drop_target)
+            + """).dispatchEvent(event);"""
+        )
+
+    def test_drop_mdb_image(self):
+        zope.component.getGlobalSiteManager().registerUtility(zeit.content.image.mdb.FakeMDB())
+        self.open('/repository/@@upload-images')
+        self._fake_drop(
+            '.imageupload__drop',
+            json.dumps(
+                {
+                    'module': 'mdb',
+                    'data': [41733454],
+                    'thumb_map': {
+                        '41733454': '/mdb_data/147/2025/09/10/4/1/7/3/3/MDB41733454TN_25c72dd5c1.IR'
+                        + 'ZEITPROD_NQGJA.jpg'
+                    },
+                    'preview_thumb_map': {
+                        '41733454': '/mdb_data/147/2025/09/10/4/1/7/3/3/PMDB41733454TN_25c72dd5c1.I'
+                        + 'RZEITPROD_NQGJA.jpg'
+                    },
+                    'href_map': {
+                        '41733454': '/exec/ir_engine.pl?sid=bdbc2171a90b3ae0a3ccc6c21b4a32e7&linkf'
+                        + 'ile=image.IRZEITPROD_NQGJA.jpg&file=/mdb_data/147/2025/09/10/4/1/7/3/3/'
+                        + 'MDB41733454_25c72dd5c1.IRZEITPROD_NQGJA.jpg'
+                    },
+                }
+            ),
+        )
+        self.selenium.waitForElementPresent('css=.imageupload__gallery li')
+        self.selenium.assertText('css=.imageupload__gallery .imageupload__filename', 'image.jpg')
+        self.selenium.click('css=.imageupload__button--submit')
+        self.selenium.waitForLocation('*/repository/@@edit-images?files=*')
+
+    def test_enter_mdb_id(self):
+        s = self.selenium
+        zope.component.getGlobalSiteManager().registerUtility(zeit.content.image.mdb.FakeMDB())
+        self.open('/repository/@@upload-images')
+        s.type('css=.imageupload__mdb-ids', '12345')
+        s.keyPress('css=.imageupload__mdb-ids', Keys.RETURN)
+        s.waitForElementPresent('css=.imageupload__gallery li')
+        s.assertText(
+            'css=.imageupload__gallery .imageupload__filename',
+            'MDB2752_4ed1cf12e4.IRZEITDEV_14L.jpg',  # FIXME: We don't get the nice name yet
+        )
+        s.assertValue('css=.imageupload__mdb-ids', '')
+        s.click('css=.imageupload__button--submit')
+        s.waitForLocation('*/repository/@@edit-images?files=*')
 
 
 class AddCentralImageUploadTest(zeit.content.image.testing.SeleniumTestCase):

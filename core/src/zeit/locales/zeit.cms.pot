@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Mon Sep 15 10:58:38 2025\n"
+"POT-Creation-Date: Mon Sep 15 14:49:57 2025\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -352,7 +352,7 @@ msgstr ""
 
 #: zeit/cms/browser/tree.pt:19
 #: zeit/content/article/edit/browser/recension-list.pt:19
-#: zeit/content/image/browser/imageupload.upload-images.pt:16
+#: zeit/content/image/browser/imageupload.upload-images.pt:22
 msgid "Remove"
 msgstr ""
 
@@ -3522,7 +3522,6 @@ msgid "Caption"
 msgstr ""
 
 #: zeit/content/image/browser/imageupload.edit-images.pt:33
-#: zeit/content/image/browser/imageupload.upload-images.pt:10
 msgid "Upload"
 msgstr ""
 
@@ -3546,20 +3545,28 @@ msgstr ""
 msgid "Please upload at least one image"
 msgstr ""
 
-#: zeit/content/image/browser/imageupload.py:186
+#: zeit/content/image/browser/imageupload.py:194
 msgid "Edit images"
 msgstr ""
 
-#: zeit/content/image/browser/imageupload.py:214
+#: zeit/content/image/browser/imageupload.py:222
 msgid "File name is already in use"
 msgstr ""
 
-#: zeit/content/image/browser/imageupload.upload-images.pt:6
-msgid "Upload one or multiple images"
+#: zeit/content/image/browser/imageupload.upload-images.pt:5
+msgid "Drag and drop image from local computer or InterRed MDB"
 msgstr ""
 
-#: zeit/content/image/browser/imageupload.upload-images.pt:7
+#: zeit/content/image/browser/imageupload.upload-images.pt:6
 msgid "Select files"
+msgstr ""
+
+#: zeit/content/image/browser/imageupload.upload-images.pt:9
+msgid "Import via ID from InterRed MDB"
+msgstr ""
+
+#: zeit/content/image/browser/imageupload.upload-images.pt:16
+msgid "Select"
 msgstr ""
 
 #: zeit/content/image/browser/interfaces.py:10

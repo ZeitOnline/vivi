@@ -42,13 +42,24 @@ class UploadForm(zeit.cms.browser.view.Base, zeit.content.image.browser.form.Cre
             return self.handle_post()
         return super().__call__()
 
+    def accepted_mime_types(self):
+        return ','.join(zeit.content.image.interfaces.AVAILABLE_MIME_TYPES)
+
     def handle_post(self):
         files = self.request.form.get('files', None)
         if not files:
             return self._report_user_error(_('Please upload at least one image'))
 
-        if not isinstance(files, Iterable):
+        if not isinstance(files, Iterable) or isinstance(files, str):
             files = (files,)
+
+        mdb = zope.component.getUtility(zeit.content.image.interfaces.IMDB)
+        files = tuple(
+            mdb.get_body(file.replace('mdb:', ''))
+            if isinstance(file, str) and file.startswith('mdb:')
+            else file
+            for file in files
+        )
 
         try:
             for file in files:

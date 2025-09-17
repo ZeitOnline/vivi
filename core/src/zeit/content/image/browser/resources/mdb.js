@@ -4,6 +4,32 @@
 
 zeit.cms.declare_namespace('zeit.content.image');
 
+zeit.content.image.parse_mdb_drop = function (transfer) {
+    const data = JSON.parse(transfer.getData('text/plain'));
+    return data['data'].map(mdb_id => {
+        const file_name = data['href_map'][mdb_id].replace(/^.*&linkfile=(.+)\.IRZEIT[^.]+(\..+)&file.*$/, '$1$2');
+        const thumb_path = data['thumb_map'][mdb_id];
+        return {
+            mdb_id,
+            file_name,
+            thumb: (thumb_path.includes(".IRZEITDEV_") ? 'https://cms-dev.interred.zeit.de' : 'https://cms.interred.zeit.de') + thumb_path
+        };
+    });
+};
+
+zeit.content.image.get_mdb_metadata = function (mdb_id) {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            type: 'GET',
+            dataType: 'json',
+            url: window.application_url + '/@@mdb_metadata',
+            data: {'id':  mdb_id},
+            success: resolve,
+            error: request => reject(request.responseText)
+        });
+    });
+};
+
 zeit.content.image.DropMDBWidget = gocept.Class.extend({
 
     construct: function(element) {
@@ -39,8 +65,7 @@ zeit.content.image.DropMDBWidget = gocept.Class.extend({
             }
             var mdb_id;
             try {
-                var data = JSON.parse(transfer.getData('text/plain'));
-                mdb_id = data['data'][0];
+                ({mdb_id} = zeit.content.image.parse_mdb_drop(transfer)[0]);
             } catch (error) {
                 log(error);
                 return;
@@ -61,19 +86,9 @@ zeit.content.image.DropMDBWidget = gocept.Class.extend({
     },
 
     retrieve: function(mdb_id) {
-        var self = this;
-        $.ajax({
-            type: 'GET',
-            dataType: 'json',
-            url: window.application_url + '/@@mdb_metadata',
-            data: {'id':  mdb_id},
-            success: function(data) {
-                self.set(data);
-            },
-            error: function(request) {
-                log(request.responseText);
-                alert(request.responseText);
-            }
+        zeit.content.image.get_mdb_metadata(mdb_id).then(data => this.set(data)).catch(e => {
+            log(e);
+            alert(e);
         });
     },
 
