@@ -37,7 +37,7 @@ Set data:
 >>> import zeit.content.image.testing
 >>> pb.name = 'Hans Wurst'
 >>> pb.text = '<p><strong>Hans Wurst</strong> wursted hansig.</p>'
->>> repository['image'] = zeit.content.image.testing.create_local_image()
+>>> repository['image'] = zeit.content.image.testing.create_image()
 >>> pb.image = repository['image']
 >>> print(zeit.cms.testing.xmltotext(pb.xml))
 <container layout="artbox" label="portrait">

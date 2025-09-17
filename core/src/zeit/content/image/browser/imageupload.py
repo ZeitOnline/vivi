@@ -4,6 +4,8 @@ import os.path
 import urllib.parse
 import uuid
 
+from zope.cachedescriptors.property import Lazy as cachedproperty
+import grokcore.component as grok
 import zope.event
 import zope.formlib.form
 import zope.formlib.widgets
@@ -13,6 +15,7 @@ from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import IPublish
 import zeit.cms.browser.form
 import zeit.cms.browser.view
+import zeit.cms.checkout.interfaces
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.content.image.browser.imagegroup
@@ -39,9 +42,6 @@ class UploadForm(zeit.cms.browser.view.Base, zeit.content.image.browser.form.Cre
             return self.handle_post()
         return super().__call__()
 
-    def action(self):
-        return self.url(self.context, '@@upload-images')
-
     def accepted_mime_types(self):
         return ','.join(zeit.content.image.interfaces.AVAILABLE_MIME_TYPES)
 
@@ -67,13 +67,10 @@ class UploadForm(zeit.cms.browser.view.Base, zeit.content.image.browser.form.Cre
         except zope.schema.ValidationError as e:
             return self._report_user_error(e.doc())
 
-        (target, origin) = self._get_upload_target_and_origin()
-
+        target = zeit.content.image.browser.interfaces.IUploadTarget(self.context)
         params = {'files': tuple(self._upload_imagegroup(file, target) for file in files)}
-        if origin is not None:
-            params['from'] = origin
 
-        url = self.url(target, '@@edit-images') + '?' + urllib.parse.urlencode(params, doseq=True)
+        url = self.url(name='@@edit-images') + '?' + urllib.parse.urlencode(params, doseq=True)
         if self._is_xhr_request():
             return url
         self.redirect(url, status=303)
@@ -89,30 +86,6 @@ class UploadForm(zeit.cms.browser.view.Base, zeit.content.image.browser.form.Cre
             self.send_message(error_message, type='error')
             return super().__call__()
 
-    def _get_upload_target_and_origin(self):
-        """Determine the target (folder) for the images,
-        the name of the origin of the upload process,
-        and whether it can be used for naming the images."""
-
-        if zeit.cms.repository.interfaces.IFolder.providedBy(self.context):
-            # A folder is a valid upload target and not useful for naming the image files
-            return (self.context, None)
-
-        # The process was not initiated in a folder, so target the parent
-        # Since self.context is potentially checked out, we cannot rely on self.context.__parent__
-        target = zeit.cms.interfaces.ICMSContent(self.context.uniqueId).__parent__
-
-        # Use the origin object's name as base for the image names
-        origin = self.context.__name__
-
-        renameable = zeit.cms.repository.interfaces.IAutomaticallyRenameable(self.context)
-        if renameable.renameable:
-            # This is a new article, so don't use its (temporary) file name.
-            # Instead, take the new target name as given by the user (if available).
-            origin = renameable.rename_to
-
-        return (target, origin)
-
     def _upload_imagegroup(self, file, parent):
         imagegroup = zeit.content.image.imagegroup.ImageGroup()
         image = self.create_image(file)
@@ -124,6 +97,37 @@ class UploadForm(zeit.cms.browser.view.Base, zeit.content.image.browser.form.Cre
         parent[name] = imagegroup
         imagegroup[image.__name__] = image
         return name
+
+
+@grok.adapter(zeit.cms.interfaces.ICMSContent)
+@grok.implementer(zeit.content.image.browser.interfaces.IUploadTarget)
+def default_target(context):
+    if zeit.cms.checkout.interfaces.ILocalContent.providedBy(context):
+        context = zeit.cms.interfaces.ICMSContent(context.uniqueId)
+    return context.__parent__
+
+
+@grok.adapter(zeit.cms.repository.interfaces.IFolder)
+@grok.implementer(zeit.content.image.browser.interfaces.IUploadTarget)
+def folder_target(context):
+    return context
+
+
+@grok.adapter(zeit.cms.interfaces.ICMSContent)
+@grok.implementer(zeit.content.image.browser.interfaces.IUploadBaseName)
+def default_base_name(context):
+    renameable = zeit.cms.repository.interfaces.IAutomaticallyRenameable(context)
+    if renameable.renameable:
+        # This is a new article, so don't use its (temporary) file name.
+        # Instead, take the new target name as given by the user (if available).
+        return renameable.rename_to
+    return context.__name__
+
+
+@grok.adapter(zeit.cms.repository.interfaces.IFolder)
+@grok.implementer(zeit.content.image.browser.interfaces.IUploadBaseName)
+def folder_base_name(context):
+    return None
 
 
 def get_image_name(base_name, pos, others):
@@ -207,18 +211,22 @@ class EditForm(zeit.cms.browser.view.Base):
         self._files = tuple(self._parse_get_request())
         return super().__call__()
 
+    @cachedproperty
+    def folder(self):
+        return zeit.content.image.browser.interfaces.IUploadTarget(self.context)
+
     def handle_cancel(self):
         for file in self._files:
-            del self.context[file['tmp_name']]
+            del self.folder[file['tmp_name']]
         self.redirect(self.url(name=''), status=303)
 
     def handle_submit(self):
-        renamer = zope.copypastemove.interfaces.IContainerItemRenamer(self.context)
+        renamer = zope.copypastemove.interfaces.IContainerItemRenamer(self.folder)
         taken_names = set()
         for file in self._files:
-            if (
-                file['target_name'] != file['tmp_name'] and file['target_name'] in self.context
-            ) or (file['target_name'] in taken_names):
+            if (file['target_name'] != file['tmp_name'] and file['target_name'] in self.folder) or (
+                file['target_name'] in taken_names
+            ):
                 self._errors[file['tmp_name']] = _('File name is already in use')
             taken_names.add(file['target_name'])
 
@@ -232,7 +240,7 @@ class EditForm(zeit.cms.browser.view.Base):
             # (which replaces the '.' with '-'), the two always differ.
             renamer.renameItem(tmp_name, name)
             with zeit.cms.checkout.helper.checked_out(
-                self.context[name], temporary=False, raise_if_error=True
+                self.folder[name], temporary=False, raise_if_error=True
             ) as imagegroup:
                 metadata = zeit.content.image.interfaces.IImageMetadata(imagegroup)
                 metadata.copyright = (
@@ -249,36 +257,43 @@ class EditForm(zeit.cms.browser.view.Base):
                 ).renameable = False
 
             if 'upload_and_publish' in self.request.form:
-                IPublish(self.context[name]).publish()
+                IPublish(self.folder[name]).publish()
+
+        return_url = zope.component.queryMultiAdapter(
+            (self.context, self.request), zeit.content.image.browser.interfaces.IUploadReturnURL
+        )
 
         if 'upload_and_open' in self.request.form:
             if len(self._files) > 1:
                 image_urls = []
                 for file in self._files:
-                    image_url = self.url(self.context[file['target_name']], '@@variant.html')
+                    image_url = self.url(self.folder[file['target_name']], '@@variant.html')
                     image_urls.append(image_url)
                 return self._open_multiple_images(image_urls)
             else:
                 url = self.url(
-                    self.context[self._files[0]['target_name']],
+                    self.folder[self._files[0]['target_name']],
                     name='@@variant.html',
                 )
+        elif return_url is not None:
+            url = return_url
         elif len(self._files) == 1:
-            url = self.url(self.context[self._files[0]['target_name']], name='@@variant.html')
+            url = self.url(self.folder[self._files[0]['target_name']], name='@@variant.html')
         else:
-            url = self.url(name='')
+            url = self.url(self.folder)
 
         self.redirect(url, status=303)
 
     def _parse_get_request(self):
-        from_name = self.request.form.get('from', None)
+        from_name = zeit.content.image.browser.interfaces.IUploadBaseName(self.context, None)
+
         filenames = self.request.form.get('files', ())
         if isinstance(filenames, str):
             filenames = (filenames,)
 
-        name_provider = ImageNameProvider(self.context)
+        name_provider = ImageNameProvider(self.folder)
         for tmp_name in filenames:
-            imggroup = self.context[tmp_name]
+            imggroup = self.folder[tmp_name]
 
             meta = imggroup[imggroup.master_image].getXMPMetadata()
 
@@ -318,7 +333,7 @@ class EditForm(zeit.cms.browser.view.Base):
                 'title': self.request.form[f'title[{index}]'],
                 'copyright': self.request.form[f'copyright[{index}]'],
                 'caption': self.request.form[f'caption[{index}]'],
-                'thumbnail': self.url(self.context[tmp_name], 'thumbnail'),
+                'thumbnail': self.url(self.folder[tmp_name], 'thumbnail'),
             }
             index += 1
 

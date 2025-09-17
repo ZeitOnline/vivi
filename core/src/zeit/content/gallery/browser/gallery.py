@@ -1,12 +1,15 @@
 import zope.component
 import zope.interface
+import zope.publisher.interfaces.browser
 import zope.security
 
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
 import zeit.cms.repository.interfaces
+import zeit.content.gallery.browser.overview
 import zeit.content.gallery.interfaces
 import zeit.content.image.browser.image
+import zeit.content.image.browser.interfaces
 
 
 @zope.component.adapter(
@@ -54,3 +57,19 @@ class Index(zeit.cms.browser.view.Base):
             if zope.security.canAccess(view, '__call__'):
                 return self.redirect(self.url(view))
         raise zope.security.interfaces.Unauthorized()
+
+
+@zope.component.adapter(zeit.content.gallery.interfaces.IGallery)
+@zope.interface.implementer(zeit.content.image.browser.interfaces.IUploadTarget)
+def gallery_upload_target(context):
+    return context.image_folder
+
+
+@zope.component.adapter(
+    zeit.content.gallery.interfaces.IGallery, zope.publisher.interfaces.browser.IBrowserRequest
+)
+@zope.interface.implementer(zeit.content.image.browser.interfaces.IUploadReturnURL)
+def gallery_upload_return_url(context, request):
+    url = zope.component.getMultiAdapter((context, request), name='absolute_url')
+    sync = zeit.content.gallery.browser.overview.SynchroniseMenuItem.action
+    return f'{url}/{sync}'

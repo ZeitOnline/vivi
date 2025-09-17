@@ -620,6 +620,24 @@ def remove_thumbnail_source_on_delete(context, event):
         del group[thumbnail_name]
 
 
+@grok.adapter(zeit.content.image.interfaces.IImageGroup)
+@grok.implementer(zeit.content.image.interfaces.IPersistentThumbnail)
+def persistent_thumbnail_factory(context):
+    name = context.__name__
+    container = zeit.content.image.interfaces.IThumbnailFolder(context)
+    if name not in container:
+        thumbnails = zeit.content.image.interfaces.IThumbnails(context)
+        source = thumbnails.source_image(thumbnails.master_image(''))
+        config = zeit.cms.config.package('zeit.content.image')
+        width = int(config.get('thumbnail-width', 50))
+        transform = zeit.content.image.interfaces.ITransform(source)
+        preview = zeit.content.image.variant.Variant(
+            id='preview', aspect_ratio='16:9', focus_x=0.5, focus_y=0.3, zoom=0
+        )
+        container[name] = transform.create_variant_image(preview, (width, 0))
+    return container[name]
+
+
 class FolderDependencies(zeit.cms.workflow.dependency.DependencyBase):
     grok.context(zeit.content.image.interfaces.IImageGroup)
     grok.name('zeit.cms.repository.folder')

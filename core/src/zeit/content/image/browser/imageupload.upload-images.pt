@@ -1,5 +1,5 @@
 <tal:block i18n:domain="zeit.cms">
-  <form name="imageupload" enctype="multipart/form-data" class="imageupload" method="POST" tal:attributes="action view/action">
+  <form name="imageupload" enctype="multipart/form-data" class="imageupload" method="POST">
     <label class="imageupload__drop">
       <input type="file" class="imageupload__input" multiple tal:attributes="accept view/accepted_mime_types" name="files">
       <p i18n:translate="">Drag and drop image from local computer or InterRed MDB</p>

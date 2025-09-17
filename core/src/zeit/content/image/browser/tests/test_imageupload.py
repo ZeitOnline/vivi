@@ -43,7 +43,7 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
         b.getForm(name='imageupload').submit()
         folder = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/')
         img = next(x for x in folder.values() if 'tmp' in x.uniqueId)
-        assert b.url.endswith(f'/@@edit-images?files={img.__name__}&from=testcontent')
+        assert b.url.endswith(f'/testcontent/@@edit-images?files={img.__name__}')
 
     def test_does_not_redirect_if_files_field_is_not_in_request(self):
         b = self.browser
@@ -172,10 +172,9 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
         folder = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/')
         images = tuple(x for x in folder.values() if 'tmp' in x.uniqueId)
         # We don't know the exact order of the url params
-        assert '/@@edit-images?files=' in b.url
+        assert '/testcontent/@@edit-images?files=' in b.url
         assert re.search('[&?]files=' + re.escape(images[0].__name__) + '(&|$)', b.url)
         assert re.search('[&?]files=' + re.escape(images[1].__name__) + '(&|$)', b.url)
-        assert re.search('[&?]from=testcontent(&|$)', b.url)
 
     def test_huge_image_is_resized(self):
         b = self.browser
@@ -348,8 +347,8 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
             ),
         )
         self.repository['group'] = group
-        self.repository['group']['master-image.jpg'] = (
-            zeit.content.image.testing.create_local_image('obama-clinton-120x120.jpg')
+        self.repository['group']['master-image.jpg'] = zeit.content.image.testing.create_image(
+            'obama-clinton-120x120.jpg'
         )
         b = self.browser
         b.open('/repository/@@edit-images?files=group')
@@ -533,7 +532,7 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
         folder = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/')
         images = tuple(x for x in folder.values() if 'tmp' in x.uniqueId or '-bild' in x.uniqueId)
         assert len(images) == 0
-        assert b.url.endswith('/repository/')
+        assert b.url.endswith('/repository/testcontent/')
 
     def test_editimages_normalizes_user_input_file_name(self):
         b = self.browser

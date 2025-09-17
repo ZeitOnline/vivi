@@ -6,7 +6,7 @@ from zeit.cms.checkout.helper import checked_out
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
 from zeit.content.audio.interfaces import Podcast, PodcastSource
 from zeit.content.audio.testing import AudioBuilder, FunctionalTestCase
-from zeit.content.image.testing import create_local_image
+from zeit.content.image.testing import create_image
 import zeit.cms.content.interfaces
 import zeit.cms.content.sources
 import zeit.cms.interfaces
@@ -52,7 +52,7 @@ class PodcastSourceTest(FunctionalTestCase):
         self.assertEqual((), audio.authorships)
 
     def test_get_podcast_image(self):
-        self.repository['pawdcast-image'] = create_local_image()
+        self.repository['pawdcast-image'] = create_image()
 
         audio = AudioBuilder().build()
         images = zeit.content.image.interfaces.IImages(audio)

@@ -13,6 +13,8 @@
 
   <adapter factory=".gallery.gallery_browse_location" />
   <adapter factory=".gallery.gallery_folder_browse_location" />
+  <adapter factory=".gallery.gallery_upload_target" />
+  <adapter factory=".gallery.gallery_upload_return_url" />
 
   <browser:page
     for="..interfaces.IGallery"
@@ -112,25 +114,12 @@
     permission="zeit.EditContent"
     />
 
-
-  <!-- upload -->
-
   <browser:viewlet
-    name="Upload"
+    name="upload-images"
     for="zeit.content.gallery.interfaces.IGallery"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    template="upload.pt"
+    class=".overview.UploadMenuItem"
     manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
-    permission="zeit.EditContent"
-    weight="0"
-    selected="0"
-    />
-
-  <browser:page
-    for="zeit.content.gallery.interfaces.IGallery"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="upload-image"
-    class=".overview.UploadImage"
     permission="zeit.EditContent"
     />
 
@@ -203,16 +192,6 @@
     name="imp-image-bar"
     class=".crop.ImageBar"
     permission="zope.View"
-    />
-
-  <!-- ticket -->
-
-  <adapter factory=".ticket.TicketTraverser" name="ticket" />
-  <browser:page
-    for="zope.location.interfaces.ISite"
-    name="get-ticket"
-    class=".ticket.TicketIssuer"
-    permission="zope.Public"
     />
 
 </configure>

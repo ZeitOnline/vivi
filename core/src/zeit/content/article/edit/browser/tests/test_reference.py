@@ -64,10 +64,8 @@ class ImageForm(zeit.content.article.edit.browser.testing.BrowserTestCase):
         article = zeit.content.article.testing.create_article()
 
         self.repository['image-group'] = zeit.content.image.imagegroup.ImageGroup()
-        self.repository['image-group']['DSC00109_2.PNG'] = (
-            zeit.content.image.testing.create_local_image(
-                'DSC00109_2.PNG', 'zeit.connector', 'testcontent/2016'
-            )
+        self.repository['image-group']['DSC00109_2.PNG'] = zeit.content.image.testing.create_image(
+            'DSC00109_2.PNG', 'zeit.connector', 'testcontent/2016'
         )
         zeit.content.image.interfaces.IImages(article).image = self.repository['image-group']
         self.repository['article'] = article
@@ -77,10 +75,10 @@ class ImageForm(zeit.content.article.edit.browser.testing.BrowserTestCase):
         b.getControl(name='teaser-image.fill_color')
 
     def test_non_png_teaser_images_should_not_enable_colorpicker(self):
-        from zeit.content.image.testing import create_image_group_with_master_image
+        from zeit.content.image.testing import create_image_group
 
         article = zeit.content.article.testing.create_article()
-        group = create_image_group_with_master_image()
+        group = create_image_group()
         zeit.content.image.interfaces.IImages(article).image = group
         self.repository['article'] = article
         b = self.browser
@@ -125,7 +123,7 @@ class ImageForm(zeit.content.article.edit.browser.testing.BrowserTestCase):
         )
         b.getForm(name='imageupload').submit()
         img_name = b.getControl(name='tmp_name[0]').value
-        self.assertEndsWith(f'/repository/@@edit-images?files={img_name}', b.url)
+        self.assertEndsWith(f'/@@edit-images?files={img_name}', b.url)
 
     def test_teaser_image_upload_uses_new_filename_of_new_article(self):
         b = self.browser
@@ -148,7 +146,7 @@ class ImageForm(zeit.content.article.edit.browser.testing.BrowserTestCase):
             ],
         )
         b.getForm(name='imageupload').submit()
-        self.assertEndsWith('&from=possibly-the-new-name', b.url)
+        self.assertEqual('possibly-the-new-name-bild', b.getControl(name='target_name[0]').value)
 
 
 class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):

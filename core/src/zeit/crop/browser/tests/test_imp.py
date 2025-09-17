@@ -24,7 +24,7 @@ class TestBase(zeit.crop.testing.BrowserTestCase):
     def setUp(self):
         super().setUp()
         zope.component.hooks.setSite(self.getRootFolder())
-        zeit.content.image.testing.create_image_group_with_master_image()
+        zeit.content.image.testing.create_image_group()
 
 
 class ImageBarTest(TestBase):

@@ -13,7 +13,7 @@ Create a testbrowser first:
 >>> zeit.cms.testing.set_site()
 >>> repository = zope.component.getUtility(
 ...     zeit.cms.repository.interfaces.IRepository)
->>> repository['image'] = zeit.content.image.testing.create_local_image()
+>>> repository['image'] = zeit.content.image.testing.create_image()
 
 Lets create a portraitbox:
 

@@ -237,7 +237,7 @@ def persistent_thumbnail_factory(context):
 THUMBNAIL_FOLDER_NAME = 'thumbnails'
 
 
-@zope.component.adapter(zeit.content.image.interfaces.IImage)
+@zope.component.adapter(zeit.cms.interfaces.ICMSContent)
 @zope.interface.implementer(zeit.content.image.interfaces.IThumbnailFolder)
 def thumbnail_folder_factory(context):
     folder = context.__parent__

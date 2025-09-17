@@ -4,7 +4,7 @@ import io
 import PIL.ExifTags
 import PIL.Image
 
-from zeit.content.image.testing import create_image_group_with_master_image, fixture_bytes
+from zeit.content.image.testing import fixture_bytes
 import zeit.cms.interfaces
 import zeit.content.image.testing
 
@@ -135,13 +135,12 @@ class ImageGroupBrowserTest(zeit.content.image.testing.BrowserTestCase, ImageGro
         self.assertEqual((2250, 4000), img.getImageSize())
 
     def test_traversing_thumbnail_yields_images(self):
-        create_image_group_with_master_image()
         b = self.browser
         b.open('http://localhost/++skin++vivi/repository/group/thumbnails/square/@@raw')
         self.assertEqual('image/jpeg', b.headers['Content-Type'])
 
     def test_primary_master_image_is_marked_for_desktop_viewport(self):
-        group = self.repository['imagegroup']
+        group = self.repository['group']
         self.assertEqual(1, len(group.master_images))
         self.assertEqual('desktop', group.master_images[0][0])
         self.assertEqual('master-image.jpg', group.master_images[0][1])
@@ -177,7 +176,7 @@ class ImageGroupBrowserTest(zeit.content.image.testing.BrowserTestCase, ImageGro
         self.save_imagegroup()
         b = self.browser
         self.assertEndsWith('@@variant.html', b.url)
-        b.open('http://localhost/++skin++vivi/repository/imagegroup')
+        b.open('http://localhost/++skin++vivi/repository/group')
         self.assertEndsWith('@@variant.html', b.url)
 
     def test_display_type_infographic_uses_view_html_by_default(self):
@@ -231,11 +230,8 @@ class ImageGroupBrowserTest(zeit.content.image.testing.BrowserTestCase, ImageGro
         self.assertEllipsis('...Unsupported image type...', self.browser.contents)
 
     def test_new_image_upload_is_not_present_for_imagegroup(self):
-        self.add_imagegroup()
-        self.upload_primary_image('shoppingmeile_2251x4001px.jpg')
-        self.save_imagegroup()
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/imagegroup/@@view.html')
+        b.open('http://localhost/++skin++vivi/repository/group/@@view.html')
         menu = b.getControl(name='add_menu')
         self.assertNotIn('Image (new)', menu.displayOptions)
 
@@ -245,7 +241,7 @@ class ImageGroupWebdriverTest(zeit.content.image.testing.SeleniumTestCase):
         sel = self.selenium
         origin = 'css=.fieldname-origin'
         display_type = r'css=#form\.display_type'
-        sel.open('/repository/imagegroup/@@checkout')
+        sel.open('/repository/group/@@checkout')
 
         sel.select(display_type, 'label=Infografik')
         sel.assertVisible(origin)
@@ -255,14 +251,14 @@ class ImageGroupWebdriverTest(zeit.content.image.testing.SeleniumTestCase):
 
     def test_origin_field_is_hidden_in_read_only_mode_if_not_infographic(self):
         sel = self.selenium
-        sel.open('/repository/imagegroup/@@metadata.html')
+        sel.open('/repository/group/@@metadata.html')
         sel.assertNotVisible('css=.fieldname-origin')
 
     def test_photographer_is_shown_if_company_is_chosen(self):
         sel = self.selenium
         photographer = r'css=#form\.copyright\.combination_00'
         company = r'css=#form\.copyright\.combination_01'
-        sel.open('/repository/imagegroup/@@checkout')
+        sel.open('/repository/group/@@checkout')
 
         sel.assertVisible(photographer)
         sel.select(company, 'label=dpa')
@@ -275,7 +271,7 @@ class ImageGroupWebdriverTest(zeit.content.image.testing.SeleniumTestCase):
         sel = self.selenium
         freetext = r'css=#form\.copyright\.combination_02'
         company = r'css=#form\.copyright\.combination_01'
-        sel.open('/repository/imagegroup/@@checkout')
+        sel.open('/repository/group/@@checkout')
 
         sel.assertNotVisible(freetext)
         sel.select(company, 'label=dpa')
@@ -290,7 +286,7 @@ class ThumbnailTest(zeit.content.image.testing.FunctionalTestCase):
         from zeit.content.image.browser.imagegroup import Thumbnail
 
         super().setUp()
-        self.group = self.repository['imagegroup']
+        self.group = self.repository['group']
         self.thumbnail = Thumbnail()
         self.thumbnail.context = self.group
 
@@ -298,9 +294,9 @@ class ThumbnailTest(zeit.content.image.testing.FunctionalTestCase):
         self.assertEqual(self.group['master-image.jpg'], self.thumbnail._find_image())
 
     def test_uses_materialized_image_if_present(self):
-        from zeit.content.image.testing import create_local_image
+        from zeit.content.image.testing import create_image
 
-        self.group['image-540x304.jpg'] = create_local_image('obama-clinton-120x120.jpg')
+        self.group['image-540x304.jpg'] = create_image('obama-clinton-120x120.jpg')
         self.assertEqual(self.group['image-540x304.jpg'], self.thumbnail._find_image())
 
 

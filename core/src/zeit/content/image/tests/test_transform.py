@@ -1,5 +1,4 @@
 from pprint import pformat
-import importlib.resources
 import io
 
 import PIL.ExifTags
@@ -179,8 +178,8 @@ class CreateVariantImageTest(zeit.content.image.testing.FunctionalTestCase):
         """Apply no cropping to use the default variant image as master in UI."""
         # Create image group with b/w image that is equal to the image which is
         # generated during setUp
-        self.group = zeit.content.image.testing.create_image_group_with_master_image(
-            importlib.resources.files(__package__) / 'Black-White.PNG'
+        self.group = zeit.content.image.testing.create_image_group(
+            'Black-White.PNG', package='zeit.content.image', folder='tests'
         )
 
         # Set zoom < 1, which would usually result in cropping,
@@ -233,9 +232,7 @@ class CreateVariantImageTest(zeit.content.image.testing.FunctionalTestCase):
         self.assertEqual([0.1, 0.2, 0.3, 0.4], sorted(factors))
 
     def test_variant_fill_color_is_ignored_if_image_has_no_alpha(self):
-        img = zeit.content.image.testing.create_local_image(
-            'Opaque.PNG', 'zeit.content.image', 'tests'
-        )
+        img = zeit.content.image.testing.create_image('Opaque.PNG', 'zeit.content.image', 'tests')
         transform = zeit.content.image.interfaces.ITransform(img)
         variant = Variant(id='square', focus_x=0.5, focus_y=0.5, zoom=1, aspect_ratio='1:1')
 
@@ -254,9 +251,7 @@ class CreateVariantImageTest(zeit.content.image.testing.FunctionalTestCase):
         )
 
     def test_variant_fill_color_is_applied_if_image_has_alpha_channel(self):
-        img = zeit.content.image.testing.create_local_image(
-            'Frame.PNG', 'zeit.content.image', 'tests'
-        )
+        img = zeit.content.image.testing.create_image('Frame.PNG', 'zeit.content.image', 'tests')
         transform = zeit.content.image.interfaces.ITransform(img)
         variant = Variant(id='square', focus_x=0.5, focus_y=0.5, zoom=1, aspect_ratio='1:1')
 
@@ -280,7 +275,7 @@ class CreateVariantImageTest(zeit.content.image.testing.FunctionalTestCase):
         self.assertEqual((8, 8), image.getImageSize())
 
     def test_encoder_parameters_are_configurable(self):
-        group = zeit.content.image.testing.create_image_group_with_master_image()
+        group = self.repository['group']
         transform = zeit.content.image.interfaces.ITransform(group['master-image.jpg'])
         highquality = io.BytesIO()
         img = transform.image.copy()

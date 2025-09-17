@@ -6,9 +6,10 @@ import PIL
 import zope.event
 import zope.lifecycleevent
 
+from zeit.cms.checkout.helper import checked_out
 from zeit.cms.workflow.interfaces import IPublicationDependencies
 from zeit.content.image import imagegroup
-from zeit.content.image.testing import create_image_group_with_master_image, create_local_image
+from zeit.content.image.testing import create_image
 import zeit.cms.repository.interfaces
 import zeit.content.image.testing
 
@@ -16,7 +17,7 @@ import zeit.content.image.testing
 class ImageGroupTest(zeit.content.image.testing.FunctionalTestCase):
     def setUp(self):
         super().setUp()
-        self.group = create_image_group_with_master_image()
+        self.group = self.repository['group']
         self.request = zope.publisher.browser.TestRequest(
             skin=zeit.cms.browser.interfaces.ICMSLayer
         )
@@ -74,7 +75,7 @@ class ImageGroupTest(zeit.content.image.testing.FunctionalTestCase):
 
     def test_getitem_chooses_master_image_using_given_viewport(self):
         """Uses master-image for desktop and master-image-mobile for mobile."""
-        self.group['master-image-mobile.jpg'] = create_local_image('obama-clinton-120x120.jpg')
+        self.group['master-image-mobile.jpg'] = create_image('obama-clinton-120x120.jpg')
         with mock.patch(
             'zeit.content.image.imagegroup.ImageGroupBase.master_images',
             new_callable=mock.PropertyMock,
@@ -130,9 +131,7 @@ class ImageGroupTest(zeit.content.image.testing.FunctionalTestCase):
 
     def test_dav_content_with_same_name_is_preferred(self):
         self.assertEqual((1536, 1536), self.traverse('square').getImageSize())
-        self.group['square'] = zeit.content.image.testing.create_local_image(
-            'new-hampshire-450x200.jpg'
-        )
+        self.group['square'] = zeit.content.image.testing.create_image('new-hampshire-450x200.jpg')
         self.assertEqual((450, 200), self.traverse('square').getImageSize())
 
     def test_thumbnails_create_variants_from_smaller_master_image(self):
@@ -188,6 +187,17 @@ class ImageGroupTest(zeit.content.image.testing.FunctionalTestCase):
                 'master-image.jpg', self.group.master_image_for_viewport('desktop').__name__
             )
 
+    def test_can_adapt_group_to_master_image(self):
+        image = zeit.content.image.interfaces.IMasterImage(self.repository['group'])
+        self.assertTrue(zeit.content.image.interfaces.IImage.providedBy(image))
+        self.assertTrue(zeit.content.image.interfaces.IMasterImage.providedBy(image))
+
+    def test_can_adapt_checked_out_group_to_master_image(self):
+        with checked_out(self.repository['group']) as group:
+            image = zeit.content.image.interfaces.IMasterImage(group)
+            self.assertTrue(zeit.content.image.interfaces.IImage.providedBy(image))
+            self.assertTrue(zeit.content.image.interfaces.IMasterImage.providedBy(image))
+
     def test_device_pixel_ratio_affects_image_size(self):
         self.assertEqual((600, 320), self.traverse('cinema__300x160__scale_2.0').getImageSize())
         self.assertEqual((180, 96), self.traverse('cinema__300x160__scale_0.6').getImageSize())
@@ -211,7 +221,7 @@ class ImageGroupTest(zeit.content.image.testing.FunctionalTestCase):
     def test_does_not_change_external_id_when_already_set(self):
         meta = zeit.content.image.interfaces.IImageMetadata(self.group)
         meta.external_id = '12345'
-        self.group['6789.jpg'] = create_local_image('opernball.jpg')
+        self.group['6789.jpg'] = create_image('opernball.jpg')
         zope.event.notify(zope.lifecycleevent.ObjectAddedEvent(self.traverse('6789.jpg')))
         self.assertEqual('12345', meta.external_id)
 
@@ -297,7 +307,7 @@ class ImageGroupFromImageTest(zeit.content.image.testing.FunctionalTestCase):
 
     def test_image_group_from_image(self):
         repository = self.repository()
-        local_image = create_local_image('opernball.jpg')
+        local_image = create_image('opernball.jpg')
         group = zeit.content.image.imagegroup.ImageGroup.from_image(
             repository, 'group', local_image
         )
@@ -305,14 +315,16 @@ class ImageGroupFromImageTest(zeit.content.image.testing.FunctionalTestCase):
 
     def test_image_group_from_none(self):
         repository = self.repository()
-        group = zeit.content.image.imagegroup.ImageGroup.from_image(repository, 'group', None)
+        group = zeit.content.image.imagegroup.ImageGroup()
+        repository['imagegroup'] = group
+        group = zeit.content.image.imagegroup.ImageGroup.from_image(repository, 'imagegroup', None)
         assert group.master_image is None
 
 
 class ImageGroupFromImage(zeit.content.image.testing.BrowserTestCase):
     def test_image_group_from_image(self):
-        local_image = zeit.content.image.testing.create_local_image('opernball.jpg')
-        imagegroup.ImageGroup.from_image(self.repository, 'group', local_image)
+        image = zeit.content.image.testing.create_image('opernball.jpg')
+        imagegroup.ImageGroup.from_image(self.repository, 'group', image)
         b = self.browser
         b.handleErrors = False
         b.open('http://localhost/++skin++vivi/repository/group/@@metadata.html')
@@ -321,7 +333,7 @@ class ImageGroupFromImage(zeit.content.image.testing.BrowserTestCase):
 class ExternalIDTest(zeit.content.image.testing.FunctionalTestCase):
     def setUp(self):
         super().setUp()
-        self.group = create_image_group_with_master_image()
+        self.group = self.repository['group']
 
     def search(self, filename):
         context = mock.Mock()
@@ -352,7 +364,7 @@ class ThumbnailsTest(zeit.content.image.testing.FunctionalTestCase):
         from ..imagegroup import Thumbnails
 
         super().setUp()
-        self.group = create_image_group_with_master_image()
+        self.group = self.repository['group']
         self.thumbnails = Thumbnails(self.group)
 
     def test_uses_master_image_for_thumbnails(self):
@@ -364,7 +376,7 @@ class ThumbnailsTest(zeit.content.image.testing.FunctionalTestCase):
         )
 
     def test_uses_image_defined_for_viewport_mobile_when_given(self):
-        self.group['master-image-mobile.jpg'] = create_local_image('obama-clinton-120x120.jpg')
+        self.group['master-image-mobile.jpg'] = create_image('obama-clinton-120x120.jpg')
         with mock.patch(
             'zeit.content.image.imagegroup.ImageGroupBase.master_images',
             new_callable=mock.PropertyMock,
@@ -384,7 +396,7 @@ class ThumbnailsTest(zeit.content.image.testing.FunctionalTestCase):
         self.assertIn('thumbnail-source-master-image.jpg', self.group.keys())
 
     def test_thumbnail_is_removed_on_delete(self):
-        self.group['second'] = create_local_image('new-hampshire-450x200.jpg')
+        self.group['second'] = create_image('new-hampshire-450x200.jpg')
         self.thumbnails.THUMBNAIL_WIDTH = 100
         self.thumbnails.source_image(self.group['second'])
         del self.group['second']
@@ -396,3 +408,17 @@ class ThumbnailsTest(zeit.content.image.testing.FunctionalTestCase):
         dependencies = IPublicationDependencies(self.group).get_dependencies()
         self.assertIn(self.group['master-image.jpg'], dependencies)
         self.assertNotIn(self.thumbnails.source_image(self.group['master-image.jpg']), dependencies)
+
+    def test_persistent_thumbnail_is_stored_in_thumbnail_folder(self):
+        image = self.repository['group']['master-image.jpg']
+        thumbnail = zeit.content.image.interfaces.IPersistentThumbnail(image)
+        self.assertTrue(zeit.content.image.interfaces.IImage.providedBy(thumbnail))
+        self.assertEqual((50, 37), thumbnail.getImageSize())
+        self.assertEqual('http://xml.zeit.de/group/thumbnails/master-image.jpg', thumbnail.uniqueId)
+
+    def test_persistent_thumbnail_size_can_be_configured(self):
+        zeit.cms.config.set('zeit.content.image', 'thumbnail-width', '200')
+        zeit.cms.config.set('zeit.content.image', 'thumbnail-height', '200')
+        image = self.repository['group']['master-image.jpg']
+        thumbnail = zeit.content.image.interfaces.IPersistentThumbnail(image)
+        self.assertEqual((200, 150), thumbnail.getImageSize())

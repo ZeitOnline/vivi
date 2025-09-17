@@ -6,7 +6,7 @@ import zope.component
 
 from zeit.cms.repository.folder import Folder
 from zeit.cms.workflow.interfaces import IPublicationDependencies
-from zeit.content.image.testing import create_local_image
+from zeit.content.image.testing import create_image
 import zeit.content.gallery.gallery
 
 
@@ -94,7 +94,7 @@ class TestWorkflow(zeit.content.gallery.testing.FunctionalTestCase):
         super().setUp()
 
         self.folder = self.repository['image-folder'] = Folder()
-        image = create_local_image('opernball.jpg')
+        image = create_image('opernball.jpg')
         image = self.folder['opernball.jpg'] = image
 
         gallery = zeit.content.gallery.gallery.Gallery()

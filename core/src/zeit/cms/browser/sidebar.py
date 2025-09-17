@@ -1,6 +1,6 @@
 import persistent.mapping
 import zope.annotation.factory
-import zope.app.preference.interfaces
+import zope.annotation.interfaces
 import zope.cachedescriptors.property
 import zope.component
 import zope.interface
@@ -56,15 +56,21 @@ class Sidebar:
             return 'sidebar-folded'
         return 'sidebar-expanded'
 
-    @property
-    def folded(self):
-        return self.preferences.sidebarFolded
-
     def set_folded(self, folded):
         # XXX this type conversion is a little ridiculous
-        self.preferences.sidebarFolded = True if folded == 'true' else False
+        self.folded = True if folded == 'true' else False
         return self.css_class
+
+    PREFKEY = f'{__module__}.folded'
+
+    @property
+    def folded(self):
+        return self.preferences.get(self.PREFKEY)
+
+    @folded.setter
+    def folded(self, value):
+        self.preferences[self.PREFKEY] = value
 
     @zope.cachedescriptors.property.Lazy
     def preferences(self):
-        return zope.app.preference.interfaces.IUserPreferences(self.context).cms_preferences
+        return zope.annotation.interfaces.IAnnotations(self.request.principal)
