@@ -1,0 +1,2 @@
+<input type="hidden" tal:attributes="name view/name; value view/new_value" />
+<button tal:attributes="title view/title"></button>

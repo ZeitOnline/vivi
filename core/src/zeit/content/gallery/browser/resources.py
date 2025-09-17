@@ -7,3 +7,4 @@ lib = Library('zeit.content.gallery', 'resources')
 Resource('gallery.css')
 
 Resource('details.js', depends=[zeit.cms.browser.resources.base, gallery_css])
+Resource('overview.js', depends=[zeit.cms.browser.resources.base, gallery_css])

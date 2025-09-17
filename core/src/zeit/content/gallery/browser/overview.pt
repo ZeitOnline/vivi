@@ -7,39 +7,10 @@
     <div class="subtitle" tal:content="view/metadata/subtitle" />
   </div>
 
-  <form action="" method="POST">
-    <table class="gallery table-sorter">
-      <tr tal:repeat="entry view/entries"
-          tal:attributes="class entry/css_class">
-        <td>
-          <div class="handle">
-             <a href="#" class="edit-image" title="Edit image"
-                i18n:attributes="title"
-                tal:attributes="href entry/url">
-                <span class="action-title">Edit image</span>
-            </a>
-            <a title="Show image" class="show-image"
-                  tal:attributes="href entry/view_url"
-                  i18n:attributes="title"
-                  i18n:translate="">
-                    <span class="action-title">Show Image</span>
-            </a>
-          </div>
-          <div class="box">
-            <div class="image">
-              <input type="hidden" name="images:list"
-                tal:attributes="value entry/__name__" />
-              <img tal:replace="structure entry/thumbnail/@@view.html/tag" />
-              <div class="caption"
-                tal:condition="entry/caption"
-                tal:content="entry/caption">
-                Caption
-              </div>
-          </div>
-        </td>
-      </tr>
-    </table>
-    <input type="submit" name="form.actions.save_sorting" value="Save sorting"
-      i18n:attributes="value" />
-  </form>
+  <ul class="gallery-overview">
+    <li tal:repeat="entry context/values"
+      tal:attributes="data-entry-name entry/__name__"
+      tal:content="structure entry/@@overview-entry">
+    </li>
+  </ul>
 </div>

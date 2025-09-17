@@ -1,62 +1,154 @@
-.layout-hidden {
+.gallery-overview {
+  list-style: none;
+  padding: 0;
+  margin: 0 1em 0 0;
+}
+
+.gallery-overview-entry {
+  padding: 0.5em 0;
+}
+
+.gallery-overview .sortable-dragging + li {
+  border-top: 2px solid red !important;
+}
+.gallery-overview:has(.sortable-dragging:last-child) li:nth-last-child(2) {
+  border-bottom: 2px solid red !important;
+}
+
+.gallery-overview-entry:has([name="form.layout"][value="default"]) {
   opacity: 0.3;
 }
 
-.layout-hidden:hover {
+.gallery-overview-entry:has([name="form.layout"][value="default"]):hover {
   opacity: 0.5;
 }
 
-.gallery {
-  clear: both;
-}
-
-table.gallery td {
-  padding-bottom: 1.5em;
-}
-
-table.gallery td div.handle {
+.gallery-overview-entry div.handle {
   background-color: #F2F2F2;
   border: 1px solid #BBBBBB;
-  padding: 0.3em;
-  padding-left: 0.5em;
+  padding: 0.3em 1em;
   overflow:hidden;
 }
 
-table.gallery td div.box {
+.gallery-overview-entry div.box {
   border: 1px solid #BBBBBB;
-  border-top: 0px solid black;
+  border-top: 0;
+  display: flex;
+  gap: 16px;
   padding:1em;
-  overflow:hidden;
 }
 
-table.gallery td div.box div.image {
-  width:150px;
-  float:left;
+.handle {
+  cursor: pointer;
 }
 
-table.gallery .caption {
-  padding-bottom: 1em;
+.dirty .handle {
+  background: linear-gradient(0deg, #FFF, #CEF) !important;
 }
 
+.submitted-successfully .handle {
+  animation: 2.5s bg-fadeout forwards;
+  background-image: linear-gradient(0deg, #FFF, #CFD) !important;
+  background-repeat: no-repeat;
+}
 
-
-.handle a {
-  display:block;
+.handle .show-image {
+  background-image: url("showimage.png");
   background-repeat:no-repeat;
+  background-position: center;
   width:14px;
   height: 14px;
   float:left;
-  margin-right:5px;
+  margin-right: 5px;
+  margin-top: 1px;
 }
 
-table.gallery a.edit-image {
-  background-image: url("editimage.png");
- }
+.handle .inline-form {
+  float: right;
+}
 
-table.gallery a.show-image {
-  background-image: url("showimage.png");
- }
+.handle .inline-form fieldset {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
 
+.handle .inline-form .field,
+.handle .inline-form .widget {
+  margin: 0;
+}
+
+.handle .fieldname-layout .label {
+  display: none;
+}
+
+.handle .fieldname-layout button {
+  display: block;
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+
+  height: 16px;
+  width: 17px;
+}
+
+.handle .fieldname-layout input[value="hidden"] + button {
+  background-image: url('/fanstatic/zeit.content.cp/eye.png');
+}
+
+.handle .fieldname-layout input[value="default"] + button {
+  background-image: url('/fanstatic/zeit.content.cp/contrast.png');
+}
+
+.handle .inline-form.busy {
+  width: 16px;
+  height: 16px;
+}
+
+.handle .busy .fieldname-layout button {
+  display: none;
+}
+
+.gallery-overview-entry .box .inline-form {
+  width: 100%;
+}
+
+.gallery-overview-entry .box fieldset {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.gallery-overview-entry .box .label {
+  display: none;
+}
+
+.gallery-overview-entry .box .field {
+  margin: 0;
+}
+
+.gallery-overview-entry .box .fieldname-caption {
+  margin: 0;
+  padding: 0;
+}
+
+.gallery-overview-entry .box .widget {
+  margin: 0;
+}
+
+.gallery-overview-entry textarea#form\.caption {
+  height: calc(4lh + 2 * 5px);
+  margin: 0;
+
+  border: 1px solid #aaa;
+  border-radius: 3px;
+  box-sizing: border-box;
+  font-family: unset;
+  padding: 5px;
+}
 
 /* gallery object details */
 

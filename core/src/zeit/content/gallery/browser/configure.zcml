@@ -159,6 +159,53 @@
     class=".gallery.MetadataPreview"
     />
 
+  <browser:page
+    class=".overview.Entry"
+    for="..interfaces.IGalleryEntry"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="overview-entry"
+    permission="zeit.EditContent"
+    template="overview.entry.pt"
+    />
+
+  <browser:viewlet
+    for="..interfaces.IGalleryEntry"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IEditBarViewletManager"
+    name="toggle-visible"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zeit.EditContent"
+    weight="100"
+    />
+
+  <browser:page
+    for="..interfaces.IGalleryEntry"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="toggle-visible"
+    class=".overview.ToggleVisible"
+    permission="zeit.EditContent"
+    />
+
+  <browser:viewlet
+    for="zeit.content.gallery.interfaces.IGalleryEntry"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.form.caption"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zeit.EditContent"
+    weight="1"
+    />
+
+  <browser:page
+    class=".overview.EditCaption"
+    for="..interfaces.IGalleryEntry"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.form.caption"
+    permission="zeit.EditContent"
+    />
+
+
   <!-- IMP -->
 
   <gocept:pagelet
