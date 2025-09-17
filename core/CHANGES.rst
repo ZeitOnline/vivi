@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.188.0 (2025-09-17)
+--------------------
+
+- WCM-916: Create image folder for gallery automatically on add if none is given
+
+- WCM-1107: preserve metadata as much as pillow allows
+
+
 7.187.0 (2025-09-17)
 --------------------
 
