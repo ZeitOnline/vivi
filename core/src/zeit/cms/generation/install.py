@@ -1,5 +1,8 @@
+import zope.app.appsetup.bootstrap
 import zope.component
 import zope.error.interfaces
+import zope.principalannotation.interfaces
+import zope.principalannotation.utility
 
 import zeit.authentication.azure
 import zeit.cms.browser.error
@@ -29,6 +32,12 @@ def installErrorReportingUtility(root):
 
 def install(root):
     installErrorReportingUtility(root)
+    zope.app.appsetup.bootstrap.addConfigureUtility(
+        root,
+        zope.principalannotation.interfaces.IPrincipalAnnotationUtility,
+        'PrincipalAnnotation',
+        zope.principalannotation.utility.PrincipalAnnotationUtility,
+    )
     installLocalUtility(
         root,
         zeit.cms.repository.repository.repositoryFactory,
