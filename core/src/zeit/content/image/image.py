@@ -8,6 +8,7 @@ from PIL.ExifTags import TAGS
 import filetype
 import lxml.builder
 import lxml.etree
+import opentelemetry.trace
 import PIL.Image
 import requests
 import zope.cachedescriptors.property
@@ -81,7 +82,7 @@ class BaseImage:
 
     @staticmethod
     def _icc_properties(icc_profile: ImageCms.ImageCmsProfile) -> dict:
-        """List of available useful properties from the for the icc profile
+        """List available and useful properties from the icc profile
         https://pillow.readthedocs.io/en/stable/reference/ImageCms.html#cmsprofile"""
         icc_properties = [
             'attributes',
@@ -139,16 +140,30 @@ class BaseImage:
                 continue
         return metadata
 
+    @staticmethod
+    def _iptc_properties(img: PIL.Image) -> dict:
+        """Pillows IPTC parser doesn't know when to stop.
+        After reading all IPTC records, it continues reading
+        and if it encounters other blocks it will throw an exception."""
+        iptc_tags = {(2, 110): 'copyright', (2, 120): 'caption', (2, 105): 'title'}
+        metadata = {}
+        try:
+            iptc = IptcImagePlugin.getiptcinfo(img)
+        except SyntaxError as err:
+            current_span = opentelemetry.trace.get_current_span()
+            current_span.record_exception(err)
+        else:
+            if isinstance(iptc, dict):
+                for code, value in iptc.items():
+                    tag_name = iptc_tags.get(code, code)
+                    metadata[tag_name] = value
+
+        return metadata
+
     def _metadata(self, img):
         """See https://de.wikipedia.org/wiki/IPTC-IIM-Standard for a list of available iptc tags"""
         metadata = img.info.copy() if isinstance(img.info, dict) else {}
-        iptc_tags = {(2, 110): 'copyright', (2, 120): 'caption', (2, 105): 'title'}
-        iptc = IptcImagePlugin.getiptcinfo(img)
-        if isinstance(iptc, dict):
-            metadata['iptc'] = {}
-            for code, value in iptc.items():
-                tag_name = iptc_tags.get(code, code)
-                metadata['iptc'][tag_name] = value
+        metadata['iptc'] = self._iptc_properties(img)
         metadata['exif'] = {}
         for tag_id, value in img.getexif().items():
             tag_name = TAGS.get(tag_id, tag_id)
