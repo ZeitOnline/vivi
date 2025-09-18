@@ -7,6 +7,7 @@ import zope.lifecycleevent
 
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.content.sources import FEATURE_TOGGLES
+from zeit.content.image.testing import create_image
 import zeit.cms.checkout.interfaces
 import zeit.cms.interfaces
 import zeit.content.image.image
