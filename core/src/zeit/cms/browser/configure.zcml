@@ -318,7 +318,7 @@
 
   <!-- Flashmessage via session -->
   <utility
-     factory="z3c.flashmessage.sources.SessionMessageSource"
+     factory=".flashmessage.SessionMessageSource"
      name="session"
      />
   <utility
