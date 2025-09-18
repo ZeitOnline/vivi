@@ -17,10 +17,12 @@
     <template class="imageupload__template">
         <li>
             <img/>
-            <span class="imageupload__filename"></span>
+            <div>
+              <button class="imageupload__button imageupload__button--remove" i18n:attributes="title" title="Remove"></button>
+              <p class="imageupload__filename"></p>
+            </div>
             <progress max=100 value=0></progress>
-            <button class="imageupload__button imageupload__button--remove" i18n:translate="">Remove</button>
-            <span class="imageupload__error"></span>
+            <div class="imageupload__error"></div>
         </li>
     </template>
   </form>

@@ -77,7 +77,9 @@
 }
 
 .imageupload__filename {
+  margin: 0;
   overflow-wrap: anywhere;
+  overflow: hidden;
 }
 
 .imageupload__gallery progress {
@@ -94,7 +96,16 @@
 }
 
 .imageupload__button--remove {
-  margin-left: auto;
+  float: right;
+  background-image: url("/fanstatic/zeit.cms/icons/delete.png");
+  background-color: inherit;
+  background-position: top left;
+  background-repeat: no-repeat;
+  height: 18px;
+  width: 12px;
+  border: none;
+  padding: 0;
+  margin-left: 2px;
 }
 
 .edit-image-table {
