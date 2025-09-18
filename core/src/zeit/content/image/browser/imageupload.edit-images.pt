@@ -1,5 +1,6 @@
 <tal:block i18n:domain="zeit.cms">
-  <form action="" method="post" name="edit-images">
+<div id="edit-form">
+  <form action="" method="post" name="edit-images" class="edit-images-form">
     <table class="edit-image-table">
       <tr>
         <th></th>
@@ -29,13 +30,16 @@
         <td><textarea tal:content="item/caption" tal:attributes="name string:caption[${repeat/item/index}]"></textarea></td>
       </tr>
     </table>
-    <p>
-      <button i18n:translate="">Upload</button>
-      <button name="upload_and_publish" i18n:translate="">Upload and publish</button>
-      <button name="upload_and_open" i18n:translate="">Upload and open</button>
-    </p>
-    <p>
-      <button name="cancel" i18n:translate="">Remove images</button>
-    </p>
+    <div id="actionsView" class="edit-images-actions-view">
+      <p>
+        <button i18n:translate="">Upload</button>
+        <button name="upload_and_publish" i18n:translate="">Upload and publish</button>
+        <button name="upload_and_open" i18n:translate="">Upload and open</button>
+      </p>
+      <p>
+        <button name="cancel" i18n:translate="">Remove images</button>
+      </p>
+    </div>
   </form>
+</div>
 </tal:block>

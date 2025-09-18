@@ -58,6 +58,7 @@
 
 .imageupload__gallery {
   margin: 0 0 0 -1em;
+  overflow: auto;
   padding: 0;
 }
 
@@ -108,8 +109,18 @@
   margin-left: 2px;
 }
 
+#edit-form:has(.edit-images-form) {
+  --edit-form-actions-view-height: 7.3em;
+}
+
+.edit-images-form {
+  height: 100%;
+  overflow: auto;
+}
+
 .edit-image-table {
-  width: calc(100% - 8px);
+  border-collapse: collapse;
+  width: 100%;
 }
 
 .edit-image-table td,
@@ -143,4 +154,8 @@
   height: 67px;
   margin: 0;
   resize: none;
+}
+
+.edit-images-actions-view p {
+  margin: 0.5em 0;
 }
