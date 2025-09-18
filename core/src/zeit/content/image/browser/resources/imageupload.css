@@ -123,10 +123,16 @@
   width: 100%;
 }
 
-.edit-image-table td,
-.edit-image-table th {
+.edit-image-table td {
   padding: 1em 0.2em;
   vertical-align: top;
+}
+
+.edit-image-table th {
+  background: #f1f4f9;
+  padding: 0.8em 0.2em;
+  position: sticky;
+  top: 0;
 }
 
 .edit-image-table td:first-child {
