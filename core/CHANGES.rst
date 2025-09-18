@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.189.0 (2025-09-18)
+--------------------
+
+- WCM-1113: Use set instead of list for flashmessages, to reduce likelihood of conflicts
+
+
 7.188.0 (2025-09-17)
 --------------------
 
