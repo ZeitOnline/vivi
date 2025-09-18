@@ -1,10 +1,10 @@
 import BTrees
-import zope.app.zopeappgenerations
 import zope.component
-import zope.component.hooks
+
+import zeit.objectlog.generation
 
 
-def install(root):
+def update(root):
     # Migrate from one central time line to one per object
     site_manager = zope.component.getSiteManager()
     log = site_manager['objectlog']
@@ -20,10 +20,4 @@ def install(root):
 
 
 def evolve(context):
-    site = zope.component.hooks.getSite()
-    try:
-        root = zope.app.zopeappgenerations.getRootFolder(context)
-        zope.component.hooks.setSite(root)
-        install(root)
-    finally:
-        zope.component.hooks.setSite(site)
+    zeit.objectlog.generation.do_evolve(context, update)

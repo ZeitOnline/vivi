@@ -8,7 +8,6 @@ import pendulum
 import persistent
 import transaction
 import ZODB.POSException
-import zope.app.keyreference.interfaces
 import zope.component
 import zope.interface
 import zope.security.management
@@ -29,21 +28,17 @@ class ObjectLog(persistent.Persistent):
         self._object_log = BTrees.family64.OO.BTree()
 
     def get_log(self, object):
-        key = zope.app.keyreference.interfaces.IKeyReference(object, None)
-        if key is None:
-            return
-        object_log = self._object_log.get(key, [])
+        object_log = self._object_log.get(object.uniqueId, [])
         for key in object_log:
             yield object_log[key]
 
     def log(self, object, message):
         logger.debug('Logging: %s %s' % (object, message))
-        obj_key = zope.app.keyreference.interfaces.IKeyReference(object)
 
-        object_log = self._object_log.get(obj_key)
+        object_log = self._object_log.get(object.uniqueId)
         if object_log is None:
             # Create a timeline for the object.
-            object_log = self._object_log[obj_key] = BTrees.family64.IO.BTree()
+            object_log = self._object_log[object.uniqueId] = BTrees.family64.IO.BTree()
 
         log_entry = LogEntry(object, message)
 
@@ -64,21 +59,17 @@ class ObjectLog(persistent.Persistent):
             )
             raise e
 
-    def move(self, source_ref, target):
-        source_key = zope.app.keyreference.interfaces.IKeyReference(source_ref)
-        log = self._object_log.pop(source_key, None)
+    def move(self, source_id, target):
+        log = self._object_log.pop(source_id, None)
         if log is None:
             return
-        target_key = zope.app.keyreference.interfaces.IKeyReference(target)
+        target_key = target.uniqueId
         self._object_log[target_key] = log
         for entry in log.values():
             entry.object_reference = target_key
 
     def delete(self, object):
-        key = zope.app.keyreference.interfaces.IKeyReference(object, None)
-        if key is None:
-            return
-        self._object_log.pop(key, None)
+        self._object_log.pop(object.uniqueId, None)
 
     def clean(self, timedelta):
         reference_time = int(10e6 * (time.time() - timedelta.days * 3600 * 24 - timedelta.seconds))
@@ -101,7 +92,8 @@ class ObjectLog(persistent.Persistent):
 class LogEntry(persistent.Persistent):
     def __init__(self, object, message):
         self.time = pendulum.now('UTC')
-        self.object_reference = zope.app.keyreference.interfaces.IKeyReference(object)
+        self.uniqueId = object.uniqueId
+
         self.message = message
         participations = zope.security.management.getInteraction().participations
         if participations and participations[0].principal:
@@ -110,7 +102,7 @@ class LogEntry(persistent.Persistent):
             self.principal = None
 
     def get_object(self):
-        return self.object_reference()
+        return zeit.cms.interfaces.ICMSContent(self.uniqueId)
 
 
 @zope.component.adapter(zope.interface.Interface)

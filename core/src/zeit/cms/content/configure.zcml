@@ -31,8 +31,6 @@
   <subscriber handler=".liveproperty.remove_live_properties" />
   <adapter factory=".liveproperty.live_to_cmscontent" />
 
-  <adapter factory=".keyreference.CMSContentKeyReference" />
-
   <!-- uuid -->
   <adapter factory=".contentuuid.ContentUUID" />
   <adapter factory=".contentuuid.properties" />

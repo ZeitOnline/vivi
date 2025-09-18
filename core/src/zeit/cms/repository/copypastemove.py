@@ -62,9 +62,11 @@ def move_objectlog_on_move(context, event):
         return
     if zeit.cms.checkout.interfaces.IWorkingcopy.providedBy(event.newParent):
         return
-    key_ref = zeit.cms.content.keyreference.UniqueIdKeyReference(event.oldParent, event.oldName)
+    parent = event.oldParent.uniqueId
+    if not parent.endswith('/'):
+        parent += '/'
     log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
-    log.move(key_ref, event.object)
+    log.move(parent + event.oldName, event.object)
 
 
 @zope.interface.implementer(zeit.cms.repository.interfaces.IRenameInfo)
