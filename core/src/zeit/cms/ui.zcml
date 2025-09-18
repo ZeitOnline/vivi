@@ -100,6 +100,7 @@
   <include package="zope.principalannotation" />
   <include package="zope.app.tree"/>
 
+  <includeOverrides package="zeit.cms.locking" file="overrides.zcml"/>
   <include package="zope.app.locking"/>
 
   <include package="zc.form" />

@@ -1,7 +1,6 @@
 from datetime import datetime
 import time
 
-import grokcore.component as grok
 import pendulum
 import persistent.mapping
 import zope.app.locking.adapter
@@ -92,7 +91,7 @@ class CMSLockingAdapter(zope.app.locking.adapter.LockingAdapter):
     __repr__ = object.__repr__
 
 
-@grok.adapter(zeit.cms.interfaces.ICMSContent)
-@grok.implementer(zope.app.locking.interfaces.ILockable)
+@zope.component.adapter(zope.interface.Interface)
+@zope.interface.implementer(zope.app.locking.interfaces.ILockable)
 def no_general_locking(context):
     return None
