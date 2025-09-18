@@ -1,8 +1,9 @@
 from contextlib import contextmanager
+import io
 import os
 import urllib.parse
 
-from PIL import IptcImagePlugin
+from PIL import ImageCms, IptcImagePlugin
 from PIL.ExifTags import TAGS
 import filetype
 import lxml.builder
@@ -79,7 +80,66 @@ class BaseImage:
         return result
 
     @staticmethod
-    def _metadata(img):
+    def _icc_properties(icc_profile: ImageCms.ImageCmsProfile) -> dict:
+        """List of available useful properties from the for the icc profile
+        https://pillow.readthedocs.io/en/stable/reference/ImageCms.html#cmsprofile"""
+        icc_properties = [
+            'attributes',
+            'blue_colorant',
+            'blue_primary',
+            'chromatic_adaption',
+            'chromaticity',
+            'clut',
+            'colorant_table_out',
+            'colorant_table',
+            'colorimetric_intent',
+            'connection_space',
+            'copyright',
+            'creation_date',
+            'device_class',
+            'green_colorant',
+            'green_primary',
+            'header_flags',
+            'header_manufacturer',
+            'header_model',
+            'icc_version',
+            'intent_supported',
+            'is_matrix_shaper',
+            'luminance',
+            'manufacturer',
+            'media_black_point',
+            'media_white_point_temperature',
+            'media_white_point',
+            'model',
+            'perceptual_rendering_intent_gamut',
+            'profile_description',
+            'profile_id',
+            'red_colorant',
+            'red_primary',
+            'rendering_intent',
+            'saturation_rendering_intent_gamut',
+            'screening_description',
+            'target',
+            'technology',
+            'version',
+            'viewing_condition',
+            'xcolor_space',
+        ]
+        metadata = {}
+        for prop_name in icc_properties:
+            try:
+                value = getattr(icc_profile.profile, prop_name, None)
+                if value is not None:
+                    if hasattr(value, '__str__'):
+                        metadata[prop_name] = str(value)
+                    else:
+                        metadata[prop_name] = value
+            except Exception:
+                # too many available image sources and we cannot check them all
+                continue
+        return metadata
+
+    def _metadata(self, img):
         """See https://de.wikipedia.org/wiki/IPTC-IIM-Standard for a list of available iptc tags"""
         metadata = img.info.copy() if isinstance(img.info, dict) else {}
         iptc_tags = {(2, 110): 'copyright', (2, 120): 'caption', (2, 105): 'title'}
@@ -94,6 +154,10 @@ class BaseImage:
             tag_name = TAGS.get(tag_id, tag_id)
             metadata['exif'][tag_name] = value
         metadata['xmp'] = img.getxmp()
+        if 'icc_profile' in metadata:
+            icc_data = io.BytesIO(metadata['icc_profile'])
+            profile = ImageCms.ImageCmsProfile(icc_data)
+            metadata['icc_profile'] = self._icc_properties(profile)
         return metadata
 
     def getImageSize(self):
