@@ -4,19 +4,23 @@ import os
 import urllib.parse
 
 from PIL import ImageCms
-import filetype
+import grokcore.component as grok
 import lxml.builder
 import lxml.etree
 import PIL.Image
 import requests
 import zope.cachedescriptors.property
 import zope.component
+import zope.event
 import zope.interface
+import zope.lifecycleevent
 import zope.location.interfaces
 import zope.security.proxy
 
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.image import embedded
+import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.repository.file
@@ -33,6 +37,24 @@ class BaseImage:
     def __init__(self, uniqueId=None):
         super().__init__(uniqueId)
 
+    _mime_type = zeit.cms.content.dav.DAVProperty(
+        zeit.content.image.interfaces.IImage['mime_type'],
+        zeit.content.image.interfaces.IMAGE_NAMESPACE,
+        'mime_type',
+    )
+
+    _width = zeit.cms.content.dav.DAVProperty(
+        zeit.content.image.interfaces.IImage['width'],
+        zeit.content.image.interfaces.IMAGE_NAMESPACE,
+        'width',
+    )
+
+    _height = zeit.cms.content.dav.DAVProperty(
+        zeit.content.image.interfaces.IImage['height'],
+        zeit.content.image.interfaces.IMAGE_NAMESPACE,
+        'height',
+    )
+
     @contextmanager
     def as_pil(self, keep_metadata=False):
         with self.open() as f:
@@ -43,14 +65,13 @@ class BaseImage:
                 pil.encoderinfo = pil.info.copy()
             yield pil
 
-    @property
-    def mimeType(self):
-        with self.open() as f:
-            head = f.read(261)
-        file_type = filetype.guess_mime(head) or ''
-        if not file_type.startswith('image/'):
-            return ''
-        return file_type
+    def embedded_metadata(self):
+        with self.as_pil() as img:
+            return self._metadata(img)
+
+    def embedded_metadata_flattened(self):
+        with self.as_pil() as img:
+            return self._flatten(self._metadata(img))
 
     def _flatten(self, data, parent=''):
         """Kludgy heuristics to try to flatten the nested XMP/RDF structure into
@@ -90,22 +111,56 @@ class BaseImage:
             metadata['icc_profile'] = embedded.icc(profile)
         return metadata
 
+    @property
+    def mimeType(self):
+        if FEATURE_TOGGLES.find('column_read_wcm_56'):
+            return self._mime_type
+        return self._parse_mime()
+
+    def _parse_mime(self):
+        with self.as_pil() as pil:
+            return PIL.Image.MIME.get(pil.format, '')
+
+    @mimeType.setter
+    def mimeType(self, value):
+        self._mime_type = value
+
+    @property
+    def width(self):
+        if FEATURE_TOGGLES.find('column_read_wcm_56'):
+            return self._width
+        return self._parse_size()[0]
+
+    @width.setter
+    def width(self, value):
+        self._width = value
+
+    @property
+    def height(self):
+        if FEATURE_TOGGLES.find('column_read_wcm_56'):
+            return self._height
+        return self._parse_size()[1]
+
+    @height.setter
+    def height(self, value):
+        self._height = value
+
     def getImageSize(self):
+        if FEATURE_TOGGLES.find('column_read_wcm_56'):
+            return (self.width, self.height)
+        return self._parse_size()
+
+    def _parse_size(self):
         with self.as_pil() as img:
             return img.size
-
-    def embedded_metadata(self):
-        with self.as_pil() as img:
-            return self._metadata(img)
-
-    def embedded_metadata_flattened(self):
-        with self.as_pil() as img:
-            return self._flatten(self._metadata(img))
 
     @property
     def ratio(self):
         try:
-            width, height = self.getImageSize()
+            # Spell more explicitly, to prevent calling _parse_size() twice
+            if FEATURE_TOGGLES.find('column_read_wcm_56'):
+                return float(self.width) / float(self.height)
+            width, height = self._parse_size()
             return float(width) / float(height)
         except Exception:
             return None
@@ -216,4 +271,20 @@ def get_remote_image(url, timeout=2):
                 first_chunk = False
                 assert len(chunk) > DOWNLOAD_CHUNK_SIZE / 2
             fh.write(chunk)
+    zope.event.notify(zope.lifecycleevent.ObjectCreatedEvent(image))
     return image
+
+
+@grok.subscribe(zeit.content.image.interfaces.IImage, zope.lifecycleevent.IObjectCreatedEvent)
+def set_image_properties(context, event):
+    if FEATURE_TOGGLES.find('column_write_wcm_56'):
+        with context.as_pil() as pil:
+            context.mimeType = PIL.Image.MIME.get(pil.format, '')
+            (context.width, context.height) = pil.size
+
+
+@grok.subscribe(
+    zeit.content.image.interfaces.IImage, zeit.cms.checkout.interfaces.IBeforeCheckinEvent
+)
+def update_image_properties(context, event):
+    return set_image_properties(context, event)

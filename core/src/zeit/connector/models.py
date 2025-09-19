@@ -7,6 +7,7 @@ from sqlalchemy import (
     ForeignKey,
     Index,
     Integer,
+    SmallInteger,
     Unicode,
     UnicodeText,
     Uuid,
@@ -113,9 +114,22 @@ class ContentTypes:
     author_vgwort_code = mapped_column(Unicode, info={'namespace': 'author', 'name': 'vgwort_code'})
 
     centerpage_type = mapped_column(Unicode, info={'namespace': 'zeit.content.cp', 'name': 'type'})
+
     image_separately_purchased = mapped_column(
         Boolean, info={'namespace': 'image', 'name': 'single_purchase'}
     )
+    image_mime_type = mapped_column(
+        Unicode, info={'namespace': 'image', 'name': 'mime_type', 'migration': 'wcm_56'}
+    )
+    image_height = mapped_column(
+        SmallInteger,
+        info={'namespace': 'image', 'name': 'height', 'migration': 'wcm_56'},
+    )
+    image_width = mapped_column(
+        SmallInteger,
+        info={'namespace': 'image', 'name': 'width', 'migration': 'wcm_56'},
+    )
+
     gallery_type = mapped_column(
         Unicode, info={'namespace': 'zeit.content.gallery', 'name': 'type'}
     )

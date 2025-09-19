@@ -105,6 +105,12 @@ class IImage(
 ):
     """Image."""
 
+    width = zope.schema.Int(title=_('Width'), required=False)
+
+    height = zope.schema.Int(title=_('Height'), required=False)
+
+    mime_type = zope.schema.TextLine(title=_('MIME type'), required=False)
+
     def getImageSize():
         """return tuple (width, heigth) of image."""
 
