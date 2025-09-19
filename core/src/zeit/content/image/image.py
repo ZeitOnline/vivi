@@ -66,16 +66,13 @@ class BaseImage:
                 pil.encoderinfo = pil.info.copy()
             yield pil
 
-    @property
-    def mimeType(self):
-        if FEATURE_TOGGLES.find('column_read_wcm_56'):
-            return self._mime_type
-        with self.open() as f:
-            head = f.read(261)
-        file_type = filetype.guess_mime(head) or ''
-        if not file_type.startswith('image/'):
-            return ''
-        return file_type
+    def embedded_metadata(self):
+        with self.as_pil() as img:
+            return self._metadata(img)
+
+    def embedded_metadata_flattened(self):
+        with self.as_pil() as img:
+            return self._flatten(self._metadata(img))
 
     def _flatten(self, data, parent=''):
         """Kludgy heuristics to try to flatten the nested XMP/RDF structure into
@@ -115,6 +112,20 @@ class BaseImage:
             metadata['icc_profile'] = embedded.icc(profile)
         return metadata
 
+    @property
+    def mimeType(self):
+        if FEATURE_TOGGLES.find('column_read_wcm_56'):
+            return self._mime_type
+        return self._parse_mime()
+
+    def _parse_mime(self):
+        with self.open() as f:
+            head = f.read(261)
+        file_type = filetype.guess_mime(head) or ''
+        if not file_type.startswith('image/'):
+            return ''
+        return file_type
+
     @mimeType.setter
     def mimeType(self, value):
         self._mime_type = value
@@ -123,7 +134,7 @@ class BaseImage:
     def width(self):
         if FEATURE_TOGGLES.find('column_read_wcm_56'):
             return self._width
-        return self.getImageSize()[0]
+        return self._parse_size()[0]
 
     @width.setter
     def width(self, value):
@@ -133,7 +144,7 @@ class BaseImage:
     def height(self):
         if FEATURE_TOGGLES.find('column_read_wcm_56'):
             return self._height
-        return self.getImageSize()[1]
+        return self._parse_size()[1]
 
     @height.setter
     def height(self, value):
@@ -142,25 +153,19 @@ class BaseImage:
     def getImageSize(self):
         if FEATURE_TOGGLES.find('column_read_wcm_56'):
             return (self.width, self.height)
+        return self._parse_size()
+
+    def _parse_size(self):
         with self.as_pil() as img:
             return img.size
-
-    def embedded_metadata(self):
-        with self.as_pil() as img:
-            return self._metadata(img)
-
-    def embedded_metadata_flattened(self):
-        with self.as_pil() as img:
-            return self._flatten(self._metadata(img))
 
     @property
     def ratio(self):
         try:
-            # Use only if width and height are available in storage,
-            # otherwise getImageSize is called twice
+            # Spell more explicitly, to prevent calling _parse_size() twice
             if FEATURE_TOGGLES.find('column_read_wcm_56'):
                 return float(self.width) / float(self.height)
-            width, height = self.getImageSize()
+            width, height = self._parse_size()
             return float(width) / float(height)
         except Exception:
             return None
