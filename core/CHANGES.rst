@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.192.0 (2025-09-19)
+--------------------
+
+FIX:
+- Don't use zodb generation to migrate objectlog
+
+
 7.191.0 (2025-09-19)
 --------------------
 
