@@ -3,12 +3,10 @@ import io
 import os
 import urllib.parse
 
-from PIL import ImageCms, IptcImagePlugin
-from PIL.ExifTags import TAGS
+from PIL import ImageCms
 import filetype
 import lxml.builder
 import lxml.etree
-import opentelemetry.trace
 import PIL.Image
 import requests
 import zope.cachedescriptors.property
@@ -18,6 +16,7 @@ import zope.location.interfaces
 import zope.security.proxy
 
 from zeit.cms.i18n import MessageFactory as _
+from zeit.content.image import embedded
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.repository.file
@@ -80,99 +79,15 @@ class BaseImage:
 
         return result
 
-    @staticmethod
-    def _icc_properties(icc_profile: ImageCms.ImageCmsProfile) -> dict:
-        """List available and useful properties from the icc profile
-        https://pillow.readthedocs.io/en/stable/reference/ImageCms.html#cmsprofile"""
-        icc_properties = [
-            'attributes',
-            'blue_colorant',
-            'blue_primary',
-            'chromatic_adaption',
-            'chromaticity',
-            'clut',
-            'colorant_table_out',
-            'colorant_table',
-            'colorimetric_intent',
-            'connection_space',
-            'copyright',
-            'creation_date',
-            'device_class',
-            'green_colorant',
-            'green_primary',
-            'header_flags',
-            'header_manufacturer',
-            'header_model',
-            'icc_version',
-            'intent_supported',
-            'is_matrix_shaper',
-            'luminance',
-            'manufacturer',
-            'media_black_point',
-            'media_white_point_temperature',
-            'media_white_point',
-            'model',
-            'perceptual_rendering_intent_gamut',
-            'profile_description',
-            'profile_id',
-            'red_colorant',
-            'red_primary',
-            'rendering_intent',
-            'saturation_rendering_intent_gamut',
-            'screening_description',
-            'target',
-            'technology',
-            'version',
-            'viewing_condition',
-            'xcolor_space',
-        ]
-        metadata = {}
-        for prop_name in icc_properties:
-            try:
-                value = getattr(icc_profile.profile, prop_name, None)
-                if value is not None:
-                    if hasattr(value, '__str__'):
-                        metadata[prop_name] = str(value)
-                    else:
-                        metadata[prop_name] = value
-            except Exception:
-                # too many available image sources and we cannot check them all
-                continue
-        return metadata
-
-    @staticmethod
-    def _iptc_properties(img: PIL.Image) -> dict:
-        """Pillows IPTC parser doesn't know when to stop.
-        After reading all IPTC records, it continues reading
-        and if it encounters other blocks it will throw an exception."""
-        iptc_tags = {(2, 110): 'copyright', (2, 120): 'caption', (2, 105): 'title'}
-        metadata = {}
-        try:
-            iptc = IptcImagePlugin.getiptcinfo(img)
-        except SyntaxError as err:
-            current_span = opentelemetry.trace.get_current_span()
-            current_span.record_exception(err)
-        else:
-            if isinstance(iptc, dict):
-                for code, value in iptc.items():
-                    tag_name = iptc_tags.get(code, code)
-                    metadata[tag_name] = value
-
-        return metadata
-
     def _metadata(self, img):
-        """See https://de.wikipedia.org/wiki/IPTC-IIM-Standard for a list of available iptc tags"""
         metadata = img.info.copy() if isinstance(img.info, dict) else {}
-        metadata['iptc'] = self._iptc_properties(img)
-        metadata['exif'] = {}
-        for tag_id, value in img.getexif().items():
-            tag_name = TAGS.get(tag_id, tag_id)
-            metadata['exif'][tag_name] = value
+        metadata['iptc'] = embedded.iptc(img)
+        metadata['exif'] = embedded.exif(img)
         metadata['xmp'] = img.getxmp()
         if 'icc_profile' in metadata:
             icc_data = io.BytesIO(metadata['icc_profile'])
             profile = ImageCms.ImageCmsProfile(icc_data)
-            metadata['icc_profile'] = self._icc_properties(profile)
+            metadata['icc_profile'] = embedded.icc(profile)
         return metadata
 
     def getImageSize(self):
