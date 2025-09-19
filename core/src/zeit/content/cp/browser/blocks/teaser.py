@@ -6,6 +6,7 @@ import zope.formlib.form
 import zope.interface
 import zope.lifecycleevent
 
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
@@ -113,9 +114,16 @@ class Display(zeit.cms.browser.view.Base):
         image = images.image
         if zeit.content.image.interfaces.IImageGroup.providedBy(image):
             repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
+            if FEATURE_TOGGLES.find('cp_teaser_image_from_thumbnail'):
+                params = {'thumbnail': True}
+            else:
+                params = {
+                    'width': zeit.cms.config.get('zeit.content.image', 'thumbnail-width', 50),
+                    'height': 0,
+                }
             return '%s%s/@@raw' % (
                 self.url(repository),
-                image.variant_url(image_pattern, thumbnail=True),
+                image.variant_url(image_pattern, **params),
             )
         else:
             return self.url(image, '@@raw')
