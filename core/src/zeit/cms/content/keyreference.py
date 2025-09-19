@@ -3,8 +3,8 @@ from functools import total_ordering
 
 @total_ordering
 class CMSContentKeyReference:  # BBB keep until zeit.objectlog generation 2 ran
-    def __init__(self, object):
-        self.referenced_object = object.uniqueId
+    def __init__(self, uniqueId):
+        self.referenced_object = uniqueId
 
     def __hash__(self):
         return hash(self.referenced_object)

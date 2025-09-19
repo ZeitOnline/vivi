@@ -4,8 +4,8 @@ import zope.generations.generations
 import zope.generations.utility
 
 
-minimum_generation = 2
-generation = 2
+minimum_generation = 1
+generation = 1
 
 manager = zope.generations.generations.SchemaManager(
     minimum_generation, generation, 'zeit.objectlog.generation'

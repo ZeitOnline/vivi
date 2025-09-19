@@ -12,6 +12,7 @@ import zope.component
 import zope.interface
 import zope.security.management
 
+from zeit.cms.content.keyreference import CMSContentKeyReference
 import zeit.cms.cli
 import zeit.objectlog.interfaces
 
@@ -28,14 +29,21 @@ class ObjectLog(persistent.Persistent):
         self._object_log = BTrees.family64.OO.BTree()
 
     def get_log(self, object):
-        object_log = self._object_log.get(object.uniqueId, [])
+        if object.uniqueId in self._object_log:
+            object_log = self._object_log.get(object.uniqueId, [])
+        else:  # BBB
+            object_log = self._object_log.get(CMSContentKeyReference(object.uniqueId), [])
+
         for key in object_log:
             yield object_log[key]
 
     def log(self, object, message):
         logger.debug('Logging: %s %s' % (object, message))
 
-        object_log = self._object_log.get(object.uniqueId)
+        if object.uniqueId in self._object_log:
+            object_log = self._object_log.get(object.uniqueId)
+        else:  # BBB
+            object_log = self._object_log.get(CMSContentKeyReference(object.uniqueId))
         if object_log is None:
             # Create a timeline for the object.
             object_log = self._object_log[object.uniqueId] = BTrees.family64.IO.BTree()
@@ -61,6 +69,8 @@ class ObjectLog(persistent.Persistent):
 
     def move(self, source_id, target):
         log = self._object_log.pop(source_id, None)
+        if log is None:  # BBB
+            log = self._object_log.pop(CMSContentKeyReference(source_id), None)
         if log is None:
             return
         target_key = target.uniqueId
@@ -70,6 +80,7 @@ class ObjectLog(persistent.Persistent):
 
     def delete(self, object):
         self._object_log.pop(object.uniqueId, None)
+        self._object_log.pop(CMSContentKeyReference(object.uniqueId), None)
 
     def clean(self, timedelta):
         reference_time = int(10e6 * (time.time() - timedelta.days * 3600 * 24 - timedelta.seconds))
@@ -102,7 +113,11 @@ class LogEntry(persistent.Persistent):
             self.principal = None
 
     def get_object(self):
-        return zeit.cms.interfaces.ICMSContent(self.uniqueId)
+        try:
+            id = self.uniqueId
+        except AttributeError:  # BBB
+            id = self.object_reference.referenced_object
+        return zeit.cms.interfaces.ICMSContent(id)
 
 
 @zope.component.adapter(zope.interface.Interface)
