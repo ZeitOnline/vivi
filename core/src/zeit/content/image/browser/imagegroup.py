@@ -224,8 +224,7 @@ class View(zeit.cms.browser.listing.Listing):
 
     def filter_content(self, obj):
         """Do not display thumbnail images."""
-        prefix = zeit.content.image.imagegroup.Thumbnails.SOURCE_IMAGE_PREFIX
-        if obj.__name__.startswith(prefix):
+        if obj.__name__.startswith('thumbnail-source'):
             return False
         return super().filter_content(obj)
 

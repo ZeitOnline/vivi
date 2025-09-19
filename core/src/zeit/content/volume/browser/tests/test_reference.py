@@ -36,7 +36,7 @@ class ReferenceDisplayTest(zeit.content.volume.testing.FunctionalTestCase):
 
     def test_display_shows_cover_image(self):
         self.assertEllipsis(
-            '<img src=".../imagegroup/thumbnails/original/@@raw" ... />',
+            '<img src=".../imagegroup/original__50x0/@@raw" ... />',
             self.get_display_view().cover_image(),
         )
 

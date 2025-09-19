@@ -115,7 +115,11 @@ class Display(zeit.cms.browser.view.Base):
             repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
             return '%s%s/@@raw' % (
                 self.url(repository),
-                image.variant_url(image_pattern, thumbnail=True),
+                image.variant_url(
+                    image_pattern,
+                    width=zeit.cms.config.get('zeit.content.image', 'thumbnail-width', 50),
+                    height=0,
+                ),
             )
         else:
             return self.url(image, '@@raw')
