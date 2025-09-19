@@ -8,7 +8,6 @@ import zeit.cms.browser.menu
 import zeit.cms.browser.view
 import zeit.cms.content.interfaces
 import zeit.content.gallery.interfaces
-import zeit.wysiwyg.interfaces
 
 
 class Overview(zeit.cms.browser.view.Base):

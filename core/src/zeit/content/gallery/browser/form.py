@@ -12,7 +12,6 @@ import zeit.content.gallery.gallery
 import zeit.content.gallery.interfaces
 import zeit.content.image.interfaces
 import zeit.push.browser.form
-import zeit.wysiwyg.interfaces
 
 
 base = zeit.cms.content.browser.form.CommonMetadataFormBase
@@ -24,8 +23,7 @@ class GalleryFormBase(zeit.push.browser.form.SocialBase, zeit.push.browser.form.
         zeit.cms.interfaces.ICMSContent,
         zeit.content.image.interfaces.IImages,
         zeit.content.gallery.interfaces.IGalleryMetadata,
-        zeit.wysiwyg.interfaces.IHTMLContent,
-    )
+    ) + zope.formlib.form.FormFields(zeit.content.gallery.interfaces.IGallery).select('text')
 
     text_fields = gocept.form.grouped.Fields(
         _('Texts'),
@@ -37,7 +35,7 @@ class GalleryFormBase(zeit.push.browser.form.SocialBase, zeit.push.browser.form.
             'teaserText',
             'image',
             'fill_color',
-            'html',
+            'text',
         ),
         css_class='wide-widgets column-left',
     )
@@ -113,10 +111,3 @@ class EditEntry(zeit.cms.browser.form.EditForm):
             css_class='full-width wide-widgets',
         ),
     )
-
-    def setUpWidgets(self):
-        # XXX backwards compatibility only, should probably be removed at some
-        # point (see #8858)
-        if self.context.text is not None and self.context.text.getchildren():
-            self.form_fields += zope.formlib.form.FormFields(zeit.wysiwyg.interfaces.IHTMLContent)
-        super().setUpWidgets()
