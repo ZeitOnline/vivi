@@ -3,6 +3,20 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.190.0 (2025-09-19)
+--------------------
+
+- WCM-56: Add image property columns to storage
+
+- WCM-1107: display icc color profile information
+
+- WCM-925: Replace zope.app.keyreference with resolving uniqueId directly in zeit.objectlog
+
+- WCM-859: Overhaul gallery overview
+
+- WCM-1085: Various UI improvements for image upload
+
+
 7.189.0 (2025-09-18)
 --------------------
 
