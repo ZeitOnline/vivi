@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Wed Sep 17 13:38:05 2025\n"
+"POT-Creation-Date: Thu Sep 18 11:01:06 2025\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -1816,7 +1816,7 @@ msgstr "Easy-Embed"
 #: zeit/content/article/interfaces.py:65 zeit/content/cp/interfaces.py:128
 #: zeit/content/cp/interfaces.py:302 zeit/content/cp/interfaces.py:633
 #: zeit/content/image/browser/configure.zcml:269
-#: zeit/content/image/browser/imagegroup.py:221 zeit/content/image/image.py:193
+#: zeit/content/image/browser/imagegroup.py:221 zeit/content/image/image.py:257
 #: zeit/content/portraitbox/interfaces.py:16
 #: zeit/wysiwyg/browser/resources/reference/image.pt:17
 msgid "Image"
@@ -3339,7 +3339,7 @@ msgstr "Dateiliste"
 #: zeit/content/image/browser/configure.zcml:444
 #: zeit/content/image/browser/embedded_metadata.py:23
 msgid "Embedded Metadata"
-msgstr "Eingebettete Metadaten"
+msgstr "Technische Metadaten"
 
 #: zeit/content/image/browser/configure.zcml:463
 #: zeit/content/image/browser/imageupload.py:32

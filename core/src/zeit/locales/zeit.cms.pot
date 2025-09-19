@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Wed Sep 17 13:38:05 2025\n"
+"POT-Creation-Date: Thu Sep 18 11:01:06 2025\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -1861,7 +1861,7 @@ msgstr ""
 #: zeit/content/cp/interfaces.py:633
 #: zeit/content/image/browser/configure.zcml:269
 #: zeit/content/image/browser/imagegroup.py:221
-#: zeit/content/image/image.py:193
+#: zeit/content/image/image.py:257
 #: zeit/content/portraitbox/interfaces.py:16
 #: zeit/wysiwyg/browser/resources/reference/image.pt:17
 msgid "Image"

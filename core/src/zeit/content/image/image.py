@@ -1,9 +1,9 @@
 from contextlib import contextmanager
+import io
 import os
 import urllib.parse
 
-from PIL import IptcImagePlugin
-from PIL.ExifTags import TAGS
+from PIL import ImageCms
 import filetype
 import lxml.builder
 import lxml.etree
@@ -16,6 +16,7 @@ import zope.location.interfaces
 import zope.security.proxy
 
 from zeit.cms.i18n import MessageFactory as _
+from zeit.content.image import embedded
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.repository.file
@@ -78,22 +79,15 @@ class BaseImage:
 
         return result
 
-    @staticmethod
-    def _metadata(img):
-        """See https://de.wikipedia.org/wiki/IPTC-IIM-Standard for a list of available iptc tags"""
+    def _metadata(self, img):
         metadata = img.info.copy() if isinstance(img.info, dict) else {}
-        iptc_tags = {(2, 110): 'copyright', (2, 120): 'caption', (2, 105): 'title'}
-        iptc = IptcImagePlugin.getiptcinfo(img)
-        if isinstance(iptc, dict):
-            metadata['iptc'] = {}
-            for code, value in iptc.items():
-                tag_name = iptc_tags.get(code, code)
-                metadata['iptc'][tag_name] = value
-        metadata['exif'] = {}
-        for tag_id, value in img.getexif().items():
-            tag_name = TAGS.get(tag_id, tag_id)
-            metadata['exif'][tag_name] = value
+        metadata['iptc'] = embedded.iptc(img)
+        metadata['exif'] = embedded.exif(img)
         metadata['xmp'] = img.getxmp()
+        if 'icc_profile' in metadata:
+            icc_data = io.BytesIO(metadata['icc_profile'])
+            profile = ImageCms.ImageCmsProfile(icc_data)
+            metadata['icc_profile'] = embedded.icc(profile)
         return metadata
 
     def getImageSize(self):
