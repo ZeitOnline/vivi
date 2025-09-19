@@ -330,7 +330,6 @@
     for="zeit.content.image.interfaces.IRepositoryImageGroup"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="variant.html"
-    class=".variant.Editor"
     template="image-variants.pt"
     permission="zope.View"
     />

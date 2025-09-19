@@ -229,8 +229,8 @@ def unindex_async(self, uuid):
 # Mostly relevant for bulk reindex, since zeit.content.quiz is not used anymore
 SKIP_TYPES = ['quiz']
 THUMBNAIL_NAMES = [
-    '/%s/' % zeit.content.image.transform.THUMBNAIL_FOLDER_NAME,
-    zeit.content.image.imagegroup.Thumbnails.SOURCE_IMAGE_PREFIX,
+    '/thumbnails/',  # zeit.content.image.transform.THUMBNAIL_FOLDER_NAME
+    'thumbnail-source',  # zeit.content.image.imagegroup.Thumbnails.SOURCE_IMAGE_PREFIX
 ]
 
 
