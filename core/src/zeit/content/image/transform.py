@@ -211,7 +211,7 @@ class ImageTransform:
         # parsing the PIL data *again*.
         if FEATURE_TOGGLES.find('column_write_wcm_56'):
             (image.width, image.height) = pil_image.size
-            image.mimeType = PIL.Image.MIME[format]
+            image.mimeType = PIL.Image.MIME.get(format, '')
         return image
 
 

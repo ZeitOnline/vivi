@@ -4,7 +4,6 @@ import os
 import urllib.parse
 
 from PIL import ImageCms
-import filetype
 import grokcore.component as grok
 import lxml.builder
 import lxml.etree
@@ -119,12 +118,8 @@ class BaseImage:
         return self._parse_mime()
 
     def _parse_mime(self):
-        with self.open() as f:
-            head = f.read(261)
-        file_type = filetype.guess_mime(head) or ''
-        if not file_type.startswith('image/'):
-            return ''
-        return file_type
+        with self.as_pil() as pil:
+            return PIL.Image.MIME.get(pil.format, '')
 
     @mimeType.setter
     def mimeType(self, value):
@@ -284,7 +279,7 @@ def get_remote_image(url, timeout=2):
 def set_image_properties(context, event):
     if FEATURE_TOGGLES.find('column_write_wcm_56'):
         with context.as_pil() as pil:
-            context.mimeType = PIL.Image.MIME[pil.format]
+            context.mimeType = PIL.Image.MIME.get(pil.format, '')
             (context.width, context.height) = pil.size
 
 
