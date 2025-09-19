@@ -13,48 +13,74 @@ import zeit.wysiwyg.interfaces
 
 class Overview(zeit.cms.browser.view.Base):
     title = _('Overview')
-    layout_source = zeit.content.gallery.interfaces.IGalleryEntry['layout'].vocabulary
 
     def update(self):
         if 'form.actions.save_sorting' in self.request:
             self.context.updateOrder(self.request.get('images'))
-        entries = []
-        for entry in self.context.values():
-            entries.append(
-                {
-                    '__name__': entry.__name__,
-                    'caption': entry.caption,
-                    'css_class': 'layout-%s' % (entry.layout if entry.layout else ''),
-                    'image': entry.image,
-                    'layout': self.get_entry_layout(entry),
-                    'text': self.get_text(entry),
-                    'thumbnail': entry.thumbnail,
-                    'title': entry.title,
-                    'url': self.url(entry),
-                }
-            )
-        self.entries = entries
-
-    def get_text(self, entry):
-        return zeit.wysiwyg.interfaces.IHTMLConverter(entry).to_html(entry.text)
-
-    def get_entry_layout(self, entry):
-        try:
-            title = self.layout_terms.getTerm(entry.layout).title
-        except KeyError:
-            return ''
-        else:
-            return zope.i18n.translate(title, context=self.request)
 
     @zope.cachedescriptors.property.Lazy
     def metadata(self):
         return zeit.cms.content.interfaces.ICommonMetadata(self.context)
 
-    @zope.cachedescriptors.property.Lazy
-    def layout_terms(self):
-        return zope.component.getMultiAdapter(
-            (self.layout_source, self.request), zope.browser.interfaces.ITerms
+
+class Entry(zeit.cms.browser.view.Base):
+    def view_url(self):
+        return self.url(self.context.image, '@@view.html')
+
+
+class ToggleWidget(zope.formlib.widget.SimpleInputWidget):
+    template = zope.browserpage.ViewPageTemplateFile('togglewidget.pt')
+
+    def __init__(self, field, request, values, title):
+        super().__init__(field, request)
+        self.values = values
+        self.title = title
+
+    def _toFormValue(self, value):
+        return next(k for k, v in self.values.items() if v == value)
+
+    def _toFieldValue(self, input):
+        return self.values[input]
+
+    def new_value(self):
+        value = self._getFormValue()
+        return next(k for k in self.values.keys() if k != value)
+
+    def __call__(self):
+        return self.template()
+
+
+def toggle_widget_factory(values, title):
+    def build(field, request):
+        return ToggleWidget(field, request, values, title)
+
+    return build
+
+
+class ToggleVisible(zeit.edit.browser.form.InlineForm):
+    legend = ''
+
+    @property
+    def form_fields(self):
+        form_fields = zope.formlib.form.FormFields(
+            zeit.content.gallery.interfaces.IGalleryEntry
+        ).select('layout')
+        form_fields['layout'].custom_widget = toggle_widget_factory(
+            {
+                'hidden': 'hidden',
+                'default': None,
+            },
+            _('Switch visible'),
         )
+        return form_fields
+
+
+class EditCaption(zeit.edit.browser.form.InlineForm):
+    legend = ''
+
+    form_fields = zope.formlib.form.FormFields(
+        zeit.content.gallery.interfaces.IGalleryEntry
+    ).select('caption')
 
 
 class Synchronise(zeit.cms.browser.view.Base):

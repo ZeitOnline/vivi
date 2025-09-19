@@ -57,7 +57,7 @@ thumbnails of the images in the gallery together with the texts:
 >>> print(browser.contents)
 <?xml ...
 <!DOCTYPE ...
-    <table class="gallery table-sorter">
+    <ul class="gallery-overview">
     ...
         <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/thumbnails/01.jpg/@@raw" alt="" height="50" width="50" border="0" />
     ...
@@ -69,7 +69,7 @@ thumbnails of the images in the gallery together with the texts:
     ...
         <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/thumbnails/05/@@raw" alt="" height="28" width="50" border="0" />
     ...
-</table>...
+</ul>...
 
 We can edit the metadata of the gallery on the edit tab:
 
@@ -102,55 +102,6 @@ Editing a gallery
 Each entry can be edited on the overview page:
 
 >>> browser.getLink('Images').click()
->>> browser.getLink('Edit image').click()
->>> browser.getControl('Title').value = 'The man man'
->>> sorted(browser.getControl('Layout').displayOptions)
-['(nothing selected)', 'Hidden', 'Image only']
->>> browser.getControl('Layout').displayValue = ['Image only']
->>> browser.getControl('Image caption').value = "Mann/Stein"
->>> browser.getControl('Apply').click()
-
-After saving we're back at the overview:
-
->>> print(browser.contents)
-<?xml version="1.0"?>...
-<div class="caption">Mann/Stein</div>...
-<div class="title">The man man</div>...
-
-
-
-Images can be re-ordered at the overview via javascript drag and drop. This
-basically changes the order of the input fields:
-
->>> browser.getControl(name='images:list', index=0).value
-'01.jpg'
->>> browser.getControl(name='images:list', index=1).value
-'02.jpg'
-
-So let's change the sorting:
-
->>> browser.getControl(name='images:list', index=0).value = '02.jpg'
->>> browser.getControl(name='images:list', index=1).value = '01.jpg'
-
->>> browser.getControl('Save sorting').click()
-
-
->>> print(browser.contents)
-<?xml ...
-<!DOCTYPE ...
-    <table class="gallery table-sorter">
-    ...
-        <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/thumbnails/02.jpg/@@raw" alt="" height="50" width="50" border="0" />
-    ...
-        <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/thumbnails/01.jpg/@@raw" alt="" height="50" width="50" border="0" />
-    ...
-        <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/thumbnails/03.jpg/@@raw" alt="" height="50" width="50" border="0" />
-    ...
-        <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/thumbnails/04.jpg/@@raw" alt="" height="50" width="50" border="0" />
-    ...
-        <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/thumbnails/05/@@raw" alt="" height="28" width="50" border="0" />
-    ...
-</table>...
 
 The default view while editing a gallery is the overview page:
 
@@ -190,17 +141,17 @@ listed:
 >>> print(browser.contents)
 <?xml ...
 <!DOCTYPE ...
-    <table class="gallery table-sorter">
-    ...
-        <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/thumbnails/02.jpg/@@raw" alt="" height="50" width="50" border="0" />
+    <ul class="gallery-overview">
     ...
         <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/thumbnails/01.jpg/@@raw" alt="" height="50" width="50" border="0" />
+    ...
+        <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/thumbnails/02.jpg/@@raw" alt="" height="50" width="50" border="0" />
     ...
         <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/thumbnails/04.jpg/@@raw" alt="" height="50" width="50" border="0" />
     ...
         <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/thumbnails/05/@@raw" alt="" height="28" width="50" border="0" />
     ...
-</table>...
+    </ul>...
 
 >>> '03.jpg' in browser.contents
 False
@@ -240,8 +191,7 @@ the caption) of the image changes:
 >>> browser.getLink('Synchronise with image folder').click()
 >>> browser.getLink('Source').click()
 >>> print(browser.getControl('XML Source').value.replace('\r\n', '\n'))
-<gallery...<block layout="image-only" name="01.jpg">...
-...<caption...>Mann/Stein</caption>...
+<gallery...<block name="01.jpg">...
 
 
 The redirect of the synchronise view can be prevented by passing an argument.
@@ -272,12 +222,17 @@ There is also a metdata preview showing the images:
 ...     'http://localhost/++skin++cms/repository/online/2007/01/island'
 ...     '/@@metadata_preview')
 >>> print(browser.contents)
-<div ...
-    <div class="image-group-image-preview">
-      <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/02.jpg/thumbnail" alt="" height="100" width="100" border="0" />
-    </div>
+<div class="contextViewsAndActions">
+  <div class="context-views">
+  ...
+  </div>
+</div>
+<div id="metadata_preview">
     <div class="image-group-image-preview">
       <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/01.jpg/thumbnail" alt="" height="100" width="100" border="0" />
+    </div>
+    <div class="image-group-image-preview">
+      <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/02.jpg/thumbnail" alt="" height="100" width="100" border="0" />
     </div>
     <div class="image-group-image-preview">
       <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/04.jpg/thumbnail" alt="" height="100" width="100" border="0" />

@@ -3,6 +3,9 @@
    i18n_domain="zope"
    >
 
+  <include package="zeit.edit" />
+  <include package="zeit.edit.browser" />
+
   <include package="zeit.content.gallery" />
   <include package="zeit.content.gallery.browser" />
 

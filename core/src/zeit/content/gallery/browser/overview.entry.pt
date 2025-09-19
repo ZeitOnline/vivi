@@ -1,0 +1,16 @@
+<div class="gallery-overview-entry"
+  i18n:domain="zeit.cms">
+  <div class="handle">
+    <a title="Show image" class="show-image"
+          tal:attributes="href view/view_url"
+          i18n:attributes="title"
+          i18n:translate="">
+            <span class="action-title">Show Image</span>
+    </a>
+    <div tal:replace="structure provider:zeit.edit.edit-bar" />
+  </div>
+  <div class="box">
+    <img tal:replace="structure context/thumbnail/@@view.html/tag" />
+    <div tal:replace="structure provider:zeit.edit.contents" />
+  </div>
+</div>

@@ -35,9 +35,8 @@ Entries without text
 
 Normally, gallery entries do not show a text widget:
 
->>> browser.getLink('Images').click()
+>>> browser.open('01.jpg')
 >>> browser.handleErrors = False
->>> browser.getLink('Edit image').click()
 >>> browser.getControl('Text')
 Traceback (most recent call last):
   ...

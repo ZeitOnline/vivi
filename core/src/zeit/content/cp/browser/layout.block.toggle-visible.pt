@@ -3,5 +3,5 @@
    i18n:attributes="title"
    i18n:domain="zeit.cms"
    cms:cp-module="zeit.edit.LoadAndReload">
-  <span class="action-title">Switch visible</span>
+  <span class="action-title" i18n:translate="">Switch visible</span>
 </a>
