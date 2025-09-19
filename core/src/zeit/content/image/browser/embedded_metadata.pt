@@ -4,7 +4,7 @@
 
   <p i18n:translate="">Extracted automatically, cannot be edited.</p>
 
-  <metal:content-listing
-    use-macro="context/@@standard_macros/content-listing">
-  </metal:content-listing>
+  <metal:listing-table
+    use-macro="context/@@standard_macros/listing-table">
+  </metal:listing-table>
 </tal:block>

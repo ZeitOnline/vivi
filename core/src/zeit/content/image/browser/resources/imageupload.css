@@ -58,6 +58,7 @@
 
 .imageupload__gallery {
   margin: 0 0 0 -1em;
+  overflow: auto;
   padding: 0;
 }
 
@@ -77,7 +78,9 @@
 }
 
 .imageupload__filename {
+  margin: 0;
   overflow-wrap: anywhere;
+  overflow: hidden;
 }
 
 .imageupload__gallery progress {
@@ -94,17 +97,42 @@
 }
 
 .imageupload__button--remove {
-  margin-left: auto;
+  float: right;
+  background-image: url("/fanstatic/zeit.cms/icons/delete.png");
+  background-color: inherit;
+  background-position: top left;
+  background-repeat: no-repeat;
+  height: 18px;
+  width: 12px;
+  border: none;
+  padding: 0;
+  margin-left: 2px;
+}
+
+#edit-form:has(.edit-images-form) {
+  --edit-form-actions-view-height: 7.3em;
+}
+
+.edit-images-form {
+  height: 100%;
+  overflow: auto;
 }
 
 .edit-image-table {
-  width: calc(100% - 8px);
+  border-collapse: collapse;
+  width: 100%;
 }
 
-.edit-image-table td,
-.edit-image-table th {
+.edit-image-table td {
   padding: 1em 0.2em;
   vertical-align: top;
+}
+
+.edit-image-table th {
+  background: #f1f4f9;
+  padding: 0.8em 0.2em;
+  position: sticky;
+  top: 0;
 }
 
 .edit-image-table td:first-child {
@@ -132,4 +160,8 @@
   height: 67px;
   margin: 0;
   resize: none;
+}
+
+.edit-images-actions-view p {
+  margin: 0.5em 0;
 }

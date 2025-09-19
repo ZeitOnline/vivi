@@ -22,7 +22,7 @@ class MetadataColumn(GetterColumn):
 class Listing(zeit.cms.browser.listing.Listing):
     title = _('Embedded Metadata')
     filter_interface = None
-    css_class = 'contentListing hasMetadata'
+    css_class = 'contentListing hasMetadata filterable'
 
     columns = (
         GetterColumn(title=_('Name'), getter=lambda t, c: t[0]),

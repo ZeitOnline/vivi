@@ -170,6 +170,29 @@
     </div>
   </metal:macro>
 
+  <metal:macro define-macro="listing-table">
+        <div id="tableFilter">
+          Filter: <input name="tableFilter" type="text" value="" />
+        </div>
+
+
+      <div id="topcontent">
+
+          <table
+            tal:condition="view/content"
+            tal:replace="structure view/contentTable">
+            Table with contents...
+          </table>
+
+          <span class="Info"
+            tal:condition="not:view/content"
+            tal:content="view/no_content_message"
+            i18n:translate="">
+          There are no objects in this folder.
+        </span>
+      </div>
+  </metal:macro>
+
   <metal:macro define-macro="content-listing">
 
     <form name="containerContentsForm" method="get"
@@ -192,28 +215,12 @@
           </option>
         </select>
 
-    </div>
-
-        <div id="tableFilter">
-          Filter: <input name="tableFilter" type="text" value="" />
-        </div>
-
-
-      <div id="topcontent">
-
-          <table
-            tal:condition="view/content"
-            tal:replace="structure view/contentTable">
-            Table with contents...
-          </table>
-
-          <span class="Info"
-            tal:condition="not:view/content"
-            tal:content="view/no_content_message"
-            i18n:translate="">
-          There are no objects in this folder.
-        </span>
       </div>
+
+      <metal:listing-table
+        use-macro="context/@@standard_macros/listing-table">
+      </metal:listing-table>
+
       <div id="bottomcontent"></div>
     </form>
   </metal:macro>

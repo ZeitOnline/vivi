@@ -312,7 +312,7 @@ input#form\.copyrights[type=text] {
     right: 0;
     left: 0;
     bottom: 0;
-    padding-bottom: 4em;
+    padding-bottom: calc(var(--edit-form-actions-view-height, 3em) + 1em);
 }
 
 #edit-form > form > div.form-status {
@@ -321,7 +321,7 @@ input#form\.copyrights[type=text] {
 
 #edit-form > form > div.field-group {
     position: absolute;
-    bottom: 4em;
+    bottom: calc(var(--edit-form-actions-view-height, 3em) + 1em);
     left: 0;
     right: 0;
     top: 0;
@@ -330,7 +330,7 @@ input#form\.copyrights[type=text] {
 
 #edit-form > form > div#actionsView {
     position: absolute;
-    height: 3em;
+    height: var(--edit-form-actions-view-height, 3em);
     bottom: 0;
     left: 0;
     right: 0;

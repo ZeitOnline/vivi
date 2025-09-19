@@ -3471,11 +3471,11 @@ msgstr "Hochladen"
 
 #: zeit/content/image/browser/imageupload.edit-images.pt:34
 msgid "Upload and publish"
-msgstr "Speichern & veröffentlichen"
+msgstr "Hochladen & veröffentlichen"
 
 #: zeit/content/image/browser/imageupload.edit-images.pt:35
 msgid "Upload and open"
-msgstr "Speichern & öffnen"
+msgstr "Hochladen & öffnen"
 
 #: zeit/content/image/browser/imageupload.edit-images.pt:38
 msgid "Remove images"
