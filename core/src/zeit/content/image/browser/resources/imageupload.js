@@ -156,28 +156,44 @@
         li.remove()
       }
 
-      uploadFiles() {
+      async uploadFiles() {
         this.#form.classList.add('imageupload--uploading')
         this.#submitButton.disabled = true
-        let uploads = []
+        const uploads = []
+
         for (let li of this.#gallery.childNodes) {
-          let errorSpan = li.querySelector('.imageupload__error')
+          const errorSpan = li.querySelector('.imageupload__error')
           errorSpan.textContent = ''
-          uploads.push(this.uploadFile(li.upload_data, progress => li.querySelector('progress').value = progress).catch(error => {
-            errorSpan.textContent = error
-            throw error
-          }))
+
+          try {
+            const url = await this.uploadFile(li.upload_data, progress => {
+              li.querySelector('progress').value = progress
+            })
+            uploads.push(url)
+
+            // Add delay between uploads to reduce ZODB conflicts
+            // XXX is it useful or just me being to careful?
+            await new Promise(resolve => setTimeout(resolve, 100))
+          } catch (error) {
+            errorSpan.textContent = error.message || error
+            this.#form.classList.remove('imageupload--uploading')
+            this.#submitButton.disabled = false
+            // XXX first error and stop processing???
+            return
+          }
         }
-        Promise.all(uploads).then(results => {
-          if (!results.length) { return; }
-          let url = results[0] + results.slice(1).map(url => '&files=' + new URL(url).searchParams.get('files')).join("")
-          window.location = url
-        }, e => {
-          // Swallow exception since we already displayed it at the li
-        }).finally(() => {
-          this.#form.classList.remove('imageupload--uploading')
-          this.#submitButton.disabled = false
-        });
+
+        if (!uploads.length) {
+          return
+        }
+
+        const baseUrl = uploads[0]
+        const additionalFiles = uploads.slice(1).map(url => {
+          return '&files=' + new URL(url).searchParams.get('files')
+        }).join('')
+
+        const url = baseUrl + additionalFiles
+        window.location = url
       }
 
       uploadFile(file, updateProgress) {
@@ -211,4 +227,3 @@
 
   }); // End of document.ready
 }(jQuery));
-</tal: block >
