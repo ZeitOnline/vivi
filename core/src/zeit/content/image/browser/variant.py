@@ -74,13 +74,3 @@ class VariantDetail(zeit.cms.browser.view.Base, VariantSerializeMixin):
         del data[self.context.id]
         group.variants = data
         return self.render()
-
-
-class Editor:
-    def __call__(self):
-        # Force generating thumbnail source if does not exist yet, so not each
-        # variant preview tries to do it simultaneously later on (which only
-        # leads to conflicts).
-        thumbnails = zeit.content.image.interfaces.IThumbnails(self.context)
-        thumbnails.source_image(thumbnails.master_image(''))
-        return super().__call__()

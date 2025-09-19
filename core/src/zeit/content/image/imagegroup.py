@@ -165,13 +165,11 @@ class ImageGroupBase:
 
         return image
 
-    def variant_url(self, name, width=None, height=None, fill_color=None, thumbnail=False):
+    def variant_url(self, name, width=None, height=None, fill_color=None):
         """Helper method to create URLs to Variant images."""
         path = urllib.parse.urlparse(self.uniqueId).path
         if path.endswith('/'):
             path = path[:-1]
-        if thumbnail:
-            name = '%s/%s' % (Thumbnails.NAME, name)
         if width is None or height is None:
             url = '{path}/{name}'.format(path=path, name=name)
         else:
@@ -519,115 +517,13 @@ def guess_external_id(context, event):
         meta.external_id = match.group(1)
 
 
-@zope.interface.implementer(z3c.traverser.interfaces.IPluggableTraverser)
-class ThumbnailTraverser:
-    def __init__(self, context, request):
-        self.context = context
-        self.request = request
-
-    def publishTraverse(self, request, name):
-        if name != Thumbnails.NAME:
-            raise zope.publisher.interfaces.NotFound(self.context, name, request)
-        return zeit.content.image.interfaces.IThumbnails(self.context)
-
-
-@grok.implementer(zeit.content.image.interfaces.IThumbnails)
-class Thumbnails(grok.Adapter):
-    grok.context(zeit.content.image.interfaces.IRepositoryImageGroup)
-
-    NAME = 'thumbnails'
-    SOURCE_IMAGE_PREFIX = 'thumbnail-source'
-    THUMBNAIL_SIZE = 1000
-
-    def __getitem__(self, key):
-        master_image = self.master_image(key)
-        if master_image is None:
-            raise KeyError(key)
-        return self.context.create_variant_image(
-            source=self.source_image(master_image), **VariantTraverser(self.context).parse_url(key)
-        )
-
-    def source_image_name(self, master_image):
-        return '%s-%s' % (self.SOURCE_IMAGE_PREFIX, master_image.__name__)
-
-    def source_image(self, master_image):
-        if master_image is None:
-            return None
-        if self.source_image_name(master_image) in self.context:
-            return self.context[self.source_image_name(master_image)]
-        if master_image.width <= self.THUMBNAIL_SIZE:
-            return master_image
-        lockable = zope.app.locking.interfaces.ILockable(self.context, None)
-        # XXX 1. mod_dav does not allow LOCK of a member in a locked collection
-        # even though the WebDAV spec reads as if that should be possible.
-        # 2. zeit.connector has some kind of bug where it loses the property
-        # cache of the collection upon that error, so it thinks the collection
-        # is empty from then on out (only refresh-cache helps).
-        if lockable is not None and not lockable.locked():
-            return self._create_source_image(master_image)
-        else:
-            return master_image
-
-    def _create_source_image(self, master_image):
-        image = zeit.content.image.interfaces.ITransform(master_image).thumbnail(
-            self.THUMBNAIL_SIZE, self.THUMBNAIL_SIZE
-        )
-        self.context[self.source_image_name(master_image)] = image
-        return self.context[self.source_image_name(master_image)]
-
-    def master_image(self, key):
-        viewport = VariantTraverser(self.context)._parse_viewport(key)
-        if viewport:
-            for view, name in self.context.master_images:
-                if viewport == view:
-                    return self.context[name]
-        return zeit.content.image.interfaces.IMasterImage(self.context, None)
-
-
-@grok.subscribe(zeit.content.image.interfaces.IImage, zope.lifecycleevent.IObjectAddedEvent)
-def create_thumbnail_source_on_add(context, event):
-    group = context.__parent__
-    if not zeit.content.image.interfaces.IRepositoryImageGroup.providedBy(group):
-        return
-    if group.master_image != context.__name__:
-        return
-    thumbnails = zeit.content.image.interfaces.IThumbnails(group)
-    thumbnails.source_image(thumbnails.master_image(''))
-
-
-@grok.subscribe(
-    zeit.content.image.interfaces.IImageGroup, zeit.cms.repository.interfaces.IObjectReloadedEvent
-)
-def refresh_thumbnail_source(context, event):
-    if not zeit.content.image.interfaces.IRepositoryImageGroup.providedBy(context):
-        return
-    thumbnails = zeit.content.image.interfaces.IThumbnails(context)
-    for name, _image in context.items():
-        if name.startswith(thumbnails.SOURCE_IMAGE_PREFIX):
-            del context[name]
-    for _view, name in context.master_images:
-        thumbnails.source_image(context[name])
-
-
-@grok.subscribe(zeit.content.image.interfaces.IImage, zope.lifecycleevent.IObjectRemovedEvent)
-def remove_thumbnail_source_on_delete(context, event):
-    group = context.__parent__
-    if not zeit.content.image.interfaces.IRepositoryImageGroup.providedBy(group):
-        return
-    thumbnails = zeit.content.image.interfaces.IThumbnails(group)
-    thumbnail_name = thumbnails.source_image_name(context)
-    if thumbnail_name in group:
-        del group[thumbnail_name]
-
-
 @grok.adapter(zeit.content.image.interfaces.IImageGroup)
 @grok.implementer(zeit.content.image.interfaces.IPersistentThumbnail)
 def persistent_thumbnail_factory(context):
     name = context.__name__
     container = zeit.content.image.interfaces.IThumbnailFolder(context)
     if name not in container:
-        thumbnails = zeit.content.image.interfaces.IThumbnails(context)
-        source = thumbnails.source_image(thumbnails.master_image(''))
+        source = context.master_image_for_viewport('desktop')
         config = zeit.cms.config.package('zeit.content.image')
         width = int(config.get('thumbnail-width', 50))
         transform = zeit.content.image.interfaces.ITransform(source)
@@ -645,8 +541,4 @@ class FolderDependencies(zeit.cms.workflow.dependency.DependencyBase):
     retract_dependencies = True
 
     def get_dependencies(self):
-        return [
-            x
-            for x in self.context.values()
-            if not x.__name__.startswith(Thumbnails.SOURCE_IMAGE_PREFIX)
-        ]
+        return [x for x in self.context.values() if not x.__name__.startswith('thumbnail-source')]

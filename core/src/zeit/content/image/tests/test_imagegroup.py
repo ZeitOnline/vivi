@@ -7,7 +7,6 @@ import zope.event
 import zope.lifecycleevent
 
 from zeit.cms.checkout.helper import checked_out
-from zeit.cms.workflow.interfaces import IPublicationDependencies
 from zeit.content.image import imagegroup
 from zeit.content.image.testing import create_image
 import zeit.cms.repository.interfaces
@@ -133,11 +132,6 @@ class ImageGroupTest(zeit.content.image.testing.FunctionalTestCase):
         self.assertEqual((1536, 1536), self.traverse('square').getImageSize())
         self.group['square'] = zeit.content.image.testing.create_image('new-hampshire-450x200.jpg')
         self.assertEqual((450, 200), self.traverse('square').getImageSize())
-
-    def test_thumbnails_create_variants_from_smaller_master_image(self):
-        self.assertEqual((1536, 1536), self.traverse('square').getImageSize())
-        thumbnails = zeit.content.image.interfaces.IThumbnails(self.group)
-        self.assertEqual((750, 750), thumbnails['square'].getImageSize())
 
     def test_can_access_small_variant_via_name_and_size(self):
         variant = self.traverser._parse_variant_by_size('cinema__200x100')
@@ -300,6 +294,20 @@ class ImageGroupTest(zeit.content.image.testing.FunctionalTestCase):
         result = self.traverser.parse_params('cinema?fill=0000ff&viewport=foo')
         assert result['viewport'] == 'foo'
 
+    def test_persistent_thumbnail_is_stored_in_thumbnail_folder(self):
+        image = self.repository['group']['master-image.jpg']
+        thumbnail = zeit.content.image.interfaces.IPersistentThumbnail(image)
+        self.assertTrue(zeit.content.image.interfaces.IImage.providedBy(thumbnail))
+        self.assertEqual((50, 37), thumbnail.getImageSize())
+        self.assertEqual('http://xml.zeit.de/group/thumbnails/master-image.jpg', thumbnail.uniqueId)
+
+    def test_persistent_thumbnail_size_can_be_configured(self):
+        zeit.cms.config.set('zeit.content.image', 'thumbnail-width', '200')
+        zeit.cms.config.set('zeit.content.image', 'thumbnail-height', '200')
+        image = self.repository['group']['master-image.jpg']
+        thumbnail = zeit.content.image.interfaces.IPersistentThumbnail(image)
+        self.assertEqual((200, 150), thumbnail.getImageSize())
+
 
 class ImageGroupFromImageTest(zeit.content.image.testing.FunctionalTestCase):
     def repository(self):
@@ -357,71 +365,6 @@ class ExternalIDTest(zeit.content.image.testing.FunctionalTestCase):
         self.assertEqual('rtsü6hm', self.search('rtsü6hm.jpg'))
         self.assertEqual('6', self.search('Kopie von rtsu6hm.jpg'))
         self.assertEqual(None, self.search('wartsnurab.jpg'))
-
-
-class ThumbnailsTest(zeit.content.image.testing.FunctionalTestCase):
-    def setUp(self):
-        from ..imagegroup import Thumbnails
-
-        super().setUp()
-        self.group = self.repository['group']
-        self.thumbnails = Thumbnails(self.group)
-
-    def test_uses_master_image_for_thumbnails(self):
-        self.assertEqual(self.group['master-image.jpg'], self.thumbnails.master_image('square'))
-
-    def test_uses_image_defined_for_viewport_desktop_when_given(self):
-        self.assertEqual(
-            self.group['master-image.jpg'], self.thumbnails.master_image('square__desktop')
-        )
-
-    def test_uses_image_defined_for_viewport_mobile_when_given(self):
-        self.group['master-image-mobile.jpg'] = create_image('obama-clinton-120x120.jpg')
-        with mock.patch(
-            'zeit.content.image.imagegroup.ImageGroupBase.master_images',
-            new_callable=mock.PropertyMock,
-        ) as master_images:
-            master_images.return_value = (
-                ('desktop', 'master-image.jpg'),
-                ('mobile', 'master-image-mobile.jpg'),
-            )
-            self.assertEqual(
-                self.group['master-image-mobile.jpg'],
-                self.thumbnails.master_image('square__mobile'),
-            )
-
-    def test_recreates_thumbnails_on_reload_event(self):
-        del self.group['thumbnail-source-master-image.jpg']
-        zope.event.notify(zeit.cms.repository.interfaces.ObjectReloadedEvent(self.group))
-        self.assertIn('thumbnail-source-master-image.jpg', self.group.keys())
-
-    def test_thumbnail_is_removed_on_delete(self):
-        self.group['second'] = create_image('new-hampshire-450x200.jpg')
-        self.thumbnails.THUMBNAIL_WIDTH = 100
-        self.thumbnails.source_image(self.group['second'])
-        del self.group['second']
-        self.assertEqual(
-            ['master-image.jpg', 'thumbnail-source-master-image.jpg'], self.group.keys()
-        )
-
-    def test_thumbnail_is_not_published(self):
-        dependencies = IPublicationDependencies(self.group).get_dependencies()
-        self.assertIn(self.group['master-image.jpg'], dependencies)
-        self.assertNotIn(self.thumbnails.source_image(self.group['master-image.jpg']), dependencies)
-
-    def test_persistent_thumbnail_is_stored_in_thumbnail_folder(self):
-        image = self.repository['group']['master-image.jpg']
-        thumbnail = zeit.content.image.interfaces.IPersistentThumbnail(image)
-        self.assertTrue(zeit.content.image.interfaces.IImage.providedBy(thumbnail))
-        self.assertEqual((50, 37), thumbnail.getImageSize())
-        self.assertEqual('http://xml.zeit.de/group/thumbnails/master-image.jpg', thumbnail.uniqueId)
-
-    def test_persistent_thumbnail_size_can_be_configured(self):
-        zeit.cms.config.set('zeit.content.image', 'thumbnail-width', '200')
-        zeit.cms.config.set('zeit.content.image', 'thumbnail-height', '200')
-        image = self.repository['group']['master-image.jpg']
-        thumbnail = zeit.content.image.interfaces.IPersistentThumbnail(image)
-        self.assertEqual((200, 150), thumbnail.getImageSize())
 
 
 class DeleteTemporaryImages(zeit.content.image.testing.FunctionalTestCase):

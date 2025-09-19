@@ -1,0 +1,1 @@
+WCM-1121: Remove creation of thumbnail image for imagegroups, we simply render those from the master image now
