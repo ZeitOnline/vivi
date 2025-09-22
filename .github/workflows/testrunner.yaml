@@ -75,11 +75,6 @@ jobs:
           enable-cache: true
           cache-dependency-glob: |
               deployment/components/source/*.txt
-      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
-        with:
-          node-version: "22"
-          cache: npm
-          cache-dependency-path: package-lock.json
       - name: setup apt
         # firefox dependencies see https://github.com/microsoft/playwright/blob/main/packages/playwright-core/src/server/registry/nativeDeps.ts
         # gcc for e.g. `pygraphviz`
