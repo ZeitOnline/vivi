@@ -685,15 +685,6 @@ wheels = [
 ]
 
 [[package]]
-name = "gocept-jslint"
-version = "3.0+importlib"
-source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/gocept-jslint/gocept_jslint-3.0+importlib.tar.gz", hash = "sha256:6927623611d41e8635f5f3015602796ed3b217e333c63e69b3a454e0d1587265" }
-wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/gocept-jslint/gocept_jslint-3.0+importlib-py3-none-any.whl", hash = "sha256:5e5c859c75ec25380a2abf9cf7ad2b37825ead63484a5cd0e61711d69e927e38" },
-]
-
-[[package]]
 name = "gocept-pagelet"
 version = "2.1+importlib"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
@@ -2695,7 +2686,7 @@ wheels = [
 
 [[package]]
 name = "vivi-core"
-version = "7.187.0.dev0"
+version = "7.194.0.dev0"
 source = { editable = "." }
 dependencies = [
     { name = "beautifulsoup4" },
@@ -2743,7 +2734,6 @@ dependencies = [
     { name = "zodburi" },
     { name = "zope-annotation" },
     { name = "zope-app-appsetup" },
-    { name = "zope-app-keyreference" },
     { name = "zope-app-locking" },
     { name = "zope-cachedescriptors" },
     { name = "zope-component" },
@@ -2803,7 +2793,6 @@ test = [
     { name = "gcp-storage-emulator" },
     { name = "gocept-httpserverlayer" },
     { name = "gocept-jasmine" },
-    { name = "gocept-jslint" },
     { name = "gocept-selenium" },
     { name = "gocept-testing" },
     { name = "opentelemetry-exporter-otlp" },
@@ -2831,7 +2820,6 @@ test = [
 ]
 test-zon = [
     { name = "gocept-jasmine" },
-    { name = "gocept-jslint" },
     { name = "gocept-selenium" },
     { name = "pytest-remove-stale-bytecode" },
 ]
@@ -2873,11 +2861,8 @@ ui = [
     { name = "zope-app-basicskin" },
     { name = "zope-app-container" },
     { name = "zope-app-exception" },
-    { name = "zope-app-form" },
     { name = "zope-app-locales" },
     { name = "zope-app-pagetemplate" },
-    { name = "zope-app-preference" },
-    { name = "zope-app-principalannotation" },
     { name = "zope-app-publication" },
     { name = "zope-app-publisher" },
     { name = "zope-app-tree" },
@@ -2909,10 +2894,13 @@ ui-zon = [
     { name = "zc-set" },
     { name = "zc-sourcefactory" },
     { name = "zc-table" },
+    { name = "zope-app-exception" },
+    { name = "zope-app-tree" },
 ]
 zon = [
     { name = "gocept-cache" },
     { name = "zope-app-locking" },
+    { name = "zope-file" },
     { name = "zope-xmlpickle" },
 ]
 
@@ -2954,8 +2942,6 @@ requires-dist = [
     { name = "gocept-httpserverlayer", marker = "extra == 'test'", specifier = ">=1.4.0.dev0" },
     { name = "gocept-jasmine", marker = "extra == 'test'" },
     { name = "gocept-jasmine", marker = "extra == 'test-zon'", specifier = "==0.7+py3.4" },
-    { name = "gocept-jslint", marker = "extra == 'test'", specifier = ">=0.2" },
-    { name = "gocept-jslint", marker = "extra == 'test-zon'", specifier = "==3.0+importlib" },
     { name = "gocept-pagelet", marker = "extra == 'ui'" },
     { name = "gocept-pagelet", marker = "extra == 'ui-zon'", specifier = "==2.1+importlib" },
     { name = "gocept-selenium", marker = "extra == 'test'" },
@@ -3049,7 +3035,7 @@ requires-dist = [
     { name = "z3c-traverser" },
     { name = "z3c-traverser", marker = "extra == 'ui-zon'", specifier = "==2.0.0+notests" },
     { name = "zc-datetimewidget", marker = "extra == 'ui'" },
-    { name = "zc-datetimewidget", marker = "extra == 'ui-zon'", specifier = "==0.8.0+py3.5" },
+    { name = "zc-datetimewidget", marker = "extra == 'ui-zon'", specifier = "==0.8.0+py3.6" },
     { name = "zc-form" },
     { name = "zc-queue" },
     { name = "zc-queue", marker = "extra == 'ui-zon'", specifier = "==3.0+importlib" },
@@ -3069,17 +3055,15 @@ requires-dist = [
     { name = "zope-app-basicskin", marker = "extra == 'ui'" },
     { name = "zope-app-container", marker = "extra == 'ui'" },
     { name = "zope-app-exception", marker = "extra == 'ui'" },
-    { name = "zope-app-form", marker = "extra == 'ui'", specifier = ">=3.6.0" },
-    { name = "zope-app-keyreference" },
+    { name = "zope-app-exception", marker = "extra == 'ui-zon'", specifier = "==5.1+importlib" },
     { name = "zope-app-locales", marker = "extra == 'ui'" },
     { name = "zope-app-locking" },
-    { name = "zope-app-locking", marker = "extra == 'zon'", specifier = "==3.5.0+py3.1" },
+    { name = "zope-app-locking", marker = "extra == 'zon'", specifier = "==3.5.0+py3.4" },
     { name = "zope-app-pagetemplate", marker = "extra == 'ui'" },
-    { name = "zope-app-preference", marker = "extra == 'ui'" },
-    { name = "zope-app-principalannotation", marker = "extra == 'ui'" },
     { name = "zope-app-publication", marker = "extra == 'ui'" },
     { name = "zope-app-publisher", marker = "extra == 'ui'" },
     { name = "zope-app-tree", marker = "extra == 'ui'" },
+    { name = "zope-app-tree", marker = "extra == 'ui-zon'", specifier = "==5.0+importlib" },
     { name = "zope-app-wsgi", marker = "extra == 'test'" },
     { name = "zope-app-wsgi", marker = "extra == 'ui'" },
     { name = "zope-authentication", marker = "extra == 'ui'" },
@@ -3099,6 +3083,7 @@ requires-dist = [
     { name = "zope-event" },
     { name = "zope-exceptions" },
     { name = "zope-file" },
+    { name = "zope-file", marker = "extra == 'zon'", specifier = "==2.1+importlib" },
     { name = "zope-formlib", marker = "extra == 'ui'" },
     { name = "zope-generations" },
     { name = "zope-i18n", specifier = ">3.4.0" },
@@ -3423,7 +3408,7 @@ wheels = [
 
 [[package]]
 name = "zc-datetimewidget"
-version = "0.8.0+py3.5"
+version = "0.8.0+py3.6"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
 dependencies = [
     { name = "pytz" },
@@ -3434,9 +3419,9 @@ dependencies = [
     { name = "zope-publisher" },
     { name = "zope-schema" },
 ]
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zc-datetimewidget/zc_datetimewidget-0.8.0+py3.5.tar.gz", hash = "sha256:cde3ba23bb1af6bbf16349d2b5197793d5a2bbe930647345a1ac79f64f94cfa9" }
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zc-datetimewidget/zc_datetimewidget-0.8.0+py3.6.tar.gz", hash = "sha256:56745215bdae323eb1ff7d738ae358cf5fa177c3339a3dbc5420dc7c627bf4a9" }
 wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zc-datetimewidget/zc_datetimewidget-0.8.0+py3.5-py3-none-any.whl", hash = "sha256:c35bfdae6fc8842897697082bee3b6e0e1f7be8acada795e3e2c8dbafcdb71c8" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zc-datetimewidget/zc_datetimewidget-0.8.0+py3.6-py3-none-any.whl", hash = "sha256:8ac2b709f50a126705422d12769762e3ac481766cca0693d39771b0df784b7a9" },
 ]
 
 [[package]]
@@ -3799,10 +3784,9 @@ wheels = [
 
 [[package]]
 name = "zope-app-exception"
-version = "5.0"
+version = "5.1+importlib"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
 dependencies = [
-    { name = "setuptools" },
     { name = "zope-authentication" },
     { name = "zope-browser" },
     { name = "zope-browserpage" },
@@ -3811,70 +3795,10 @@ dependencies = [
     { name = "zope-publisher" },
     { name = "zope-security" },
 ]
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zope-app-exception/zope.app.exception-5.0.tar.gz", hash = "sha256:3d65d6cdd008aa21bc891fe663a8440d566b1a8def1713e1a87ad3f4b9ade5bd" }
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zope-app-exception/zope_app_exception-5.1+importlib.tar.gz", hash = "sha256:ff3a7378c16df22658be08db80ec0b13675f992440301375c246a2cb1db2b672" }
 wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zope-app-exception/zope.app.exception-5.0-py3-none-any.whl", hash = "sha256:3bca4b21817f51cc1e525f2658cb6ad55c1d96c095937923f94132b70cb28936" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zope-app-exception/zope_app_exception-5.1+importlib-py3-none-any.whl", hash = "sha256:5b998908cf6a3d893a7af96e22bd8565f7acf5deb74d4252dea782d2e8ec8e9b" },
 ]
-
-[[package]]
-name = "zope-app-form"
-version = "6.1"
-source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
-dependencies = [
-    { name = "setuptools" },
-    { name = "transaction" },
-    { name = "zope-browser" },
-    { name = "zope-browsermenu" },
-    { name = "zope-browserpage" },
-    { name = "zope-component" },
-    { name = "zope-configuration" },
-    { name = "zope-datetime" },
-    { name = "zope-exceptions" },
-    { name = "zope-formlib" },
-    { name = "zope-i18n" },
-    { name = "zope-interface" },
-    { name = "zope-proxy" },
-    { name = "zope-publisher" },
-    { name = "zope-schema" },
-    { name = "zope-security" },
-]
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zope-app-form/zope.app.form-6.1.tar.gz", hash = "sha256:d6e6c3b344b9e34ee5fa4d6c015787de792823f6bbc6fb5896522fd5314b87f5" }
-wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zope-app-form/zope.app.form-6.1-py3-none-any.whl", hash = "sha256:34c59eb8698e944f61ba298ceec3160e4dcebd7940478e6347eef4212e373639" },
-]
-
-[[package]]
-name = "zope-app-i18n"
-version = "4.1.0"
-source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
-dependencies = [
-    { name = "btrees" },
-    { name = "persistent" },
-    { name = "setuptools" },
-    { name = "zope-app-publisher" },
-    { name = "zope-component" },
-    { name = "zope-configuration" },
-    { name = "zope-container" },
-    { name = "zope-i18n" },
-    { name = "zope-i18nmessageid" },
-    { name = "zope-interface" },
-    { name = "zope-publisher" },
-    { name = "zope-security" },
-]
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zope-app-i18n/zope.app.i18n-4.1.0.tar.gz", hash = "sha256:314797aed7d3f26f5db8fd3533ff654707c32c76582a3dcded4ebb96823eac96" }
-wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zope-app-i18n/zope.app.i18n-4.1.0-py2.py3-none-any.whl", hash = "sha256:b468f17c7effa39942c52fd58d5da8f3ac49ef42a28fdaac53238216f7039eb3" },
-]
-
-[[package]]
-name = "zope-app-keyreference"
-version = "3.6.1"
-source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
-dependencies = [
-    { name = "setuptools" },
-    { name = "zope-keyreference" },
-]
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zope-app-keyreference/zope.app.keyreference-3.6.1.tar.gz", hash = "sha256:d8012d487cb66262886ae06a6d20de229d18d4df932048136f882f5b5801ff63" }
 
 [[package]]
 name = "zope-app-locales"
@@ -3893,24 +3817,22 @@ wheels = [
 
 [[package]]
 name = "zope-app-locking"
-version = "3.5.0+py3.1"
+version = "3.5.0+py3.4"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
 dependencies = [
-    { name = "setuptools" },
     { name = "zodb" },
-    { name = "zope-app-i18n" },
-    { name = "zope-app-keyreference" },
     { name = "zope-component" },
     { name = "zope-event" },
+    { name = "zope-i18nmessageid" },
     { name = "zope-interface" },
     { name = "zope-schema" },
     { name = "zope-security" },
     { name = "zope-size" },
     { name = "zope-traversing" },
 ]
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zope-app-locking/zope_app_locking-3.5.0+py3.1.tar.gz", hash = "sha256:2a831a79684061549dfc9a286a86d67e5849010086cc3945b06b4f420cb18cb8" }
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zope-app-locking/zope_app_locking-3.5.0+py3.4.tar.gz", hash = "sha256:312802820ae702276dcd6e3c629802f8bf0c7f123f1ae9d4639847fbcc0712d3" }
 wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zope-app-locking/zope.app.locking-3.5.0+py3.1-py3-none-any.whl", hash = "sha256:1a5a6232befef113992d234d2f6ffe88f50e8dfaabd2330f4b5f9476bab9333b" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zope-app-locking/zope_app_locking-3.5.0+py3.4-py3-none-any.whl", hash = "sha256:85d06680dfc6a62f0550faa64e40a821de7de930db54f7f5d1b5b203a5179d49" },
 ]
 
 [[package]]
@@ -3935,37 +3857,6 @@ dependencies = [
 sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zope-app-pagetemplate/zope_app_pagetemplate-6.0.tar.gz", hash = "sha256:380dfbe17856b5f3fcde447d874df6852d93521b0e4e1033a2c81c492b044b40" }
 wheels = [
     { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zope-app-pagetemplate/zope_app_pagetemplate-6.0-py3-none-any.whl", hash = "sha256:096065c79867eaedbd1b476a397cab3659d91659d9cf8df0b5786c7a8d5c082e" },
-]
-
-[[package]]
-name = "zope-app-preference"
-version = "4.1.0"
-source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
-dependencies = [
-    { name = "setuptools" },
-    { name = "zope-app-form" },
-    { name = "zope-app-tree" },
-    { name = "zope-preference" },
-]
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zope-app-preference/zope.app.preference-4.1.0.tar.gz", hash = "sha256:57a85ebc37d551af5331a5d5b848bb3f1eeed8a11160d3cad1bf248bf2f92793" }
-wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zope-app-preference/zope.app.preference-4.1.0-py2.py3-none-any.whl", hash = "sha256:97e518339dd543c8ba477e81cb6c0e4cd050d24ad7304cf7f480fdbe595aec33" },
-]
-
-[[package]]
-name = "zope-app-principalannotation"
-version = "5.0"
-source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
-dependencies = [
-    { name = "setuptools" },
-    { name = "transaction" },
-    { name = "zope-app-appsetup" },
-    { name = "zope-principalannotation" },
-    { name = "zope-processlifetime" },
-]
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zope-app-principalannotation/zope.app.principalannotation-5.0.tar.gz", hash = "sha256:218e6e0a5150306b9d98c5c948c20238caf032c629805081d521fdacdce23d29" }
-wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zope-app-principalannotation/zope.app.principalannotation-5.0-py3-none-any.whl", hash = "sha256:fb008f8b9557db66c10e49f85354ba12dd1a0b9bf11ab8d24e22b7db4eecabbc" },
 ]
 
 [[package]]
@@ -4017,10 +3908,9 @@ wheels = [
 
 [[package]]
 name = "zope-app-tree"
-version = "4.1.0"
+version = "5.0+importlib"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
 dependencies = [
-    { name = "setuptools" },
     { name = "zope-component" },
     { name = "zope-container" },
     { name = "zope-interface" },
@@ -4030,9 +3920,9 @@ dependencies = [
     { name = "zope-security" },
     { name = "zope-traversing" },
 ]
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zope-app-tree/zope.app.tree-4.1.0.tar.gz", hash = "sha256:52e5c114fe139b2a5c1951c994e3291264989b5b3e7830f28922b6a22ec60bfa" }
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zope-app-tree/zope_app_tree-5.0+importlib.tar.gz", hash = "sha256:50e8294d2ce4c7ac41d637b15cdf0832be922230c6a4188d7a99cdcee3d9e169" }
 wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zope-app-tree/zope.app.tree-4.1.0-py2.py3-none-any.whl", hash = "sha256:5fb86df04ea48749bc920fc9faa1f6e38eaa1c626771fd6098710d15cfdccd74" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zope-app-tree/zope_app_tree-5.0+importlib-py3-none-any.whl", hash = "sha256:c8d79c58050d1d9daf7a6129376afd3e7adf9f63281249f004eb80e872d30d33" },
 ]
 
 [[package]]
@@ -4459,10 +4349,9 @@ wheels = [
 
 [[package]]
 name = "zope-file"
-version = "2.0"
+version = "2.1+importlib"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
 dependencies = [
-    { name = "setuptools" },
     { name = "zodb" },
     { name = "zope-annotation" },
     { name = "zope-component" },
@@ -4479,9 +4368,9 @@ dependencies = [
     { name = "zope-security" },
     { name = "zope-size" },
 ]
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zope-file/zope_file-2.0.tar.gz", hash = "sha256:7549c7fbb4f80e8982c9e471fc29f27ed1efadb34ba7e23291ba48e526b02997" }
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zope-file/zope_file-2.1+importlib.tar.gz", hash = "sha256:dddde7a823092272aa4ad769ccd6358be7ea96894b2057747115854f0252d5fe" }
 wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zope-file/zope.file-2.0-py3-none-any.whl", hash = "sha256:20bce16a750ddeb519890de81fd552ca6535d9df7a0edcafacaa0552b83e2a2e" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zope-file/zope.file-2.1+importlib-py3-none-any.whl", hash = "sha256:fdf254824c6a6dad9dd4040f2659f5e91034e3840097b618ab9fe270989982e1" },
 ]
 
 [[package]]
@@ -4807,25 +4696,6 @@ dependencies = [
 sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zope-pluggableauth/zope_pluggableauth-5.0.tar.gz", hash = "sha256:b9b0e5331ce8ef8c3e748f6c902fa00b92dbee163fe8080cfc91bb63a687eab1" }
 wheels = [
     { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zope-pluggableauth/zope_pluggableauth-5.0-py3-none-any.whl", hash = "sha256:ecf8133ddbd34c6eab349ea7528043bafee6e038b2d861a86fc557237ce0f559" },
-]
-
-[[package]]
-name = "zope-preference"
-version = "5.0"
-source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
-dependencies = [
-    { name = "btrees" },
-    { name = "setuptools" },
-    { name = "zope-annotation" },
-    { name = "zope-component" },
-    { name = "zope-container" },
-    { name = "zope-schema" },
-    { name = "zope-security" },
-    { name = "zope-traversing" },
-]
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zope-preference/zope.preference-5.0.tar.gz", hash = "sha256:6b3d63c75e4e0c051a89a6adfc67c9f0a9e7c884de2cd8054cc435dc37d7f3d8" }
-wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zope-preference/zope.preference-5.0-py3-none-any.whl", hash = "sha256:99e50e3364983f8e31b7606c2fdabaef0e278a60d32a378c73862a8c481766ed" },
 ]
 
 [[package]]

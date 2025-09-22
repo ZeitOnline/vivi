@@ -202,7 +202,6 @@ zon = [
 ]
 test-zon = [
     "gocept.jasmine==0.7+py3.4",  # https://github.com/ZeitOnline/gocept.jasmine
-    "gocept.jslint==3.0+importlib",  # https://github.com/ZeitOnline/gocept.jslint/tree/pkgresources
     "gocept.selenium==7.1+importlib.2",  # https://github.com/ZeitOnline/gocept.selenium
     "pytest-remove-stale-bytecode==6.1+importlib.2",  # https://github.com/ZeitOnline/pytest-remove-stale-bytecode/tree/pkgresources
 ]
