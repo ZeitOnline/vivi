@@ -57,3 +57,9 @@ def animation_images(context):
 @grok.implementer(zeit.content.audio.interfaces.IAudioReferences)
 def animation_audios(context):
     return zeit.content.audio.interfaces.IAudioReferences(context.article)
+
+
+@grok.adapter(zeit.content.animation.interfaces.IAnimation)
+@grok.implementer(zeit.content.article.interfaces.ISpeechbertChecksum)
+def animation_checksum(context):
+    return zeit.content.article.interfaces.ISpeechbertChecksum(context.article)
