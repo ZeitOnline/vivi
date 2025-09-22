@@ -28,6 +28,8 @@ jobs:
         node-version: "22"
         cache: npm
         cache-dependency-path: package-lock.json
+    - name: Install npm dependencies
+      run: npm install
     - uses: pre-commit/action@2c7b3805fd2a0fd8c1884dcaebf91fc102a13ecd # v3.0.1
 
     - uses: slackapi/slack-github-action@91efab103c0de0a537f72a35f6b8cda0ee76bf0a # v2.1.1
