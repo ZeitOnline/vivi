@@ -270,6 +270,9 @@ form .column-right-small {
 #form\.hpTeaserText {
     height: 2lh;
 }
+#form\.accompanying_text {
+    height: 7lh;
+}
 
 #form\.title {
     height: 1lh;
