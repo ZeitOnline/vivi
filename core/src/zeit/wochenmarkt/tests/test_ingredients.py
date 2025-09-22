@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import zeit.cms.testing
-import zeit.wochenmarkt.interfaces
 import zeit.wochenmarkt.testing
 
 
@@ -35,7 +33,3 @@ class TestIngredients(zeit.wochenmarkt.testing.FunctionalTestCase):
     def test_ingredients_should_be_sorted_with_exact_match_leading(self):
         result = zeit.wochenmarkt.sources.ingredientsSource(None).factory.search('ei')
         assert ['Ei', 'Eis', 'Basmatireis', 'Brei'] == ([r.name for r in result])
-
-
-class JSLintTest(zeit.cms.testing.JSLintTestCase):
-    include = ('zeit.wochenmarkt.browser:resources',)

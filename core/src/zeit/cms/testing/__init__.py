@@ -6,7 +6,6 @@ from .browser import Browser, BrowserAssertions, BrowserTestCase
 from .celery import CeleryWorkerLayer, wait_for_celery
 from .doctest import FunctionalDocFileSuite, optionflags
 from .http import HTTPLayer, WSGIServerLayer
-from .javascript import JSLintTestCase
 from .layer import Layer
 from .mock import ResetMocks
 from .pytest import copy_inherited_functions
