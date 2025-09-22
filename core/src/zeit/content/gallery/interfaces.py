@@ -48,7 +48,9 @@ class IReadGallery(
 ):
     """Read methods for gallery."""
 
-    text = zeit.cms.content.field.Markdown(title=_('Text'), required=False)
+    accompanying_text = zeit.cms.content.field.Markdown(
+        title=_('Accompanying text (in markdown format)'), required=False
+    )
 
 
 class IWriteGallery(zope.container.interfaces.IWriteContainer):
