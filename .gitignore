@@ -3,3 +3,5 @@
 .idea/
 *.pyc
 smoketest/msal.json
+# npm related
+node_modules/
