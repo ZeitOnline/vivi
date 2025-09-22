@@ -43,7 +43,7 @@ FCKCommands.RegisterCommand(
         'Timeline', 'ZEIT: Zeitstrahl',
         FCKConfig.PageConfig.ZeitResources + '/reference/timeline.pt',
         800, 600));
-var button = new FCKToolbarButton('Zeit_Timeline', 'Zeitstrahl');
+button = new FCKToolbarButton('Zeit_Timeline', 'Zeitstrahl');
 button.IconPath = FCKConfig.PageConfig.ZeitResources + '/reference/timeline.png'
 FCKToolbarItems.RegisterItem('Zeit_Timeline', button);
 
@@ -54,7 +54,7 @@ FCKCommands.RegisterCommand(
         'Portraitbox', 'ZEIT: Porträtbox',
         FCKConfig.PageConfig.ZeitResources + '/reference/portraitbox.pt',
         800, 600));
-var button = new FCKToolbarButton('Zeit_Portraitbox', 'Portraitbox');
+button = new FCKToolbarButton('Zeit_Portraitbox', 'Portraitbox');
 button.IconPath = FCKConfig.PageConfig.ZeitResources +
     '/reference/portraitbox.png'
 FCKToolbarItems.RegisterItem('Zeit_Portraitbox', button);
@@ -66,6 +66,6 @@ FCKCommands.RegisterCommand(
         'Gallery', 'ZEIT: Bildergalerie',
         FCKConfig.PageConfig.ZeitResources + '/reference/gallery.pt',
         800, 600));
-var button = new FCKToolbarButton('Zeit_Gallery', 'Gallery');
+button = new FCKToolbarButton('Zeit_Gallery', 'Gallery');
 button.IconPath = FCKConfig.PageConfig.ZeitResources + '/reference/gallery.png'
 FCKToolbarItems.RegisterItem('Zeit_Gallery', button);

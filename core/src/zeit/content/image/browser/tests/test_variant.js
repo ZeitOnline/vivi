@@ -1,5 +1,3 @@
-/*global expect, describe, it, beforeEach, spyOn, afterEach, runs, waitsFor */
-/*global Backbone, jQuery, zeit*/
 (function ($) {
     "use strict";
 

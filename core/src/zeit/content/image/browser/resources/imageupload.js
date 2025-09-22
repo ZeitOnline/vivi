@@ -22,12 +22,13 @@
       let promptMessage, currentValue = '';
 
       switch (field) {
-        case 'filename':
+        case 'filename': {
           promptMessage = 'Inhalt für alle Dateinamen überschreiben';
           // Get the base name from first filename (remove any existing suffix)
-          const firstFilename = document.querySelector('input[name^="target_name["]').value;
+          let firstFilename = document.querySelector('input[name^="target_name["]').value;
           currentValue = firstFilename.replace(/-bild(-\d+)?$/, '');
           break;
+        }
         case 'copyright':
           promptMessage = 'Copyright für alle überschreiben:';
           currentValue = document.querySelector('input[name^="copyright["]').value;

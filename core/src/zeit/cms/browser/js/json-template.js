@@ -590,12 +590,14 @@ var get_lookup = function(data_dict, path, undefined_str) {
   var context = _ScopedContext(data_dict, {'undefined_str': undefined_str});
   for (var i = 0; i < steps.length; i++) {
     var parts = steps[i].split('|');
+    let key = '';
+    let indexes = [];
     if (parts.length >= 2) {
-      var key = parts[0];
-      var indexes = parts.slice(1);
+      key = parts[0];
+      indexes = parts.slice(1);
     } else {
-      var key = parts[0];
-      var indexes = [];
+      key = parts[0];
+      indexes = [];
     }
     if (key == '') {
       continue;

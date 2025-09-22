@@ -1,4 +1,3 @@
-/*global window,zeit,document*/
 (function() {
     "use strict";
 

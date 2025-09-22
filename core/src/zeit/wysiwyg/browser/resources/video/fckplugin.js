@@ -15,7 +15,7 @@ FCKCommands.RegisterCommand(
         'Audio', 'ZEIT: Audio',
         FCKConfig.PageConfig.ZeitResources + '/video/dialog.pt?kind=audio',
         380, 250));
-var button = new FCKToolbarButton('Zeit_Add_Audio', 'Audio');
+button = new FCKToolbarButton('Zeit_Add_Audio', 'Audio');
 button.IconPath = FCKConfig.PageConfig.ZeitResources+'/video/audio_icon.png';
 FCKToolbarItems.RegisterItem( 'Zeit_Add_Audio', button);
 

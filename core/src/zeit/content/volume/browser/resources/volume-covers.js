@@ -2,7 +2,7 @@
 
 $(document).bind('fragment-ready', function(event) {
 
-    if (! Boolean($('body.type-volume.location-workingcopy').length)) {
+    if ($('body.type-volume.location-workingcopy').length === 0) {
         return;
     }
     // Check first if a choose cover element already exists, because part
