@@ -503,7 +503,7 @@ class Speechbert(zeit.cms.content.dav.DAVPropertiesAdapter):
         return not self.__eq__(other)
 
     def __str__(self):
-        return self.checksum
+        return self.checksum or ''
 
 
 @grok.subscribe(
