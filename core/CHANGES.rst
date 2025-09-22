@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.193.0 (2025-09-22)
+--------------------
+
+- WCM-1109: Replace wysywig with markdown for gallery text
+
+
 7.192.0 (2025-09-19)
 --------------------
 
