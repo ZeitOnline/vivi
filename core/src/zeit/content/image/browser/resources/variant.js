@@ -1,4 +1,3 @@
-/*global zeit,Backbone,window,document,Handlebars*/
 (function() {
     "use strict";
 

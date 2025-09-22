@@ -1,4 +1,3 @@
-/*global document,window,MochiKit,gocept,zeit,log*/
 (function($) {
 "use strict";
 

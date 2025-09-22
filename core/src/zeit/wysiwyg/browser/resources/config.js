@@ -1,3 +1,4 @@
+/* eslint no-useless-escape: "off" */
 FCKConfig.ToolbarSets["Zeit"] = [
         ['Source', 'About'],
         ['Cut','Copy','Paste','PasteText','PasteWord'],
@@ -72,7 +73,7 @@ function CleanWord( oNode, bIgnoreFont, bRemoveStyles )
     // Remove everything but elements and text
     var next = oNode.firstChild;
     while (next) {
-        var node = next;
+        let node = next;
         next = node.nextSibling;
 
         if (node.nodeType == node.TEXT_NODE)

@@ -11,3 +11,11 @@ repos:
     args: [--fix, --exit-non-zero-on-fix]
     types_or: [python, pyi]
   - id: ruff-format
+-   repo: https://github.com/pre-commit/mirrors-eslint
+    rev: 'v9.36.0'
+    hooks:
+    -   id: eslint
+        additional_dependencies:
+          - eslint@9.23.0
+          - eslint-plugin-compat@6.0.2
+          - "@zeitonline/eslint-config@1.0.1"

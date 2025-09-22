@@ -9,7 +9,8 @@
     "pep621",
     "pre-commit",
     "dockerfile",
-    "kustomize"
+    "kustomize",
+    "npm"
   ],
   "lockFileMaintenance": {
     "enabled": true,
@@ -40,6 +41,11 @@
     {
       "groupName": "All pre-commit changes",
       "matchManagers": ["pre-commit"]
-    }
+    },
+		{
+			"groupName": "All minor npm changes",
+			"matchManagers": ["npm"],
+			"matchUpdateTypes": ["minor", "patch"]
+		},
   ]
 }

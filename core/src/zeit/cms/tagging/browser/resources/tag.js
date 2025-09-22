@@ -97,7 +97,7 @@ zeit.cms.tagging.Widget = gocept.Class.extend({
         if (isUndefined(position)) {
             position = 'end';
         }
-        var pinned = pinned ? 'pinned' : 'toggle-pin';
+        pinned = pinned ? 'pinned' : 'toggle-pin';
         var item = LI(
             {'cms:uniqueId': code},
             SPAN({'class': 'icon delete', 'cms:call': 'delete'}),
