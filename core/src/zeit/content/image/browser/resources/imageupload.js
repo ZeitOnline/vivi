@@ -1,5 +1,9 @@
 (function ($) {
   $(document).ready(function () {
+    const form = document.querySelector('form[name="imageupload"]');
+    if (!form) {
+      return;
+    }
     class UserFile {
       #file
 
