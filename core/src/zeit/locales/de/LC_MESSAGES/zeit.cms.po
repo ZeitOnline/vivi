@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Thu Sep 18 11:01:06 2025\n"
+"POT-Creation-Date: Mon Sep 22 14:47:58 2025\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -3294,7 +3294,11 @@ msgstr ""
 "Ordner, der die Bilder enthält, die in der Bildergalerie angezeigt werden "
 "sollen."
 
-#: zeit/content/gallery/interfaces.py:94
+#: zeit/content/gallery/interfaces.py:52
+msgid "Accompanying text (in markdown format)"
+msgstr "Begleittext (im Markdown-Format)"
+
+#: zeit/content/gallery/interfaces.py:97
 msgid "Is a cropped image of"
 msgstr "Ist ein Zuschnitt von"
 

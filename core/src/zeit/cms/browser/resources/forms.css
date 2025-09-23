@@ -264,27 +264,30 @@ form .column-right-small {
 
 /* Line height: 1.3em * rows */
 #form\.teaserText {
-    height: 6.5em;
+    height: 5lh;
 }
 #form\.shortTeaserText,
 #form\.hpTeaserText {
-    height: 2.6em;
+    height: 2lh;
+}
+#form\.accompanying_text {
+    height: 7lh;
 }
 
 #form\.title {
-    height: 1.3em;
+    height: 1lh;
 }
 
 #form\.info,
 #form\.subtitle,
 #form\.html_description {
-    height: 6.5em;
+    height: 5lh;
 }
 
 #form\.teaserTitle,
 #form\.shortTeaserTitle,
 #form\.hpTeaserTitle {
-    height: 1.3em;
+    height: 1lh;
 }
 
 input#form\.copyrights[type=text] {

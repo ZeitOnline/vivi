@@ -23,7 +23,9 @@ class GalleryFormBase(zeit.push.browser.form.SocialBase, zeit.push.browser.form.
         zeit.cms.interfaces.ICMSContent,
         zeit.content.image.interfaces.IImages,
         zeit.content.gallery.interfaces.IGalleryMetadata,
-    ) + zope.formlib.form.FormFields(zeit.content.gallery.interfaces.IGallery).select('text')
+    ) + zope.formlib.form.FormFields(zeit.content.gallery.interfaces.IGallery).select(
+        'accompanying_text'
+    )
 
     text_fields = gocept.form.grouped.Fields(
         _('Texts'),
@@ -35,7 +37,7 @@ class GalleryFormBase(zeit.push.browser.form.SocialBase, zeit.push.browser.form.
             'teaserText',
             'image',
             'fill_color',
-            'text',
+            'accompanying_text',
         ),
         css_class='wide-widgets column-left',
     )

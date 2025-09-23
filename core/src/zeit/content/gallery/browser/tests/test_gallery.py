@@ -67,10 +67,10 @@ class GalleryUI(zeit.content.gallery.testing.BrowserTestCase):
         b.getControl('File name').value = 'island'
         b.getControl('Title').value = 'Auf den Spuren der Elfen'
         b.getControl('Ressort', index=0).displayValue = ['Reisen']
-        b.getControl('Text', index=0).value = 'one\n\n*two* three'
+        b.getControl('Accompanying text (in markdown format)', index=0).value = 'one\n\n*two* three'
         b.getControl(name='form.actions.add').click()
         self.assertNotEllipsis('...There were errors...', b.contents)
         b.getLink('Checkin').click()
 
         gallery = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/island')
-        self.assertEqual('<p>one</p>\n<p><em>two</em> three</p>', gallery.text)
+        self.assertEqual('<p>one</p>\n<p><em>two</em> three</p>', gallery.accompanying_text)

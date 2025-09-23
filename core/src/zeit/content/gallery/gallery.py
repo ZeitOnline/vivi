@@ -48,7 +48,7 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
         ('type',),
     )
 
-    text = zeit.cms.content.property.Structure('.body.text')
+    accompanying_text = zeit.cms.content.property.Structure('.body.text')
 
     @property
     def image_folder(self):
