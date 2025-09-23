@@ -42,6 +42,10 @@
   <include package="zope.browserresource" />
   <include package="zope.copypastemove" />
   <include package="zope.componentvocabulary" />
+  <utility
+    provides="zope.error.interfaces.IErrorReportingUtility"
+    factory="zeit.cms.browser.error.ErrorReportingUtility"
+    />
   <include package="zope.error" />
   <include package="zope.publisher" />
   <include package="zope.site" />
