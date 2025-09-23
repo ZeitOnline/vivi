@@ -79,6 +79,7 @@
             break
           case 'drop':
             this.handleDrop(e.dataTransfer)
+            break
           case 'dragleave':
             this.#dropArea.classList.remove('imageupload__drop--active')
             e.preventDefault()
