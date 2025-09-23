@@ -1,0 +1,1 @@
+WCM-1120: Record all exceptions for tracing, even the retried and finally failed ones

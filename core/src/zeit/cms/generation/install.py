@@ -21,17 +21,7 @@ def installLocalUtility(root, factory, name, interface, utility_name=''):
     return root[name]
 
 
-def installErrorReportingUtility(root):
-    zope.app.appsetup.bootstrap.addConfigureUtility(
-        root,
-        zope.error.interfaces.IErrorReportingUtility,
-        '',
-        zeit.cms.browser.error.ErrorReportingUtility,
-    )
-
-
 def install(root):
-    installErrorReportingUtility(root)
     zope.app.appsetup.bootstrap.addConfigureUtility(
         root,
         zope.principalannotation.interfaces.IPrincipalAnnotationUtility,
