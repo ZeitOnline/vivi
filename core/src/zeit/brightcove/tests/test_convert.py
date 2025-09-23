@@ -95,13 +95,9 @@ class VideoTest(zeit.brightcove.testing.FunctionalTestCase, zeit.cms.tagging.tes
     def test_converts_related(self):
         cms = CMSVideo()
         related = zeit.cms.related.interfaces.IRelatedContent(cms)
-        related.related = (
-            zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/eta-zapatero'),
-        )
+        related.related = (zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/testcontent'),)
         bc = BCVideo.from_cms(cms)
-        self.assertEqual(
-            'http://xml.zeit.de/online/2007/01/eta-zapatero', bc.data['custom_fields']['ref_link1']
-        )
+        self.assertEqual('http://xml.zeit.de/testcontent', bc.data['custom_fields']['ref_link1'])
 
     def test_converts_advertisement(self):
         cms = CMSVideo()
@@ -147,7 +143,7 @@ class VideoTest(zeit.brightcove.testing.FunctionalTestCase, zeit.cms.tagging.tes
                     sep=zeit.cms.tagging.tag.Tag.SEPARATOR
                 ),
                 'produkt-id': 'TEST',
-                'ref_link1': 'http://xml.zeit.de/online/2007/01/eta-zapatero',
+                'ref_link1': 'http://xml.zeit.de/testcontent',
                 'serie': 'Chefsache',
             },
             'images': {'poster': {'src': 'http://example.com/still'}},
@@ -172,7 +168,7 @@ class VideoTest(zeit.brightcove.testing.FunctionalTestCase, zeit.cms.tagging.tes
         self.assertEqual('TEST', cms.product.id)
         self.assertEqual(True, cms.has_advertisement)
         self.assertEqual(
-            (zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/eta-zapatero'),),
+            (zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/testcontent'),),
             zeit.cms.related.interfaces.IRelatedContent(cms).related,
         )
         self.assertEqual('Chefsache', cms.serie.serienname)
@@ -182,11 +178,11 @@ class VideoTest(zeit.brightcove.testing.FunctionalTestCase, zeit.cms.tagging.tes
         with mock.patch('zeit.brightcove.connection.CMSAPI.get_video') as get:
             with mock.patch('zeit.brightcove.resolve.query_video_id') as query:
                 get.return_value = None
-                query.return_value = 'http://xml.zeit.de/online/2007/01/Somalia'
+                query.return_value = 'http://xml.zeit.de/testcontent'
                 bc = BCVideo.find_by_id('nonexistent')
         self.assertIsInstance(bc, zeit.brightcove.convert.DeletedVideo)
-        self.assertEqual('http://xml.zeit.de/online/2007/01/Somalia', bc.uniqueId)
-        self.assertEqual('http://xml.zeit.de/online/2007/01', bc.__parent__.uniqueId)
+        self.assertEqual('http://xml.zeit.de/testcontent', bc.uniqueId)
+        self.assertEqual('http://xml.zeit.de/', bc.__parent__.uniqueId)
 
     def test_missing_values_use_field_default(self):
         bc = BCVideo()

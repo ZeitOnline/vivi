@@ -323,6 +323,7 @@ class ExportTest(zeit.brightcove.testing.FunctionalTestCase):
             self.repository['myvid'], semantic_change=True
         ) as co:
             co.title = 'local change'
+            transaction.commit()
         transaction.commit()
         self.assertEqual(1, self.request.call_count)
         self.assertEqual('local change', self.request.call_args[1]['body']['name'])
