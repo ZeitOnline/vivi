@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.194.0 (2025-09-23)
+--------------------
+
+- WCM-1117: Enable lookup of speechbert checksum for animation objects
+
+- WCM-1109: Make accompanying text input stand out more
+
+
 7.193.0 (2025-09-22)
 --------------------
 
