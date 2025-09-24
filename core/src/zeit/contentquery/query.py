@@ -587,7 +587,7 @@ class RSSFeedContentQuery(ContentQuery):
             log.debug('Could not fetch feed {}: {}'.format(rss_feed.url, e))
             return []
         for item in xml.xpath('/rss/channel/item'):
-            link = zeit.content.cp.blocks.rss.RSSLink(item, rss_feed)
+            link = zeit.content.cp.blocks.rss.RSSLink(rss_feed, item)
             items.append(link)
         return items
 

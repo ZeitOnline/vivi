@@ -706,6 +706,9 @@ class AutomaticRSSTest(zeit.content.cp.testing.FunctionalTestCase):
         super().setUp()
         self.cp = self.create_and_checkout_centerpage()
         self.elasticsearch = zope.component.getUtility(zeit.retresco.interfaces.IElasticsearch)
+        self.feed = zeit.contentquery.interfaces.AutomaticFeed(
+            'spektrum', 'Spektrum', 'http://example.com', timeout=0, kind='rss'
+        )
 
     def feed_xml(self):
         url = str((importlib.resources.files(__package__) / 'fixtures/feed_data.xml'))
@@ -722,7 +725,7 @@ class AutomaticRSSTest(zeit.content.cp.testing.FunctionalTestCase):
     def test_spektrum_teaser_object_should_have_expected_attributes(self):
         feed_xml = self.feed_xml()
         items = feed_xml.xpath('/rss/channel/item')
-        item = zeit.content.cp.blocks.rss.RSSLink(items[0])
+        item = zeit.content.cp.blocks.rss.RSSLink(self.feed, items[0])
         self.assertEqual('Ein Dinosaurier mit einem Hals wie ein Baukran', item.teaserTitle)
         self.assertEqual('Qijianglong', item.teaserSupertitle)
         self.assertEqual(
@@ -741,9 +744,9 @@ class AutomaticRSSTest(zeit.content.cp.testing.FunctionalTestCase):
             </item>"""
 
         xml = lxml.etree.fromstring(xml_str)
-        teaser = zeit.content.cp.blocks.rss.RSSLink(xml)
+        teaser = zeit.content.cp.blocks.rss.RSSLink(self.feed, xml)
 
-        self.assertEqual(None, teaser.teaserSupertitle)
+        self.assertEqual('', teaser.teaserSupertitle)
         self.assertEqual('', teaser.teaserTitle)
         self.assertEqual('', teaser.teaserText)
         self.assertEqual(None, teaser.image_url)
@@ -754,13 +757,13 @@ class AutomaticRSSTest(zeit.content.cp.testing.FunctionalTestCase):
                 <category><![CDATA[Lorem ipsum]]></category>
             </item>"""
 
-        teaser = zeit.content.cp.blocks.rss.RSSLink(lxml.etree.fromstring(xml_str))
+        teaser = zeit.content.cp.blocks.rss.RSSLink(self.feed, lxml.etree.fromstring(xml_str))
         self.assertEqual('Lorem ipsum', teaser.supertitle)
 
     def test_teaser_falls_back_to_icms_content_missing_value(self):
         feed_xml = self.feed_xml()
         items = feed_xml.xpath('/rss/channel/item')
-        item = zeit.content.cp.blocks.rss.RSSLink(items[0])
+        item = zeit.content.cp.blocks.rss.RSSLink(self.feed, items[0])
         with self.assertRaises(AttributeError):
             item.foo
 

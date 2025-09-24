@@ -1,6 +1,5 @@
-# -*- coding: utf-8 -*-
-from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
+import lxml.etree
 import zope.interface
 
 import zeit.cms.content.interfaces
@@ -14,12 +13,32 @@ class IRSSLink(zeit.content.link.interfaces.ILink):
 
 @zope.interface.implementer(IRSSLink)
 class RSSLink:
-    def __init__(self, xml, feed=None):
-        self.xml = xml
+    def __init__(self, feed, item):
+        # Conform to ILink/IXMLContent, mostly for zeit.web
+        self.xml = lxml.etree.Element('empty')
+
         self.__name__ = None
         self.__parent__ = None
         self.feed = feed
+
+        parse = getattr(self, f'_parse_{feed.kind}')
+        parse(item)
+
+        self.teaserTitle = self.title
+        self.teaserSupertitle = self.supertitle
+        self.teaserText = self.text
+
         self.uniqueId = self.url
+
+    def _parse_rss(self, xml):
+        self.title = xml.findtext('title', '').strip()
+        self.supertitle = xml.findtext('category', '').strip()
+        self.text = xml.findtext('description')
+        self.url = xml.findtext('link', '').strip()
+        enclosure = xml.find('enclosure')
+        self.image_url = enclosure.get('url') if enclosure is not None else None
+        dc_type = xml.findtext('dc:type', namespaces={'dc': 'http://purl.org/dc/elements/1.1/'})
+        self.is_ad = dc_type == 'native-ad'
 
     # Since only a few attributes of z.c.link.ILink are implemented,
     # fall back to the missing values of zopes schema fields
@@ -32,57 +51,6 @@ class RSSLink:
     authorships = ()
 
     target = '_blank'
-
-    @cachedproperty
-    def title(self):
-        title = self.xml.findtext('title')
-        if title is None:
-            return None
-        return title.strip()
-
-    @cachedproperty
-    def teaserTitle(self):  # NOQA
-        return self.title
-
-    @cachedproperty
-    def supertitle(self):
-        supertitle = self.xml.findtext('category')
-        if supertitle is None:
-            return None
-        return supertitle.strip()
-
-    @cachedproperty
-    def teaserSupertitle(self):  # NOQA
-        return self.supertitle
-
-    @cachedproperty
-    def text(self):
-        return self.xml.findtext('description')
-
-    @cachedproperty
-    def teaserText(self):  # NOQA
-        return self.text
-
-    @cachedproperty
-    def url(self):
-        link = self.xml.findtext('link')
-        if link is None:
-            return None
-        return link.strip()
-
-    @cachedproperty
-    def image_url(self):
-        enclosure = self.xml.find('enclosure')
-        if enclosure is None:
-            return None
-        return enclosure.get('url')
-
-    @cachedproperty
-    def is_ad(self):
-        dc_type = self.xml.find('dc:type', namespaces={'dc': 'http://purl.org/dc/elements/1.1/'})
-        if dc_type is not None and dc_type.text == 'native-ad':
-            return True
-        return False
 
 
 @grok.adapter(IRSSLink)
