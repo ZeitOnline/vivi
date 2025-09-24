@@ -1,3 +1,4 @@
+import transaction
 import zope.component
 import zope.event
 
@@ -82,9 +83,11 @@ class MessageTest(zeit.push.testing.TestCase):
     def test_changes_to_template_are_applied_immediately(self):
         message = zeit.push.urbanairship.Message(self.repository['testcontent'])
         self.create_payload_template('{"messages": {"one": 1}}', 'foo.json')
+        transaction.commit()
         message.config['payload_template'] = 'foo.json'
         self.assertEqual({'one': 1}, message.render())
         self.create_payload_template('{"messages": {"two": 1}}', 'foo.json')
+        transaction.commit()
         self.assertEqual({'two': 1}, message.render())
 
     def test_payload_loads_jinja_payload_variables(self):
@@ -132,10 +135,11 @@ class ChannelsTest(zeit.push.testing.TestCase):
     def test_template_sets_content_channels(self):
         with zeit.cms.checkout.helper.checked_out(self.content) as co:
             co.channels = (('Politik', None),)
+        transaction.commit()
         with zeit.cms.checkout.helper.checked_out(self.content) as co:
             push = zeit.push.interfaces.IPushMessages(co)
             push.message_config = (self.message_config('coffee'),)
-
+        self.content = self.repository['content']
         self.assertIn(('Push', 'coffee'), self.content.channels)
         self.assertIn(('Politik', None), self.content.channels)
 

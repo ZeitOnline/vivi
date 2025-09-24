@@ -1,6 +1,7 @@
 from selenium.webdriver.common.keys import Keys
 
 import zeit.cms.workingcopy.interfaces
+import zeit.content.image.testing
 import zeit.push.interfaces
 import zeit.push.testing
 import zeit.push.workflow
@@ -109,14 +110,15 @@ class SocialFormTest(zeit.push.testing.BrowserTestCase):
         self.assertEqual('mobile', b.getControl('Mobile text').value)
 
     def test_stores_mobile_image(self):
+        zeit.content.image.testing.create_image_group()
         self.open_form()
         b = self.browser
-        b.getControl('Mobile image').value = 'http://xml.zeit.de/2007/03/group'
+        b.getControl('Mobile image').value = 'http://xml.zeit.de/group'
         b.getControl('Apply').click()
         article = self.get_article()
         push = zeit.push.interfaces.IPushMessages(article)
         service = push.get(type='mobile')
-        self.assertEqual('http://xml.zeit.de/2007/03/group', service['image'])
+        self.assertEqual('http://xml.zeit.de/group', service['image'])
 
         self.open_form()
         b.getControl('Mobile image').value = ''

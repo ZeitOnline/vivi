@@ -1,5 +1,6 @@
 # coding: utf-8
 import lxml.etree
+import transaction
 import zope.component
 import zope.security.management
 
@@ -22,11 +23,13 @@ class BannerPublisherTest(zeit.push.testing.TestCase):
 
     def test_banner_xml_is_updated_on_push(self):
         self.publisher.send('foo', 'http://xml.zeit.de/foo')
+        transaction.commit()
         banner = self.repository['banner']
         self.assertIn('http://xml.zeit.de/foo', zeit.cms.testing.xmltotext(banner.xml))
 
     def test_banner_utility_is_updated_on_push(self):
         self.publisher.send('foo', 'http://xml.zeit.de/foo')
+        transaction.commit()
         banner = zope.component.getUtility(zeit.push.interfaces.IBanner)
         self.assertEqual('http://xml.zeit.de/foo', banner.article_id)
         self.assertEqual(self.repository['foo'], zeit.push.banner.get_breaking_news_article())
