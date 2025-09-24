@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.196.0 (2025-09-24)
+--------------------
+
+FIX:
+- handle image drop correctly
+
+
 7.195.0 (2025-09-24)
 --------------------
 
