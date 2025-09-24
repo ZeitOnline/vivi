@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.195.0 (2025-09-24)
+--------------------
+
+- WCM-1120: Record all exceptions for tracing, even the retried and finally failed ones
+
+- WCM-1123: Enable lookup of speechbert checksum for animation objects
+
+
 7.194.0 (2025-09-23)
 --------------------
 
