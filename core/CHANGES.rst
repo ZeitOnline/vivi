@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.198.0 (2025-09-24)
+--------------------
+
+- WCM-1126: Handle zodb data loss when reading object log
+
+
 7.197.0 (2025-09-24)
 --------------------
 
