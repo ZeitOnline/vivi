@@ -175,18 +175,13 @@
               li.querySelector('progress').value = progress
             })
             uploads.push(url)
-
-            // Add delay between uploads to reduce ZODB conflicts
-            // XXX is it useful or just me being to careful?
-            await new Promise(resolve => setTimeout(resolve, 100))
           } catch (error) {
             errorSpan.textContent = error.message || error
-            this.#form.classList.remove('imageupload--uploading')
-            this.#submitButton.disabled = false
-            // XXX first error and stop processing???
-            return
           }
         }
+
+        this.#form.classList.remove('imageupload--uploading')
+        this.#submitButton.disabled = false
 
         if (!uploads.length) {
           return
