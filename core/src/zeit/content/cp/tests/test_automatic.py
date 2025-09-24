@@ -714,6 +714,11 @@ class AutomaticRSSTest(zeit.content.cp.testing.FunctionalTestCase):
         url = str((importlib.resources.files(__package__) / 'fixtures/feed_data.xml'))
         return lxml.etree.parse(url)
 
+    def feed_json(self):
+        url = str((importlib.resources.files(__package__) / 'fixtures/feed_data.json'))
+        with open(url) as f:
+            return json.load(f)
+
     def mocked_rss_query(self, area):
         source = zeit.contentquery.interfaces.AUTOMATIC_FEED_SOURCE
         spektrum_feed = source.factory.find(None, 'spektrum')
@@ -731,6 +736,21 @@ class AutomaticRSSTest(zeit.content.cp.testing.FunctionalTestCase):
         self.assertEqual(
             'Forscher entdecken ein China die \xc3\x9cberreste eines bisher '
             'unbekannten, langhalsigen Dinosauriers.',
+            item.teaserText,
+        )
+        self.assertTrue(item.image_url.endswith('spektrum/images/img1.jpg'))
+
+    def test_wiwo_teaser_object_should_have_expected_attributes(self):
+        items = self.feed_json()
+        self.feed.kind = 'wiwojson'
+        item = zeit.content.cp.blocks.rss.RSSLink(self.feed, items[0])
+        self.assertEqual(
+            'Interesse der Deutschen an chinesischen Benzinern höher als an E-Autos',
+            item.teaserTitle,
+        )
+        self.assertEqual('Verbrenner aus Fernost', item.teaserSupertitle)
+        self.assertEqual(
+            'Chinas Autohersteller greifen mit ihren E-Autos hiesige Konzerne an. Das stimmt, ist aber nicht die ganze Wahrheit. Auch chinesische Verbrenner sind in Deutschland gefragt.',
             item.teaserText,
         )
         self.assertTrue(item.image_url.endswith('spektrum/images/img1.jpg'))
@@ -767,7 +787,7 @@ class AutomaticRSSTest(zeit.content.cp.testing.FunctionalTestCase):
         with self.assertRaises(AttributeError):
             item.foo
 
-    def test_rss_content_query_creates_teasers_from_feed(self):
+    def test_rss_content_query_creates_teasers_from_rss_feed(self):
         area = create_automatic_area(self.cp, count=3, type='rss-feed')
         m = self.mocked_rss_query(area)
         rss_query = zeit.contentquery.query.RSSFeedContentQuery(area)
@@ -785,6 +805,23 @@ class AutomaticRSSTest(zeit.content.cp.testing.FunctionalTestCase):
             IRenderedArea(elastic_area).values()
         elastic_query = self.elasticsearch.search.call_args[0][0]
         self.assertNotIn('ids', elastic_query['query']['bool']['must_not'])
+
+    def mocked_json_query(self, area):
+        source = zeit.contentquery.interfaces.AUTOMATIC_FEED_SOURCE
+        spektrum_feed = source.factory.find(None, 'spektrum')
+        spektrum_feed.kind = 'wiwojson'
+        area.rss_feed = spektrum_feed.id
+        m = requests_mock.Mocker()
+        m.get(spektrum_feed.url, status_code=200, content=json.dumps(self.feed_json()))
+        return m
+
+    def test_rss_content_query_creates_teasers_from_json_feed(self):
+        area = create_automatic_area(self.cp, count=3, type='rss-feed')
+        m = self.mocked_rss_query(area)
+        rss_query = zeit.contentquery.query.RSSFeedContentQuery(area)
+        with m:
+            result = rss_query()
+        self.assertEqual(3, len(result))
 
 
 class AutomaticAreaSQLTest(zeit.content.cp.testing.FunctionalTestCase):
