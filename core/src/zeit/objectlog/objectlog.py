@@ -76,7 +76,7 @@ class ObjectLog(persistent.Persistent):
         target_key = target.uniqueId
         self._object_log[target_key] = log
         for entry in log.values():
-            entry.object_reference = target_key
+            entry.uniqueId = target_key
 
     def delete(self, object):
         self._object_log.pop(object.uniqueId, None)
