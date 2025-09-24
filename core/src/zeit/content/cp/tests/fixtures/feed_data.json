@@ -1,0 +1,319 @@
+[
+  {
+    "id": 100157448,
+    "link": "https://www.wiwo.de/unternehmen/auto/verbrenner-aus-fernost-interesse-der-deutschen-an-chinesischen-benzinern-hoeher-als-an-e-autos/100157448.html?utm_medium=ko&utm_source=zeit&utm_campaign=parkett",
+    "teaser": {
+      "image": {
+        "mediaId": "kvdXylFr0yZ5",
+        "width": 3000,
+        "height": 2082,
+        "mimeType": "image/jpeg",
+        "urlFriendlyTitle": "china-autos-speed",
+        "title": "",
+        "fileExtension": "jpg",
+        "baseUrl": "https://images.wiwo.de",
+        "credits": "Foto: Reuters",
+        "crops": [
+          {
+            "name": "3:2",
+            "width": 2727,
+            "height": 1818,
+            "trim": {
+              "left": 193,
+              "top": 264,
+              "right": 80,
+              "bottom": 0
+            },
+            "gravity": {
+              "x": 0.5,
+              "y": 0.5
+            },
+            "ratio": 1.5,
+            "url": "https://images.wiwo.de/kvdXylFr0yZ5/cover/2727/1818/193/80/264/0/0.5/0.5/china-autos-speed.jpg"
+          },
+          {
+            "name": "16:9",
+            "width": 2727,
+            "height": 1534,
+            "trim": {
+              "left": 232,
+              "top": 548,
+              "right": 41,
+              "bottom": 0
+            },
+            "gravity": {
+              "x": 0.5,
+              "y": 0.5
+            },
+            "ratio": 1.77771,
+            "url": "https://images.wiwo.de/kvdXylFr0yZ5/cover/2727/1534/232/41/548/0/0.5/0.5/china-autos-speed.jpg"
+          },
+          {
+            "name": "4:3",
+            "width": 2524,
+            "height": 1893,
+            "trim": {
+              "left": 242,
+              "top": 189,
+              "right": 234,
+              "bottom": 0
+            },
+            "gravity": {
+              "x": 0.5,
+              "y": 0.5
+            },
+            "ratio": 1.33333,
+            "url": "https://images.wiwo.de/kvdXylFr0yZ5/cover/2524/1893/242/234/189/0/0.5/0.5/china-autos-speed.jpg"
+          },
+          {
+            "name": "1:1",
+            "width": 2082,
+            "height": 2082,
+            "trim": {
+              "left": 549,
+              "top": 0,
+              "right": 369,
+              "bottom": 0
+            },
+            "gravity": {
+              "x": 0.5,
+              "y": 0.5
+            },
+            "ratio": 1,
+            "url": "https://images.wiwo.de/kvdXylFr0yZ5/cover/2082/2082/549/369/0/0/0.5/0.5/china-autos-speed.jpg"
+          },
+          {
+            "name": "2:3",
+            "width": 1388,
+            "height": 2082,
+            "trim": {
+              "left": 1097,
+              "top": 0,
+              "right": 515,
+              "bottom": 0
+            },
+            "gravity": {
+              "x": 0.5,
+              "y": 0.5
+            },
+            "ratio": 0.66667,
+            "url": "https://images.wiwo.de/kvdXylFr0yZ5/cover/1388/2082/1097/515/0/0/0.5/0.5/china-autos-speed.jpg"
+          },
+          {
+            "name": "4:1",
+            "width": 3000,
+            "height": 750,
+            "trim": {
+              "left": 0,
+              "top": 666,
+              "right": 0,
+              "bottom": 666
+            },
+            "gravity": {
+              "x": 0.5,
+              "y": 0.5
+            },
+            "ratio": 4,
+            "url": "https://images.wiwo.de/kvdXylFr0yZ5/cover/3000/750/0/0/666/666/0.5/0.5/china-autos-speed.jpg"
+          },
+          {
+            "name": "original",
+            "width": 3000,
+            "height": 2082,
+            "trim": {
+              "left": 0,
+              "right": 0,
+              "top": 0,
+              "bottom": 0
+            },
+            "gravity": {
+              "x": 0.5,
+              "y": 0.5
+            },
+            "ratio": 1.44092,
+            "url": "%HOST%spektrum/images/img1.jpg"
+          }
+        ],
+        "orientation": "horizontal",
+        "caption": "Ein sportlicher Geländewagen des Typs Jaecoo 7 wird bei einer Veranstaltung zur Markteinführung des vom chinesischen Automobilhersteller Chery hergestellten Fahrzeugs in der Nähe von Windsor, Großbritannien, am 30. Januar 2025 ausgestellt.  REUTERS/Toby Melville Zum Sonderbericht CHINA-AUTOS/SPEED passen",
+        "alt": "",
+        "url": "https://hmgprod.blob.core.windows.net/images/2025/09/24/ff0437f5-a578-4971-aaf4-598f5bad2bea.jpg"
+      },
+      "kicker": "Verbrenner aus Fernost",
+      "headline": "Interesse der Deutschen an chinesischen Benzinern höher als an E-Autos",
+      "leadText": "Chinas Autohersteller greifen mit ihren E-Autos hiesige Konzerne an. Das stimmt, ist aber nicht die ganze Wahrheit. Auch chinesische Verbrenner sind in Deutschland gefragt."
+    },
+    "title": null,
+    "paidContent": false,
+    "authors": ["Seiwert, Martin"],
+    "financialIdentifiers": {
+      "isins": ["CNE100000296", "FR0000131906", "JP3898400001", "JP3397200001"],
+      "quants": [],
+      "keywords": []
+    },
+    "category": "unternehmen_auto",
+    "categoryLabels": ["Unternehmen", "Auto"],
+    "content": "",
+    "latestPublicationDate": "2025-09-24T11:48:51.556Z",
+    "firstPublicationDate": "2025-09-24T10:20:49.895Z"
+  },
+  {
+    "id": 100157483,
+    "link": "https://www.wiwo.de/technologie/riskanter-lauschangriff-was-russland-wirklich-im-nato-luftraum-macht/100157483.html?utm_medium=ko&utm_source=zeit&utm_campaign=parkett",
+    "teaser": {
+      "image": {
+        "mediaId": "xFbj73xxJSPK",
+        "width": 3000,
+        "height": 1750,
+        "mimeType": "image/jpeg",
+        "urlFriendlyTitle": "epa04866236-a-handout-photograph-made-available-on-30-july-2015-by-the-british-ministry-of-defence-s",
+        "title": "",
+        "fileExtension": "jpg",
+        "baseUrl": "https://images.wiwo.de",
+        "credits": "Foto: picture alliance / dpa",
+        "crops": [
+          {
+            "name": "3:2",
+            "width": 2625,
+            "height": 1750,
+            "trim": {
+              "left": 188,
+              "top": 0,
+              "right": 187,
+              "bottom": 0
+            },
+            "gravity": {
+              "x": 0.5,
+              "y": 0.5
+            },
+            "ratio": 1.5,
+            "url": "https://images.wiwo.de/xFbj73xxJSPK/cover/2625/1750/188/187/0/0/0.5/0.5/epa04866236-a-handout-photograph-made-available-on-30-july-2015-by-the-british-ministry-of-defence-s.jpg"
+          },
+          {
+            "name": "16:9",
+            "width": 3000,
+            "height": 1687,
+            "trim": {
+              "left": 0,
+              "top": 31,
+              "right": 0,
+              "bottom": 32
+            },
+            "gravity": {
+              "x": 0.5,
+              "y": 0.5
+            },
+            "ratio": 1.7783,
+            "url": "https://images.wiwo.de/xFbj73xxJSPK/cover/3000/1687/0/0/31/32/0.5/0.5/epa04866236-a-handout-photograph-made-available-on-30-july-2015-by-the-british-ministry-of-defence-s.jpg"
+          },
+          {
+            "name": "4:3",
+            "width": 2333,
+            "height": 1750,
+            "trim": {
+              "left": 333,
+              "top": 0,
+              "right": 334,
+              "bottom": 0
+            },
+            "gravity": {
+              "x": 0.5,
+              "y": 0.5
+            },
+            "ratio": 1.33314,
+            "url": "https://images.wiwo.de/xFbj73xxJSPK/cover/2333/1750/333/334/0/0/0.5/0.5/epa04866236-a-handout-photograph-made-available-on-30-july-2015-by-the-british-ministry-of-defence-s.jpg"
+          },
+          {
+            "name": "1:1",
+            "width": 1750,
+            "height": 1750,
+            "trim": {
+              "left": 625,
+              "top": 0,
+              "right": 625,
+              "bottom": 0
+            },
+            "gravity": {
+              "x": 0.5,
+              "y": 0.5
+            },
+            "ratio": 1,
+            "url": "https://images.wiwo.de/xFbj73xxJSPK/cover/1750/1750/625/625/0/0/0.5/0.5/epa04866236-a-handout-photograph-made-available-on-30-july-2015-by-the-british-ministry-of-defence-s.jpg"
+          },
+          {
+            "name": "2:3",
+            "width": 1167,
+            "height": 1750,
+            "trim": {
+              "left": 917,
+              "top": 0,
+              "right": 916,
+              "bottom": 0
+            },
+            "gravity": {
+              "x": 0.5,
+              "y": 0.5
+            },
+            "ratio": 0.66686,
+            "url": "https://images.wiwo.de/xFbj73xxJSPK/cover/1167/1750/917/916/0/0/0.5/0.5/epa04866236-a-handout-photograph-made-available-on-30-july-2015-by-the-british-ministry-of-defence-s.jpg"
+          },
+          {
+            "name": "4:1",
+            "width": 3000,
+            "height": 750,
+            "trim": {
+              "left": 0,
+              "top": 500,
+              "right": 0,
+              "bottom": 500
+            },
+            "gravity": {
+              "x": 0.5,
+              "y": 0.5
+            },
+            "ratio": 4,
+            "url": "https://images.wiwo.de/xFbj73xxJSPK/cover/3000/750/0/0/500/500/0.5/0.5/epa04866236-a-handout-photograph-made-available-on-30-july-2015-by-the-british-ministry-of-defence-s.jpg"
+          },
+          {
+            "name": "original",
+            "width": 3000,
+            "height": 1750,
+            "trim": {
+              "left": 0,
+              "right": 0,
+              "top": 0,
+              "bottom": 0
+            },
+            "gravity": {
+              "x": 0.5,
+              "y": 0.5
+            },
+            "ratio": 1.71429,
+            "url": "%HOST%spektrum/images/img2.jpg"
+          }
+        ],
+        "orientation": "horizontal",
+        "caption": "epa04866236 A handout photograph made available on 30 JUly 2015 by the British Ministry of Defence showing and Air to Air - image taken over Baltic airspace by British Royal Air Force (RAF) Typhoon pilots, intercepting Russian Mikoyan MiG-31 aircraft on 24 July 2015 as part of NATO_s ongoing mission to police Baltic airspace. RAF Typhoons intercepted 10 Russian aircraft during a single Baltic Air Patrol, Quick Reaction Alert mission: The Typhoon aircraft, from 6 (Fighter) Squadron, RAF Lossiemouth were launched after multiple groups of aircraft were detected by NATO air defences in international airspace near to the Baltic States. RAF jets identified the aircraft as 4 x FULLBACKS Sukhoi Su-34 fighters, 4 x FOXHOUNDS Mikoyan MiG-31 fighters and 2 x Antonov An26 _CURL_ transport aircraft who appeared to be carrying out a variety of routine training. EPA/BRITISH MINISTRY OF DEFENCE / HANDOUT HANDOUT EDITORIAL USE ONLY/NO SALES ++",
+        "alt": "",
+        "url": "https://hmgprod.blob.core.windows.net/images/2025/09/23/d0abdabb-055b-4c87-92dc-bb014d56eb1c.jpg",
+        "hugoId": "245933088"
+      },
+      "kicker": "Riskanter Lauschangriff",
+      "headline": "Was Russland wirklich macht, wenn es in Nato-Luftraum eindringt",
+      "leadText": "Moskaus Manöver dienen nicht nur der Provokation, glauben Experten für Luftverteidigung. Das Regime sammele hochsensible Radardaten – auch von den neuen F-35-Jets."
+    },
+    "title": null,
+    "paidContent": true,
+    "authors": ["Stölzel, Thomas"],
+    "financialIdentifiers": {
+      "isins": [],
+      "quants": [],
+      "keywords": []
+    },
+    "category": "technologie",
+    "categoryLabels": ["Technologie"],
+    "content": "",
+    "latestPublicationDate": "2025-09-24T12:08:00.000Z",
+    "firstPublicationDate": "2025-09-24T12:08:00.000Z"
+  }
+]

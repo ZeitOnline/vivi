@@ -581,8 +581,8 @@ class RSSFeedContentQuery(ContentQuery):
 
         items = []
         try:
-            content = self._get_feed(rss_feed.url, rss_feed.timeout)
-            xml = lxml.etree.fromstring(content)
+            r = self._get_feed(rss_feed.url, rss_feed.timeout)
+            xml = lxml.etree.fromstring(r.content)
         except (requests.exceptions.RequestException, lxml.etree.XMLSyntaxError) as e:
             log.debug('Could not fetch feed {}: {}'.format(rss_feed.url, e))
             return []
@@ -591,8 +591,25 @@ class RSSFeedContentQuery(ContentQuery):
             items.append(link)
         return items
 
-    def _get_feed(self, url, timeout):
-        return requests.get(url, timeout=timeout).content
+    def _parse_wiwojson(self):
+        rss_feed = self.context.rss_feed
+        if not rss_feed:
+            return []
+
+        items = []
+        try:
+            r = self._get_feed(rss_feed.url, rss_feed.timeout)
+            data = r.json()
+        except (requests.exceptions.RequestException, json.JSONDecodeError) as e:
+            log.debug('Could not fetch feed {}: {}'.format(rss_feed.url, e))
+            return []
+        for item in data:
+            link = zeit.content.cp.blocks.rss.RSSLink(rss_feed, item)
+            items.append(link)
+        return items
+
+    def _get_feed(self, url, timeout):  # Extension point for zeit.web
+        return requests.get(url, timeout=timeout)
 
 
 class ManualLegacyResult(ContentQuery):

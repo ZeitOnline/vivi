@@ -40,6 +40,17 @@ class RSSLink:
         dc_type = xml.findtext('dc:type', namespaces={'dc': 'http://purl.org/dc/elements/1.1/'})
         self.is_ad = dc_type == 'native-ad'
 
+    def _parse_wiwojson(self, item):
+        teaser = item.get('teaser', {})
+        self.title = teaser.get('headline', '').strip()
+        self.supertitle = teaser.get('kicker', '').strip()
+        self.text = teaser.get('leadText')
+        self.url = item.get('link', '').strip()
+        for img in teaser.get('image', {}).get('crops', ()):
+            if img.get('name') == 'original':
+                self.image_url = img.get('url')
+        self.is_ad = False
+
     # Since only a few attributes of z.c.link.ILink are implemented,
     # fall back to the missing values of zopes schema fields
     def __getattr__(self, name):
