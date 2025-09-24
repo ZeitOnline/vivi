@@ -21,7 +21,7 @@ FIX:
 
 - WCM-1120: Record all exceptions for tracing, even the retried and finally failed ones
 
-- WCM-1123: Enable lookup of speechbert checksum for animation objects
+- WCM-1123: Upload images sequentially to avoid ConflictErrors
 
 
 7.194.0 (2025-09-23)
