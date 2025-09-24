@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.197.0 (2025-09-24)
+--------------------
+
+- WCM-1122: Add toggle cp_teaser_image_from_thumbnail to evaluate performance without thumbnails here as well
+
+
 7.196.0 (2025-09-24)
 --------------------
 
