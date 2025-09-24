@@ -34,8 +34,19 @@ class ObjectLog(persistent.Persistent):
         else:  # BBB
             object_log = self._object_log.get(CMSContentKeyReference(object.uniqueId), [])
 
-        for key in object_log:
-            yield object_log[key]
+        for key in list(object_log):
+            value = object_log[key]
+            try:
+                value.message
+            except ZODB.POSException.POSKeyError:
+                logger.warning(
+                    'ZODB.POSException.POSKeyError, removing lost key %s for %s',
+                    key,
+                    object.uniqueId,
+                )
+                del object_log[key]
+            else:
+                yield value
 
     def log(self, object, message):
         logger.debug('Logging: %s %s' % (object, message))
