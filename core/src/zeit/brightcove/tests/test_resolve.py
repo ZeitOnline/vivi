@@ -7,7 +7,7 @@ import zeit.brightcove.testing
 
 class VideoIdResolverTest(zeit.brightcove.testing.FunctionalTestCase):
     def test_video_id_should_be_resolved_to_unique_id(self):
-        with mock.patch('zeit.connector.mock.Connector.search') as search:
+        with mock.patch('zeit.connector.postgresql.Connector.search') as search:
             search.return_value = iter((('http://xml.zeit.de/video/2010-03/1234',),))
             self.assertEqual(
                 'http://xml.zeit.de/video/2010-03/1234',
@@ -21,7 +21,7 @@ class VideoIdResolverTest(zeit.brightcove.testing.FunctionalTestCase):
 
     def test_should_raise_and_warn_if_multiple_objects_are_found(self):
         log = logging.getLogger('zeit.brightcove.resolve')
-        with mock.patch('zeit.connector.mock.Connector.search') as search:
+        with mock.patch('zeit.connector.postgresql.Connector.search') as search:
             with mock.patch.object(log, 'warning') as log_warning:
                 search.return_value = iter(
                     (
