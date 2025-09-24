@@ -569,26 +569,25 @@ class RSSFeedContentQuery(ContentQuery):
 
     def __call__(self):
         self.total_hits = 0
-        feed_data = self._parse_feed()
+        parse = getattr(self, f'_parse_{self.context.rss_feed.kind}')
+        feed_data = parse()
         self.total_hits = len(feed_data)
         return feed_data
 
-    @property
-    def rss_feed(self):
-        return self.context.rss_feed
-
-    def _parse_feed(self):
-        if not self.rss_feed:
+    def _parse_rss(self):
+        rss_feed = self.context.rss_feed
+        if not rss_feed:
             return []
+
         items = []
         try:
-            content = self._get_feed(self.rss_feed.url, self.rss_feed.timeout)
+            content = self._get_feed(rss_feed.url, rss_feed.timeout)
             xml = lxml.etree.fromstring(content)
         except (requests.exceptions.RequestException, lxml.etree.XMLSyntaxError) as e:
-            log.debug('Could not fetch feed {}: {}'.format(self.rss_feed.url, e))
+            log.debug('Could not fetch feed {}: {}'.format(rss_feed.url, e))
             return []
         for item in xml.xpath('/rss/channel/item'):
-            link = zeit.content.cp.blocks.rss.RSSLink(item, self.rss_feed)
+            link = zeit.content.cp.blocks.rss.RSSLink(item, rss_feed)
             items.append(link)
         return items
 
