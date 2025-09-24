@@ -12,7 +12,6 @@ import zope.component
 import zope.interface
 import zope.security.management
 
-from zeit.cms.content.keyreference import CMSContentKeyReference
 import zeit.cms.cli
 import zeit.objectlog.interfaces
 
@@ -29,21 +28,26 @@ class ObjectLog(persistent.Persistent):
         self._object_log = BTrees.family64.OO.BTree()
 
     def get_log(self, object):
-        if object.uniqueId in self._object_log:
-            object_log = self._object_log.get(object.uniqueId, [])
-        else:  # BBB
-            object_log = self._object_log.get(CMSContentKeyReference(object.uniqueId), [])
+        object_log = self._object_log.get(object.uniqueId, [])
 
-        for key in object_log:
-            yield object_log[key]
+        for key in list(object_log):
+            value = object_log[key]
+            try:
+                value.message
+            except ZODB.POSException.POSKeyError:
+                logger.warning(
+                    'ZODB.POSException.POSKeyError, removing lost key %s for %s',
+                    key,
+                    object.uniqueId,
+                )
+                del object_log[key]
+            else:
+                yield value
 
     def log(self, object, message):
         logger.debug('Logging: %s %s' % (object, message))
+        object_log = self._object_log.get(object.uniqueId)
 
-        if object.uniqueId in self._object_log:
-            object_log = self._object_log.get(object.uniqueId)
-        else:  # BBB
-            object_log = self._object_log.get(CMSContentKeyReference(object.uniqueId))
         if object_log is None:
             # Create a timeline for the object.
             object_log = self._object_log[object.uniqueId] = BTrees.family64.IO.BTree()
@@ -69,18 +73,15 @@ class ObjectLog(persistent.Persistent):
 
     def move(self, source_id, target):
         log = self._object_log.pop(source_id, None)
-        if log is None:  # BBB
-            log = self._object_log.pop(CMSContentKeyReference(source_id), None)
         if log is None:
             return
         target_key = target.uniqueId
         self._object_log[target_key] = log
         for entry in log.values():
-            entry.object_reference = target_key
+            entry.uniqueId = target_key
 
     def delete(self, object):
         self._object_log.pop(object.uniqueId, None)
-        self._object_log.pop(CMSContentKeyReference(object.uniqueId), None)
 
     def clean(self, timedelta):
         reference_time = int(10e6 * (time.time() - timedelta.days * 3600 * 24 - timedelta.seconds))

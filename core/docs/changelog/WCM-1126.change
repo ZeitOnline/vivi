@@ -1,0 +1,1 @@
+WCM-1126: Handle zodb data loss when reading object log

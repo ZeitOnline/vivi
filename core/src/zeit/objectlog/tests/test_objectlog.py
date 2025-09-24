@@ -64,3 +64,4 @@ class ObjectLog(zeit.objectlog.testing.FunctionalTestCase):
         for old, copied in zip(original_log, changed_log):
             self.assertEqual(old.message, copied.message)
             self.assertEqual(old.time, copied.time)
+            self.assertEqual(old.uniqueId, copied.uniqueId)
