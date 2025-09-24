@@ -707,7 +707,12 @@ class AutomaticRSSTest(zeit.content.cp.testing.FunctionalTestCase):
         self.cp = self.create_and_checkout_centerpage()
         self.elasticsearch = zope.component.getUtility(zeit.retresco.interfaces.IElasticsearch)
         self.feed = zeit.contentquery.interfaces.AutomaticFeed(
-            'spektrum', 'Spektrum', 'http://example.com', timeout=0, kind='rss'
+            'spektrum',
+            'Spektrum',
+            'http://example.com',
+            timeout=0,
+            kind='rss',
+            image_base_url=None,
         )
 
     def feed_xml(self):
