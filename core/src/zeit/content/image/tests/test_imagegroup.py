@@ -2,7 +2,9 @@
 from unittest import mock
 
 from zope.publisher.interfaces import NotFound
+import pendulum
 import PIL
+import transaction
 import zope.event
 import zope.lifecycleevent
 
@@ -422,3 +424,28 @@ class ThumbnailsTest(zeit.content.image.testing.FunctionalTestCase):
         image = self.repository['group']['master-image.jpg']
         thumbnail = zeit.content.image.interfaces.IPersistentThumbnail(image)
         self.assertEqual((200, 150), thumbnail.getImageSize())
+
+
+class DeleteTemporaryImages(zeit.content.image.testing.FunctionalTestCase):
+    def setUp(self):
+        super().setUp()
+        self.group = self.repository['group']
+        self.tmp_name = '0a4a86df-18cc-442b-8a79-11cd1bcd880e.tmp'
+        self.repository[self.tmp_name] = self.repository['group']
+
+    def test_do_not_delete_recent_temporary_images(self):
+        zeit.content.image.cli.delete_temporary_imagegroups(1, 1)
+        self.assertTrue(self.tmp_name in self.repository)
+
+    def test_delete_temporary_images(self):
+        self.repository.connector.changeProperties(
+            self.group.uniqueId,
+            {
+                ('date_created', 'http://namespaces.zeit.de/CMS/document'): pendulum.now('UTC')
+                .subtract(hours=2)
+                .isoformat(),
+            },
+        )
+        transaction.commit()
+        zeit.content.image.cli.delete_temporary_imagegroups(1, 1)
+        self.assertTrue(self.tmp_name not in self.repository)
