@@ -1,3 +1,4 @@
+from unittest import mock
 import importlib.resources
 
 import requests_mock
@@ -50,6 +51,22 @@ class TestImageMetadataAcquisition(zeit.content.image.testing.FunctionalTestCase
         self.assertEqual(metadata['xmp:xmpmeta:Source'], 'AFP')
         self.assertEqual(metadata['xmp:xmpmeta:Headline'], 'CYCLING-BEL-RENEWI')
         self.assertEqual(metadata['xmp:xmpmeta:creator'], 'DAVID PINTENS')
+
+    def test_flatten(self):
+        image = create_image('gettyimages-2168232879-150x100.jpg')
+        metadata = image._flatten({'foo': ['bar', {'baz': 0}, 1]})
+        self.assertEqual(metadata, {'foo': 1, 'foo:baz': 0})
+
+        metadata = image._flatten({'foo': {'baz': 0}, 'bar': 1})
+        self.assertEqual(metadata, {'bar': 1, 'foo:baz': 0})
+
+        metadata = image._flatten({'foo': ['bar', 1, 1.1]})
+        self.assertEqual(metadata, {'foo': 'bar, 1, 1.1'})
+
+    def test_flatten_raises_silently(self):
+        image = create_image('gettyimages-2168232879-150x100.jpg')
+        with mock.patch('zeit.content.image.image.BaseImage._flatten', side_effect=Exception):
+            self.assertEqual(image.embedded_metadata_flattened(), {})
 
 
 class TestImageXMLReference(zeit.content.image.testing.FunctionalTestCase):
