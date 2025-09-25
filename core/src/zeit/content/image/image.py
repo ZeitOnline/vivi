@@ -7,6 +7,7 @@ from PIL import ImageCms
 import grokcore.component as grok
 import lxml.builder
 import lxml.etree
+import opentelemetry.trace
 import PIL.Image
 import requests
 import zope.cachedescriptors.property
@@ -60,6 +61,7 @@ class BaseImage:
         with self.open() as f:
             pil = PIL.Image.open(f)
             pil.load()
+
         with pil as pil:
             if keep_metadata:
                 pil.encoderinfo = pil.info.copy()
@@ -71,7 +73,20 @@ class BaseImage:
 
     def embedded_metadata_flattened(self):
         with self.as_pil() as img:
-            return self._flatten(self._metadata(img))
+            metadata = self._metadata(img)
+            try:
+                return self._flatten(metadata)
+            except Exception as err:
+                message = f'Unable to flatten image metadata for {self.uniqueId}: {err}'
+                opentelemetry.trace.get_current_span().add_event(
+                    'exception',
+                    {
+                        'exception.type': 'FlattenMetadataError',
+                        'exception.severity': 'info',
+                        'exception.message': message,
+                    },
+                )
+                return {}
 
     def _flatten(self, data, parent=''):
         """Kludgy heuristics to try to flatten the nested XMP/RDF structure into
@@ -88,8 +103,8 @@ class BaseImage:
                     key = f'{parent}:{key}' if parent else key
                 result.update(self._flatten(value, key))
         elif isinstance(data, list):
-            if isinstance(data[0], str):
-                result[parent] = ', '.join(data)
+            if all([type(i) in [str, int, float] for i in data]):
+                result[parent] = ', '.join([str(i) for i in data])
             else:
                 for x in data:
                     result.update(self._flatten(x, parent))
