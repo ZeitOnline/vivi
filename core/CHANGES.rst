@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.199.0 (2025-09-25)
+--------------------
+
+FIX:
+- WCM-1135: support lists in metadata with mixed types
+
+
 7.198.0 (2025-09-24)
 --------------------
 
