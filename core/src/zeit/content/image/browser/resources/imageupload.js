@@ -156,6 +156,7 @@
         const li = this.#form.querySelector('.imageupload__template').content.cloneNode(true).firstElementChild
         li.querySelector('.imageupload__filename').textContent = file.filename()
         li.upload_data = file.data()
+        li.upload_status = 'pending'
         file.thumbnail().then(thumbnail => {
           const img = li.querySelector('img')
           img.onerror = () => img.src = '/fanstatic/zeit.cms/preview_not_available.png'
@@ -164,17 +165,21 @@
         this.#gallery.appendChild(li)
       }
 
-      removeFile(li) {
-        li.remove()
+      removeFile(uploadItem) {
+        const index = this.#failedUploads.indexOf(uploadItem)
+        if (index !== -1) {
+          this.#failedUploads.splice(index, 1)
+        }
+
+        uploadItem.remove()
       }
 
       async uploadFiles() {
         this.#form.classList.add('imageupload--uploading')
         this.#submitButton.disabled = true
 
-        const itemsToUpload = this.#failedUploads.length > 0
-          ? this.#failedUploads
-          : Array.from(this.#gallery.childNodes)
+        const pendingItems = Array.from(this.#gallery.childNodes).filter(item => item.upload_status === 'pending')
+        const itemsToUpload = [...new Set([...this.#failedUploads, ...pendingItems])]
 
         this.#failedUploads = []
 
@@ -187,8 +192,10 @@
               uploadItem.querySelector('progress').value = progress
             })
             this.#successfulUploads.push(url)
+            uploadItem.upload_status = 'success'
           } catch (error) {
             errorSpan.textContent = error.message || error
+            uploadItem.upload_status = 'failed'
             this.#failedUploads.push(uploadItem)
           }
         }
