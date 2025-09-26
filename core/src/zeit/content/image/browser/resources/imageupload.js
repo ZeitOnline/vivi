@@ -57,12 +57,16 @@
       #dropArea
       #gallery
       #submitButton
+      #successfulUploads
+      #failedUploads
 
       constructor(form) {
         this.#form = form
         this.#dropArea = form.querySelector('.imageupload__drop')
         this.#gallery = form.querySelector('.imageupload__gallery')
         this.#submitButton = form.querySelector('.imageupload__button--submit')
+        this.#successfulUploads = []
+        this.#failedUploads = []
 
         this.#dropArea.addEventListener('dragenter', this, false)
         this.#dropArea.addEventListener('dragover', this, false)
@@ -167,31 +171,37 @@
       async uploadFiles() {
         this.#form.classList.add('imageupload--uploading')
         this.#submitButton.disabled = true
-        const uploads = []
 
-        for (let li of this.#gallery.childNodes) {
-          const errorSpan = li.querySelector('.imageupload__error')
+        const itemsToUpload = this.#failedUploads.length > 0
+          ? this.#failedUploads
+          : Array.from(this.#gallery.childNodes)
+
+        this.#failedUploads = []
+
+        for (let uploadItem of itemsToUpload) {
+          const errorSpan = uploadItem.querySelector('.imageupload__error')
           errorSpan.textContent = ''
 
           try {
-            const url = await this.uploadFile(li.upload_data, progress => {
-              li.querySelector('progress').value = progress
+            const url = await this.uploadFile(uploadItem.upload_data, progress => {
+              uploadItem.querySelector('progress').value = progress
             })
-            uploads.push(url)
+            this.#successfulUploads.push(url)
           } catch (error) {
             errorSpan.textContent = error.message || error
+            this.#failedUploads.push(uploadItem)
           }
         }
 
         this.#form.classList.remove('imageupload--uploading')
         this.#submitButton.disabled = false
 
-        if (!uploads.length) {
+        if (this.#failedUploads.length > 0 || this.#successfulUploads.length === 0) {
           return
         }
 
-        const baseUrl = uploads[0]
-        const additionalFiles = uploads.slice(1).map(url => {
+        const baseUrl = this.#successfulUploads[0]
+        const additionalFiles = this.#successfulUploads.slice(1).map(url => {
           return '&files=' + new URL(url).searchParams.get('files')
         }).join('')
 
