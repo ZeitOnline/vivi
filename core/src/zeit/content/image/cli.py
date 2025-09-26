@@ -15,8 +15,8 @@ def delete_temporary_imagegroups(query_min_age, query_max_age):
     sql_query = """
         name like '%.tmp' and
         type = 'image-group' and
-        date_created < NOW() - INTERVAL ':min_age hour' and
-        date_created > NOW() - INTERVAL ':max_age days'
+        last_updated < NOW() - INTERVAL ':min_age hour' and
+        last_updated > NOW() - INTERVAL ':max_age days'
     """
     query = select(ConnectorModel)
     query = query.where(

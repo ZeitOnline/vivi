@@ -2,9 +2,7 @@
 from unittest import mock
 
 from zope.publisher.interfaces import NotFound
-import pendulum
 import PIL
-import transaction
 import zope.event
 import zope.lifecycleevent
 
@@ -438,14 +436,5 @@ class DeleteTemporaryImages(zeit.content.image.testing.FunctionalTestCase):
         self.assertTrue(self.tmp_name in self.repository)
 
     def test_delete_temporary_images(self):
-        self.repository.connector.changeProperties(
-            self.group.uniqueId,
-            {
-                ('date_created', 'http://namespaces.zeit.de/CMS/document'): pendulum.now('UTC')
-                .subtract(hours=2)
-                .isoformat(),
-            },
-        )
-        transaction.commit()
-        zeit.content.image.cli.delete_temporary_imagegroups(1, 1)
+        zeit.content.image.cli.delete_temporary_imagegroups(-1, 1)
         self.assertTrue(self.tmp_name not in self.repository)
