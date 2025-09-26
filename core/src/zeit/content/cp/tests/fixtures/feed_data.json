@@ -1,0 +1,79 @@
+[
+  {
+    "id": 100157448,
+    "link": "https://www.wiwo.de/unternehmen/auto/verbrenner-aus-fernost-interesse-der-deutschen-an-chinesischen-benzinern-hoeher-als-an-e-autos/100157448.html?utm_medium=ko&utm_source=zeit&utm_campaign=parkett",
+    "teaser": {
+      "image": {
+        "mediaId": "kvdXylFr0yZ5",
+        "width": 3000,
+        "height": 2082,
+        "mimeType": "image/jpeg",
+        "urlFriendlyTitle": "china-autos-speed",
+        "title": "",
+        "fileExtension": "jpg",
+        "baseUrl": "https://images.wiwo.de",
+        "credits": "Foto: Reuters",
+        "crops": ["removed"],
+        "orientation": "horizontal",
+        "caption": "Ein sportlicher Geländewagen des Typs Jaecoo 7 wird bei einer Veranstaltung zur Markteinführung des vom chinesischen Automobilhersteller Chery hergestellten Fahrzeugs in der Nähe von Windsor, Großbritannien, am 30. Januar 2025 ausgestellt.  REUTERS/Toby Melville Zum Sonderbericht CHINA-AUTOS/SPEED passen",
+        "alt": "",
+        "url": "%HOST%spektrum/images/img1.jpg"
+      },
+      "kicker": "Verbrenner aus Fernost",
+      "headline": "Interesse der Deutschen an chinesischen Benzinern höher als an E-Autos",
+      "leadText": "Chinas Autohersteller greifen mit ihren E-Autos hiesige Konzerne an. Das stimmt, ist aber nicht die ganze Wahrheit. Auch chinesische Verbrenner sind in Deutschland gefragt."
+    },
+    "title": null,
+    "paidContent": false,
+    "authors": ["Seiwert, Martin"],
+    "financialIdentifiers": {
+      "isins": ["CNE100000296", "FR0000131906", "JP3898400001", "JP3397200001"],
+      "quants": [],
+      "keywords": []
+    },
+    "category": "unternehmen_auto",
+    "categoryLabels": ["Unternehmen", "Auto"],
+    "content": "",
+    "latestPublicationDate": "2025-09-24T11:48:51.556Z",
+    "firstPublicationDate": "2025-09-24T10:20:49.895Z"
+  },
+  {
+    "id": 100157483,
+    "link": "https://www.wiwo.de/technologie/riskanter-lauschangriff-was-russland-wirklich-im-nato-luftraum-macht/100157483.html?utm_medium=ko&utm_source=zeit&utm_campaign=parkett",
+    "teaser": {
+      "image": {
+        "mediaId": "xFbj73xxJSPK",
+        "width": 3000,
+        "height": 1750,
+        "mimeType": "image/jpeg",
+        "urlFriendlyTitle": "epa04866236-a-handout-photograph-made-available-on-30-july-2015-by-the-british-ministry-of-defence-s",
+        "title": "",
+        "fileExtension": "jpg",
+        "baseUrl": "https://images.wiwo.de",
+        "credits": "Foto: picture alliance / dpa",
+        "crops": ["removed"],
+        "orientation": "horizontal",
+        "caption": "epa04866236 A handout photograph made available on 30 JUly 2015 by the British Ministry of Defence showing and Air to Air - image taken over Baltic airspace by British Royal Air Force (RAF) Typhoon pilots, intercepting Russian Mikoyan MiG-31 aircraft on 24 July 2015 as part of NATO_s ongoing mission to police Baltic airspace. RAF Typhoons intercepted 10 Russian aircraft during a single Baltic Air Patrol, Quick Reaction Alert mission: The Typhoon aircraft, from 6 (Fighter) Squadron, RAF Lossiemouth were launched after multiple groups of aircraft were detected by NATO air defences in international airspace near to the Baltic States. RAF jets identified the aircraft as 4 x FULLBACKS Sukhoi Su-34 fighters, 4 x FOXHOUNDS Mikoyan MiG-31 fighters and 2 x Antonov An26 _CURL_ transport aircraft who appeared to be carrying out a variety of routine training. EPA/BRITISH MINISTRY OF DEFENCE / HANDOUT HANDOUT EDITORIAL USE ONLY/NO SALES ++",
+        "alt": "",
+        "url": "%HOST%spektrum/images/img2.jpg",
+        "hugoId": "245933088"
+      },
+      "kicker": "Riskanter Lauschangriff",
+      "headline": "Was Russland wirklich macht, wenn es in Nato-Luftraum eindringt",
+      "leadText": "Moskaus Manöver dienen nicht nur der Provokation, glauben Experten für Luftverteidigung. Das Regime sammele hochsensible Radardaten – auch von den neuen F-35-Jets."
+    },
+    "title": null,
+    "paidContent": true,
+    "authors": ["Stölzel, Thomas"],
+    "financialIdentifiers": {
+      "isins": [],
+      "quants": [],
+      "keywords": []
+    },
+    "category": "technologie",
+    "categoryLabels": ["Technologie"],
+    "content": "",
+    "latestPublicationDate": "2025-09-24T12:08:00.000Z",
+    "firstPublicationDate": "2025-09-24T12:08:00.000Z"
+  }
+]
