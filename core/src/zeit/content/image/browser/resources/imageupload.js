@@ -57,12 +57,14 @@
       #dropArea
       #gallery
       #submitButton
+      #successfulUploads
 
       constructor(form) {
         this.#form = form
         this.#dropArea = form.querySelector('.imageupload__drop')
         this.#gallery = form.querySelector('.imageupload__gallery')
         this.#submitButton = form.querySelector('.imageupload__button--submit')
+        this.#successfulUploads = []
 
         this.#dropArea.addEventListener('dragenter', this, false)
         this.#dropArea.addEventListener('dragover', this, false)
@@ -152,6 +154,7 @@
         const li = this.#form.querySelector('.imageupload__template').content.cloneNode(true).firstElementChild
         li.querySelector('.imageupload__filename').textContent = file.filename()
         li.upload_data = file.data()
+        li.upload_status = 'pending'
         file.thumbnail().then(thumbnail => {
           const img = li.querySelector('img')
           img.onerror = () => img.src = '/fanstatic/zeit.cms/preview_not_available.png'
@@ -160,38 +163,43 @@
         this.#gallery.appendChild(li)
       }
 
-      removeFile(li) {
-        li.remove()
+      removeFile(uploadItem) {
+        uploadItem.remove()
       }
 
       async uploadFiles() {
         this.#form.classList.add('imageupload--uploading')
         this.#submitButton.disabled = true
-        const uploads = []
+        let uploadsFailed = false
 
-        for (let li of this.#gallery.childNodes) {
-          const errorSpan = li.querySelector('.imageupload__error')
+        const itemsToUpload = Array.from(this.#gallery.childNodes).filter(item => ['pending', 'failed'].includes(item.upload_status))
+
+        for (let uploadItem of itemsToUpload) {
+          const errorSpan = uploadItem.querySelector('.imageupload__error')
           errorSpan.textContent = ''
 
           try {
-            const url = await this.uploadFile(li.upload_data, progress => {
-              li.querySelector('progress').value = progress
+            const url = await this.uploadFile(uploadItem.upload_data, progress => {
+              uploadItem.querySelector('progress').value = progress
             })
-            uploads.push(url)
+            this.#successfulUploads.push(url)
+            uploadItem.upload_status = 'success'
           } catch (error) {
             errorSpan.textContent = error.message || error
+            uploadItem.upload_status = 'failed'
+            uploadsFailed = true
           }
         }
 
         this.#form.classList.remove('imageupload--uploading')
         this.#submitButton.disabled = false
 
-        if (!uploads.length) {
+        if (uploadsFailed || this.#successfulUploads.length === 0) {
           return
         }
 
-        const baseUrl = uploads[0]
-        const additionalFiles = uploads.slice(1).map(url => {
+        const baseUrl = this.#successfulUploads[0]
+        const additionalFiles = this.#successfulUploads.slice(1).map(url => {
           return '&files=' + new URL(url).searchParams.get('files')
         }).join('')
 
