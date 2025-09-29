@@ -58,7 +58,6 @@
       #gallery
       #submitButton
       #successfulUploads
-      #failedUploads
 
       constructor(form) {
         this.#form = form
@@ -66,7 +65,6 @@
         this.#gallery = form.querySelector('.imageupload__gallery')
         this.#submitButton = form.querySelector('.imageupload__button--submit')
         this.#successfulUploads = []
-        this.#failedUploads = []
 
         this.#dropArea.addEventListener('dragenter', this, false)
         this.#dropArea.addEventListener('dragover', this, false)
@@ -166,22 +164,15 @@
       }
 
       removeFile(uploadItem) {
-        const index = this.#failedUploads.indexOf(uploadItem)
-        if (index !== -1) {
-          this.#failedUploads.splice(index, 1)
-        }
-
         uploadItem.remove()
       }
 
       async uploadFiles() {
         this.#form.classList.add('imageupload--uploading')
         this.#submitButton.disabled = true
+        let uploadsFailed = false
 
-        const pendingItems = Array.from(this.#gallery.childNodes).filter(item => item.upload_status === 'pending')
-        const itemsToUpload = [...new Set([...this.#failedUploads, ...pendingItems])]
-
-        this.#failedUploads = []
+        const itemsToUpload = Array.from(this.#gallery.childNodes).filter(item => ['pending', 'failed'].includes(item.upload_status))
 
         for (let uploadItem of itemsToUpload) {
           const errorSpan = uploadItem.querySelector('.imageupload__error')
@@ -196,14 +187,14 @@
           } catch (error) {
             errorSpan.textContent = error.message || error
             uploadItem.upload_status = 'failed'
-            this.#failedUploads.push(uploadItem)
+            uploadsFailed = true
           }
         }
 
         this.#form.classList.remove('imageupload--uploading')
         this.#submitButton.disabled = false
 
-        if (this.#failedUploads.length > 0 || this.#successfulUploads.length === 0) {
+        if (uploadsFailed || this.#successfulUploads.length === 0) {
           return
         }
 
