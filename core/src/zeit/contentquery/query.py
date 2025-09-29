@@ -13,6 +13,7 @@ from sqlalchemy.orm import aliased
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
 import lxml
+import opentelemetry.trace
 import pendulum
 import requests
 import zope.component
@@ -584,7 +585,7 @@ class RSSFeedContentQuery(ContentQuery):
             r = self._get_feed(rss_feed.url, rss_feed.timeout)
             xml = lxml.etree.fromstring(r.content)
         except (requests.exceptions.RequestException, lxml.etree.XMLSyntaxError) as e:
-            log.debug('Could not fetch feed {}: {}'.format(rss_feed.url, e))
+            opentelemetry.trace.get_current_span().record_exception(e)
             return []
         for item in xml.xpath('/rss/channel/item'):
             link = zeit.content.cp.blocks.rss.RSSLink(rss_feed, item)
@@ -601,7 +602,7 @@ class RSSFeedContentQuery(ContentQuery):
             r = self._get_feed(rss_feed.url, rss_feed.timeout)
             data = r.json()
         except (requests.exceptions.RequestException, json.JSONDecodeError) as e:
-            log.debug('Could not fetch feed {}: {}'.format(rss_feed.url, e))
+            opentelemetry.trace.get_current_span().record_exception(e)
             return []
         for item in data:
             link = zeit.content.cp.blocks.rss.RSSLink(rss_feed, item)
