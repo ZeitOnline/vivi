@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.200.0 (2025-09-29)
+--------------------
+
+- WCM-1106: Implement parsing WIWO json feed format
+
+- WCM-1125: add job to remove abandoned temporary images
+
+
 7.199.0 (2025-09-25)
 --------------------
 
