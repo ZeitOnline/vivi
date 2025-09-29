@@ -13,6 +13,7 @@ from sqlalchemy.orm import aliased
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
 import lxml
+import opentelemetry.trace
 import pendulum
 import requests
 import zope.component
@@ -569,31 +570,47 @@ class RSSFeedContentQuery(ContentQuery):
 
     def __call__(self):
         self.total_hits = 0
-        feed_data = self._parse_feed()
+        parse = getattr(self, f'_parse_{self.context.rss_feed.kind}')
+        feed_data = parse()
         self.total_hits = len(feed_data)
         return feed_data
 
-    @property
-    def rss_feed(self):
-        return self.context.rss_feed
-
-    def _parse_feed(self):
-        if not self.rss_feed:
+    def _parse_rss(self):
+        rss_feed = self.context.rss_feed
+        if not rss_feed:
             return []
+
         items = []
         try:
-            content = self._get_feed(self.rss_feed.url, self.rss_feed.timeout)
-            xml = lxml.etree.fromstring(content)
+            r = self._get_feed(rss_feed.url, rss_feed.timeout)
+            xml = lxml.etree.fromstring(r.content)
         except (requests.exceptions.RequestException, lxml.etree.XMLSyntaxError) as e:
-            log.debug('Could not fetch feed {}: {}'.format(self.rss_feed.url, e))
+            opentelemetry.trace.get_current_span().record_exception(e)
             return []
         for item in xml.xpath('/rss/channel/item'):
-            link = zeit.content.cp.blocks.rss.RSSLink(item, self.rss_feed)
+            link = zeit.content.cp.blocks.rss.RSSLink(rss_feed, item)
             items.append(link)
         return items
 
-    def _get_feed(self, url, timeout):
-        return requests.get(url, timeout=timeout).content
+    def _parse_wiwojson(self):
+        rss_feed = self.context.rss_feed
+        if not rss_feed:
+            return []
+
+        items = []
+        try:
+            r = self._get_feed(rss_feed.url, rss_feed.timeout)
+            data = r.json()
+        except (requests.exceptions.RequestException, json.JSONDecodeError) as e:
+            opentelemetry.trace.get_current_span().record_exception(e)
+            return []
+        for item in data:
+            link = zeit.content.cp.blocks.rss.RSSLink(rss_feed, item)
+            items.append(link)
+        return items
+
+    def _get_feed(self, url, timeout):  # Extension point for zeit.web
+        return requests.get(url, timeout=timeout)
 
 
 class ManualLegacyResult(ContentQuery):

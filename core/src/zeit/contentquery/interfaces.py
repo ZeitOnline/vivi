@@ -17,10 +17,12 @@ log = logging.getLogger(__name__)
 
 
 class AutomaticFeed(zeit.cms.content.sources.AllowedBase):
-    def __init__(self, id, title, url, timeout):
+    def __init__(self, id, title, url, timeout, kind, image_base_url):
         super().__init__(id, title, None)
         self.url = url
         self.timeout = timeout
+        self.kind = kind
+        self.image_base_url = image_base_url
 
 
 class AutomaticFeedSource(
@@ -35,10 +37,12 @@ class AutomaticFeedSource(
         result = {}
         for node in self._get_tree().iterchildren('*'):
             feed = AutomaticFeed(
-                str(node.get('id')),
-                str(node.text.strip()),
-                str(node.get('url')),
+                node.get('id'),
+                node.text.strip(),
+                node.get('url'),
                 int(node.get('timeout', 2)),
+                node.get('kind'),
+                node.get('image_base_url'),
             )
             result[feed.id] = feed
         return result
