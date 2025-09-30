@@ -1,3 +1,4 @@
+from colorsys import hls_to_rgb, rgb_to_hls
 from contextlib import contextmanager
 import io
 import os
@@ -54,6 +55,12 @@ class BaseImage:
         zeit.content.image.interfaces.IImage['height'],
         zeit.content.image.interfaces.IMAGE_NAMESPACE,
         'height',
+    )
+
+    accent_color = zeit.cms.content.dav.DAVProperty(
+        zeit.content.image.interfaces.IImage['accent_color'],
+        zeit.content.image.interfaces.IMAGE_NAMESPACE,
+        'accent_color',
     )
 
     @contextmanager
@@ -306,3 +313,53 @@ def set_image_properties(context, event):
 )
 def update_image_properties(context, event):
     return set_image_properties(context, event)
+
+
+@grok.subscribe(zeit.content.image.interfaces.IImage, zope.lifecycleevent.IObjectCreatedEvent)
+def set_image_accent_color(context, event):
+    if zope.lifecycleevent.IObjectCopiedEvent.providedBy(event):
+        return
+    if not context.accent_color and FEATURE_TOGGLES.find('calculate_accent_color'):
+        image = zope.security.proxy.removeSecurityProxy(context)
+        with image.as_pil() as pil:
+            quantized = pil.quantize(10)
+            palette = quantized.getpalette()
+            color_populations = quantized.getcolors(10)
+            colors = sorted(
+                (
+                    (
+                        rgb_to_hls(
+                            palette[idx * 3] / 255,
+                            palette[idx * 3 + 1] / 255,
+                            palette[idx * 3 + 2] / 255,
+                        ),
+                        population,
+                    )
+                    for population, idx in color_populations
+                ),
+                key=lambda x: -x[1],
+            )
+            rgb = None
+            light = 0
+            total = 0
+            for hls, population in colors:
+                if hls[1] > 0.5:
+                    light += population
+                total += population
+
+                if hls[2] > 0.2:
+                    rgb = hls_to_rgb(hls[0], max(0.1, min(hls[1], 0.35)), hls[2])
+                    break
+            if rgb is None:
+                rgb = [0.298, 0.298, 0.298] if (light / total > 0.8) else [0, 0, 0]
+
+            image.accent_color = (
+                f'{round(rgb[0] * 255):02x}{round(rgb[1] * 255):02x}{round(rgb[2] * 255):02x}'
+            )
+
+
+@grok.subscribe(
+    zeit.content.image.interfaces.IImage, zeit.cms.checkout.interfaces.IBeforeCheckinEvent
+)
+def update_image_accent_color(context, event):
+    return set_image_accent_color(context, event)
