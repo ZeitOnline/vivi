@@ -64,7 +64,8 @@ class CachedXMLBase(OverridableURLConfiguration):
     @CONFIG_CACHE.cache_on_arguments()
     def _get_tree_from_url(self, url):
         logger.debug('Getting %s' % url)
-        return lxml.objectify.parse(load(url)).getroot()
+        with load(url) as f:
+            return lxml.objectify.parse(f).getroot()
 
 
 class ShortCachedXMLBase(CachedXMLBase):
@@ -72,7 +73,8 @@ class ShortCachedXMLBase(CachedXMLBase):
     @FEATURE_CACHE.cache_on_arguments()
     def _get_tree_from_url(self, url):
         logger.debug('Getting %s' % url)
-        return lxml.objectify.parse(load(url)).getroot()
+        with load(url) as f:
+            return lxml.objectify.parse(f).getroot()
 
 
 class SimpleXMLSourceBase(CachedXMLBase):

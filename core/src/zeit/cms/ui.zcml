@@ -33,7 +33,9 @@
     class="zope.tal.htmltalparser.HTMLTALParser"
     original="RCDATA_CONTENT_ELEMENTS"
     replacement=".tal_patch.RCDATA_CONTENT_ELEMENTS"
-    preservedoc="False"/>
+    preservedoc="False"
+    ignoreOriginal="true"
+    />
   <include package="zope.app.pagetemplate" />
   <include package="zope.app.publication" file="meta.zcml" />
   <include package="zope.app.publication" />
