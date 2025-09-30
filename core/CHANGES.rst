@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.202.0 (2025-09-30)
+--------------------
+
+FIX:
+- Use correct arguments from cli to call delete-tmp-images
+
+
 7.201.0 (2025-09-29)
 --------------------
 
