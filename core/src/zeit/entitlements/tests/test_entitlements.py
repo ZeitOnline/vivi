@@ -1,6 +1,7 @@
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.content.audio.testing import AudioBuilder
+from zeit.content.text.text import Text
 import zeit.entitlements
 import zeit.entitlements.testing
 
@@ -22,9 +23,8 @@ class Entitlements(zeit.entitlements.testing.FunctionalTestCase):
         self.assertEqual({'zplus'}, zeit.entitlements.accepted(self.content))
 
     def test_empty_for_not_commonmetadata(self):
-        self.assertEqual(
-            set(), zeit.entitlements.accepted(self.repository['2006']['DSC00109_2.JPG.meta'])
-        )
+        text = Text()
+        self.assertEqual(set(), zeit.entitlements.accepted(text))
 
     def test_ressort_wochenmarkt_adds_entitlement(self):
         self.content.access = 'abo'
