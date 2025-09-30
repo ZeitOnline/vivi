@@ -9,6 +9,105 @@
         "_source": {
           "doc_type": "article",
           "title": "US-Umweltbeh\u00f6rdenchef Pruitt geht nach Serie von Skandalen",
+          "url": "/testcontent",
+          "teaser": "US-Umweltbeh\u00f6rdenchef Pruitt geht nach Serie von Skandalen",
+          "doc_id": "{urn:uuid:74252e2a-08e9-4f24-908d-20acea747eb4}",
+          "author": "William Shakespeare",
+          "payload": {
+            "body": {
+              "supertitle": "Wegen Korruptionsvorw\u00fcrfen",
+              "subtitle": "",
+              "title": "US-Umweltbeh\u00f6rdenchef Pruitt geht nach Serie von Skandalen"
+            },
+            "head": {
+              "authors": []
+            },
+            "workflow": {
+              "status": "OK",
+              "edited": "yes",
+              "date_last_published_semantic": "2018-07-06T06:46:31.894545+00:00",
+              "images_added": "no",
+              "corrected": "yes",
+              "date_last_published": "2018-07-06T06:46:32.139953+00:00",
+              "urgent": false,
+              "product-id": "News",
+              "published": true,
+              "refined": "yes",
+              "product-name": "News"
+            },
+            "vivi": {
+              "cms_icon": "/@@/zeit-content-article-interfaces-IArticle-zmi_icon.png",
+              "publish_status": "published",
+              "cms_preview_url": ""
+            },
+            "vgwort": {
+              "public_token": "6293feae70ce4feaa4daa7f4b6af65a3",
+              "private_token": "329fc6a36c5d46c4b15e3a5dcac477ca"
+            },
+            "teaser": {},
+            "meta": {
+              "type": "article",
+              "provides": "<pickle>\n  <initialized_object>\n    <klass>\n      <global name=\"Provides\" module=\"zope.interface.declarations\"/>\n    </klass>\n    <arguments>\n      <tuple>\n        <global name=\"Article\" module=\"zeit.content.article.article\"/>\n        <global name=\"IZONArticle\" module=\"zeit.content.article.interfaces\"/>\n        <global name=\"IZONContent\" module=\"zeit.cms.section.interfaces\"/>\n        <global name=\"Interface\" module=\"zope.interface\"/>\n      </tuple>\n    </arguments>\n  </initialized_object>\n</pickle>"
+            },
+            "import": {
+              "nitf-id": "urn-newsml-dpa-com-20090101-180705-99-32956",
+              "local_image_path": "../publishedPictures/large/urn-newsml-dpa-com-20090101-180705-99-32955_large_4_3.jpg",
+              "nitf-version": "1530859419000"
+            },
+            "document": {
+              "artbox_thema": false,
+              "hide_ligatus_recommendations": false,
+              "comments_premoderate": false,
+              "fixture": "/infoline/brennpunkte/",
+              "channels": [
+                "News"
+              ],
+              "countings": false,
+              "minimal_header": false,
+              "foldable": true,
+              "banner_content": true,
+              "title": "US-Umweltbeh\u00f6rdenchef Pruitt geht nach Serie von Skandalen",
+              "recent_comments_first": false,
+              "rebrush_website_content": false,
+              "tldr_milestone": false,
+              "comments": false,
+              "template": "zon-article",
+              "color_scheme": "Redaktion",
+              "is_content": "yes",
+              "overscrolling": true,
+              "paragraphsperpage": "500",
+              "date_last_checkout": "2018-07-06T06:46:32.189792+00:00",
+              "last-semantic-change": "2018-07-06T06:43:39+00:00",
+              "breaking_news": false,
+              "ressort": "News",
+              "show_commentthread": true,
+              "mostread": "no",
+              "banner": true,
+              "has_recensions": false,
+              "uuid": "{urn:uuid:74252e2a-08e9-4f24-908d-20acea747eb4}",
+              "date_first_released": "2018-07-06T06:43:39+00:00",
+              "header_layout": "default",
+              "last_modified_by": "zope.dpa",
+              "text-length": 3067,
+              "export_cds": false
+            },
+            "tagging": {
+              "keywords": "<ns0:rankedTags xmlns:ns0=\"http://namespaces.zeit.de/CMS/tagging\"><ns0:rankedTags><tag type=\"person\">Martin Bialecki</tag><tag type=\"person\">Scott Pruitt</tag><tag type=\"person\">Donald Trump</tag><tag type=\"location\">Washington</tag><tag type=\"organisation\">EPA</tag><tag type=\"organisation\">Twitter</tag><tag type=\"keyword\">Korruptionsvorwurf</tag><tag type=\"keyword\">Skandal</tag></ns0:rankedTags></ns0:rankedTags>"
+            }
+          }
+        },
+        "_score": null,
+        "_index": "zeit_pool_content_20180302_114433",
+        "_id": "{urn:uuid:74252e2a-08e9-4f24-908d-20acea747eb4}"
+      },
+      {
+        "sort": [
+          1530859419000
+        ],
+        "_type": "documents",
+        "_source": {
+          "doc_type": "article",
+          "title": "US-Umweltbeh\u00f6rdenchef Pruitt geht nach Serie von Skandalen",
           "url": "/online/2007/01/Somalia",
           "teaser": "US-Umweltbeh\u00f6rdenchef Pruitt geht nach Serie von Skandalen",
           "doc_id": "{urn:uuid:74252e2a-08e9-4f24-908d-20acea747eb4}",
