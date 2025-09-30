@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.203.0 (2025-09-30)
+--------------------
+
+MAINT:
+- Be dilligent about closing filehandles when loading config files
+
+
 7.202.0 (2025-09-30)
 --------------------
 
