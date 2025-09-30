@@ -42,4 +42,4 @@ def delete_temporary_images():
     parser.add_argument('--min-age', help='Minimum age in hours', default=query_min_age)
     parser.add_argument('--max-age', help='Maximum age in days', default=query_max_age)
     options = parser.parse_args()
-    delete_temporary_imagegroups(options.query_min_age, options.query_max_age)
+    delete_temporary_imagegroups(options.min_age, options.max_age)
