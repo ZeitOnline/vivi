@@ -292,6 +292,8 @@ def get_remote_image(url, timeout=2):
 
 @grok.subscribe(zeit.content.image.interfaces.IImage, zope.lifecycleevent.IObjectCreatedEvent)
 def set_image_properties(context, event):
+    if zope.lifecycleevent.IObjectCopiedEvent.providedBy(event):
+        return
     if FEATURE_TOGGLES.find('column_write_wcm_56'):
         image = zope.security.proxy.removeSecurityProxy(context)
         with image.as_pil() as pil:

@@ -139,3 +139,20 @@ class TestImageProperties(zeit.content.image.testing.FunctionalTestCase):
         self.assertEqual('image/jpeg', image.mimeType)
         self.assertEqual(2048, image.width)
         self.assertEqual(1536, image.height)
+
+    def test_copy_image_does_not_violate_security(self):
+        FEATURE_TOGGLES.set('column_read_wcm_56')
+        FEATURE_TOGGLES.set('column_write_wcm_56')
+        new_name = 'new-image'
+        self.repository['image-with-properties'] = zeit.content.image.testing.create_image()
+        obj = self.repository['image-with-properties']
+
+        repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
+        new = repository.getCopyOf(obj.uniqueId)
+        del new.__parent__
+        del new.__name__
+        self.repository[new_name] = new
+        new = self.repository[new_name]
+        # would fail with zope.security.interfaces.Forbidden, because the object is not checked out
+        zope.event.notify(zope.lifecycleevent.ObjectCopiedEvent(new, obj))
+        self.assertEqual(self.repository[new_name].mimeType, obj.mimeType)
