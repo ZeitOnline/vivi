@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.205.0 (2025-10-02)
+--------------------
+
+FIX:
+- WCM-1153: do not set mime type if image is copied
+
+
 7.204.0 (2025-10-01)
 --------------------
 
