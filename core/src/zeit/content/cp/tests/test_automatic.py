@@ -817,16 +817,19 @@ class AutomaticRSSTest(zeit.content.cp.testing.FunctionalTestCase):
         spektrum_feed.kind = 'wiwojson'
         area.rss_feed = spektrum_feed.id
         m = requests_mock.Mocker()
-        m.get(spektrum_feed.url, status_code=200, content=json.dumps(self.feed_json()))
+        m.get(
+            spektrum_feed.url, status_code=200, content=json.dumps(self.feed_json()).encode('utf-8')
+        )
         return m
 
     def test_rss_content_query_creates_teasers_from_json_feed(self):
         area = create_automatic_area(self.cp, count=3, type='rss-feed')
-        m = self.mocked_rss_query(area)
+        m = self.mocked_json_query(area)
         rss_query = zeit.contentquery.query.RSSFeedContentQuery(area)
         with m:
             result = rss_query()
-        self.assertEqual(3, len(result))
+        self.assertEqual(2, len(result))
+        self.assertEqual('myagent', m.request_history[-1].headers['user-agent'])
 
 
 class AutomaticAreaSQLTest(zeit.content.cp.testing.FunctionalTestCase):

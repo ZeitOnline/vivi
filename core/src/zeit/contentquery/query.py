@@ -580,9 +580,13 @@ class RSSFeedContentQuery(ContentQuery):
         if not rss_feed:
             return []
 
+        headers = {}
+        if rss_feed.user_agent:
+            headers['user-agent'] = rss_feed.user_agent
+
         items = []
         try:
-            r = self._get_feed(rss_feed.url, rss_feed.timeout)
+            r = self._get_feed(rss_feed.url, headers=headers, timeout=rss_feed.timeout)
             xml = lxml.etree.fromstring(r.content)
         except (requests.exceptions.RequestException, lxml.etree.XMLSyntaxError) as e:
             opentelemetry.trace.get_current_span().record_exception(e)
@@ -597,9 +601,13 @@ class RSSFeedContentQuery(ContentQuery):
         if not rss_feed:
             return []
 
+        headers = {}
+        if rss_feed.user_agent:
+            headers['user-agent'] = rss_feed.user_agent
+
         items = []
         try:
-            r = self._get_feed(rss_feed.url, rss_feed.timeout)
+            r = self._get_feed(rss_feed.url, headers=headers, timeout=rss_feed.timeout)
             data = r.json()
         except (requests.exceptions.RequestException, json.JSONDecodeError) as e:
             opentelemetry.trace.get_current_span().record_exception(e)
@@ -609,8 +617,8 @@ class RSSFeedContentQuery(ContentQuery):
             items.append(link)
         return items
 
-    def _get_feed(self, url, timeout):  # Extension point for zeit.web
-        return requests.get(url, timeout=timeout)
+    def _get_feed(self, url, **kw):  # Extension point for zeit.web
+        return requests.get(url, **kw)
 
 
 class ManualLegacyResult(ContentQuery):
