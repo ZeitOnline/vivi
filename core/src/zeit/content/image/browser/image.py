@@ -75,6 +75,10 @@ class ImageView(zeit.cms.browser.view.Base):
             'nofollow': nofollow,
         }
 
+    @property
+    def accent_color(self):
+        return self.context.accent_color
+
 
 class ReferenceDetailsHeading(zeit.cms.browser.objectdetails.Details):
     template = ViewPageTemplateFile(

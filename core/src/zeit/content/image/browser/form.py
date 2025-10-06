@@ -99,7 +99,12 @@ class EditForm(ImageFormBase, zeit.cms.browser.form.EditForm):
             '__name__'
         )
         + ImageFormBase.form_fields
+        + zope.formlib.form.FormFields(zeit.content.image.interfaces.IImage).select('accent_color')
     )
+
+    def setUpWidgets(self, *args, **kw):
+        super().setUpWidgets(*args, **kw)
+        self.form_fields['accent_color'].custom_widget = zeit.cms.browser.widget.ColorpickerWidget
 
     @zope.formlib.form.action(_('Apply'), condition=zope.formlib.form.haveInputWidgets)
     def handle_edit_action(self, action, data):

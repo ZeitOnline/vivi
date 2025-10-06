@@ -46,4 +46,11 @@
       http://...
     </a><span tal:omit-tag="python:True" tal:condition="view/metadata/nofollow"> rel="nofollow"</span>
   </div>
+  <div>
+    <span i18n:translate="">
+    Accent color:
+    </span>
+    <div tal:attributes="style string:display: inline-block;; width: 1em;; height: 1em;; background:#${view/accent_color}"></div>
+    #<span tal:replace="view/accent_color" />
+  </div>
 </div>
