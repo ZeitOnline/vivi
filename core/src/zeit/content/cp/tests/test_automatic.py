@@ -829,6 +829,7 @@ class AutomaticRSSTest(zeit.content.cp.testing.FunctionalTestCase):
         with m:
             result = rss_query()
         self.assertEqual(2, len(result))
+        self.assertEqual('myagent', m.request_history[-1].headers['user-agent'])
 
 
 class AutomaticAreaSQLTest(zeit.content.cp.testing.FunctionalTestCase):
