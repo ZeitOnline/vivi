@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Mon Sep 22 14:47:58 2025\n"
+"POT-Creation-Date: Mon Oct  6 08:59:04 2025\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -3466,6 +3466,10 @@ msgstr ""
 msgid "Links to: ${link} rel=\"nofollow\""
 msgstr ""
 
+#: zeit/content/image/browser/image_view.pt:50
+msgid "Accent color:"
+msgstr ""
+
 #: zeit/content/image/browser/imagegroup.py:52
 msgid "Add image group"
 msgstr ""
@@ -3686,6 +3690,10 @@ msgstr ""
 
 #: zeit/content/image/interfaces.py:91
 msgid "Links to"
+msgstr ""
+
+#: zeit/content/image/interfaces.py:129
+msgid "Accent color"
 msgstr ""
 
 #: zeit/content/image/interfaces.py:177

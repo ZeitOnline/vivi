@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Mon Sep 22 14:47:58 2025\n"
+"POT-Creation-Date: Mon Oct  6 08:59:04 2025\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -3410,6 +3410,10 @@ msgstr "Bildunterschrift: ${caption}"
 msgid "Links to: ${link} rel=\"nofollow\""
 msgstr "Verlinkt nach: ${link} (nofollow)"
 
+#: zeit/content/image/browser/image_view.pt:50
+msgid "Accent color:"
+msgstr "Akzent-Farbe:"
+
 #: zeit/content/image/browser/imagegroup.py:52
 msgid "Add image group"
 msgstr "Bildergruppe hinzufügen"
@@ -3634,6 +3638,10 @@ msgstr "Geben Sie eine URL ein, auf die das Bild verlinken soll."
 #: zeit/content/image/interfaces.py:91
 msgid "Links to"
 msgstr "Verlinkt nach"
+
+#: zeit/content/image/interfaces.py:129
+msgid "Accent color"
+msgstr "Akzent-Farbe"
 
 #: zeit/content/image/interfaces.py:177
 msgid "viewport-desktop"
