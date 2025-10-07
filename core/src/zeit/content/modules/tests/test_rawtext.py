@@ -99,7 +99,7 @@ class EmbedCSS(zeit.content.modules.testing.FunctionalTestCase):
         self.module.text_reference = self.repository['embed']
         self.assertEqual(None, self.css(self.module))
 
-    def test_selectors_are_prefixed_with_module_id(self):
+    def test_selectors_are_nested_with_module(self):
         embed = zeit.content.text.embed.Embed()
         embed.text = 'none'
         embed.vivi_css = """\
@@ -111,8 +111,10 @@ two, three { c: 3; }
         self.assertEllipsis(
             """\
 <style>
-#mymodule one, .mymodule one { a: 1; b: 2 }
-#mymodule two, .mymodule two, #mymodule three, .mymodule three { c: 3 }
+#mymodule, .mymodule {
+one { a: 1; b: 2; }
+two, three { c: 3; }
+}
 </style>""",
             self.css(self.module),
         )

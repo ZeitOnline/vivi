@@ -82,7 +82,6 @@ dependencies = [
 ui = [
     "celery >= 4.0",
     "celery_redis_sync",
-    "cssutils",
     "docutils",
     "fanstatic",
     "gocept.fckeditor[fanstatic]",
