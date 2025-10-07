@@ -333,6 +333,7 @@ def determine_accent_color(pil):
     colors = itertools.batched(palette, 3, strict=True)
     colors = (rgb_to_hls(r / 255, g / 255, b / 255) for r, g, b in colors)
     colors = sorted(zip(colors, color_populations), key=lambda x: -x[1])
+
     rgb = None
     light = 0
     total = 0
@@ -341,9 +342,16 @@ def determine_accent_color(pil):
             light += population
         total += population
 
+        # We are looking for a color with some saturation (i. e. not grey, white or black)
+        # Design doesn't want different greys as accent color
         if hls[2] > 0.2:
+            # We clamp the luminosity to a value between 0.1 and 0.35, so that we can always put
+            # bright text on it.
             rgb = hls_to_rgb(hls[0], max(0.1, min(hls[1], 0.35)), hls[2])
             break
+
+    # We didn't find an actual color, so we take black, or, if the image is very bright, a grey,
+    # as specified by design.
     if rgb is None:
         rgb = [0.298, 0.298, 0.298] if (light / total > 0.8) else [0, 0, 0]
 
