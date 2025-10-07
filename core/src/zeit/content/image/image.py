@@ -301,11 +301,21 @@ def get_remote_image(url, timeout=2):
 def set_image_properties(context, event):
     if zope.lifecycleevent.IObjectCopiedEvent.providedBy(event):
         return
-    if FEATURE_TOGGLES.find('column_write_wcm_56'):
-        image = zope.security.proxy.removeSecurityProxy(context)
-        with image.as_pil() as pil:
+
+    set_props = FEATURE_TOGGLES.find('column_write_wcm_56')
+    set_accent_color = not context.accent_color and FEATURE_TOGGLES.find('calculate_accent_color')
+
+    if not set_props and not set_accent_color:
+        return
+
+    image = zope.security.proxy.removeSecurityProxy(context)
+    with image.as_pil() as pil:
+        if set_props:
             image.mimeType = PIL.Image.MIME.get(pil.format, '')
             (image.width, image.height) = pil.size
+        if set_accent_color:
+            rgb = determine_accent_color(pil)
+            image.accent_color = f'{rgb[0]:02x}{rgb[1]:02x}{rgb[2]:02x}'
 
 
 @grok.subscribe(
@@ -315,51 +325,36 @@ def update_image_properties(context, event):
     return set_image_properties(context, event)
 
 
-@grok.subscribe(zeit.content.image.interfaces.IImage, zope.lifecycleevent.IObjectCreatedEvent)
-def set_image_accent_color(context, event):
-    if zope.lifecycleevent.IObjectCopiedEvent.providedBy(event):
-        return
-    if not context.accent_color and FEATURE_TOGGLES.find('calculate_accent_color'):
-        image = zope.security.proxy.removeSecurityProxy(context)
-        with image.as_pil() as pil:
-            quantized = pil.quantize(10)
-            palette = quantized.getpalette()
-            color_populations = quantized.getcolors(10)
-            colors = sorted(
-                (
-                    (
-                        rgb_to_hls(
-                            palette[idx * 3] / 255,
-                            palette[idx * 3 + 1] / 255,
-                            palette[idx * 3 + 2] / 255,
-                        ),
-                        population,
-                    )
-                    for population, idx in color_populations
+def determine_accent_color(pil):
+    quantized = pil.quantize(10)
+    palette = quantized.getpalette()
+    color_populations = quantized.getcolors(10)
+    colors = sorted(
+        (
+            (
+                rgb_to_hls(
+                    palette[idx * 3] / 255,
+                    palette[idx * 3 + 1] / 255,
+                    palette[idx * 3 + 2] / 255,
                 ),
-                key=lambda x: -x[1],
+                population,
             )
-            rgb = None
-            light = 0
-            total = 0
-            for hls, population in colors:
-                if hls[1] > 0.5:
-                    light += population
-                total += population
+            for population, idx in color_populations
+        ),
+        key=lambda x: -x[1],
+    )
+    rgb = None
+    light = 0
+    total = 0
+    for hls, population in colors:
+        if hls[1] > 0.5:
+            light += population
+        total += population
 
-                if hls[2] > 0.2:
-                    rgb = hls_to_rgb(hls[0], max(0.1, min(hls[1], 0.35)), hls[2])
-                    break
-            if rgb is None:
-                rgb = [0.298, 0.298, 0.298] if (light / total > 0.8) else [0, 0, 0]
+        if hls[2] > 0.2:
+            rgb = hls_to_rgb(hls[0], max(0.1, min(hls[1], 0.35)), hls[2])
+            break
+    if rgb is None:
+        rgb = [0.298, 0.298, 0.298] if (light / total > 0.8) else [0, 0, 0]
 
-            image.accent_color = (
-                f'{round(rgb[0] * 255):02x}{round(rgb[1] * 255):02x}{round(rgb[2] * 255):02x}'
-            )
-
-
-@grok.subscribe(
-    zeit.content.image.interfaces.IImage, zeit.cms.checkout.interfaces.IBeforeCheckinEvent
-)
-def update_image_accent_color(context, event):
-    return set_image_accent_color(context, event)
+    return tuple(round(x * 255) for x in rgb)
