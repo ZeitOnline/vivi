@@ -327,7 +327,7 @@ def update_image_properties(context, event):
 
 
 def determine_accent_color(pil):
-    quantized = pil.quantize(10)
+    quantized = pil.convert('RGB').quantize(10)
     palette = quantized.getpalette()
     color_populations = (pop for pop, _ in quantized.getcolors(10))
     colors = itertools.batched(palette, 3, strict=True)
