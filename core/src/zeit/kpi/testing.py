@@ -84,9 +84,12 @@ BQ_CONFIG_LAYER = ConfigLayer()
 BQ_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     config_file='ftesting-bigquery.zcml',
     bases=(zeit.cms.testing.CONFIG_LAYER, BQ_CONFIG_LAYER),
+    features=['zeit.connector.sql.zope'],
 )
 BIGQUERY_LAYER = zeit.cms.testing.ZopeLayer(BQ_ZCML_LAYER)
 
 
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(zeit.cms.testing.CONFIG_LAYER)
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
+    zeit.cms.testing.CONFIG_LAYER, features=['zeit.connector.sql.zope']
+)
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)

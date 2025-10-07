@@ -1,3 +1,7 @@
+import importlib.resources
+
+import transaction
+
 from zeit.cms.checkout.helper import checked_out
 from zeit.wochenmarkt.recipe import IRecipeArticle
 import zeit.cms.interfaces
@@ -8,13 +12,19 @@ import zeit.wochenmarkt.testing
 class RecipeArticle(zeit.wochenmarkt.testing.FunctionalTestCase):
     def setUp(self):
         super().setUp()
-        uid = 'http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept'
-        self.repository['article'] = zeit.cms.interfaces.ICMSContent(uid)
+
+        fs = zeit.connector.filesystem.Connector(
+            str(importlib.resources.files('zeit.connector') / 'testcontent')
+        )
+        res = fs['http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept']
+        self.repository.connector['http://xml.zeit.de/article'] = res
+        transaction.commit()
         self.categories_source = zeit.wochenmarkt.sources.recipeCategoriesSource(None).factory
 
     def test_recipe_properties_are_stored(self):
         with checked_out(self.repository['article']):
             pass
+        transaction.commit()
         recipe = IRecipeArticle(self.repository['article'])
         self.assertEqual(
             ('Vier Rezepte für eine Herdplatte', 'Wurst-Hähnchen', 'Tomaten-Grieß'),
@@ -41,6 +51,7 @@ class RecipeArticle(zeit.wochenmarkt.testing.FunctionalTestCase):
         with checked_out(self.repository['article']) as co:
             for module in co.body.filter_values(zeit.content.modules.interfaces.IRecipeList):
                 del co.body[module.__name__]
+        transaction.commit()
         self.assertNotIn(
             ('ingredients', 'http://namespaces.zeit.de/CMS/recipe'),
             zeit.connector.interfaces.IWebDAVProperties(self.repository['article']),
@@ -55,6 +66,7 @@ class RecipeArticle(zeit.wochenmarkt.testing.FunctionalTestCase):
     def test_recipe_special_categories_are_updated(self):
         with checked_out(self.repository['article']):
             pass
+        transaction.commit()
         recipe = IRecipeArticle(self.repository['article'])
         categories = [category.id for category in recipe.categories]
         self.assertEqual(
@@ -73,6 +85,7 @@ class RecipeArticle(zeit.wochenmarkt.testing.FunctionalTestCase):
             recipelist = co.body.filter_values(zeit.content.modules.interfaces.IRecipeList)
             for recipe in recipelist:
                 recipe.complexity = 'hard'
+        transaction.commit()
 
         recipe = IRecipeArticle(self.repository['article'])
         categories = [category.id for category in recipe.categories]
@@ -89,6 +102,7 @@ class RecipeArticle(zeit.wochenmarkt.testing.FunctionalTestCase):
                     for i in recipe.ingredients
                     if ingredients.find(None, i.id) and ingredients.find(None, i.id).diet == 'vegan'
                 ]
+        transaction.commit()
 
         recipe = IRecipeArticle(self.repository['article'])
         self.assertEqual(7, len(recipe.categories))
@@ -119,6 +133,7 @@ class RecipeArticle(zeit.wochenmarkt.testing.FunctionalTestCase):
                     if ingredients.find(None, i.id)
                     and ingredients.find(None, i.id).diet in ('vegan', 'vegetarian')
                 ] + [ingredients.find(None, 'ei')]
+        transaction.commit()
         recipe = IRecipeArticle(self.repository['article'])
         self.assertEqual(7, len(recipe.categories))
         self.assertIn(self.categories_source.find(None, 'vegetarische-rezepte'), recipe.categories)
