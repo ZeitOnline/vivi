@@ -3467,6 +3467,10 @@ msgstr ""
 msgid "Links to: ${link} rel=\"nofollow\""
 msgstr ""
 
+#: zeit/content/image/browser/image_view.pt:50
+msgid "Accent color:"
+msgstr ""
+
 #: zeit/content/image/browser/imagegroup.py:52
 msgid "Add image group"
 msgstr ""
@@ -3687,6 +3691,10 @@ msgstr ""
 
 #: zeit/content/image/interfaces.py:91
 msgid "Links to"
+msgstr ""
+
+#: zeit/content/image/interfaces.py:129
+msgid "Accent color"
 msgstr ""
 
 #: zeit/content/image/interfaces.py:108

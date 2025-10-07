@@ -613,29 +613,31 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
             b.contents,
         )
 
-        def test_upload_image_has_properties(self):
-            FEATURE_TOGGLES.set('column_read_wcm_56')
-            FEATURE_TOGGLES.set('column_write_wcm_56')
-            b = self.browser
-            b.open('/repository/testcontent/@@upload-images')
-            file_input = b.getControl(name='files')
-            add_file_multi(
-                file_input,
-                [
-                    (
-                        fixture_bytes('new-hampshire-450x200.jpg'),
-                        'new-hampshire-450x200.jpg',
-                        'image/jpg',
-                    )
-                ],
-            )
-            b.getForm(name='imageupload').submit()
-            folder = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/')
-            img = next(x for x in folder.values() if 'tmp' in x.uniqueId)
-            master_img = zeit.content.image.interfaces.IMasterImage(img)
-            self.assertEqual(450, master_img.width)
-            self.assertEqual(200, master_img.height)
-            self.assertEqual(master_img._mime_type, master_img.mimeType)
+    def test_upload_image_has_properties(self):
+        FEATURE_TOGGLES.set('column_read_wcm_56')
+        FEATURE_TOGGLES.set('column_write_wcm_56')
+        FEATURE_TOGGLES.set('calculate_accent_color')
+        b = self.browser
+        b.open('/repository/testcontent/@@upload-images')
+        file_input = b.getControl(name='files')
+        add_file_multi(
+            file_input,
+            [
+                (
+                    fixture_bytes('new-hampshire-450x200.jpg'),
+                    'new-hampshire-450x200.jpg',
+                    'image/jpg',
+                )
+            ],
+        )
+        b.getForm(name='imageupload').submit()
+        folder = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/')
+        img = next(x for x in folder.values() if 'tmp' in x.uniqueId)
+        master_img = zeit.content.image.interfaces.IMasterImage(img)
+        self.assertEqual(450, master_img.width)
+        self.assertEqual(200, master_img.height)
+        self.assertEqual(master_img._mime_type, master_img.mimeType)
+        self.assertEqual('202310', master_img.accent_color)
 
 
 class ImageUploadSeleniumTest(zeit.content.image.testing.SeleniumTestCase):

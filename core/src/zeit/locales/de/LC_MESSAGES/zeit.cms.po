@@ -3411,6 +3411,10 @@ msgstr "Bildunterschrift: ${caption}"
 msgid "Links to: ${link} rel=\"nofollow\""
 msgstr "Verlinkt nach: ${link} (nofollow)"
 
+#: zeit/content/image/browser/image_view.pt:50
+msgid "Accent color:"
+msgstr "Akzent-Farbe:"
+
 #: zeit/content/image/browser/imagegroup.py:52
 msgid "Add image group"
 msgstr "Bildergruppe hinzufügen"
@@ -3635,6 +3639,10 @@ msgstr "Geben Sie eine URL ein, auf die das Bild verlinken soll."
 #: zeit/content/image/interfaces.py:91
 msgid "Links to"
 msgstr "Verlinkt nach"
+
+#: zeit/content/image/interfaces.py:129
+msgid "Accent color"
+msgstr "Akzent-Farbe"
 
 #: zeit/content/image/interfaces.py:108
 msgid "Width"
