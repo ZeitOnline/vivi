@@ -533,7 +533,7 @@ class Followings(grok.Adapter, IgnoreMixin):
         series_uuids = self.get_series_uuids()
         author_uuids = self.get_author_uuids()
         recipe_categories_uuids = self.get_recipe_categories()
-        all_uuids = [*series_uuids, *author_uuids, *recipe_categories_uuids]
+        all_uuids = series_uuids + author_uuids + recipe_categories_uuids
         if not all_uuids:
             return None
         created = zeit.cms.workflow.interfaces.IPublishInfo(
