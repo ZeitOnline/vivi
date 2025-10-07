@@ -125,28 +125,14 @@ class CSSInjector(grok.Adapter):
 
     @cachedproperty
     def vivi_css(self):
-        import cssutils  # UI-only dependency
-
         embed = self.context.text_reference
         if not zeit.content.text.interfaces.IEmbed.providedBy(embed):
             return None
         if not embed.vivi_css:
             return None
-
         module = self.context.__name__
-        css = cssutils.parseString(embed.vivi_css)
-        for rule in css:
-            if not isinstance(rule, cssutils.css.CSSStyleRule):
-                continue
-            selectors = [x.selectorText for x in rule.selectorList]
-            while rule.selectorList:
-                del rule.selectorList[0]
-            for selector in selectors:
-                # zeit.content.article
-                rule.selectorList.append('#%s %s' % (module, selector))
-                # zeit.content.cp
-                rule.selectorList.append('.%s %s' % (module, selector))
-        return '<style>\n%s\n</style>' % css.cssText.decode('utf-8')
+        # z.c.article uses ids, while z.c.cp uses classes, sigh.
+        return f'<style>\n#{module}, .{module} {{\n{embed.vivi_css}\n}}\n</style>'
 
 
 class EmbedParameterForm:
