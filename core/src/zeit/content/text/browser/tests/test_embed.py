@@ -71,3 +71,15 @@ class EmbedBrowserTest(zeit.content.text.testing.BrowserTestCase):
         self.assertEqual(['yes'], b.getControl('Contains thirdparty code').displayValue)
         self.assertEqual(['Twitter'], b.getControl(name='form.thirdparty_vendors.0.').displayValue)
         self.assertEqual(['YouTube'], b.getControl(name='form.thirdparty_vendors.1.').displayValue)
+
+    def test_validates_css(self):
+        embed = zeit.content.text.embed.Embed()
+        embed.text = ''
+        self.repository['embed'] = embed
+        b = self.browser
+        b.open('/repository/embed')
+        b.getLink('Checkout').click()
+        b.getLink('Edit embed parameters').click()
+        b.getControl('Embed CSS').value = 'fieldset:has(option:checked) {}'
+        b.getControl('Apply').click()
+        self.assertEllipsis('...Unexpected start of pseudo...', b.contents)

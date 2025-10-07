@@ -1,3 +1,4 @@
+import cssutils
 import zope.schema
 
 from zeit.cms.content.interfaces import ICommonMetadata
@@ -99,6 +100,18 @@ class SchemaValidationError(Exception):
     pass
 
 
+class CSSCode(Code):
+    def validate(self, value):
+        super().validate(value)
+        if not value:
+            return
+        parser = cssutils.CSSParser(raiseExceptions=True)
+        try:
+            parser.parseString(value)
+        except Exception as e:
+            raise zeit.cms.interfaces.ValidationError(str(e))
+
+
 class IEmbed(IText):
     render_as_template = zope.schema.Bool(title=_('Render as template?'))
 
@@ -106,7 +119,7 @@ class IEmbed(IText):
 
     parameter_fields = zope.interface.Attribute('dict of schema fields')
 
-    vivi_css = Code(title=_('Embed CSS'), required=False)
+    vivi_css = CSSCode(title=_('Embed CSS'), required=False)
 
 
 class EmbedSource(zeit.cms.content.contentsource.CMSContentSource):
