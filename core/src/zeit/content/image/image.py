@@ -1,6 +1,7 @@
 from colorsys import hls_to_rgb, rgb_to_hls
 from contextlib import contextmanager
 import io
+import itertools
 import os
 import urllib.parse
 
@@ -328,21 +329,10 @@ def update_image_properties(context, event):
 def determine_accent_color(pil):
     quantized = pil.quantize(10)
     palette = quantized.getpalette()
-    color_populations = quantized.getcolors(10)
-    colors = sorted(
-        (
-            (
-                rgb_to_hls(
-                    palette[idx * 3] / 255,
-                    palette[idx * 3 + 1] / 255,
-                    palette[idx * 3 + 2] / 255,
-                ),
-                population,
-            )
-            for population, idx in color_populations
-        ),
-        key=lambda x: -x[1],
-    )
+    color_populations = (pop for pop, _ in quantized.getcolors(10))
+    colors = itertools.batched(palette, 3, strict=True)
+    colors = (rgb_to_hls(r / 255, g / 255, b / 255) for r, g, b in colors)
+    colors = sorted(zip(colors, color_populations), key=lambda x: -x[1])
     rgb = None
     light = 0
     total = 0
