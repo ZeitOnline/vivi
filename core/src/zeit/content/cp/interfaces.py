@@ -342,28 +342,37 @@ class IReadArea(zeit.edit.interfaces.IReadContainer, ITopicLinks, IConfiguration
     @zope.interface.invariant
     def automatic_type_required_arguments(data):
         if data.automatic and not automatic_area_can_read_teasers_automatically(data):
-            if data.automatic_type == 'centerpage':
-                error_message = _(
-                    'Automatic area with teaser from centerpage requires a referenced centerpage.'
-                )
-            if data.automatic_type == 'custom':
-                error_message = _(
-                    'Automatic area with teaser from custom query requires a query condition.'
-                )
-            if data.automatic_type == 'topicpage':
-                error_message = _(
-                    'Automatic area with teaser from TMS topicpage requires a topicpage ID.'
-                )
-            if data.automatic_type == 'elasticsearch-query':
-                error_message = _(
-                    'Automatic area with teaser from elasticsearch query requires a raw query.'
-                )
-            if data.automatic_type == 'rss-feed':
-                error_message = _('Automatic area with rss-feed requires a given feed')
-            if data.automatic_type == 'related-topics':
-                error_message = _('Automatic area with related-topics requires a given topicpage')
-            if data.automatic_type == 'reach':
-                error_message = _('Automatic area with teasers from reach require a given kind')
+            match data.automatic_type:
+                case 'centerpage':
+                    error_message = _(
+                        'Automatic area with teaser from centerpage requires'
+                        ' a referenced centerpage.'
+                    )
+                case 'custom':
+                    error_message = _(
+                        'Automatic area with teaser from custom query requires a query condition.'
+                    )
+                case 'topicpage':
+                    error_message = _(
+                        'Automatic area with teaser from TMS topicpage requires a topicpage ID.'
+                    )
+                case 'elasticsearch-query':
+                    error_message = _(
+                        'Automatic area with teaser from elasticsearch query requires a raw query.'
+                    )
+                case 'rss-feed':
+                    error_message = _('Automatic area with rss-feed requires a given feed')
+                case 'related-topics':
+                    error_message = _(
+                        'Automatic area with related-topics requires a given topicpage'
+                    )
+                case 'reach':
+                    error_message = _('Automatic area with teasers from reach require a given kind')
+                case _:
+                    error_message = _(
+                        'Automatic area has unknown type ${type}',
+                        mapping={'type': data.automatic_type},
+                    )
             raise zeit.cms.interfaces.ValidationError(error_message)
         return True
 
