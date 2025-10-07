@@ -518,7 +518,11 @@ class Followings(grok.Adapter, IgnoreMixin):
         try:
             recipe = IRecipeArticle(self.context)
             category_uuids = []
+            source = zeit.wochenmarkt.sources.recipeCategoriesSource(self.context)
             for category in recipe.categories:
+                meta = source.find(category.id)
+                if meta and meta.flag == 'no-search':
+                    continue
                 category_content = zeit.cms.interfaces.ICMSContent(
                     f'{zeit.cms.interfaces.ID_NAMESPACE}rezepte/{category.id}'
                 )
