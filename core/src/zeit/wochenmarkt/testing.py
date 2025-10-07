@@ -38,7 +38,10 @@ class ModulesConfigLayer(zeit.cms.testing.ProductConfigLayer):
 MODULES_CONFIG_LAYER = ModulesConfigLayer({}, package='zeit.content.modules')
 
 
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer((CONFIG_LAYER, ARTICLE_CONFIG_LAYER, MODULES_CONFIG_LAYER))
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
+    (CONFIG_LAYER, ARTICLE_CONFIG_LAYER, MODULES_CONFIG_LAYER),
+    features=['zeit.connector.sql.zope'],
+)
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
 
 
