@@ -3,6 +3,16 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.208.0 (2025-10-07)
+--------------------
+
+- ES-395: Determine accent_color for images
+
+
+MAINT:
+- Restrict embed CSS via nesting instead of parsing+adjusting its selectors
+
+
 7.207.0 (2025-10-07)
 --------------------
 
