@@ -3,6 +3,22 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.207.0 (2025-10-07)
+--------------------
+
+- WCM-1154: Add error message for unknown automatic_type
+
+
+MAINT:
+- MAINT: update translations
+
+
+7.206.0 (2025-10-06)
+--------------------
+
+- WCM-1106: Allow configuring a fixed user-agent for feed requests
+
+
 7.205.0 (2025-10-02)
 --------------------
 
