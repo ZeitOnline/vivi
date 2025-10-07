@@ -50,7 +50,7 @@
     <span i18n:translate="">
     Accent color:
     </span>
-    <div tal:attributes="style string:display: inline-block;; width: 1em;; height: 1em;; background:#${view/accent_color}"></div>
-    #<span tal:replace="view/accent_color" />
+    <div tal:attributes="style string:display: inline-block;; width: 1em;; height: 1em;; background:#${context/accent_color}"></div>
+    #<span tal:replace="context/accent_color" />
   </div>
 </div>
