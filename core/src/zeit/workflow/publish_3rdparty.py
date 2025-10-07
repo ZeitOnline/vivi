@@ -3,6 +3,7 @@ import logging
 
 import grokcore.component as grok
 import lxml.etree
+import opentelemetry.trace
 import pendulum
 import zope.component
 
@@ -528,7 +529,8 @@ class Followings(grok.Adapter, IgnoreMixin):
                 )
                 category_uuids.append(zeit.cms.content.interfaces.IUUID(category_content).shortened)
             return category_uuids
-        except Exception:
+        except Exception as err:
+            opentelemetry.trace.get_current_span().record_exception(err)
             return []
 
     def publish_json(self):
