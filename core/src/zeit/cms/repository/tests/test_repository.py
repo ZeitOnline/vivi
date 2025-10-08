@@ -2,10 +2,12 @@ from unittest import mock
 import unittest
 
 import gocept.testing.mock
+import transaction
 import zope.component
 import zope.security.management
 
 from zeit.cms.interfaces import ICMSContent
+from zeit.cms.repository.folder import Folder
 from zeit.cms.repository.repository import (
     live_https_url_to_content,
     live_url_to_content,
@@ -161,6 +163,26 @@ class RepositoryTest(zeit.cms.testing.ZeitCmsTestCase):
         self.assertEqual(1, len(self.repository._content))
         del self.repository['testcontent']
         self.assertEqual(0, len(self.repository._content))
+
+    def test_cache_is_cleared_on_transaction(self):
+        self.repository['kultur'] = Folder()
+        self.repository['kultur']['kunst'] = Folder()
+        transaction.commit()
+        with self.assertRaises(AttributeError):
+            self.repository['kultur']._v_local_unique_map
+
+        self.repository['kultur'].keys()  # Cause cache to be populated
+        self.assertEqual(
+            {'kunst': 'http://xml.zeit.de/kultur/kunst'},
+            self.repository['kultur']._v_local_unique_map,
+        )
+        self.assertEqual(
+            {'http://xml.zeit.de/kultur': self.repository['kultur']}, self.repository._content
+        )
+        transaction.abort()
+        self.assertEqual({}, self.repository._content)
+        with self.assertRaises(AttributeError):
+            self.repository['kultur']._v_local_unique_map
 
 
 class ContentBaseTest(zeit.cms.testing.ZeitCmsTestCase):
