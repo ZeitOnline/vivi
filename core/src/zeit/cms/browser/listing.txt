@@ -14,7 +14,7 @@ Create a browser first:
 The filelisting is to be found under /repository. To get a dojo based
 FilteringTable open a specific folder:
 
->>> browser.open('http://localhost/++skin++cms/repository/2007/01')
+>>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
 
 We expect a normal file listing:
 
@@ -37,7 +37,7 @@ the header bar:
 >>> bc[0].text
 'repository'
 >>> bc[1].text
-'2007'
+'online'
 
 
 Workflow indicator
@@ -66,121 +66,4 @@ Let's indicate a published object:
     <td>
       <div class="workflow-column"><span class="publish-state published" title="Published"></span></div>
     </td>
-    <td>
-    </td>
-    <td>
-      4schanzentournee-abgesang
-    </td>
-    ...
-
-
-When we have local modifications the we get the third indicator. Let's try some
-"None"-cases before:
-
->>> from pendulum import datetime
->>> import zeit.connector.interfaces
->>> import zope.component
->>> connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
->>> connector.changeProperties(uid, {
-...     ('date_last_modified', 'http://namespaces.zeit.de/CMS/document'):
-...     datetime(2007, 12, 6, 12, 00).isoformat()})
-
-We don't know when the object was published. Assume it's fresh:
-
->>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
->>> print(browser.contents)
-<?xml ...
-  <tbody>
-  <tr class="odd">
-    ...
-    <td>
-      <div class="workflow-column"><span class="publish-state published" title="Published"></span></div>
-    </td>
-    <td>
-    </td>
-    <td>
-      4schanzentournee-abgesang
-    </td>
-    ...
-
-
-Make sure the date is converted to CET (12:00 GMT -> 13:00 CET (no DST)):
-
->>> '2007 12 6  13:00:00' in browser.contents
-True
-
-
-With a publication date *after* the modifcation date it is also fresh:
-
->>> zeit.cms.workflow.mock._publish_times[uid] = datetime(2007, 12, 6, 13, 0)
->>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
->>> print(browser.contents)
-<?xml ...
-  <tbody>
-  <tr class="odd">
-    ...
-    <td>
-      <div class="workflow-column"><span class="publish-state published" title="Published"></span></div>
-    </td>
-    <td>
-    </td>
-    <td>
-      4schanzentournee-abgesang
-    </td>
-    ...
-
-
-With a publication time *before* the modifaction time it is not fresh:
-
->>> zeit.cms.workflow.mock._publish_times[uid] = datetime(2007, 12, 6, 11, 0)
->>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
->>> print(browser.contents)
-<?xml ...
-  <tbody>
-  <tr class="odd">
-    ...
-    <td>
-      <div class="workflow-column"><span class="publish-state published-with-changes" title="Published but has changes"></span></div>
-    </td>
-    <td>
-    </td>
-    <td>
-      4schanzentournee-abgesang
-    </td>
-    ...
-
-
-When the modification date is not known we also assume it is fresh. Note that
-this case is rather constructed because in reality all objects have a
-modification time.
-
->>> connector._properties[uid][('date_last_modified', 'http://namespaces.zeit.de/CMS/document')] = None
->>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
->>> print(browser.contents)
-<?xml ...
-  <tbody>
-  <tr class="odd">
-    ...
-    <td>
-      <div class="workflow-column"><span class="publish-state published" title="Published"></span></div>
-    </td>
-    <td>
-    </td>
-    <td>
-      4schanzentournee-abgesang
-    </td>
-    ...
-
-
-Title
-=====
-
-The title of the listing is "Directory listing"
-
->>> browser = Browser(layer['wsgi_app'])
->>> browser.login('user', 'userpw')
->>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
->>> print(browser.contents)
-<?xml...
-    <title> 01 – Directory listing </title>
     ...

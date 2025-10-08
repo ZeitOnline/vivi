@@ -162,7 +162,7 @@ Register an adapter for IUnknownResource redirecting to the container:
 >>> gsm = zope.component.getGlobalSiteManager()
 >>> gsm.registerAdapter(
 ...     preview,
-...     (zeit.cms.repository.interfaces.IUnknownResource, ),
+...     (zeit.cms.testcontenttype.interfaces.IExampleContentType, ),
 ...     zeit.cms.browser.interfaces.IPreviewObject)
 
 The preview is on the container now:
@@ -178,7 +178,7 @@ http://localhost/preview-prefix/online/2007/01
 Clean up:
 >>> gsm.unregisterAdapter(
 ...     preview,
-...     (zeit.cms.repository.interfaces.IUnknownResource, ),
+...     (zeit.cms.testcontenttype.interfaces.IExampleContentType, ),
 ...     zeit.cms.browser.interfaces.IPreviewObject)
 True
 

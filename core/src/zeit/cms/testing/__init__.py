@@ -67,7 +67,7 @@ CONFIG_LAYER = ProductConfigLayer(
         }
     },
 )
-ZCML_LAYER = ZCMLLayer(CONFIG_LAYER)
+ZCML_LAYER = ZCMLLayer(CONFIG_LAYER, features=['zeit.connector.sql.zope'])
 ZOPE_LAYER = ZopeLayer(ZCML_LAYER)
 WSGI_LAYER = WSGILayer(ZOPE_LAYER)
 HTTP_LAYER = WSGIServerLayer(WSGI_LAYER)
