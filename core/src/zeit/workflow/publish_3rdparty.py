@@ -3,11 +3,13 @@ import logging
 
 import grokcore.component as grok
 import lxml.etree
+import opentelemetry.trace
 import pendulum
 import zope.component
 
 from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
+from zeit.wochenmarkt.recipe import IRecipeArticle
 import zeit.cms.config
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
@@ -511,17 +513,39 @@ class Followings(grok.Adapter, IgnoreMixin):
             for author in self.context.authorships
         ]
 
+    def get_recipe_categories(self):
+        if self.context.genre is None or 'rezept' not in self.context.genre:
+            return []
+        try:
+            recipe = IRecipeArticle(self.context)
+            category_uuids = []
+            source = zeit.wochenmarkt.sources.recipeCategoriesSource(self.context)
+            for category in recipe.categories:
+                meta = source.find(category.id)
+                if meta and meta.flag == 'no-search':
+                    continue
+                category_content = zeit.cms.interfaces.ICMSContent(
+                    f'{zeit.cms.interfaces.ID_NAMESPACE}rezepte/{category.id}'
+                )
+                category_uuids.append(zeit.cms.content.interfaces.IUUID(category_content).shortened)
+            return category_uuids
+        except Exception as err:
+            opentelemetry.trace.get_current_span().record_exception(err)
+            return []
+
     def publish_json(self):
         if self.ignore():
             return None
         series_uuids = self.get_series_uuids()
         author_uuids = self.get_author_uuids()
-        if not series_uuids and not author_uuids:
+        recipe_categories_uuids = self.get_recipe_categories()
+        all_uuids = series_uuids + author_uuids + recipe_categories_uuids
+        if not all_uuids:
             return None
         created = zeit.cms.workflow.interfaces.IPublishInfo(
             self.context
         ).date_first_released.isoformat()
-        return {'parent_uuids': [*series_uuids, *author_uuids], 'created': created}
+        return {'parent_uuids': all_uuids, 'created': created}
 
     def retract_json(self):
         return {}

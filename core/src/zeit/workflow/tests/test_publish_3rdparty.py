@@ -708,6 +708,30 @@ class FollowingsPayloadTest(zeit.workflow.testing.FunctionalTestCase):
         self.assertIn(expected_author_uuid, data['parent_uuids'])
         self.assertEqual(data['created'], date.isoformat())
 
+    def test_followings_recipe_categories(self):
+        article = ICMSContent('http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept')
+
+        self.repository['rezepte'] = zeit.cms.repository.folder.Folder()
+        self.repository['rezepte']['herbst'] = zeit.content.cp.centerpage.CenterPage()
+        cp = self.repository['rezepte']['herbst']
+
+        mock_category = unittest.mock.Mock()
+        mock_category.id = 'herbst'
+
+        mock_recipe = unittest.mock.Mock()
+        mock_recipe.categories = [mock_category]
+
+        with unittest.mock.patch('zeit.workflow.publish_3rdparty.IRecipeArticle') as mock_adapter:
+            mock_adapter.return_value = mock_recipe
+
+            date = zeit.cms.workflow.interfaces.IPublishInfo(article).date_first_released
+            expected_uuid = zeit.cms.content.interfaces.IUUID(cp).shortened
+
+            data = zeit.workflow.testing.publish_json(article, 'followings')
+            self.assertIsNotNone(data, 'Data should not be None when recipe categories are present')
+            self.assertEqual(data['parent_uuids'][0], expected_uuid)
+            self.assertEqual(data['created'], date.isoformat())
+
     def test_followings_no_series(self):
         article = ICMSContent('http://xml.zeit.de/online/2022/08/trockenheit')
 
