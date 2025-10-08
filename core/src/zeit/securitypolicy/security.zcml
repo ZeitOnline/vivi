@@ -148,10 +148,6 @@
     />
   <grant
     role="zeit.Producer"
-    permission="zeit.cms.repository.ViewNavigationTree"
-    />
-  <grant
-    role="zeit.Producer"
     permission="zeit.cms.repository.ViewProperties"
     />
   <grant

@@ -28,19 +28,6 @@
     description="Menu for adding content."
     />
 
-  <!-- Sidebar/Navigation tree -->
-
-  <browser:viewlet
-    zcml:condition="have zeit.cms.repository.tree"
-    for="*"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="10_navtree"
-    manager="zeit.cms.browser.interfaces.ISidebar"
-    class=".repository.HTMLTree"
-    template="navtree.pt"
-    permission="zeit.cms.repository.ViewNavigationTree"
-    />
-
   <include file="unknown.zcml" />
   <include file="folder.zcml" />
   <include file="file.zcml" />
