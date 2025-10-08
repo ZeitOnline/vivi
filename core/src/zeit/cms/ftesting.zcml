@@ -8,7 +8,6 @@
   <meta:provides feature="zeit.cms.testing" />
 
   <!-- Enable all feature toggles in tests. -->
-  <meta:provides feature="zeit.cms.decentral-syndication" />
   <meta:provides feature="zeit.cms.repository.tree" />
 
   <meta:provides feature="zeit.cms.tracing.prometheus.singleproc" />
