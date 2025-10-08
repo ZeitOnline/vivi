@@ -91,16 +91,19 @@ class TestImageProperties(zeit.content.image.testing.FunctionalTestCase):
     def test_create_image_sets_properties(self):
         FEATURE_TOGGLES.set('column_read_wcm_56')
         FEATURE_TOGGLES.set('column_write_wcm_56')
+        FEATURE_TOGGLES.set('calculate_accent_color')
         image = zeit.content.image.testing.create_image()
         self.repository['image-with-properties'] = image
         image = self.repository['image-with-properties']
         self.assertEqual('image/jpeg', image.mimeType)
         self.assertEqual(119, image.width)
         self.assertEqual(160, image.height)
+        self.assertEqual('8f7223', image.accent_color)
 
     def test_create_image_from_remote_sets_properties(self):
         FEATURE_TOGGLES.set('column_read_wcm_56')
         FEATURE_TOGGLES.set('column_write_wcm_56')
+        FEATURE_TOGGLES.set('calculate_accent_color')
 
         def callback(*args):
             image = (
@@ -119,10 +122,12 @@ class TestImageProperties(zeit.content.image.testing.FunctionalTestCase):
         self.assertEqual('image/jpeg', image.mimeType)
         self.assertEqual(2048, image.width)
         self.assertEqual(1536, image.height)
+        self.assertEqual('28818b', image.accent_color)
 
     def test_update_image_updates_properties(self):
         FEATURE_TOGGLES.set('column_read_wcm_56')
         FEATURE_TOGGLES.set('column_write_wcm_56')
+        FEATURE_TOGGLES.set('calculate_accent_color')
         self.repository['image-with-properties'] = zeit.content.image.testing.create_image()
         image = self.repository['image-with-properties']
         self.assertEqual('image/jpeg', image.mimeType)
@@ -139,6 +144,7 @@ class TestImageProperties(zeit.content.image.testing.FunctionalTestCase):
         self.assertEqual('image/jpeg', image.mimeType)
         self.assertEqual(2048, image.width)
         self.assertEqual(1536, image.height)
+        self.assertEqual('8f7223', image.accent_color)
 
     def test_copy_image_does_not_violate_security(self):
         FEATURE_TOGGLES.set('column_read_wcm_56')

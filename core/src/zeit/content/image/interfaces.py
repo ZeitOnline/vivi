@@ -126,6 +126,8 @@ class IImage(
 
     ratio = zope.interface.Attribute('width/height')
 
+    accent_color = zeit.cms.content.field.Color(title=_('Accent color'), required=False)
+
 
 class ITransform(zope.interface.Interface):
     def thumbnail(width, height):

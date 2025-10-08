@@ -1,7 +1,7 @@
 [project]
 name = "vivi.core"
 authors = [{ name = "DIE ZEIT", email = "zon-backend@zeit.de" }]
-version = "7.208.0.dev0"
+version = "7.209.0.dev0"
 requires-python = ">=3.13"
 
 dependencies = [
@@ -82,7 +82,6 @@ dependencies = [
 ui = [
     "celery >= 4.0",
     "celery_redis_sync",
-    "cssutils",
     "docutils",
     "fanstatic",
     "gocept.fckeditor[fanstatic]",

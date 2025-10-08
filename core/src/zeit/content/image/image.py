@@ -1,5 +1,7 @@
+from colorsys import hls_to_rgb, rgb_to_hls
 from contextlib import contextmanager
 import io
+import itertools
 import os
 import urllib.parse
 
@@ -54,6 +56,12 @@ class BaseImage:
         zeit.content.image.interfaces.IImage['height'],
         zeit.content.image.interfaces.IMAGE_NAMESPACE,
         'height',
+    )
+
+    accent_color = zeit.cms.content.dav.DAVProperty(
+        zeit.content.image.interfaces.IImage['accent_color'],
+        zeit.content.image.interfaces.IMAGE_NAMESPACE,
+        'accent_color',
     )
 
     @contextmanager
@@ -294,11 +302,21 @@ def get_remote_image(url, timeout=2):
 def set_image_properties(context, event):
     if zope.lifecycleevent.IObjectCopiedEvent.providedBy(event):
         return
-    if FEATURE_TOGGLES.find('column_write_wcm_56'):
-        image = zope.security.proxy.removeSecurityProxy(context)
-        with image.as_pil() as pil:
+
+    set_props = FEATURE_TOGGLES.find('column_write_wcm_56')
+    set_accent_color = not context.accent_color and FEATURE_TOGGLES.find('calculate_accent_color')
+
+    if not set_props and not set_accent_color:
+        return
+
+    image = zope.security.proxy.removeSecurityProxy(context)
+    with image.as_pil() as pil:
+        if set_props:
             image.mimeType = PIL.Image.MIME.get(pil.format, '')
             (image.width, image.height) = pil.size
+        if set_accent_color:
+            rgb = determine_accent_color(pil)
+            image.accent_color = f'{rgb[0]:02x}{rgb[1]:02x}{rgb[2]:02x}'
 
 
 @grok.subscribe(
@@ -306,3 +324,35 @@ def set_image_properties(context, event):
 )
 def update_image_properties(context, event):
     return set_image_properties(context, event)
+
+
+def determine_accent_color(pil):
+    quantized = pil.convert('RGB').quantize(10)
+    palette = quantized.getpalette()
+    color_populations = (pop for pop, _ in quantized.getcolors(10))
+    colors = itertools.batched(palette, 3, strict=True)
+    colors = (rgb_to_hls(r / 255, g / 255, b / 255) for r, g, b in colors)
+    colors = sorted(zip(colors, color_populations), key=lambda x: -x[1])
+
+    rgb = None
+    light = 0
+    total = 0
+    for hls, population in colors:
+        if hls[1] > 0.5:
+            light += population
+        total += population
+
+        # We are looking for a color with some saturation (i. e. not grey, white or black)
+        # Design doesn't want different greys as accent color
+        if hls[2] > 0.2:
+            # We clamp the luminosity to a value between 0.1 and 0.35, so that we can always put
+            # bright text on it.
+            rgb = hls_to_rgb(hls[0], max(0.1, min(hls[1], 0.35)), hls[2])
+            break
+
+    # We didn't find an actual color, so we take black, or, if the image is very bright, a grey,
+    # as specified by design.
+    if rgb is None:
+        rgb = [0.298, 0.298, 0.298] if (light / total > 0.8) else [0, 0, 0]
+
+    return tuple(round(x * 255) for x in rgb)
