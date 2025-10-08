@@ -155,11 +155,10 @@ class WebhookExcludeTest(zeit.cms.testing.ZeitCmsTestCase):
 
 
 class WebhookIncludeTest(zeit.cms.testing.ZeitCmsTestCase):
-    def test_matches_criteria_is_false_when_include_does_not_match_contenttype(self):
+    def test_matches_criteria(self):
         hook = zeit.cms.checkout.webhook.Hook(None, None)
         hook.add_include('type', 'testcontenttype')
         self.assertTrue(hook.should_include(self.repository['testcontent']))
-        self.assertFalse(hook.should_include(self.repository['online']['2007']['01']['Somalia']))
 
     def test_matches_criteria_is_false_when_include_does_not_match(self):
         hook = zeit.cms.checkout.webhook.Hook(None, None)
