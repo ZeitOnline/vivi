@@ -33,20 +33,21 @@ class TestRemoveOnCheckin(zeit.cms.testing.ZeitCmsTestCase):
 class AlwaysWriteableProperty(zeit.cms.testing.ZeitCmsTestCase):
     def setUp(self):
         super().setUp()
+        self.namespace = 'http://namespaces.zeit.de/CMS/bar'
         manager = zope.component.getUtility(zeit.cms.content.interfaces.ILivePropertyManager)
-        manager.register_live_property('foo', 'bar', WRITEABLE_ALWAYS)
+        manager.register_live_property('foo', self.namespace, WRITEABLE_ALWAYS)
 
     def test_is_writeable_in_repository(self):
         content = self.repository['testcontent']
         properties = zeit.connector.interfaces.IWebDAVProperties(content)
-        properties[('foo', 'bar')] = 'qux'
-        self.assertEqual('qux', properties[('foo', 'bar')])
+        properties[('foo', self.namespace)] = 'qux'
+        self.assertEqual('qux', properties[('foo', self.namespace)])
 
     def test_is_writeable_in_workingcopy_and_survives_checkin(self):
         content = self.repository['testcontent']
         properties = zeit.connector.interfaces.IWebDAVProperties(content)
-        properties[('foo', 'bar')] = 'one'
+        properties[('foo', self.namespace)] = 'one'
         with zeit.cms.checkout.helper.checked_out(content) as co:
             wc_properties = zeit.connector.interfaces.IWebDAVProperties(co)
-            wc_properties[('foo', 'bar')] = 'two'
-        self.assertEqual('two', properties[('foo', 'bar')])
+            wc_properties[('foo', self.namespace)] = 'two'
+        self.assertEqual('two', properties[('foo', self.namespace)])
