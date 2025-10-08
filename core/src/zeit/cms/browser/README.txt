@@ -99,15 +99,15 @@ repository content.
 Make sure the menu entries are there and the targets are _blank:
 
 >>> browser.open(
-...     'http://localhost/++skin++cms/repository/online/2007/01/Somalia' )
+...     'http://localhost/++skin++cms/repository/testcontent' )
 >>> print(browser.contents)
 <?xml ...
     <li class="preview ">
-     <a href=".../online/2007/01/Somalia/@@show_preview" rel="..."
+     <a href=".../testcontent/@@show_preview" rel="..."
         target="_blank" title="Preview">...
    </li>
    <li class="live ">
-     <a href=".../online/2007/01/Somalia/@@show_live" rel="..."
+     <a href=".../testcontent/@@show_live" rel="..."
         target="_blank" title="Live">...
    </li>
    ...
@@ -125,16 +125,16 @@ Check the preview:
 ...         browser.follow_redirects = True
 >>> click_wo_redirect(browser, 'Preview')
 302 Moved Temporarily
-http://localhost/preview-prefix/online/2007/01/Somalia
+http://localhost/preview-prefix/testcontent
 
 
 Check the live site:
 
 >>> browser.open(
-...     'http://localhost/++skin++cms/repository/online/2007/01/Somalia' )
+...     'http://localhost/++skin++cms/repository/testcontent' )
 >>> click_wo_redirect(browser, 'Live')
 302 Moved Temporarily
-http://localhost/live-prefix/online/2007/01/Somalia
+http://localhost/live-prefix/testcontent
 
 
 Query arguments are passed to the server:
@@ -142,43 +142,42 @@ Query arguments are passed to the server:
 >>> browser.follow_redirects = False
 >>> try:
 ...     browser.open(
-...         'http://localhost/++skin++cms/repository/online/2007/01/Somalia/@@show_preview?foo=bar')
+...         'http://localhost/++skin++cms/repository/testcontent/@@show_preview?foo=bar')
 ... finally:
 ...     browser.follow_redirects = True
 >>> print(browser.headers['Status'])
 302 Moved Temporarily
 >>> print(browser.headers['Location'])
-http://localhost/preview-prefix/online/2007/01/Somalia?foo=bar
+http://localhost/preview-prefix/testcontent?foo=bar
 
 
 When an adapter to IPreviewObject is registered the preview url may change.
-Register an adapter for IUnknownResource redirecting to the container:
 
 >>> import zope.component
 >>> import zeit.cms.browser.interfaces
->>> import zeit.cms.repository.interfaces
+>>> import zeit.cms.testcontenttype.interfaces
 >>> def preview(context):
 ...     return context.__parent__
 >>> gsm = zope.component.getGlobalSiteManager()
 >>> gsm.registerAdapter(
 ...     preview,
-...     (zeit.cms.repository.interfaces.IUnknownResource, ),
+...     (zeit.cms.testcontenttype.interfaces.IExampleContentType, ),
 ...     zeit.cms.browser.interfaces.IPreviewObject)
 
 The preview is on the container now:
 
 
 >>> browser.open(
-...     'http://localhost/++skin++cms/repository/online/2007/01/Somalia' )
+...     'http://localhost/++skin++cms/repository/testcontent' )
 >>> click_wo_redirect(browser, 'Preview')
 302 Moved Temporarily
-http://localhost/preview-prefix/online/2007/01
+http://localhost/preview-prefix/
 
 
 Clean up:
 >>> gsm.unregisterAdapter(
 ...     preview,
-...     (zeit.cms.repository.interfaces.IUnknownResource, ),
+...     (zeit.cms.testcontenttype.interfaces.IExampleContentType, ),
 ...     zeit.cms.browser.interfaces.IPreviewObject)
 True
 

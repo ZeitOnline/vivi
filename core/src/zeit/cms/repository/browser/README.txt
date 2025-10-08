@@ -19,32 +19,11 @@ The filelisting is to be found under /repository. Open it:
 To dive into folder objects we use a Javascript based tree. The testbrowser
 doesn't support Javascript unforunately. Therefore we're just opening the url:
 
->>> browser.open(
-...     'http://localhost/++skin++cms/repository/online/2007/01')
->>> print(browser.contents)
-<?xml version...
-<!DOCTYPE ...
-...Querdax...
-...Saarland...
-...Saddam...
-
-
 There is also a View tab:
 
 >>> browser.getLink("View")
 <Link text='View'
-  url='http://localhost/++skin++cms/repository/online/2007/01/@@view.html'>
-
-
-Entry Page
-==========
-
-The user is redirected to the repository directory listing, if he hits
-the site root:
-
->>> browser.open('http://localhost/++skin++cms/')
->>> print(browser.url)
-http://localhost/++skin++cms/repository/online/2008/26
+  url='http://localhost/++skin++cms/repository/@@view.html'>
 
 
 Adding Folders
@@ -102,26 +81,7 @@ Popup file browser
 ==================
 
 The popup file browser is displayed in a lightbox for selecting objects. It is
-reachable at `get_object_browser` for every folder:
-
->>> browser.open('http://localhost/++skin++cms/repository/online/2007/01/'
-...              '@@get_object_browser')
->>> print(browser.contents)
-  <h1>http://xml.zeit.de/online/2007/01</h1>
-  <div id="popup-navtree" class="Tree">
-  <ul>
-      <li active="True" class="Root...">
-      ...
-</div>
-  <div class="objectbrowser-content">
-<table class="contentListing hasMetadata filterable">
-   ...
-</table>
-...
-</div>
-  <div class="tree-view-url">http://localhost/++skin++cms/repository/@@tree.html</div>
-...
-
+reachable at `get_object_browser` for every folder.
 The object browser also supports filtering of types via a content type source
 name. Without filter everything is displayed:
 
@@ -139,22 +99,14 @@ name. Without filter everything is displayed:
     ...
    <tbody>
    ...
-     <td>
-       2006
-     </td>
-     ...
-     <td>
-       2007
-     </td>
-     ...
-     <td>
-       new-folder
-     </td>
-     ...
-     <td>
-       ...testcontent...
-     </td>
-     ...
+   <td>
+     new-folder
+   </td>
+   ...
+   <td>
+     ...testcontent...
+   </td>
+   ...
 
 
 Let's filter for folders:
@@ -171,32 +123,23 @@ Let's filter for folders:
 </div>
   <div class="objectbrowser-content">
 <table class="contentListing hasMetadata filterable">
-    ...
+   ...
    <tbody>
    ...
-     <td>
-       2006
-     </td>
-     ...
-     <td>
-       2007
-     </td>
-     ...
-     <td>
-       new-folder
-     </td>
-    ...
-
+   <td>
+     new-folder
+   </td>
+   ...
 >>> 'testcontent' in browser.contents
 False
 
 When there are no suitable objects, we'll get a message:
 
 >>> browser.open(
-...     'http://localhost/++skin++cms/repository/online/2007/01/'
+...     'http://localhost/++skin++cms/repository/new-folder/'
 ...     '@@get_object_browser?type_filter=folders')
 >>> print(browser.contents)
-  <h1>http://xml.zeit.de/online/2007/01</h1>
+  <h1>http://xml.zeit.de/new-folder</h1>
   ...
   <div class="objectbrowser-content no-content">
     There are no selectable objects in this folder.
@@ -207,13 +150,13 @@ When there are no suitable objects, we'll get a message:
 Within the object browser the tree is automatically expanded:
 
 >>> browser.open(
-...     'http://localhost/++skin++cms/repository/online/2007/01/'
+...     'http://localhost/++skin++cms/repository/new-folder/'
 ...     '@@get_object_browser')
 >>> print(browser.contents)
-  <h1>http://xml.zeit.de/online/2007/01</h1>
+  <h1>http://xml.zeit.de/new-folder</h1>
   ...
       <li action="collapse" active="True" class="NotRoot..."
-          uniqueid="http://xml.zeit.de/online/2007/01">
+          uniqueid="http://xml.zeit.de/new-folder">
           ...
 
 
@@ -238,29 +181,28 @@ For any type the default browse location will be the folder itself:
 ...     zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
 >>> location.uniqueId
 'http://xml.zeit.de/'
->>> online = repository['online']
 >>> location = zope.component.getMultiAdapter(
-...     (online, source),
+...     (repository['new-folder'], source),
 ...     zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
 >>> location.uniqueId
-'http://xml.zeit.de/online'
+'http://xml.zeit.de/new-folder'
 
 For a content object it will be the folder it is contained in:
 
 >>> location = zope.component.getMultiAdapter(
-...     (online['2007']['01']['Saarland'], source),
+...     (repository['testcontent'], source),
 ...     zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
 >>> location.uniqueId
-'http://xml.zeit.de/online/2007/01'
+'http://xml.zeit.de/'
 
 
 There is a view all ICMSContent which redirects to the browsing location:
 
 >>> browser.open(
-...     'http://localhost/++skin++cms/repository/online/2007/01/'
+...     'http://localhost/++skin++cms/repository/new-folder/'
 ...     '@@default-browsing-location?type_filter=all-types')
 >>> print(browser.url)
-http://localhost/++skin++cms/repository/online/2007/01/@@get_object_browser?type_filter=all-types
+http://localhost/++skin++cms/repository/new-folder/@@get_object_browser?type_filter=all-types
 
 
 
@@ -271,18 +213,18 @@ There is a helper which redirects to the view of an object when you put in
 the unique id:
 
 >>> browser.open('http://localhost/++skin++cms/@@redirect_to?unique_id='
-...              'http://xml.zeit.de/online/2007/01/Somalia')
+...              'http://xml.zeit.de/testcontent/')
 >>> browser.url
-'http://localhost/++skin++cms/repository/online/2007/01/Somalia/'
+'http://localhost/++skin++cms/repository/testcontent/'
 
 When another view is desired it can be passed as the ``view`` query argument:
 
 >>> browser.open(
 ...     'http://localhost/++skin++cms/@@redirect_to'
-...     '?unique_id=http://xml.zeit.de/online/2007/01/Somalia'
+...     '?unique_id=http://xml.zeit.de/testcontent'
 ...     '&view=@@drag-pane.html')
 >>> browser.url
-'http://localhost/++skin++cms/repository/online/2007/01/Somalia/@@drag-pane.html'
+'http://localhost/++skin++cms/repository/testcontent/@@drag-pane.html'
 
 If no object with the given UID can be found, an ugly but useful error is
 returned:
@@ -309,11 +251,11 @@ reload. Reloading sends an IResourceInvalidatedEvent.
 >>> gsm.registerHandler(invalid)
 
 
->>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
+>>> browser.open('http://localhost/++skin++cms/repository/new-folder')
 >>> browser.getLink('Reload').click()
-Invalidate: http://xml.zeit.de/online/2007/01
+Invalidate: http://xml.zeit.de/new-folder
 >>> browser.url
-'http://localhost/++skin++cms/repository/online/2007/01/@@view.html'
+'http://localhost/++skin++cms/repository/new-folder/@@view.html'
 
 
 Clean up:

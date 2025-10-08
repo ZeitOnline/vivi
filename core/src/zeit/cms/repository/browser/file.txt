@@ -6,6 +6,19 @@ Set the file as default type:
 >>> import zeit.cms.config
 >>> zeit.cms.config.set('zeit.cms', 'default-type', 'file')
 
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
+>>> import importlib.resources
+>>> import transaction
+>>> import zeit.connector.filesystem
+>>> import zeit.connector.interfaces
+>>> import zope.component
+>>> connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+>>> fs = zeit.connector.filesystem.Connector(
+...     str(importlib.resources.files('zeit.connector') / 'testcontent'))
+>>> connector['http://xml.zeit.de/myfile'] = fs['http://xml.zeit.de/2006/DSC00109_2.JPG']
+>>> transaction.commit()
+
 
 Viewing, downloading and changing files
 +++++++++++++++++++++++++++++++++++++++
@@ -16,8 +29,7 @@ Open the default metadata view of a file:
 >>> import zeit.cms.testing
 >>> browser = zeit.cms.testing.Browser(layer['wsgi_app'])
 >>> browser.login('user', 'userpw')
->>> browser.open('http://localhost/++skin++cms/repository/2006'
-...              '/DSC00109_2.JPG/@@view.html')
+>>> browser.open('/repository/myfile/@@view.html')
 >>> print(browser.contents)
 <?xml ...
  <title>... View file </title>
@@ -25,7 +37,7 @@ Open the default metadata view of a file:
  <div><dl>
   <dt>File name</dt>
   <dd>
-    <a href="http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG">DSC00109_2.JPG</a>
+    <a href="http://localhost/++skin++vivi/repository/myfile">myfile</a>
   </dd>
   <dt>Size</dt>
   <dd>
@@ -38,11 +50,10 @@ Open the default metadata view of a file:
 Download the file:
 
 >>> bookmark = browser.url
->>> browser.handleErrors = False
->>> browser.getLink('DSC00109_2').click()
+>>> browser.getLink('myfile').click()
 >>> print(browser.headers)
 Status: 200 Ok
-Content-Disposition: attachment; filename="DSC00109_2.JPG"
+Content-Disposition: attachment; filename="myfile"
 Content-Length: 882409
 ...
 >>> browser.contents
@@ -60,7 +71,7 @@ Check the file out. The edit view also contains the metadata:
  <div class=...><dl>
   <dt>File name</dt>
   <dd>
-    <a href="http://localhost/++skin++cms/workingcopy/zope.user/DSC00109_2.JPG">DSC00109_2.JPG</a>
+    <a href="http://localhost/++skin++vivi/workingcopy/zope.user/myfile">myfile</a>
   </dd>
   <dt>Size</dt>
   <dd>
@@ -72,10 +83,10 @@ Check the file out. The edit view also contains the metadata:
 We can also download the file here:
 
 >>> bookmark = browser.url
->>> browser.getLink('DSC00109_2.JPG').click()
+>>> browser.getLink('myfile').click()
 >>> print(browser.headers)
 Status: 200 Ok
-Content-Disposition: attachment; filename="DSC00109_2.JPG"
+Content-Disposition: attachment; filename="myfile"
 Content-Length: 882409
 ...
 >>> browser.contents
@@ -97,7 +108,7 @@ Let's upload a new file:
  <div ...><dl>
   <dt>File name</dt>
   <dd>
-    <a href="http://localhost/++skin++cms/workingcopy/zope.user/DSC00109_2.JPG">DSC00109_2.JPG</a>
+    <a href="http://localhost/++skin++vivi/workingcopy/zope.user/myfile">myfile</a>
   </dd>
   <dt>Size</dt>
   <dd>
@@ -109,10 +120,10 @@ Let's upload a new file:
 We can download the new file now:
 
 >>> bookmark = browser.url
->>> browser.open('http://localhost/++skin++cms/workingcopy/zope.user/DSC00109_2.JPG')
+>>> browser.open('http://localhost/++skin++vivi/workingcopy/zope.user/myfile')
 >>> print(browser.headers)
 Status: 200 Ok
-Content-Disposition: attachment; filename="DSC00109_2.JPG"
+Content-Disposition: attachment; filename="myfile"
 Content-Length: 23
 ...
 >>> browser.contents
@@ -130,7 +141,7 @@ When we check in the file is updated in the repository:
  <div><dl>
   <dt>File name</dt>
   <dd>
-    <a href="http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG">DSC00109_2.JPG</a>
+    <a href="http://localhost/++skin++vivi/repository/myfile">myfile</a>
   </dd>
   <dt>Size</dt>
   <dd>
@@ -142,10 +153,10 @@ When we check in the file is updated in the repository:
 We can still download the new file:
 
 >>> bookmark = browser.url
->>> browser.getLink('DSC00109_2').click()
+>>> browser.getLink('myfile').click()
 >>> print(browser.headers)
 Status: 200 Ok
-Content-Disposition: attachment; filename="DSC00109_2.JPG"
+Content-Disposition: attachment; filename="myfile"
 Content-Length: 23
 ...
 >>> browser.contents
@@ -154,14 +165,13 @@ b'Mary had a little lamb.'
 
 The metadata preview also shows the file details:
 
->>> browser.open('http://localhost/++skin++cms/repository/2006'
-...              '/DSC00109_2.JPG/@@metadata_preview')
+>>> browser.open('/repository/myfile/@@metadata_preview')
 >>> print(browser.contents)
  <div...
     <dl>
   <dt>File name</dt>
   <dd>
-    <a href="http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG">DSC00109_2.JPG</a>
+    <a href="http://localhost/++skin++vivi/repository/myfile">myfile</a>
   </dd>
   <dt>Size</dt>
   <dd>
@@ -174,7 +184,7 @@ Adding files
 
 Files are added like other types:
 
->>> browser.open('http://localhost/++skin++cms/repository/2006')
+>>> browser.open('/repository')
 >>> menu = browser.getControl(name='add_menu')
 >>> menu.displayValue = ['File']
 >>> browser.open(menu.value[0])
@@ -189,7 +199,7 @@ We can upload a file w/o setting a file name:
 ...     BytesIO(b'Mary had a giant ogre.'), 'text/plain', 'ogre.txt')
 >>> browser.getControl('Add').click()
 >>> browser.url
-'http://localhost/++skin++cms/workingcopy/zope.user/ogre.txt/@@edit.html'
+'http://localhost/++skin++vivi/workingcopy/zope.user/ogre.txt/@@edit.html'
 
 After adding we're at the edit form:
 
@@ -200,7 +210,7 @@ After adding we're at the edit form:
  <div class=...><dl>
   <dt>File name</dt>
   <dd>
-    <a href="http://localhost/++skin++cms/workingcopy/zope.user/ogre.txt">ogre.txt</a>
+    <a href="http://localhost/++skin++vivi/workingcopy/zope.user/ogre.txt">ogre.txt</a>
   </dd>
   <dt>Size</dt>
   <dd>
@@ -232,7 +242,7 @@ Check it in:
  <div class=...><dl>
   <dt>File name</dt>
   <dd>
-    <a href="http://localhost/++skin++cms/repository/2006/ogre.txt">ogre.txt</a>
+    <a href="http://localhost/++skin++vivi/repository/ogre.txt">ogre.txt</a>
   </dd>
   <dt>Size</dt>
   <dd>
@@ -244,7 +254,7 @@ Check it in:
 
 When adding a file it is possible to explicitly set the file name:
 
->>> browser.open('http://localhost/++skin++cms/repository/2006')
+>>> browser.open('/repository')
 >>> menu = browser.getControl(name='add_menu')
 >>> menu.displayValue = ['File']
 >>> browser.open(menu.value[0])
@@ -253,4 +263,4 @@ When adding a file it is possible to explicitly set the file name:
 >>> browser.getControl('File name').value = 'medium-pig.txt'
 >>> browser.getControl('Add').click()
 >>> browser.url
-'http://localhost/++skin++cms/workingcopy/zope.user/medium-pig.txt/@@edit.html'
+'http://localhost/++skin++vivi/workingcopy/zope.user/medium-pig.txt/@@edit.html'

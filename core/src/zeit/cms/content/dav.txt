@@ -229,25 +229,26 @@ source:
 
 >>> import zeit.cms.testing
 >>> zeit.cms.testing.set_site()
+>>> repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
+>>> repository['folder'] = zeit.cms.repository.folder.Folder()
 >>> field = zope.schema.Choice(
 ...     source=zeit.cms.content.contentsource.FolderSource())
 >>> converter = get_converter(field)
->>> folder = converter.fromProperty('http://xml.zeit.de/online')
+>>> folder = converter.fromProperty('http://xml.zeit.de/folder')
 >>> folder
 <zeit.cms.repository.folder.Folder...>
 >>> folder.uniqueId
-'http://xml.zeit.de/online'
+'http://xml.zeit.de/folder'
 
 When a unique id references an object wich doesn't exist, None is returned:
 
->>> converter.fromProperty('http://xml.zeit.de/online/gibtsnich') is None
+>>> converter.fromProperty('http://xml.zeit.de/nonexistent') is None
 True
 
 When a unique id references an object which exists but is not contained in the
 source, None is returned, too:
 
->>> converter.fromProperty(
-...     'http://xml.zeit.de/online/2007/01/thailand-anschlaege') is None
+>>> converter.fromProperty('http://xml.zeit.de/testcontent') is None
 True
 
 Bug #4124: When the property exists, but is empty or None, the source raised
@@ -267,7 +268,7 @@ True
 The other way round stores the unique id:
 
 >>> converter.toProperty(folder)
-'http://xml.zeit.de/online'
+'http://xml.zeit.de/folder'
 
 
 Principal source

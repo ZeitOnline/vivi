@@ -17,25 +17,27 @@ from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
 import zeit.cms.workingcopy.interfaces
+import zeit.connector.interfaces
 
 
 class TestConflicts(zeit.cms.testing.ZeitCmsTestCase):
     def setUp(self):
         super().setUp()
-        self.repository['online']['conflicting'] = (
-            zeit.cms.repository.unknown.PersistentUnknownResource('Pop')
-        )
+        self.repository['folder'] = Folder()
+        content = ExampleContentType()
+        content.title = 'foo'
+        self.repository['folder']['conflicting'] = content
+
         self.res = zeit.cms.workingcopy.interfaces.ILocalContent(
-            self.repository['online']['conflicting']
+            self.repository['folder']['conflicting']
         )
-        self.repository['online']['conflicting'] = (
-            zeit.cms.repository.unknown.PersistentUnknownResource('Bang')
-        )
+
+        self.repository['folder']['conflicting'] = ExampleContentType()
 
     def test_conflict_on_setitem(self):
         self.assertRaises(
             zeit.cms.repository.interfaces.ConflictError,
-            self.repository['online'].__setitem__,
+            self.repository['folder'].__setitem__,
             'conflicting',
             self.res,
         )
@@ -47,7 +49,7 @@ class TestConflicts(zeit.cms.testing.ZeitCmsTestCase):
 
     def test_conflict_override(self):
         self.repository.addContent(self.res, ignore_conflicts=True)
-        self.assertEqual('Pop', self.repository['online']['conflicting'].data)
+        self.assertEqual('foo', self.repository['folder']['conflicting'].title)
 
 
 class LiveURLToContent(unittest.TestCase):
@@ -147,15 +149,11 @@ class RepositoryTest(zeit.cms.testing.ZeitCmsTestCase):
         self.repository['cache'] = zeit.cms.repository.folder.Folder()
         folder = self.repository['cache']
         folder['one'] = ExampleContentType()
-        with mock.patch('zeit.connector.mock.Connector.listCollection') as lst:
-            lst.return_value = [
-                ('one', 'http://xml.zeit.de/cache/one'),
-                ('two', 'http://xml.zeit.de/cache/two'),
-            ]
-            self.assertEqual(['one', 'two'], list(folder.keys()))
-            self.assertEqual(
-                ['http://xml.zeit.de/cache/one'], [x.uniqueId for x in folder.values()]
-            )
+        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+        connector.child_name_cache['http://xml.zeit.de/cache'].add('http://xml.zeit.de/cache/two')
+
+        self.assertEqual(['one', 'two'], list(folder.keys()))
+        self.assertEqual(['http://xml.zeit.de/cache/one'], [x.uniqueId for x in folder.values()])
 
     def test_delete_must_clear_cache(self):
         self.assertEqual(0, len(self.repository._content))
@@ -194,9 +192,11 @@ class ContentBaseTest(zeit.cms.testing.ZeitCmsTestCase):
         )
 
     def test_has_parent(self):
+        self.repository['folder'] = Folder()
+        self.repository['folder']['testcontent'] = ExampleContentType()
         self.assertEqual(
-            self.repository['online']['2007']['01'],
-            self.repository.getContent('http://xml.zeit.de/online/2007/01/Somalia').__parent__,
+            self.repository['folder'],
+            self.repository.getContent('http://xml.zeit.de/folder/testcontent').__parent__,
         )
 
     def test_root_folder_is_repository(self):

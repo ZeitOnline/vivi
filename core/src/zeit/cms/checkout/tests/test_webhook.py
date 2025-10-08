@@ -103,10 +103,11 @@ class WebhookConfigTest(FunctionalTestCase):
 
 class WebhookExcludeTest(zeit.cms.testing.ZeitCmsTestCase):
     def test_match_contenttype(self):
+        self.repository['file'] = zeit.cms.repository.file.LocalFile()
         hook = zeit.cms.checkout.webhook.Hook(None, None)
         hook.add_exclude('type', 'testcontenttype')
         self.assertTrue(hook.should_exclude(self.repository['testcontent']))
-        self.assertFalse(hook.should_exclude(self.repository['online']['2007']['01']['Somalia']))
+        self.assertFalse(hook.should_exclude(self.repository['file']))
 
     def test_match_product(self):
         hook = zeit.cms.checkout.webhook.Hook(None, None)
@@ -148,10 +149,12 @@ class WebhookExcludeTest(zeit.cms.testing.ZeitCmsTestCase):
         self.assertTrue(hook.should_exclude(self.repository['testcontent']))
 
     def test_match_path_prefix(self):
+        self.repository['kultur'] = zeit.cms.repository.folder.Folder()
+        self.repository['kultur']['foo'] = ExampleContentType()
         hook = zeit.cms.checkout.webhook.Hook(None, None)
-        hook.add_exclude('path_prefix', '/online')
+        hook.add_exclude('path_prefix', '/kultur')
         self.assertFalse(hook.should_exclude(self.repository['testcontent']))
-        self.assertTrue(hook.should_exclude(self.repository['online']['2007']['01']['Somalia']))
+        self.assertTrue(hook.should_exclude(self.repository['kultur']['foo']))
 
 
 class WebhookIncludeTest(zeit.cms.testing.ZeitCmsTestCase):

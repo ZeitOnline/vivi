@@ -3,6 +3,7 @@ from unittest import mock
 import zope.copypastemove.interfaces
 
 from zeit.cms.checkout.helper import checked_out
+from zeit.cms.repository.folder import Folder
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import zeit.cms.testing
 
@@ -32,10 +33,12 @@ class MoveContentBaseTest(zeit.cms.testing.ZeitCmsTestCase):
         zope.component.getGlobalSiteManager().registerHandler(
             move, (zope.lifecycleevent.IObjectMovedEvent,)
         )
-        content = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        self.repository['oldparent'] = Folder()
+        self.repository['oldparent']['testcontent'] = ExampleContentType()
+        content = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/oldparent/testcontent')
         zope.copypastemove.interfaces.IObjectMover(content).moveTo(self.repository, 'changed')
         event = move.call_args[0][0]
-        self.assertEqual(self.repository['online']['2007']['01'], event.oldParent)
+        self.assertEqual(self.repository['oldparent'], event.oldParent)
 
     def test_move_content_preserves_objectlog_even_in_root_folder(self):
         with checked_out(self.repository['testcontent']):
@@ -52,16 +55,17 @@ class MoveContentBaseTest(zeit.cms.testing.ZeitCmsTestCase):
             self.assertEqual(old.time, copied.time)
 
     def test_move_content_preserves_objectlog(self):
-        self.repository['online']['testcontent'] = ExampleContentType()
-        with checked_out(self.repository['online']['testcontent']):
+        self.repository['folder'] = Folder()
+        self.repository['folder']['testcontent'] = ExampleContentType()
+        with checked_out(self.repository['folder']['testcontent']):
             # checkout to create log entry in workflowlog
             pass
-        original = self.repository['online']['testcontent']
+        original = self.repository['folder']['testcontent']
         original_log = list(zeit.objectlog.interfaces.ILog(original).get_log())
         zope.copypastemove.interfaces.IObjectMover(original).moveTo(
-            self.repository['online'], 'changed'
+            self.repository['folder'], 'changed'
         )
-        changed = self.repository['online']['changed']
+        changed = self.repository['folder']['changed']
         changed_log = list(zeit.objectlog.interfaces.ILog(changed).get_log())
         self.assertEqual(len(original_log), len(changed_log))
         for old, copied in zip(original_log, changed_log):

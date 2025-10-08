@@ -1,10 +1,11 @@
 from datetime import datetime
-from unittest import mock
 import urllib.error
 
 import time_machine
 
+from zeit.cms.checkout.helper import checked_out
 import zeit.cms.checkout.interfaces
+import zeit.cms.content.interfaces
 import zeit.cms.testing
 
 
@@ -13,7 +14,6 @@ class LockAPI(zeit.cms.testing.ZeitCmsBrowserTestCase):
         super().setUp()
         # API is available without authentication
         self.browser = zeit.cms.testing.Browser(self.layer['wsgi_app'])
-        self.repository.connector.search_result = ['http://xml.zeit.de/online/2007/01/Somalia']
 
     def test_status_200_for_unlocked(self):
         b = self.browser
@@ -33,17 +33,16 @@ class LockAPI(zeit.cms.testing.ZeitCmsBrowserTestCase):
         )
 
     def test_resolves_uuid(self):
+        uuid = zeit.cms.content.interfaces.IUUID(self.repository['testcontent']).id
         b = self.browser
-        # mock connector search() always returns
-        # http://xml.zeit.de/online/2007/01/Somalia
-        b.open('http://localhost/@@lock_status?uuid=dummy')
+        b.open(f'http://localhost/@@lock_status?uuid={uuid}')
         self.assertEqual('200 Ok', b.headers['Status'])
 
     def test_resolves_interred_article_id(self):
+        with checked_out(self.repository['testcontent']) as co:
+            co.ir_article_id = 1234
         b = self.browser
-        # mock connector search() always returns
-        # http://xml.zeit.de/online/2007/01/Somalia
-        b.open('http://localhost/@@lock_status?irid=dummy')
+        b.open('http://localhost/@@lock_status?irid=1234')
         self.assertEqual('200 Ok', b.headers['Status'])
 
     def test_status_404_for_nonexistent(self):
@@ -53,7 +52,7 @@ class LockAPI(zeit.cms.testing.ZeitCmsBrowserTestCase):
             self.assertEqual(404, info.exception.status)
 
         with self.assertRaises(urllib.error.HTTPError) as info:
-            with mock.patch('zeit.connector.mock.Connector.search') as search:
-                search.return_value = None
-                b.open('http://localhost/@@lock_status?uuid=dummy')
+            b.open(
+                'http://localhost/@@lock_status?uuid={urn:uuid:00000000-0000-0000-0000-000000000000}'
+            )
             self.assertEqual(404, info.exception.status)

@@ -7,11 +7,9 @@ The lock icon shows information about the current lock:
 >>> from zeit.cms.testing import Browser
 >>> browser = Browser(layer['wsgi_app'])
 >>> browser.login('user', 'userpw')
->>> url = ('http://localhost:8080/++skin++cms/repository/online'
-...        '/2007/01/Somalia')
->>> browser.open(url)
+>>> browser.open('/repository/testcontent')
 >>> browser.getLink('Manage lock')
-<Link text='Manage lock' url='javascript:zeit.cms.lightbox_form('http://localhost:8080/++skin++cms/repository/online/2007/01/Somalia/@@locks.html')'>
+<Link text='Manage lock' url='javascript:zeit.cms.lightbox_form('http://localhost/++skin++vivi/repository/testcontent/@@locks.html')'>
 >>> print(browser.contents)
 <?xml...
     <img src=".../lock-open.png" title="Not locked" class="lock-open" />
@@ -20,7 +18,7 @@ The lock icon shows information about the current lock:
 
 Open the lightbox. The object is currently not locked:
 
->>> browser.open(url + '/@@locks.html')
+>>> browser.open('/repository/testcontent/@@locks.html')
 >>> print(browser.contents)
 <div>
   <h1>Locks</h1>
@@ -72,20 +70,20 @@ When we lock we'll see the relevant information:
 
 Make sure a lock message was send to the user:
 
->>> browser.open(url)
+>>> browser.open('/repository/testcontent')
 >>> print(browser.contents)
 <?xml ...
-    <li class="message">"Somalia" has been locked.</li>
+    <li class="message">"testcontent" has been locked.</li>
     ...
     <img src=".../lock-closed-mylock.png" title="Locked by you"
         class="lock-closed-mylock" />
     ...
 
-We can now unlock Somalia:
+We can now unlock:
 
 >>> browser.getLink('Manage lock')
-<Link text='Manage lock' url='javascript:zeit.cms.lightbox_form('http://localhost:8080/++skin++cms/repository/online/2007/01/Somalia/@@locks.html')'>
->>> browser.open(url + '/@@locks.html')
+<Link text='Manage lock' url='javascript:zeit.cms.lightbox_form('http://localhost/++skin++vivi/repository/testcontent/@@locks.html')'>
+>>> browser.open('/repository/testcontent/@@locks.html')
 >>> browser.getControl('Unlock').click()
 >>> print(browser.contents)
 <div>
@@ -99,16 +97,16 @@ We can now unlock Somalia:
 
 Make sure the unlock message was sent to the user:
 
->>> browser.open(url)
+>>> browser.open('/repository/testcontent')
 >>> print(browser.contents)
 <?xml ...
-    <li class="message">"Somalia" has been unlocked.</li>
+    <li class="message">"testcontent" has been unlocked.</li>
     ...
 
 
 Let's lock the object again to test stealing:
 
->>> browser.open(url + '/@@locks.html')
+>>> browser.open('/repository/testcontent/@@locks.html')
 >>> browser.getControl('Lock').click()
 >>> print(browser.contents)
 <div>
@@ -123,12 +121,12 @@ Login in as zmgr and steal the lock:
 
 >>> mgr = Browser(layer['wsgi_app'])
 >>> mgr.login('zmgr', 'mgrpw')
->>> mgr.open(url)
+>>> mgr.open('/repository/testcontent')
 >>> print(mgr.contents)
 <?xml ...
     <img src=".../lock-closed.png" title="Locked by zope.user"
         class="lock-closed" />...
->>> mgr.open(url + '/@@locks.html')
+>>> mgr.open('/repository/testcontent/@@locks.html')
 >>> mgr.getControl('Steal lock').click()
 >>> print(mgr.contents)
 <div>
@@ -147,9 +145,9 @@ Login in as zmgr and steal the lock:
 
 Make sure the unlock message was sent to the user:
 
->>> mgr.open(url)
+>>> mgr.open('/repository/testcontent')
 >>> print(mgr.contents)
 <?xml ...
-    <li class="message">The lock on "Somalia" has been stolen from
+    <li class="message">The lock on "testcontent" has been stolen from
         "zope.user".</li>
     ...

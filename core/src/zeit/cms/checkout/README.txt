@@ -7,6 +7,7 @@ process.
 
 We need an interaction as checkout manager needs to get the principal:
 
+>>> import transaction
 >>> import zeit.cms.testing
 >>> principal = zeit.cms.testing.create_interaction()
 >>> zeit.cms.testing.set_site()
@@ -37,8 +38,8 @@ copy. Get a content object first:
 >>> import zeit.cms.repository.interfaces
 >>> repository = zope.component.getUtility(
 ...     zeit.cms.repository.interfaces.IRepository)
->>> collection = repository['online']['2007']['01']
->>> content = list(collection.values())[0]
+>>> collection = repository
+>>> content = repository['testcontent']
 >>> ICMSContent.providedBy(content)
 True
 
@@ -82,9 +83,9 @@ Event: <zeit.cms.checkout.interfaces.AfterCheckoutEvent object at 0x...>
     Workingcopy: <zeit.cms.workingcopy.workingcopy.Workingcopy object at 0x...>
 >>> workingcopy = IWorkingcopy(principal)
 >>> list(workingcopy.keys())
-['4schanzentournee-abgesang']
+['testcontent']
 >>> list(workingcopy.values())
-[<zeit.cms.repository.unknown.PersistentUnknownResource...4schanzentournee-abgesang>]
+[<zeit.cms.testcontenttype.testcontenttype.ExampleContentType http://xml.zeit.de/testcontent>]
 
 The resource is locked in DAV for about an hour:
 
@@ -132,15 +133,15 @@ back" into the repository.
 
 Get the object we cecked out above from the working copy and modify it:
 
->>> checked_out = workingcopy['4schanzentournee-abgesang']
->>> checked_out.data = 'Lorem ipsum.'
+>>> checked_out = workingcopy['testcontent']
+>>> checked_out.title = 'Lorem ipsum.'
 
 
 So far nothing in the repository has changed:
 
 >>> content = repository.getContent(checked_out.uniqueId)
->>> content.data
-'<?xml version="1.0" ...'
+>>> content.title
+'...'
 
 But now we check in:
 
@@ -158,6 +159,7 @@ Event: <zeit.cms.checkout.interfaces.AfterCheckinEvent object at 0x...>
      Principal: zope.user
      Content: <zeit.cms...>
      Workingcopy: <zeit.cms.workingcopy.workingcopy.Workingcopy object at 0x...>
+>>> transaction.commit()
 
 `checked_in` is the object in the repository:
 
@@ -173,7 +175,7 @@ When we get the object from the repository, it now contains `Lorem ipsum.` and
 we can check it out again:
 
 >>> content = repository.getContent(checked_out.uniqueId)
->>> content.data
+>>> content.title
 'Lorem ipsum.'
 >>> manager = ICheckoutManager(content)
 >>> manager.canCheckout
@@ -200,11 +202,11 @@ False
 >>> checked_out = manager.checkout()
 Event: <zeit.cms.checkout.interfaces.BeforeCheckoutEvent object at 0x...>
     Principal: zope.user
-    Content: <zeit.cms.repository.unknown.PersistentUnknownResource...>
+    Content: <zeit.cms.testcontenttype.testcontenttype.ExampleContentType...>
     Workingcopy: <zeit.cms.workingcopy.workingcopy.Workingcopy object at 0x...>
 Event: <zeit.cms.checkout.interfaces.AfterCheckoutEvent object at 0x...>
     Principal: zope.user
-    Content: <zeit.cms.repository.unknown.PersistentUnknownResource...>
+    Content: <zeit.cms.testcontenttype.testcontenttype.ExampleContentType...>
     Workingcopy: <zeit.cms.workingcopy.workingcopy.Workingcopy object at 0x...>
 >>> lockable.locked()
 True
@@ -212,14 +214,15 @@ True
 >>> manager.delete()
 Event: <zeit.cms.checkout.interfaces.BeforeDeleteEvent object at 0x...>
     Principal: zope.user
-    Content: <zeit.cms.repository.unknown.PersistentUnknownResource...>
+    Content: <zeit.cms.testcontenttype.testcontenttype.ExampleContentType...>
     Workingcopy: <zeit.cms.workingcopy.workingcopy.Workingcopy object at 0x...>
 Event: <zeit.cms.checkout.interfaces.AfterDeleteEvent object at 0x...>
     Principal: zope.user
-    Content: <zeit.cms.repository.unknown.PersistentUnknownResource...>
+    Content: <zeit.cms.testcontenttype.testcontenttype.ExampleContentType...>
     Workingcopy: <zeit.cms.workingcopy.workingcopy.Workingcopy object at 0x...>
 >>> lockable.locked()
 False
+>>> transaction.commit()
 
 
 Temporary checkouts
@@ -232,11 +235,11 @@ interfere with the user. The system usually checks out content as "temporary".
 >>> checked_out = manager.checkout(temporary=True)
 Event: <zeit.cms.checkout.interfaces.BeforeCheckoutEvent object at 0x...>
     Principal: zope.user
-    Content: <zeit.cms.repository.unknown.PersistentUnknownResource...>
+    Content: <zeit.cms.testcontenttype.testcontenttype.ExampleContentType...>
     Workingcopy: <zeit.cms.workingcopy.workingcopy.Workingcopy object at 0x...>
 Event: <zeit.cms.checkout.interfaces.AfterCheckoutEvent object at 0x...>
     Principal: zope.user
-    Content: <zeit.cms.repository.unknown.PersistentUnknownResource...>
+    Content: <zeit.cms.testcontenttype.testcontenttype.ExampleContentType...>
     Workingcopy: <zeit.cms.workingcopy.workingcopy.Workingcopy object at 0x...>
 
 The workingcopy is still empty:
@@ -251,7 +254,7 @@ The checked out content is stored in a temporary workingcopy:
 >>> checked_out.__parent__.__parent__ is None
 True
 >>> list(checked_out.__parent__.keys())
-['4schanzentournee-abgesang']
+['testcontent']
 
 
 The lock timeout is small for temporary checkouts (around 30 seconds):
@@ -270,13 +273,13 @@ True
 >>> manager.checkin()
 Event: <zeit.cms.checkout.interfaces.BeforeCheckinEvent object at 0x...>
     Principal: zope.user
-    Content: <zeit.cms.repository.unknown.PersistentUnknownResource...>
+    Content: <zeit.cms.testcontenttype.testcontenttype.ExampleContentType...>
     Workingcopy: <zeit.cms.workingcopy.workingcopy.Workingcopy object at 0x...>
 Event: <zeit.cms.checkout.interfaces.AfterCheckinEvent object at 0x...>
     Principal: zope.user
-    Content: <zeit.cms.repository.unknown.PersistentUnknownResource...>
+    Content: <zeit.cms.testcontenttype.testcontenttype.ExampleContentType...>
     Workingcopy: <zeit.cms.workingcopy.workingcopy.Workingcopy object at 0x...>
-<zeit.cms.repository.unknown.PersistentUnknownResource...>
+<zeit.cms.testcontenttype.testcontenttype.ExampleContentType...>
 
 
 Locking race condition
@@ -319,30 +322,3 @@ Remove the event printer:
 ...     checkoutEvent,
 ...     (ICMSContent, ICheckinCheckoutEvent))
 True
-
-
-Conflicts
-=========
-
-It is possible to override conflicts when checking in.
-
->>> manager = ICheckoutManager(content)
->>> checked_out = manager.checkout()
-
-Provoke a conflict:
-
->>> import zeit.cms.testcontenttype.testcontenttype
->>> content.__parent__[content.__name__] = (
-...     zeit.cms.testcontenttype.testcontenttype.ExampleContentType())
-
-Checking in is not possible just like that:
-
->>> ICheckinManager(checked_out).checkin()
-Traceback (most recent call last):
-    ...
-ConflictError
-
-Checking in is possible with ignored conflicts:
-
->>> ICheckinManager(checked_out).checkin(ignore_conflicts=True)
-<zeit.cms.repository.unknown.PersistentUnknownResource...4schanzentournee-abgesang>

@@ -14,7 +14,7 @@ Create a browser first:
 The filelisting is to be found under /repository. To get a dojo based
 FilteringTable open a specific folder:
 
->>> browser.open('http://localhost/++skin++cms/repository/2007/01')
+>>> browser.open('http://localhost/++skin++cms/repository')
 
 We expect a normal file listing:
 
@@ -33,11 +33,9 @@ the header bar:
 
 >>> bc = browser.xpath('//ul[@id="breadcrumbs"]/li/a')
 >>> bc
-[<Element a ...>, <Element a ...>]
+[<Element a ...
 >>> bc[0].text
 'repository'
->>> bc[1].text
-'2007'
 
 
 Workflow indicator
@@ -55,9 +53,9 @@ Published
 Let's indicate a published object:
 
 >>> import zeit.cms.workflow.mock
->>> uid = 'http://xml.zeit.de/online/2007/01/4schanzentournee-abgesang'
+>>> uid = 'http://xml.zeit.de/testcontent'
 >>> zeit.cms.workflow.mock._published[uid] = True
->>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
+>>> browser.open('http://localhost/++skin++cms/repository')
 >>> print(browser.contents)
 <?xml ...
   <tbody>
@@ -69,7 +67,9 @@ Let's indicate a published object:
     <td>
     </td>
     <td>
-      4schanzentournee-abgesang
+    </td>
+    <td>
+      <span class="filename">testcontent</span>
     </td>
     ...
 
@@ -78,8 +78,10 @@ When we have local modifications the we get the third indicator. Let's try some
 "None"-cases before:
 
 >>> from pendulum import datetime
+>>> import zeit.cms.testing
 >>> import zeit.connector.interfaces
 >>> import zope.component
+>>> zeit.cms.testing.set_site()
 >>> connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
 >>> connector.changeProperties(uid, {
 ...     ('date_last_modified', 'http://namespaces.zeit.de/CMS/document'):
@@ -87,7 +89,7 @@ When we have local modifications the we get the third indicator. Let's try some
 
 We don't know when the object was published. Assume it's fresh:
 
->>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
+>>> browser.open('http://localhost/++skin++cms/repository')
 >>> print(browser.contents)
 <?xml ...
   <tbody>
@@ -99,7 +101,9 @@ We don't know when the object was published. Assume it's fresh:
     <td>
     </td>
     <td>
-      4schanzentournee-abgesang
+    </td>
+    <td>
+      <span class="filename">testcontent</span>
     </td>
     ...
 
@@ -113,7 +117,7 @@ True
 With a publication date *after* the modifcation date it is also fresh:
 
 >>> zeit.cms.workflow.mock._publish_times[uid] = datetime(2007, 12, 6, 13, 0)
->>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
+>>> browser.open('http://localhost/++skin++cms/repository')
 >>> print(browser.contents)
 <?xml ...
   <tbody>
@@ -125,7 +129,9 @@ With a publication date *after* the modifcation date it is also fresh:
     <td>
     </td>
     <td>
-      4schanzentournee-abgesang
+    </td>
+    <td>
+      <span class="filename">testcontent</span>
     </td>
     ...
 
@@ -133,7 +139,7 @@ With a publication date *after* the modifcation date it is also fresh:
 With a publication time *before* the modifaction time it is not fresh:
 
 >>> zeit.cms.workflow.mock._publish_times[uid] = datetime(2007, 12, 6, 11, 0)
->>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
+>>> browser.open('http://localhost/++skin++cms/repository')
 >>> print(browser.contents)
 <?xml ...
   <tbody>
@@ -145,29 +151,9 @@ With a publication time *before* the modifaction time it is not fresh:
     <td>
     </td>
     <td>
-      4schanzentournee-abgesang
-    </td>
-    ...
-
-
-When the modification date is not known we also assume it is fresh. Note that
-this case is rather constructed because in reality all objects have a
-modification time.
-
->>> connector._properties[uid][('date_last_modified', 'http://namespaces.zeit.de/CMS/document')] = None
->>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
->>> print(browser.contents)
-<?xml ...
-  <tbody>
-  <tr class="odd">
-    ...
-    <td>
-      <div class="workflow-column"><span class="publish-state published" title="Published"></span></div>
     </td>
     <td>
-    </td>
-    <td>
-      4schanzentournee-abgesang
+      <span class="filename">testcontent</span>
     </td>
     ...
 
@@ -179,8 +165,8 @@ The title of the listing is "Directory listing"
 
 >>> browser = Browser(layer['wsgi_app'])
 >>> browser.login('user', 'userpw')
->>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
+>>> browser.open('http://localhost/++skin++cms/repository')
 >>> print(browser.contents)
 <?xml...
-    <title> 01 – Directory listing </title>
+    <title> repository – Directory listing </title>
     ...

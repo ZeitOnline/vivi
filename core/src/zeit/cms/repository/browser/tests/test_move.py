@@ -1,3 +1,4 @@
+from zeit.cms.repository.folder import Folder
 import zeit.cms.testing
 
 
@@ -12,14 +13,14 @@ class MoveTest(zeit.cms.testing.ZeitCmsBrowserTestCase):
         self.assertEllipsis('.../testcontent... already exists...', b.contents)
 
     def test_moves_object(self):
+        self.repository['folder'] = Folder()
         b = self.browser
         b.open('http://localhost/++skin++vivi/repository/testcontent/@@move-box')
-        b.getControl('New path').value = '/online/2007/01/flub'
+        b.getControl('New path').value = '/folder/flub'
         b.getControl('Move').click()
         self.assertEllipsis(
-            '...<span class="nextURL">http://localhost/++skin++vivi/repository'
-            '/online/2007/01/flub...',
+            '...<span class="nextURL">http://localhost/++skin++vivi/repository/folder/flub...',
             b.contents,
         )
         with self.assertNothingRaised():
-            zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/flub')
+            zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/folder/flub')

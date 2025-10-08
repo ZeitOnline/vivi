@@ -6,6 +6,7 @@ import os.path
 import unittest
 
 from selenium.webdriver.common.keys import Keys
+import transaction
 import zope.configuration.xmlconfig
 import zope.formlib.interfaces
 import zope.interface
@@ -253,6 +254,8 @@ class TestObjectSequenceWidgetJavascript(zeit.cms.testing.SeleniumTestCase):
 
     def setUp(self):
         super().setUp()
+        self.repository['2007'] = zeit.cms.repository.folder.Folder()
+        transaction.commit()
         self.open('/@@/zeit.cms.browser.tests.fixtures/objectsequencewidget.html')
 
     def waitForDropFinished(self, count=1):

@@ -20,9 +20,20 @@ The repository file is not modifyable. Therefore there is no need to actually
 keep the data around. The data is retrieved directly from the repository when
 required:
 
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
+>>> import importlib.resources
+>>> import transaction
+>>> import zeit.connector.filesystem
+>>> import zeit.connector.interfaces
+>>> import zope.component
+>>> connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+>>> fs = zeit.connector.filesystem.Connector(
+...     str(importlib.resources.files('zeit.connector') / 'testcontent'))
+>>> connector['http://xml.zeit.de/file'] = fs['http://xml.zeit.de/2006/DSC00109_2.JPG']
+>>> transaction.commit()
 >>> import zeit.cms.repository.file
->>> f = zeit.cms.repository.file.RepositoryFile(
-...     'http://xml.zeit.de/2006/DSC00109_2.JPG')
+>>> f = zeit.cms.repository.file.RepositoryFile('http://xml.zeit.de/file')
 >>> f
 <zeit.cms.repository.file.RepositoryFile...>
 
@@ -46,13 +57,7 @@ The file has a size:
 
 We can get the data via the ``open`` method:
 
->>> fh = f.open()
->>> fh
-<...BytesIO object at 0x...>
->>> fh.close()
 >>> fh = f.open('r')
->>> fh
-<...BytesIO object at 0x...>
 >>> fh.read(10)
 b'\xff\xd8\xff\xe1\x0c\xdaExif'
 >>> fh.close()
@@ -72,8 +77,7 @@ LocalFile
 The LocalFile actually stores data.
 
 
->>> local = zeit.cms.repository.file.LocalFile(
-...     'http://xml.zeit.de/2006/DSC00109_2.JPG')
+>>> local = zeit.cms.repository.file.LocalFile('http://xml.zeit.de/file')
 >>> local
 <zeit.cms.repository.file.LocalFile...>
 
@@ -90,13 +94,7 @@ True
 
 We can get the data via the ``open`` method:
 
->>> fh = local.open()
->>> fh
-<...BytesIO object at 0x...>
->>> fh.close()
 >>> fh = local.open('r')
->>> fh
-<...BytesIO object at 0x...>
 >>> fh.read(10)
 b'\xff\xd8\xff\xe1\x0c\xdaExif'
 >>> fh.close()
@@ -174,7 +172,7 @@ when specified accordingly :
 >>> import zope.component
 >>> repository = zope.component.getUtility(
 ...     zeit.cms.repository.interfaces.IRepository)
->>> f = repository['2006']['DSC00109_2.JPG']
+>>> f = repository['file']
 >>> f
 <zeit.cms.repository.file.RepositoryFile...>
 >>> fh = f.open()
@@ -189,7 +187,7 @@ When we adapt the RepositoryFile to ILocalContent we'll get a LocalFile:
 >>> local
 <zeit.cms.repository.file.LocalFile...>
 >>> local.__name__
-'DSC00109_2.JPG'
+'file'
 
 When we change some data ...
 

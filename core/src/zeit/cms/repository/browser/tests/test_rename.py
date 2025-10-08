@@ -3,6 +3,7 @@ import urllib.error
 
 from zope.testbrowser.browser import LinkNotFoundError
 
+from zeit.cms.repository.folder import Folder
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_SUCCESS, IPublish, IPublishInfo
 import zeit.cms.testing
@@ -30,10 +31,11 @@ class TestRename(zeit.cms.testing.ZeitCmsBrowserTestCase):
             b.getControl('Rename')  # 'Rename' button is missing
 
     def test_rename_menu_item_is_not_displayed_for_folder_with_content(self):
-        folder = self.repository['testing']
+        self.repository['folder'] = Folder()
+        folder = self.repository['folder']
         folder['foo'] = ExampleContentType()
         b = self.browser
-        b.open('http://localhost:8080/++skin++vivi/repository/testing')
+        b.open('http://localhost:8080/++skin++vivi/repository/folder')
         with self.assertRaises(LinkNotFoundError):
             b.getLink(url='@@rename-box')
 

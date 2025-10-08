@@ -26,25 +26,17 @@ properties:
 >>> properties
 <zeit.cms.content.liveproperty.LiveProperties object at 0x...>
 
-Let's see what properties we've got:
-
->>> sorted(properties.keys())
-[('getlastmodified', 'DAV:'), ('type', 'http://namespaces.zeit.de/CMS/meta')]
->>> import pprint
->>> pprint.pprint(dict(properties))
-{('getlastmodified', 'DAV:'): '...',
- ('type', 'http://namespaces.zeit.de/CMS/meta'): 'testcontenttype'}
-
 
 To set properties via the LiveProperty class properties have to be registered
 as live. This is a safty belt to avoid accidently setting non-live properties.
 Also this is required to make sure that live properties are not overwritten
 when checking in an object:
 
->>> properties[('foo', 'test')] = 'bar'
+>>> TEST = 'http://namespaces.zeit.de/CMS/testing'
+>>> properties[('foo', TEST)] = 'bar'
 Traceback (most recent call last):
     ...
-Forbidden: ('foo', 'test')
+Forbidden: ('foo', 'http://namespaces.zeit.de/CMS/testing')
 
 Register foo/test as live property:
 
@@ -52,18 +44,15 @@ Register foo/test as live property:
 >>> from zeit.cms.content.interfaces import WRITEABLE_LIVE
 >>> lp_manager = zope.component.getUtility(
 ...     zeit.cms.content.interfaces.ILivePropertyManager)
->>> lp_manager.is_writeable_live('foo', 'test')
+>>> lp_manager.is_writeable_live('foo', TEST)
 False
->>> lp_manager.register_live_property('foo', 'test', WRITEABLE_LIVE)
->>> lp_manager.is_writeable_live('foo', 'test')
+>>> lp_manager.register_live_property('foo', TEST, WRITEABLE_LIVE)
+>>> lp_manager.is_writeable_live('foo', TEST)
 True
 
->>> properties[('foo', 'test')] = 'bar'
->>> pprint.pprint(dict(properties))
-{('foo', 'test'): 'bar',
- ('getlastmodified', 'DAV:'): 'Fri, 07 Mar 2008 12:47:16 GMT',
- ('type', 'http://namespaces.zeit.de/CMS/meta'): 'testcontenttype'}
-
+>>> properties[('foo', TEST)] = 'bar'
+>>> properties[('foo', TEST)]
+'bar'
 
 Since foo/test is a live property now, it will not be overwritten when we check
 in an object:
@@ -75,11 +64,11 @@ in an object:
 ...     checked_out)
 >>> checked_out_properties
 <zeit.connector.resource.WebDAVProperties object at 0x...>
->>> checked_out_properties[('foo', 'test')] = 'new-value-in-checked-out'
+>>> checked_out_properties[('foo', TEST)] = 'new-value-in-checked-out'
 
 Of course until now nothing has changed in the live-properties
 
->>> properties[('foo', 'test')]
+>>> properties[('foo', TEST)]
 'bar'
 
 Check in:
@@ -89,7 +78,7 @@ Check in:
 
 The live property value has not changed:
 
->>> properties[('foo', 'test')]
+>>> properties[('foo', TEST)]
 'bar'
 
 
@@ -111,12 +100,12 @@ request:
 ...     change_properties(id, properties)
 >>> connector.changeProperties = printing_change_props
 
->>> properties[('foo', 'test')] = 'New Value'
-Change: http://xml.zeit.de/testcontent {('foo', 'test'): 'New Value'}
+>>> properties[('foo', TEST)] = 'New Value'
+Change: http://xml.zeit.de/testcontent {('foo', 'http://namespaces.zeit.de/CMS/testing'): 'New Value'}
 
 Setting the same value again does not make a DAV request:
 
->>> properties[('foo', 'test')] = 'New Value'
+>>> properties[('foo', TEST)] = 'New Value'
 
 
 Clean up

@@ -1,5 +1,8 @@
 import xml.sax.saxutils
 
+import transaction
+
+from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import zeit.cms.testing
 
 
@@ -8,17 +11,21 @@ class TestListing(zeit.cms.testing.SeleniumTestCase):
     window_height = 800
 
     def test_tablelisting_filter(self):
+        self.repository['foo'] = ExampleContentType()
+        self.repository['bar'] = ExampleContentType()
+        transaction.commit()
+
         s = self.selenium
 
         # Open a folder with articles.
-        self.open('/repository/online/2007/01')
-        self.verifyTextDisplayed('Somalia')
-        self.verifyTextDisplayed('presseschau')
+        self.open('/repository')
+        self.verifyTextDisplayed('foo')
+        self.verifyTextDisplayed('bar')
 
         # Type in a word to filter the table
-        s.type('name=tableFilter', 'internat')
-        self.verifyTextNotDisplayed('Somalia')
-        self.verifyTextDisplayed('presseschau')
+        s.type('name=tableFilter', 'foo')
+        self.verifyTextNotDisplayed('bar')
+        self.verifyTextDisplayed('foo')
 
     def test_drag_and_drop_from_table(self):
         # First create a clip to have a target for dragging

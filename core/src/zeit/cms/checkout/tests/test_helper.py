@@ -1,4 +1,5 @@
 import lxml.etree
+import transaction
 import zope.component
 
 import zeit.cms.checkout.helper
@@ -16,6 +17,7 @@ class TestHelper(zeit.cms.testing.ZeitCmsTestCase):
         with zeit.cms.checkout.helper.checked_out(content) as co:
             self.assertNotEqual(self.repository, co.__parent__)
             co.title = 'foo'
+        transaction.commit()
         self.assertEqual('foo', self.repository['testcontent'].title)
         sc = zeit.cms.content.interfaces.ISemanticChange(content)
         self.assertTrue(sc.last_semantic_change is None)
@@ -58,6 +60,7 @@ class TestHelper(zeit.cms.testing.ZeitCmsTestCase):
         # Assign an etag
         with zeit.cms.checkout.helper.checked_out(content):
             pass
+        transaction.commit()
 
         def cycle_without_ignore_raises():
             with zeit.cms.checkout.helper.checked_out(content) as co:
