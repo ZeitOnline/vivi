@@ -149,10 +149,6 @@
     />
   <grant
     principal="zope.producer"
-    permission="zeit.cms.repository.ViewNavigationTree"
-    />
-  <grant
-    principal="zope.producer"
     permission="zeit.cms.repository.ViewProperties"
     />
   <grant

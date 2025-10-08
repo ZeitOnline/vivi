@@ -7,6 +7,5 @@ def test_suite():
         'delete.txt',
         'file.txt',
         'rename.txt',
-        'tree.txt',
         package='zeit.cms.repository.browser',
     )

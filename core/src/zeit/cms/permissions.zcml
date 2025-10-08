@@ -66,11 +66,6 @@
     />
 
   <permission
-    id="zeit.cms.repository.ViewNavigationTree"
-    title="View repository navigation tree"
-    />
-
-  <permission
     id="zeit.cms.repository.ViewProperties"
     title="View DAV properties"
     />

@@ -144,22 +144,6 @@ class INonRecursiveCollection(ICollection):
     """
 
 
-class IUserPreferences(zope.interface.Interface):
-    """User preferences regarding the repository."""
-
-    def hide_container(container):
-        """Mark the container as hidden."""
-
-    def show_container(container):
-        """Mark the container as shown."""
-
-    def is_hidden(container):
-        """Return if the container is hidden."""
-
-    def get_hidden_containers():
-        """Returen a set of hidden containers."""
-
-
 class IFile(IDAVContent, zope.file.interfaces.IFile):
     """A file like object in the CMS."""
 

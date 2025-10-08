@@ -1,5 +1,3 @@
-import hashlib
-
 import grokcore.component as grok
 import zope.cachedescriptors.property
 import zope.component
@@ -26,35 +24,6 @@ def layer_for_repository(context):
     return zeit.cms.browser.interfaces.IRepositoryLayer
 
 
-class HTMLTree(zope.viewlet.viewlet.ViewletBase, zeit.cms.browser.view.Base):
-    """view class for navtree"""
-
-    def render(self):
-        return self.index()
-
-    @zope.cachedescriptors.property.Lazy
-    def tree_view(self):
-        return zope.component.getMultiAdapter((self.repository, self.request), name='tree.html')
-
-    @property
-    def tree_url(self):
-        preferences = zeit.cms.repository.interfaces.IUserPreferences(
-            zeit.cms.workingcopy.interfaces.IWorkingcopy(self.request.principal)
-        )
-        hash_ = hashlib.md5(usedforsecurity=False)
-        for container in preferences.get_hidden_containers():
-            hash_.update(container.encode('utf-8'))
-        hash_.update('TREE'.encode('utf-8'))
-        for container in sorted(self.tree_view.treeState):
-            hash_.update(container.encode('utf-8'))
-        return '%s/++noop++%s/@@tree.html' % (self.url(self.repository), hash_.hexdigest())
-
-    @zope.cachedescriptors.property.Lazy
-    def repository(self):
-        """repository representing the root of the tree"""
-        return zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
-
-
 class Tree(zeit.cms.browser.tree.Tree):
     """Repository Tree"""
 
@@ -69,8 +38,6 @@ class Tree(zeit.cms.browser.tree.Tree):
     def listContainer(self, container):
         for obj in sorted(container.values(), key=zeit.cms.content.interfaces.IContentSortKey):
             if not zeit.cms.repository.interfaces.ICollection.providedBy(obj):
-                continue
-            if self.preferences.is_hidden(obj) and not self.selected(self.getUrl(obj)):
                 continue
             yield obj
 
@@ -104,59 +71,12 @@ class Tree(zeit.cms.browser.tree.Tree):
 
         return view_path[: len(path)] == path
 
-    @zope.cachedescriptors.property.Lazy
-    def preferences(self):
-        return zeit.cms.repository.interfaces.IUserPreferences(
-            zeit.cms.workingcopy.interfaces.IWorkingcopy(self.request.principal)
-        )
-
     def expanded(self, obj):
         if self.request.form.get('autoexpand-tree'):
             url = self.getUrl(obj)
             if self.selected(url):
                 return True
         return super().expanded(obj)
-
-
-class HiddenCollections(zeit.cms.browser.view.Base):
-    def hide_collection(self):
-        self.add_to_preference()
-        self.send_message(
-            _(
-                '"${name}" is now hidden from the navigation tree.',
-                mapping={'name': self.context.__name__},
-            )
-        )
-        return self.redirect()
-
-    def show_collection(self):
-        self.remove_from_preference()
-        self.send_message(
-            _(
-                '"${name}" is now shown in the navigation tree.',
-                mapping={'name': self.context.__name__},
-            )
-        )
-        return self.redirect()
-
-    def redirect(self):
-        self.request.response.redirect(self.url(self.context))
-
-    def add_to_preference(self):
-        self.preferences.hide_container(self.context)
-
-    def remove_from_preference(self):
-        self.preferences.show_container(self.context)
-
-    @property
-    def hidden(self):
-        return self.preferences.is_hidden(self.context)
-
-    @zope.cachedescriptors.property.Lazy
-    def preferences(self):
-        return zeit.cms.repository.interfaces.IUserPreferences(
-            zeit.cms.workingcopy.interfaces.IWorkingcopy(self.request.principal)
-        )
 
 
 class RedirectToObjectWithUniqueId(zeit.cms.browser.view.Base):
