@@ -1,11 +1,12 @@
 import copy
-import unittest.mock as mock
 
 import pendulum
 import pytest
+import transaction
 
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
+from zeit.connector.interfaces import IWebDAVProperties
 from zeit.speech.connection import Speech
 import zeit.cms.testing
 import zeit.content.article.testing
@@ -65,7 +66,7 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
     },
     bases=zeit.content.article.testing.CONFIG_LAYER,
 )
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER)
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER, features=['zeit.connector.sql.zope'])
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
 WSGI_LAYER = zeit.cms.testing.WSGILayer(ZOPE_LAYER)
 
@@ -76,11 +77,14 @@ class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
     def setUp(self):
         super().setUp()
         current_date = pendulum.now('UTC')
-        self.unique_id = (
-            f'http://xml.zeit.de/tts/{current_date.strftime("%Y-%m")}/{TTS_CREATED["uuid"]}'
+        uuid = TTS_CREATED['uuid']
+        self.unique_id = f'http://xml.zeit.de/tts/{current_date.strftime("%Y-%m")}/{uuid}'
+        article = zeit.content.article.testing.create_article()
+        IWebDAVProperties(article)[('uuid', 'http://namespaces.zeit.de/CMS/document')] = (
+            '{urn:uuid:%s}' % uuid
         )
-        self.article_uid = 'http://xml.zeit.de/online/2022/08/trockenheit'
-        self.article = ICMSContent(self.article_uid)
+        self.article = self.repository['article'] = article
+        self.article_uid = self.article.uniqueId
         IPublishInfo(self.article).urgent = True
         IPublish(self.article).publish(background=False)
 
@@ -92,11 +96,8 @@ class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
         self.caplog = caplog
 
     def create_audio(self, data):
-        self.repository.connector.search_result = [(self.article.uniqueId)]
-        speech = Speech()
-        with mock.patch('zeit.speech.connection.Speech._find', return_value=None):
-            speech.update(data)
-        self.repository.connector.search_result = []
+        Speech().update(data)
+        transaction.commit()
         return ICMSContent(self.unique_id)
 
     def setup_speech_message(self, field, value):

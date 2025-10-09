@@ -34,6 +34,7 @@ import zeit.content.modules.interfaces
 import zeit.edit.interfaces
 import zeit.edit.rule
 import zeit.workflow.interfaces
+import zeit.workflow.publish_3rdparty
 import zeit.workflow.workflow
 
 
