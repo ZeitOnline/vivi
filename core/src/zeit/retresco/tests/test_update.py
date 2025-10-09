@@ -184,6 +184,11 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
         zope.event.notify(event)
         self.assertTrue(self.tms.index.called)
 
+    def test_event_should_index(self):
+        content = self.repository['testcontent']
+        zope.event.notify(zeit.cms.checkout.interfaces.ContentIndexEvent(content))
+        self.assertTrue(self.tms.index.called)
+
 
 class UpdatePublishTest(zeit.retresco.testing.FunctionalTestCase):
     def setUp(self):

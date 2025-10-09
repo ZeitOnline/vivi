@@ -235,3 +235,15 @@ class BeforeDeleteEvent(EventBase):
 @zope.interface.implementer(IAfterDeleteEvent)
 class AfterDeleteEvent(EventBase):
     pass
+
+
+class IContentIndexEvent(zope.interface.interfaces.IObjectEvent):
+    """
+    Should be IContentModifiedEvent, but TMS index is complex.
+    Index content object in tms synchronuously
+    """
+
+
+@zope.interface.implementer(IContentIndexEvent)
+class ContentIndexEvent(zope.interface.interfaces.ObjectEvent):
+    pass
