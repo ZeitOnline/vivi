@@ -17,7 +17,7 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
     },
     bases=zeit.content.audio.testing.CONFIG_LAYER,
 )
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER)
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER, features=['zeit.connector.sql.zope'])
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
 
 
