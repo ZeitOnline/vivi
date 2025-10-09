@@ -33,4 +33,15 @@
 
   <include package="zeit.cms" file="ftesting-securitypolicy.zcml" />
 
+  <principal
+    id="zeit.cms.modify"
+    title="ContentModifier"
+    login="notify"
+    password="notifypw" />
+
+  <grant
+    principal="zeit.cms.modify"
+    permission="zeit.cms.ModifyContent"
+    />
+
 </configure>
