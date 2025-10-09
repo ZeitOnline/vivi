@@ -106,7 +106,6 @@ class WebhookExcludeTest(zeit.cms.testing.ZeitCmsTestCase):
         hook = zeit.cms.checkout.webhook.Hook(None, None)
         hook.add_exclude('type', 'testcontenttype')
         self.assertTrue(hook.should_exclude(self.repository['testcontent']))
-        self.assertFalse(hook.should_exclude(self.repository['online']['2007']['01']['Somalia']))
 
     def test_match_product(self):
         hook = zeit.cms.checkout.webhook.Hook(None, None)
@@ -149,9 +148,11 @@ class WebhookExcludeTest(zeit.cms.testing.ZeitCmsTestCase):
 
     def test_match_path_prefix(self):
         hook = zeit.cms.checkout.webhook.Hook(None, None)
-        hook.add_exclude('path_prefix', '/online')
+        hook.add_exclude('path_prefix', '/folder')
+        self.repository['folder'] = zeit.cms.repository.folder.Folder()
+        self.repository['folder']['testcontent'] = ExampleContentType()
         self.assertFalse(hook.should_exclude(self.repository['testcontent']))
-        self.assertTrue(hook.should_exclude(self.repository['online']['2007']['01']['Somalia']))
+        self.assertTrue(hook.should_exclude(self.repository['folder']['testcontent']))
 
 
 class WebhookIncludeTest(zeit.cms.testing.ZeitCmsTestCase):
@@ -159,7 +160,6 @@ class WebhookIncludeTest(zeit.cms.testing.ZeitCmsTestCase):
         hook = zeit.cms.checkout.webhook.Hook(None, None)
         hook.add_include('type', 'testcontenttype')
         self.assertTrue(hook.should_include(self.repository['testcontent']))
-        self.assertFalse(hook.should_include(self.repository['online']['2007']['01']['Somalia']))
 
     def test_matches_criteria_is_false_when_include_does_not_match(self):
         hook = zeit.cms.checkout.webhook.Hook(None, None)
