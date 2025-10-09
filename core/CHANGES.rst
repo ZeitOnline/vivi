@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.209.0 (2025-10-09)
+--------------------
+
+- ENG-422: send recipe category to publisher in followings
+
+- WCM-1097: Remove long-unused repository tree viewlet
+
+
 7.208.0 (2025-10-07)
 --------------------
 
