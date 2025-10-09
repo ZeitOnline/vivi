@@ -23,7 +23,6 @@ import zope.security.proxy
 from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.image import embedded
-import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.repository.file
@@ -44,24 +43,28 @@ class BaseImage:
         zeit.content.image.interfaces.IImage['mime_type'],
         zeit.content.image.interfaces.IMAGE_NAMESPACE,
         'mime_type',
+        writeable=zeit.cms.content.interfaces.WRITEABLE_LIVE,
     )
 
     _width = zeit.cms.content.dav.DAVProperty(
         zeit.content.image.interfaces.IImage['width'],
         zeit.content.image.interfaces.IMAGE_NAMESPACE,
         'width',
+        writeable=zeit.cms.content.interfaces.WRITEABLE_LIVE,
     )
 
     _height = zeit.cms.content.dav.DAVProperty(
         zeit.content.image.interfaces.IImage['height'],
         zeit.content.image.interfaces.IMAGE_NAMESPACE,
         'height',
+        writeable=zeit.cms.content.interfaces.WRITEABLE_LIVE,
     )
 
     accent_color = zeit.cms.content.dav.DAVProperty(
         zeit.content.image.interfaces.IImage['accent_color'],
         zeit.content.image.interfaces.IMAGE_NAMESPACE,
         'accent_color',
+        writeable=zeit.cms.content.interfaces.WRITEABLE_LIVE,
     )
 
     @contextmanager
@@ -320,7 +323,7 @@ def set_image_properties(context, event):
 
 
 @grok.subscribe(
-    zeit.content.image.interfaces.IImage, zeit.cms.checkout.interfaces.IBeforeCheckinEvent
+    zeit.content.image.interfaces.IImage, zeit.cms.content.interfaces.IContentModifiedEvent
 )
 def update_image_properties(context, event):
     return set_image_properties(context, event)
