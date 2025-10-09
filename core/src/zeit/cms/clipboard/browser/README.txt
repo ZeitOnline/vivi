@@ -8,6 +8,20 @@ Create a testbrowser:
 >>> browser = Browser(layer['wsgi_app'])
 >>> browser.login('user', 'userpw')
 
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
+>>> import zope.component
+>>> from zeit.cms.repository.interfaces import IRepository
+>>> repository = zope.component.getUtility(IRepository)
+>>> from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
+
+>>> one = ExampleContentType()
+>>> one.title = 'one'
+>>> repository['one'] = one
+>>> two = ExampleContentType()
+>>> two.title = 'two'
+>>> repository['two'] = two
+
 
 Tree
 ====
@@ -40,17 +54,17 @@ Open the drag pane of a content ojbect:
 
 >>> ajax = Browser(layer['wsgi_app'])
 >>> ajax.login('user', 'userpw')
->>> ajax.open(browser.url + '/online/2007/01/Somalia/@@drag-pane.html')
+>>> ajax.open(browser.url + '/one/@@drag-pane.html')
 >>> print(ajax.contents)
-<div class="Text">Somalia</div>
-<div class="UniqueId">http://xml.zeit.de/online/2007/01/Somalia</div>
+<div class="Text"> one </div>
+<div class="UniqueId">http://xml.zeit.de/one</div>
 
 We assume, that we drag the pane over the Clipboard:
 
 >>> ajax.handleErrors = False
 >>> ajax.open('http://localhost/++skin++vivi/workingcopy/zope.user/'
 ...           'zeit.cms.clipboard.clipboard.Clipboard/@@addContent?'
-...           'add_to=&unique_id=http://xml.zeit.de/online/2007/01/Somalia')
+...           'add_to=&unique_id=http://xml.zeit.de/one')
 >>> print(ajax.contents)
   <ul>
     <li class="Root..." uniqueid="">
@@ -63,10 +77,10 @@ We assume, that we drag the pane over the Clipboard:
       </a>
       </p>
       <ul>
-        <li class="NotRoot type-unknown" uniqueid="Somalia">
+        <li class="NotRoot type-testcontenttype" uniqueid="one">
           <p>
-            <a href="http://localhost/++skin++vivi/workingcopy/zope.user/zeit.cms.clipboard.clipboard.Clipboard/Somalia">Somalia</a>
-            <span class="uniqueId">...Somalia</span>
+            <a href="http://localhost/++skin++vivi/workingcopy/zope.user/zeit.cms.clipboard.clipboard.Clipboard/one">one</a>
+            <span class="uniqueId">...one</span>
             <a title="Remove" class="deleteLink context-action"...>
                <img alt="Delete" ... />
                <span class="action-title">Remove</span>
@@ -78,13 +92,13 @@ We assume, that we drag the pane over the Clipboard:
  </ul>
 
 
-Assume we drop the object `Queerdax` on the `Somalia` object. `Querdax` will be
+Assume we drop the object `two` on the `one` object. `two` will be
 added *after* the previous object:
 
 >>> ajax.open('http://localhost/++skin++vivi/workingcopy/zope.user/'
 ...           'zeit.cms.clipboard.clipboard.Clipboard/@@addContent?'
-...           'add_to=Somalia&'
-...           'unique_id=http://xml.zeit.de/online/2007/01/Querdax')
+...           'add_to=one&'
+...           'unique_id=http://xml.zeit.de/two')
 >>> print(ajax.contents)
     <ul>
       <li class="Root..." uniqueid="">
@@ -94,17 +108,17 @@ added *after* the previous object:
           <a title="Remove" ...
         </p>
         <ul>
-          <li class="NotRoot type-unknown" uniqueid="Somalia">
+          <li class="NotRoot type-testcontenttype" uniqueid="one">
             <p>
-              <a href="...Somalia">Somalia</a>
-              <span class="uniqueId">...Somalia</span>
+              <a href="...one">one</a>
+              <span class="uniqueId">...one</span>
               <a title="Remove" ...
             </p>
           </li>
-          <li class="NotRoot type-unknown" uniqueid="Querdax">
+          <li class="NotRoot type-testcontenttype" uniqueid="two">
             <p>
-              <a href="...Querdax">Querdax</a>
-              <span class="uniqueId">...Querdax</span>
+              <a href="...two">two</a>
+              <span class="uniqueId">...two</span>
               <a title="Remove" ...
             </p>
           </li>
@@ -119,38 +133,38 @@ Reload first the page, to get the test in sync with the "ajax":
 
 Let's click the link in the tree. We'll be redirect to the object's main view:
 
->>> browser.getLink('Somalia').click()
+>>> browser.getLink('one').click()
 >>> browser.url
-'http://localhost/++skin++vivi/repository/online/2007/01/Somalia'
+'http://localhost/++skin++vivi/repository/one'
 
 
 The clipboard link calls the default view of the clipboard entry:
 
->>> browser.getLink('Somalia', index=1).url
-'http://localhost/++skin++vivi/workingcopy/zope.user/zeit.cms.clipboard.clipboard.Clipboard/Somalia'
+>>> browser.getLink('one', index=1).url
+'http://localhost/++skin++vivi/workingcopy/zope.user/zeit.cms.clipboard.clipboard.Clipboard/one'
 
 The link in the listing pane, however, refers to @@view of the clipboard entry,
 which also redirects to the referenced object.
 
->>> browser.open('%s/@@view.html' % browser.getLink('Somalia', index=1).url)
+>>> browser.open('%s/@@view.html' % browser.getLink('one', index=1).url)
 >>> browser.url
-'http://localhost/++skin++vivi/repository/online/2007/01/Somalia'
+'http://localhost/++skin++vivi/repository/one'
 
 And there also is an @@edit.html for clipboard entries, which redirects to
 the referenced object, too:
 
->>> browser.open('%s/@@edit.html' % browser.getLink('Somalia', index=1).url)
+>>> browser.open('%s/@@edit.html' % browser.getLink('one', index=1).url)
 >>> browser.url
-'http://localhost/++skin++vivi/repository/online/2007/01/Somalia'
+'http://localhost/++skin++vivi/repository/one'
 
 We can also get the unique id from an entry:  XXX why do we need this?
 
 >>> ajax.open(
 ...     'http://localhost/++skin++vivi/workingcopy/zope.user/'
-...     'zeit.cms.clipboard.clipboard.Clipboard/Somalia'
+...     'zeit.cms.clipboard.clipboard.Clipboard/one'
 ...     '/@@ajax.get_unique_id')
 >>> print(ajax.contents)
-http://xml.zeit.de/online/2007/01/Somalia
+http://xml.zeit.de/one
 
 
 Adding Clips
@@ -179,16 +193,16 @@ element of the root node:
       <span class="uniqueId">...</span>
       ...
       <ul>
-        <li class="NotRoot..." uniqueid="Somalia">
+        <li class="NotRoot..." uniqueid="one">
         <p>
-          <a href="...Somalia">Somalia</a>
-          <span class="uniqueId">...Somalia</span>
+          <a href="...one">one</a>
+          <span class="uniqueId">...one</span>
           ...
         </li>
-        <li class="NotRoot..." uniqueid="Querdax">
+        <li class="NotRoot..." uniqueid="two">
         <p>
-          <a href="...Querdax">Querdax</a>
-          <span class="uniqueId">...Querdax</span>
+          <a href="...two">two</a>
+          <span class="uniqueId">...two</span>
           ...
         </li>
         <li action="expand" class="NotRoot..." uniqueid="New Clip">
@@ -214,16 +228,16 @@ Let's add another clip:
       <span class="uniqueId">...</span>
       ...
       <ul>
-        <li class="NotRoot..." uniqueid="Somalia">
+        <li class="NotRoot..." uniqueid="one">
           <p>
-          <a href="...Somalia">Somalia</a>
-          <span class="uniqueId">...Somalia</span>
+          <a href="...one">one</a>
+          <span class="uniqueId">...one</span>
           ...
         </li>
-        <li class="NotRoot..." uniqueid="Querdax">
+        <li class="NotRoot..." uniqueid="two">
           <p>
-          <a href="...Querdax">Querdax</a>
-          <span class="uniqueId">...Querdax</span>
+          <a href="...two">two</a>
+          <span class="uniqueId">...two</span>
           ...
         </li>
         <li action="expand" class="NotRoot..." uniqueid="New Clip">
@@ -245,13 +259,13 @@ Let's add another clip:
 Moving
 ======
 
-We can now move things around. This also works via ajax. Move the `Querdax`
-to `New Clip`. This moves `Querdax` after `New Clip` since `New Clip` is not
+We can now move things around. This also works via ajax. Move the `two`
+to `New Clip`. This moves `two` after `New Clip` since `New Clip` is not
 expanded:
 
 >>> ajax.open('http://localhost/++skin++vivi/workingcopy/zope.user/'
 ...           'zeit.cms.clipboard.clipboard.Clipboard/@@moveContent?'
-...           'object_path=Querdax&add_to=New%20Clip')
+...           'object_path=two&add_to=New%20Clip')
 >>> print(ajax.contents)
   <ul>
     <li class="Root..." uniqueid="">
@@ -259,9 +273,9 @@ expanded:
       <a href="...">Clipboard</a>
       ...
       <ul>
-        <li class="NotRoot..." uniqueid="Somalia">
+        <li class="NotRoot..." uniqueid="one">
         <p>
-          <a href="...Somalia">Somalia</a>
+          <a href="...one">one</a>
           ...
         </li>
         <li action="expand" class="NotRoot..." uniqueid="New Clip">
@@ -269,10 +283,10 @@ expanded:
           <a href="...">New Clip</a>
           ...
         </li>
-        <li class="NotRoot..." uniqueid="Querdax">
+        <li class="NotRoot..." uniqueid="two">
           <p>
-          <a href="...Querdax">Querdax</a>
-          <span class="uniqueId">...Querdax</span>
+          <a href="...two">two</a>
+          <span class="uniqueId">...two</span>
           ...
         </li>
         <li action="expand" class="NotRoot..." uniqueid="Second Clip">
@@ -285,7 +299,7 @@ expanded:
  </ul>
 
 
-To move `Querdax` *into* `New Clip` it needs to be expanded:
+To move `two` *into* `New Clip` it needs to be expanded:
 
 >>> ajax.open('http://localhost/++skin++vivi/workingcopy/zope.user/'
 ...           'zeit.cms.clipboard.clipboard.Clipboard/tree.html/'
@@ -297,9 +311,9 @@ To move `Querdax` *into* `New Clip` it needs to be expanded:
       <a href="...">Clipboard</a>
       ...
       <ul>
-        <li class="NotRoot..." uniqueid="Somalia">
+        <li class="NotRoot..." uniqueid="one">
           <p>
-          <a href="...Somalia">Somalia</a>
+          <a href="...one">one</a>
           ...
         </li>
         <li action="collapse" class="NotRoot..." uniqueid="New Clip">
@@ -307,9 +321,9 @@ To move `Querdax` *into* `New Clip` it needs to be expanded:
           <a href="...">New Clip</a>
           ...
         </li>
-        <li class="NotRoot..." uniqueid="Querdax">
+        <li class="NotRoot..." uniqueid="two">
           <p>
-          <a href="...Querdax">Querdax</a>
+          <a href="...two">two</a>
           ...
         </li>
         <li action="expand" class="NotRoot..." uniqueid="Second Clip">
@@ -323,7 +337,7 @@ To move `Querdax` *into* `New Clip` it needs to be expanded:
 
 >>> ajax.open('http://localhost/++skin++vivi/workingcopy/zope.user/'
 ...           'zeit.cms.clipboard.clipboard.Clipboard/@@moveContent?'
-...           'object_path=Querdax&add_to=New%20Clip')
+...           'object_path=two&add_to=New%20Clip')
 >>> print(ajax.contents)
   <ul>
     <li class="Root..." uniqueid="">
@@ -331,9 +345,9 @@ To move `Querdax` *into* `New Clip` it needs to be expanded:
       <a href="...">Clipboard</a>
       ...
       <ul>
-        <li class="NotRoot..." uniqueid="Somalia">
+        <li class="NotRoot..." uniqueid="one">
           <p>
-          <a href="...Somalia">Somalia</a>
+          <a href="...one">one</a>
           ...
         </li>
         <li action="collapse" class="NotRoot..." uniqueid="New Clip">
@@ -342,9 +356,9 @@ To move `Querdax` *into* `New Clip` it needs to be expanded:
           <span class="uniqueId">...</span>
           ...
           <ul>
-            <li class="NotRoot..." uniqueid="New Clip/Querdax">
+            <li class="NotRoot..." uniqueid="New Clip/two">
               <p>
-              <a href="...Querdax">Querdax</a>
+              <a href="...two">two</a>
               ...
             </li>
           </ul>
@@ -365,7 +379,7 @@ We can of course also move clips into clips:
 
 >>> ajax.open('http://localhost/++skin++vivi/workingcopy/zope.user/'
 ...           'zeit.cms.clipboard.clipboard.Clipboard/@@moveContent?'
-...           'object_path=Second%20Clip&add_to=New%20Clip/Querdax')
+...           'object_path=Second%20Clip&add_to=New%20Clip/two')
 >>> print(ajax.contents)
   <ul>
     <li class="Root..." uniqueid="">
@@ -373,9 +387,9 @@ We can of course also move clips into clips:
       <a href="...">Clipboard</a>
       ...
       <ul>
-        <li class="NotRoot..." uniqueid="Somalia">
+        <li class="NotRoot..." uniqueid="one">
           <p>
-          <a href="...Somalia">Somalia</a>
+          <a href="...one">one</a>
           ...
         </li>
         <li action="collapse" class="NotRoot..." uniqueid="New Clip">
@@ -383,9 +397,9 @@ We can of course also move clips into clips:
           <a href="...">New Clip</a>
           ...
           <ul>
-            <li class="NotRoot..." uniqueid="New Clip/Querdax">
+            <li class="NotRoot..." uniqueid="New Clip/two">
               <p>
-              <a href="...Querdax">Querdax</a>
+              <a href="...two">two</a>
               ...
             </li>
             <li action="expand" class="NotRoot..."
@@ -405,12 +419,12 @@ Removing Clips
 ==============
 
 Each clipboard entry can be removed.  We use our "ajax" browser and remove
-the Querdax entry we've moved into New Clip above:
+the two entry we've moved into New Clip above:
 
 >>> link = ajax.getLink('Remove', index=3)
 >>> link
 <Link text='Remove'
-   url='http://localhost/++skin++vivi/workingcopy/zope.user/zeit.cms.clipboard.clipboard.Clipboard/New%20Clip/Querdax/@@ajax-delete-entry'>
+   url='http://localhost/++skin++vivi/workingcopy/zope.user/zeit.cms.clipboard.clipboard.Clipboard/New%20Clip/two/@@ajax-delete-entry'>
 
 >>> link.click()
 >>> print(ajax.contents)
@@ -420,9 +434,9 @@ the Querdax entry we've moved into New Clip above:
       <a href="...">Clipboard</a>
       ...
       <ul>
-        <li class="NotRoot..." uniqueid="Somalia">
+        <li class="NotRoot..." uniqueid="one">
           <p>
-          <a href="...Somalia">Somalia</a>
+          <a href="...one">one</a>
           ...
         </li>
         <li action="collapse" class="NotRoot..." uniqueid="New Clip">
@@ -456,10 +470,10 @@ in the clipboard also has its icon:
 <table class="contentListing hasMetadata filterable">
     ...
     <td>
-      Somalia
+      one
     </td>
     <td>
-      <span class="filename">Somalia</span>
+      <span class="filename">one</span>
     ...
 
 
@@ -472,15 +486,7 @@ verify this is working:
 When a referenced object is deleted, the clip will become an "invalid
 reference".
 
->>> import zeit.cms.testing
->>> zeit.cms.testing.set_site()
->>> import zope.component
->>> from zeit.cms.repository.interfaces import IRepository
->>> repository = zope.component.getUtility(IRepository)
->>> import transaction
-
->>> del repository['online']['2007']['01']['Somalia']
->>> transaction.commit()
+>>> del repository['one']
 
 Let's have a look at the sidebar:
 
@@ -492,9 +498,9 @@ Let's have a look at the sidebar:
       <li class="Root..." uniqueid="">
         ...
   <ul>
-      <li class="NotRoot..." uniqueid="Somalia">
+      <li class="NotRoot..." uniqueid="one">
         <p>
-        <a href="http://localhost/++skin++vivi/workingcopy/zope.user/zeit.cms.clipboard.clipboard.Clipboard/Somalia">Somalia</a>
+        <a href="http://localhost/++skin++vivi/workingcopy/zope.user/zeit.cms.clipboard.clipboard.Clipboard/one">one</a>
         ...
 
 
@@ -545,9 +551,9 @@ Reload the whole page and verify the title change:
       <a href="...">Clipboard</a>
       ...
       <ul>
-        <li class="NotRoot..." uniqueid="Somalia">
+        <li class="NotRoot..." uniqueid="one">
           <p>
-          <a href="...Somalia">Somalia</a>
+          <a href="...one">one</a>
           ...
         </li>
         <li action="collapse" class="NotRoot..." uniqueid="New Clip">
@@ -606,9 +612,9 @@ Open "New clip", we have a delete link there:
       <a href="...">Clipboard</a>
       ...
       <ul>
-        <li class="NotRoot..." uniqueid="Somalia">
+        <li class="NotRoot..." uniqueid="one">
           <p>
-          <a href="...Somalia">Somalia</a>
+          <a href="...one">one</a>
           ...
         </li>
       </ul>
@@ -622,20 +628,20 @@ Copying from clipboard
 
 Content can be copied from the clipbard. Go to a folder in the repository:
 
->>> browser.open('http://localhost/++skin++vivi/repository/online')
+>>> browser.open('http://localhost/++skin++vivi/repository')
 >>> browser.getLink('Copy from clipboard')
-<Link text='Copy from clipboard' url='javascript:zeit.cms.lightbox_form('http://localhost/++skin++vivi/repository/online/@@insert_from_clipboard.lightbox')'>
+<Link text='Copy from clipboard' url='javascript:zeit.cms.lightbox_form('http://localhost/++skin++vivi/repository/@@insert_from_clipboard.lightbox')'>
 
 Let's open the lightbox. It shows the clipboard tree:
 
 >>> browser.handleErrors = False
->>> ajax.open('http://localhost/++skin++vivi/repository/online'
+>>> ajax.open('http://localhost/++skin++vivi/repository'
 ...           '/@@insert_from_clipboard.lightbox')
 >>> print(ajax.contents)
 <div>
   <h1>
     Copy content into
-    http://xml.zeit.de/online
+    http://xml.zeit.de/
   </h1>
   <div id="LightboxClipboard" class="Tree">
   <ul>
@@ -647,26 +653,26 @@ Let's open the lightbox. It shows the clipboard tree:
     zeit.cms._lightbox_clipboard = new zeit.cms.Clipboard(
       'http://localhost/++skin++vivi/workingcopy/zope.user/zeit.cms.clipboard.clipboard.Clipboard', 'http://localhost/++skin++vivi/workingcopy/zope.user/zeit.cms.clipboard.clipboard.Clipboard/tree.html', 'LightboxClipboard');
     zeit.cms._lightbox_clipboard_copy = new zeit.cms.CopyFromClipboard(
-      zeit.cms._lightbox_clipboard, 'http://localhost/++skin++vivi/repository/online/@@copy');
+      zeit.cms._lightbox_clipboard, 'http://localhost/++skin++vivi/repository/@@copy');
     </script>...
 
 In the javascript the copy-url is passed to javascript:
 
->>> copy_url = 'http://localhost/++skin++vivi/repository/online/@@copy'
+>>> copy_url = 'http://localhost/++skin++vivi/repository/@@copy'
 
 When the user chooses an element from his clipboard the copy url is called with
 the unique id of the chosen element. Let's copy
 
->>> unique_id = 'http://xml.zeit.de/online/2007/01'
+>>> unique_id = 'http://xml.zeit.de/testcontent'
 
 to online:
 
 
 >>> browser.open('%s?unique_id=%s' % (copy_url, unique_id))
 >>> browser.url
-'http://localhost/++skin++vivi/repository/online/01'
+'http://localhost/++skin++vivi/repository/testcontent-2'
 >>> print(browser.contents)
 <?xml ...
-        <li class="message">http://xml.zeit.de/online/2007/01 was copied to
-        http://xml.zeit.de/online/01.</li>
+        <li class="message">http://xml.zeit.de/testcontent was copied to
+        http://xml.zeit.de/testcontent-2.</li>
         ...

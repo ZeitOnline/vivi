@@ -116,7 +116,8 @@ class Breadcrumbs(zeit.cms.testing.ZeitCmsTestCase):
         )
 
     def test_no_icommonmetadata_in_wc_lists_repo_path(self):
-        content = self.repository['2006']['DSC00109_2.JPG']
+        self.repository['kultur']['file'] = zeit.cms.repository.file.LocalFile()
+        content = self.repository['kultur']['file']
         manager = zeit.cms.checkout.interfaces.ICheckoutManager(content)
         co = manager.checkout()
         self.assertEqual(
@@ -127,14 +128,14 @@ class Breadcrumbs(zeit.cms.testing.ZeitCmsTestCase):
                     'url': 'http://127.0.0.1/repository',
                 },
                 {
-                    'title': '2006',
-                    'uniqueId': 'http://xml.zeit.de/2006',
-                    'url': 'http://127.0.0.1/repository/2006',
+                    'title': 'kultur',
+                    'uniqueId': 'http://xml.zeit.de/kultur',
+                    'url': 'http://127.0.0.1/repository/kultur',
                 },
                 {
-                    'title': 'DSC00109_2.JPG',
-                    'uniqueId': 'http://xml.zeit.de/2006/DSC00109_2.JPG',
-                    'url': 'http://127.0.0.1/repository/2006/DSC00109_2.JPG',
+                    'title': 'file',
+                    'uniqueId': 'http://xml.zeit.de/kultur/file',
+                    'url': 'http://127.0.0.1/repository/kultur/file',
                 },
             ],
             BreadcrumbsView(co).get_breadcrumbs,
@@ -155,16 +156,17 @@ class Breadcrumbs(zeit.cms.testing.ZeitCmsTestCase):
         )
 
     def test_local_content_without_corr_repo_content_lists_name(self):
-        content = self.repository['2006']['DSC00109_2.JPG']
+        self.repository['kultur']['file'] = zeit.cms.repository.file.LocalFile()
+        content = self.repository['kultur']['file']
         manager = zeit.cms.checkout.interfaces.ICheckoutManager(content)
         co = manager.checkout()
-        del self.repository['2006']['DSC00109_2.JPG']
+        del self.repository['kultur']['file']
         self.assertEqual(
             [
                 {
-                    'title': 'DSC00109_2.JPG',
-                    'uniqueId': 'http://xml.zeit.de/2006/DSC00109_2.JPG',
-                    'url': 'http://127.0.0.1/workingcopy/zope.user/DSC00109_2.JPG',
+                    'title': 'file',
+                    'uniqueId': 'http://xml.zeit.de/kultur/file',
+                    'url': 'http://127.0.0.1/workingcopy/zope.user/file',
                 },
             ],
             BreadcrumbsView(co).get_breadcrumbs,
@@ -220,7 +222,8 @@ class Breadcrumbs(zeit.cms.testing.ZeitCmsTestCase):
         self.assertTrue(view.get_breadcrumbs_from_path.called)
 
     def test_deconfigured_no_icommonmetadata_in_wc_lists_wc_path(self):
-        content = self.repository['2006']['DSC00109_2.JPG']
+        self.repository['kultur']['file'] = zeit.cms.repository.file.LocalFile()
+        content = self.repository['kultur']['file']
         zope.app.appsetup.product._configs['zeit.cms']['breadcrumbs-use-common-metadata'] = 'false'
         manager = zeit.cms.checkout.interfaces.ICheckoutManager(content)
         co = manager.checkout()
@@ -234,9 +237,9 @@ class Breadcrumbs(zeit.cms.testing.ZeitCmsTestCase):
                     'url': 'http://127.0.0.1/workingcopy/zope.user',
                 },
                 {
-                    'title': 'DSC00109_2.JPG',
-                    'uniqueId': 'http://xml.zeit.de/2006/DSC00109_2.JPG',
-                    'url': 'http://127.0.0.1/workingcopy/zope.user/DSC00109_2.JPG',
+                    'title': 'file',
+                    'uniqueId': 'http://xml.zeit.de/kultur/file',
+                    'url': 'http://127.0.0.1/workingcopy/zope.user/file',
                 },
             ],
             BreadcrumbsView(co).get_breadcrumbs,

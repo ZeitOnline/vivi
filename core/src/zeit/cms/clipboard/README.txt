@@ -107,34 +107,36 @@ The model doens't know anything about being expanded or not, though. That's why
 Using the ``Politik`` clip as reference will add content *after* Politik
 because Politik is collapsed right now:
 
+>>> from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
+>>> repository['one'] = ExampleContentType()
+>>> repository['two'] = ExampleContentType()
+
 >>> reference_object = clipboard['Politik']
->>> content = repository['2007']['02']['Traum-Umberto-Eco']
+>>> content = repository['one']
 >>> clipboard.addContent(reference_object, content, content.__name__)
 >>> list(clipboard.keys())
-['myfeed', 'Politik', 'Traum-Umberto-Eco', 'Wirtschaft']
+['myfeed', 'Politik', 'one', 'Wirtschaft']
 
 When using `myfeed` as reference, content will be added after it:
 
->>> content = repository['2007']['02']['Verfolgt']
+>>> content = repository['two']
 >>> clipboard.addContent(clipboard['myfeed'], content, content.__name__)
 >>> list(clipboard.keys())
-['myfeed', 'Verfolgt', 'Politik', 'Traum-Umberto-Eco', 'Wirtschaft']
+['myfeed', 'two', 'Politik', 'one', 'Wirtschaft']
 
 
 Adding the same object twice works as well:
 
 >>> clipboard.addContent(clipboard['myfeed'], content, content.__name__)
 >>> list(clipboard.keys())
-['myfeed', 'Verfolgt-2', 'Verfolgt', 'Politik', 'Traum-Umberto-Eco',
- 'Wirtschaft']
+['myfeed', 'two-2', 'two', 'Politik', 'one', 'Wirtschaft']
 
 To insert into a folder the ``insert`` argument must be True:
 
 >>> clipboard.addContent(
 ...     reference_object, repository['testcontent'], 'test', insert=True)
 >>> list(clipboard.keys())
-['myfeed', 'Verfolgt-2', 'Verfolgt', 'Politik', 'Traum-Umberto-Eco',
- 'Wirtschaft']
+['myfeed', 'two-2', 'two', 'Politik', 'one', 'Wirtschaft']
 >>> list(clipboard['Politik'].keys())
 ['test']
 
@@ -156,12 +158,12 @@ documents into clips. Move the `Verfolgt` object to the `Politik` clip. Note
 that move has the same semantics as add:
 
 >>> politik = clipboard['Politik']
->>> verfolgt = clipboard['Verfolgt']
->>> clipboard.moveObject(verfolgt, politik, insert=True)
+>>> two = clipboard['two']
+>>> clipboard.moveObject(two, politik, insert=True)
 >>> list(clipboard.keys())
-['myfeed', 'Verfolgt-2', 'Politik', 'Traum-Umberto-Eco', 'Wirtschaft']
+['myfeed', 'two-2', 'Politik', 'one', 'Wirtschaft']
 >>> list(politik.keys())
-['Verfolgt', 'test']
+['two', 'test']
 
 
 It's also possible to re-order content. Move the `Politik` clip to the front,
@@ -169,31 +171,31 @@ i.e. "after" the clipboard:
 
 >>> clipboard.moveObject(politik, clipboard, insert=True)
 >>> list(clipboard.keys())
-['Politik',  'myfeed', 'Verfolgt-2', 'Traum-Umberto-Eco', 'Wirtschaft']
+['Politik',  'myfeed', 'two-2', 'one', 'Wirtschaft']
 
 When insert==False the object is moved after the reference object:
 
->>> traum = clipboard['Traum-Umberto-Eco']
->>> clipboard.moveObject(traum, politik)
+>>> one = clipboard['one']
+>>> clipboard.moveObject(one, politik)
 >>> list(clipboard.keys())
-['Politik', 'Traum-Umberto-Eco', 'myfeed', 'Verfolgt-2', 'Wirtschaft']
+['Politik', 'one', 'myfeed', 'two-2', 'Wirtschaft']
 
 
 It's also possible to move Clips into Clips to build a deeper hierarchy:
 
 >>> wirtschaft = clipboard['Wirtschaft']
->>> clipboard.moveObject(wirtschaft, politik['Verfolgt'])
+>>> clipboard.moveObject(wirtschaft, politik['two'])
 >>> list(clipboard.keys())
-['Politik', 'Traum-Umberto-Eco', 'myfeed', 'Verfolgt-2']
+['Politik', 'one', 'myfeed', 'two-2']
 >>> list(politik.keys())
-['Verfolgt', 'Wirtschaft', 'test']
+['two', 'Wirtschaft', 'test']
 
 
 You can drop objects onto themselves. Nothing will happen though:
 
->>> clipboard.moveObject(clipboard['Verfolgt-2'], clipboard['Verfolgt-2'])
+>>> clipboard.moveObject(clipboard['two-2'], clipboard['two-2'])
 >>> list(clipboard.keys())
-['Politik', 'Traum-Umberto-Eco', 'myfeed', 'Verfolgt-2']
+['Politik', 'one', 'myfeed', 'two-2']
 
 
 Erroneous Moving Attempts

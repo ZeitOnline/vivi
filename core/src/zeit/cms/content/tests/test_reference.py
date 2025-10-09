@@ -2,6 +2,7 @@ from unittest.mock import Mock
 import urllib.error
 import urllib.parse
 
+import transaction
 import zope.security.management
 import zope.security.proxy
 
@@ -262,6 +263,7 @@ class ReferenceTraversalBase:
     def test_absolute_url(self):
         with checked_out(self.repository['content']) as co:
             self.set_reference(co, co.references.create(self.repository['target']))
+        transaction.commit()
         b = zeit.cms.testing.Browser(self.layer['wsgi_app'])
         b.login('user', 'userpw')
         content = self.repository['content']

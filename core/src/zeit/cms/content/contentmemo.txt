@@ -45,6 +45,8 @@ Let's set a note to the memo and check in:
 
 >>> checkin_manager = ICheckinManager(checked_out)
 >>> checked_in = checkin_manager.checkin()
+>>> import transaction
+>>> transaction.commit()
 >>> memo = zeit.cms.content.interfaces.IMemo(checked_in).memo
 >>> memo
 'Not yet finished.'

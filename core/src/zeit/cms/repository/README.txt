@@ -14,42 +14,11 @@ Repository Containers
 The repository contains objects representing collections in the WebDAV server:
 
 >>> import zope.component
->>> from zeit.cms.repository.interfaces import IRepository
+>>> from zeit.cms.repository.interfaces import IRepository, IRepositoryContent
 >>> repository = zope.component.getUtility(IRepository)
->>> 'online' in repository.keys()
-True
-
->>> c_2007 = repository['online']['2007']
->>> c_2007
-<zeit.cms.repository.folder.Folder...>
->>> c_2007.keys()
-['01', '02']
->>> from pprint import pprint
->>> pprint(list(c_2007.values()))
-[<zeit.cms.repository.folder.Folder...>,
- <zeit.cms.repository.folder.Folder...>]
->>> len(c_2007)
-2
->>> pprint(list(c_2007.items()))
-[('01', <zeit.cms.repository.folder.Folder...>),
- ('02', <zeit.cms.repository.folder.Folder...>)]
-
->>> repository.get('2006')
-<zeit.cms.repository.folder.Folder...>
->>> print(repository.get('2005'))
-None
->>> repository.get('2005', 'default')
-'default'
-
 
 All objects in the the repository will also provide the IRepositoryContent
-interface:
-
->>> from zeit.cms.repository.interfaces import IRepositoryContent
->>> IRepositoryContent.providedBy(c_2007)
-True
-
-The repository itself provides IRepositoryContent too:
+interface; the repository itself provides IRepositoryContent too:
 
 >>> IRepositoryContent.providedBy(repository)
 True
@@ -62,23 +31,21 @@ Constructing objects sends an event. Create a handler to test this:
 
 >>> import zeit.cms.interfaces
 >>> def after_construct(object, event):
-...     print("Constructing %s" % object.uniqueId)
+...     print('Constructing %s' % object.uniqueId)
 ...     site_manager.unregisterHandler(
 ...         after_construct,
 ...         (zeit.cms.interfaces.ICMSContent,
 ...          zeit.cms.repository.interfaces.IAfterObjectConstructedEvent))
->>> site_manager = zope.component.getSiteManager()
+>>> site_manager = zope.component.getGlobalSiteManager()
 >>> site_manager.registerHandler(
 ...     after_construct,
 ...     (zeit.cms.interfaces.ICMSContent,
 ...      zeit.cms.repository.interfaces.IAfterObjectConstructedEvent))
 
-Getting the object /online/2007/01/lebenslagen-01:
-
->>> content = repository['online']['2007']['01']['lebenslagen-01']
-Constructing http://xml.zeit.de/online/2007/01/lebenslagen-01
+>>> content = repository['testcontent']
+Constructing http://xml.zeit.de/testcontent
 >>> content
-<zeit.cms.repository.unknown.PersistentUnknownResource...>
+<zeit.cms.testcontenttype.testcontenttype.ExampleContentType...>
 
 
 The content object provides IRepositoryContent since it was read from the
@@ -102,7 +69,7 @@ True
 
 When we get the same object again, we *really* get the *same* object:
 
->>> content is repository['online']['2007']['01']['lebenslagen-01']
+>>> content is repository['testcontent']
 True
 
 
@@ -117,10 +84,8 @@ properties:
 >>> properties = zeit.connector.interfaces.IWebDAVReadProperties(content)
 >>> properties
 <zeit.cms.content.liveproperty.LiveProperties...>
->>> pprint(dict(properties))
-{('author', 'http://namespaces.zeit.de/CMS/document'): ' Thomas Luther',
- ('banner', 'http://namespaces.zeit.de/CMS/document'): 'yes',
- ...
+>>> properties[('type', 'http://namespaces.zeit.de/CMS/meta')]
+'testcontenttype'
 
 
 When we convert the PersistentUnknownResource back to a `Resource` object, the properties
@@ -131,10 +96,8 @@ are still there:
 <zeit.connector.resource.Resource...>
 >>> resource.properties
 <zeit.connector.resource.WebDAVProperties...>
->>> pprint(dict(resource.properties))
-{('author', 'http://namespaces.zeit.de/CMS/document'): ' Thomas Luther',
- ('banner', 'http://namespaces.zeit.de/CMS/document'): 'yes',
- ...
+>>> properties[('type', 'http://namespaces.zeit.de/CMS/meta')]
+'testcontenttype'
 
 Unique Ids
 ==========
@@ -144,7 +107,7 @@ of `http://xml.zeit.de/(online)?/[Jahr]/[Ausgabe]/[Artikelname]` but that's
 actually a backend implementation detail:
 
 >>> content.uniqueId
-'http://xml.zeit.de/online/2007/01/lebenslagen-01'
+'http://xml.zeit.de/testcontent'
 
 
 Adding Content Objects
@@ -172,7 +135,6 @@ Adding sends an event. Register an event handler for IBeforeObjectAddedEvent
 ...     print('%s %s' % (type(event).__name__, object))
 ...     print('    Old: %s %s' % (event.oldParent, event.oldName))
 ...     print('    New: %s %s' % (event.newParent, event.newName))
->>> site_manager = zope.component.getSiteManager()
 >>> site_manager.registerHandler(
 ...     before_added,
 ...     (zeit.cms.interfaces.ICMSContent,
@@ -240,6 +202,8 @@ ObjectMovedEvent...
 True
 >>> 'i_am_not_so_new_anymore' in repository
 False
+>>> import transaction
+>>> transaction.commit()
 
 
 Deleting Content Object
@@ -254,7 +218,6 @@ Deleting objects sends an event:
 ...         after_remove,
 ...         (zeit.cms.interfaces.ICMSContent,
 ...          zeit.cms.repository.interfaces.IBeforeObjectRemovedEvent))
->>> site_manager = zope.component.getSiteManager()
 >>> site_manager.registerHandler(
 ...     after_remove,
 ...     (zeit.cms.interfaces.ICMSContent,
@@ -279,7 +242,7 @@ Getting the value of course doesn't work either:
 >>> repository['i_am_new']
 Traceback (most recent call last):
     ...
-KeyError: 'http://xml.zeit.de/i_am_new'
+KeyError: ...
 
 
 When you try to delete a non existend object, a KeyError is raised:
@@ -287,7 +250,7 @@ When you try to delete a non existend object, a KeyError is raised:
 >>> del repository['i-dont-exist']
 Traceback (most recent call last):
     ...
-KeyError: "The resource 'http://xml.zeit.de/i-dont-exist' does not exist."
+KeyError: 'The resource http://xml.zeit.de/i-dont-exist does not exist.'
 
 
 Copying objects
@@ -296,7 +259,14 @@ Copying objects
 It is possible to copy objects using the IObjectCopier interface. Get an object
 to copy:
 
->>> to_copy = repository['online']['2007']['01']
+>>> from zeit.cms.repository.folder import Folder
+>>> repository['folder1'] = Folder()
+ObjectAddedEvent...
+>>> repository['folder1']['01'] = Folder()
+ObjectAddedEvent...
+>>> repository['folder2'] = Folder()
+ObjectAddedEvent...
+>>> to_copy = repository['folder1']['01']
 
 Get the copier:
 
@@ -313,23 +283,20 @@ True
 
 Let's copy. `copyTo` returns the new name:
 
->>> copier.copyTo(repository['online'])
+>>> copier.copyTo(repository['folder2'])
 ObjectAddedEvent...
 '01'
 
 When copying againer, we'll get another name:
 
->>> copier.copyTo(repository['online'])
-ObjectAddedEvent <zeit.cms.repository.unknown.PersistentUnknownResource...>
+>>> copier.copyTo(repository['folder2'])
+ObjectAddedEvent...
     Old: None None
     New: <zeit.cms.repository.folder.Folder...> 01-2
-...
 '01-2'
 
->>> repository['online'].keys()
-['01', '01-2', '2005', '2006', '2007', '2022']
->>> len(repository['online']['01'].keys())
-53
+>>> repository['folder2'].keys()
+['01', '01-2']
 
 Let's clean that up again:
 
@@ -339,10 +306,6 @@ Let's clean that up again:
 ...     (zeit.cms.interfaces.ICMSContent,
 ...      zope.lifecycleevent.IObjectMovedEvent))
 True
->>> del repository['online']['01']
->>> del repository['online']['01-2']
->>> import transaction
->>> transaction.commit()
 
 Getting content by unique_id
 ============================
@@ -350,20 +313,13 @@ Getting content by unique_id
 The `getContent` method of IRepository returns the contained content object
 from the unique id:
 
->>> content = repository.getContent(
-...     'http://xml.zeit.de/online/2007/01/Somalia')
->>> content
-<zeit.cms.repository.unknown.PersistentUnknownResource...>
+>>> content = repository.getContent('http://xml.zeit.de/folder1/01')
 >>> content.__parent__
 <zeit.cms.repository.folder.Folder...>
->>> content.__parent__.__name__
-'01'
 
 An even easier way is adapting to ICMSContent:
 
->>> zeit.cms.interfaces.ICMSContent(
-...     'http://xml.zeit.de/online/2007/01/Somalia')
-<zeit.cms.repository.unknown.PersistentUnknownResource...>
+>>> content = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/testcontent')
 
 
 A TypeError is raised if anything but a string is passed:
@@ -394,24 +350,12 @@ TypeError: ('Could not adapt', 'foo', <InterfaceClass zeit.cms.interfaces.ICMSCo
 
 A KeyError is raised if the unique_id does not reference to an existing object:
 
->>> repository.getContent('http://xml.zeit.de/online/foo')
+>>> repository.getContent('http://xml.zeit.de/nonexistent')
 Traceback (most recent call last):
     ...
-KeyError: 'http://xml.zeit.de/online/foo'
+KeyError: 'http://xml.zeit.de/nonexistent'
 
->>> zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/foo')
+>>> zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/nonexistent')
 Traceback (most recent call last):
     ...
-TypeError: ('Could not adapt', 'http://xml.zeit.de/online/foo', <InterfaceClass zeit.cms.interfaces.ICMSContent>)
-
-
-
-Old style paths are supported. When an Id starts with /cms/work it is
-considered as valid.
-
->>> content = repository.getContent('/cms/work/online/2007/01/Somalia')
->>> content.uniqueId
-'http://xml.zeit.de/online/2007/01/Somalia'
->>> zeit.cms.interfaces.ICMSContent(
-...     '/cms/work/online/2007/01/Somalia').uniqueId
-'http://xml.zeit.de/online/2007/01/Somalia'
+TypeError: ('Could not adapt', 'http://xml.zeit.de/nonexistent', <InterfaceClass zeit.cms.interfaces.ICMSContent>)

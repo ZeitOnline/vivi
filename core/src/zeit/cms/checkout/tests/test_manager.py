@@ -2,6 +2,7 @@ from unittest import mock
 import copy
 import datetime
 
+import transaction
 import zope.annotation.interfaces
 import zope.component
 
@@ -119,15 +120,18 @@ class ManagerTest(zeit.cms.testing.ZeitCmsTestCase):
 class ValidateCheckinTest(zeit.cms.testing.ZeitCmsTestCase):
     def setUp(self):
         super().setUp()
-        zope.component.getSiteManager().registerHandler(self.provoke_veto, (IValidateCheckinEvent,))
+        zope.component.getGlobalSiteManager().registerHandler(
+            self.provoke_veto, (IValidateCheckinEvent,)
+        )
 
         self.workingcopy = zeit.cms.workingcopy.interfaces.IWorkingcopy(self.principal)
 
         manager = ICheckoutManager(self.repository['testcontent'])
         self.checked_out = manager.checkout()
+        transaction.commit()
 
     def tearDown(self):
-        zope.component.getSiteManager().unregisterHandler(
+        zope.component.getGlobalSiteManager().unregisterHandler(
             self.provoke_veto, (IValidateCheckinEvent,)
         )
         super().tearDown()
@@ -166,6 +170,7 @@ class ValidateCheckinTest(zeit.cms.testing.ZeitCmsTestCase):
         # undo setUp, since it doesn't apply for this test
         manager = ICheckinManager(self.checked_out)
         manager.delete()
+        transaction.commit()
 
         manager = ICheckoutManager(self.repository['testcontent'])
         checked_out = manager.checkout(temporary=True)
@@ -205,9 +210,11 @@ class DeleteWorkingCopy(zeit.cms.testing.ZeitCmsTestCase):
         content = self.repository['testcontent']
         co_manager = zeit.cms.checkout.interfaces.ICheckoutManager(content)
         co = co_manager.checkout()
+        transaction.commit()
         zeit.cms.repository.interfaces.IAutomaticallyRenameable(co).renameable = True
         ci_manager = zeit.cms.checkout.interfaces.ICheckinManager(co)
         ci_manager.delete()
+        transaction.commit()
         with self.assertRaises(TypeError):
             zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/testcontent')
 
@@ -215,8 +222,10 @@ class DeleteWorkingCopy(zeit.cms.testing.ZeitCmsTestCase):
         content = self.repository['testcontent']
         co_manager = zeit.cms.checkout.interfaces.ICheckoutManager(content)
         co = co_manager.checkout()
+        transaction.commit()
         zeit.cms.repository.interfaces.IAutomaticallyRenameable(co).renameable = False
         ci_manager = zeit.cms.checkout.interfaces.ICheckinManager(co)
         ci_manager.delete()
+        transaction.commit()
         with self.assertNothingRaised():
             zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/testcontent')

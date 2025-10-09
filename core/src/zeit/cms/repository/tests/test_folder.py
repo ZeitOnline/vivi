@@ -1,5 +1,6 @@
 import zope.copypastemove.interfaces
 
+from zeit.cms.repository.folder import Folder
 import zeit.cms.interfaces
 import zeit.cms.testing
 import zeit.cms.workflow.interfaces
@@ -9,9 +10,10 @@ import zeit.workflow.testing
 
 class RenameFolderTest(zeit.cms.testing.ZeitCmsTestCase):
     def test_renaming_folder(self):
+        self.repository['folder'] = Folder()
         renamer = zope.copypastemove.interfaces.IContainerItemRenamer(self.repository)
-        renamer.renameItem('online', 'offline')
-        self.assertNotIn('online', self.repository)
+        renamer.renameItem('folder', 'offline')
+        self.assertNotIn('folder', self.repository)
         self.assertIn('offline', self.repository)
 
 

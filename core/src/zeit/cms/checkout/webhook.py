@@ -69,8 +69,9 @@ def notify_webhook(self, uniqueId, id, url):
         hooks[url](content)
     except TechnicalError as e:
         raise self.retry(countdown=e.countdown)
-    # Don't even think about trying to write to DAV cache, to avoid conflicts.
-    transaction.abort()
+    if not self.app.conf.task_always_eager:
+        # Don't even think about trying to write to DAV cache, to avoid conflicts.
+        transaction.abort()
 
 
 class Hook:

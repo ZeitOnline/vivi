@@ -136,7 +136,7 @@ class SSOTest(zeit.cms.testing.BrowserTestCase):
 
     def test_url_parameter_redirects_all_the_way_back_after_login(self):
         b = self.browser
-        target = 'http://localhost/++skin++vivi/repository/2016'
+        target = 'http://localhost/++skin++vivi/repository/testcontent'
         b.open('http://localhost/++skin++vivi/sso-login?url=' + urllib.parse.quote_plus(target))
         b.getControl('Username').value = 'user'
         b.getControl('Password').value = 'userpw'
