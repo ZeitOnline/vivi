@@ -49,7 +49,7 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
     },
     bases=(zeit.content.audio.testing.CONFIG_LAYER,),
 )
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER)
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER, features=['zeit.connector.sql.zope'])
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
 WSGI_LAYER = zeit.cms.testing.WSGILayer(ZOPE_LAYER)
 
@@ -58,15 +58,7 @@ class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
     layer = ZOPE_LAYER
     episode_info = EPISODE_200
 
-    def setUp(self):
-        super().setUp()
-        self.repository.connector.search_result = []
-
 
 class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
     layer = WSGI_LAYER
     episode_info = EPISODE_200
-
-    def setUp(self):
-        super().setUp()
-        self.repository.connector.search_result = []
