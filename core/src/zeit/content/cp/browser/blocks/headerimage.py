@@ -21,6 +21,8 @@ class Display(zeit.cms.browser.view.Base):
         return '%s%s/@@raw' % (
             self.url(repository),
             self.context.image.variant_url(
-                zeit.cms.config.required('zeit.content.cp', 'header-image-variant'), thumbnail=True
+                zeit.cms.config.required('zeit.content.cp', 'header-image-variant'),
+                width=zeit.cms.config.get('zeit.content.cp', 'thumbnail-width', 1000),
+                height=0,
             ),
         )
