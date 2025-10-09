@@ -3,6 +3,7 @@ from collections import Counter
 import celery.result
 import celery.states
 import pendulum
+import transaction
 import zope.component
 import zope.interface
 
@@ -28,8 +29,11 @@ class MockPublish:
         return celery.result.EagerResult('eager', None, celery.states.SUCCESS)
 
     def publish(self, priority=PRIORITY_DEFAULT, background=True, object=None, **kw):
+        transaction.commit()  # real implementation has lock+commit first thing
         if object is not None:
             self.context = object
+        if background:  # celery task would reload the object and thus see XML changes
+            self.context = zeit.cms.interfaces.ICMSContent(self.context.uniqueId)
         self.context = zope.security.proxy.getObject(self.context)
         can_publish = zeit.cms.workflow.interfaces.IPublishInfo(self.context).can_publish()
         if can_publish == CAN_PUBLISH_ERROR:
@@ -52,8 +56,11 @@ class MockPublish:
         return self._result()
 
     def retract(self, priority=PRIORITY_DEFAULT, background=True, object=None, **kw):
+        transaction.commit()  # real implementation has lock+commit first thing
         if object is not None:
             self.context = object
+        if background:  # celery task would reload the object and thus see XML changes
+            self.context = zeit.cms.interfaces.ICMSContent(self.context.uniqueId)
         self.context = zope.security.proxy.getObject(self.context)
         can_retract = zeit.cms.workflow.interfaces.IPublishInfo(self.context).can_retract()
         if can_retract == CAN_RETRACT_ERROR:
