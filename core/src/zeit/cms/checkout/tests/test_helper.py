@@ -56,20 +56,25 @@ class TestHelper(zeit.cms.testing.ZeitCmsTestCase):
         self.assertEqual('', self.repository['testcontent'].title)
 
     def test_ignore_conflict(self):
-        content = self.repository['testcontent']
-        # Assign an etag
-        with zeit.cms.checkout.helper.checked_out(content):
-            pass
+        c1 = zeit.cms.checkout.interfaces.ICheckoutManager(
+            self.repository['testcontent']
+        ).checkout()
+        c1.xml.replace(c1.xml.find('body'), lxml.etree.fromstring('<body>one</body>'))
+        # In reality, the lock would have to time out for this scenario to happen
+        self.repository.connector.unlock('http://xml.zeit.de/testcontent')
         transaction.commit()
 
-        def cycle_without_ignore_raises():
-            with zeit.cms.checkout.helper.checked_out(content) as co:
-                co.xml.replace(co.xml.find('body'), lxml.etree.fromstring('<body>bar</body>'))
-                zeit.connector.interfaces.IWebDAVProperties(co)[('getetag', 'DAV:')] = 'foo'
+        zope.security.management.endInteraction()
+        zeit.cms.testing.create_interaction('zope.producer')
+        with zeit.cms.checkout.helper.checked_out(self.repository['testcontent']) as c2:
+            c2.xml.replace(c2.xml.find('body'), lxml.etree.fromstring('<body>two</body>'))
+        transaction.commit()
+        zope.security.management.endInteraction()
+        zeit.cms.testing.create_interaction('zope.user')
 
-        self.assertRaises(zeit.cms.repository.interfaces.ConflictError, cycle_without_ignore_raises)
-        with zeit.cms.checkout.helper.checked_out(content, ignore_conflicts=True) as co:
-            # Change the etag to provoke a conflict. No exception will be
-            # raised due to ignore_conflicts=True
-            co.xml.replace(co.xml.find('body'), lxml.etree.fromstring('<body>foo</body>'))
-            zeit.connector.interfaces.IWebDAVProperties(co)[('getetag', 'DAV:')] = 'foo'
+        c1 = zeit.cms.checkout.interfaces.ICheckinManager(c1)
+        with self.assertRaises(zeit.cms.repository.interfaces.ConflictError):
+            c1.checkin()
+
+        with self.assertNothingRaised():
+            c1.checkin(ignore_conflicts=True)
