@@ -190,8 +190,6 @@ class Simplecast:
         log.info('Podcast Episode %s successfully published.', audio.uniqueId)
 
     def _retract(self, audio):
-        with zeit.cms.checkout.helper.checked_out(audio, semantic_change=None, events=False) as co:
-            IPodcastEpisodeInfo(co).is_published = False
         IPublish(audio).retract(background=False)
         log.info('Podcast Episode %s successfully retracted.', audio.uniqueId)
 
