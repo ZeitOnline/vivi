@@ -566,113 +566,67 @@
   z-index: 50;
 }
 
+
+/* ********************************************************
+ * RTE Toolbar Icons
+ ******************************************************* */
+
 .type-article .rte-toolbar > a {
-  background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat 0px 0px;
+  color: transparent;
   display: block;
   height: 20px;
-  text-align: center;
+  position: relative;
   width: 20px;
-  color: transparent;
+  margin: 1px;
 }
 
-.type-article .rte-toolbar > a[href='bold'] {
-  background-position: 3px -357px;
-  color: transparent;
+/* Icons are inserted as pseudo content so we can apply CSS filters on them */
+.type-article .rte-toolbar > a::before {
+  content: "";
+  /* transparent pixel as fallback if no image is given */
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=);
+  background-size: 18px;
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  width: 18px;
+  height: 18px;
+  transition: filter 0.2s ease;
+}
+.type-article .rte-toolbar > a:hover::before,
+.type-article .rte-toolbar > a.active::before {
+  filter: brightness(0.6);
 }
 
-.type-article .rte-toolbar > a[href='bold']:hover,
-.type-article .rte-toolbar > a.active[href='bold'] {
-  background-position: 3px -387px;
+.type-article .rte-toolbar > a[href='bold']::before {
+  background-image: url("/fanstatic/zeit.cms/icons/rte_bold.png");
+}
+.type-article .rte-toolbar > a[href='italic']::before {
+  background-image: url("/fanstatic/zeit.cms/icons/rte_italic.png");
+}
+.type-article .rte-toolbar > a[href='insertunorderedlist']::before {
+  background-image: url("/fanstatic/zeit.cms/icons/rte_bullets.png");
+}
+.type-article .rte-toolbar > a[href='formatBlock/h3']::before,
+.type-article .rte-toolbar > a[href='formatBlock/p']::before {
+  background-image: url("/fanstatic/zeit.cms/icons/rte_headlines.png");
+}
+.type-article .rte-toolbar > a[href='upload_image']::before {
+  background-image: url("/fanstatic/zeit.cms/icons/rte_image.png");
+}
+.type-article .rte-toolbar > a[href='insert_link']::before {
+  background-image: url("/fanstatic/zeit.cms/icons/rte_link.png");
+}
+.type-article .rte-toolbar > a[href='unlink']::before {
+  background-image: url("/fanstatic/zeit.cms/icons/rte_unlink.png");
+}
+.type-article .rte-toolbar > a[href='removeFormat']::before {
+  background-image: url("/fanstatic/zeit.cms/icons/rte_delete-styles.png");
+}
+.type-article .rte-toolbar > a[href='show_find_dialog']::before {
+  background-image: url("/fanstatic/zeit.cms/icons/rte_search.png");
 }
 
-.type-article .rte-toolbar > a[href='italic'] {
-  background-position: 4px -1016px;
-  color: transparent;
-}
-
-.type-article .rte-toolbar > a[href='italic']:hover,
-.type-article .rte-toolbar > a.active[href='italic'] {
-  background-position: 4px -1046px;
-}
-
-.type-article .rte-toolbar > a[href='insertunorderedlist'] {
-  background-position: 3px -1136px;
-  color: transparent;
-}
-
-.type-article .rte-toolbar > a[href='insertunorderedlist']:hover,
-.type-article .rte-toolbar > a.active[href='insertunorderedlist'] {
-  background-position: 3px -1166px;
-}
-
-.type-article .rte-toolbar > a[href='formatBlock/h3'] {
-  background-position: 2px -1076px;
-  color: transparent;
-}
-
-.type-article .rte-toolbar > a[href='formatBlock/h3']:hover,
-.type-article .rte-toolbar > a.active[href='formatBlock/h3'] {
-  background-position: 2px -1106px;
-}
-
-.type-article .rte-toolbar > a[href='upload_image'] {
-  background-position: 4px -712px;
-  color: transparent;
-}
-
-.type-article .rte-toolbar > a[href='upload_image']:hover,
-.type-article .rte-toolbar > a.active[href='upload_image'] {
-  background-position: 4px -742px;
-}
-
-.type-article .rte-toolbar > a[href='formatBlock/p'] {
-  background-position: -2px -1106px;
-  color: transparent;
-}
-
-.type-article .rte-toolbar > a[href='formatBlock/p']:hover,
-.type-article .rte-toolbar > a.active[href='formatBlock/p'] {
-  background-position: 2px -1106px;
-}
-
-.type-article .rte-toolbar > a[href='insert_link'] {
-  background-position: 3px -1194px;
-  color: transparent;
-}
-
-.type-article .rte-toolbar > a[href='insert_link']:hover,
-.type-article .rte-toolbar > a.active[href='insert_link'] {
-  background-position: 3px -1224px;
-}
-
-.type-article .rte-toolbar > a[href='unlink'] {
-  background-position: 3px -1255px;
-  color: transparent;
-}
-
-.type-article .rte-toolbar > a[href='unlink']:hover,
-.rte-toolbar > a.active[href='unlink'] {
-  background-position: 3px -1285px;
-}
-
-.type-article .rte-toolbar > a[href='removeFormat'] {
-  background-position: 3px -178px;
-  color: transparent;
-}
-
-.type-article .rte-toolbar > a[href='removeFormat']:hover {
-  background-position: 3px -208px;
-}
-
-.type-article .rte-toolbar > a[href='show_find_dialog'] {
-  background-position: 3px -55px;
-  color: transparent;
-}
-
-.type-article .rte-toolbar > a[href='show_find_dialog']:hover,
-.type-article .rte-toolbar > a.active[href='show_find_dialog'] {
-  background-position: 3px -85px;
-}
 
 .type-article .link_input {
   background-color: #fff;
