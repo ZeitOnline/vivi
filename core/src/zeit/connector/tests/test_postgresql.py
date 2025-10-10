@@ -16,7 +16,7 @@ from zeit.cms.repository.interfaces import ConflictError
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.cms.workflow.interfaces import IModified
 from zeit.connector.interfaces import INTERNAL_PROPERTY, DeleteProperty
-from zeit.connector.models import Content, Lock
+from zeit.connector.models import Content, ContentReference, Lock
 from zeit.connector.postgresql import _unlock_overdue_locks
 from zeit.connector.resource import Resource, WriteableCachedResource
 from zeit.connector.search import SearchVar
@@ -496,3 +496,85 @@ class ColumnDeclarationTest(zeit.connector.testing.TestCase):
             ns = column.info['namespace']
             name = column.info['name']
             self.assertIn((ns, name), declared)
+
+
+class ReferencesTest(zeit.connector.testing.SQLTest):
+    def _create_references(self):
+        article = self.add_resource('foo', type='article')
+        author1 = self.add_resource('author1', type='author')
+        author2 = self.add_resource('author2', type='author')
+
+        references = [
+            {'target': author1.id, 'type': 'author'},
+            {'target': author2.id, 'type': 'author'},
+        ]
+        self.connector.update_references(article.id, references)
+        transaction.commit()
+        return article
+
+    def _stored_references(self, article):
+        article_content = self.connector._get_content(article.id)
+        query = select(ContentReference).where(ContentReference.source == article_content.id)
+        result = self.connector.session.execute(query)
+        return list(result.scalars())
+
+    def test_update_adds_new_references(self):
+        article = self.add_resource('foo', type='article')
+        author = self.add_resource('author1', type='author')
+        image = self.add_resource('image1', type='image')
+
+        references = [
+            {'target': author.id, 'type': 'author'},
+            {'target': image.id, 'type': 'image'},
+        ]
+        self.connector.update_references(article.id, references)
+        transaction.commit()
+
+        stored_refs = self._stored_references(article)
+        self.assertEqual(len(stored_refs), 2)
+
+        stored_refs = {(ref.target, ref.reference_type) for ref in stored_refs}
+        author_content = self.connector._get_content(author.id)
+        image_content = self.connector._get_content(image.id)
+
+        expected_refs = {(author_content.id, 'author'), (image_content.id, 'image')}
+        self.assertEqual(stored_refs, expected_refs)
+
+    def test_update_removes_old_references(self):
+        author1_uid = 'http://xml.zeit.de/testing/author1'
+        article = self._create_references()
+        stored_refs = self._stored_references(article)
+        self.assertEqual(len(stored_refs), 2)
+
+        references = [{'target': author1_uid, 'type': 'author'}]
+        self.connector.update_references(article.id, references)
+        transaction.commit()
+
+        stored_refs = self._stored_references(article)
+        self.assertEqual(len(stored_refs), 1)
+
+        author1_content = self.connector._get_content(author1_uid)
+        self.assertEqual(stored_refs[0].target, author1_content.id)
+        self.assertEqual(stored_refs[0].reference_type, 'author')
+
+    def test_update_removes_all_references(self):
+        article = self._create_references()
+        stored_refs = self._stored_references(article)
+        self.assertEqual(len(stored_refs), 2)
+
+        self.connector.update_references(article.id, [])
+        transaction.commit()
+
+        stored_refs = self._stored_references(article)
+        self.assertEqual(len(stored_refs), 0)
+
+    def test_update_removing_source_removes_all_references(self):
+        article = self._create_references()
+        stored_refs = self._stored_references(article)
+        self.assertEqual(len(stored_refs), 2)
+
+        del self.connector[article.id]
+        transaction.commit()
+
+        result = self.connector.session.query(ContentReference).all()
+        self.assertEqual(len(result), 0)
