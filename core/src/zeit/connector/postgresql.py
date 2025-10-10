@@ -41,7 +41,7 @@ from zeit.connector.interfaces import (
     LockStatus,
     MoveError,
 )
-from zeit.connector.models import ID_NAMESPACE, Content, Lock
+from zeit.connector.models import ID_NAMESPACE, Content, ContentReference, Lock
 import zeit.cms.cli
 import zeit.cms.config
 import zeit.cms.interfaces
@@ -720,9 +720,10 @@ class Connector:
         parent = os.path.split(uniqueid)[0]
         self._reload_child_name_cache(parent)
 
-    def update_references(self, uniqueid, references: Sequence[Dict]):
+    def update_references(self, uniqueid, references):
         uniqueid = self._normalize(uniqueid)
-        content = self._get_content(uniqueid)
+        # XXX do I need the lock or not?
+        content = self._get_content(uniqueid, getlock=False)
         if content is None:
             raise KeyError(f'The resource {uniqueid} does not exist.')
         if content.lock_status == LockStatus.FOREIGN:
@@ -730,16 +731,38 @@ class Connector:
                 uniqueid, f'{uniqueid} is already locked by {content.lock.principal}'
             )
 
-        references = set(
-            Reference(source=content.id, target=x['target'], type=x['type']) for x in references
-        )
+        # Convert references to (target_id, reference_type) tuples
+        current_refs = set()
+        # XXX can we do a combined query instead of n single ones?
+        for ref in references:
+            target_content = self._get_content(ref['target'], getlock=False)
+            if target_content:
+                current_refs.add((target_content.id, ref['type']))
 
-        existing = set(select(...))
-        to_delete = existing - references
-        to_add = references - existing
+        query = select(ContentReference).where(ContentReference.source == content.id)
+        result = self.session.execute(query)
+        existing_refs = {(ref.target, ref.reference_type) for ref in result.scalars()}
 
-        self.bulk_delete(to_delete)
-        self.bulk_insert(to_add)
+        refs_to_add = current_refs - existing_refs
+        refs_to_remove = existing_refs - current_refs
+
+        # XXX bulk delete does not seem to exist
+        if refs_to_remove:
+            for target_id, ref_type in refs_to_remove:
+                self.session.execute(
+                    delete(ContentReference).where(
+                        ContentReference.source == content.id,
+                        ContentReference.target == target_id,
+                        ContentReference.reference_type == ref_type,
+                    )
+                )
+
+        if refs_to_add:
+            refs_to_insert = [
+                {'source': content.id, 'target': target_id, 'reference_type': ref_type}
+                for target_id, ref_type in refs_to_add
+            ]
+            self.session.execute(insert(ContentReference), refs_to_insert)
 
 
 factory = Connector.factory
