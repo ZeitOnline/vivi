@@ -505,5 +505,5 @@ class ContentReference(Base):
     reference_type = mapped_column(Unicode, primary_key=True)
     created_at = mapped_column(TIMESTAMP, server_default=sqlalchemy.func.now())
 
-    source = relationship('Content', foreign_keys=[source], lazy='noload')
-    target = relationship('Content', foreign_keys=[target], lazy='noload')
+    source_content = relationship('Content', foreign_keys=[source], lazy='noload')
+    target_content = relationship('Content', foreign_keys=[target], lazy='noload')
