@@ -96,3 +96,9 @@ class ImageReference(zeit.cms.content.reference.Reference):
             self.xml.set('base-id', self.target.uniqueId)
         elif self.xml.get('src'):
             self.xml.set('src', self.target.uniqueId)
+
+
+@grok.adapter('kann IImages')
+@grok.implementer(zeit.cms.references.interfaces.IReferenceExtract)
+def extract_author_references(context):
+    return [{'target': IImages(context.image), 'type': 'teaser-image'}]

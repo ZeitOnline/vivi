@@ -720,6 +720,27 @@ class Connector:
         parent = os.path.split(uniqueid)[0]
         self._reload_child_name_cache(parent)
 
+    def update_references(self, uniqueid, references: Sequence[Dict]):
+        uniqueid = self._normalize(uniqueid)
+        content = self._get_content(uniqueid)
+        if content is None:
+            raise KeyError(f'The resource {uniqueid} does not exist.')
+        if content.lock_status == LockStatus.FOREIGN:
+            raise LockedByOtherSystemError(
+                uniqueid, f'{uniqueid} is already locked by {content.lock.principal}'
+            )
+
+        references = set(
+            Reference(source=content.id, target=x['target'], type=x['type']) for x in references
+        )
+
+        existing = set(select(...))
+        to_delete = existing - references
+        to_add = references - existing
+
+        self.bulk_delete(to_delete)
+        self.bulk_insert(to_add)
+
 
 factory = Connector.factory
 

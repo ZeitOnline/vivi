@@ -151,3 +151,9 @@ def log_access_change(context, event):
         break
     else:
         return
+
+
+@grok.adapter(ICommonMetadata)
+@grok.implementer(zeit.cms.references.interfaces.IReferenceExtract)
+def extract_author_references(context):
+    return [{'target': x.target, 'type': 'author'} for x in context.authorships]
