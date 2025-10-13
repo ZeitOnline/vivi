@@ -1,8 +1,8 @@
+import transaction
 import zope.component
 
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.content.sources import FEATURE_TOGGLES
-from zeit.cms.interfaces import ICMSContent
 from zeit.revisions.interfaces import IContentRevision
 import zeit.cms.checkout.webhook
 import zeit.content.cp.centerpage
@@ -14,12 +14,14 @@ import zeit.revisions.testing
 class Revisions(zeit.revisions.testing.FunctionalTestCase):
     def setUp(self):
         super().setUp()
-        self.article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
-        self.uuid = zeit.cms.content.interfaces.IUUID(self.article).shortened
+        self.article = zeit.content.article.testing.create_article()
+        self.repository['article'] = self.article
+        transaction.commit()
+        self.uuid = zeit.cms.content.interfaces.IUUID(self.repository['article']).shortened
         self.revision = zope.component.getUtility(IContentRevision)
 
     def test_create_revision_after_checkin_for_articles(self):
-        with checked_out(self.article):
+        with checked_out(self.repository['article']):
             pass
         file_types = ['json', 'xml']
         for file_type in file_types:
