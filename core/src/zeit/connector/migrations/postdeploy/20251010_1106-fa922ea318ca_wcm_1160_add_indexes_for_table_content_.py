@@ -23,7 +23,23 @@ def upgrade() -> None:
         op.create_index(
             op.f('ix_content_references'),
             'content_references',
-            ['target', 'source', 'reference_type'],
+            ['source', 'target', 'reference_type'],
+            unique=False,
+            postgresql_concurrently=True,
+            if_not_exists=True,
+        )
+        op.create_index(
+            op.f('ix_content_references_source'),
+            'content_references',
+            ['source'],
+            unique=False,
+            postgresql_concurrently=True,
+            if_not_exists=True,
+        )
+        op.create_index(
+            op.f('ix_content_references_target'),
+            'content_references',
+            ['target'],
             unique=False,
             postgresql_concurrently=True,
             if_not_exists=True,
@@ -34,6 +50,18 @@ def downgrade() -> None:
     with op.get_context().autocommit_block():
         op.drop_index(
             'ix_content_references',
+            table_name='content_references',
+            postgresql_concurrently=True,
+            if_exists=True,
+        )
+        op.drop_index(
+            'ix_content_references_source',
+            table_name='content_references',
+            postgresql_concurrently=True,
+            if_exists=True,
+        )
+        op.drop_index(
+            'ix_content_references_target',
             table_name='content_references',
             postgresql_concurrently=True,
             if_exists=True,
