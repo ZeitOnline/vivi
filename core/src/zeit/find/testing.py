@@ -45,6 +45,10 @@ HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(WSGI_LAYER)
 WEBDRIVER_LAYER = zeit.cms.testing.WebdriverLayer(HTTP_LAYER)
 
 
+class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
+    layer = WEBDRIVER_LAYER
+
+
 class SearchMockLayer(zeit.cms.testing.Layer):
     def setUp(self):
         registry = zope.component.getGlobalSiteManager()

@@ -6,6 +6,7 @@ For UI-Tests we need a Testbrowser and some setup:
 
 
 >>> import zeit.cms.testing
+>>> import zeit.content.image.testing
 >>> zeit.cms.testing.set_site()
 
 >>> import zope.security.testing
@@ -13,6 +14,7 @@ For UI-Tests we need a Testbrowser and some setup:
 >>> participation = zope.security.testing.Participation(principal)
 
 >>> import zeit.cms.testing
+>>> _ = zeit.content.image.testing.create_image_group()
 >>> browser = zeit.cms.testing.Browser(layer['wsgi_app'])
 >>> browser.login('user', 'userpw')
 
@@ -99,10 +101,10 @@ Adding a content object as a favorite requires the call of the
 
 >>> browser.open(
 ...     'http://localhost/++skin++vivi/toggle_favorited?'
-...     'uniqueId=http://xml.zeit.de/online/2007/01/Somalia')
+...     'uniqueId=http://xml.zeit.de/testcontent')
 >>> browser.open(
 ...     'http://localhost/++skin++vivi/toggle_favorited?'
-...     'uniqueId=http://xml.zeit.de/2006/DSC00109_2.JPG')
+...     'uniqueId=http://xml.zeit.de/group/master-image.jpg')
 
 It returns the css class for the favorite star:
 
@@ -112,17 +114,17 @@ It returns the css class for the favorite star:
 The clipboard now has a clip "Favoriten" with one entry:
 
 >>> clipboard["Favoriten"].keys()
-['Somalia', 'DSC00109_2.JPG']
+['testcontent', 'master-image.jpg']
 
 
 Calling the toggle view again removes the object from the favorites:
 
 >>> browser.open(
 ...     'http://localhost/++skin++vivi/toggle_favorited?'
-...     'uniqueId=http://xml.zeit.de/online/2007/01/Somalia')
+...     'uniqueId=http://xml.zeit.de/testcontent')
 >>> browser.open(
 ...     'http://localhost/++skin++vivi/toggle_favorited?'
-...     'uniqueId=http://xml.zeit.de/2006/DSC00109_2.JPG')
+...     'uniqueId=http://xml.zeit.de/group/master-image.jpg')
 >>> pprint.pprint(json.loads(browser.contents))
 {'favorited_css_class': 'toggle_favorited not_favorited',...
 
@@ -153,7 +155,7 @@ Favorites are marked in the search result as well:
 >>> first_result = result['results'][0]
 >>> pprint.pprint(first_result)
 {...
- 'favorite_url': 'http://localhost/++skin++vivi/toggle_favorited?uniqueId=http://xml.zeit.de/online/2007/01/Somalia',
+ 'favorite_url': 'http://localhost/++skin++vivi/toggle_favorited?uniqueId=http://xml.zeit.de/testcontent',
  'favorited': False,
  'favorited_css_class': 'toggle_favorited not_favorited',
  ...
@@ -166,7 +168,7 @@ Toggle favorite and search again:
 >>> first_result = result['results'][0]
 >>> pprint.pprint(first_result)
 {...
- 'favorite_url': 'http://localhost/++skin++vivi/toggle_favorited?uniqueId=http://xml.zeit.de/online/2007/01/Somalia',
+ 'favorite_url': 'http://localhost/++skin++vivi/toggle_favorited?uniqueId=http://xml.zeit.de/testcontent',
  'favorited': True,
  'favorited_css_class': 'toggle_favorited favorited',
  ...
@@ -179,7 +181,7 @@ This also works if there is a Clip in the favorites:
 >>> first_result = result['results'][0]
 >>> pprint.pprint(first_result)
 {...
- 'favorite_url': 'http://localhost/++skin++vivi/toggle_favorited?uniqueId=http://xml.zeit.de/online/2007/01/Somalia',
+ 'favorite_url': 'http://localhost/++skin++vivi/toggle_favorited?uniqueId=http://xml.zeit.de/testcontent',
  'favorited': True,
  'favorited_css_class': 'toggle_favorited favorited',
  ...
