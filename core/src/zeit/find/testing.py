@@ -17,7 +17,7 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
     },
     bases=zeit.content.audio.testing.CONFIG_LAYER,
 )
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER, features=['zeit.connector.sql.zope'])
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER)
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
 
 
@@ -43,6 +43,10 @@ LAYER = Layer()
 WSGI_LAYER = zeit.cms.testing.WSGILayer(LAYER)
 HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(WSGI_LAYER)
 WEBDRIVER_LAYER = zeit.cms.testing.WebdriverLayer(HTTP_LAYER)
+
+
+class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
+    layer = WEBDRIVER_LAYER
 
 
 class SearchMockLayer(zeit.cms.testing.Layer):
