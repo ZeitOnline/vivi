@@ -217,21 +217,7 @@ def test_background_color_is_hex_validation(color, raised_exception):
         field.validate(color)
 
 
-class TestVolumeQueries(zeit.content.volume.testing.SQLTestCase):
-    def create_volume(self, year, name, product='ZEI', published=True):
-        volume = Volume()
-        volume.year = year
-        volume.volume = name
-        volume.product = zeit.cms.content.sources.Product(product)
-        if published:
-            volume.date_digital_published = datetime(year, name, 1)
-        year = str(year)
-        name = '%02d' % name
-        self.repository[year] = Folder()
-        self.repository[year][name] = Folder()
-        self.repository[year][name]['ausgabe'] = volume
-        return self.repository[year][name]['ausgabe']
-
+class TestVolumeQueries(zeit.content.volume.testing.FunctionalTestCase):
     def test_next_and_previous(self):
         vol1 = self.create_volume(2025, 1)
         magazin = self.create_volume(2025, 2, product='Dev')
@@ -254,7 +240,7 @@ class TestVolumeQueries(zeit.content.volume.testing.SQLTestCase):
         self.assertEqual(vol1, vol3.previous)
 
 
-class TestVolumeAccessQueries(zeit.content.volume.testing.SQLTestCase):
+class TestVolumeAccessQueries(zeit.content.volume.testing.FunctionalTestCase):
     def setUp(self):
         super().setUp()
         self.create_volume(2025, 1)
@@ -318,7 +304,7 @@ class TestVolumeAccessQueries(zeit.content.volume.testing.SQLTestCase):
         self.assertEqual(volume, result)
 
 
-class TestVolumeGetArticlesQuery(zeit.content.volume.testing.SQLTestCase):
+class TestVolumeGetArticlesQuery(zeit.content.volume.testing.FunctionalTestCase):
     def setUp(self):
         super().setUp()
         self.create_volume(2025, 1)
