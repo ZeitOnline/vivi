@@ -720,6 +720,9 @@ class Connector:
         parent = os.path.split(uniqueid)[0]
         self._reload_child_name_cache(parent)
 
+    def update_references(self, uniqueid, references):
+        pass  # XXX not yet implemented
+
 
 factory = Connector.factory
 

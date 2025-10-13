@@ -104,6 +104,13 @@ class IRepository(zope.interface.Interface):
         returns an iterator that yields ICMSContent objects
         """
 
+    def update_references(content, references):
+        """Store references for the given content object.
+
+        content: ICMSContent
+        references: iterable of dict {'target': ICMSContent, 'type': str}
+        """
+
 
 class IRepositoryContent(zope.interface.Interface):
     """Marker interface for content in the repository.

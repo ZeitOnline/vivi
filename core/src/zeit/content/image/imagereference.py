@@ -7,6 +7,7 @@ import zeit.cms.content.property
 import zeit.cms.content.reference
 import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces
+import zeit.cms.references.references
 import zeit.cms.related.related
 import zeit.content.image.interfaces
 
@@ -96,3 +97,14 @@ class ImageReference(zeit.cms.content.reference.Reference):
             self.xml.set('base-id', self.target.uniqueId)
         elif self.xml.get('src'):
             self.xml.set('src', self.target.uniqueId)
+
+
+class ExtractImageReferences(zeit.cms.references.references.Extract):
+    interface = zeit.content.image.interfaces.IImages
+    grok.name(interface.__name__)
+
+    def __call__(self):
+        if self.context.image is None:
+            return set()
+        else:
+            return [{'target': self.context.image, 'type': 'teaser-image'}]

@@ -23,6 +23,7 @@
   <include package=".clipboard" />
   <include package=".content" />
   <include package=".locking" />
+  <include package=".references" />
   <include package=".related" />
   <include package=".repository" />
   <include package=".retractlog" />

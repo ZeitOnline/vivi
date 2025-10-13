@@ -250,6 +250,16 @@ class IConnector(zope.interface.Interface):
         returns a sqlalchemy result object
         """
 
+    def update_references(id, references):
+        """
+        Store references for the given resource.
+        (Any previously stored references that are not present in the given
+        `references` will be removed.)
+
+        id: unique id
+        references: iterable of dict {'target': uuid, 'type': str}
+        """
+
 
 class ICachingConnector(IConnector):
     """A connector that caches."""

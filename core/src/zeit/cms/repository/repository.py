@@ -330,6 +330,11 @@ class Repository(persistent.Persistent, Container):
             return unique_id.replace('/cms/work/', zeit.cms.interfaces.ID_NAMESPACE)
         return unique_id
 
+    def update_references(self, content, references):
+        for item in references:
+            item['target'] = zeit.cms.content.interfaces.IUUID(item['target']).shortened
+        self.connector.update_references(content.uniqueId, references)
+
 
 def repositoryFactory():
     repository = Repository()
