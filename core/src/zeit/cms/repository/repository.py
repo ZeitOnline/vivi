@@ -298,6 +298,9 @@ class Repository(persistent.Persistent, Container):
         if resource.id is None:
             raise ValueError('Objects to be added to the repository need a unique id.')
         self.connector.add(resource, verify_etag=not ignore_conflicts)
+        resource = zeit.cms.interfaces.IResource(content)
+        self._makeContent(resource)
+        resource.data.close()
 
     @property
     def repository(self):
