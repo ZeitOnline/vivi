@@ -491,3 +491,23 @@ class Lock(Base):
             return LockStatus.OWN
         else:
             return LockStatus.FOREIGN
+
+
+class Reference(Base):
+    __tablename__ = 'content_references'
+
+    source = mapped_column(
+        Uuid(as_uuid=False), ForeignKey('properties.id', ondelete='CASCADE'), primary_key=True
+    )
+    target = mapped_column(
+        Uuid(as_uuid=False), ForeignKey('properties.id', ondelete='CASCADE'), primary_key=True
+    )
+    type = mapped_column(Unicode, primary_key=True)
+    created_at = mapped_column(TIMESTAMP, server_default=sqlalchemy.func.now())
+
+    _source = relationship('Content', foreign_keys=[source], lazy='noload')
+    _target = relationship('Content', foreign_keys=[target], lazy='noload')
+
+    @declared_attr
+    def __table_args__(cls):
+        return (cls.Index('target'),)
