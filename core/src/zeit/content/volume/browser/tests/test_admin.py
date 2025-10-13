@@ -17,7 +17,6 @@ import zeit.find.interfaces
 
 
 class VolumeAdminBrowserTest(zeit.content.volume.testing.BrowserTestCase):
-    layer = zeit.content.volume.testing.SQL_WSGI_LAYER
     login_as = 'zmgr:mgrpw'
 
     def setUp(self):
