@@ -24,6 +24,7 @@ from zeit.retresco.interfaces import DAV_NAMESPACE_BASE
 import zeit.cms.browser.interfaces
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
+import zeit.cms.grok
 import zeit.cms.workflow.interfaces
 import zeit.content.article.interfaces
 import zeit.content.audio.interfaces
@@ -84,31 +85,8 @@ class TMSRepresentation(grok.Adapter):
 
 
 @grok.implementer(zeit.retresco.interfaces.ITMSRepresentation)
-class Converter(grok.Adapter):
-    """This adapter works a bit differently: It adapts its context to a
-    separately _configured_ `interface`, and declines if that is not possible;
-    but all adapters are _registered_ for the same basic ICMSContent interface.
-    This way we can retrieve data stored in various DAVPropertyAdapters.
-    """
-
+class Converter(zeit.cms.grok.IndirectAdapter):
     grok.baseclass()
-    grok.context(zeit.cms.interfaces.ICMSContent)
-
-    interface = NotImplemented
-    # Subclasses need to register as named adapters to work with
-    # `TMSRepresentation`, e.g. by specifying `grok.name(interface.__name__)`
-
-    def __new__(cls, context):
-        adapted = cls.interface(context, None)
-        if adapted is None:
-            return None
-        instance = object.__new__(cls)
-        instance.context = adapted
-        instance.content = context
-        return instance
-
-    def __init__(self, context):
-        pass  # self.context has been set by __new__() already.
 
     def __call__(self):
         return {'payload': {}}
@@ -589,7 +567,7 @@ class Volume(Converter):
     def __new__(cls, context):
         if not cls.interface.providedBy(context):
             return None
-        instance = super(Converter, cls).__new__(cls)
+        instance = super(zeit.cms.grok.IndirectAdapter, cls).__new__(cls)
         instance.context = context
         instance.content = context
         return instance
