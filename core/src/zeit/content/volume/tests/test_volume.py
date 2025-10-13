@@ -6,6 +6,7 @@ import lxml.builder
 import lxml.etree
 import pytest
 import requests_mock
+import transaction
 import zope.component
 
 from zeit.cms.repository.folder import Folder
@@ -180,6 +181,7 @@ class TestVolume(zeit.content.volume.testing.FunctionalTestCase):
         self.repository['2015']['01']['index'] = content
         volume = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2015/01/ausgabe')
         self.repository['2015']['01']['index'] = zeit.content.cp.centerpage.CenterPage()
+        transaction.commit()
         cp = zeit.content.cp.interfaces.ICenterPage(volume)
         self.assertEqual('http://xml.zeit.de/2015/01/index', cp.uniqueId)
 
