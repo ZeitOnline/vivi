@@ -257,7 +257,10 @@ class IConnector(zope.interface.Interface):
         `references` will be removed.)
 
         id: unique id
-        references: iterable of dict {'target': uuid, 'type': str}
+        references: iterable of dict {'target': uuid-string, 'type': str}
+        (uuid-string must look like 'c6425bdc-d8a3-4e42-ab27-f0f11c57e143',
+         matching the `Uuid(as_uuid=False)` format returned by sqlalchemy,
+         so we can directly compare input values to DB values)
         """
 
 

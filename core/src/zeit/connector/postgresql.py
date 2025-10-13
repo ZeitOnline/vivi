@@ -16,7 +16,9 @@ from google.cloud.storage.retry import DEFAULT_RETRY
 from opentelemetry.metrics import NoOpUpDownCounter
 from opentelemetry.trace import SpanKind
 from opentelemetry.trace.status import Status, StatusCode
+from sqlalchemy import and_ as sql_and
 from sqlalchemy import delete, insert, select, update
+from sqlalchemy import or_ as sql_or
 from sqlalchemy import text as sql
 from sqlalchemy.orm import joinedload
 import google.api_core.exceptions
@@ -41,7 +43,7 @@ from zeit.connector.interfaces import (
     LockStatus,
     MoveError,
 )
-from zeit.connector.models import ID_NAMESPACE, Content, Lock
+from zeit.connector.models import ID_NAMESPACE, Content, Lock, Reference
 import zeit.cms.cli
 import zeit.cms.config
 import zeit.cms.interfaces
@@ -721,7 +723,34 @@ class Connector:
         self._reload_child_name_cache(parent)
 
     def update_references(self, uniqueid, references):
-        pass  # XXX not yet implemented
+        uniqueid = self._normalize(uniqueid)
+        content = self._get_content(uniqueid)
+        if content is None:
+            raise KeyError(f'The resource {uniqueid} does not exist.')
+        if content.lock_status == LockStatus.FOREIGN:
+            raise LockedByOtherSystemError(
+                uniqueid, f'{uniqueid} is already locked by {content.lock.principal}'
+            )
+
+        new = set(
+            Reference(source=content.id, target=x['target'], type=x['type']) for x in references
+        )
+        existing = set(
+            self.session.execute(select(Reference).where(Reference.source == content.id)).scalars()
+        )
+
+        to_insert = new - existing
+        if to_insert:
+            self._bulk_insert(Reference, to_insert)
+
+        to_delete = existing - new
+        if to_delete:
+            columns = [c for c in sqlalchemy.orm.class_mapper(Reference).columns if c.primary_key]
+            conditions = []
+            for ref in to_delete:
+                condition = sql_and(*[c == getattr(ref, c.key) for c in columns])
+                conditions.append(condition)
+            self.session.execute(delete(Reference).where(sql_or(*conditions)))
 
 
 factory = Connector.factory

@@ -511,3 +511,13 @@ class Reference(Base):
     @declared_attr
     def __table_args__(cls):
         return (cls.Index('target'),)
+
+    def __eq__(self, other):
+        if not isinstance(other, type(self)):
+            return False
+        return (
+            self.source == other.source and self.target == other.target and self.type == other.type
+        )
+
+    def __hash__(self):
+        return hash((self.source, self.target, self.type))
