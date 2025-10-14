@@ -17,7 +17,7 @@ ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
 
 
-class DynamicLayer(zeit.cms.testing.Layer):
+class DynamicLayer(zeit.cms.testing.ContentFixtureLayer):
     defaultBases = (ZOPE_LAYER,)
 
     def __init__(self, path, files):
@@ -25,17 +25,11 @@ class DynamicLayer(zeit.cms.testing.Layer):
         self.path = path
         self.files = files
 
-    def setUp(self):
-        self['gcs_storage'].stack_push()
-        with self['rootFolder'](self['zodbDB-layer']) as root:
-            with zeit.cms.testing.site(root):
-                repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
-                repository['dynamicfolder'] = create_dynamic_folder(
-                    __package__ + ':' + self.path, self.files
-                )
-
-    def tearDown(self):
-        self['gcs_storage'].stack_pop()
+    def create_fixture(self):
+        repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
+        repository['dynamicfolder'] = create_dynamic_folder(
+            __package__ + ':' + self.path, self.files
+        )
 
 
 def create_dynamic_folder(package, files):

@@ -76,19 +76,13 @@ def add_file_multi(control, files):
     ]
 
 
-class FixtureLayer(zeit.cms.testing.Layer):
-    def setUp(self):
-        self['gcs_storage'].stack_push()
-        with self['rootFolder'](self['zodbDB-layer']) as root:
-            with zeit.cms.testing.site(root):
-                repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
-                repository['image'] = create_image(
-                    'DSC00109_2.JPG', package='zeit.connector', folder='testcontent/2006'
-                )
-                create_image_group()
-
-    def tearDown(self):
-        self['gcs_storage'].stack_pop()
+class FixtureLayer(zeit.cms.testing.ContentFixtureLayer):
+    def create_fixture(self):
+        repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
+        repository['image'] = create_image(
+            'DSC00109_2.JPG', package='zeit.connector', folder='testcontent/2006'
+        )
+        create_image_group()
 
 
 LAYER = FixtureLayer(ZOPE_LAYER)

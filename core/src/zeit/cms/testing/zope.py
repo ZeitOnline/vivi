@@ -320,6 +320,24 @@ class ZopeLayer(Layer):
         site.__bases__ = (self['zcaRegistry'],)
 
 
+class ContentFixtureLayer(Layer):
+    def setUp(self):
+        self['sql_transaction_layer'] = self['sql_connection'].begin_nested()
+        self['gcs_storage'].stack_push()
+        with self['rootFolder'](self['zodbDB-layer']) as root:
+            with zeit.cms.testing.site(root):
+                self.create_fixture()
+
+    def create_fixture(self):
+        raise NotImplementedError()
+
+    def tearDown(self):
+        transaction.abort()
+        self['sql_transaction_layer'].rollback()
+        del self['sql_transaction_layer']
+        self['gcs_storage'].stack_pop()
+
+
 class WSGILayer(Layer):
     def setUp(self):
         self['zope_app'] = zope.app.wsgi.WSGIPublisherApplication(self['zodbDB-layer'])
