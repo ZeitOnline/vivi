@@ -14,6 +14,7 @@ import zope.component
 import zope.interface
 
 from zeit.cms.content.interfaces import ISemanticChange
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
 from zeit.connector.search import SearchVar
 from zeit.content.article.article import Article
@@ -306,12 +307,8 @@ class ArticleEntry(Entry):
         return article
 
     def publish(self, content):
-        # Checkin will trigger an asynchronous celery job for TMS (when our
-        # transaction is committed by the mainloop), but that will run only
-        # _long after_ our synchronous publish has run, resulting in no
-        # keywords in the published TMS data. Thus we have to do it explicitly
-        # and synchronously here.
-        zeit.retresco.update.index_async(content.uniqueId)
+        if FEATURE_TOGGLES.find('newsimport_explicit_tms_before_publish'):
+            zeit.retresco.update.index_async(content.uniqueId)
         return super().publish(content)
 
 
