@@ -1,3 +1,5 @@
+import logging
+
 import requests
 import zope.interface
 
@@ -38,4 +40,8 @@ class Publisher:
 @zope.interface.implementer(zeit.cms.workflow.interfaces.IPublisher)
 class MockPublisher:
     def request(self, items, method):
-        return
+        logging.getLogger(__name__).info(
+            'Publisher %r for %s',
+            method,
+            [x.get('uniqueId', 'unknown') for x in items],
+        )

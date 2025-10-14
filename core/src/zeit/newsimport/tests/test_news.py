@@ -558,7 +558,7 @@ class DPATOTMSTest(zeit.newsimport.testing.FunctionalTestCase):
 
         uniqueid = 'http://xml.zeit.de/news/2021-12/15/beispielmeldung-ueberschrift'
 
-        log_publish = f'Publishing {uniqueid}'
+        log_publish = f"Publisher 'publish' for ['{uniqueid}']"
         log_tags = f'Updating tags for {uniqueid}'
 
         index_tags, index_publish = None, None
