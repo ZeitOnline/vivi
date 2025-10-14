@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.210.0 (2025-10-14)
+--------------------
+
+- WCM-1146: Change icons in article RTE
+
+- WCM-1160: Store references in SQL table on checkin
+
+
 7.209.0 (2025-10-09)
 --------------------
 
