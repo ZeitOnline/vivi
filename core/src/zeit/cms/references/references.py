@@ -3,16 +3,15 @@ import zope.component
 
 from zeit.cms.content.sources import FEATURE_TOGGLES
 import zeit.cms.checkout.interfaces
+import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.references.interfaces
 import zeit.cms.repository.interfaces
 
 
-@grok.subscribe(zeit.cms.interfaces.ICMSContent, zeit.cms.checkout.interfaces.IAfterCheckinEvent)
+@grok.subscribe(zeit.cms.interfaces.ICMSContent, zeit.cms.content.interfaces.IContentModifiedEvent)
 def update_references(context, event):
     if not FEATURE_TOGGLES.find('store_references'):
-        return
-    if event.publishing:
         return
 
     repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
