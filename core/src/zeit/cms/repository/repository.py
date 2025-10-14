@@ -298,6 +298,9 @@ class Repository(persistent.Persistent, Container):
         if resource.id is None:
             raise ValueError('Objects to be added to the repository need a unique id.')
         self.connector.add(resource, verify_etag=not ignore_conflicts)
+        resource = zeit.cms.interfaces.IResource(content)
+        self._makeContent(resource)
+        resource.data.close()
 
     @property
     def repository(self):
@@ -329,6 +332,11 @@ class Repository(persistent.Persistent, Container):
         if unique_id.startswith('/cms/work/'):
             return unique_id.replace('/cms/work/', zeit.cms.interfaces.ID_NAMESPACE)
         return unique_id
+
+    def update_references(self, content, references):
+        for item in references:
+            item['target'] = zeit.cms.content.interfaces.IUUID(item['target']).shortened
+        self.connector.update_references(content.uniqueId, references)
 
 
 def repositoryFactory():

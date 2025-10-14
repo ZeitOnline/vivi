@@ -76,9 +76,21 @@ class TestCase(zeit.cms.testing.FunctionalTestCase):
     def connector(self):
         return zope.component.getUtility(zeit.connector.interfaces.IConnector)
 
-    def get_resource(self, name, body=b'', properties=None, is_collection=False, type='testing'):
+    def get_resource(
+        self,
+        name,
+        body=b'',
+        properties=None,
+        is_collection=False,
+        type='testing',
+        uuid=None,
+    ):
         if not isinstance(body, bytes):
             body = body.encode('utf-8')
+        if uuid is not None:
+            if properties is None:
+                properties = {}
+            properties[('uuid', 'http://namespaces.zeit.de/CMS/document')] = '{urn:uuid:%s}' % uuid
         return zeit.connector.resource.Resource(
             f'{ROOT}/{name}',
             name,

@@ -19,18 +19,19 @@
   <include file="patches.zcml" />
 
   <include package=".admin" />
-  <include package=".content" />
-  <include package=".related" />
   <include package=".checkout"  />
-  <include package=".repository" />
-  <include package=".workingcopy" />
   <include package=".clipboard" />
+  <include package=".content" />
   <include package=".locking" />
-  <include package=".workflow" />
+  <include package=".references" />
+  <include package=".related" />
+  <include package=".repository" />
+  <include package=".retractlog" />
+  <include package=".section" />
   <include package=".settings" />
   <include package=".tagging" />
-  <include package=".section" />
-  <include package=".retractlog" />
+  <include package=".workflow" />
+  <include package=".workingcopy" />
 
 
   <!-- configuration -->

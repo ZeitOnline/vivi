@@ -12,17 +12,15 @@ ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
 
 
-class Layer(zeit.cms.testing.Layer):
+class Layer(zeit.cms.testing.ContentFixtureLayer):
     defaultBases = (ZOPE_LAYER,)
 
-    def setUp(self):
-        with self['rootFolder'](self['zodbDB-layer']) as root:
-            with zeit.cms.testing.site(root):
-                repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
-                wochenende = zeit.cms.repository.folder.Folder()
-                zope.interface.alsoProvides(wochenende, IZWESection)
-                zope.interface.alsoProvides(wochenende, IZWEFolder)
-                repository['wochenende'] = wochenende
+    def create_fixture(self):
+        repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
+        wochenende = zeit.cms.repository.folder.Folder()
+        zope.interface.alsoProvides(wochenende, IZWESection)
+        zope.interface.alsoProvides(wochenende, IZWEFolder)
+        repository['wochenende'] = wochenende
 
 
 LAYER = Layer()

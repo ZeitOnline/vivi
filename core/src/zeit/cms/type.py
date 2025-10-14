@@ -1,4 +1,5 @@
 import logging
+import os.path
 
 import grokcore.component as grok
 import lxml.etree
@@ -64,7 +65,7 @@ class TypeDeclaration:
         self._serialize_provided_interfaces_to_dav(content)
         return zeit.connector.resource.Resource(
             content.uniqueId,
-            content.__name__,
+            os.path.basename(content.uniqueId) if content.uniqueId else None,
             self.type,
             data=self.resource_body(content),
             properties=self.resource_properties(content),

@@ -8,6 +8,7 @@ import zeit.cms.content.dav
 import zeit.cms.content.property
 import zeit.cms.content.reference
 import zeit.cms.content.xmlsupport
+import zeit.cms.references.references
 import zeit.cms.tagging.tag
 
 
@@ -151,3 +152,11 @@ def log_access_change(context, event):
         break
     else:
         return
+
+
+class ExtractAuthorReferences(zeit.cms.references.references.Extract):
+    interface = zeit.cms.content.interfaces.ICommonMetadata
+    grok.name(interface.__name__)
+
+    def __call__(self):
+        return [{'target': x.target, 'type': 'author'} for x in self.context.authorships]

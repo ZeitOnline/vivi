@@ -12,18 +12,12 @@ ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
 
 
-class FixtureLayer(zeit.cms.testing.Layer):
-    def setUp(self):
-        self['gcs_storage'].stack_push()
-        with self['rootFolder'](self['zodbDB-layer']) as root:
-            with zeit.cms.testing.site(root):
-                repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
-                repository['article'] = zeit.content.article.testing.create_article()
-                repository['image1'] = zeit.content.image.testing.create_image()
-                repository['image2'] = zeit.content.image.testing.create_image()
-
-    def tearDown(self):
-        self['gcs_storage'].stack_pop()
+class FixtureLayer(zeit.cms.testing.ContentFixtureLayer):
+    def create_fixture(self):
+        repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
+        repository['article'] = zeit.content.article.testing.create_article()
+        repository['image1'] = zeit.content.image.testing.create_image()
+        repository['image2'] = zeit.content.image.testing.create_image()
 
 
 LAYER = FixtureLayer(ZOPE_LAYER)

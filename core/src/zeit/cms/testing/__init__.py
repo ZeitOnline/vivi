@@ -13,6 +13,7 @@ from .selenium import SeleniumTestCase, WebdriverLayer
 from .utils import xmltotext
 from .zope import (
     AdditionalZCMLLayer,
+    ContentFixtureLayer,
     FunctionalTestCase,
     ProductConfigLayer,
     WSGILayer,
