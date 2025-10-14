@@ -531,6 +531,9 @@ class TestProcess(zeit.newsimport.testing.FunctionalTestCase):
 
 
 class DPATOTMSTest(zeit.newsimport.testing.FunctionalTestCase):
+    # Since the whole point is that tasks triggered by checkin will run too late,
+    # after the sync publish has already happened, we have to run the tests in
+    # an environment where that holds true as well.
     layer = zeit.newsimport.testing.CELERY_LAYER
 
     @pytest.fixture(autouse=True)
