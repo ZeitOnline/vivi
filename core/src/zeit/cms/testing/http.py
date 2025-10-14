@@ -72,9 +72,12 @@ class WSGIServerLayer(Layer):
 
 
 class RecordingRequestHandler(gocept.httpserverlayer.custom.RequestHandler):
-    response_code = 200
-    response_headers = {}
-    response_body = '{}'
+    @classmethod
+    def reset(cls):
+        cls.requests = []
+        cls.response_headers = {}
+        cls.response_body = '{}'
+        cls.response_code = 200
 
     def do_GET(self):
         length = int(self.headers.get('content-length', 0))
@@ -107,10 +110,10 @@ class RecordingRequestHandler(gocept.httpserverlayer.custom.RequestHandler):
 class HTTPLayer(gocept.httpserverlayer.custom.Layer):
     def __init__(self, request_handler=RecordingRequestHandler):
         super().__init__(request_handler)
+        if issubclass(request_handler, RecordingRequestHandler):
+            request_handler.reset()
 
     def testSetUp(self):
         super().testSetUp()
-        self['request_handler'].requests = []
-        self['request_handler'].response_headers = {}
-        self['request_handler'].response_body = '{}'
-        self['request_handler'].response_code = 200
+        if issubclass(self['request_handler'], RecordingRequestHandler):
+            self['request_handler'].reset()
