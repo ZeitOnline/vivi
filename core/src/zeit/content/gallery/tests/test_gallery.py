@@ -12,8 +12,9 @@ class TestEntryMetadata(zeit.content.gallery.testing.FunctionalTestCase):
         super().setUp()
         gallery = zeit.content.gallery.gallery.Gallery()
         repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
-        gallery.image_folder = repository['2007']
-        zeit.content.gallery.testing.add_image('2007', '01.jpg')
+        repository['folder'] = Folder()
+        gallery.image_folder = repository['folder']
+        zeit.content.gallery.testing.add_image('folder', '01.jpg')
         transaction.commit()
         gallery.reload_image_folder()
         self.gallery = gallery
@@ -51,10 +52,11 @@ class TestVisibleEntryCount(zeit.content.gallery.testing.FunctionalTestCase):
         super().setUp()
         gallery = zeit.content.gallery.gallery.Gallery()
         repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
-        gallery.image_folder = repository['2007']
+        self.repository['folder'] = Folder()
+        gallery.image_folder = repository['folder']
         entries = {'01.jpg': None, '02.jpg': 'image-only', '03.jpg': 'hidden'}
         for key in entries:
-            zeit.content.gallery.testing.add_image('2007', key)
+            zeit.content.gallery.testing.add_image('folder', key)
         transaction.commit()
         gallery.reload_image_folder()
         for key, layout in entries.items():
@@ -71,7 +73,6 @@ class TestVisibleEntryCount(zeit.content.gallery.testing.FunctionalTestCase):
 class TestWorkflow(zeit.content.gallery.testing.FunctionalTestCase):
     def setUp(self):
         super().setUp()
-
         self.folder = self.repository['image-folder'] = Folder()
         image = create_image('opernball.jpg')
         image = self.folder['opernball.jpg'] = image
@@ -79,6 +80,7 @@ class TestWorkflow(zeit.content.gallery.testing.FunctionalTestCase):
         gallery = zeit.content.gallery.gallery.Gallery()
         gallery.image_folder = self.folder
         self.gallery = self.repository['gallery'] = gallery
+        transaction.commit()
 
     def test_publishes_images_from_folder_with_gallery(self):
         pub = IPublicationDependencies(self.gallery)
@@ -87,4 +89,5 @@ class TestWorkflow(zeit.content.gallery.testing.FunctionalTestCase):
 
     def test_nonexistent_image_folder_does_not_break(self):
         del self.folder.__parent__[self.folder.__name__]
+        transaction.commit()
         self.assertEqual([], IPublicationDependencies(self.gallery).get_dependencies())

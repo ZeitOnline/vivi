@@ -1,5 +1,6 @@
 import importlib.resources
 
+import transaction
 import zope.component
 
 import zeit.cms.repository.interfaces
@@ -18,7 +19,7 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
     },
     bases=(zeit.crop.testing.CONFIG_LAYER, zeit.push.testing.CONFIG_LAYER),
 )
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER)
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER, features=['zeit.connector.sql.zope'])
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
 PUSH_LAYER = zeit.push.testing.UrbanairshipTemplateLayer(ZOPE_LAYER)
 LAYER = zeit.cms.testing.Layer(PUSH_LAYER)
@@ -44,3 +45,4 @@ def add_image(folder, filename, name=None):
 
     repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
     repository[folder][name] = image
+    transaction.commit()
