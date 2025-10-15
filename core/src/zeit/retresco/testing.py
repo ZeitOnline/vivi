@@ -96,7 +96,7 @@ class TMSMockLayer(zeit.cms.testing.Layer):
 TMS_MOCK_LAYER = TMSMockLayer()
 
 
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER)
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER, features=['zeit.connector.sql.zope'])
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
 WSGI_LAYER = zeit.cms.testing.WSGILayer(ZOPE_LAYER)
 
