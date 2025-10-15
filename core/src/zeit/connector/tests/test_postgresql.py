@@ -576,3 +576,19 @@ class ReferencesTest(zeit.connector.testing.SQLTest):
         transaction.commit()
 
         self.assertEqual(0, self.connector.session.query(Reference).count())
+
+    def test_bulk_insert_handles_missing_references(self):
+        self.add_resource('author', uuid='aaaaaaaa-d8a3-4e42-ab27-f0f11c57e143')
+        nonexistent_target = 'deadbeef-0000-0000-0000-000000000000'
+        references = [
+            {'target': 'aaaaaaaa-d8a3-4e42-ab27-f0f11c57e143', 'type': 'author'},
+            {'target': nonexistent_target, 'type': 'image'},
+        ]
+
+        with self.assertNothingRaised():
+            self.connector.update_references(self.article.id, references)
+            transaction.commit()
+
+        stored = self.connector.get_references(self.article.id)
+        self.assertEqual(1, len(stored))
+        self.assertEqual('aaaaaaaa-d8a3-4e42-ab27-f0f11c57e143', stored[0]['target'])
