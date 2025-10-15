@@ -726,7 +726,7 @@ class Connector:
         uniqueid = self._normalize(uniqueid)
         content = self._get_content(uniqueid, False)
         if content is None:
-            raise KeyError(f'The resource {uniqueid} does not exist.')
+            return []
 
         references = self.session.execute(
             select(Reference).where(Reference.source == content.id)

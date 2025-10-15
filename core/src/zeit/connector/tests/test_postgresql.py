@@ -507,6 +507,9 @@ class ReferencesTest(zeit.connector.testing.SQLTest):
     def _sorted(self, references):
         return sorted(references, key=lambda x: x['target'])
 
+    def test_empty_list_if_source_is_missing(self):
+        self.assertEqual([], self.connector.get_references('http://xml.zeit.de/missing'))
+
     def test_update_references_replaces_completely(self):
         self.add_resource('author', uuid='aaaaaaaa-d8a3-4e42-ab27-f0f11c57e143')
         self.add_resource('teaser-image', uuid='bbbbbbbb-d8a3-4e42-ab27-f0f11c57e143')
