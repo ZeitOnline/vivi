@@ -531,6 +531,9 @@ class TestProcess(zeit.newsimport.testing.FunctionalTestCase):
 
 
 class DPATOTMSTest(zeit.newsimport.testing.FunctionalTestCase):
+    # Since the whole point is that tasks triggered by checkin will run too late,
+    # after the sync publish has already happened, we have to run the tests in
+    # an environment where that holds true as well.
     layer = zeit.newsimport.testing.CELERY_LAYER
 
     @pytest.fixture(autouse=True)
@@ -555,20 +558,11 @@ class DPATOTMSTest(zeit.newsimport.testing.FunctionalTestCase):
 
         uniqueid = 'http://xml.zeit.de/news/2021-12/15/beispielmeldung-ueberschrift'
 
-        log_publish = f'Publishing {uniqueid}'
-        log_tags = f'Updating tags for {uniqueid}'
+        log = [x.message for x in self.caplog.records]
+        log_publish = log.index(f"Publisher 'publish' for ['{uniqueid}']")
+        log_tags = log.index(f'Updating tags for {uniqueid}')
 
-        index_tags, index_publish = None, None
-        for i, record in enumerate(self.caplog.records):
-            if record.message == log_publish:
-                index_publish = i
-            elif record.message == log_tags:
-                index_tags = i
-
-            if index_publish and index_tags:
-                break
-
-        self.assertGreater(index_publish, index_tags, 'Publish should happen after tags update')
+        self.assertGreater(log_publish, log_tags, 'Publish should happen after tags update')
         content = ICMSContent(uniqueid)
         self.assertTrue(isinstance(content, zeit.content.article.article.Article))
         self.assertTrue(IPublishInfo(content).published)
