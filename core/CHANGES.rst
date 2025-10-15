@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.211.0 (2025-10-15)
+--------------------
+
+- WCM-1172: Prepare for removing duplicate TMS indexing in newsimport by putting it behind toggle
+
+- WCM-1162: get_references from connector
+
+
 7.210.0 (2025-10-14)
 --------------------
 
