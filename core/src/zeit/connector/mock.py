@@ -324,6 +324,9 @@ class Connector(zeit.connector.filesystem.Connector):
         self.search_args.append(self._compile_sql(query))
         return self.search_result
 
+    def get_references(self, uniqueid):
+        pass  # will not be supported, use postgresql Connector instead.
+
     def update_references(self, uniqueid, references):
         pass  # will not be supported, use postgresql Connector instead.
 
