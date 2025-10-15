@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.212.0 (2025-10-15)
+--------------------
+
+- WCM-810: Add image properties on ContentModifiedEvent and provide new view for content-storage API calls
+
+
 7.211.0 (2025-10-15)
 --------------------
 
