@@ -194,6 +194,10 @@ class CheckoutManager:
                     msg = _('Checked in')
                 zeit.objectlog.interfaces.ILog(added).log(msg)
 
+                zope.event.notify(
+                    zeit.cms.content.interfaces.ContentModifiedEvent(added, self.principal)
+                )
+
         lockable = zope.app.locking.interfaces.ILockable(added, None)
         # Since publishing starts and ends with its own lock()/unlock(), it
         # would be premature to already unlock during the cycle() step.

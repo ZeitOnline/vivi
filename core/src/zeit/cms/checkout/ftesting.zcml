@@ -1,0 +1,20 @@
+<configure
+   xmlns="http://namespaces.zope.org/zope"
+   xmlns:grok="http://namespaces.zope.org/grok"
+   i18n_domain="zope"
+   >
+
+  <include package="zeit.cms" file="ftesting.zcml" />
+
+  <principal
+    id="zeit.modify"
+    title="ContentModifier"
+    login="notify"
+    password="notifypw" />
+
+  <grant
+    principal="zeit.modify"
+    permission="zeit.cms.ModifyContent"
+    />
+
+</configure>

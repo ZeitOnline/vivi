@@ -125,6 +125,12 @@ def index_workflow_properties(context, event):
         index_async.delay(content.uniqueId, enrich=False)
 
 
+@grok.subscribe(zeit.cms.interfaces.ICMSContent, zeit.cms.checkout.interfaces.IContentIndexEvent)
+def index_after_external_content_modification(context, event):
+    log.info('After external content modification: Update index %s', context.uniqueId)
+    zeit.retresco.update.index(context, enrich=True)
+
+
 @zeit.cms.celery.task(bind=True, queue='search')
 def index_async(self, uniqueId, enrich=True, publish=False):
     context = zeit.cms.interfaces.ICMSContent(uniqueId, None)

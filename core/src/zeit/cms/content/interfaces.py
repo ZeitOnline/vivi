@@ -554,3 +554,14 @@ class IRemoteMetadata(zope.interface.Interface):
     remote_image = zope.schema.URI(title=_('Remote image URL'), required=False)
 
     remote_timestamp = zope.schema.URI(title=_('Remote timestamp URL'), required=False)
+
+
+class IContentModifiedEvent(zope.interface.interfaces.IObjectEvent):
+    """IObjectModifiedEvent would be preferable, but is too entangled with zope.formlib"""
+
+
+@zope.interface.implementer(IContentModifiedEvent)
+class ContentModifiedEvent(zope.interface.interfaces.ObjectEvent):
+    def __init__(self, object, principal):
+        super().__init__(object)
+        self.principal = principal
