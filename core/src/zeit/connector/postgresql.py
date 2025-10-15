@@ -722,6 +722,18 @@ class Connector:
         parent = os.path.split(uniqueid)[0]
         self._reload_child_name_cache(parent)
 
+    def get_references(self, uniqueid):
+        uniqueid = self._normalize(uniqueid)
+        content = self._get_content(uniqueid, False)
+        if content is None:
+            return []
+
+        references = self.session.execute(
+            select(Reference).where(Reference.source == content.id)
+        ).scalars()
+
+        return [{'target': ref.target, 'type': ref.type} for ref in references]
+
     def update_references(self, uniqueid, references):
         uniqueid = self._normalize(uniqueid)
         content = self._get_content(uniqueid)

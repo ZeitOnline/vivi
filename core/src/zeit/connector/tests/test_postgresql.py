@@ -8,7 +8,6 @@ from sqlalchemy import text as sql
 from sqlalchemy.exc import IntegrityError, OperationalError
 import google.api_core.exceptions
 import pendulum
-import sqlalchemy.orm
 import transaction
 
 from zeit.cms.checkout.helper import checked_out
@@ -505,29 +504,23 @@ class ReferencesTest(zeit.connector.testing.SQLTest):
         self.article_id = 'ffffffff-d8a3-4e42-ab27-f0f11c57e143'
         self.article = self.add_resource('article', uuid=self.article_id)
 
-    def _stored_references(self):
-        query = select(Reference).where(Reference.source == self.article_id)
-        result = self.connector.session.execute(query).scalars()
-        columns = [c.key for c in sqlalchemy.orm.class_mapper(Reference).columns if c.primary_key]
-        return self._sorted([{c: getattr(x, c) for c in columns} for x in result])
-
     def _sorted(self, references):
         return sorted(references, key=lambda x: x['target'])
 
+    def test_empty_list_if_source_is_missing(self):
+        self.assertEqual([], self.connector.get_references('http://xml.zeit.de/missing'))
+
     def test_update_references_replaces_completely(self):
-        self.add_resource('author1', uuid='aaaaaaaa-d8a3-4e42-ab27-f0f11c57e143')
-        self.add_resource('author2', uuid='bbbbbbbb-d8a3-4e42-ab27-f0f11c57e143')
+        self.add_resource('author', uuid='aaaaaaaa-d8a3-4e42-ab27-f0f11c57e143')
+        self.add_resource('teaser-image', uuid='bbbbbbbb-d8a3-4e42-ab27-f0f11c57e143')
 
         references = [
             {'target': 'aaaaaaaa-d8a3-4e42-ab27-f0f11c57e143', 'type': 'author'},
-            {'target': 'bbbbbbbb-d8a3-4e42-ab27-f0f11c57e143', 'type': 'author'},
+            {'target': 'bbbbbbbb-d8a3-4e42-ab27-f0f11c57e143', 'type': 'teaser-image'},
         ]
         self.connector.update_references(self.article.id, references)
         transaction.commit()
-
-        for x in references:
-            x['source'] = self.article_id
-        self.assertEqual(self._sorted(references), self._stored_references())
+        self.assertEqual(references, self._sorted(self.connector.get_references(self.article.id)))
 
         self.add_resource('image', uuid='cccccccc-d8a3-4e42-ab27-f0f11c57e143')
         references = [
@@ -536,52 +529,48 @@ class ReferencesTest(zeit.connector.testing.SQLTest):
         ]
         self.connector.update_references(self.article.id, references)
         transaction.commit()
-
-        for x in references:
-            x['source'] = self.article_id
-        self.assertEqual(self._sorted(references), self._stored_references())
+        self.assertEqual(references, self._sorted(self.connector.get_references(self.article.id)))
 
     def test_empty_list_deletes_them_all(self):
         self.add_resource('author', uuid='aaaaaaaa-d8a3-4e42-ab27-f0f11c57e143')
         references = [{'target': 'aaaaaaaa-d8a3-4e42-ab27-f0f11c57e143', 'type': 'author'}]
         self.connector.update_references(self.article.id, references)
         transaction.commit()
-        self.assertEqual(1, len(self._stored_references()))
+        self.assertEqual(1, len(self.connector.get_references(self.article.id)))
 
         self.connector.update_references(self.article.id, [])
         transaction.commit()
-        self.assertEqual(0, len(self._stored_references()))
+        self.assertEqual(0, len(self.connector.get_references(self.article.id)))
 
     def test_delete_target_deletes_reference(self):
-        a1 = self.add_resource('author1', uuid='aaaaaaaa-d8a3-4e42-ab27-f0f11c57e143')
-        self.add_resource('author2', uuid='bbbbbbbb-d8a3-4e42-ab27-f0f11c57e143')
+        a1 = self.add_resource('author', uuid='aaaaaaaa-d8a3-4e42-ab27-f0f11c57e143')
+        self.add_resource('teaser-image', uuid='bbbbbbbb-d8a3-4e42-ab27-f0f11c57e143')
 
         references = [
             {'target': 'aaaaaaaa-d8a3-4e42-ab27-f0f11c57e143', 'type': 'author'},
-            {'target': 'bbbbbbbb-d8a3-4e42-ab27-f0f11c57e143', 'type': 'author'},
+            {'target': 'bbbbbbbb-d8a3-4e42-ab27-f0f11c57e143', 'type': 'teaser-image'},
         ]
         self.connector.update_references(self.article.id, references)
         transaction.commit()
-        self.assertEqual(2, len(self._stored_references()))
+        self.assertEqual(2, len(self.connector.get_references(self.article.id)))
 
         del self.connector[a1.id]
         transaction.commit()
 
         references = [
             {
-                'source': self.article_id,
                 'target': 'bbbbbbbb-d8a3-4e42-ab27-f0f11c57e143',
-                'type': 'author',
+                'type': 'teaser-image',
             },
         ]
-        self.assertEqual(self._sorted(references), self._stored_references())
+        self.assertEqual(references, self.connector.get_references(self.article.id))
 
     def test_delete_source_deletes_all_references(self):
         self.add_resource('author', uuid='aaaaaaaa-d8a3-4e42-ab27-f0f11c57e143')
         references = [{'target': 'aaaaaaaa-d8a3-4e42-ab27-f0f11c57e143', 'type': 'author'}]
         self.connector.update_references(self.article.id, references)
         transaction.commit()
-        self.assertEqual(1, len(self._stored_references()))
+        self.assertEqual(1, len(self.connector.get_references(self.article.id)))
 
         del self.connector[self.article.id]
         transaction.commit()

@@ -250,6 +250,15 @@ class IConnector(zope.interface.Interface):
         returns a sqlalchemy result object
         """
 
+    def get_references(id):
+        """Read all references for the given resource.
+
+        id: unique id
+
+        returns iterable of dict {'target': uuid-string, 'type': str}
+        (Same format as accepted by update_references)
+        """
+
     def update_references(id, references):
         """
         Store references for the given resource.
