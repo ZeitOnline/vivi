@@ -64,7 +64,6 @@ case $COMMAND in
         exec uv run pytest -c none --tb=native --nightwatch-environment=$environment "$@"
         ;;
     *)
-        echo "Unrecognized command: $COMMAND"
-        exit 1
-    ;;
+        exec $DIR/../../../../bin/test "$@"
+        ;;
 esac
