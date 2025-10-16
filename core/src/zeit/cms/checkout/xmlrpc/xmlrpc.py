@@ -7,7 +7,6 @@ import zope.publisher.xmlrpc
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.connector.interfaces
-import zeit.retresco.update
 
 
 log = logging.getLogger(__name__)
