@@ -319,8 +319,11 @@ class Connector(zeit.connector.filesystem.Connector):
                     result.append(self.search_result.pop(0))
                 except IndexError:
                     break
-        for uniqueid in result:
-            yield self[uniqueid]
+        for item in result:
+            if isinstance(item, str):
+                yield self[item]
+            else:  # So zeit.web can populate FakeArticle objects
+                yield item
 
     def search_sql_count(self, query):
         self.search_args.append(self._compile_sql(query))
