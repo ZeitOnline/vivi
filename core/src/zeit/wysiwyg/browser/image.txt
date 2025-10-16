@@ -32,8 +32,6 @@ After assigning an image group it contained images are returned:
 ...         with zeit.cms.checkout.helper.checked_out(content) as co:
 ...             zeit.content.image.interfaces.IImages(co).image = image_group
 
->>> browser.handleErrors = False
 >>> browser.reload()
 >>> pprint.pprint(json.loads(browser.contents))
-{'images': ['http://xml.zeit.de/group/master-image.jpg',
-            'http://xml.zeit.de/group/thumbnail-source-master-image.jpg']}
+{'images': ['http://xml.zeit.de/group/master-image.jpg']}

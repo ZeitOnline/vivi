@@ -258,7 +258,7 @@ class IImageGroup(
         title=_('Display Type'), source=DisplayTypeSource(), default='imagegroup', required=True
     )
 
-    def variant_url(name, width=None, height=None, fill_color=None, thumbnail=False):
+    def variant_url(name, width=None, height=None, fill_color=None):
         """Return an URL path to the variant with the given name that matches
         the width/height requirements most closely.
 
@@ -267,9 +267,6 @@ class IImageGroup(
         as to www.zeit.de, for example.
 
         Optionally a fill_color can be given (for images with an alpha channel)
-
-        If thumbnail is True, return a path for an image that was generated
-        by a downsampled version instead of the full master image.
         """
 
     def create_variant_image(key, source=None):
@@ -374,12 +371,6 @@ class ImageGroupSource(zeit.cms.content.contentsource.CMSContentSource):
 
 
 imageGroupSource = ImageGroupSource()
-
-
-class IThumbnails(zope.container.interfaces.IReadContainer):
-    """Traverser to access smaller images via /thumbnails"""
-
-    source_image = zope.schema.Choice(source=bareImageSource)
 
 
 class IMasterImage(zope.interface.Interface):

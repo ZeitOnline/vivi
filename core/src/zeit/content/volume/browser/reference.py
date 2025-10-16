@@ -4,6 +4,7 @@ import zope.formlib.interfaces
 
 import zeit.cms.browser.objectdetails
 import zeit.cms.browser.view
+import zeit.cms.config
 import zeit.cms.repository.interfaces
 import zeit.content.volume.interfaces
 import zeit.edit.browser.form
@@ -59,6 +60,11 @@ class Display(zeit.cms.browser.view.Base):
             return ''
         repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
         cover_url = '{}{}/@@raw'.format(
-            self.url(repository), cover.variant_url('original', thumbnail=True)
+            self.url(repository),
+            cover.variant_url(
+                'original',
+                width=zeit.cms.config.get('zeit.content.image', 'thumbnail-width', 50),
+                height=0,
+            ),
         )
         return '<img src="{}" alt="" height="{}" border="0" />'.format(cover_url, height)
