@@ -938,6 +938,14 @@ class AutomaticAreaSQLTest(zeit.content.cp.testing.FunctionalTestCase):
             self.connector.search_args[0],
         )
 
+    def test_join_content_references_adds_clause(self):
+        self.area.sql_join_content_references = True
+        IRenderedArea(self.area).values()
+        self.assertEllipsis(
+            '...JOIN content_references ON properties.id = content_references.source...',
+            self.connector.search_args[0],
+        )
+
 
 class AutomaticAreaSQLCustomTest(zeit.content.cp.testing.FunctionalTestCase):
     def setUp(self):

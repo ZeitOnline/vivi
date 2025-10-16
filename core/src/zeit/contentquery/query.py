@@ -22,7 +22,7 @@ import zope.interface
 from zeit.cms.content.cache import content_cache
 from zeit.cms.content.interfaces import IUUID
 from zeit.cms.interfaces import ICMSContent
-from zeit.connector.models import TIMESTAMP, Content
+from zeit.connector.models import TIMESTAMP, Content, Reference
 from zeit.contentquery.configuration import CustomQueryProperty
 import zeit.cms.config
 import zeit.cms.content.interfaces
@@ -102,6 +102,8 @@ class SQLContentQuery(ContentQuery):
     @property
     def conditions(self):
         query = select(Content)
+        if self.context.sql_join_content_references:
+            query = query.join(Reference, Content.id == Reference.source)
         return query.where(sql(f'({self.context.sql_query})'))
 
     @property

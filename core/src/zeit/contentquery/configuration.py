@@ -147,6 +147,7 @@ class Configuration:
         'sql_order': True,
         'sql_restrict_time': True,
         'sql_force_queryplan': False,
+        'sql_join_content_references': False,
     }.items():
         locals()[name] = zeit.cms.content.property.ObjectPathProperty(
             '.%s' % name, IConfiguration[name], use_default=default
