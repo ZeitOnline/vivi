@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.213.0 (2025-10-16)
+--------------------
+
+- WCM-1162: handle references with errors gracefully for internal to public synchronization
+
+
 7.212.0 (2025-10-15)
 --------------------
 
