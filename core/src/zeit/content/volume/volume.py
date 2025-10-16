@@ -316,9 +316,6 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         return with_dependencies
 
     def _needs_publishing(self, content):
-        # Dont publish content which is already published
-        if zeit.cms.workflow.interfaces.IPublishInfo(content).published:
-            return False
         # content has to provide one of interfaces defined above
         return any(x.providedBy(content) for x in self.assets_to_publish)
 
