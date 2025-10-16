@@ -39,7 +39,7 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
 )
 # NOTE author config layer is included in article config layer
 # NOTE article config layer is included in retresco config layer
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER)
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER, features=['zeit.connector.sql.zope'])
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer((ZCML_LAYER, zeit.retresco.testhelper.TMS_MOCK_LAYER))
 
 
@@ -110,7 +110,7 @@ class DPAMockLayer(zeit.cms.testing.Layer):
         self['dpa_entries'] = copy.deepcopy(DPA_ENTRIES)
 
         image_entry = self['dpa_entries']['entries'][-1]['associations'][0]
-        self['image_server_mock'] = r_mock = requests_mock.Mocker()
+        self['image_server_mock'] = r_mock = requests_mock.Mocker(real_http=True)
         self['image_get'] = r_mock.register_uri(
             'GET', image_entry['renditions'][0]['url'], content=callback
         )
