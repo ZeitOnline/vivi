@@ -5,6 +5,7 @@
    >
 
   <include package="zeit.cms" file="ftesting.zcml" />
+  <include package="zeit.cms.checkout.xmlrpc" />
 
   <principal
     id="zeit.modify"

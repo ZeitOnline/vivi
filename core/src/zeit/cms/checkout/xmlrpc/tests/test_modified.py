@@ -1,7 +1,7 @@
-import zeit.cms.checkout.testing
+import zeit.cms.checkout.xmlrpc.testing
 
 
-class XMLRPCTest(zeit.cms.checkout.testing.BrowserTestCase):
+class XMLRPCTest(zeit.cms.checkout.xmlrpc.testing.BrowserTestCase):
     def test_notify_cms_about_content_modified(self):
         unique_id = 'http://xml.zeit.de/testcontent'
         self.content_modified_request(unique_id)
