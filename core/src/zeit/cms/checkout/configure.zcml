@@ -1,7 +1,7 @@
 <configure
-    xmlns="http://namespaces.zope.org/zope"
-    xmlns:xmlrpc="http://namespaces.zope.org/xmlrpc"
-    >
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:grok="http://namespaces.zope.org/grok"
+  >
 
   <adapter factory=".manager.CheckoutManager"
     provides=".interfaces.ICheckoutManager"
@@ -18,17 +18,5 @@
       interface=".interfaces.ICheckinManager"
       permission="zeit.Checkin" />
   </class>
-
-  <permission
-    id="zeit.cms.ModifyContent"
-    title="Notify cms about modified content "
-    />
-
-  <xmlrpc:view
-    for="zope.location.interfaces.ISite"
-    class=".xmlrpc.ContentModified"
-    permission="zeit.cms.ModifyContent"
-    methods="content_modified"
-    />
 
 </configure>

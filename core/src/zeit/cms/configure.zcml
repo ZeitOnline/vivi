@@ -19,7 +19,7 @@
   <include file="patches.zcml" />
 
   <include package=".admin" />
-  <include package=".checkout"  />
+  <include package=".checkout" />
   <include package=".clipboard" />
   <include package=".content" />
   <include package=".locking" />

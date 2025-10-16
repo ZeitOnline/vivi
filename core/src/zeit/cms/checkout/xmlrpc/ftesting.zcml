@@ -1,10 +1,11 @@
 <configure
-   xmlns="http://namespaces.zope.org/zope"
-   xmlns:grok="http://namespaces.zope.org/grok"
-   i18n_domain="zope"
-   >
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:grok="http://namespaces.zope.org/grok"
+    i18n_domain="zope"
+    >
 
   <include package="zeit.cms" file="ftesting.zcml" />
+  <include package="zeit.cms.checkout.xmlrpc" />
 
   <principal
     id="zeit.modify"
