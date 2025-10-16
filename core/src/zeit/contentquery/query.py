@@ -22,7 +22,7 @@ import zope.interface
 from zeit.cms.content.cache import content_cache
 from zeit.cms.content.interfaces import IUUID
 from zeit.cms.interfaces import ICMSContent
-from zeit.connector.models import TIMESTAMP, Content
+from zeit.connector.models import TIMESTAMP, Content, Reference
 from zeit.contentquery.configuration import CustomQueryProperty
 import zeit.cms.config
 import zeit.cms.content.interfaces
@@ -102,7 +102,11 @@ class SQLContentQuery(ContentQuery):
     @property
     def conditions(self):
         query = select(Content)
-        return query.where(sql(f'({self.context.sql_query})'))
+        query = query.where(sql(f'({self.context.sql_query})'))
+        if self.context.sql_reference_query:
+            semijoin = select(Reference.source).where(sql(f'({self.context.sql_reference_query})'))
+            query = query.where(Content.id.in_(semijoin))
+        return query
 
     @property
     def order(self):
