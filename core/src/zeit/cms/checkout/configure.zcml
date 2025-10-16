@@ -19,4 +19,9 @@
       permission="zeit.Checkin" />
   </class>
 
+  <permission
+    id="zeit.cms.ModifyContent"
+    title="Notify cms about modified content "
+    />
+
 </configure>

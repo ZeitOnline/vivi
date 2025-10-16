@@ -3,11 +3,6 @@
     xmlns:xmlrpc="http://namespaces.zope.org/xmlrpc"
     >
 
-  <permission
-    id="zeit.cms.ModifyContent"
-    title="Notify cms about modified content "
-    />
-
   <xmlrpc:view
     for="zope.location.interfaces.ISite"
     class=".xmlrpc.ContentModified"
