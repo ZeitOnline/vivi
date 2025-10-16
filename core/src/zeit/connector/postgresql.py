@@ -753,7 +753,15 @@ class Connector:
 
         to_insert = new - existing
         if to_insert:
-            self._bulk_insert(Reference, to_insert)
+            # Filter out references with non-existent targets
+            # target might not exist in database yet, e.g. unpublished referenced content
+            target_ids = {ref.target for ref in to_insert}
+            existing_targets = set(
+                self.session.execute(select(Content.id).where(Content.id.in_(target_ids))).scalars()
+            )
+            valid_refs = [ref for ref in to_insert if ref.target in existing_targets]
+            if valid_refs:
+                self._bulk_insert(Reference, valid_refs)
 
         to_delete = existing - new
         if to_delete:
