@@ -18,7 +18,10 @@ class ScrollyChapter(zeit.content.article.edit.reference.Reference):
         '.', 'title', zeit.content.article.edit.interfaces.IScrollyChapter['title']
     )
     font_style = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'font-style', zeit.content.article.edit.interfaces.IScrollyChapter['font_style']
+        '.',
+        'font-style',
+        zeit.content.article.edit.interfaces.IScrollyChapter['font_style'],
+        use_default=True,
     )
 
 
