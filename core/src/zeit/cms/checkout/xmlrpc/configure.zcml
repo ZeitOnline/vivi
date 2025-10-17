@@ -1,0 +1,18 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:xmlrpc="http://namespaces.zope.org/xmlrpc"
+  i18n_domain="zeit.cms">
+
+  <permission
+    id="zeit.cms.ModifyContent"
+    title="Notify cms about modified content "
+    />
+
+  <xmlrpc:view
+    for="zope.location.interfaces.ISite"
+    class=".modified.ContentModified"
+    permission="zeit.cms.ModifyContent"
+    methods="content_modified"
+    />
+
+</configure>
