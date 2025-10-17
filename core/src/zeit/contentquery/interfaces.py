@@ -308,6 +308,8 @@ class IConfiguration(zope.interface.Interface):
 
     sql_query = zope.schema.Text(title=_('SQL query'), required=False)
 
+    sql_join_content_references = zope.schema.Bool(title=_('With references'), required=False)
+
     sql_order = zope.schema.TextLine(
         title=_('Sort order'),
         default='date_last_published_semantic desc nulls last',

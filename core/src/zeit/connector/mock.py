@@ -71,8 +71,8 @@ class Connector(zeit.connector.filesystem.Connector):
         self._paths = {}
         self._deleted = set()
         self._properties = {}
-        self.search_result = []
-        self.search_result_count = None
+        self._search_result = []
+        self.search_result_count = 0
         self.search_args = []
         self.search_dav_args = []
 
@@ -311,18 +311,36 @@ class Connector(zeit.connector.filesystem.Connector):
 
     def search_sql(self, query, timeout=None, cache=True):
         self.search_args.append(self._compile_sql(query))
-        for uniqueid in self.search_result:
-            yield self[uniqueid]
+        result = self.search_result
+        if query._limit:
+            result = []
+            for _ in range(query._limit):
+                try:
+                    result.append(self.search_result.pop(0))
+                except IndexError:
+                    break
+        for item in result:
+            if isinstance(item, str):
+                yield self[item]
+            else:  # So zeit.web can populate FakeArticle objects
+                yield item
 
     def search_sql_count(self, query):
-        if self.search_result_count is not None:
-            return self.search_result_count
-        else:
-            return len(list(self.search_sql(query)))
+        self.search_args.append(self._compile_sql(query))
+        return self.search_result_count
 
     def execute_sql(self, query, timeout=None):
         self.search_args.append(self._compile_sql(query))
         return self.search_result
+
+    @property
+    def search_result(self):
+        return self._search_result
+
+    @search_result.setter
+    def search_result(self, value):
+        self._search_result = value
+        self.search_result_count = len(value)
 
     def get_references(self, uniqueid):
         pass  # will not be supported, use postgresql Connector instead.
