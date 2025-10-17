@@ -364,6 +364,46 @@ class IQuiz(IBlock, zeit.content.modules.interfaces.IQuiz):
     pass
 
 
+class ScrollyChapterFontStyleSource(zeit.cms.content.sources.SimpleFixedValueSource):
+    values = {
+        'tablet-gothic': _('Tablet Gothic'),
+        'tiemann': _('Tiemann'),
+    }
+
+
+class ScrollyChapterMediaSource(zeit.cms.content.contentsource.CMSContentSource):
+    """Source for images and animation objects."""
+
+    name = 'scrolly-chapter-media'
+    check_interfaces = (
+        zeit.content.image.interfaces.IImageGroup,
+        zeit.content.image.interfaces.IImage,
+        IAnimation,
+    )
+
+
+class IScrollyChapter(IReference):
+    """Scrollytelling chapter divider block."""
+
+    references = zope.schema.Choice(
+        title=_('Image'),
+        description=_('Drag image group or animation here'),
+        source=ScrollyChapterMediaSource(),
+        required=True,
+    )
+
+    kicker = zope.schema.TextLine(title=_('Kicker'), required=False, max_length=140)
+
+    title = zope.schema.TextLine(title=_('Title'), required=True, max_length=140)
+
+    font_style = zope.schema.Choice(
+        title=_('Font Style'),
+        source=ScrollyChapterFontStyleSource(),
+        default='tablet-gothic',
+        required=True,
+    )
+
+
 class IBox(IBlock):
     """
     This box is a first step to generalizing other boxes
