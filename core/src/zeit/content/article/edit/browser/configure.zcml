@@ -461,6 +461,26 @@
     permission="zope.View"
     />
 
+  <!-- scrolly chapter -->
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IScrollyChapter"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit-scrolly-chapter"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IScrollyChapter"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-scrolly-chapter"
+    class=".edit.EditScrollyChapter"
+    permission="zope.View"
+    />
+
   <!-- puzzle form -->
 
   <browser:viewlet

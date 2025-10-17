@@ -329,6 +329,17 @@ class EditCitationComment(zeit.edit.browser.form.InlineForm):
         return 'citationcomment.{0}'.format(self.context.__name__)
 
 
+class EditScrollyChapter(zeit.edit.browser.form.InlineForm):
+    legend = None
+    form_fields = zope.formlib.form.FormFields(
+        zeit.content.article.edit.interfaces.IScrollyChapter
+    ).select('references', 'kicker', 'title', 'font_style')
+
+    @property
+    def prefix(self):
+        return 'scrollychapter.{0}'.format(self.context.__name__)
+
+
 class EditPuzzleForm(zeit.edit.browser.form.InlineForm):
     legend = None
     form_fields = zope.formlib.form.FormFields(
