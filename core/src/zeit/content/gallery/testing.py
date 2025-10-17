@@ -1,9 +1,12 @@
 import importlib.resources
 
+import transaction
 import zope.component
 
+from zeit.cms.repository.folder import Folder
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
+import zeit.content.gallery.gallery
 import zeit.content.image.image
 import zeit.content.image.interfaces
 import zeit.crop.testing
@@ -18,15 +21,33 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
     },
     bases=(zeit.crop.testing.CONFIG_LAYER, zeit.push.testing.CONFIG_LAYER),
 )
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER)
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER, features=['zeit.connector.sql.zope'])
+
+
+class GalleryFixtureLayer(zeit.cms.testing.ContentFixtureLayer):
+    def create_fixture(self):
+        repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
+        repository['folder'] = Folder()
+        zeit.content.gallery.testing.add_image('folder', '01.jpg')
+        zeit.content.gallery.testing.add_image('folder', '02.jpg')
+        transaction.commit()
+        gallery = zeit.content.gallery.gallery.Gallery()
+        gallery.image_folder = repository['folder']
+        repository['gallery'] = gallery
+
+
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
-PUSH_LAYER = zeit.push.testing.UrbanairshipTemplateLayer(ZOPE_LAYER)
-LAYER = zeit.cms.testing.Layer(PUSH_LAYER)
+FIXTURE_LAYER = GalleryFixtureLayer(ZOPE_LAYER)
+LAYER = zeit.push.testing.UrbanairshipTemplateLayer(FIXTURE_LAYER)
 WSGI_LAYER = zeit.cms.testing.WSGILayer(LAYER)
 
 
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
-    layer = ZOPE_LAYER
+    layer = LAYER
+
+    def setUp(self):
+        super().setUp()
+        self.gallery = self.repository['gallery']
 
 
 class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
@@ -44,3 +65,4 @@ def add_image(folder, filename, name=None):
 
     repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
     repository[folder][name] = image
+    transaction.commit()

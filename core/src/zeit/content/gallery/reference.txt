@@ -45,17 +45,17 @@ The gallery is now noted in the webdav properties of `content`:
 The browse location of a gallery reference depends on the adapted object and
 yields the container the object is in:
 
->>> repository['online']['content'] = content
->>> content = repository['online']['content']
+>>> repository['content'] = content
+>>> content = repository['content']
 >>> import zeit.cms.browser.interfaces
 >>> loc = zope.component.getMultiAdapter(
 ...     (gref,
 ...      zeit.content.gallery.interfaces.IGalleryReference['gallery'].source),
 ...     zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
 >>> loc
-<zeit.cms.repository.folder.Folder...>
+<zeit.cms.repository.repository.Repository...>
 >>> loc.uniqueId
-'http://xml.zeit.de/online'
+'http://xml.zeit.de/'
 
 
 The gallery source is a utility:
@@ -75,5 +75,5 @@ An xml reference to content also indicates the gallery:
 >>> node = zope.component.getAdapter(
 ...     content, zeit.cms.content.interfaces.IXMLReference, name='related')
 >>> print(zeit.cms.testing.xmltotext(node))
-<reference type="intern" href="http://xml.zeit.de/online/content"/>
+<reference type="intern" href="http://xml.zeit.de/content"/>
 
