@@ -16,6 +16,6 @@ repos:
     hooks:
     -   id: eslint
         additional_dependencies:
-          - eslint@9.23.0
-          - eslint-plugin-compat@6.0.2
-          - "@zeitonline/eslint-config@1.0.1"
+          - eslint
+          - "@eslint/js"
+          - globals
