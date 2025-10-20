@@ -122,13 +122,10 @@ class VolumeAdminBrowserTest(zeit.content.volume.testing.BrowserTestCase):
         b.open('http://localhost/++skin++vivi/repository/2015/01/ausgabe/@@create-audio-objects')
         self.publish_content()
 
-        # If article was not published yet, publish audio with it
         audio1 = self.repository['premium']['audio']['2015']['01'][article1_uuid.shortened]
         self.assertTrue(zeit.cms.workflow.interfaces.IPublishInfo(audio1).published)
-
-        # If article already was published, don't publish audio
         audio2 = self.repository['premium']['audio']['2015']['01'][article2_uuid.shortened]
-        self.assertFalse(zeit.cms.workflow.interfaces.IPublishInfo(audio2).published)
+        self.assertTrue(zeit.cms.workflow.interfaces.IPublishInfo(audio2).published)
 
     def test_create_audio_objects_only_references_premium_audio_objects(self):
         FEATURE_TOGGLES.set('volume_publish_create_audio_objects')

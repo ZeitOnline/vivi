@@ -332,17 +332,13 @@ class TestVolumeGetArticlesQuery(zeit.content.volume.testing.FunctionalTestCase)
         info = IPublishInfo(article)
         info.urgent = True
 
-    def test_volume_considers_unpublished_article(self):
+    def test_volume_considers_unpublished_and_published_articles(self):
         volume = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2025/01/ausgabe')
         result = list(volume.get_articles_for_publishing())
         self.assertIn(
             zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2025/01/article01'), result
         )
-
-    def test_volume_does_not_consider_published_article(self):
-        volume = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2025/01/ausgabe')
-        result = list(volume.get_articles_for_publishing())
-        self.assertNotIn(
+        self.assertIn(
             zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2025/01/article02'), result
         )
 
