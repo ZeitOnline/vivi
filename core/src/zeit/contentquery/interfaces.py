@@ -314,6 +314,8 @@ class IConfiguration(zope.interface.Interface):
         required=False,
     )
 
+    sql_reference_query = zope.schema.Text(title=_('SQL query references'), required=False)
+
     sql_restrict_time = zope.schema.Bool(title=_('Restrict time interval'), default=True)
     query_restrict_time = sql_restrict_time.bind(object())
 

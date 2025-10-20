@@ -145,6 +145,7 @@ class Configuration:
         # For automatic_type=sql-query
         'sql_query': False,
         'sql_order': True,
+        'sql_reference_query': False,
         'sql_restrict_time': True,
         'sql_force_queryplan': False,
     }.items():

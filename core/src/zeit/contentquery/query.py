@@ -22,8 +22,7 @@ import zope.interface
 from zeit.cms.content.cache import content_cache
 from zeit.cms.content.interfaces import IUUID
 from zeit.cms.interfaces import ICMSContent
-from zeit.connector.models import TIMESTAMP
-from zeit.connector.models import Content as ConnectorModel
+from zeit.connector.models import TIMESTAMP, Content, Reference
 from zeit.contentquery.configuration import CustomQueryProperty
 import zeit.cms.config
 import zeit.cms.content.interfaces
@@ -102,8 +101,12 @@ class SQLContentQuery(ContentQuery):
 
     @property
     def conditions(self):
-        query = select(ConnectorModel)
-        return query.where(sql(f'({self.context.sql_query})'))
+        query = select(Content)
+        query = query.where(sql(f'({self.context.sql_query})'))
+        if self.context.sql_reference_query:
+            semijoin = select(Reference.source).where(sql(f'({self.context.sql_reference_query})'))
+            query = query.where(Content.id.in_(semijoin))
+        return query
 
     @property
     def order(self):
@@ -153,17 +156,15 @@ class SQLContentQuery(ContentQuery):
 
         if not ids:
             return query
-        return query.where(ConnectorModel.id.not_in(sorted(ids)))
+        return query.where(Content.id.not_in(sorted(ids)))
 
     def restrict_time(self, query):
         if not self._restrict_time_enabled:
             return query
         days = int(zeit.cms.config.get('zeit.content.cp', 'sql-query-restrict-days', 7))
-        column = getattr(
-            ConnectorModel, self.order_column, ConnectorModel.date_last_published_semantic
-        )
+        column = getattr(Content, self.order_column, Content.date_last_published_semantic)
         if not isinstance(column.type, TIMESTAMP):
-            column = ConnectorModel.date_last_published_semantic
+            column = Content.date_last_published_semantic
         freeze = zeit.cms.config.get('zeit.reach', 'freeze-now')
         now = sql_cast(pendulum.parse(freeze), TIMESTAMP) if freeze else sql_func.current_date()
         return query.where(column >= now - sql_func.make_interval(0, 0, 0, days))
@@ -180,7 +181,7 @@ class SQLContentQuery(ContentQuery):
         # default strategy of "sort first, then filter via table/heap scan".
         # Specifying `offset` forces the actually separate evaluation of the CTE,
         # see <https://www.endpointdev.com/blog/2009/04/offset-0-ftw/>.
-        query = select(aliased(ConnectorModel, query.offset(0).cte()))
+        query = select(aliased(Content, query.offset(0).cte()))
         return query
 
     @property
@@ -219,7 +220,7 @@ class SQLCustomContentQuery(SQLContentQuery):
             typ = item[0]
             fields.setdefault(typ, []).append(item)
 
-        query = select(ConnectorModel)
+        query = select(Content)
         for typ in fields:
             conditions = []
             for item in fields[typ]:
@@ -254,13 +255,13 @@ class SQLCustomContentQuery(SQLContentQuery):
     def _column(cls, typ):
         name = cls.COLUMNS.get(typ)
         if name:
-            return getattr(ConnectorModel, name)
+            return getattr(Content, name)
 
         # XXX Generalize the class?
         prop = getattr(zeit.content.article.article.Article, typ)
         if not isinstance(prop, zeit.cms.content.dav.DAVProperty):
             raise ValueError('Cannot determine field name for %s', typ)
-        return ConnectorModel.column_by_name(prop.name, prop.namespace)
+        return Content.column_by_name(prop.name, prop.namespace)
 
     def _make_channels_condition(self, item):
         typ = item[0]
