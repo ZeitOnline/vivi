@@ -134,11 +134,6 @@ class ImageGroupBrowserTest(zeit.content.image.testing.BrowserTestCase, ImageGro
         )
         self.assertEqual((2250, 4000), img.getImageSize())
 
-    def test_traversing_thumbnail_yields_images(self):
-        b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/group/thumbnails/square/@@raw')
-        self.assertEqual('image/jpeg', b.headers['Content-Type'])
-
     def test_primary_master_image_is_marked_for_desktop_viewport(self):
         group = self.repository['group']
         self.assertEqual(1, len(group.master_images))
@@ -298,24 +293,3 @@ class ThumbnailTest(zeit.content.image.testing.FunctionalTestCase):
 
         self.group['image-540x304.jpg'] = create_image('obama-clinton-120x120.jpg')
         self.assertEqual(self.group['image-540x304.jpg'], self.thumbnail._find_image())
-
-
-class ThumbnailBrowserTest(zeit.content.image.testing.BrowserTestCase, ImageGroupHelperMixin):
-    def test_thumbnail_source_is_created_on_add(self):
-        self.add_imagegroup()
-        self.upload_primary_image('shoppingmeile_4001x2251px.jpg')
-        self.save_imagegroup()
-        group = self.repository['imagegroup2']
-        self.assertIn('thumbnail-source-shoppingmeile-4001x2251px.jpg', group)
-
-    def test_thumbnail_images_are_hidden_in_content_listing(self):
-        self.add_imagegroup()
-        self.upload_primary_image('shoppingmeile_4001x2251px.jpg')
-        self.save_imagegroup()
-        b = self.browser
-        b.open('/repository/imagegroup2/view.html')
-        self.assertEqual(
-            ['shoppingmeile-4001x2251px.jpg', 'thumbnail-source-shoppingmeile-4001x2251px.jpg'],
-            [x.__name__ for x in self.repository['imagegroup2'].values()],
-        )
-        self.assertNotIn('thumbnail-source-shoppingmeile-4001x2251px.jpg', b.contents)

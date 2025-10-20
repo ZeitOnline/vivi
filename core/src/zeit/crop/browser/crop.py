@@ -4,7 +4,6 @@ import transaction
 import zope.app.pagetemplate
 import zope.cachedescriptors.property
 
-from zeit.content.image.imagegroup import Thumbnails
 import zeit.cms.browser.view
 import zeit.content.image.interfaces
 import zeit.crop.browser.interfaces
@@ -64,6 +63,6 @@ class ImageBar(zeit.cms.browser.view.Base):
                 continue
             if zeit.content.image.interfaces.IMasterImage.providedBy(obj):
                 continue
-            if obj.__name__.startswith(Thumbnails.SOURCE_IMAGE_PREFIX):
+            if obj.__name__.startswith('thumbnail-source'):
                 continue
             yield obj

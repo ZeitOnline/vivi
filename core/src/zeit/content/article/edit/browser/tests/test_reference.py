@@ -397,9 +397,7 @@ class VolumeEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         # ensure object-details are displayed
         s.waitForElementPresent('css=.block.type-volume textarea ')
         s.assertTextPresent('Die Zeit, Jahrgang: 2006, Ausgabe 23')
-        s.assertAttribute(
-            'css=.block.type-volume img@src', '*/imagegroup/thumbnails/original/@@raw'
-        )
+        s.assertAttribute('css=.block.type-volume img@src', '*/imagegroup/original__50x0/@@raw')
 
 
 class PortraitboxForm(zeit.content.article.edit.browser.testing.BrowserTestCase):
