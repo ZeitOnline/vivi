@@ -7,7 +7,8 @@ import zope.traversing.browser
 
 from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
-from zeit.cms.workflow.interfaces import IPublish
+from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
+from zeit.content.article.interfaces import IArticle
 import zeit.cms.admin.browser.admin
 import zeit.mediaservice.mediaservice
 
@@ -54,6 +55,14 @@ class PublishAll:
     # See zeit.workflow.json.publish.Publish.publish()
     def __call__(self):
         all_content_to_publish = self.context.articles_with_references_for_publishing()
+        articles = [x for x in all_content_to_publish if IArticle.providedBy(x)]
+        published = [x for x in articles if IPublishInfo(x).published]
+        zeit.objectlog.interfaces.ILog(self.context).log(
+            _(
+                'Collective Publication of ${total} articles, ${published} already published',
+                mapping={'total': len(articles), 'published': len(published)},
+            )
+        )
         IPublish(self.context).publish_multiple(
             all_content_to_publish,
             priority=zeit.cms.workflow.interfaces.IPublishPriority(self.context),

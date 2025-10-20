@@ -289,11 +289,7 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         return contents
 
     def get_articles_for_publishing(self):
-        conditions = """
-        type='article'
-        AND published=false
-        AND unsorted @@ '$.workflow.urgent == "yes"'
-        """
+        conditions = """type='article' AND unsorted @@ '$.workflow.urgent == "yes"'"""
         query = self._query_content_for_current_volume().where(sql(conditions))
         return self.repository.search(query)
 
