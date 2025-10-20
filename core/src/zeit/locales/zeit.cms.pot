@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Mon Oct 20 11:46:47 2025\n"
+"POT-Creation-Date: Mon Oct 20 14:14:50 2025\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -614,7 +614,7 @@ msgstr ""
 #: zeit/cms/content/interfaces.py:80
 #: zeit/content/article/edit/interfaces.py:253
 #: zeit/content/volume/browser/form.py:38
-#: zeit/content/volume/volume.py:333
+#: zeit/content/volume/volume.py:329
 msgid "Volume"
 msgstr ""
 
@@ -4202,15 +4202,19 @@ msgstr ""
 msgid "Video type"
 msgstr ""
 
-#: zeit/content/volume/browser/admin.py:43
+#: zeit/content/volume/browser/admin.py:44
 msgid "Publish content of this volume"
 msgstr ""
 
-#: zeit/content/volume/browser/admin.py:45
+#: zeit/content/volume/browser/admin.py:46
 #: zeit/content/volume/browser/create-audio-objects.pt:2
 #: zeit/content/volume/browser/create-audio-objects.pt:5
 #: zeit/content/volume/browser/publish-all.pt:5
 msgid "Create premium audio objects"
+msgstr ""
+
+#: zeit/content/volume/browser/admin.py:61
+msgid "Collective Publication of ${total} articles, ${published} already published"
 msgstr ""
 
 #: zeit/content/volume/browser/configure.zcml:125

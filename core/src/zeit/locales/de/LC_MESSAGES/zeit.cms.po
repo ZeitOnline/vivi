@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Mon Oct 20 11:46:47 2025\n"
+"POT-Creation-Date: Mon Oct 20 14:14:50 2025\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -584,7 +584,7 @@ msgstr "Jahr"
 
 #: zeit/cms/content/interfaces.py:80
 #: zeit/content/article/edit/interfaces.py:253
-#: zeit/content/volume/browser/form.py:38 zeit/content/volume/volume.py:333
+#: zeit/content/volume/browser/form.py:38 zeit/content/volume/volume.py:329
 msgid "Volume"
 msgstr "Ausgabe"
 
@@ -4152,16 +4152,23 @@ msgstr "Werbung"
 msgid "Video type"
 msgstr "Typ"
 
-#: zeit/content/volume/browser/admin.py:43
+#: zeit/content/volume/browser/admin.py:44
 msgid "Publish content of this volume"
 msgstr "Gesamte Ausgabe veröffentlichen"
 
-#: zeit/content/volume/browser/admin.py:45
+#: zeit/content/volume/browser/admin.py:46
 #: zeit/content/volume/browser/create-audio-objects.pt:2
 #: zeit/content/volume/browser/create-audio-objects.pt:5
 #: zeit/content/volume/browser/publish-all.pt:5
 msgid "Create premium audio objects"
 msgstr "Premium-Audios anlegen"
+
+#: zeit/content/volume/browser/admin.py:61
+msgid ""
+"Collective Publication of ${total} articles, ${published} already published"
+msgstr ""
+"Sammelveröffentlichung gestartet (${total} Artikel, davon ${published} "
+"bereits veröffentlicht)"
 
 #: zeit/content/volume/browser/configure.zcml:125
 msgid "Table of Content"
