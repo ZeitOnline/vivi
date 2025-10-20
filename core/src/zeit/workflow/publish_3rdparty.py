@@ -9,6 +9,8 @@ import zope.component
 
 from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
+from zeit.content.volume.interfaces import IVolume
+from zeit.wochenende.interfaces import IZWEContent
 from zeit.wochenmarkt.recipe import IRecipeArticle
 import zeit.cms.config
 import zeit.cms.content.interfaces
@@ -16,9 +18,11 @@ import zeit.cms.interfaces
 import zeit.cms.type
 import zeit.content.article.edit.interfaces
 import zeit.content.article.interfaces
+import zeit.content.article.source
 import zeit.content.audio.interfaces
 import zeit.content.author.interfaces
 import zeit.content.cp.interfaces
+import zeit.content.cp.source
 import zeit.content.gallery.interfaces
 import zeit.content.image.interfaces
 import zeit.content.link.interfaces
@@ -26,6 +30,7 @@ import zeit.content.video.interfaces
 import zeit.content.volume.interfaces
 import zeit.objectlog.interfaces
 import zeit.retresco.interfaces
+import zeit.wochenende.interfaces
 import zeit.workflow.interfaces
 
 
@@ -495,7 +500,7 @@ class VideoDataScience(DataScience):
 
 
 @grok.implementer(zeit.workflow.interfaces.IPublisherData)
-class Followings(grok.Adapter, IgnoreMixin):
+class ArticleFollowings(grok.Adapter, IgnoreMixin):
     grok.context(zeit.content.article.interfaces.IArticle)
     grok.name('followings')
 
@@ -546,6 +551,55 @@ class Followings(grok.Adapter, IgnoreMixin):
             self.context
         ).date_first_released.isoformat()
         return {'parent_uuids': all_uuids, 'created': created}
+
+    def retract_json(self):
+        return {}
+
+
+class IFollowingParent(zope.interface.Interface):
+    """Marker interface that provides parent uuids"""
+
+    def get_parent_uuids(self):
+        return []
+
+
+@grok.implementer(IFollowingParent)
+class VolumeFollowingParent(grok.Adapter):
+    grok.context(IVolume)
+
+    def get_parent_uuids(self):
+        following_types = ['volume', 'volume_audio']
+        followings_source = zeit.content.cp.source.Followings().factory
+        return [followings_source.getTitle(None, type) for type in following_types]
+
+
+@grok.implementer(IFollowingParent)
+class WochenendeFollowingParent(grok.Adapter):
+    grok.context(IZWEContent)
+
+    def get_parent_uuids(self):
+        followings_source = zeit.content.cp.source.Followings().factory
+        return [followings_source.getTitle(None, 'volume_zwe')]
+
+
+@grok.implementer(zeit.workflow.interfaces.IPublisherData)
+class CenterPageFollowings(grok.Adapter, IgnoreMixin):
+    grok.context(zeit.content.cp.interfaces.ICenterPage)
+    grok.name('followings')
+
+    def publish_json(self):
+        parent = IFollowingParent(self.context, None)
+        if parent is None:
+            return None
+
+        parent_uuids = parent.get_parent_uuids()
+        if not parent_uuids:
+            return None
+
+        created = zeit.cms.workflow.interfaces.IPublishInfo(
+            self.context
+        ).date_first_released.isoformat()
+        return {'parent_uuids': parent_uuids, 'created': created}
 
     def retract_json(self):
         return {}

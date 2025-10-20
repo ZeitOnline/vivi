@@ -753,6 +753,48 @@ class FollowingsPayloadTest(zeit.workflow.testing.FunctionalTestCase):
             self.assertIsNotNone(data, 'Data should not be None when recipe categories are present')
             self.assertEqual(data['parent_uuids'][0], expected_uuid)
 
+    def test_followings_volume(self):
+        self.repository['data'] = zeit.cms.repository.folder.Folder()
+        volume_uuid = '2742c390-8618-480c-aa89-173907456a64'
+        volume_audio_uuid = '18ba93e7-54a4-4cc4-8c76-05ee063382db'
+        self.repository['2025'] = zeit.cms.repository.folder.Folder()
+        self.repository['2025']['10'] = zeit.cms.repository.folder.Folder()
+        cp = self.repository['2025']['10']['index'] = zeit.content.cp.centerpage.CenterPage()
+        self.repository['index'] = zeit.content.cp.centerpage.CenterPage()
+        zope.interface.alsoProvides(cp, zeit.content.volume.interfaces.IVolume)
+
+        with checked_out(cp):
+            cp.year = 2025
+            cp.volume = 10
+            cp.type = 'volume'
+            info = zeit.cms.workflow.interfaces.IPublishInfo(cp)
+            info.date_first_released = pendulum.datetime(2025, 3, 5, 8, 18)
+
+        data = zeit.workflow.testing.publish_json(cp, 'followings')
+        date = zeit.cms.workflow.interfaces.IPublishInfo(cp).date_first_released
+        self.assertIsNotNone(data, 'Data should not be None')
+        self.assertEqual(len(data['parent_uuids']), 2)
+        self.assertTrue(volume_uuid in data['parent_uuids'])
+        self.assertTrue(volume_audio_uuid in data['parent_uuids'])
+        self.assertEqual(data['created'], date.isoformat())
+
+    def test_followings_volume_wochenende(self):
+        self.repository['wochenende'] = zeit.cms.repository.folder.Folder()
+        self.repository['wochenende']['2025'] = zeit.cms.repository.folder.Folder()
+        cp = self.repository['wochenende']['2025']['10'] = zeit.content.cp.centerpage.CenterPage()
+        zope.interface.alsoProvides(cp, zeit.wochenende.interfaces.IZWEContent)
+        expected_uuid = '31ac2c26-2061-440f-946c-71532a322624'
+
+        with checked_out(cp):
+            info = zeit.cms.workflow.interfaces.IPublishInfo(cp)
+            info.date_first_released = pendulum.datetime(2025, 3, 5, 8, 18)
+
+        data = zeit.workflow.testing.publish_json(cp, 'followings')
+        date = zeit.cms.workflow.interfaces.IPublishInfo(cp).date_first_released
+        self.assertIsNotNone(data, 'Data should not be None')
+        self.assertEqual(data['parent_uuids'][0], expected_uuid)
+        self.assertEqual(data['created'], date.isoformat())
+
     def test_followings_no_series(self):
         data = zeit.workflow.testing.publish_json(self.repository['article'], 'followings')
         self.assertEqual(data, None)
