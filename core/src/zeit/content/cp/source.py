@@ -1,5 +1,6 @@
 import zope.dottedname.resolve
 
+import zeit.cms
 import zeit.cms.content.contentsource
 import zeit.cms.content.sources
 
@@ -38,3 +39,11 @@ class CenterPageSource(zeit.cms.content.contentsource.CMSContentSource):
 
 
 centerPageSource = CenterPageSource()
+
+
+class Followings(zeit.cms.content.sources.XMLSource):
+    product_configuration = 'zeit.content.article'
+    config_url = 'followings'
+    default_filename = 'followings.xml'
+    attribute = 'type'
+    title_xpath = '/followings/following'
