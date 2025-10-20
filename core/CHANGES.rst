@@ -3,6 +3,22 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.214.0 (2025-10-20)
+--------------------
+
+- WCM-810: Register xmlrpc view separately, so zeit.web does not break
+
+- WCM-1121: Remove creation of thumbnail image for imagegroups, we simply render those from the master image now
+
+- WCM-1143: Publish all articles with volume, even if they are already published
+
+- WCM-1163: Add SQL condition to filter using references to automatic area
+
+
+MAINT:
+- Record XML-RPC method and parameters for tracing
+
+
 7.213.0 (2025-10-16)
 --------------------
 
