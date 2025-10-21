@@ -4,7 +4,6 @@ import unittest
 import lxml.builder
 import zope.lifecycleevent
 
-from zeit.cms.checkout.helper import checked_out
 import zeit.content.article.testing
 
 
@@ -172,23 +171,6 @@ class TestFactories(zeit.content.article.testing.FunctionalTestCase):
         from zeit.content.article.edit.interfaces import IPortraitbox
 
         self.assert_factory('portraitbox', 'Portraitbox', IPortraitbox)
-
-
-class TestMetadataUpdate(zeit.content.article.testing.FunctionalTestCase):
-    def setUp(self):
-        # We do not want a fake tagger as Portraitbox and Infobox do not
-        # support tagging in the real world, so skip the setup of the parent
-        # class and doe the one of the grandparent.
-        super(zeit.content.article.testing.FunctionalTestCase, self).setUp()
-
-    def test_empty_reference_should_not_break_metadata_update(self):
-        for typ in ['gallery', 'portraitbox', 'infobox', 'image', 'author', 'volume']:
-            article = self.get_article()
-            self.get_factory(article, typ)()
-            self.repository['article'] = article
-            with self.assertNothingRaised():
-                with checked_out(self.repository['article']):
-                    pass
 
 
 class EmptyMarkerTest:

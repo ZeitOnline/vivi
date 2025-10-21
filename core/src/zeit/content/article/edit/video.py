@@ -76,14 +76,3 @@ def create_video_block_from_video(body, context, position):
     block = Factory(body)(position)
     block.video = context
     return block
-
-
-@grok.subscribe(
-    zeit.content.article.interfaces.IArticle, zeit.cms.checkout.interfaces.IBeforeCheckinEvent
-)
-def update_video_metadata(article, event):
-    for block in article.body.values():
-        video = zeit.content.article.edit.interfaces.IVideo(block, None)
-        if video is not None:
-            # Re-assigning the old value updates xml metadata
-            video.video = video.video
