@@ -79,13 +79,6 @@ def create_video_block_from_video(body, context, position):
 
 
 @grok.subscribe(
-    zeit.content.article.edit.interfaces.IVideo, zope.lifecycleevent.IObjectModifiedEvent
-)
-def update_empty(context, event):
-    context.is_empty = context.video is None
-
-
-@grok.subscribe(
     zeit.content.article.interfaces.IArticle, zeit.cms.checkout.interfaces.IBeforeCheckinEvent
 )
 def update_video_metadata(article, event):
