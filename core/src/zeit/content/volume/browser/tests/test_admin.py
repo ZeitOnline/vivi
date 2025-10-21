@@ -104,12 +104,8 @@ class VolumeAdminBrowserTest(zeit.content.volume.testing.BrowserTestCase):
     def test_referenced_boxes_of_articles_are_published_as_well(self):
         self.create_article_with_references()
         self.publish_content()
-        self.assertTrue(
-            zeit.cms.workflow.interfaces.IPublishInfo(self.repository['portraitbox']).published
-        )
-        self.assertTrue(
-            zeit.cms.workflow.interfaces.IPublishInfo(self.repository['infobox']).published
-        )
+        self.assertTrue(IPublishInfo(self.repository['portraitbox']).published)
+        self.assertTrue(IPublishInfo(self.repository['infobox']).published)
 
     def test_reference_premium_audio_objects(self):
         FEATURE_TOGGLES.set('volume_publish_create_audio_objects')
@@ -122,15 +118,11 @@ class VolumeAdminBrowserTest(zeit.content.volume.testing.BrowserTestCase):
         b.open('http://localhost/++skin++vivi/repository/2015/01/ausgabe/@@create-audio-objects')
         self.publish_content()
 
-        # If article was not published yet, publish audio with it
-        audio1 = self.repository['premium']['audio']['2015']['01'][article1_uuid.shortened]
-        self.assertTrue(zeit.cms.workflow.interfaces.IPublishInfo(audio1).published)
+        folder = self.repository['premium']['audio']['2015']['01']
+        self.assertTrue(IPublishInfo(folder[article1_uuid.shortened]).published)
+        self.assertTrue(IPublishInfo(folder[article2_uuid.shortened]).published)
 
-        # If article already was published, don't publish audio
-        audio2 = self.repository['premium']['audio']['2015']['01'][article2_uuid.shortened]
-        self.assertFalse(zeit.cms.workflow.interfaces.IPublishInfo(audio2).published)
-
-    def test_create_audio_objects_only_references_premium_audio_objects(self):
+    def test_create_audio_objects_does_not_publish_them(self):
         FEATURE_TOGGLES.set('volume_publish_create_audio_objects')
         article1_uuid = self.create_article_with_references(mediasync_id=1234, name='article_1')
         article2_uuid = self.create_article_with_references(
@@ -140,18 +132,14 @@ class VolumeAdminBrowserTest(zeit.content.volume.testing.BrowserTestCase):
         b = self.browser
         b.open('http://localhost/++skin++vivi/repository/2015/01/ausgabe/@@create-audio-objects')
 
-        audio1 = self.repository['premium']['audio']['2015']['01'][article1_uuid.shortened]
-        self.assertFalse(zeit.cms.workflow.interfaces.IPublishInfo(audio1).published)
-
-        audio2 = self.repository['premium']['audio']['2015']['01'][article2_uuid.shortened]
-        self.assertFalse(zeit.cms.workflow.interfaces.IPublishInfo(audio2).published)
+        folder = self.repository['premium']['audio']['2015']['01']
+        self.assertFalse(IPublishInfo(folder[article1_uuid.shortened]).published)
+        self.assertFalse(IPublishInfo(folder[article2_uuid.shortened]).published)
 
     def test_referenced_image_is_not_published(self):
         self.create_article_with_references()
         self.publish_content()
-        self.assertFalse(
-            zeit.cms.workflow.interfaces.IPublishInfo(self.repository['image']).published
-        )
+        self.assertFalse(IPublishInfo(self.repository['image']).published)
 
 
 class PublishAllContent(zeit.content.volume.testing.SeleniumTestCase):

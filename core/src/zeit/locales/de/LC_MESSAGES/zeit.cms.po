@@ -22,7 +22,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.6\n"
+"X-Generator: Poedit 3.8\n"
 
 #: zeit/addcentral/sidebar.pt:10 zeit/addcentral/sidebar.py:39
 #: zeit/cms/browser/form.py:223 zeit/cms/menu.zcml:17 zeit/cms/menu.zcml:24
@@ -201,6 +201,8 @@ msgstr "Autor"
 #: zeit/content/rawxml/interfaces.py:18 zeit/content/text/interfaces.py:65
 #: zeit/content/video/browser/object-details-body.pt:24
 #: zeit/content/volume/browser/form.py:73 zeit/content/volume/interfaces.py:46
+#: zeit/content/article/edit/interfaces.py:381
+#: zeit/content/article/edit/interfaces.py:516
 msgid "Title"
 msgstr "Titel"
 
@@ -580,12 +582,14 @@ msgstr "dynamisch"
 #: zeit/cms/content/interfaces.py:78 zeit/cms/content/interfaces.py:496
 #: zeit/content/article/edit/interfaces.py:511
 #: zeit/content/article/interfaces.py:208
+#: zeit/content/article/edit/interfaces.py:471
 msgid "Year"
 msgstr "Jahr"
 
 #: zeit/cms/content/interfaces.py:80
 #: zeit/content/article/edit/interfaces.py:253
 #: zeit/content/volume/browser/form.py:38 zeit/content/volume/volume.py:333
+#: zeit/content/volume/volume.py:329
 msgid "Volume"
 msgstr "Ausgabe"
 
@@ -648,12 +652,15 @@ msgstr "Spitzmarke"
 #: zeit/cms/content/interfaces.py:152 zeit/cms/content/interfaces.py:171
 #: zeit/content/article/edit/interfaces.py:416
 #: zeit/content/article/edit/interfaces.py:553
+#: zeit/content/article/edit/interfaces.py:376
+#: zeit/content/article/edit/interfaces.py:513
 msgid "Please take care of capitalisation."
 msgstr "Bitte auf Groß- und Kleinschreibung achten."
 
 #: zeit/cms/content/interfaces.py:161
 #: zeit/content/article/edit/interfaces.py:423
 #: zeit/content/modules/interfaces.py:171
+#: zeit/content/article/edit/interfaces.py:383
 msgid "Subtitle"
 msgstr "Teaser/Vorspann (Unterzeile)"
 
@@ -1493,6 +1500,7 @@ msgstr "Video"
 #: zeit/content/animation/interfaces.py:44
 #: zeit/content/article/edit/interfaces.py:613
 #: zeit/content/gallery/browser/configure.zcml:93
+#: zeit/content/article/edit/interfaces.py:573
 msgid "Images"
 msgstr "Bilder"
 
@@ -1810,6 +1818,7 @@ msgstr "Easy-Embed"
 #: zeit/content/image/browser/imagegroup.py:221 zeit/content/image/image.py:268
 #: zeit/content/portraitbox/interfaces.py:16
 #: zeit/wysiwyg/browser/resources/reference/image.pt:17
+#: zeit/content/article/edit/interfaces.py:580
 msgid "Image"
 msgstr "Einzelbild"
 
@@ -1854,6 +1863,7 @@ msgstr "Ziehen Sie ein Video hierher, um es zu verknüpfen"
 #: zeit/wysiwyg/browser/resources/citation/dialog.pt:39
 #: zeit/wysiwyg/browser/resources/reference/image.pt:26
 #: zeit/wysiwyg/browser/resources/reference/portraitbox.pt:24
+#: zeit/content/article/edit/interfaces.py:385
 msgid "Layout"
 msgstr "Layout"
 
@@ -1883,12 +1893,14 @@ msgstr "redigiert"
 
 #: zeit/content/article/edit/interfaces.py:166
 #: zeit/content/article/edit/interfaces.py:628
+#: zeit/content/article/edit/interfaces.py:588
 msgid "Display Mode"
 msgstr "Darstellung"
 
 #: zeit/content/article/edit/interfaces.py:174
 #: zeit/content/article/edit/interfaces.py:635
 #: zeit/content/article/interfaces.py:73
+#: zeit/content/article/edit/interfaces.py:595
 msgid "Variant Name"
 msgstr "Seitenverhältnis"
 
@@ -2009,42 +2021,53 @@ msgstr "Schriftart"
 #: zeit/content/infobox/interfaces.py:15
 #: zeit/content/video/browser/object-details-body.pt:20
 #: zeit/content/volume/browser/toc_listing.py:33
+#: zeit/content/article/edit/interfaces.py:375
+#: zeit/content/article/edit/interfaces.py:513
 msgid "Supertitle"
 msgstr "Spitzmarke"
 
 #: zeit/content/article/edit/interfaces.py:434
+#: zeit/content/article/edit/interfaces.py:394
 msgid "Jobbox ticker"
 msgstr "Jobticker"
 
 #: zeit/content/article/edit/interfaces.py:443
+#: zeit/content/article/edit/interfaces.py:403
 msgid "Article body"
 msgstr "Artikeltext"
 
 #: zeit/content/article/edit/interfaces.py:443
+#: zeit/content/article/edit/interfaces.py:403
 msgid "breaking-news-more-shortly"
 msgstr "Mehr in Kürze hier bei der ZEIT"
 
 #: zeit/content/article/edit/interfaces.py:468
+#: zeit/content/article/edit/interfaces.py:428
 msgid "Adplace Tile"
 msgstr "Tile"
 
 #: zeit/content/article/edit/interfaces.py:508
+#: zeit/content/article/edit/interfaces.py:468
 msgid "Puzzle"
 msgstr "Rätsel"
 
 #: zeit/content/article/edit/interfaces.py:519
+#: zeit/content/article/edit/interfaces.py:479
 msgid "manual"
 msgstr "Klassisch"
 
 #: zeit/content/article/edit/interfaces.py:520
+#: zeit/content/article/edit/interfaces.py:480
 msgid "centerpage"
 msgstr "Centerpage"
 
 #: zeit/content/article/edit/interfaces.py:521
+#: zeit/content/article/edit/interfaces.py:481
 msgid "topicpage"
 msgstr "Themenseite"
 
 #: zeit/content/article/edit/interfaces.py:522
+#: zeit/content/article/edit/interfaces.py:482
 msgid "related-api"
 msgstr "Related-API"
 
@@ -2052,47 +2075,60 @@ msgstr "Related-API"
 #: zeit/content/image/interfaces.py:66
 #: zeit/content/link/browser/configure.zcml:8
 #: zeit/content/link/browser/form.py:47 zeit/content/link/link.py:52
+#: zeit/content/article/edit/interfaces.py:519
 msgid "Link"
 msgstr "Link"
 
 #: zeit/content/article/edit/interfaces.py:562
+#: zeit/content/article/edit/interfaces.py:522
 msgid "Linktext"
 msgstr "LInktext"
 
 #: zeit/content/article/edit/interfaces.py:565
 #: zeit/content/cp/interfaces.py:330
+#: zeit/content/article/edit/interfaces.py:525
 msgid "Automatic type"
 msgstr "Quelle"
 
 #: zeit/content/article/edit/interfaces.py:569
 #: zeit/content/article/edit/interfaces.py:576
 #: zeit/content/article/edit/interfaces.py:583
+#: zeit/content/article/edit/interfaces.py:529
+#: zeit/content/article/edit/interfaces.py:536
+#: zeit/content/article/edit/interfaces.py:543
 msgid "Reference"
 msgstr "Referenz"
 
 #: zeit/content/article/edit/interfaces.py:570
+#: zeit/content/article/edit/interfaces.py:530
 msgid "Drag article/cp/link here"
 msgstr "Ziehen Sie einen Artikel/CP/Link hierher"
 
 #: zeit/content/article/edit/interfaces.py:577
 #: zeit/content/article/edit/interfaces.py:584
+#: zeit/content/article/edit/interfaces.py:537
+#: zeit/content/article/edit/interfaces.py:544
 msgid "Drag article/link here"
 msgstr "Ziehen Sie einen Artikel/Link hierher"
 
 #: zeit/content/article/edit/interfaces.py:622
 #: zeit/content/gallery/interfaces.py:111
+#: zeit/content/article/edit/interfaces.py:582
 msgid "Image caption"
 msgstr "Bildunterschrift"
 
 #: zeit/content/article/edit/interfaces.py:623
+#: zeit/content/article/edit/interfaces.py:583
 msgid "Alternative Text"
 msgstr "ALT-Text"
 
 #: zeit/content/article/edit/interfaces.py:643
+#: zeit/content/article/edit/interfaces.py:603
 msgid "Show caption"
 msgstr "Bildunterschrift anzeigen"
 
 #: zeit/content/article/edit/interfaces.py:644
+#: zeit/content/article/edit/interfaces.py:604
 msgid "Show source"
 msgstr "Bildquelle anzeigen"
 
@@ -2714,34 +2750,42 @@ msgid "List of teasers"
 msgstr "Teaser"
 
 #: zeit/content/cp/browser/area.py:213 zeit/content/cp/interfaces.py:214
+#: zeit/content/cp/browser/area.py:214
 msgid "automatic-area-type-centerpage"
 msgstr "Centerpage"
 
 #: zeit/content/cp/browser/area.py:214 zeit/content/cp/interfaces.py:221
+#: zeit/content/cp/browser/area.py:215
 msgid "automatic-area-type-rss-feed"
 msgstr "RSS-Feed"
 
 #: zeit/content/cp/browser/area.py:216 zeit/content/cp/interfaces.py:215
+#: zeit/content/cp/browser/area.py:217
 msgid "automatic-area-type-custom"
 msgstr "Individuelle Abfrage"
 
 #: zeit/content/cp/browser/area.py:220 zeit/content/cp/interfaces.py:216
+#: zeit/content/cp/browser/area.py:221
 msgid "automatic-area-type-topicpage"
 msgstr "TMS-Themenseite"
 
 #: zeit/content/cp/browser/area.py:224 zeit/content/cp/interfaces.py:218
+#: zeit/content/cp/browser/area.py:225
 msgid "automatic-area-type-elasticsearch-query"
 msgstr "ES-Query"
 
 #: zeit/content/cp/browser/area.py:227 zeit/content/cp/interfaces.py:217
+#: zeit/content/cp/browser/area.py:228
 msgid "automatic-area-type-related-topics"
 msgstr "Verwandte TMS-Themenseiten"
 
 #: zeit/content/cp/browser/area.py:229 zeit/content/cp/interfaces.py:219
+#: zeit/content/cp/browser/area.py:230
 msgid "automatic-area-type-reach"
 msgstr "Reach"
 
 #: zeit/content/cp/browser/area.py:233 zeit/content/cp/interfaces.py:222
+#: zeit/content/cp/browser/area.py:234
 msgid "automatic-area-type-sql-query"
 msgstr "SQL-Query"
 
@@ -3660,10 +3704,8 @@ msgid "Height"
 msgstr "Höhe"
 
 #: zeit/content/image/interfaces.py:112
-#, fuzzy
-#| msgid "Media type"
 msgid "MIME type"
-msgstr "Medientyp"
+msgstr "MIME-Typ"
 
 #: zeit/content/image/interfaces.py:129
 msgid "Accent color"
@@ -4178,6 +4220,7 @@ msgid "Video type"
 msgstr "Typ"
 
 #: zeit/content/volume/browser/admin.py:43
+#: zeit/content/volume/browser/admin.py:44
 msgid "Publish content of this volume"
 msgstr "Gesamte Ausgabe veröffentlichen"
 
@@ -4185,6 +4228,7 @@ msgstr "Gesamte Ausgabe veröffentlichen"
 #: zeit/content/volume/browser/create-audio-objects.pt:2
 #: zeit/content/volume/browser/create-audio-objects.pt:5
 #: zeit/content/volume/browser/publish-all.pt:5
+#: zeit/content/volume/browser/admin.py:46
 msgid "Create premium audio objects"
 msgstr "Premium-Audios anlegen"
 
@@ -4443,11 +4487,11 @@ msgstr "Alter (in Tagen)"
 msgid "SQL query"
 msgstr "SQL-Abfrage"
 
-#: zeit/contentquery/interfaces.py:317
+#: zeit/contentquery/interfaces.py:317 zeit/contentquery/interfaces.py:319
 msgid "Restrict time interval"
 msgstr "Zeitraum einschränken (Performance-Optimierung)"
 
-#: zeit/contentquery/interfaces.py:320
+#: zeit/contentquery/interfaces.py:320 zeit/contentquery/interfaces.py:322
 msgid "Force sql filter before sort"
 msgstr "Filtern vor Sortieren (Performance-Optimierung)"
 
@@ -4949,6 +4993,17 @@ msgstr "Format"
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:53
 msgid "with info"
 msgstr "mit Info"
+
+#: zeit/content/volume/browser/admin.py:61
+msgid ""
+"Collective Publication of ${total} articles, ${published} already published"
+msgstr ""
+"Sammelveröffentlichung gestartet (${total} Artikel, davon ${published} "
+"bereits veröffentlicht)"
+
+#: zeit/contentquery/interfaces.py:317
+msgid "SQL query references"
+msgstr "SQL-Abfrage für Referenzen"
 
 #~ msgid "View repository navigation tree"
 #~ msgstr "Repository Navigationbaum anzeigen"

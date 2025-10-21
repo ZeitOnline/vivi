@@ -20,6 +20,7 @@ import zope.app.wsgi.paste
 import zope.component
 import zope.component.hooks
 import zope.publisher.browser
+import zope.publisher.xmlrpc
 
 from zeit.cms.tracing import anonymize
 import zeit.cms.cli
@@ -233,3 +234,21 @@ def add_username_to_span(event):
         return
     span = opentelemetry.trace.get_current_span()
     span.set_attribute('enduser.id', anonymize(principal.id))
+
+
+class XMLRPCRequest(zope.publisher.xmlrpc.XMLRPCRequest):
+    def processInputs(self):
+        super().processInputs()
+        try:
+            method = self._path_suffix[0]
+        except IndexError:
+            method = 'unknown'
+        span = opentelemetry.trace.get_current_span()
+        span.update_name(f'xmlrpc.vivi/{method}')
+        span.set_attributes(
+            {
+                'rpc.system': 'xmlrpc',
+                'rpc.method': method,
+                'rpc.args': str(self._args),
+            }
+        )

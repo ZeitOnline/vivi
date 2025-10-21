@@ -48,7 +48,7 @@ class AutomaticEditForm(zeit.content.cp.testing.BrowserTestCase):
         b = self.browser
         self.create_automatic_cp(b)
         b.getControl('Automatic type', index=0).displayValue = ['sql-query']
-        b.getControl('SQL query').value = "type='article'"
+        b.getControl('SQL query', index=0).value = "type='article'"
         b.getControl('Apply').click()
         self.assertEllipsis('...Updated on...', b.contents)
 

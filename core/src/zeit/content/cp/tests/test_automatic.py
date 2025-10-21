@@ -938,6 +938,16 @@ class AutomaticAreaSQLTest(zeit.content.cp.testing.FunctionalTestCase):
             self.connector.search_args[0],
         )
 
+    def test_reference_query_adds_clause(self):
+        self.area.sql_reference_query = "type='teaser-image'"
+        IRenderedArea(self.area).values()
+        self.assertEllipsis(
+            """...AND properties.id IN
+(SELECT content_references.source FROM content_references
+WHERE (type='teaser-image'))...""",
+            self.connector.search_args[0],
+        )
+
 
 class AutomaticAreaSQLCustomTest(zeit.content.cp.testing.FunctionalTestCase):
     def setUp(self):

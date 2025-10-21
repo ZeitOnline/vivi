@@ -290,16 +290,15 @@ class CreateVariantImageTest(zeit.content.image.testing.FunctionalTestCase):
 
         self.assertLess(len(configured.open().read()), len(highquality.read()))
 
-    def test_thumbnail_has_image_properties(self):
+    def test_transform_result_has_image_properties(self):
         FEATURE_TOGGLES.set('column_read_wcm_56')
         FEATURE_TOGGLES.set('column_write_wcm_56')
         group = zeit.content.image.testing.create_image_group()
         transform = zeit.content.image.interfaces.ITransform(group['master-image.jpg'])
-        highquality = io.BytesIO()
-        img = transform.image.copy()
-        img.thumbnail((200, 200))
-        img.save(highquality, 'JPEG', quality=75)
-        thumbnail = self.repository['group']['thumbnail-source-master-image.jpg']
+        square = zeit.content.image.variant.Variant(
+            id='square', aspect_ratio='1:1', focus_x=0.5, focus_y=0.5, zoom=0
+        )
+        thumbnail = transform.create_variant_image(square, size=(200, 200))
         self.assertEqual(thumbnail.width, thumbnail._width)
         self.assertEqual(thumbnail.height, thumbnail._height)
         self.assertEqual(thumbnail.mimeType, thumbnail._mime_type)
