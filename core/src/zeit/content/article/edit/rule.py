@@ -16,11 +16,6 @@ def content(context):
     return []
 
 
-@glob(zeit.content.article.edit.interfaces.IVideo)
-def content(context):  # noqa
-    return [x for x in [context.video] if x]
-
-
 @glob(zeit.content.article.edit.interfaces.IReference)
 def content(context):  # noqa
     field = zope.interface.implementedBy(type(zope.security.proxy.getObject(context))).get(

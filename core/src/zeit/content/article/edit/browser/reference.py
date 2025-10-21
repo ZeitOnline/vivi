@@ -86,7 +86,7 @@ class EditInfobox(EditBase):
 
 class EditVideo(EditBase):
     interface = zeit.content.article.edit.interfaces.IVideo
-    fields = ('video', 'layout')
+    fields = ('references', 'layout')
 
 
 class EditAuthor(EditBase):
