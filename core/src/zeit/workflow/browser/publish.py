@@ -50,9 +50,9 @@ class Publish:
 class FlashPublishErrors(zeit.cms.browser.view.Base):
     def __call__(self, job, objectlog=False):
         objectlog = ast.literal_eval(objectlog)
-        async_result = celery.result.AsyncResult(job)
-        if async_result.failed():
-            error = str(async_result.result)
+        result = celery.result.AsyncResult(job)
+        if result.failed():
+            error = f'Task {result.name} failed: {result.result}'
             self.send_message(error, type='error')
             if objectlog:
                 zeit.objectlog.interfaces.ILog(self.context).log(error)
