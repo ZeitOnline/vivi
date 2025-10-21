@@ -257,7 +257,7 @@ class IVolume(IReference):
     )
 
 
-class IAudio(IBlock):
+class IAudio(IReference):
     references = zope.schema.Choice(
         title=_('Drag an audio here'),
         source=zeit.content.audio.interfaces.AudioSource(),
