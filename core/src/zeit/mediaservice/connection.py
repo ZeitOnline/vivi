@@ -12,17 +12,7 @@ class Connection:
 
     def get_audio_infos(self, year, volume):
         result = {}
-        keycloak = zope.component.getUtility(zeit.mediaservice.interfaces.IKeycloak)
-        auth_header = keycloak.authenticate()
-        if not auth_header:
-            return result
-        response = requests.get(
-            self.feed_url,
-            params={'year': year, 'number': volume},
-            headers=auth_header,
-            timeout=2,
-        )
-        data = response.json()
+        data = self._get_feed(year, volume)
         volumes = data.get('dataFeedElement', None)
         if not volumes:
             return result
@@ -64,6 +54,19 @@ class Connection:
                         'duration': audio_duration,
                     }
         return result
+
+    def _get_feed(self, year, volume):
+        keycloak = zope.component.getUtility(zeit.mediaservice.interfaces.IKeycloak)
+        auth_header = keycloak.authenticate()
+        if not auth_header:
+            return {}
+        response = requests.get(
+            self.feed_url,
+            params={'year': year, 'number': volume},
+            headers=auth_header,
+            timeout=2,
+        )
+        return response.json()
 
 
 @zope.interface.implementer(zeit.mediaservice.interfaces.IConnection)
