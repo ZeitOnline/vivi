@@ -290,16 +290,3 @@ class TestKeycloak(zeit.mediaservice.testing.FunctionalTestCase):
         with mocker:
             keycloak = zope.component.getUtility(zeit.mediaservice.interfaces.IKeycloak)
             self.assertFalse(keycloak.authenticate())
-
-    def test_get_audio_infos_does_not_break_on_missing_auth_token(self):
-        mocker = requests_mock.Mocker()
-        mocker.get(
-            f'{self.preview_feed_url}?year=2025&number=1',
-            json=DATA,
-            headers={'Authorization': 'Bearer mock_token'},
-        )
-        mocker.post('https://discovery-url.foo/protocol/openid-connect/token', status_code=503)
-        with mocker:
-            mediaservice = zeit.mediaservice.connection.Connection(self.preview_feed_url)
-            audios = mediaservice.get_audio_infos(year=2025, volume=1)
-            self.assertFalse(audios)

@@ -12,17 +12,7 @@ class Connection:
 
     def get_audio_infos(self, year, volume):
         result = {}
-        keycloak = zope.component.getUtility(zeit.mediaservice.interfaces.IKeycloak)
-        auth_header = keycloak.authenticate()
-        if not auth_header:
-            return result
-        response = requests.get(
-            self.feed_url,
-            params={'year': year, 'number': volume},
-            headers=auth_header,
-            timeout=2,
-        )
-        data = response.json()
+        data = self._get_feed(year, volume)
         volumes = data.get('dataFeedElement', None)
         if not volumes:
             return result
@@ -64,6 +54,25 @@ class Connection:
                         'duration': audio_duration,
                     }
         return result
+
+    def _get_feed(self, year, volume):
+        keycloak = zope.component.getUtility(zeit.mediaservice.interfaces.IKeycloak)
+        auth_header = keycloak.authenticate()
+        if not auth_header:
+            raise RuntimeError('Authentication for mediaservice via keycloak failed')
+        response = requests.get(
+            self.feed_url,
+            params={'year': year, 'number': volume},
+            headers=auth_header,
+            timeout=2,
+            allow_redirects=False,  # Record oidc redirect as non-200
+        )
+        try:
+            return response.json()
+        except Exception as err:
+            current_span = opentelemetry.trace.get_current_span()
+            current_span.record_exception(err)
+            raise ValueError('Could not parse mediaservice response:\n' + response.text)
 
 
 @zope.interface.implementer(zeit.mediaservice.interfaces.IConnection)
