@@ -7,10 +7,10 @@ import zope.security.proxy
 
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.interfaces import CONFIG_CACHE
-from zeit.content.animation.interfaces import IAnimation
 from zeit.content.article.source import BodyAwareXMLSource
 import zeit.cms.content.field
 import zeit.cms.content.sources
+import zeit.content.animation.interfaces
 import zeit.content.article.interfaces
 import zeit.content.article.source
 import zeit.content.audio.interfaces
@@ -286,7 +286,7 @@ class IEmbed(IBlock, zeit.content.modules.interfaces.IEmbed):
 
 class AnimationObjectSource(zeit.cms.content.contentsource.CMSContentSource):
     name = 'animation'
-    check_interfaces = (IAnimation,)
+    check_interfaces = (zeit.content.animation.interfaces.IAnimation,)
 
 
 class IAnimation(IBlock):
@@ -362,6 +362,46 @@ class ITickarooLiveblog(IBlock, zeit.content.modules.interfaces.ITickarooLiveblo
 
 class IQuiz(IBlock, zeit.content.modules.interfaces.IQuiz):
     pass
+
+
+class ScrollyChapterFontStyleSource(zeit.cms.content.sources.SimpleFixedValueSource):
+    values = {
+        'tablet-gothic': _('Tablet Gothic'),
+        'tiemann': _('Tiemann'),
+    }
+
+
+class ScrollyChapterMediaSource(zeit.cms.content.contentsource.CMSContentSource):
+    """Source for images and animation objects."""
+
+    name = 'scrolly-chapter-media'
+    check_interfaces = (
+        zeit.content.image.interfaces.IImageGroup,
+        zeit.content.image.interfaces.IImage,
+        zeit.content.animation.interfaces.IAnimation,
+    )
+
+
+class IScrollyChapter(IReference):
+    """Scrollytelling chapter divider block."""
+
+    references = zope.schema.Choice(
+        title=_('Image'),
+        description=_('Drag image group or animation here'),
+        source=ScrollyChapterMediaSource(),
+        required=True,
+    )
+
+    kicker = zope.schema.TextLine(title=_('Kicker'), required=False, max_length=140)
+
+    title = zope.schema.TextLine(title=_('Title'), required=True, max_length=140)
+
+    font_style = zope.schema.Choice(
+        title=_('Font Style'),
+        source=ScrollyChapterFontStyleSource(),
+        default='tablet-gothic',
+        required=True,
+    )
 
 
 class IBox(IBlock):

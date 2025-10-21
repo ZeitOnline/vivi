@@ -222,6 +222,17 @@
       />
   </class>
 
+  <class class=".scrolly_chapter.ScrollyChapter">
+    <require
+      interface=".interfaces.IScrollyChapter"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IScrollyChapter"
+      permission="zeit.EditContent"
+      />
+  </class>
+
   <class class=".citation_comment.CitationComment">
     <require
       interface=".interfaces.ICitationComment"
