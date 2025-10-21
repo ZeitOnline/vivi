@@ -59,7 +59,7 @@ class Connection:
         keycloak = zope.component.getUtility(zeit.mediaservice.interfaces.IKeycloak)
         auth_header = keycloak.authenticate()
         if not auth_header:
-            return {}
+            raise RuntimeError('Authentication for mediaservice via keycloak failed')
         response = requests.get(
             self.feed_url,
             params={'year': year, 'number': volume},
