@@ -1576,6 +1576,11 @@
   background-color: #fff79a;
 }
 
+.type-article .fieldname-memo textarea {
+  height: unset;
+  field-sizing: content;
+}
+
 .type-article .fieldname-memo .rst-preview p {
   color: #333333;
 }
