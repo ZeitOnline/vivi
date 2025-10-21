@@ -65,8 +65,14 @@ class Connection:
             params={'year': year, 'number': volume},
             headers=auth_header,
             timeout=2,
+            allow_redirects=False,  # Record oidc redirect as non-200
         )
-        return response.json()
+        try:
+            return response.json()
+        except Exception as err:
+            current_span = opentelemetry.trace.get_current_span()
+            current_span.record_exception(err)
+            raise ValueError('Could not parse mediaservice response:\n' + response.text)
 
 
 @zope.interface.implementer(zeit.mediaservice.interfaces.IConnection)
