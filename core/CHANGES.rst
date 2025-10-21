@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.215.0 (2025-10-21)
+--------------------
+
+- ES-423: Add scrollytelling chapter module
+
+- WCM-1175: Make celery error messages (e.g. create audio objects) more readable
+
+
 7.214.0 (2025-10-20)
 --------------------
 
