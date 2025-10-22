@@ -2,6 +2,7 @@ from unittest.mock import Mock
 import urllib.error
 import urllib.parse
 
+import lxml.builder
 import transaction
 import zope.security.management
 import zope.security.proxy
@@ -77,12 +78,24 @@ class ReferencePropertyTest(ReferenceFixture, zeit.cms.testing.ZeitCmsTestCase):
             ['http://xml.zeit.de/target'], [x.target.uniqueId for x in content.references]
         )
 
-    def test_multiple_references_to_same_object_are_collapsed(self):
+    def test_multiple_references_to_same_object_are_collapsed_on_write(self):
         content = self.repository['content']
         content.references = (
             content.references.create(self.repository['target']),
             content.references.create(self.repository['target']),
         )
+        self.assertEqual(
+            ['http://xml.zeit.de/target'], [x.target.uniqueId for x in content.references]
+        )
+
+    def test_multiple_references_to_same_object_are_collapsed_on_read(self):
+        """Safetybelt, since we've seen production data with duplicates, sigh."""
+        content = self.repository['content']
+        content.references = (content.references.create(self.repository['target']),)
+        content.xml.find('body').find('references').append(
+            lxml.builder.E.reference(type='intern', href='http://xml.zeit.de/target')
+        )
+
         self.assertEqual(
             ['http://xml.zeit.de/target'], [x.target.uniqueId for x in content.references]
         )
