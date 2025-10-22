@@ -19,23 +19,31 @@ class ExtractReferencesTest(zeit.cms.testing.ZeitCmsTestCase):
         registry.registerAdapter(zeit.cms.related.related.BasicReference, name='author')
         registry.registerAdapter(zeit.cms.related.related.RelatedReference, name='author')
 
-    def test_stores_references_on_checkin(self):
-        article = self.repository['testcontent']
+        self.article = self.repository['testcontent']
         self.repository['author'] = ExampleContentType()
         transaction.commit()
-        author = self.repository['author']
+        self.author = self.repository['author']
 
-        with checked_out(article) as co:
-            co.authorships = (co.authorships.create(author),)
+    def test_stores_references_on_checkin(self):
+        with checked_out(self.article) as co:
+            co.authorships = (co.authorships.create(self.author),)
         transaction.commit()
 
-        references = self.repository.connector.get_references(article.uniqueId)
+        references = self.repository.connector.get_references(self.article.uniqueId)
         self.assertEqual(
             [
                 {
-                    'target': IUUID(author).shortened,
+                    'target': IUUID(self.author).shortened,
                     'type': 'author',
                 }
             ],
             references,
         )
+
+    def test_ignores_nonexistent_targets(self):
+        with checked_out(self.article) as co:
+            co.authorships = (co.authorships.create(self.author),)
+            del self.repository['author']
+            transaction.commit()
+        transaction.commit()
+        self.assertEqual([], self.repository.connector.get_references(self.article.uniqueId))

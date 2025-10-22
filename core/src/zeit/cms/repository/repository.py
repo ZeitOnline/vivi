@@ -5,6 +5,7 @@ import re
 
 import gocept.cache.property
 import grokcore.component as grok
+import opentelemetry.trace
 import persistent
 import zope.annotation.interfaces
 import zope.component
@@ -335,7 +336,22 @@ class Repository(persistent.Persistent, Container):
 
     def update_references(self, content, references):
         for item in references:
-            item['target'] = zeit.cms.content.interfaces.IUUID(item['target']).shortened
+            id = zeit.cms.content.interfaces.IUUID(item['target'], None)
+            if id is None:
+                opentelemetry.trace.get_current_span().add_event(
+                    'exception',
+                    {
+                        'exception.type': 'BrokenReference',
+                        'exception.severity': 'warning',
+                        'exception.message': (
+                            f'Ignored broken reference of type {item["type"]} in {content}'
+                        ),
+                    },
+                )
+                continue
+            short = id.shortened
+            if short:
+                item['target'] = short
         self.connector.update_references(content.uniqueId, references)
 
 
