@@ -99,7 +99,7 @@ def globs(context):
     for name, adapter in zope.component.getAdapters((context,), zeit.edit.interfaces.IRuleGlob):
         if not name:
             continue
-        globs[name] = adapter
+        globs[name] = adapter if adapter != '__NONE__' else None
     return globs
 
 
