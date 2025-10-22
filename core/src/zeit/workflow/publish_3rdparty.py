@@ -495,7 +495,7 @@ class VideoDataScience(DataScience):
 
 
 @grok.implementer(zeit.workflow.interfaces.IPublisherData)
-class Followings(grok.Adapter, IgnoreMixin):
+class ArticleFollowings(grok.Adapter, IgnoreMixin):
     grok.context(zeit.content.article.interfaces.IArticle)
     grok.name('followings')
 
@@ -546,6 +546,45 @@ class Followings(grok.Adapter, IgnoreMixin):
             self.context
         ).date_first_released.isoformat()
         return {'parent_uuids': all_uuids, 'created': created}
+
+    def retract_json(self):
+        return {}
+
+
+@grok.implementer(zeit.workflow.interfaces.IPublisherData)
+class CenterPageFollowings(grok.Adapter, IgnoreMixin):
+    grok.context(zeit.content.cp.interfaces.ICenterPage)
+    grok.name('followings')
+
+    def get_volume_id(self):
+        if zeit.wochenende.interfaces.IZWEContent.providedBy(self.context):
+            return zeit.cms.interfaces.ICMSContent(
+                f'{zeit.cms.interfaces.ID_NAMESPACE}wochenende/index'
+            )
+        if (
+            self.context.type != 'volume'
+            or self.context.volume is None
+            or self.context.year is None
+        ):
+            return None
+        return zeit.cms.interfaces.ICMSContent(
+            f'{zeit.cms.interfaces.ID_NAMESPACE}{self.context.year}/index'
+        )
+
+    def get_volume_overview_uuid(self):
+        volume = self.get_volume_id()
+        if volume is None:
+            return None
+        return zeit.cms.content.interfaces.IUUID(volume).shortened
+
+    def publish_json(self):
+        volume_uuid = self.get_volume_overview_uuid()
+        if volume_uuid is None:
+            return None
+        created = zeit.cms.workflow.interfaces.IPublishInfo(
+            self.context
+        ).date_first_released.isoformat()
+        return {'parent_uuids': [volume_uuid], 'created': created}
 
     def retract_json(self):
         return {}
