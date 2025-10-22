@@ -199,7 +199,7 @@ error_unless(scheduled_for_publishing(context))
         s = self.apply(r, tc)
         self.assertNotEqual(zeit.edit.rule.ERROR, s.status)
 
-    def test_globs_should_never_return_none(self):
+    def test_globs_can_return_none_although_they_are_adapters(self):
         import zeit.edit.rule
 
         r = zeit.edit.rule.Rule(
@@ -211,7 +211,7 @@ error_if(True, type)
         del self.block.xml.attrib['{http://namespaces.zeit.de/CMS/cp}type']
         s = self.apply(r, self.block)
         self.assertEqual(zeit.edit.rule.ERROR, s.status)
-        self.assertEqual('__NONE__', s.message)
+        self.assertEqual(None, s.message)
 
 
 class RulesManagerTest(zeit.edit.testing.FunctionalTestCase):
