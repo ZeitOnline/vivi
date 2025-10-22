@@ -3,6 +3,16 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.216.0 (2025-10-22)
+--------------------
+
+- WCM-56: Remove read and write toggle from code
+
+
+MAINT:
+- Simplify differentiating cp and article validation rules
+
+
 7.215.0 (2025-10-21)
 --------------------
 
