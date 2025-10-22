@@ -495,7 +495,7 @@ class VideoDataScience(DataScience):
 
 
 @grok.implementer(zeit.workflow.interfaces.IPublisherData)
-class Followings(grok.Adapter, IgnoreMixin):
+class ArticleFollowings(grok.Adapter, IgnoreMixin):
     grok.context(zeit.content.article.interfaces.IArticle)
     grok.name('followings')
 
@@ -533,32 +533,49 @@ class Followings(grok.Adapter, IgnoreMixin):
             opentelemetry.trace.get_current_span().record_exception(err)
             return []
 
-    def get_volume(self):
-        if self.context.volume is None or self.context.year is None:
-            return []
-        try:
-            volume_cp = zeit.cms.interfaces.ICMSContent(
-                f'{zeit.cms.interfaces.ID_NAMESPACE}{self.context.year}/{self.context.volume}/index'
-            )
-            return [zeit.cms.content.interfaces.IUUID(volume_cp).shortened]
-        except Exception as err:
-            opentelemetry.trace.get_current_span().record_exception(err)
-            return []
-
     def publish_json(self):
         if self.ignore():
             return None
         series_uuids = self.get_series_uuids()
         author_uuids = self.get_author_uuids()
         recipe_categories_uuids = self.get_recipe_categories()
-        volume_uuid = self.get_volume()
-        all_uuids = series_uuids + author_uuids + recipe_categories_uuids + volume_uuid
+        all_uuids = series_uuids + author_uuids + recipe_categories_uuids
         if not all_uuids:
             return None
         created = zeit.cms.workflow.interfaces.IPublishInfo(
             self.context
         ).date_first_released.isoformat()
         return {'parent_uuids': all_uuids, 'created': created}
+
+    def retract_json(self):
+        return {}
+
+
+@grok.implementer(zeit.workflow.interfaces.IPublisherData)
+class CenterPageFollowings(grok.Adapter, IgnoreMixin):
+    grok.context(zeit.content.cp.interfaces.ICenterPage)
+    grok.name('followings')
+
+    def get_volume_overview_uuid(self):
+        if (
+            self.context.type != 'volume'
+            or self.context.volume is None
+            or self.context.year is None
+        ):
+            return []
+        volume_overview = zeit.cms.interfaces.ICMSContent(
+            f'{zeit.cms.interfaces.ID_NAMESPACE}{self.context.year}/index'
+        )
+        return [zeit.cms.content.interfaces.IUUID(volume_overview).shortened]
+
+    def publish_json(self):
+        volume_uuids = self.get_volume_overview_uuid()
+        if len(volume_uuids) == 0:
+            return None
+        created = zeit.cms.workflow.interfaces.IPublishInfo(
+            self.context
+        ).date_first_released.isoformat()
+        return {'parent_uuids': volume_uuids, 'created': created}
 
     def retract_json(self):
         return {}
