@@ -4,6 +4,7 @@ import json
 import logging
 import xml.sax.saxutils
 
+import opentelemetry.trace
 import zope.browserpage
 import zope.formlib.form
 import zope.i18n
@@ -161,6 +162,9 @@ class ErrorPreventingViewletManager(zope.viewlet.manager.WeightOrderedViewletMan
             mapping = {'name': viewlet.__name__, 'exc_type': type(e).__name__, 'exc_msg': str(e)}
             error_msg = _(
                 'There was an error rendering ${name}: ${exc_type} ${exc_msg}', mapping=mapping
+            )
+            opentelemetry.trace.get_current_span().record_exception(
+                e, {'exception.severity': 'warning'}
             )
             log.warning(
                 'There was an error rendering %s at %s' % (mapping['name'], self.request.getURL()),
