@@ -765,7 +765,6 @@ class FollowingsPayloadTest(zeit.workflow.testing.FunctionalTestCase):
             cp.volume = 10
             cp.type = 'volume'
             info = zeit.cms.workflow.interfaces.IPublishInfo(cp)
-            info.published = True
             info.date_first_released = datetime(2025, 3, 5, 8, 18, tzinfo=timezone.utc)
 
         with checked_out(overview_cp):
@@ -773,6 +772,26 @@ class FollowingsPayloadTest(zeit.workflow.testing.FunctionalTestCase):
             overview_cp.type = 'volume-overview'
 
         overview_cp = self.repository['2025']['index']
+
+        data = zeit.workflow.testing.publish_json(cp, 'followings')
+        expected_uuid = zeit.cms.content.interfaces.IUUID(overview_cp).shortened
+        date = zeit.cms.workflow.interfaces.IPublishInfo(cp).date_first_released
+        self.assertIsNotNone(data, 'Data should not be None')
+        self.assertEqual(data['parent_uuids'][0], expected_uuid)
+        self.assertEqual(data['created'], date.isoformat())
+
+    def test_followings_volume_wochenende(self):
+        self.repository['wochenende'] = zeit.cms.repository.folder.Folder()
+        self.repository['wochenende']['2025'] = zeit.cms.repository.folder.Folder()
+        cp = self.repository['wochenende']['2025']['10'] = zeit.content.cp.centerpage.CenterPage()
+        zope.interface.alsoProvides(cp, zeit.wochenende.interfaces.IZWEContent)
+
+        self.repository['wochenende']['index'] = zeit.content.cp.centerpage.CenterPage()
+        overview_cp = self.repository['wochenende']['index']
+
+        with checked_out(cp):
+            info = zeit.cms.workflow.interfaces.IPublishInfo(cp)
+            info.date_first_released = datetime(2025, 3, 5, 8, 18, tzinfo=timezone.utc)
 
         data = zeit.workflow.testing.publish_json(cp, 'followings')
         expected_uuid = zeit.cms.content.interfaces.IUUID(overview_cp).shortened
