@@ -1,5 +1,3 @@
-from sqlalchemy import select
-import sqlalchemy.orm
 import transaction
 import zope.component
 
@@ -7,7 +5,6 @@ from zeit.cms.checkout.helper import checked_out
 from zeit.cms.content.interfaces import IUUID
 from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
-from zeit.connector.models import Reference
 import zeit.cms.testing
 
 
@@ -32,13 +29,10 @@ class ExtractReferencesTest(zeit.cms.testing.ZeitCmsTestCase):
             co.authorships = (co.authorships.create(author),)
         transaction.commit()
 
-        columns = [c.key for c in sqlalchemy.orm.class_mapper(Reference).columns if c.primary_key]
-        result = self.repository.connector.session.execute(select(Reference)).scalars()
-        references = [{c: getattr(x, c) for c in columns} for x in result]
+        references = self.repository.connector.get_references(article.uniqueId)
         self.assertEqual(
             [
                 {
-                    'source': IUUID(article).shortened,
                     'target': IUUID(author).shortened,
                     'type': 'author',
                 }
