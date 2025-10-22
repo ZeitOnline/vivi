@@ -9,5 +9,7 @@
   <include package="zeit.content.animation.browser" />
 
   <include package="zeit.content.article" file="ctesting.zcml" />
+  <include package="zeit.content.gallery" />
+  <include package="zeit.content.video" />
 
 </configure>

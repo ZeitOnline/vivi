@@ -1,3 +1,5 @@
+import itertools
+
 import grokcore.component as grok
 import zope.schema
 
@@ -204,17 +206,16 @@ class ExtractBodyReferences(zeit.cms.references.references.Extract):
 
     def __call__(self):
         result = []
-        for module in self.content.body.filter_values(*self.ATTRIBUTES):
-            target = self._get_reference_target(module)
-            if target is not None:
-                result.append({'target': target, 'type': 'article-body'})
-
+        body = self.content.body.filter_values(*self.ATTRIBUTES)
         header = self.content.header.module
         if any(x.providedBy(header) for x in self.ATTRIBUTES):
-            target = self._get_reference_target(header)
+            header = [header]
+        else:
+            header = []
+        for module in itertools.chain(body, header):
+            target = self._get_reference_target(module)
             if target is not None:
-                result.append({'target': target, 'type': 'article-header'})
-
+                result.append({'target': target, 'type': 'body'})
         return result
 
     def _get_reference_target(self, module):

@@ -63,3 +63,18 @@ def animation_audios(context):
 @grok.implementer(zeit.content.article.interfaces.ISpeechbertChecksum)
 def animation_checksum(context):
     return zeit.content.article.interfaces.ISpeechbertChecksum(context.article)
+
+
+class ExtractAnimationReferences(zeit.cms.references.references.Extract):
+    interface = zeit.content.animation.interfaces.IAnimation
+    grok.name(interface.__name__)
+
+    def __call__(self):
+        cls = type(self.content)
+        properties = [getattr(cls, x) for x in dir(cls)]
+        properties = [
+            x for x in properties if isinstance(x, zeit.cms.content.reference.SingleResource)
+        ]
+        references = [x.__get__(self.content, None) for x in properties]
+        references.extend(self.content.images)
+        return [{'target': x, 'type': 'body'} for x in references]

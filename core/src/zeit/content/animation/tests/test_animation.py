@@ -5,10 +5,12 @@ from zeit.cms.checkout.helper import checked_out
 from zeit.cms.interfaces import ICMSContent
 from zeit.content.article.interfaces import ISpeechbertChecksum
 from zeit.content.audio.interfaces import IAudioReferences
+from zeit.content.gallery.gallery import Gallery
 from zeit.content.image.interfaces import IImages
+from zeit.content.video.video import Video
+import zeit.cms.references.references
 import zeit.content.animation.animation
 import zeit.content.animation.testing
-import zeit.content.video.testing
 
 
 @pytest.mark.parametrize('display_mode', ['images', 'gallery-manual'])
@@ -65,3 +67,16 @@ class AnimationTest(zeit.content.animation.testing.FunctionalTestCase):
         animation = zeit.content.animation.animation.Animation()
         animation.article = self.repository['article']
         self.assertEqual('foo', ISpeechbertChecksum(animation).checksum)
+
+    def test_extracts_references(self):
+        self.repository['video'] = Video()
+        self.repository['gallery'] = Gallery()
+        animation = zeit.content.animation.animation.Animation()
+        animation.article = self.repository['article']
+        animation.gallery = self.repository['gallery']
+        animation.images = (self.repository['image1'],)
+        animation.video = self.repository['video']
+
+        references = [x['target'] for x in zeit.cms.references.references.extract(animation)]
+        for name in ['article', 'gallery', 'image1', 'video']:
+            self.assertIn(self.repository[name], references)
