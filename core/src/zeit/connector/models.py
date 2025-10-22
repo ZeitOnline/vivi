@@ -118,16 +118,14 @@ class ContentTypes:
     image_separately_purchased = mapped_column(
         Boolean, info={'namespace': 'image', 'name': 'single_purchase'}
     )
-    image_mime_type = mapped_column(
-        Unicode, info={'namespace': 'image', 'name': 'mime_type', 'migration': 'wcm_56'}
-    )
+    image_mime_type = mapped_column(Unicode, info={'namespace': 'image', 'name': 'mime_type'})
     image_height = mapped_column(
         SmallInteger,
-        info={'namespace': 'image', 'name': 'height', 'migration': 'wcm_56'},
+        info={'namespace': 'image', 'name': 'height'},
     )
     image_width = mapped_column(
         SmallInteger,
-        info={'namespace': 'image', 'name': 'width', 'migration': 'wcm_56'},
+        info={'namespace': 'image', 'name': 'width'},
     )
 
     gallery_type = mapped_column(
