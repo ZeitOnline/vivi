@@ -4,7 +4,6 @@ import zope.interface.common.sequence
 import zope.schema
 
 from zeit.cms.i18n import MessageFactory as _
-from zeit.cms.interfaces import MAX_PUBLISH_DATE
 import zeit.cms.workflow.interfaces
 import zeit.workflow.source
 
@@ -20,8 +19,8 @@ class ITimeBasedPublishing(zeit.cms.workflow.interfaces.IPublishInfo):
 
     release_period = zc.form.field.Combination(
         (
-            zope.schema.Datetime(title=_('From'), required=False, max=MAX_PUBLISH_DATE),
-            zope.schema.Datetime(title=_('To'), required=False, max=MAX_PUBLISH_DATE),
+            zope.schema.Datetime(title=_('From'), required=False),
+            zope.schema.Datetime(title=_('To'), required=False),
         ),
         title=_('Publication period'),
         description=_('workflow-publication-period-description', 'Leave empty for no constraint.'),
