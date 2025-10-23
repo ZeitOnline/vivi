@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.217.0 (2025-10-23)
+--------------------
+
+MAINT:
+- Remove long-obsolete maxmium timebased publish date restriction
+
+
 7.216.0 (2025-10-22)
 --------------------
 
