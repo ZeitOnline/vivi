@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.218.0 (2025-10-23)
+--------------------
+
+- WCM-1177: Extract audio and body references from articles
+
+
 7.217.0 (2025-10-23)
 --------------------
 
