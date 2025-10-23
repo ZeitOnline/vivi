@@ -10,11 +10,20 @@ import zeit.edit.interfaces
 
 
 @grok.implementer(zeit.content.article.edit.interfaces.IAudio)
-class Audio(zeit.content.article.edit.block.Block):
+class Audio(zeit.content.article.edit.reference.Reference):
     type = 'audio'
     # In the future we might switch this to use a Reference, so we can e.g.
     # express "this audio fully represents this article".
-    references = zeit.content.article.edit.reference.SingleResource('.', 'related')
+    _references = zeit.content.article.edit.reference.SingleResource('.', 'related')
+
+    @property
+    def references(self):
+        return self._references
+
+    @references.setter
+    def references(self, value):
+        self._references = value
+        self.is_empty = value is None
 
 
 class Factory(zeit.content.article.edit.block.BlockFactory):

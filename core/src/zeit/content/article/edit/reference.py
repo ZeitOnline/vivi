@@ -1,3 +1,5 @@
+import itertools
+
 import grokcore.component as grok
 import zope.schema
 
@@ -5,6 +7,7 @@ from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
+import zeit.cms.references.references
 import zeit.content.article.edit.block
 import zeit.content.article.edit.interfaces
 import zeit.content.article.interfaces
@@ -190,3 +193,35 @@ class SingleResource(zeit.cms.content.reference.SingleResource):
         for name, val in saved_attributes.items():
             setattr(instance, name, val)
         instance._p_changed = True
+
+
+class ExtractBodyReferences(zeit.cms.references.references.Extract):
+    interface = zeit.content.article.interfaces.IArticle
+    grok.name(interface.__name__)
+
+    ATTRIBUTES = {
+        zeit.content.article.edit.interfaces.IReference: 'references',
+        zeit.content.article.edit.interfaces.IRawText: 'text_reference',
+    }
+
+    def __call__(self):
+        result = []
+        body = self.content.body.filter_values(*self.ATTRIBUTES)
+        header = self.content.header.module
+        if any(x.providedBy(header) for x in self.ATTRIBUTES):
+            header = [header]
+        else:
+            header = []
+        for module in itertools.chain(body, header):
+            target = self._get_reference_target(module)
+            if target is not None:
+                result.append({'target': target, 'type': 'body'})
+        return result
+
+    def _get_reference_target(self, module):
+        for iface, name in self.ATTRIBUTES.items():
+            if iface.providedBy(module):
+                value = getattr(module, name)
+                if zeit.cms.content.interfaces.IReference.providedBy(value):
+                    value = value.target
+                return value

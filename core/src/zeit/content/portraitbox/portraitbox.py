@@ -1,3 +1,4 @@
+import grokcore.component as grok
 import lxml.builder
 import zope.interface
 
@@ -56,3 +57,13 @@ class PortraitboxHTMLContent(zeit.wysiwyg.html.HTMLContentBase):
                     text.remove(child)
                 text.append(lxml.builder.E.p(*children))
         return text
+
+
+class ExtractPortraitboxReferences(zeit.cms.references.references.Extract):
+    interface = zeit.content.portraitbox.interfaces.IPortraitbox
+    grok.name(interface.__name__)
+
+    def __call__(self):
+        if self.content.image is None:
+            return []
+        return [{'target': self.content.image, 'type': 'body'}]

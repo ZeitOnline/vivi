@@ -6,5 +6,6 @@
 
   <include package="zeit.cms" file="ftesting.zcml" />
   <include package="zeit.content.infobox" file="ctesting.zcml" />
+  <include package="zeit.content.image" />
 
 </configure>

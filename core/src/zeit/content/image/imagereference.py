@@ -105,6 +105,6 @@ class ExtractImageReferences(zeit.cms.references.references.Extract):
 
     def __call__(self):
         if self.context.image is None:
-            return set()
+            return []
         else:
             return [{'target': self.context.image, 'type': 'teaser-image'}]

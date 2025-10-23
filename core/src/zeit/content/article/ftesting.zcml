@@ -20,6 +20,7 @@
   <include package="zeit.content.audio.browser" />
   <include package="zeit.content.portraitbox" file="ctesting.zcml" />
   <include package="zeit.content.rawxml" />
+  <include package="zeit.content.text" />
   <include package="zeit.content.video" file="ctesting.zcml" />
   <include package="zeit.content.volume" />
   <include package="zeit.content.volume.browser" />

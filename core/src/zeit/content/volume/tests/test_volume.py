@@ -37,10 +37,8 @@ class TestVolumeCovers(zeit.content.volume.testing.FunctionalTestCase):
         self.volume = Volume()
         self.volume.product = zeit.cms.content.sources.Product('ZEI')
 
-    def add_ipad_cover(self, product_id='ZEI'):
-        node = lxml.builder.E.cover(
-            href='http://xml.zeit.de/imagegroup', id='ipad', product_id=product_id
-        )
+    def add_ipad_cover(self, product_id='ZEI', unique_id='http://xml.zeit.de/imagegroup'):
+        node = lxml.builder.E.cover(href=unique_id, id='ipad', product_id=product_id)
         self.volume.xml.find('covers').append(node)
 
     def test_set_raises_for_invalid_product(self):
@@ -80,6 +78,14 @@ class TestVolumeCovers(zeit.content.volume.testing.FunctionalTestCase):
     def test_returns_main_product_if_no_dependent_cover_present(self):
         self.add_ipad_cover()
         self.assertEqual(self.cover, self.volume.get_cover('ipad', 'ZMLB'))
+
+    def test_extract_references_finds_covers(self):
+        self.repository['othergroup'] = create_image_group()
+        self.add_ipad_cover()
+        self.add_ipad_cover('ZMLB', 'http://xml.zeit.de/othergroup')
+        references = [x['target'] for x in zeit.cms.references.references.extract(self.volume)]
+        for name in ['imagegroup', 'othergroup']:
+            self.assertIn(self.repository[name], references)
 
 
 class TestReference(zeit.content.volume.testing.FunctionalTestCase):

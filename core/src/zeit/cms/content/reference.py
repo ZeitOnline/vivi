@@ -82,6 +82,7 @@ class ReferenceProperty:
                 reference.attribute = attribute
                 reference.xml_reference_name = self.xml_reference_name
                 result.append(reference)
+        result = self._filter_duplicates(result)
         return References(
             result, source=instance, attribute=attribute, xml_reference_name=self.xml_reference_name
         )

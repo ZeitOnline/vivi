@@ -422,6 +422,30 @@ def retrieve_corresponding_centerpage(context):
     return cp
 
 
+class ExtractVolumeCoverReferences(zeit.cms.references.references.Extract):
+    interface = zeit.content.volume.interfaces.IVolume
+    grok.name(interface.__name__)
+
+    def __new__(cls, context):
+        """This adapter is for indexing actual IVolume objects. Since
+        ICMSContent objects can be adapted to IVolume (finding the associated
+        volume object), we explicitly restrict this here (which is different
+        from the baseclass)."""
+        if not cls.interface.providedBy(context):
+            return None
+        instance = super(zeit.cms.grok.IndirectAdapter, cls).__new__(cls)
+        instance.context = context
+        instance.content = context
+        return instance
+
+    def __call__(self):
+        covers = {
+            zeit.cms.interfaces.ICMSContent(x.get('href'), None)
+            for x in self.content.xml.xpath('//covers/cover')
+        }
+        return [{'target': x, 'type': 'body'} for x in covers if x is not None]
+
+
 def _find_performing_articles_via_webtrekk(volume):
     """
     Check webtrekk-API for performing articles. Since the webtrekk api,

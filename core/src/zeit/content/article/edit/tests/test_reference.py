@@ -4,7 +4,6 @@ import unittest
 import lxml.builder
 import zope.lifecycleevent
 
-from zeit.cms.checkout.helper import checked_out
 import zeit.content.article.testing
 
 
@@ -174,23 +173,6 @@ class TestFactories(zeit.content.article.testing.FunctionalTestCase):
         self.assert_factory('portraitbox', 'Portraitbox', IPortraitbox)
 
 
-class TestMetadataUpdate(zeit.content.article.testing.FunctionalTestCase):
-    def setUp(self):
-        # We do not want a fake tagger as Portraitbox and Infobox do not
-        # support tagging in the real world, so skip the setup of the parent
-        # class and doe the one of the grandparent.
-        super(zeit.content.article.testing.FunctionalTestCase, self).setUp()
-
-    def test_empty_reference_should_not_break_metadata_update(self):
-        for typ in ['gallery', 'portraitbox', 'infobox', 'image', 'author', 'volume']:
-            article = self.get_article()
-            self.get_factory(article, typ)()
-            self.repository['article'] = article
-            with self.assertNothingRaised():
-                with checked_out(self.repository['article']):
-                    pass
-
-
 class EmptyMarkerTest:
     block_type = NotImplemented
 
@@ -279,3 +261,35 @@ class InfoboxEmptyMarker(zeit.content.article.testing.FunctionalTestCase, EmptyM
 
         self.repository['infobox'] = Infobox()
         return self.repository['infobox']
+
+
+class ExtractReferencesFromBody(zeit.content.article.testing.FunctionalTestCase):
+    def test_extracts_references_from_body_modules(self):
+        from zeit.content.image.testing import create_image
+        from zeit.content.infobox.infobox import Infobox
+        from zeit.content.text.text import Text
+        from zeit.content.video.video import Video
+
+        article = zeit.content.article.article.Article()
+        self.repository['infobox'] = Infobox()
+        article.body.create_item('infobox').references = self.repository['infobox']
+        self.repository['image'] = create_image()
+        img = article.body.create_item('image')
+        img.references = img.references.create(self.repository['image'])
+        self.repository['text'] = Text()
+        article.body.create_item('rawtext').text_reference = self.repository['text']
+        self.repository['video'] = Video()
+        article.body.create_item('video').references = self.repository['video']
+
+        references = [x['target'] for x in zeit.cms.references.references.extract(article)]
+        for name in ['infobox', 'image', 'text', 'video']:
+            self.assertIn(self.repository[name], references)
+
+    def test_extracts_references_from_header_module(self):
+        from zeit.content.text.text import Text
+
+        self.repository['text'] = Text()
+        article = zeit.content.article.article.Article()
+        article.header.create_item('rawtext').text_reference = self.repository['text']
+        references = [x['target'] for x in zeit.cms.references.references.extract(article)]
+        self.assertIn(self.repository['text'], references)

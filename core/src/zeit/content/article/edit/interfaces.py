@@ -111,32 +111,6 @@ class IDivision(IBlock):
     number = zope.interface.Attribute('The position of this division in the article body (1-based)')
 
 
-class VideoLayoutSource(BodyAwareXMLSource):
-    product_configuration = 'zeit.content.article'
-    config_url = 'video-layout-source'
-    default_filename = 'article-video-layouts.xml'
-    attribute = 'id'
-
-
-class IVideo(IBlock, ILayoutable):
-    video = zope.schema.Choice(
-        title=_('Video'),
-        description=_('Drag a video here'),
-        required=False,
-        source=zeit.content.video.interfaces.videoSource,
-    )
-
-    layout = zope.schema.Choice(
-        title=_('Layout'), source=VideoLayoutSource(), default='large', required=False
-    )
-
-    # XXX it would be nice if could somehow express that IVideo actually
-    # is a kind of IReference (only it has video/video_2 instead of references)
-    is_empty = zope.schema.Bool(
-        title=_('true if this block has no reference; benefits XSLT'), required=False, default=True
-    )
-
-
 class IReference(IBlock):
     """A block which references another object."""
 
@@ -257,7 +231,27 @@ class IVolume(IReference):
     )
 
 
-class IAudio(IBlock):
+class VideoLayoutSource(BodyAwareXMLSource):
+    product_configuration = 'zeit.content.article'
+    config_url = 'video-layout-source'
+    default_filename = 'article-video-layouts.xml'
+    attribute = 'id'
+
+
+class IVideo(IReference, ILayoutable):
+    references = zope.schema.Choice(
+        title=_('Video'),
+        description=_('Drag a video here'),
+        required=False,
+        source=zeit.content.video.interfaces.videoSource,
+    )
+
+    layout = zope.schema.Choice(
+        title=_('Layout'), source=VideoLayoutSource(), default='large', required=False
+    )
+
+
+class IAudio(IReference):
     references = zope.schema.Choice(
         title=_('Drag an audio here'),
         source=zeit.content.audio.interfaces.AudioSource(),
