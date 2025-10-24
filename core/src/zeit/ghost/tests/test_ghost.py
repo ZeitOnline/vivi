@@ -4,8 +4,31 @@ from zeit.cms.checkout.helper import checked_out
 from zeit.cms.checkout.interfaces import ICheckoutManager
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import zeit.cms.checkout.interfaces
+import zeit.cms.workingcopy.interfaces
 import zeit.ghost.ghost
 import zeit.ghost.testing
+
+
+class GhostTest(zeit.ghost.testing.FunctionalTestCase):
+    def test_creates_ghost_on_checkin(self):
+        workingcopy = zeit.cms.workingcopy.interfaces.IWorkingcopy(self.principal)
+        with checked_out(self.repository['testcontent'], temporary=False):
+            self.assertEqual(['testcontent'], list(workingcopy))
+
+        self.assertEqual(['testcontent'], list(workingcopy))
+        ghost = workingcopy['testcontent']
+        self.assertTrue(zeit.ghost.interfaces.IGhost.providedBy(ghost))
+        self.assertTrue(zeit.cms.clipboard.interfaces.IClipboardEntry.providedBy(ghost))
+
+        with checked_out(self.repository['testcontent'], temporary=False):
+            self.assertEqual(['testcontent'], list(workingcopy))
+            self.assertFalse(zeit.ghost.interfaces.IGhost.providedBy(workingcopy['testcontent']))
+
+    def test_temporary_checkout_does_not_create_ghost(self):
+        workingcopy = zeit.cms.workingcopy.interfaces.IWorkingcopy(self.principal)
+        with checked_out(self.repository['testcontent'], temporary=True):
+            pass
+        self.assertEqual([], list(workingcopy))
 
 
 class GhostbusterTest(zeit.ghost.testing.FunctionalTestCase):
@@ -35,3 +58,18 @@ class GhostbusterTest(zeit.ghost.testing.FunctionalTestCase):
 
         zeit.ghost.ghost.create_ghost(self.repository['testcontent'])
         self.assertEqual(zeit.ghost.ghost.TARGET_WORKINGCOPY_SIZE + 1, len(wc))
+
+    def test_removes_broken_ghost_on_checkout(self):
+        workingcopy = zeit.cms.workingcopy.interfaces.IWorkingcopy(self.principal)
+        self.repository['c1'] = ExampleContentType()
+        self.repository['c2'] = ExampleContentType()
+
+        for name in ['c1', 'c2']:
+            with checked_out(self.repository[name], temporary=False):
+                pass
+        self.assertEqual(['c1', 'c2'], sorted(list(workingcopy)))
+        del self.repository['c2']
+        self.assertEqual(['c1', 'c2'], sorted(list(workingcopy)))
+
+        with checked_out(self.repository['c1'], temporary=False):
+            self.assertEqual(['c1'], list(workingcopy))
