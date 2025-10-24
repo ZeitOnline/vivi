@@ -288,16 +288,14 @@ unique id:
 
 >>> step = zeit.wysiwyg.html.URLStep(article, None)
 
->>> step._url_to_id('http://127.0.0.1/repository/online/2007/01/Somalia')
-'http://xml.zeit.de/online/2007/01/Somalia'
+>>> step._url_to_id('http://127.0.0.1/repository/testcontent')
+'http://xml.zeit.de/testcontent'
 
 When the url doesn't point to an existing object in the repository, the url is
 returned:
 
->>> step._url_to_id('http://127.0.0.1/repository/online/2020/hamwanich')
-'http://127.0.0.1/repository/online/2020/hamwanich'
->>> step._url_to_id('http://127.0.0.1/flubber')
-'http://127.0.0.1/flubber'
+>>> step._url_to_id('http://127.0.0.1/repository/nonexistent')
+'http://127.0.0.1/repository/nonexistent'
 
 The url is also just returned if it is completely unrelated:
 >>> step._url_to_id('http://gocept.com')
@@ -306,16 +304,14 @@ The url is also just returned if it is completely unrelated:
 
 The method `_id_to_url` handles the other way round:
 
->>> step._id_to_url('http://xml.zeit.de/online/2007/01/Somalia')
-'http://127.0.0.1/repository/online/2007/01/Somalia'
+>>> step._id_to_url('http://xml.zeit.de/testcontent')
+'http://127.0.0.1/repository/testcontent'
 
 When the id doesn't point to an existing object in the repository, the id is
 returned:
 
->>> step._id_to_url('http://xml.zeit.de/online/2020/hamwanich')
-'http://xml.zeit.de/online/2020/hamwanich'
->>> step._id_to_url('http://xml.zeit.de/flubber')
-'http://xml.zeit.de/flubber'
+>>> step._id_to_url('http://xml.zeit.de/nonexistent')
+'http://xml.zeit.de/nonexistent'
 
 The url is also just returned if it is completely unrelated:
 
@@ -331,7 +327,7 @@ We map all <a href=..."> according to the schema above:
 ...   <body>
 ...     <title>Title</title>
 ...     <p>Aus winzigen embryonalen ...</p>
-...     <p>Fuer <a href="http://xml.zeit.de/online/2007/01/Somalia">
+...     <p>Fuer <a href="http://xml.zeit.de/testcontent">
 ...         menschliche</a></p>
 ...     <p>Selbst wenn </p>
 ...     </body>
@@ -341,7 +337,7 @@ We map all <a href=..."> according to the schema above:
 >>> converter = zeit.wysiwyg.html.HTMLConverter(article)
 >>> print(converter.to_html(article.xml.find('body')))
 <p>Aus winzigen embryonalen ...</p>
-<p>Fuer <a href="http://127.0.0.1/repository/online/2007/01/Somalia">
+<p>Fuer <a href="http://127.0.0.1/repository/testcontent">
         menschliche</a></p>
 <p>Selbst wenn </p>
 
@@ -350,7 +346,7 @@ The other way round:
 >>> converter.from_html(article.xml.find('body'), """\
 ...     <p>Aus winzigen embryonalen ...</p>
 ...     <p>Fuer <a
-...         href="http://127.0.0.1/repository/online/2007/01/eta-zapatero">
+...         href="http://127.0.0.1/repository/testcontent">
 ...     menschliche</a></p>
 ...     <p>Selbst wenn </p>""")
 >>> print(zeit.cms.testing.xmltotext(article.xml))
@@ -359,7 +355,7 @@ The other way round:
   <body>
     <title>Title</title>
     <p>Aus winzigen embryonalen ...</p>
-    <p>Fuer <a href="http://xml.zeit.de/online/2007/01/eta-zapatero">
+    <p>Fuer <a href="http://xml.zeit.de/testcontent">
     menschliche</a>
     </p>
     <p>Selbst wenn </p>
@@ -375,15 +371,14 @@ copied to the article. To see this, set a copyright and a BU for the image:
 
 >>> import zope.component
 >>> import zeit.cms.repository.interfaces
+>>> import zeit.content.image.testing
 >>> repository = zope.component.getUtility(
 ...     zeit.cms.repository.interfaces.IRepository)
->>> image = repository['2006']['DSC00109_2.JPG']
->>> import zeit.cms.checkout.interfaces
->>> image = zeit.cms.checkout.interfaces.ICheckoutManager(image).checkout()
+>>> image = zeit.content.image.testing.create_image()
 >>> metadata = zeit.content.image.interfaces.IImageMetadata(image)
 >>> metadata.copyrights = (('DIE ZEIT', 'http://zeit.de'))
 >>> metadata.caption = 'Cap cap cap'
->>> image = zeit.cms.checkout.interfaces.ICheckinManager(image).checkin()
+>>> repository['image'] = image
 
 An article looks as follow:
 
@@ -395,7 +390,7 @@ An article looks as follow:
 ...     <p>Aus winzigen embryonalen ...</p>
 ...     <p>Fuer menschliche</p>
 ...      <image type="jpg" expires="2100-01-01"
-...         src="http://xml.zeit.de/2006/DSC00109_2.JPG"
+...         src="http://xml.zeit.de/image"
 ...         layout="infobox"
 ...         align="right">
 ...         <bu>Der erste Schritt zum Klon</bu>
@@ -417,7 +412,7 @@ transferred to the title attribute:
 <p>Aus winzigen embryonalen ...</p>
 <p>Fuer menschliche</p>
 <p>
-  <img src="http://127.0.0.1/repository/2006/DSC00109_2.JPG/@@raw" title="infobox"/>
+  <img src="http://127.0.0.1/repository/image/@@raw" title="infobox"/>
 </p>
 <p>Zellen ist das toll.</p>
 <p>Selbst wenn </p>
@@ -427,7 +422,7 @@ the image is put into the xml:
 
 >>> converter.from_html(article.xml.find('body'), '''\
 ... <p>Fuer menschliche</p>
-... <p><img src="http://127.0.0.1/repository/2006/DSC00109_2.JPG/@@raw" title="large"/></p>
+... <p><img src="http://127.0.0.1/repository/image/@@raw" title="large"/></p>
 ... <p>Zellen ist das toll.</p>
 ... <p>Aus winzigen embryonalen ...</p>
 ... <p>Selbst wenn </p>''')
@@ -437,7 +432,7 @@ the image is put into the xml:
   <body>
     <title>Title</title>
     <p>Fuer menschliche</p>
-    <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG" layout="large"/>
+    <image src="http://xml.zeit.de/image" type="jpeg" layout="large"/>
     <p>Zellen ist das toll.</p>
     <p>Aus winzigen embryonalen ...</p>
     <p>Selbst wenn </p>
@@ -455,7 +450,7 @@ extracted and put before the <p>.
 ...     <p>Aus winzigen embryonalen ...</p>
 ...     <p>Fuer menschliche
 ...      <image type="jpg" expires="2100-01-01"
-...         src="http://xml.zeit.de/2006/DSC00109_2.JPG"
+...         src="http://xml.zeit.de/image"
 ...         layout="infobox"
 ...         align="right">
 ...         <bu>Der erste Schritt zum Klon</bu>
@@ -470,7 +465,7 @@ extracted and put before the <p>.
 >>> print(converter.to_html(article.xml.find('body')))
 <p>Aus winzigen embryonalen ...</p>
 <p>
-  <img src="http://127.0.0.1/repository/2006/DSC00109_2.JPG/@@raw" title="infobox"/>
+  <img src="http://127.0.0.1/repository/image/@@raw" title="infobox"/>
 </p>
 <p>Fuer menschliche Zellen ist <a href="#">das</a> toll.</p>
 <p>Selbst wenn </p>
@@ -480,7 +475,7 @@ Converting html to xml also splits up paragraphs as necessary:
 >>> converter.from_html(article.xml.find('body'), '''\
 ... <p>Aus winzigen embryonalen ...</p>
 ... <p>Fuer menschliche
-...     <img src="http://127.0.0.1/repository/2006/DSC00109_2.JPG/@@raw" title="large"/>
+...     <img src="http://127.0.0.1/repository/image/@@raw" title="large"/>
 ...     Zellen ist <a href="#">das</a> toll.</p>
 ... <p>Selbst wenn </p>''')
 >>> print(zeit.cms.testing.xmltotext(article.xml))
@@ -489,7 +484,7 @@ Converting html to xml also splits up paragraphs as necessary:
   <body>
     <title>Title</title>
     <p>Aus winzigen embryonalen ...</p>
-    <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG" layout="large"/>
+    <image src="http://xml.zeit.de/image" type="jpeg" layout="large"/>
     <p>Fuer menschliche Zellen ist <a href="#">das</a> toll.</p>
     <p>Selbst wenn </p>
   </body>
@@ -507,7 +502,7 @@ support it.)
 ...     <p>Aus winzigen embryonalen ...</p>
 ...     <p>Fuer menschliche <a href="#">
 ...      <image type="jpg" expires="2100-01-01"
-...         src="http://xml.zeit.de/2006/DSC00109_2.JPG"
+...         src="http://xml.zeit.de/image"
 ...         layout="infobox"
 ...         align="right">
 ...         <bu>Der erste Schritt zum Klon</bu>
@@ -522,14 +517,14 @@ support it.)
 >>> print(converter.to_html(article.xml.find('body')))
 <p>Aus winzigen embryonalen ...</p>
 <p>Fuer menschliche <a href="#">
-<img src="http://127.0.0.1/repository/2006/DSC00109_2.JPG/@@raw" title="infobox"/></a>
+<img src="http://127.0.0.1/repository/image/@@raw" title="infobox"/></a>
 Zellen ist <a href="#">das</a> toll.</p>
 <p>Selbst wenn </p>
 
 >>> converter.from_html(article.xml.find('body'), '''\
 ... <p>Aus winzigen embryonalen ...</p>
 ... <p>Fuer menschliche
-...     <a href="#"><img src="http://127.0.0.1/repository/2006/DSC00109_2.JPG/@@raw" title="large"/></a>
+...     <a href="#"><img src="http://127.0.0.1/repository/image/@@raw" title="large"/></a>
 ...     Zellen ist <a href="#">das</a> toll.</p>
 ... <p>Selbst wenn </p>''')
 >>> print(zeit.cms.testing.xmltotext(article.xml))
@@ -539,7 +534,7 @@ Zellen ist <a href="#">das</a> toll.</p>
     <title>Title</title>
     <p>Aus winzigen embryonalen ...</p>
     <p>Fuer menschliche <a href="#">
-    <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG" layout="large"/>
+    <image src="http://xml.zeit.de/image" type="jpeg" layout="large"/>
     </a>
     Zellen ist <a href="#">das</a> toll.</p>
     <p>Selbst wenn </p>
@@ -555,7 +550,7 @@ We are greedy against old paths in the XML:
 ...   <body>
 ...     <p>Fuer menschliche</p>
 ...      <image type="jpg" expires="2100-01-01"
-...         src="/cms/work/2006/DSC00109_2.JPG"
+...         src="/cms/work/image"
 ...         align="right">
 ...         <bu>Der erste Schritt zum Klon</bu>
 ...         <copyright>jemand</copyright> BILD </image>
@@ -568,7 +563,7 @@ We are greedy against old paths in the XML:
 >>> print(converter.to_html(article.xml.find('body')))
 <p>Fuer menschliche</p>
 <p>
-  <img src="http://127.0.0.1/repository/2006/DSC00109_2.JPG/@@raw"/>
+  <img src="http://127.0.0.1/repository/image/@@raw"/>
 </p>
 <p>Selbst wenn </p>
 
@@ -680,14 +675,14 @@ Regression: Check that ``<p><strong><img`` correctly finds the image, even
 though it's nested.
 
 >>> converter.from_html(article.xml.find('body'), '''\
-...     <p><strong><img src="http://127.0.0.1/repository/2006/DSC00109_2.JPG/@@raw"/>
+...     <p><strong><img src="http://127.0.0.1/repository/image/@@raw"/>
 ...            Hurz</strong> foobar </p>
 ...     <p>Selbst wenn </p>''')
 >>> print(zeit.cms.testing.xmltotext(article.xml))
 <article>
   <head/>
   <body>
-    <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG"/>
+    <image src="http://xml.zeit.de/image" type="jpeg"/>
     <p> <strong> Hurz</strong> foobar </p>
     <p>Selbst wenn </p>
   </body>
@@ -698,7 +693,7 @@ Recheck the conversion to HTML:
 
 >>> print(converter.to_html(article.xml.find('body')))
 <p>
-  <img src="http://127.0.0.1/repository/2006/DSC00109_2.JPG/@@raw"/>
+  <img src="http://127.0.0.1/repository/image/@@raw"/>
 </p>
 <p><strong> Hurz</strong> foobar </p>
 <p>Selbst wenn </p>
@@ -1119,13 +1114,13 @@ Portraitbox
 -----------
 
 >>> import zeit.content.portraitbox.portraitbox
->>> repository['2006']['pb'] = zeit.content.portraitbox.portraitbox.Portraitbox()
+>>> repository['pb'] = zeit.content.portraitbox.portraitbox.Portraitbox()
 
 >>> source = '''\
 ... <article>
 ...   <head/>
 ...   <body>
-...     <portraitbox href="http://xml.zeit.de/2006/pb" layout="short"/>
+...     <portraitbox href="http://xml.zeit.de/pb" layout="short"/>
 ...   </body>
 ... </article>'''
 >>> article = zeit.cms.testcontenttype.testcontenttype.ExampleContentType(
@@ -1133,21 +1128,21 @@ Portraitbox
 >>> converter = zeit.wysiwyg.html.HTMLConverter(article)
 >>> print(converter.to_html(article.xml.find('body')))
 <div class="inline-element portraitbox">
-  <div class="href">http://xml.zeit.de/2006/pb</div>
+  <div class="href">http://xml.zeit.de/pb</div>
   <div class="layout">short</div>
 </div>
 <p> </p>
 
 >>> converter.from_html(article.xml.find('body'), """\
 ... <div class="inline-element portraitbox">
-...   <div class="href">http://xml.zeit.de/2006/pb</div>
+...   <div class="href">http://xml.zeit.de/pb</div>
 ...   <div class="layout">short</div>
 ... </div>""")
 >>> print(zeit.cms.testing.xmltotext(article.xml))
 <article...>
   <head/>
   <body>
-    <portraitbox href="http://xml.zeit.de/2006/pb"
+    <portraitbox href="http://xml.zeit.de/pb"
       ...layout="short"/>
   </body>
 </article>
@@ -1157,14 +1152,14 @@ nothing bad happens:
 
 >>> converter.from_html(article.xml.find('body'), """\
 ... <div class="inline-element portraitbox">
-...   <div class="href">http://xml.zeit.de/2006/pb-not-there</div>
+...   <div class="href">http://xml.zeit.de/pb-not-there</div>
 ...   <div class="layout">short</div>
 ... </div>""")
 >>> print(zeit.cms.testing.xmltotext(article.xml))
 <article...>
   <head/>
   <body>
-    <portraitbox href="http://xml.zeit.de/2006/pb-not-there" layout="short"/>
+    <portraitbox href="http://xml.zeit.de/pb-not-there" layout="short"/>
   </body>
 </article>
 
@@ -1192,13 +1187,13 @@ Infobox
 -------
 
 >>> import zeit.content.infobox.infobox
->>> repository['2006']['ib'] = zeit.content.infobox.infobox.Infobox()
+>>> repository['ib'] = zeit.content.infobox.infobox.Infobox()
 
 >>> source = '''\
 ... <article>
 ...   <head/>
 ...   <body>
-...     <infobox href="http://xml.zeit.de/2006/ib"/>
+...     <infobox href="http://xml.zeit.de/ib"/>
 ...   </body>
 ... </article>'''
 >>> article = zeit.cms.testcontenttype.testcontenttype.ExampleContentType(
@@ -1206,19 +1201,19 @@ Infobox
 >>> converter = zeit.wysiwyg.html.HTMLConverter(article)
 >>> print(converter.to_html(article.xml.find('body')))
 <div class="inline-element infobox">
-  <div class="href">http://xml.zeit.de/2006/ib</div>
+  <div class="href">http://xml.zeit.de/ib</div>
 </div>
 <p> </p>
 
 >>> converter.from_html(article.xml.find('body'), """\
 ... <div class="inline-element infobox">
-...   <div class="href">http://xml.zeit.de/2006/ib</div>
+...   <div class="href">http://xml.zeit.de/ib</div>
 ... </div>""")
 >>> print(zeit.cms.testing.xmltotext(article.xml))
 <article...>
   <head/>
   <body>
-    <infobox href="http://xml.zeit.de/2006/ib"...
+    <infobox href="http://xml.zeit.de/ib"...
   </body>
 </article>
 
@@ -1229,7 +1224,7 @@ Timeline
 ... <article>
 ...   <head/>
 ...   <body>
-...     <timeline href="http://xml.zeit.de/2006/ib"/>
+...     <timeline href="http://xml.zeit.de/ib"/>
 ...   </body>
 ... </article>'''
 >>> article = zeit.cms.testcontenttype.testcontenttype.ExampleContentType(
@@ -1237,19 +1232,19 @@ Timeline
 >>> converter = zeit.wysiwyg.html.HTMLConverter(article)
 >>> print(converter.to_html(article.xml.find('body')))
 <div class="inline-element timeline">
-  <div class="href">http://xml.zeit.de/2006/ib</div>
+  <div class="href">http://xml.zeit.de/ib</div>
 </div>
 <p> </p>
 
 >>> converter.from_html(article.xml.find('body'), """\
 ... <div class="inline-element timeline">
-...   <div class="href">http://xml.zeit.de/2006/ib</div>
+...   <div class="href">http://xml.zeit.de/ib</div>
 ... </div>""")
 >>> print(zeit.cms.testing.xmltotext(article.xml))
 <article...>
   <head/>
   <body>
-    <timeline href="http://xml.zeit.de/2006/ib"...
+    <timeline href="http://xml.zeit.de/ib"...
   </body>
 </article>
 
@@ -1257,13 +1252,13 @@ Gallery
 -------
 
 >>> import zeit.content.gallery.gallery
->>> repository['2006']['gal'] = zeit.content.gallery.gallery.Gallery()
+>>> repository['gal'] = zeit.content.gallery.gallery.Gallery()
 
 >>> source = '''\
 ... <article>
 ...   <head/>
 ...   <body>
-...     <gallery href="http://xml.zeit.de/2006/gal"/>
+...     <gallery href="http://xml.zeit.de/gal"/>
 ...   </body>
 ... </article>'''
 >>> article = zeit.cms.testcontenttype.testcontenttype.ExampleContentType(
@@ -1271,19 +1266,19 @@ Gallery
 >>> converter = zeit.wysiwyg.html.HTMLConverter(article)
 >>> print(converter.to_html(article.xml.find('body')))
 <div class="inline-element gallery">
-  <div class="href">http://xml.zeit.de/2006/gal</div>
+  <div class="href">http://xml.zeit.de/gal</div>
 </div>
 <p> </p>
 
 >>> converter.from_html(article.xml.find('body'), """\
 ... <div class="inline-element gallery">
-...   <div class="href">http://xml.zeit.de/2006/gal</div>
+...   <div class="href">http://xml.zeit.de/gal</div>
 ... </div>""")
 >>> print(zeit.cms.testing.xmltotext(article.xml))
 <article...>
   <head/>
   <body>
-    <gallery href="http://xml.zeit.de/2006/gal"/>
+    <gallery href="http://xml.zeit.de/gal"/>
   </body>
 </article>
 
