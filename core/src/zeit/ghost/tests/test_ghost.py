@@ -1,5 +1,7 @@
 from unittest import mock
 
+import transaction
+
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.checkout.interfaces import ICheckoutManager
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
@@ -14,6 +16,7 @@ class GhostTest(zeit.ghost.testing.FunctionalTestCase):
         workingcopy = zeit.cms.workingcopy.interfaces.IWorkingcopy(self.principal)
         with checked_out(self.repository['testcontent'], temporary=False):
             self.assertEqual(['testcontent'], list(workingcopy))
+        transaction.commit()
 
         self.assertEqual(['testcontent'], list(workingcopy))
         ghost = workingcopy['testcontent']
@@ -28,6 +31,7 @@ class GhostTest(zeit.ghost.testing.FunctionalTestCase):
         workingcopy = zeit.cms.workingcopy.interfaces.IWorkingcopy(self.principal)
         with checked_out(self.repository['testcontent'], temporary=True):
             pass
+        transaction.commit()
         self.assertEqual([], list(workingcopy))
 
 
@@ -67,8 +71,11 @@ class GhostbusterTest(zeit.ghost.testing.FunctionalTestCase):
         for name in ['c1', 'c2']:
             with checked_out(self.repository[name], temporary=False):
                 pass
+        transaction.commit()
+
         self.assertEqual(['c1', 'c2'], sorted(list(workingcopy)))
         del self.repository['c2']
+        transaction.commit()
         self.assertEqual(['c1', 'c2'], sorted(list(workingcopy)))
 
         with checked_out(self.repository['c1'], temporary=False):
