@@ -96,7 +96,7 @@ class TestCreateAudioObjects(zeit.mediaservice.testing.FunctionalTestCase):
 
         entries = self.get_log_entries(volume)
         assert entries == (
-            'Found 0 and created 1 premium audio objects',
+            'Created 1 premium audio objects',
             'Audio objects created for the following articles: http://xml.zeit.de/2025/01/article01',
         )
 
@@ -119,7 +119,7 @@ class TestCreateAudioObjects(zeit.mediaservice.testing.FunctionalTestCase):
 
         entries = self.get_log_entries(volume)
         assert entries == (
-            'Found 0 and created 3 premium audio objects',
+            'Created 3 premium audio objects',
             'Audio objects created for the following articles: http://xml.zeit.de/2025/01/article01'
             ', http://xml.zeit.de/2025/01/article02, http://xml.zeit.de/2025/01/article03',
         )
@@ -140,7 +140,7 @@ class TestCreateAudioObjects(zeit.mediaservice.testing.FunctionalTestCase):
 
         entries = self.get_log_entries(volume)
         assert entries == (
-            'Found 0 and created 1 premium audio objects',
+            'Created 1 premium audio objects',
             'Audio objects created for the following articles: http://xml.zeit.de/2025/01/article01',
         )
 
@@ -156,9 +156,9 @@ class TestCreateAudioObjects(zeit.mediaservice.testing.FunctionalTestCase):
 
         entries = self.get_log_entries(volume)
         assert entries == (
-            'Found 0 and created 1 premium audio objects',
+            'Created 1 premium audio objects',
             'Audio objects created for the following articles: http://xml.zeit.de/2025/01/article01',
-            'Found 1 and created 0 premium audio objects',
+            'Created 0 premium audio objects',
         )
 
     def test_mediaservice_does_not_recreate_audio(self):
@@ -174,7 +174,7 @@ class TestCreateAudioObjects(zeit.mediaservice.testing.FunctionalTestCase):
         assert audio_folder[article_uuid].audio_type == 'custom'
 
         entries = self.get_log_entries(volume)
-        assert entries == ('Found 1 and created 0 premium audio objects',)
+        assert entries == ('Created 0 premium audio objects',)
 
     def test_mediaservice_does_not_check_out_article_unnecessarily(self):
         volume = self.repository['2025']['01']['ausgabe']
@@ -195,7 +195,7 @@ class TestCreateAudioObjects(zeit.mediaservice.testing.FunctionalTestCase):
             zeit.mediaservice.mediaservice.create_audio_objects(volume.uniqueId)
 
         entries = self.get_log_entries(volume)
-        assert entries == ('Found 1 and created 0 premium audio objects',)
+        assert entries == ('Created 0 premium audio objects',)
 
     def test_mediaservice_skips_checked_out_articles(self):
         self.create_volume_content('2025', '01', 'article02')
@@ -232,7 +232,7 @@ class TestCreateAudioObjects(zeit.mediaservice.testing.FunctionalTestCase):
 
         entries = self.get_log_entries(volume)
         assert entries == (
-            'Found 0 and created 3 premium audio objects',
+            'Created 3 premium audio objects',
             'Audio objects created for the following articles: http://xml.zeit.de/2025/01/article01'
             + ', http://xml.zeit.de/2025/01/article02, http://xml.zeit.de/2025/01/article03',
             'Could not check out the following articles: http://xml.zeit.de/2025/01/article02',
