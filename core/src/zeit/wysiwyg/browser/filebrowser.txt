@@ -3,6 +3,16 @@ FCK filebrowser connector
 
 The filebrowser connector connects the fck editor to the CMS.
 
+>>> import zope.component
+>>> import zeit.cms.repository.folder
+>>> import zeit.cms.repository.interfaces
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
+>>> repository = zope.component.getUtility(
+...     zeit.cms.repository.interfaces.IRepository)
+>>> repository['online'] = zeit.cms.repository.folder.Folder()
+
+
 >>> from zeit.cms.testing import Browser
 >>> browser = Browser(layer['wsgi_app'])
 >>> browser.login('user', 'userpw')
@@ -42,17 +52,13 @@ Descent to the repository:
 >>> print(browser.contents)
 <?xml version="1.0" encoding="UTF-8"?>
 <Connector command="GetFoldersAndFiles" resourceType="File">
-  <CurrentFolder path="/repository/"
-                 url="http://localhost"/>
+  <CurrentFolder path="/repository/" url="http://localhost"/>
   <Folders>
-    ...
     <Folder name="online" title="online"/>
-    ...
   </Folders>
   <Files>
-    ...
     <File size="0" name="testcontent (testcontent)"
-          url="http://localhost/repository/testcontent"/>...
+          url="http://localhost/repository/testcontent"/>
   </Files>
 </Connector>
 
@@ -87,7 +93,7 @@ something in there:
 >>> browser.open(
 ...     'http://localhost/++skin++cms/workingcopy/zope.user/'
 ...     'zeit.cms.clipboard.clipboard.Clipboard/@@addContent?'
-...     'add_to=New+Clip&unique_id=http://xml.zeit.de/online/2007/01/Somalia')
+...     'add_to=New+Clip&unique_id=http://xml.zeit.de/testcontent')
 
 
 Let's have a look how the clipboard looks now:
@@ -109,7 +115,7 @@ Let's have a look how the clipboard looks now:
 </Connector>
 
 
-Our clip is listed! Decent:
+Our clip is listed! Descend:
 
 >>> browser.open(base_url % (urlencode(
 ...     dict(Command='GetFoldersAndFiles',
@@ -123,8 +129,8 @@ Our clip is listed! Decent:
   <Folders>
   </Folders>
   <Files>
-    <File size="0" name="Somalia (Somalia)"
-          url="http://localhost/repository/online/2007/01/Somalia"/>
+    <File size="0" name="testcontent (testcontent)"
+          url="http://localhost/repository/testcontent"/>
   </Files>
 </Connector>
 
