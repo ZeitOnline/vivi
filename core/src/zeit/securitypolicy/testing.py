@@ -6,7 +6,8 @@ import zope.component.hooks
 
 from zeit.cms.testing import FunctionalTestCase
 import zeit.brightcove.testing
-import zeit.cms.tagging.testing
+import zeit.cms.repository.folder
+import zeit.cms.repository.interfaces
 import zeit.cms.testing
 import zeit.connector.interfaces
 import zeit.retresco.testing
@@ -29,20 +30,20 @@ class ZCMLLayer(zeit.cms.testing.ZCMLLayer):
         plone.testing.zca.popGlobalRegistry()
 
 
-ZCML_LAYER = ZCMLLayer((zeit.brightcove.testing.CONFIG_LAYER, zeit.retresco.testing.CONFIG_LAYER))
+ZCML_LAYER = ZCMLLayer(
+    (zeit.brightcove.testing.CONFIG_LAYER, zeit.retresco.testing.CONFIG_LAYER),
+    features=['zeit.connector.sql.zope'],
+)
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer((ZCML_LAYER, zeit.retresco.testing.TMS_MOCK_LAYER))
 
 
-class SecurityPolicyLayer(zeit.cms.testing.Layer):
-    defaultBases = (ZOPE_LAYER,)
-
-    def testSetUp(self):
-        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
-        prop = connector._get_properties('http://xml.zeit.de/online/2007/01/Somalia')
-        prop[zeit.cms.tagging.testing.KEYWORD_PROPERTY] = 'testtag'
+class SecurityPolicyLayer(zeit.cms.testing.ContentFixtureLayer):
+    def create_fixture(self):
+        repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
+        repository['folder'] = zeit.cms.repository.folder.Folder()
 
 
-LAYER = SecurityPolicyLayer()
+LAYER = SecurityPolicyLayer(ZOPE_LAYER)
 WSGI_LAYER = zeit.cms.testing.WSGILayer(LAYER)
 
 
