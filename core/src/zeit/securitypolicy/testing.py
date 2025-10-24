@@ -6,7 +6,6 @@ import zope.component.hooks
 
 from zeit.cms.testing import FunctionalTestCase
 import zeit.brightcove.testing
-import zeit.cms.tagging.testing
 import zeit.cms.testing
 import zeit.connector.interfaces
 import zeit.retresco.testing
@@ -35,11 +34,6 @@ ZOPE_LAYER = zeit.cms.testing.ZopeLayer((ZCML_LAYER, zeit.retresco.testing.TMS_M
 
 class SecurityPolicyLayer(zeit.cms.testing.Layer):
     defaultBases = (ZOPE_LAYER,)
-
-    def testSetUp(self):
-        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
-        prop = connector._get_properties('http://xml.zeit.de/online/2007/01/Somalia')
-        prop[zeit.cms.tagging.testing.KEYWORD_PROPERTY] = 'testtag'
 
 
 LAYER = SecurityPolicyLayer()
