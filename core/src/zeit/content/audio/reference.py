@@ -1,4 +1,5 @@
 import grokcore.component as grok
+import zope.component
 import zope.interface
 
 import zeit.cms.content.reference
@@ -7,6 +8,7 @@ import zeit.cms.related.related
 import zeit.content.audio.interfaces
 
 
+@zope.component.adapter(zeit.content.article.interfaces.IArticle)
 @zope.interface.implementer(zeit.content.audio.interfaces.IAudioReferences)
 class AudioReferences(zeit.cms.related.related.RelatedBase):
     items = zeit.cms.content.reference.MultiResource('.head.audio', 'related')

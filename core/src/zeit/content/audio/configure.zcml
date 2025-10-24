@@ -36,6 +36,7 @@
 
   <adapter
     factory=".reference.AudioReferences"
+    for="zeit.content.article.interfaces.IArticle"
     provides=".interfaces.IAudioReferences"
     />
 

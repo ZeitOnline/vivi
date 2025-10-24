@@ -2,5 +2,6 @@
   <include package="zeit.cms" file="ftesting.zcml" />
   <include package="zeit.entitlements" />
 
+  <include package="zeit.content.article" file="ctesting.zcml" />
   <include package="zeit.content.audio" />
 </configure>
