@@ -556,26 +556,29 @@ class CenterPageFollowings(grok.Adapter, IgnoreMixin):
     grok.context(zeit.content.cp.interfaces.ICenterPage)
     grok.name('followings')
 
-    def get_volume_id(self):
+    def get_volume_unique_id(self):
         if zeit.wochenende.interfaces.IZWEContent.providedBy(self.context):
-            return zeit.cms.interfaces.ICMSContent(
-                f'{zeit.cms.interfaces.ID_NAMESPACE}wochenende/index'
-            )
-        if (
-            self.context.type != 'volume'
-            or self.context.volume is None
-            or self.context.year is None
-        ):
-            return None
-        return zeit.cms.interfaces.ICMSContent(
-            f'{zeit.cms.interfaces.ID_NAMESPACE}{self.context.year}/index'
-        )
+            return f'{zeit.cms.interfaces.ID_NAMESPACE}wochenende/index'
+
+        unique_id = getattr(self.context, 'uniqueId', '')
+        ressort = getattr(self.context, 'ressort', '')
+        year = getattr(self.context, 'year', None)
+        type_ = getattr(self.context, 'type', None)
+        volume = getattr(self.context, 'volume', None)
+
+        if unique_id.endswith('/playlist') and ressort == 'Administratives':
+            return f'{unique_id.removesuffix("/playlist")[:-3]}/index'
+        elif type_ == 'volume' and volume is not None and year:
+            return f'{zeit.cms.interfaces.ID_NAMESPACE}{year}/index'
+
+        return None
 
     def get_volume_overview_uuid(self):
-        volume = self.get_volume_id()
-        if volume is None:
+        unique_id = self.get_volume_unique_id()
+        if unique_id is None:
             return None
-        return zeit.cms.content.interfaces.IUUID(volume).shortened
+        content = zeit.cms.interfaces.ICMSContent(unique_id)
+        return zeit.cms.content.interfaces.IUUID(content).shortened
 
     def publish_json(self):
         volume_uuid = self.get_volume_overview_uuid()
