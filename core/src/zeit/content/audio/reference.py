@@ -1,13 +1,31 @@
 import grokcore.component as grok
-import zope.interface
 
 import zeit.cms.content.reference
+import zeit.cms.interfaces
 import zeit.cms.references.references
 import zeit.cms.related.related
 import zeit.content.audio.interfaces
 
 
-@zope.interface.implementer(zeit.content.audio.interfaces.IAudioReferences)
+@grok.adapter(zeit.cms.interfaces.ICMSContent)
+@grok.implementer(zeit.content.audio.interfaces.IAudioReferences)
+class NoAudioReferences:
+    def __init__(self, context):
+        self.context = context
+
+    @property
+    def items(self):
+        return ()
+
+    def add(self, audio):
+        raise NotImplementedError(f'Add audio reference not implemented for {type(self.context)}')
+
+    def get_by_type(self, audio_type):
+        return []
+
+
+@grok.adapter(zeit.content.article.interfaces.IArticle)
+@grok.implementer(zeit.content.audio.interfaces.IAudioReferences)
 class AudioReferences(zeit.cms.related.related.RelatedBase):
     items = zeit.cms.content.reference.MultiResource('.head.audio', 'related')
 

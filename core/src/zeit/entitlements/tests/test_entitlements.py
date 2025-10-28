@@ -1,7 +1,10 @@
+import zope.interface
+
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.content.audio.testing import AudioBuilder
 from zeit.content.text.text import Text
+import zeit.content.article.interfaces
 import zeit.entitlements
 import zeit.entitlements.testing
 
@@ -33,12 +36,14 @@ class Entitlements(zeit.entitlements.testing.FunctionalTestCase):
         self.assertEqual({'wochenmarkt', 'zplus'}, zeit.entitlements.accepted(self.content))
 
     def test_podcast_audio_reference_adds_entitlement(self):
-        content = self.repository['testcontent']
-        AudioBuilder().referenced_by(content).build()
-        with checked_out(content) as co:
+        content = ExampleContentType()
+        zope.interface.alsoProvides(content, zeit.content.article.interfaces.IArticle)
+        self.repository['testarticle'] = content
+        AudioBuilder().referenced_by(self.repository['testarticle']).build()
+        with checked_out(self.repository['testarticle']) as co:
             co.access = 'abo'
         self.assertEqual(
-            {'podcast', 'zplus'}, zeit.entitlements.accepted(self.repository['testcontent'])
+            {'podcast', 'zplus'}, zeit.entitlements.accepted(self.repository['testarticle'])
         )
 
     def test_accepted_entitlements(self):
