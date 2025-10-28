@@ -35,6 +35,12 @@
   </class>
 
   <adapter
+    factory=".reference.NoAudioReferences"
+    for="zeit.cms.interfaces.ICMSContent"
+    provides=".interfaces.IAudioReferences"
+    />
+
+  <adapter
     factory=".reference.AudioReferences"
     for="zeit.content.article.interfaces.IArticle"
     provides=".interfaces.IAudioReferences"
