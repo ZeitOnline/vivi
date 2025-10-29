@@ -614,8 +614,6 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
         )
 
     def test_upload_image_has_properties(self):
-        FEATURE_TOGGLES.set('column_read_wcm_56')
-        FEATURE_TOGGLES.set('column_write_wcm_56')
         FEATURE_TOGGLES.set('calculate_accent_color')
         b = self.browser
         b.open('/repository/testcontent/@@upload-images')
