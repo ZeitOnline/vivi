@@ -139,13 +139,7 @@ class BaseImage:
 
     @property
     def mimeType(self):
-        if FEATURE_TOGGLES.find('column_read_wcm_56'):
-            return self._mime_type
-        return self._parse_mime()
-
-    def _parse_mime(self):
-        with self.as_pil() as pil:
-            return PIL.Image.MIME.get(pil.format, '')
+        return self._mime_type
 
     @mimeType.setter
     def mimeType(self, value):
@@ -153,9 +147,7 @@ class BaseImage:
 
     @property
     def width(self):
-        if FEATURE_TOGGLES.find('column_read_wcm_56'):
-            return self._width
-        return self._parse_size()[0]
+        return self._width
 
     @width.setter
     def width(self, value):
@@ -163,33 +155,18 @@ class BaseImage:
 
     @property
     def height(self):
-        if FEATURE_TOGGLES.find('column_read_wcm_56'):
-            return self._height
-        return self._parse_size()[1]
+        return self._height
 
     @height.setter
     def height(self, value):
         self._height = value
 
     def getImageSize(self):
-        if FEATURE_TOGGLES.find('column_read_wcm_56'):
-            return (self.width, self.height)
-        return self._parse_size()
-
-    def _parse_size(self):
-        with self.as_pil() as img:
-            return img.size
+        return (self.width, self.height)
 
     @property
     def ratio(self):
-        try:
-            # Spell more explicitly, to prevent calling _parse_size() twice
-            if FEATURE_TOGGLES.find('column_read_wcm_56'):
-                return float(self.width) / float(self.height)
-            width, height = self._parse_size()
-            return float(width) / float(height)
-        except Exception:
-            return None
+        return float(self.width) / float(self.height)
 
     FORMATS = {
         'jpg': 'JPEG',
@@ -306,17 +283,11 @@ def set_image_properties(context, event):
     if zope.lifecycleevent.IObjectCopiedEvent.providedBy(event):
         return
 
-    set_props = FEATURE_TOGGLES.find('column_write_wcm_56')
     set_accent_color = not context.accent_color and FEATURE_TOGGLES.find('calculate_accent_color')
-
-    if not set_props and not set_accent_color:
-        return
-
     image = zope.security.proxy.removeSecurityProxy(context)
     with image.as_pil() as pil:
-        if set_props:
-            image.mimeType = PIL.Image.MIME.get(pil.format, '')
-            (image.width, image.height) = pil.size
+        image.mimeType = PIL.Image.MIME.get(pil.format, '')
+        (image.width, image.height) = pil.size
         if set_accent_color:
             rgb = determine_accent_color(pil)
             image.accent_color = f'{rgb[0]:02x}{rgb[1]:02x}{rgb[2]:02x}'
