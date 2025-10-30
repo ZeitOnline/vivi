@@ -262,7 +262,6 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
                         'banner': True,
                         'last_modified_by': 'zope.user',
                     },
-                    'image': {'height': 1536, 'mime_type': 'image/jpeg', 'width': 2048},
                     'meta': {'type': 'image'},
                     'body': {
                         'title': 'DSC00109_2.JPG',

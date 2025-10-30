@@ -5,6 +5,7 @@ import PIL.ExifTags
 import PIL.Image
 import PIL.ImageDraw
 
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.content.image.variant import Variant
 import zeit.content.image.interfaces
 import zeit.content.image.testing
@@ -290,6 +291,8 @@ class CreateVariantImageTest(zeit.content.image.testing.FunctionalTestCase):
         self.assertLess(len(configured.open().read()), len(highquality.read()))
 
     def test_transform_result_has_image_properties(self):
+        FEATURE_TOGGLES.set('column_read_wcm_56')
+        FEATURE_TOGGLES.set('column_write_wcm_56')
         group = zeit.content.image.testing.create_image_group()
         transform = zeit.content.image.interfaces.ITransform(group['master-image.jpg'])
         square = zeit.content.image.variant.Variant(
