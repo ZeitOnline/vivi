@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.220.0 (2025-10-30)
+--------------------
+
+- WCM-1128: Revert removal of image toggles, because tests are unstable in ci now
+
+
 7.219.0 (2025-10-30)
 --------------------
 

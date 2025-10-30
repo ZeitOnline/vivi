@@ -1,1 +1,0 @@
-WCM-1128: Revert removal of image toggles, because tests are unstable in ci now
