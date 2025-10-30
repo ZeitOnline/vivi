@@ -88,6 +88,9 @@ class CeleryWorkerLayer(Layer):
 
         So, let's create thread-local connections for worker threads
         """
+        import sqlalchemy.orm
+        import zope.sqlalchemy
+
         main_thread_id = threading.current_thread().ident
         self['_main_thread_id'] = main_thread_id
 
@@ -95,7 +98,7 @@ class CeleryWorkerLayer(Layer):
         self['_worker_connections'] = {}
 
         def setup_worker_connection(**kwargs):
-            """Create a separate SQL connection for worker threads."""
+            """Create a separate SQL connection and session for worker threads."""
             current_thread_id = threading.current_thread().ident
 
             if current_thread_id == main_thread_id:
@@ -110,12 +113,18 @@ class CeleryWorkerLayer(Layer):
             worker_conn = connector.engine.connect()
             worker_txn = worker_conn.begin()
 
+            worker_session = sqlalchemy.orm.Session(
+                bind=worker_conn, join_transaction_mode='create_savepoint'
+            )
+            zope.sqlalchemy.register(worker_session)
+
             self['_worker_connections'][current_thread_id] = {
                 'connection': worker_conn,
                 'transaction': worker_txn,
+                'session': worker_session,
             }
-
-            connector.session.configure(bind=worker_conn, join_transaction_mode='create_savepoint')
+            # Replace the scoped_session's thread-local session with our worker session
+            connector.session.registry.set(worker_session)
 
         def cleanup_worker_connection(**kwargs):
             current_thread_id = threading.current_thread().ident
@@ -126,11 +135,12 @@ class CeleryWorkerLayer(Layer):
             if current_thread_id not in self['_worker_connections']:
                 return
 
-            if connector := zope.component.queryUtility(zeit.connector.interfaces.IConnector):
-                connector.session.remove()
-
             worker_data = self['_worker_connections'][current_thread_id]
+
             try:
+                worker_data['session'].close()
+                if connector := zope.component.queryUtility(zeit.connector.interfaces.IConnector):
+                    connector.session.remove()
                 worker_data['transaction'].rollback()
                 worker_data['connection'].close()
             except Exception:
