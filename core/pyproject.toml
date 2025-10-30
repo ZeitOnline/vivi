@@ -1,7 +1,7 @@
 [project]
 name = "vivi.core"
 authors = [{ name = "DIE ZEIT", email = "zon-backend@zeit.de" }]
-version = "7.219.0"
+version = "7.220.0.dev0"
 requires-python = ">=3.13"
 
 dependencies = [
