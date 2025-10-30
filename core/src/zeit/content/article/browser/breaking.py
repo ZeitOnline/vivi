@@ -6,6 +6,7 @@ import zope.interface
 import zope.schema
 
 from zeit.cms.checkout.interfaces import ICheckinManager
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import IPublishInfo
 import zeit.cms.browser.form
@@ -48,6 +49,7 @@ class Add(zeit.cms.browser.form.AddForm, zeit.cms.browser.form.CharlimitMixin):
                 'title',
                 '__name__',
                 'text',
+                'breaking_news_image',
                 'commentsAllowed',
                 'commentsPremoderate',
                 'homepage',
@@ -61,6 +63,9 @@ class Add(zeit.cms.browser.form.AddForm, zeit.cms.browser.form.CharlimitMixin):
     )
 
     def setUpWidgets(self, *args, **kw):
+        if not FEATURE_TOGGLES.find('breaking_news_fallback_image'):
+            self.form_fields = self.form_fields.omit('breaking_news_image')
+
         GET = self.request.form
         GET['form.channels.0..combination_00'] = GET.get('form.ressort')
         GET['form.channels.0..combination_01'] = GET.get('form.sub_ressort')
@@ -73,6 +78,16 @@ class Add(zeit.cms.browser.form.AddForm, zeit.cms.browser.form.CharlimitMixin):
             self.widgets['text'].setRenderedValue(
                 zope.i18n.translate(self.form_fields['text'].field.default, context=self.request)
             )
+        if FEATURE_TOGGLES.find('breaking_news_fallback_image'):
+            self._prefill_breaking_news_image()
+
+    def _prefill_breaking_news_image(self):
+        if self.widgets['breaking_news_image'].hasInput():
+            return
+
+        default_url = zeit.cms.config.get('zeit.push', 'breaking-news-fallback-image')
+        if default_url and (default_image := zeit.cms.interfaces.ICMSContent(default_url, None)):
+            self.widgets['breaking_news_image'].setRenderedValue(default_image)
 
     @zope.formlib.form.action(_('Publish and push'), condition=zope.formlib.form.haveInputWidgets)
     def handle_add(self, action, data):

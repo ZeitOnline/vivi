@@ -436,6 +436,12 @@ class IBreakingNewsBody(zope.interface.Interface):
     text = zope.schema.Text(
         title=_('Article body'), default=_('breaking-news-more-shortly'), required=False
     )
+    breaking_news_image = zeit.cms.content.interfaces.ReferenceField(
+        title=_('Breaking news image'),
+        description=_('Drag an image group here'),
+        source=zeit.content.image.interfaces.imageGroupSource,
+        required=False,
+    )
 
 
 class AdplaceTileSource(zeit.cms.content.sources.SimpleFixedValueSource):
