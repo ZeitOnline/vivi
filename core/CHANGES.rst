@@ -3,6 +3,18 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.219.0 (2025-10-30)
+--------------------
+
+- WCM-1177: Audioreferences for articles only, not for e.g. centerpages
+
+- WCM-1128: image property toggles cleanup
+
+
+MAINT:
+- Remove "found: x" part of the "created premium audio objects" message
+
+
 7.218.0 (2025-10-23)
 --------------------
 
