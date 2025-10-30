@@ -2,9 +2,12 @@ import threading
 
 import celery.contrib.testing.app
 import celery.contrib.testing.worker
+import celery.signals
 import kombu
+import zope.component
 
 import zeit.cms.celery
+import zeit.connector.interfaces
 
 from .layer import Layer
 
@@ -58,6 +61,10 @@ class CeleryWorkerLayer(Layer):
         )
         self.reset_celery_app()
 
+        zcml = zope.app.appsetup.appsetup.getConfigContext()
+        if zcml.hasFeature('zeit.connector.sql.zope'):
+            self._setup_sql_session_isolation()
+
         self['celery_worker'] = celery.contrib.testing.worker.start_worker(self['celery_app'])
         self['celery_worker'].__enter__()
 
@@ -72,6 +79,71 @@ class CeleryWorkerLayer(Layer):
         # Kludgy way to reset `app.backend`
         self['celery_app']._local = threading.local()
 
+    def _setup_sql_session_isolation(self):
+        """Ensure Celery worker threads get their own SQL connection and transaction.
+
+        Workers run in threads and share the scoped_session.
+        If worker threads try to use the same connection, they conflict with the main
+        thread's savepoint.
+
+        So, let's create thread-local connections for worker threads
+        """
+        main_thread_id = threading.current_thread().ident
+        self['_main_thread_id'] = main_thread_id
+
+        # Thread-local storage for worker connections
+        self['_worker_connections'] = {}
+
+        def setup_worker_connection(**kwargs):
+            """Create a separate SQL connection for worker threads."""
+            current_thread_id = threading.current_thread().ident
+
+            if current_thread_id == main_thread_id:
+                return
+
+            if current_thread_id in self['_worker_connections']:
+                return
+
+            connector = zope.component.queryUtility(zeit.connector.interfaces.IConnector)
+            if connector is None:
+                return
+            worker_conn = connector.engine.connect()
+            worker_txn = worker_conn.begin()
+
+            self['_worker_connections'][current_thread_id] = {
+                'connection': worker_conn,
+                'transaction': worker_txn,
+            }
+
+            connector.session.configure(bind=worker_conn, join_transaction_mode='create_savepoint')
+
+        def cleanup_worker_connection(**kwargs):
+            current_thread_id = threading.current_thread().ident
+
+            if current_thread_id == main_thread_id:
+                return
+
+            if current_thread_id not in self['_worker_connections']:
+                return
+
+            if connector := zope.component.queryUtility(zeit.connector.interfaces.IConnector):
+                connector.session.remove()
+
+            worker_data = self['_worker_connections'][current_thread_id]
+            try:
+                worker_data['transaction'].rollback()
+                worker_data['connection'].close()
+            except Exception:
+                pass  # ¯\_(ツ)_/¯ I am sure we will be fine
+
+            del self['_worker_connections'][current_thread_id]
+
+        celery.signals.task_prerun.connect(setup_worker_connection, weak=False)
+        self['_sql_session_prerun_handler'] = setup_worker_connection
+
+        celery.signals.task_postrun.connect(cleanup_worker_connection, weak=False)
+        self['_sql_session_postrun_handler'] = cleanup_worker_connection
+
     def testSetUp(self):
         # Switch database to the currently active DemoStorage,
         # see zeit.cms.testing.zope.WSGILayer.testSetUp().
@@ -84,6 +156,25 @@ class CeleryWorkerLayer(Layer):
     def tearDown(self):
         self['celery_worker'].__exit__(None, None, None)
         del self['celery_worker']
+
+        zcml = zope.app.appsetup.appsetup.getConfigContext()
+        if zcml.hasFeature('zeit.connector.sql.zope'):
+            celery.signals.task_prerun.disconnect(self['_sql_session_prerun_handler'])
+            del self['_sql_session_prerun_handler']
+            celery.signals.task_postrun.disconnect(self['_sql_session_postrun_handler'])
+            del self['_sql_session_postrun_handler']
+
+            if '_worker_connections' in self:
+                for thread_id, worker_data in list(self['_worker_connections'].items()):
+                    try:
+                        worker_data['transaction'].rollback()
+                        worker_data['connection'].close()
+                    except Exception:
+                        pass
+                del self['_worker_connections']
+
+            if '_main_thread_id' in self:
+                del self['_main_thread_id']
 
         # This should remove any config additions made by us.
         self['celery_app'].conf.clear()
