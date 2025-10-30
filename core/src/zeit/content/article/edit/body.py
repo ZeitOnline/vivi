@@ -226,3 +226,14 @@ class BreakingNewsBody(grok.Adapter):
             if zeit.content.article.edit.interfaces.IParagraph.providedBy(block):
                 return block
         return None
+
+    @property
+    def breaking_news_image(self):
+        return self.context.main_image
+
+    @breaking_news_image.setter
+    def breaking_news_image(self, value):
+        if not value:
+            return
+        image = zeit.cms.interfaces.ICMSContent(value)
+        self.context.main_image = self.context.main_image.create(image)
