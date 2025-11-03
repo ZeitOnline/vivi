@@ -9,7 +9,7 @@ class Supertitle(zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def setUp(self):
         super().setUp()
-        self.open('/repository/online/2007/01/Somalia/@@checkout')
+        self.open('/repository/article/@@checkout')
         self.selenium.waitForElementPresent('id=%s' % self.teaser_supertitle)
 
     def test_teaser_supertitle_is_copied_to_article_supertitle_if_empty(self):

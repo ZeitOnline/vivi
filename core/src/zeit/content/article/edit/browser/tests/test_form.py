@@ -33,12 +33,10 @@ class ReadonlyTest(zeit.content.article.testing.BrowserTestCase):
 
     def setUp(self):
         super().setUp()
-        self.browser.open(
-            'http://localhost/++skin++vivi/repository/online/2007/01/Somalia/@@edit-forms'
-        )
+        self.browser.open('http://localhost/++skin++vivi/repository/article/@@edit-forms')
 
     def test_text_is_displayed(self):
-        self.assertEllipsis('...<div class="widget display">2007</div>...', self.browser.contents)
+        self.assertEllipsis('...<div class="widget display">2011</div>...', self.browser.contents)
 
     def test_text_is_not_editable(self):
         with self.assertRaises(LookupError):
@@ -47,21 +45,21 @@ class ReadonlyTest(zeit.content.article.testing.BrowserTestCase):
 
 class WorkflowStatusDisplayTest(zeit.content.article.testing.BrowserTestCase):
     def test_displays_status_fields_as_checkboxes(self):
-        somalia = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        somalia = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/article')
         IContentWorkflow(somalia).corrected = True
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/online/2007/01/Somalia/@@checkout')
+        b.open('http://localhost/++skin++vivi/repository/article/@@checkout')
         b.open('@@edit.form.workflow-display?show_form=1')
         self.assertFalse(b.getControl('Edited').selected)
         self.assertTrue(b.getControl('Corrected').selected)
 
     def test_displays_last_published_information(self):
-        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/article')
         IContentWorkflow(article).urgent = True
         IPublish(article).publish()
         IPublishInfo(article).date_last_published = datetime(2013, 7, 2, 9, 31, 24)
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/online/2007/01/Somalia/@@checkout')
+        b.open('http://localhost/++skin++vivi/repository/article/@@checkout')
         b.open('@@contents')
         self.assertEllipsis(
             '...last published at...02.07.2013...on...11:31...by...zope.user...', b.contents
@@ -70,11 +68,11 @@ class WorkflowStatusDisplayTest(zeit.content.article.testing.BrowserTestCase):
 
 class PageNumberDisplay(zeit.content.article.testing.BrowserTestCase):
     def test_existing_page_number_is_displayed(self):
-        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/article')
         with zeit.cms.checkout.helper.checked_out(article) as co:
             co.page = '4711'
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/online/2007/01/Somalia/@@checkout')
+        b.open('http://localhost/++skin++vivi/repository/article/@@checkout')
         b.open('@@edit.form.print-metadata')
         self.assertEllipsis('...Page...4711...', b.contents)
 
@@ -82,19 +80,19 @@ class PageNumberDisplay(zeit.content.article.testing.BrowserTestCase):
 class HeaderSync(zeit.content.article.edit.browser.testing.EditorTestCase):
     def setUp(self):
         super().setUp()
-        self.open('/repository/online/2007/01/Somalia/@@checkout')
+        self.open('/repository/article/@@checkout')
         self.selenium.waitForElementPresent('id=print-metadata.year')
 
     def test_header_is_reloaded_after_change_to_ressort(self):
         s = self.selenium
         s.click('css=#edit-form-metadata .fold-link')
-        s.waitForSelectedLabel('id=metadata-a.ressort', 'International')
+        s.waitForSelectedLabel('id=metadata-a.ressort', 'Deutschland')
         s.waitForElementPresent('id=editor-forms-heading')
-        s.waitForText('id=editor-forms-heading', '*International*')
-        s.select('id=metadata-a.ressort', 'Deutschland')
+        s.waitForText('id=editor-forms-heading', '*Deutschland*')
+        s.select('id=metadata-a.ressort', 'International')
         s.keyPress('id=metadata-a.sub_ressort', Keys.TAB)  # Trigger blur
         s.waitForElementNotPresent('css=.field.dirty')
-        s.waitForText('id=editor-forms-heading', '*Deutschland*')
+        s.waitForText('id=editor-forms-heading', '*International*')
 
     # XXX there are several more inline forms that trigger a reload of the
     # header. Should we write tests for all of them?
@@ -103,7 +101,7 @@ class HeaderSync(zeit.content.article.edit.browser.testing.EditorTestCase):
 class CharLimit(zeit.content.article.edit.browser.testing.EditorTestCase):
     def setUp(self):
         super().setUp()
-        self.open('/repository/online/2007/01/Somalia/@@checkout')
+        self.open('/repository/article/@@checkout')
 
     def test_teaser_supertitle_has_character_limit(self):
         s = self.selenium
@@ -130,13 +128,13 @@ class FilenameTest(zeit.content.article.testing.BrowserTestCase):
     def test_existing_filename_yields_error_message(self):
         article = Article()
         IAutomaticallyRenameable(article).renameable = True
-        self.repository['online']['2007']['01']['article'] = article
+        self.repository['article2'] = article
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/online/2007/01/article/@@checkout')
+        b.open('/repository/article2/@@checkout')
         b.open('@@edit.form.new-filename?show_form=1')
-        b.getControl('New file name').value = 'Somalia'
+        b.getControl('New file name').value = 'article'
         b.getControl('Apply').click()
-        self.assertEllipsis('...Somalia...already exists...', b.contents)
+        self.assertEllipsis('...article...already exists...', b.contents)
 
 
 @unittest.skip(
@@ -145,7 +143,7 @@ class FilenameTest(zeit.content.article.testing.BrowserTestCase):
 class ChannelSelector(zeit.content.article.edit.browser.testing.EditorTestCase):
     def setUp(self):
         super().setUp()
-        self.open('/repository/online/2007/01/Somalia/@@checkout')
+        self.open('/repository/article/@@checkout')
         s = self.selenium
         s.waitForElementPresent('css=#edit-form-channel .fold-link')
         s.click('css=#edit-form-channel .fold-link')
@@ -167,19 +165,19 @@ class ChannelSelector(zeit.content.article.edit.browser.testing.EditorTestCase):
 class SetRemoteMetadata(zeit.content.article.testing.BrowserTestCase):
     def test_remote_metadata_fields_are_displayed_for_article(self):
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/online/2007/01/Somalia/@@checkout')
+        b.open('http://localhost/++skin++vivi/repository/article/@@checkout')
         b.open('@@edit.form.options-interactive')
         self.assertEllipsis('...Remote image...', b.contents)
         self.assertEllipsis('...Remote timestamp...', b.contents)
 
     def test_existing_remote_metadata_are_displayed(self):
-        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/article')
         with zeit.cms.checkout.helper.checked_out(article) as co:
             article = zeit.cms.content.interfaces.IRemoteMetadata(co)
             article.remote_image = 'https://my-remote-image.de'
             article.remote_timestamp = 'https://my-remote-timestamp.de'
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/online/2007/01/Somalia/@@checkout')
+        b.open('http://localhost/++skin++vivi/repository/article/@@checkout')
         b.open('@@edit.form.options-interactive')
         self.assertEllipsis('...Remote image...https://my-remote-image.de...', b.contents)
         self.assertEllipsis('...Remote timestamp...https://my-remote-timestamp.de...', b.contents)
@@ -188,17 +186,17 @@ class SetRemoteMetadata(zeit.content.article.testing.BrowserTestCase):
 class SetAccessControl(zeit.content.article.testing.BrowserTestCase):
     def test_access_control_fields_are_not_displayed(self):
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/online/2007/01/Somalia/@@checkout')
+        b.open('http://localhost/++skin++vivi/repository/article/@@checkout')
         b.open('@@edit.form.options-interactive')
         self.assertNotIn('Accepted entitlements', b.contents)
 
     def test_access_control_fields_are_displayed(self):
-        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/article')
         with zeit.cms.checkout.helper.checked_out(article) as co:
             article = zeit.cms.content.interfaces.ICommonMetadata(co)
             article.access = 'abo'
             article.accepted_entitlements = 'zplus'
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/online/2007/01/Somalia/@@checkout')
+        b.open('http://localhost/++skin++vivi/repository/article/@@checkout')
         b.open('@@edit.form.options-access-control')
         self.assert_ellipsis('...Accepted entitlements...zplus...', b.contents)

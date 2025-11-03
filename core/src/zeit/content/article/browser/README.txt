@@ -13,14 +13,13 @@ Metadata Preview
 
 The metadata preview shows the most important data in list views:
 
->>> browser.open('http://localhost:8080/++skin++cms/repository/online'
-...              '/2007/01/Somalia/metadata_preview')
+>>> browser.open('/repository/article/metadata_preview')
 >>> print(browser.contents)
  <div class="contextViewsAndActions">
     <div class="context-views">...
     <div class="context-actions">...
     <div id="metadata_preview">...
-      <div class="teaser-title" title="Teaser">...
+      <div class="teaser-title" title="Title">...
 
 >>> browser.getLink('Checkout')
 <Link text='Checkout...>
@@ -31,41 +30,18 @@ Make sure we have a "view" link:
 <Link text='View...' ...>
 
 
-We have to publish another url to see if articles are listed:
-
->>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
->>> print(browser.contents)
-<?xml version...
-<!DOCTYPE ...
-...
-    <td>
-      <img...IArticle-zmi_icon.png...
-    </td>
-    <td>
-      Ford wird beigesetzt
-    </td>
-    <td>
-        <span class="filename">Ford-Beerdigung</span>
-    </td>
-    ...
-    <td>
-      International
-    </td>
-...
-
-
 Creating Articles
 =================
 
 Articles can be created through the add menu in the repository. We open an
 arbitrary url and add an article then:
 
->>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
+>>> browser.open('/repository')
 >>> menu = browser.getControl(name='add_menu')
 >>> menu.displayValue = ['Article']
 >>> url = menu.value[0]
 >>> print(url)
-http://localhost/++skin++cms/repository/online/2007/01/@@zeit.content.article.Add
+http://localhost/++skin++vivi/repository/@@zeit.content.article.Add
 >>> browser.open(url)
 
 The article is created and checked out automatically. The editor is open:
@@ -73,7 +49,7 @@ The article is created and checked out automatically. The editor is open:
 >>> print(browser.title.strip())
 e0135811-d21a-4e29-918e-1b0dde4e0c38.tmp – Edit
 >>> print(browser.url)
-http://localhost/++skin++cms/workingcopy/zope.user/e0135811-d21a-4e29-918e-1b0dde4e0c38.tmp/@@edit.html
+http://localhost/++skin++vivi/workingcopy/zope.user/e0135811-d21a-4e29-918e-1b0dde4e0c38.tmp/@@edit.html
 
 
 Since we have a new article editor a lot of basic tests were removed such as
@@ -120,16 +96,16 @@ We check in the document. We look at the document in the repository then:
 >>> browser.getLink('Checkin').click()
 >>> article_url = browser.url
 >>> article_url
-'http://localhost/++skin++cms/repository/.../asdf/@@xml_source_view.html'
+'http://localhost/++skin++vivi/repository/asdf/@@xml_source_view.html'
 
 A checked in article has a link that offers a basic view:
 
 >>> browser.getLink('View')
-<Link...'http://localhost/++skin++cms/repository/.../asdf/@@edit.html'>
+<Link...'http://localhost/++skin++vivi/repository/asdf/@@edit.html'>
 
 It will have a menu for the source
 >>> browser.getLink('View source')
-<Link...http://localhost/++skin++cms/repository/.../asdf/@@xml_source_view.html'>
+<Link...http://localhost/++skin++vivi/repository/asdf/@@xml_source_view.html'>
 
 
 When we checkout the article we will get the following
@@ -137,7 +113,7 @@ When we checkout the article we will get the following
 >>> browser.getLink('Checkout').click()
 >>> article_url = browser.url
 >>> article_url
-'http://localhost/++skin++cms/workingcopy/.../asdf/@@edit.html'
+'http://localhost/++skin++vivi/workingcopy/zope.user/asdf/@@edit.html'
 
 The edit source link...
 >>> browser.getLink('Source')

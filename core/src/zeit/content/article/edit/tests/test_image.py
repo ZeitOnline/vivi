@@ -16,7 +16,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
         image.display_mode = 'float'
         image.variant_name = 'square'
         image.animation = 'fade-in'
-        image_uid = 'http://xml.zeit.de/2006/DSC00109_2.JPG'
+        image_uid = 'http://xml.zeit.de/image'
         image.references = image.references.create(zeit.cms.interfaces.ICMSContent(image_uid))
         self.assertEqual(image_uid, image.references.target.uniqueId)
         self.assertEqual(image_uid, image.xml.get('src'))
@@ -120,7 +120,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
         import zeit.connector.interfaces
 
         connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
-        connector.move('http://xml.zeit.de/2006/DSC00109_2.JPG', 'http://xml.zeit.de/2006/ÄÖÜ.JPG')
+        connector.move('http://xml.zeit.de/image', 'http://xml.zeit.de/2006/ÄÖÜ.JPG')
         article = self.get_image_article(
             """
                 <p>A leading para</p>
@@ -140,7 +140,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
         import zeit.connector.interfaces
 
         connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
-        connector.move('http://xml.zeit.de/2006/DSC00109_2.JPG', 'http://xml.zeit.de/2006/ÄÖÜ.JPG')
+        connector.move('http://xml.zeit.de/image', 'http://xml.zeit.de/2006/ÄÖÜ.JPG')
         article = self.get_image_article(
             """
                 <p>A leading para</p>
@@ -173,7 +173,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
         with zeit.cms.checkout.helper.checked_out(self.repository['article']) as co:
             co.body.create_item('image')
 
-            image_id = 'http://xml.zeit.de/2006/DSC00109_2.JPG'
+            image_id = 'http://xml.zeit.de/image'
             IImages(co).image = zeit.cms.interfaces.ICMSContent(image_id)
             zope.lifecycleevent.modified(co, zope.lifecycleevent.Attributes(IImages, 'image'))
 
@@ -200,7 +200,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
             image_block.references = image_block.references.create(image_group)
             image_block.set_manually = True
 
-            image_id = 'http://xml.zeit.de/2006/DSC00109_2.JPG'
+            image_id = 'http://xml.zeit.de/image'
             IImages(co).image = zeit.cms.interfaces.ICMSContent(image_id)
             zope.lifecycleevent.modified(co, zope.lifecycleevent.Attributes(IImages, 'image'))
 
@@ -220,7 +220,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
             push = zeit.push.interfaces.IPushMessages(co)
             push.set({'type': 'mobile'}, enabled=False)
 
-            image_id = 'http://xml.zeit.de/2006/DSC00109_2.JPG'
+            image_id = 'http://xml.zeit.de/image'
             IImages(co).image = zeit.cms.interfaces.ICMSContent(image_id)
             zope.lifecycleevent.modified(co, zope.lifecycleevent.Attributes(IImages, 'image'))
 
@@ -243,21 +243,15 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
         # SingleReferenceProperty and path=='.', not article- or image-specific.
         from zeit.cms.interfaces import ICMSContent
 
-        self.repository['article'] = self.get_article()
+        self.repository['image2'] = zeit.content.image.testing.create_image()
 
         with zeit.cms.checkout.helper.checked_out(self.repository['article']) as co:
             block = co.body.create_item('image')
-            block.references = block.references.create(
-                ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')
-            )
+            block.references = block.references.create(ICMSContent('http://xml.zeit.de/image'))
             block = co.body.create_item('image')
-            block.references = block.references.create(
-                ICMSContent('http://xml.zeit.de/2006/DSC00109_3.JPG')
-            )
+            block.references = block.references.create(ICMSContent('http://xml.zeit.de/image2'))
 
-            self.assertEqual(
-                'http://xml.zeit.de/2006/DSC00109_3.JPG', block.references.target.uniqueId
-            )
+            self.assertEqual('http://xml.zeit.de/image2', block.references.target.uniqueId)
 
     def test_setting_same_image_again_keeps_it(self):
         from zeit.cms.interfaces import ICMSContent
@@ -265,7 +259,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
         self.repository['article'] = self.get_article()
         with zeit.cms.checkout.helper.checked_out(self.repository['article']) as co:
             block = co.body.create_item('image')
-            image_id = 'http://xml.zeit.de/2006/DSC00109_2.JPG'
+            image_id = 'http://xml.zeit.de/image'
             block.references = block.references.create(ICMSContent(image_id))
             self.assertEqual(image_id, block.references.target.uniqueId)
             block.references = block.references.get(image_id)
@@ -286,9 +280,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
             body = zeit.content.article.edit.body.EditableBody(article, article.xml.find('body'))
             factory = zope.component.getAdapter(body, zeit.edit.interfaces.IElementFactory, 'image')
             image = factory()
-            image.references = image.references.create(
-                ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')
-            )
+            image.references = image.references.create(ICMSContent('http://xml.zeit.de/image'))
             yield image
 
     def test_variant_name_available_walks_up_to_article(self):

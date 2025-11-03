@@ -54,9 +54,19 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
     # XXX Kludge because we depend on zeit.workflow.publish_3rdparty in our tests
     patches={'zeit.workflow': {}},
 )
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER)
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER, features=['zeit.connector.sql.zope'])
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
 PUSH_LAYER = zeit.push.testing.UrbanairshipTemplateLayer(ZOPE_LAYER)
+
+
+class ArticleLayer(zeit.cms.testing.ContentFixtureLayer):
+    def create_fixture(self):
+        repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
+        repository['article'] = create_article()
+        repository['image'] = zeit.content.image.testing.create_image()
+
+
+LAYER = ArticleLayer(PUSH_LAYER)
 
 
 # This is a copy from z.c.cp ElasticsearchMockLayer with an
@@ -84,18 +94,6 @@ class ElasticsearchMockLayer(zeit.cms.testing.Layer):
 
 
 ELASTICSEARCH_MOCK_LAYER = ElasticsearchMockLayer()
-
-
-class ArticleLayer(zeit.cms.testing.Layer):
-    defaultBases = (PUSH_LAYER,)
-
-    def testSetUp(self):
-        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
-        prop = connector._get_properties('http://xml.zeit.de/online/2007/01/Somalia')
-        prop[zeit.cms.tagging.testing.KEYWORD_PROPERTY] = 'Testtag|Testtag2|Testtag3'
-
-
-LAYER = ArticleLayer()
 MOCK_LAYER = zeit.cms.testing.Layer(
     name='MockLayer',
     bases=(

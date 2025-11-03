@@ -1,6 +1,19 @@
 Landing zones
 =============
 
+>>> from zeit.cms.checkout.helper import checked_out
+>>> import zeit.cms.repository.interfaces
+>>> import zeit.cms.testing
+>>> import zope.component
+>>> import transaction
+>>> zeit.cms.testing.set_site()
+>>> _ = zeit.cms.testing.create_interaction()
+>>> repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
+>>> with checked_out(repository['article']) as co:
+...     _ = co.body.create_item('image')
+...     _ = co.body.create_item('p')
+>>> transaction.commit()
+
 Mock UUID to generate known Ids.
 
 >>> import gocept.testing.mock
@@ -8,7 +21,6 @@ Mock UUID to generate known Ids.
 >>> patches = gocept.testing.mock.Patches()
 >>> fake_uuid = mock.Mock(side_effect=lambda: 'id-%s' % fake_uuid.call_count)
 >>> _ = patches.add('zeit.edit.container.Base._generate_block_id', fake_uuid)
-
 
 Module landing zones
 --------------------
@@ -18,38 +30,33 @@ Open an article's editable body. It contains landing zones:
 >>> from zeit.cms.testing import Browser
 >>> browser = Browser(layer['wsgi_app'])
 >>> browser.login('user', 'userpw')
->>> browser.open('http://localhost:8080/++skin++vivi/repository/online'
-...              '/2007/01/Somalia/@@checkout')
+>>> browser.open('http://localhost:8080/++skin++vivi/repository/article/@@checkout')
 >>> browser.open('@@edit.html')
 >>> browser.open('editable-body/@@contents')
 >>> contents_url = browser.url
 
 
-XXX This check has an isolation/ordering problem. If it runs *after* tests
-from zeit.content.article.browser, it fails. If run before or stand-alone, it
-works fine.
-
-#>>> print(browser.contents)
+>>> print(browser.contents)
 <div id="editable-body"
-     cms:url="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body"
-     class="editable-area action-block-sorter">
-  <div cms:tooltip="" class="block type-image...
-     cms:url="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/id-2"
+     class="editable-area action-block-sorter"
+     cms:url="http://localhost:8080/++skin++vivi/workingcopy/zope.user/article/editable-body">
+  <div class="block type-image...
+     cms:url="http://localhost:8080/++skin++vivi/workingcopy/zope.user/article/editable-body/id-2"
      id="id-2">
   <div class="block-inner">
     ...
   </div>
 </div>
   <div class="landing-zone action-editable-body-module-droppable..."
-       cms:create-block-url="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/id-2/@@landing-zone-drop-module">
+       cms:create-block-url="http://localhost:8080/++skin++vivi/workingcopy/zope.user/article/editable-body/id-2/@@landing-zone-drop-module"...>
   </div>
-  <div cms:tooltip="" class="block type-p...
-     cms:url="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/id-3"
+  <div class="block type-p...
+     cms:url="http://localhost:8080/++skin++vivi/workingcopy/zope.user/article/editable-body/id-3"
      id="id-3">
      ...
 </div>
   <div class="landing-zone action-editable-body-module-droppable..."
-       cms:create-block-url="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/id-3/@@landing-zone-drop-module">
+       cms:create-block-url="http://localhost:8080/++skin++vivi/workingcopy/zope.user/article/editable-body/id-3/@@landing-zone-drop-module"...>
   </div>
   ...
 
@@ -61,24 +68,24 @@ A module can be created:
 >>> import json
 >>> pprint.pprint(json.loads(browser.contents)['signals'])
 [{'args': ['editable-body',
-            'http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/@@contents'],
+            'http://localhost:8080/++skin++vivi/workingcopy/zope.user/article/editable-body/@@contents'],
   'name': 'reload',
   'when': None},
- {'args': ['id-15'], 'name': 'added', 'when': 'after-reload'}]
+ {'args': ['id-4'], 'name': 'added', 'when': 'after-reload'}]
 >>> browser.open(contents_url)
 >>> print(browser.contents)
 <div id="editable-body"
 ...
   <div class="block type-image...
-     cms:url="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/id-2"
+     cms:url="http://localhost:8080/++skin++vivi/workingcopy/zope.user/article/editable-body/id-2"
      id="id-2">
      ...
   <div class="block type-p...
-     cms:url="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/id-15"
-     id="id-15">
+     cms:url="http://localhost:8080/++skin++vivi/workingcopy/zope.user/article/editable-body/id-4"
+     id="id-4">
      ...
   <div class="block type-p...
-     cms:url="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/id-3"
+     cms:url="http://localhost:8080/++skin++vivi/workingcopy/zope.user/article/editable-body/id-3"
      id="id-3">
      ...
 

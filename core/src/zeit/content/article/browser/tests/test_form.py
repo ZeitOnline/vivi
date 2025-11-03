@@ -9,7 +9,7 @@ import zeit.content.article.testing
 class TestAdding(zeit.content.article.testing.BrowserTestCase):
     def setUp(self):
         super().setUp()
-        self.browser.open('http://localhost:8080/++skin++vivi/repository/online/2007/01/')
+        self.browser.open('http://localhost:8080/++skin++vivi/repository')
 
     def get_article(self):
         import zeit.cms.workingcopy.interfaces
@@ -127,7 +127,7 @@ class TestAdding(zeit.content.article.testing.BrowserTestCase):
     def test_filename_should_be_editable_when_article_is_renameable(self):
         from zeit.cms.repository.interfaces import IAutomaticallyRenameable
 
-        self.browser.open('Somalia/@@checkout')
+        self.browser.open('/repository/article/@@checkout')
         article = self.get_article()
         IAutomaticallyRenameable(article).renameable = True
         self.browser.open('@@edit.form.new-filename?show_form=yes')
@@ -135,7 +135,7 @@ class TestAdding(zeit.content.article.testing.BrowserTestCase):
         self.assertEqual('', ctrl.value)
 
     def test_filename_should_not_be_editable_when_article_is_not_renameable(self):
-        self.browser.open('Somalia/@@checkout')
+        self.browser.open('/repository/article/@@checkout')
         self.browser.open('@@edit-forms')
         self.assertNotIn('filename', self.browser.contents)
 
@@ -162,32 +162,32 @@ class TestAdding(zeit.content.article.testing.BrowserTestCase):
 class DefaultView(zeit.content.article.testing.BrowserTestCase):
     def test_in_repository_shows_edit_view_readonly(self):
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/online/2007/01/Somalia')
+        b.open('http://localhost/++skin++vivi/repository/article')
         # we can't really check whether it's readonly since the editor comes in
         # via Javascript, so we content ourselves with a smoke check.
         self.assertEllipsis('...<div id="cp-content">...', b.contents)
 
     def test_in_repository_but_already_checked_out_redirects_to_wc(self):
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/online/2007/01/Somalia/@@checkout')
-        b.open('http://localhost/++skin++vivi/repository/online/2007/01/Somalia')
+        b.open('http://localhost/++skin++vivi/repository/article/@@checkout')
+        b.open('http://localhost/++skin++vivi/repository/article')
         self.assertIn('workingcopy', b.url)
 
     def test_in_repository_with_ghost_just_shows_edit_view(self):
         # XXX tests don't load zeit.ghost, so this test doesn't really test
         # anything
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/online/2007/01/Somalia/@@checkout')
+        b.open('http://localhost/++skin++vivi/repository/article/@@checkout')
         b.open('@@checkin')
         self.assertEllipsis('...<div id="cp-content">...', b.contents)
 
     def test_in_workingcopy_shows_edit_view(self):
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/online/2007/01/Somalia/@@checkout')
+        b.open('http://localhost/++skin++vivi/repository/article/@@checkout')
         self.assertEllipsis('...<div id="cp-content">...', b.contents)
 
     def test_article_can_access_images_upload_form(self):
         b = self.browser
-        b.open('/repository/online/2007/01/Somalia/@@upload-images')
+        b.open('/repository/article/@@upload-images')
         # The "context views/actions" menu is hidden for this view
         self.assertNotEllipsis('...Checkout...', b.contents)

@@ -61,13 +61,13 @@ class ScrollyChapterTest(zeit.content.article.testing.FunctionalTestCase):
 
     def test_references_should_accept_image_group(self):
         chapter = self.create_scrolly_chapter()
-        image = self.repository['2006']['DSC00109_2.JPG']
+        image = self.repository['image']
         chapter.references = image
         self.assertEqual(image.uniqueId, chapter.xml.get('href'))
 
     def test_references_should_be_retrievable(self):
         chapter = self.create_scrolly_chapter()
-        image = self.repository['2006']['DSC00109_2.JPG']
+        image = self.repository['image']
         chapter.references = image
         self.assertEqual(image, chapter.references)
 

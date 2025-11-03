@@ -10,15 +10,13 @@ class BrowserTestCase(zeit.content.article.testing.BrowserTestCase):
     def setUp(self):
         super().setUp()
         browser = self.browser
-        browser.open(
-            'http://localhost:8080/++skin++vivi/repository/online/2007/01/Somalia/@@checkout'
-        )
+        browser.open('http://localhost:8080/++skin++vivi/repository/article/@@checkout')
         self.article_url = browser.url
         browser.open('@@contents')
         self.contents_url = browser.url
 
     def get_article(self, with_block=None):
-        article = self.getRootFolder()['workingcopy']['zope.user']['Somalia']
+        article = self.getRootFolder()['workingcopy']['zope.user']['article']
         for p in article.xml.xpath('//division/*'):
             p.getparent().remove(p)
         if with_block:

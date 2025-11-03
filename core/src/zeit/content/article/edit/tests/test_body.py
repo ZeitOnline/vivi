@@ -210,7 +210,7 @@ class CheckinTest(zeit.content.article.testing.FunctionalTestCase):
         co = manager.checkout()
         zeit.cms.content.field.apply_default_values(co, zeit.content.article.interfaces.IArticle)
         img = zeit.content.image.interfaces.IImages(co)
-        image = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')
+        image = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/image')
         img.image = image
         img.fill_color = '#xxxxxx'
         manager = ICheckinManager(co)

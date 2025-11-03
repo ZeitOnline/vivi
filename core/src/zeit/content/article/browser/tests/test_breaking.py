@@ -24,7 +24,7 @@ class TestAdding(zeit.content.article.testing.BrowserTestCase):
         for _name, notifier in zope.component.getUtilitiesFor(zeit.push.interfaces.IPushNotifier):
             notifier.reset()
 
-        self.browser.open('http://localhost:8080/++skin++vivi/repository/online/2007/01/')
+        self.browser.open('/repository')
 
     def create_breakingnews(self):
         b = self.browser
@@ -42,7 +42,7 @@ class TestAdding(zeit.content.article.testing.BrowserTestCase):
         self.create_breakingnews()
         self.fill_in_required_values()
         self.browser.getControl('Publish and push').click()
-        article = ICMSContent('http://xml.zeit.de/online/2007/01/foo')
+        article = ICMSContent('http://xml.zeit.de/foo')
         # XXX Kind of duplicate from .test_form.TestAdding
         self.assertEqual(2008, article.year)
         self.assertEqual(26, article.volume)
@@ -54,7 +54,7 @@ class TestAdding(zeit.content.article.testing.BrowserTestCase):
         self.create_breakingnews()
         self.fill_in_required_values()
         self.browser.getControl('Publish and push').click()
-        article = ICMSContent('http://xml.zeit.de/online/2007/01/foo')
+        article = ICMSContent('http://xml.zeit.de/foo')
         self.assertEqual(True, zeit.content.article.interfaces.IBreakingNews(article).is_breaking)
 
     def test_publish_sends_push_messages(self):
@@ -64,7 +64,7 @@ class TestAdding(zeit.content.article.testing.BrowserTestCase):
         self.fill_in_required_values()
         self.browser.getControl('Publish and push').click()
         self.browser.open('@@publish')
-        article = ICMSContent('http://xml.zeit.de/online/2007/01/foo')
+        article = ICMSContent('http://xml.zeit.de/foo')
         self.assertEqual(True, IPublishInfo(article).published)
         notifier = zope.component.getUtility(zeit.push.interfaces.IPushNotifier, name='homepage')
         self.assertEqual(1, len(notifier.calls))
@@ -81,7 +81,7 @@ class TestAdding(zeit.content.article.testing.BrowserTestCase):
         self.fill_in_required_values()
         self.browser.getControl('Publish and push').click()
         self.browser.open('@@publish')
-        article = ICMSContent('http://xml.zeit.de/online/2007/01/foo')
+        article = ICMSContent('http://xml.zeit.de/foo')
         push = zeit.push.interfaces.IPushMessages(article)
         self.assertIn(
             {
@@ -100,7 +100,7 @@ class TestAdding(zeit.content.article.testing.BrowserTestCase):
         self.fill_in_required_values()
         self.browser.getControl('Article body').value = 'mytext'
         self.browser.getControl('Publish and push').click()
-        article = ICMSContent('http://xml.zeit.de/online/2007/01/foo')
+        article = ICMSContent('http://xml.zeit.de/foo')
         para = article.body.values()[1]  # 0 is image
         self.assertEqual('mytext', para.text)
 
@@ -109,7 +109,7 @@ class TestAdding(zeit.content.article.testing.BrowserTestCase):
         self.fill_in_required_values()
         self.browser.getControl('Article body').value = ''
         self.browser.getControl('Publish and push').click()
-        article = ICMSContent('http://xml.zeit.de/online/2007/01/foo')
+        article = ICMSContent('http://xml.zeit.de/foo')
         self.assertEqual(1, len(article.body))
 
     def test_body_text_default_value_is_translated(self):
@@ -158,7 +158,7 @@ class TestAdding(zeit.content.article.testing.BrowserTestCase):
         with self.assertRaises(LookupError):
             b.getControl('Breaking news image')
         b.getControl('Publish and push').click()
-        article = ICMSContent('http://xml.zeit.de/online/2007/01/foo')
+        article = ICMSContent('http://xml.zeit.de/foo')
         self.assertIsNone(article.main_image.target)
 
     def test_breaking_news_fallback_image_is_missing(self):
@@ -170,7 +170,7 @@ class TestAdding(zeit.content.article.testing.BrowserTestCase):
         self.fill_in_required_values()
         self.assertEqual(b.getControl('Breaking news image').value, '')
         b.getControl('Publish and push').click()
-        article = ICMSContent('http://xml.zeit.de/online/2007/01/foo')
+        article = ICMSContent('http://xml.zeit.de/foo')
         self.assertIsNone(article.main_image.target)
 
     def test_breaking_news_fallback_image_is_removed(self):
@@ -182,7 +182,7 @@ class TestAdding(zeit.content.article.testing.BrowserTestCase):
         self.fill_in_required_values()
         b.getControl('Breaking news image').value = ''
         b.getControl('Publish and push').click()
-        article = ICMSContent('http://xml.zeit.de/online/2007/01/foo')
+        article = ICMSContent('http://xml.zeit.de/foo')
         self.assertIsNone(article.main_image.target)
 
     def test_breaking_news_fallback_image_is_overwritten(self):
@@ -195,7 +195,7 @@ class TestAdding(zeit.content.article.testing.BrowserTestCase):
         self.fill_in_required_values()
         b.getControl('Breaking news image').value = self.repository['user-imagegroup'].uniqueId
         b.getControl('Publish and push').click()
-        article = ICMSContent('http://xml.zeit.de/online/2007/01/foo')
+        article = ICMSContent('http://xml.zeit.de/foo')
         self.assertEqual(self.repository['user-imagegroup'], article.main_image.target)
 
     def test_breaking_news_fallback_image(self):
@@ -207,7 +207,7 @@ class TestAdding(zeit.content.article.testing.BrowserTestCase):
         self.fill_in_required_values()
         self.assertEqual(b.getControl('Breaking news image').value, image.uniqueId)
         b.getControl('Publish and push').click()
-        article = ICMSContent('http://xml.zeit.de/online/2007/01/foo')
+        article = ICMSContent('http://xml.zeit.de/foo')
         self.assertEqual(image, article.main_image.target)
 
 
@@ -225,20 +225,20 @@ class RetractBannerTest(zeit.content.article.testing.SeleniumTestCase):
         super().setUp()
         banner_config = zeit.content.rawxml.rawxml.RawXML()
         banner_config.xml = lxml.etree.fromstring(
-            '<xml><article_id>http://xml.zeit.de/online/2007/01/Somalia</article_id></xml>'
+            '<xml><article_id>http://xml.zeit.de/article</article_id></xml>'
         )
         self.repository['banner'] = banner_config
         IPublish(self.repository['banner']).publish(background=False)
 
         # Make Somalia breaking news, so the retract section is shown.
-        article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        article = ICMSContent('http://xml.zeit.de/article')
         with zeit.cms.checkout.helper.checked_out(article) as co:
             zeit.content.article.interfaces.IBreakingNews(co).is_breaking = True
 
         transaction.commit()
 
     def test_retract_banner_endtoend(self):
-        self.open('/repository/online/2007/01/Somalia')
+        self.open('/repository/article')
         s = self.selenium
         s.waitForElementPresent('id=breaking-retract')
         s.assertElementPresent('css=#breaking-retract .publish-state.published')

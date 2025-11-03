@@ -1,4 +1,5 @@
 import lxml.builder
+import transaction
 
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.content.interfaces import ISemanticChange
@@ -14,6 +15,7 @@ class LSCDefaultTest(zeit.content.article.testing.FunctionalTestCase):
         with checked_out(self.repository['article']) as co:
             co.body.create_item('tickaroo_liveblog')
             self.assertFalse(ISemanticChange(co).has_semantic_change)
+        transaction.commit()
 
     def test_article_with_liveblog_has_lsc_on_checkout(self):
         with checked_out(self.repository['article']) as co:
