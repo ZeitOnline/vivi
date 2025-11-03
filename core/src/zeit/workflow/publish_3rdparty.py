@@ -569,7 +569,7 @@ class CenterPageFollowings(grok.Adapter, IgnoreMixin):
         if unique_id.endswith('/playlist') and ressort == 'Administratives':
             return f'{unique_id.removesuffix("/playlist")[:-3]}/index'
         elif type_ == 'volume' and volume is not None and year:
-            return f'{zeit.cms.interfaces.ID_NAMESPACE}{year}/index'
+            return f'{zeit.cms.interfaces.ID_NAMESPACE}index'
 
         return None
 
