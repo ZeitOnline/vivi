@@ -4,14 +4,13 @@ import argparse
 import collections.abc
 import logging
 import tempfile
-import time
 
 from zope.dottedname.resolve import resolve
 import BTrees
 import opentelemetry.trace
+import pendulum
 import persistent
 import persistent.mapping
-import transaction
 import zc.set
 import ZODB.blob
 import ZODB.POSException
@@ -120,99 +119,58 @@ class Body(persistent.Persistent):
 
 
 class AccessTimes:
-    UPDATE_INTERVAL = NotImplemented
+    """Stores most recent access time per cache key, with 'whole day' granularity,
+    to support evicting cache entries that have not been accessed for a given time.
+    """
 
     def __init__(self):
-        self._last_access_time = BTrees.family64.OI.BTree()
-        self._access_time_to_ids = BTrees.family32.IO.BTree()
+        # We're using the keys as an ordered set: every value is `1`, and the
+        # key format is 'yyyymmdd_uniqueid', so we can efficiently retrieve
+        # uniqueIds older than a given timestamp (for `sweep()`)
+        self._sorted_access_time = BTrees.family64.OI.BTree()
+        # Have to also store {uniqueid: timestamp}, so we can remove the previous
+        # entry from _sorted_access_time efficiently.
+        self._access_time_by_id = BTrees.family64.OI.BTree()
 
     def _update_cache_access(self, key):
-        last_access_time = self._last_access_time.get(key, 0)
-        new_access_time = self._get_time_key(time.time())
+        if not hasattr(self, '_sorted_access_time'):  # BBB
+            AccessTimes.__init__(self)
 
-        old_set = None
-        if last_access_time / 10e6 < 10e6:
-            # Ignore old access times. This is to allow an update w/o downtime.
-            old_set = self._access_time_to_ids.get(last_access_time)
+        stored = self._access_time_by_id.get(key)
+        new = self._get_time_key(pendulum.now())
+        if stored == new:
+            return
+        self._access_time_by_id[key] = new
+        key = key.decode('utf-8')
+        self._sorted_access_time.pop(f'{stored}_{key}', None)
+        self._sorted_access_time[f'{new}_{key}'] = 1
 
-        try:
-            new_set = self._access_time_to_ids[new_access_time]
-        except KeyError:
-            new_set = self._access_time_to_ids[new_access_time] = BTrees.family32.OI.TreeSet()
-
-        if old_set != new_set:
-            if old_set is not None:
-                try:
-                    old_set.remove(key)
-                except KeyError:
-                    pass
-
-            new_set.insert(key)
-            self._last_access_time[key] = new_access_time
-
-    def sweep(self, cache_timeout=(7 * 24 * 3600)):
-        start = 0
-        timeout = self._get_time_key(time.time() - cache_timeout)
+    def sweep(self, cache_timeout=7):
+        # Make use of lexical sorting: `...x` is treated as greater than any
+        # `...y_suffix` if x and y are digits and x>y
+        timeout = str(self._get_time_key(pendulum.now().subtract(days=cache_timeout)))
         while True:
-            try:
-                access_time = next(iter(self._access_time_to_ids.keys(min=start, max=timeout)))
-                id_set = []
-                # For reasons unknown we sometimes get "the bucket being
-                # iterated changed size" here, which according to
-                # http://mail.zope.org/pipermail/zodb-dev/2004-June/007452.html
-                # "can never happen". So we try to sweep all the IDs we can and
-                # leave the rest to rot, rather than get stuck on one broken
-                # access_time bucket and not be able to sweep anything after it
-                try:
-                    for id in self._access_time_to_ids[access_time]:
-                        id_set.append(id)
-                except RuntimeError:
-                    pass
-                try:
-                    i = 0
-                    retries = 0
-                    while i < len(id_set):
-                        id = id_set[i]
-                        i += 1
-                        log.info('Evicting %s', id)
-                        self._last_access_time.pop(id, None)
-                        try:
-                            self.remove(id)
-                        except KeyError:
-                            pass  # already gone
-                        if i % 100 == 0:
-                            try:
-                                log.info('Sub-commit')
-                                transaction.commit()
-                            except ZODB.POSException.ConflictError:
-                                if retries == 3:
-                                    raise RuntimeError('Too many retries')
-                                log.info('ConflictError, retrying')
-                                transaction.abort()
-                                retries += 1
-                                i -= 100
-                    self._access_time_to_ids.pop(access_time, None)
-                    start = access_time
-                except Exception:
-                    start = access_time + 1
-                    log.info('Abort %s', access_time, exc_info=True)
-                    transaction.abort()
-                else:
-                    log.info('Commit %s', access_time)
-                    transaction.commit()
-            except StopIteration:
+            batch = []
+            for x in self._sorted_access_time.keys(max=timeout):
+                if len(batch) == 100:
+                    break
+                batch.append(x)
+            if not batch:
                 break
+            for _ in zeit.cms.cli.commit_with_retry():
+                for item in batch:
+                    _, _, key = item.partition('_')
+                    log.info('Evicting %s', key)
+                    self.pop(key, None)
+                    self._access_time_by_id.pop(get_storage_key(key), None)
+                    self._sorted_access_time.pop(item, None)
 
-    def _get_time_key(self, time):
-        return int(time / self.UPDATE_INTERVAL)
+    def _get_time_key(self, timestamp):
+        return timestamp.year * 10000 + timestamp.month * 100 + timestamp.day
 
 
 @zope.interface.implementer(zeit.connector.interfaces.IResourceCache)
 class ResourceCache(AccessTimes, persistent.Persistent):
-    """Cache for ressource data."""
-
-    UPDATE_INTERVAL = 24 * 3600
-
     def __init__(self):
         super().__init__()
         self._data = BTrees.family64.OO.BTree()
@@ -240,7 +198,8 @@ class ResourceCache(AccessTimes, persistent.Persistent):
         key = get_storage_key(uniqueid)
         try:
             result = key in self._data
-            self._update_cache_access(key)
+            if result:
+                self._update_cache_access(key)
             return result
         except ZODB.POSException.POSKeyError as err:
             current_span = opentelemetry.trace.get_current_span()
@@ -304,7 +263,8 @@ class PersistentCache(AccessTimes, persistent.Persistent):
         try:
             key = get_storage_key(key)
             value = self._storage.get(key, self)
-            self._update_cache_access(key)
+            if value is not self:
+                self._update_cache_access(key)
             return value is not self and not self._is_deleted(value)
         except ZODB.POSException.POSKeyError as err:
             current_span = opentelemetry.trace.get_current_span()
@@ -439,11 +399,7 @@ class Properties(persistent.mapping.PersistentMapping):
 
 @zope.interface.implementer(zeit.connector.interfaces.IPropertyCache)
 class PropertyCache(PersistentCache):
-    """Property cache."""
-
     CACHE_VALUE_CLASS = Properties
-
-    UPDATE_INTERVAL = 24 * 3600
 
     def _mark_deleted(self, value):
         value.clear()
@@ -475,10 +431,7 @@ class ChildNames(zc.set.Set):
 
 @zope.interface.implementer(zeit.connector.interfaces.IChildNameCache)
 class ChildNameCache(PersistentCache):
-    """Cache for child names."""
-
     CACHE_VALUE_CLASS = ChildNames
-    UPDATE_INTERVAL = 24 * 3600
 
     def _mark_deleted(self, value):
         value.clear()
@@ -521,5 +474,5 @@ def sweep():
     iface = resolve('zeit.connector.interfaces.' + options.cache)
     cache = zope.component.getUtility(iface)
     for _ in zeit.cms.cli.commit_with_retry():
-        cache.sweep(options.days * 24 * 3600)
+        cache.sweep(options.days)
     log.info('Sweep end')
