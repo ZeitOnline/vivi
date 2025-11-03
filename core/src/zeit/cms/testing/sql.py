@@ -1,3 +1,4 @@
+import fcntl
 import os
 import time
 
@@ -153,9 +154,12 @@ SQL_CONFIG_LAYER = SQLConfigLayer(package='zeit.connector')
 
 
 class SQLIsolationLayer(Layer):
+    _lock_file_path = '/tmp/vivi_sql_isolation_layer.lock'
+
     def __init__(self, connector=None):
         super().__init__()
         self.connector = connector  # Used by content-storage-api
+        self._lock_file = None
 
     def setUp(self):
         if self.connector is None:
@@ -178,19 +182,60 @@ class SQLIsolationLayer(Layer):
     def tearDown(self):
         if 'sql_connection' not in self:
             return
+
         self['sql_transaction_layer'].rollback()
         del self['sql_transaction_layer']
         self['sql_connection'].close()
         del self['sql_connection']
 
+    def _acquire_lock(self):
+        self._lock_file = open(self._lock_file_path, 'w')
+        fcntl.flock(self._lock_file.fileno(), fcntl.LOCK_EX)
+
+    def _release_lock(self):
+        if self._lock_file:
+            fcntl.flock(self._lock_file.fileno(), fcntl.LOCK_UN)
+            self._lock_file.close()
+            self._lock_file = None
+
     def testSetUp(self):
         if 'sql_connection' not in self:
             return
-        self['sql_transaction_test'] = self['sql_connection'].begin_nested()
+        self._acquire_lock()
+        try:
+            # Check if the connection is in an aborted transaction state
+            # This can happen if a previous test left the connection in a bad state
+            conn = self['sql_connection']
+            if conn.invalidated or (
+                hasattr(conn.connection, 'status') and conn.connection.status != 0
+            ):
+                # PostgreSQL connection is in a bad state, need to rollback and restart
+                try:
+                    self['sql_transaction_layer'].rollback()
+                except Exception:
+                    pass
+                # Start a new transaction
+                self['sql_transaction_layer'] = conn.begin()
+
+            self['sql_transaction_test'] = self['sql_connection'].begin_nested()
+        except Exception:
+            # If savepoint creation fails, release the lock immediately
+            self._release_lock()
+            raise
 
     def testTearDown(self):
         if 'sql_connection' not in self:
             return
-        transaction.abort()  # includes connector.session.close()
-        self['sql_transaction_test'].rollback()
-        del self['sql_transaction_test']
+        if 'sql_transaction_test' not in self:
+            return
+        try:
+            transaction.abort()  # includes connector.session.close()
+            self['sql_transaction_test'].rollback()
+        except Exception:
+            # If the savepoint is already gone or the connection is in a bad state,
+            # we still need to clean up. This can happen in parallel test execution.
+            pass
+        finally:
+            if 'sql_transaction_test' in self:
+                del self['sql_transaction_test']
+            self._release_lock()
