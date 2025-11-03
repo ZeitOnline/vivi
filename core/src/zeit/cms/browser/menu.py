@@ -183,3 +183,8 @@ class Empty(zope.viewlet.manager.ViewletManagerBase):
 
     def update(self):
         pass
+
+
+class EmptyItem(z3c.menu.simple.menu.GlobalMenuItem):
+    def render(self):
+        return ''

@@ -18,9 +18,9 @@ class FolderPermissionsTest(zeit.cms.testing.ZeitCmsBrowserTestCase):
         self.assertNotIn('folder/@@retract', b.contents)
         self.assertNotIn('folder/@@publish', b.contents)
 
-    def test_producing_may_retract_via_menu_item(self):
+    def test_producing_may_not_retract_via_menu_item(self):
         IPublishInfo(self.folder).published = True
         b = self.producing
         b.open('http://localhost/repository/folder')
-        self.assertEllipsis('...<a...folder/@@retract...', b.contents)
-        self.assertEllipsis('...<a...folder/@@publish...', b.contents)
+        self.assertNotEllipsis('...<a...folder/@@retract...', b.contents)
+        self.assertNotEllipsis('...<a...folder/@@publish...', b.contents)
