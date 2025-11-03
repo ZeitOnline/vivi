@@ -758,7 +758,7 @@ class FollowingsPayloadTest(zeit.workflow.testing.FunctionalTestCase):
         self.repository['2025'] = zeit.cms.repository.folder.Folder()
         self.repository['2025']['10'] = zeit.cms.repository.folder.Folder()
         cp = self.repository['2025']['10']['index'] = zeit.content.cp.centerpage.CenterPage()
-        overview_cp = self.repository['2025']['index'] = zeit.content.cp.centerpage.CenterPage()
+        self.repository['index'] = zeit.content.cp.centerpage.CenterPage()
 
         with checked_out(cp):
             cp.year = 2025
@@ -767,11 +767,7 @@ class FollowingsPayloadTest(zeit.workflow.testing.FunctionalTestCase):
             info = zeit.cms.workflow.interfaces.IPublishInfo(cp)
             info.date_first_released = datetime(2025, 3, 5, 8, 18, tzinfo=timezone.utc)
 
-        with checked_out(overview_cp):
-            overview_cp.year = 2025
-            overview_cp.type = 'volume-overview'
-
-        overview_cp = self.repository['2025']['index']
+        overview_cp = self.repository['index']
 
         data = zeit.workflow.testing.publish_json(cp, 'followings')
         expected_uuid = zeit.cms.content.interfaces.IUUID(overview_cp).shortened
