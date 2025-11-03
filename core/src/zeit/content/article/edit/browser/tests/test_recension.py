@@ -23,7 +23,6 @@ class RecensionTest(zeit.content.article.testing.SeleniumTestCase):
             transaction.commit()
 
         s = self.selenium
-        s.setTimeout(3600000)
         self.open('/repository/online/2007/01/Somalia/@@checkout')
         fold = 'css=#edit-form-recensions .fold-link'
         s.waitForElementPresent(fold)
