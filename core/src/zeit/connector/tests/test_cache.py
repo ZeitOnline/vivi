@@ -21,7 +21,7 @@ class AccessTimeTest(zeit.connector.testing.MockTest):
         self.assertEqual([], list(self.cache._sorted_access_time.items()))
         with time_machine.travel(datetime(2012, 6, 12)):
             self.cache.update('some-id', self.make_value()).close()
-        self.assertEqual([(b'some-id', 20120612)], list(self.cache._access_time_by_id.items()))
+        self.assertEqual([('some-id', 20120612)], list(self.cache._access_time_by_id.items()))
         self.assertEqual([('20120612_some-id', 1)], list(self.cache._sorted_access_time.items()))
 
     def test_same_cache_access_causes_no_zodb_change(self):
@@ -30,13 +30,13 @@ class AccessTimeTest(zeit.connector.testing.MockTest):
         with time_machine.travel(datetime(2012, 6, 12)):
             self.cache.update('some-id', self.make_value()).close()
             transaction.commit()
-            self.cache[b'some-id'].close()
+            self.cache['some-id'].close()
             self.assertFalse(self.cache._data._p_changed)
             self.assertFalse(self.cache._access_time_by_id._p_changed)
             self.assertFalse(self.cache._sorted_access_time._p_changed)
             transaction.abort()
         with time_machine.travel(datetime(2012, 6, 13)):
-            self.cache[b'some-id'].close()
+            self.cache['some-id'].close()
             self.assertFalse(self.cache._data._p_changed)
             self.assertTrue(self.cache._access_time_by_id._p_changed)
             self.assertTrue(self.cache._sorted_access_time._p_changed)
@@ -54,6 +54,6 @@ class AccessTimeTest(zeit.connector.testing.MockTest):
             self.assertNotIn('id2', self.cache)
             self.assertIn('id3', self.cache)
             self.assertIn('id4', self.cache)
-        self.assertEqual([b'id3', b'id4'], list(self.cache._data))
-        self.assertEqual([b'id3', b'id4'], list(self.cache._access_time_by_id))
+        self.assertEqual(['id3', 'id4'], list(self.cache._data))
+        self.assertEqual(['id3', 'id4'], list(self.cache._access_time_by_id))
         self.assertEqual(['20120614_id3', '20120614_id4'], list(self.cache._sorted_access_time))

@@ -17,6 +17,7 @@ import ZODB.POSException
 import zope.interface
 import zope.security.proxy
 
+from zeit.cms.content.sources import FEATURE_TOGGLES
 import zeit.cms.cli
 import zeit.cms.config
 import zeit.connector.interfaces
@@ -26,6 +27,8 @@ log = logging.getLogger(__name__)
 
 
 def get_storage_key(key):
+    if not FEATURE_TOGGLES.find('connector_cache_encode_keys'):
+        return key
     if isinstance(key, str):
         return key.encode('utf-8')
     return key
@@ -141,7 +144,8 @@ class AccessTimes:
         if stored == new:
             return
         self._access_time_by_id[key] = new
-        key = key.decode('utf-8')
+        if FEATURE_TOGGLES.find('connector_cache_encode_keys'):
+            key = key.decode('utf-8')
         self._sorted_access_time.pop(f'{stored}_{key}', None)
         self._sorted_access_time[f'{new}_{key}'] = 1
 

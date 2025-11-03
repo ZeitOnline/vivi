@@ -49,8 +49,7 @@ small objects:
 We have data in the cache. Since it's a small object it is stored as a
 reference to a plain string:
 
->>> from zeit.connector.cache import get_storage_key
->>> cached = cache._data[get_storage_key('some-id')]
+>>> cached = cache._data['some-id']
 >>> cached
 <zeit.connector.cache.Body object at 0x...>
 >>> cached.data
@@ -91,7 +90,7 @@ True
 
 Internally a blob is created in this case:
 
->>> body = cache._data[get_storage_key('some-id')]
+>>> body = cache._data['some-id']
 >>> body
 <zeit.connector.cache.Body object at 0x...>
 >>> body.data
@@ -146,7 +145,7 @@ True
 >>> 'blafasel' in cache
 False
 >>> list(cache.keys())
-[b'id']
+['id']
 
 >>> del cache['id']
 >>> cache['id']
@@ -163,7 +162,7 @@ Note that there is actually still the entry in the cache, but marked as
 deleted:
 
 >>> list(cache.keys(include_deleted=True))
-[b'id']
+['id']
 
 To really remove there is the remove method, which also works for "deleted"
 keys:
@@ -240,7 +239,7 @@ Setting ``new_properties`` does not update the ``somevalue`` to unicode:
 Note that internally no dictionaries are stored but a special object which also
 does conflict resolution:
 
->>> cache._storage[b'id']
+>>> cache._storage['id']
 <zeit.connector.cache.Properties object at 0x...>
 
 
@@ -274,9 +273,9 @@ True
 
 But actually the're just marked as deleted:
 
->>> cache._storage[b'id']
+>>> cache._storage['id']
 <zeit.connector.cache.ChildNames object at 0x...>
->>> list(cache._storage[b'id'])
+>>> list(cache._storage['id'])
 [DeleteProperty]
 
 
