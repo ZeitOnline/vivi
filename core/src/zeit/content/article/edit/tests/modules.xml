@@ -30,4 +30,5 @@
   <module id="image_row">Bilderreihe</module>
   <module id="image_parallax_properties">Bilder-Parallax-Modul</module>
   <module id="scrolly_chapter">Scrollytelling-Kapitel</module>
+  <module id="scrolly_image">Scrollytelling-Bild</module>
 </modules>

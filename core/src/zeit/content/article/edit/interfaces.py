@@ -398,6 +398,55 @@ class IScrollyChapter(IReference):
     )
 
 
+class ScrollyImageTextDisplaySource(zeit.cms.content.sources.SimpleFixedValueSource):
+    values = {
+        'boxed': _('mit Rahmen'),
+        'unboxed': _('ohne Rahmen'),
+    }
+
+
+class ScrollyImageLayoutSource(zeit.cms.content.sources.SimpleFixedValueSource):
+    values = {
+        'cover': _('Bildschirmfüllend'),
+        'contain': _('Eingepasst (ohne Rand)'),
+        'padded': _('Eingepasst (mit Rand)'),
+    }
+
+
+class IScrollyImage(IReference):
+    """Scrollytelling image block."""
+
+    references = zope.schema.Choice(
+        title=_('Image'),
+        description=_('Drag image group or animation here'),
+        source=ScrollyChapterMediaSource(),
+        required=True,
+    )
+
+    text = zope.schema.Text(title=_('Text'), required=False)
+
+    text_display = zope.schema.Choice(
+        title=_('Textdarstellung'),
+        source=ScrollyImageTextDisplaySource(),
+        default='boxed',
+        required=True,
+    )
+
+    layout_desktop = zope.schema.Choice(
+        title=_('Layout Desktop'),
+        source=ScrollyImageLayoutSource(),
+        default='cover',
+        required=True,
+    )
+
+    layout_mobile = zope.schema.Choice(
+        title=_('Layout Mobil'),
+        source=ScrollyImageLayoutSource(),
+        default='cover',
+        required=True,
+    )
+
+
 class IBox(IBlock):
     """
     This box is a first step to generalizing other boxes
