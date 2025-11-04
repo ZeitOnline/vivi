@@ -2063,3 +2063,18 @@
 .type-article .block.type-volume .block-inner {
     height: 370px;
 }
+
+/* ScrollyImage Layout: Display layout fields side-by-side */
+.type-article .block.type-scrolly_image .scrolly-image-layout {
+  display: inline-block !important;
+  width: 48% !important;
+  margin-right: 2%;
+  vertical-align: top;
+  margin-top: 12px;
+}
+
+.type-article
+  .block.type-scrolly_image
+  .scrolly-image-layout.scrolly-image-layout--desktop {
+  margin-right: 0;
+}
