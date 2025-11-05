@@ -348,12 +348,11 @@ class EditScrollyImage(zeit.edit.browser.form.InlineForm):
 
     def setUpWidgets(self, *args, **kw):
         super().setUpWidgets(*args, **kw)
+        self.widgets['text_display'].vivi_css_class = 'scrolly-3-col scrolly-3-col--text_display'
         self.widgets[
             'layout_desktop'
-        ].vivi_css_class = 'scrolly-image-layout scrolly-image-layout--desktop'
-        self.widgets[
-            'layout_mobile'
-        ].vivi_css_class = 'scrolly-image-layout scrolly-image-layout--mobile'
+        ].vivi_css_class = 'scrolly-3-col scrolly-3-col--layout_desktop'
+        self.widgets['layout_mobile'].vivi_css_class = 'scrolly-3-col scrolly-3-col--layout_mobile'
 
     @property
     def prefix(self):

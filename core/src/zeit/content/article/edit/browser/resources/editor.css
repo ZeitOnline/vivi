@@ -2065,16 +2065,27 @@
 }
 
 /* ScrollyImage Layout: Display layout fields side-by-side */
-.type-article .block.type-scrolly_image .scrolly-image-layout {
+
+.block.type-scrolly_image .scrolly-3-col {
+  box-sizing: border-box;
   display: inline-block !important;
-  width: 48% !important;
-  margin-right: 2%;
-  vertical-align: top;
+  width: 33.33% !important;
+  padding-right: 12px !important;
+  margin-right: -4px !important;
   margin-top: 12px;
+  vertical-align: top;
 }
 
-.type-article
-  .block.type-scrolly_image
-  .scrolly-image-layout.scrolly-image-layout--desktop {
-  margin-right: 0;
+.block.type-scrolly_image .scrolly-3-col.scrolly-3-col--layout_mobile {
+  padding-right: 0 !important;
 }
+
+.block.type-scrolly_image .scrolly-3-col.scrolly-3-col--text_display {
+  padding-right: 64px !important;
+}
+
+.block.type-scrolly_image .scrolly-3-col select {
+  width: 100%;
+}
+
+/* End of ScrollyImage Layout */
