@@ -44,7 +44,7 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
         b.getForm(name='imageupload').submit()
         folder = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/')
         img = next(x for x in folder.values() if 'tmp' in x.uniqueId)
-        assert b.url.endswith(f'/testcontent/@@edit-images?files={img.__name__}')
+        assert b.url.endswith(f'/testcontent/@@edit-images?files={img.__name__}&mdb_ids=')
 
     def test_does_not_redirect_if_files_field_is_not_in_request(self):
         b = self.browser
@@ -81,7 +81,7 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
         b.getForm(name='imageupload').submit()
         folder = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/')
         img = next(x for x in folder.values() if 'tmp' in x.uniqueId)
-        assert b.url.endswith(f'/@@edit-images?files={img.__name__}')
+        assert b.url.endswith(f'/@@edit-images?files={img.__name__}&mdb_ids=')
 
     def test_can_upload_image(self):
         b = self.browser
@@ -352,7 +352,7 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
             'obama-clinton-120x120.jpg'
         )
         b = self.browser
-        b.open('/repository/@@edit-images?files=group')
+        b.open('/repository/@@edit-images?files=group&mdb_ids=')
         assert b.getControl(name='target_name[0]').value == 'master-image-bild'
 
     def test_editimages_correctly_names_image_without_xmp_after_image_with_xmp(self):
@@ -698,6 +698,10 @@ class ImageUploadSeleniumTest(zeit.content.image.testing.SeleniumTestCase):
         s.assertValue('css=.imageupload__mdb-ids', '')
         s.click('css=.imageupload__button--submit')
         s.waitForLocation('*/repository/@@edit-images?files=*')
+        self.selenium.assertValue('name=target_name[0]', 'mdb-bild-titel-bild')
+        self.selenium.assertValue('name=copyright[0]', 'mdb-copyright-foo/Peter Schwalbach')
+        self.selenium.assertValue('name=title[0]', 'mdb-bild-titel')
+        self.selenium.assertValue('name=caption[0]', 'Testbilder Honorar')
 
 
 class AddCentralImageUploadTest(zeit.content.image.testing.SeleniumTestCase):

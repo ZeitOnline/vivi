@@ -15,7 +15,7 @@ class MDBImportJavascript(zeit.content.image.testing.SeleniumTestCase):
         s.open('/repository/@@zeit.content.image.imagegroup.Add')
         self.execute('document.getElementById("form.mdb_blob").widget.retrieve("4711")')
         s.waitForValue('name=form.caption', 'Testbilder Honorar')
-        s.assertValue('name=form.copyright.combination_02', 'Peter Schwalbach')
+        s.assertValue('name=form.copyright.combination_02', 'mdb-copyright-foo')
         s.assertValue('name=form.mdb_id', '4711')
         s.assertValue('name=form.mdb_blob', '4711')
         s.assertValue('name=form.release_period.combination_01', '2019-01-01T*')
