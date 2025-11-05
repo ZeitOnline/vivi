@@ -358,14 +358,7 @@ class IQuiz(IBlock, zeit.content.modules.interfaces.IQuiz):
     pass
 
 
-class ScrollyChapterFontStyleSource(zeit.cms.content.sources.SimpleFixedValueSource):
-    values = {
-        'tablet-gothic': _('Tablet Gothic'),
-        'tiemann': _('Tiemann'),
-    }
-
-
-class ScrollyChapterMediaSource(zeit.cms.content.contentsource.CMSContentSource):
+class ScrollyMediaReferenceSource(zeit.cms.content.contentsource.CMSContentSource):
     """Source for images and animation objects."""
 
     name = 'scrolly-chapter-media'
@@ -376,13 +369,20 @@ class ScrollyChapterMediaSource(zeit.cms.content.contentsource.CMSContentSource)
     )
 
 
+class ScrollyChapterFontStyleSource(zeit.cms.content.sources.SimpleFixedValueSource):
+    values = {
+        'tablet-gothic': _('Tablet Gothic'),
+        'tiemann': _('Tiemann'),
+    }
+
+
 class IScrollyChapter(IReference):
     """Scrollytelling chapter divider block."""
 
     references = zope.schema.Choice(
         title=_('Image'),
         description=_('Drag image group or animation here'),
-        source=ScrollyChapterMediaSource(),
+        source=ScrollyMediaReferenceSource(),
         required=True,
     )
 
@@ -400,16 +400,16 @@ class IScrollyChapter(IReference):
 
 class ScrollyImageTextDisplaySource(zeit.cms.content.sources.SimpleFixedValueSource):
     values = {
-        'boxed': _('With frame'),
-        'unboxed': _('Without frame'),
+        'boxed': _('mit Rahmen'),
+        'unboxed': _('ohne Rahmen'),
     }
 
 
 class ScrollyImageLayoutSource(zeit.cms.content.sources.SimpleFixedValueSource):
     values = {
-        'cover': _('Cover'),
-        'contain': _('Contain'),
-        'padded': _('Padded'),
+        'cover': _('Bildschirmfüllend'),
+        'contain': _('Eingepasst (ohne Rand)'),
+        'padded': _('Eingepasst (mit Rand)'),
     }
 
 
@@ -419,18 +419,18 @@ class IScrollyImage(IReference):
     references = zope.schema.Choice(
         title=_('Image'),
         description=_('Drag image group or animation here'),
-        source=ScrollyChapterMediaSource(),
+        source=ScrollyMediaReferenceSource(),
         required=True,
     )
 
-    text = zope.schema.Text(title=_('Text'), required=False)
-
     text_display = zope.schema.Choice(
-        title=_('Text display'),
+        title=_('Textdarstellung'),
         source=ScrollyImageTextDisplaySource(),
         default='boxed',
         required=True,
     )
+
+    text = zope.schema.Text(title=_('Text'), required=False)
 
     layout_desktop = zope.schema.Choice(
         title=_('Layout Desktop'),
@@ -440,7 +440,7 @@ class IScrollyImage(IReference):
     )
 
     layout_mobile = zope.schema.Choice(
-        title=_('Layout Mobile'),
+        title=_('Layout Mobil'),
         source=ScrollyImageLayoutSource(),
         default='cover',
         required=True,
