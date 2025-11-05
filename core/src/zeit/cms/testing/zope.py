@@ -257,31 +257,18 @@ class ZopeLayer(Layer):
     defaultBases = (CELERY_EAGER_LAYER, MOCK_RESET_LAYER)
 
     def __init__(self, bases=()):
-        from .sql import SQLIsolationLayer  # break circular import
-
         if not isinstance(bases, tuple):
             bases = (bases,)
         super().__init__(
             # This is a bit kludgy. We need an individual ZODB layer per ZCML
             # file (so e.g. different install generations are isolated), but
             # we don't really want to have to create one per package.
-            # And until *all* tests are using the SQL connector, we have to
-            # configure that layer depending on the actual connector in use.
-            self.defaultBases + bases + (ZODBLayer(), SQLIsolationLayer()),
+            self.defaultBases + bases + (ZODBLayer(),),
         )
 
     def setUp(self):
         zope.event.notify(zope.processlifetime.DatabaseOpened(self['zodbDB-layer']))
         transaction.commit()
-        with self.rootFolder(self['zodbDB-layer']) as root:
-            with site(root):
-                repository = zope.component.queryUtility(zeit.cms.repository.interfaces.IRepository)
-                typ = zope.component.queryUtility(
-                    zeit.cms.interfaces.ITypeDeclaration, name='testcontenttype'
-                )
-                # Skip for e.g. zeit.connector, zeit.securitypolicy.
-                if repository is not None and typ is not None:
-                    repository['testcontent'] = typ.factory()
         self['rootFolder'] = self.rootFolder
 
     def tearDown(self):
@@ -309,6 +296,19 @@ class ZopeLayer(Layer):
         ]
         self._set_current_zca(self['zodbApp'])
         transaction.commit()
+        self._create_fixture()
+
+    def _create_fixture(self):
+        # Since "everyone" uses /testcontent, set this up in a central place.
+        with site(self['zodbApp']):
+            repository = zope.component.queryUtility(zeit.cms.repository.interfaces.IRepository)
+            typ = zope.component.queryUtility(
+                zeit.cms.interfaces.ITypeDeclaration, name='testcontenttype'
+            )
+            # Skip for e.g. zeit.connector, zeit.securitypolicy.
+            if repository is not None and typ is not None:
+                repository['testcontent'] = typ.factory()
+                transaction.commit()
 
     def testTearDown(self):
         zope.component.hooks.setSite(None)
@@ -321,21 +321,13 @@ class ZopeLayer(Layer):
 
 
 class ContentFixtureLayer(Layer):
-    def setUp(self):
-        self['sql_transaction_layer'] = self['sql_connection'].begin_nested()
-        self['gcs_storage'].stack_push()
-        with self['rootFolder'](self['zodbDB-layer']) as root:
-            with zeit.cms.testing.site(root):
-                self.create_fixture()
+    def testSetUp(self):
+        with site(self['zodbApp']):
+            self.create_fixture()
+            transaction.commit()
 
     def create_fixture(self):
         raise NotImplementedError()
-
-    def tearDown(self):
-        transaction.abort()
-        self['sql_transaction_layer'].rollback()
-        del self['sql_transaction_layer']
-        self['gcs_storage'].stack_pop()
 
 
 class WSGILayer(Layer):

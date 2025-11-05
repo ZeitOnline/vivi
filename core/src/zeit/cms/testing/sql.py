@@ -5,8 +5,6 @@ from sqlalchemy import text as sql
 from sqlalchemy.exc import OperationalError
 import gcp_storage_emulator.server
 import sqlalchemy
-import transaction
-import zope.component
 
 import zeit.connector.interfaces
 import zeit.connector.models
@@ -83,15 +81,27 @@ class DatabaseLayer(Layer):
         engine.dispose()
 
         engine = sqlalchemy.create_engine(self['dsn'])
-        with engine.connect() as c:
-            t = c.begin()
-            zeit.connector.models.Base.metadata.drop_all(c)
-            zeit.connector.models.Base.metadata.create_all(c)
-            t.commit()
-        engine.dispose()
+        self['sql_engine'] = engine
+        self['sql_connection'] = c = engine.connect()
+        t = self['sql_connection'].begin()
+        zeit.connector.models.Base.metadata.drop_all(c)
+        zeit.connector.models.Base.metadata.create_all(c)
+        t.commit()
 
     def tearDown(self):
+        self['sql_connection'].close()
+        del self['sql_connection']
+        self['sql_engine'].dispose()
+        del self['sql_engine']
         del self['dsn']
+
+    def testSetUp(self):
+        c = self['sql_connection']
+        t = c.begin()
+        for mapper in zeit.connector.models.Base.registry.mappers:
+            table = mapper.class_.__tablename__
+            c.execute(sql(f'truncate {table} cascade'))
+        t.commit()
 
 
 DATABASE_LAYER = DatabaseLayer()
@@ -150,47 +160,3 @@ class SQLConfigLayer(ProductConfigLayer):
 
 
 SQL_CONFIG_LAYER = SQLConfigLayer(package='zeit.connector')
-
-
-class SQLIsolationLayer(Layer):
-    def __init__(self, connector=None):
-        super().__init__()
-        self.connector = connector  # Used by content-storage-api
-
-    def setUp(self):
-        if self.connector is None:
-            self.connector = zope.component.queryUtility(zeit.connector.interfaces.IConnector)
-        if not isinstance(self.connector, zeit.connector.postgresql.Connector):
-            return
-
-        self['sql_connection'] = self.connector.engine.connect()
-
-        # Configure sqlalchemy session to use only this specific connection,
-        # and to use savepoints instead of full commits. Thus it joins the
-        # transaction that we start in testSetUp() and roll back in testTearDown()
-        # See "Joining a Session into an External Transaction" in the sqlalchemy doc
-        self.connector.session.configure(
-            bind=self['sql_connection'], join_transaction_mode='create_savepoint'
-        )
-
-        self['sql_transaction_layer'] = self['sql_connection'].begin()
-
-    def tearDown(self):
-        if 'sql_connection' not in self:
-            return
-        self['sql_transaction_layer'].rollback()
-        del self['sql_transaction_layer']
-        self['sql_connection'].close()
-        del self['sql_connection']
-
-    def testSetUp(self):
-        if 'sql_connection' not in self:
-            return
-        self['sql_transaction_test'] = self['sql_connection'].begin_nested()
-
-    def testTearDown(self):
-        if 'sql_connection' not in self:
-            return
-        transaction.abort()  # includes connector.session.close()
-        self['sql_transaction_test'].rollback()
-        del self['sql_transaction_test']

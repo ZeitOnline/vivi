@@ -24,22 +24,10 @@ MOCK_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
 MOCK_CONNECTOR_LAYER = zeit.cms.testing.ZopeLayer(MOCK_ZCML_LAYER)
 
 
-class ContentFixtureLayer(zeit.cms.testing.Layer):
-    def setUp(self):
-        self['sql_transaction_test'] = self['sql_connection'].begin_nested()
+class ContentFixtureLayer(zeit.cms.testing.ContentFixtureLayer):
+    def create_fixture(self):
         connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
-        zcml = zope.app.appsetup.appsetup.getConfigContext()
-        if zcml.hasFeature('zeit.connector.sql.zope'):
-            with self['rootFolder'](self['zodbDB-layer']) as root:
-                with zeit.cms.testing.site(root):
-                    mkdir(connector, ROOT)
-        else:
-            mkdir(connector, ROOT)
-        transaction.commit()
-
-    def tearDown(self):
-        self['sql_transaction_test'].rollback()
-        del self['sql_transaction_test']
+        mkdir(connector, ROOT)
 
 
 SQL_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
