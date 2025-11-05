@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.221.0 (2025-11-05)
+--------------------
+
+- WCM-320: Remove quick publish button for folders entirely
+
+
 7.220.0 (2025-10-30)
 --------------------
 
