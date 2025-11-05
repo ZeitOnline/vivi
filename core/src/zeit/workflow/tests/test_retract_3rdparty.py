@@ -154,3 +154,11 @@ class Retract3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         )
         data = data_factory.retract_json()
         assert data == {}
+
+    def test_bookmarks_retract_article(self):
+        article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        data_factory = zope.component.getAdapter(
+            article, zeit.workflow.interfaces.IPublisherData, name='bookmarks'
+        )
+        payload = data_factory.retract_json()
+        assert payload == {}
