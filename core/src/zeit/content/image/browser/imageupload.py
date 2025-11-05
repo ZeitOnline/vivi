@@ -6,6 +6,7 @@ import uuid
 
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
+import opentelemetry.trace
 import zope.event
 import zope.formlib.form
 import zope.formlib.widgets
@@ -252,6 +253,8 @@ class EditForm(zeit.cms.browser.view.Base):
                 )
                 metadata.title = file['title']
                 metadata.caption = file['caption']
+                if mdb_id := file.get('mdb_id'):
+                    metadata.mdb_id = mdb_id
                 zeit.cms.repository.interfaces.IAutomaticallyRenameable(
                     imagegroup
                 ).renameable = False
@@ -284,6 +287,21 @@ class EditForm(zeit.cms.browser.view.Base):
 
         self.redirect(url, status=303)
 
+    def _get_metadata_for_upload(self, imggroup, mdb_id):
+        if mdb_id:
+            try:
+                mdb = zope.component.getUtility(zeit.content.image.interfaces.IMDB)
+                metadata = mdb.get_metadata(mdb_id)
+                result = parse_fields_from_metadata(metadata)
+                if any(result.values()):
+                    return result
+            except Exception as exc:
+                opentelemetry.trace.get_current_span().record_exception(exc)
+
+        return parse_fields_from_metadata(
+            imggroup[imggroup.master_image].embedded_metadata_flattened()
+        )
+
     def _parse_get_request(self):
         from_name = zeit.content.image.browser.interfaces.IUploadBaseName(self.context, None)
 
@@ -291,14 +309,16 @@ class EditForm(zeit.cms.browser.view.Base):
         if isinstance(filenames, str):
             filenames = (filenames,)
 
+        mdb_ids = self.request.form.get('mdb_ids', ())
+        if isinstance(mdb_ids, str):
+            mdb_ids = (mdb_ids,)
+
         name_provider = ImageNameProvider(self.folder)
-        for tmp_name in filenames:
+
+        for tmp_name, mdb_id in zip(filenames, mdb_ids):
             imggroup = self.folder[tmp_name]
 
-            meta = parse_fields_from_embedded_metadata(
-                imggroup[imggroup.master_image].embedded_metadata_flattened()
-            )
-
+            meta = self._get_metadata_for_upload(imggroup, mdb_id)
             name_base = None
             if from_name:
                 name_base = from_name
@@ -390,12 +410,31 @@ class EditForm(zeit.cms.browser.view.Base):
         """
 
 
-def parse_fields_from_embedded_metadata(metadata):
-    """Get title, copyright, caption from embedded metadata"""
+def parse_fields_from_metadata(metadata):
+    """Get title, copyright, caption from embedded or mdb metadata"""
     key_mapping = {
-        'title': ['xmp:xmpmeta:Headline', 'xmp:xmpmeta:title:text'],
-        'caption': ['xmp:xmpmeta:description:text'],
-        'copyright': ['xmp:xmpmeta:creator', 'xmp:xmpmeta:Credit'],
+        'title': [
+            # embedded
+            'xmp:xmpmeta:Headline',
+            'xmp:xmpmeta:title:text',
+            # mdb
+            'titel',
+        ],
+        'caption': [
+            # embedded
+            'xmp:xmpmeta:description:text',
+            # mdb
+            'beschreibung',
+        ],
+        'copyright': [
+            # embedded
+            'xmp:xmpmeta:creator',
+            'xmp:xmpmeta:Credit',
+            # mdb
+            'credit',
+            'rechteinhaber',
+            'fotograf',
+        ],
     }
 
     def first_value(keys):

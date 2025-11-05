@@ -200,7 +200,8 @@
 
         const baseUrl = this.#successfulUploads[0]
         const additionalFiles = this.#successfulUploads.slice(1).map(url => {
-          return '&files=' + new URL(url).searchParams.get('files')
+          const params = new URL(url).searchParams
+          return '&files=' + params.get('files') + '&mdb_ids=' + (params.get('mdb_ids') || '')
         }).join('')
 
         const url = baseUrl + additionalFiles
