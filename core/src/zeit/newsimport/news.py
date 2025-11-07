@@ -14,7 +14,6 @@ import zope.component
 import zope.interface
 
 from zeit.cms.content.interfaces import ISemanticChange
-from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
 from zeit.connector.search import SearchVar
 from zeit.content.article.article import Article
@@ -26,7 +25,6 @@ import zeit.connector.interfaces
 import zeit.content.image.image
 import zeit.content.image.imagegroup
 import zeit.content.image.interfaces
-import zeit.retresco.update
 
 
 log = logging.getLogger(__name__)
@@ -302,11 +300,6 @@ class ArticleEntry(Entry):
         article = zeit.cms.interfaces.ICMSContent(unique_id)
 
         return article
-
-    def publish(self, content):
-        if FEATURE_TOGGLES.find('newsimport_explicit_tms_before_publish'):
-            zeit.retresco.update.index_async(content.uniqueId)
-        return super().publish(content)
 
 
 class ImageEntry(Entry):
