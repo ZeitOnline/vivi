@@ -79,9 +79,10 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
             pass
         self.assertFalse(self.tms.enrich.called)
 
-    def test_folders_should_be_indexed_recursively(self):
+    def test_moving_folder_should_index_recursively(self):
         folder = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2007/01')
-        zeit.retresco.update.index(folder)
+        renamer = zope.copypastemove.interfaces.IContainerItemRenamer(folder.__parent__)
+        renamer.renameItem('01', '01-moved')
         # 1 Folder + 40 objects contained in it
         self.assertEqual(41, self.tms.index.call_count)
 
@@ -249,7 +250,7 @@ class IndexParallelTest(zeit.retresco.testing.FunctionalTestCase):
 
     def test_should_not_recurse_into_nonrecursive_collections(self):
         folder = zeit.cms.repository.folder.Folder()
-        zope.interface.alsoProvides(folder, zeit.cms.repository.interfaces.INonRecursiveCollection)
+        zope.interface.alsoProvides(folder, zeit.content.image.interfaces.IImageGroup)
         self.repository['nonrecursive'] = folder
         self.repository['nonrecursive']['test'] = ExampleContentType()
         self.index.reset_mock()
