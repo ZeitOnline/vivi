@@ -346,9 +346,6 @@ class EditScrollyImage(zeit.edit.browser.form.InlineForm):
         zeit.content.article.edit.interfaces.IScrollyImage
     ).select('references', 'text', 'layout_desktop', 'layout_mobile')
 
-    def setUpWidgets(self, *args, **kw):
-        super().setUpWidgets(*args, **kw)
-
     @property
     def prefix(self):
         return 'scrollyimage.{0}'.format(self.context.__name__)
