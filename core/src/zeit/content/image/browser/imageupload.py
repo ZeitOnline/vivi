@@ -87,7 +87,7 @@ class UploadForm(zeit.cms.browser.view.Base, zeit.content.image.browser.form.Cre
             self.send_message(error_message, type='error')
             return super().__call__()
 
-    def _set_metadata_for_image(self, imagegroup, image, mdb_id):
+    def _populate_metadata_from_source(self, imagegroup, image, mdb_id):
         fields = {}
         if mdb_id:
             try:
@@ -122,7 +122,7 @@ class UploadForm(zeit.cms.browser.view.Base, zeit.content.image.browser.form.Cre
         zeit.cms.repository.interfaces.IAutomaticallyRenameable(imagegroup).renameable = True
         zope.event.notify(zope.lifecycleevent.ObjectCreatedEvent(imagegroup))
         mdb_id = getattr(file, 'mdb_id', '')
-        self._set_metadata_for_image(imagegroup, image, mdb_id)
+        self._populate_metadata_from_source(imagegroup, image, mdb_id)
 
         parent[name] = imagegroup
         imagegroup[image.__name__] = image
@@ -326,6 +326,7 @@ class EditForm(zeit.cms.browser.view.Base):
         for tmp_name in filenames:
             imggroup = self.folder[tmp_name]
 
+            # metadata already parsed within upload
             meta = zeit.content.image.interfaces.IImageMetadata(imggroup)
             name_base = None
             if from_name:
