@@ -87,6 +87,32 @@ class UploadForm(zeit.cms.browser.view.Base, zeit.content.image.browser.form.Cre
             self.send_message(error_message, type='error')
             return super().__call__()
 
+    def _set_metadata_for_image(self, imagegroup, image, mdb_id):
+        fields = {}
+        if mdb_id:
+            try:
+                mdb = zope.component.getUtility(zeit.content.image.interfaces.IMDB)
+                metadata = mdb.get_metadata(mdb_id)
+                fields = parse_fields_from_metadata(metadata)
+            except Exception as exc:
+                opentelemetry.trace.get_current_span().record_exception(exc)
+
+        if not any(fields.values()):
+            fields = parse_fields_from_metadata(image.embedded_metadata_flattened())
+
+        metadata = zeit.content.image.interfaces.IImageMetadata(imagegroup)
+        metadata.copyright = (
+            None,
+            'Andere',
+            fields.get('copyright', ''),
+            None,
+            False,
+        )
+        metadata.title = fields.get('title', '')
+        metadata.caption = fields.get('caption', '')
+        if mdb_id:
+            metadata.mdb_id = mdb_id
+
     def _upload_imagegroup(self, file, parent):
         imagegroup = zeit.content.image.imagegroup.ImageGroup()
         image = self.create_image(file)
@@ -95,6 +121,9 @@ class UploadForm(zeit.cms.browser.view.Base, zeit.content.image.browser.form.Cre
         name = f'{uuid.uuid4()}.tmp'
         zeit.cms.repository.interfaces.IAutomaticallyRenameable(imagegroup).renameable = True
         zope.event.notify(zope.lifecycleevent.ObjectCreatedEvent(imagegroup))
+        mdb_id = getattr(file, 'mdb_id', '')
+        self._set_metadata_for_image(imagegroup, image, mdb_id)
+
         parent[name] = imagegroup
         imagegroup[image.__name__] = image
         return name
@@ -253,8 +282,6 @@ class EditForm(zeit.cms.browser.view.Base):
                 )
                 metadata.title = file['title']
                 metadata.caption = file['caption']
-                if mdb_id := file.get('mdb_id'):
-                    metadata.mdb_id = mdb_id
                 zeit.cms.repository.interfaces.IAutomaticallyRenameable(
                     imagegroup
                 ).renameable = False
@@ -287,21 +314,6 @@ class EditForm(zeit.cms.browser.view.Base):
 
         self.redirect(url, status=303)
 
-    def _get_metadata_for_upload(self, imggroup, mdb_id):
-        if mdb_id:
-            try:
-                mdb = zope.component.getUtility(zeit.content.image.interfaces.IMDB)
-                metadata = mdb.get_metadata(mdb_id)
-                result = parse_fields_from_metadata(metadata)
-                if any(result.values()):
-                    return result
-            except Exception as exc:
-                opentelemetry.trace.get_current_span().record_exception(exc)
-
-        return parse_fields_from_metadata(
-            imggroup[imggroup.master_image].embedded_metadata_flattened()
-        )
-
     def _parse_get_request(self):
         from_name = zeit.content.image.browser.interfaces.IUploadBaseName(self.context, None)
 
@@ -309,21 +321,17 @@ class EditForm(zeit.cms.browser.view.Base):
         if isinstance(filenames, str):
             filenames = (filenames,)
 
-        mdb_ids = self.request.form.get('mdb_ids', ())
-        if isinstance(mdb_ids, str):
-            mdb_ids = (mdb_ids,)
-
         name_provider = ImageNameProvider(self.folder)
 
-        for tmp_name, mdb_id in zip(filenames, mdb_ids):
+        for tmp_name in filenames:
             imggroup = self.folder[tmp_name]
 
-            meta = self._get_metadata_for_upload(imggroup, mdb_id)
+            meta = zeit.content.image.interfaces.IImageMetadata(imggroup)
             name_base = None
             if from_name:
                 name_base = from_name
-            elif meta['title'] is not None:
-                name_base = zeit.cms.interfaces.normalize_filename(meta['title'])
+            elif meta.title:
+                name_base = zeit.cms.interfaces.normalize_filename(meta.title)
             else:
                 filename = os.path.splitext(imggroup.master_image)[0]
                 name_base = zeit.cms.interfaces.normalize_filename(filename)
@@ -333,12 +341,16 @@ class EditForm(zeit.cms.browser.view.Base):
             else:
                 name = ''
 
+            copyright_freetext = ''
+            if meta.copyright:
+                copyright_freetext = meta.copyright[2]
+
             yield {
                 'tmp_name': tmp_name,
                 'target_name': name,
-                'title': meta['title'],
-                'copyright': meta['copyright'],
-                'caption': meta['caption'],
+                'title': meta.title or '',
+                'copyright': copyright_freetext or '',
+                'caption': meta.caption or '',
                 'thumbnail': self.url(imggroup, 'thumbnail'),
             }
 
