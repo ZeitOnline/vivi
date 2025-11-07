@@ -113,6 +113,11 @@ MOCK_LAYER = zeit.cms.testing.Layer(
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
     layer = ZOPE_LAYER
 
+    def setUp(self):
+        super().setUp()
+        # Remove TMS requests triggered by e.g. ZopeLayer.testSetUp()
+        self.layer['request_handler'].reset()
+
 
 class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
     layer = WSGI_LAYER

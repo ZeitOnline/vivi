@@ -272,6 +272,8 @@ class RetryTest(zeit.retresco.testing.FunctionalTestCase):
 
     def setUp(self):
         super().setUp()
+        # Ensure that jobs triggered by e.g. ZopeLayer.testSetUp() are done
+        zeit.cms.testing.celery.wait_for_celery()
 
         self.tms = mock.Mock()
         self.tms.get_article_data.return_value = {}
