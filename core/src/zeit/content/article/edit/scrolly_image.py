@@ -14,12 +14,6 @@ class ScrollyImage(zeit.content.article.edit.reference.Reference):
     text = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'text', zeit.content.article.edit.interfaces.IScrollyImage['text']
     )
-    text_display = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.',
-        'text-display',
-        zeit.content.article.edit.interfaces.IScrollyImage['text_display'],
-        use_default=True,
-    )
     layout_desktop = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.',
         'layout-desktop',

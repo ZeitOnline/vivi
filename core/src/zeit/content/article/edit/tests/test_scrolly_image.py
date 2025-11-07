@@ -37,19 +37,6 @@ class ScrollyImageTest(zeit.content.article.testing.FunctionalTestCase):
         self.assertEqual(text, scrolly_img.text)
         self.assertEqual(text, scrolly_img.xml.get('text'))
 
-    def test_text_display_attribute_should_be_stored_in_xml(self):
-        from zeit.content.article.edit.scrolly_image import ScrollyImage
-
-        scrolly_img = ScrollyImage(None, lxml.builder.E.scrolly_image())
-        text_display = 'unboxed'
-        scrolly_img.text_display = text_display
-        self.assertEqual(text_display, scrolly_img.text_display)
-        self.assertEqual(text_display, scrolly_img.xml.get('text-display'))
-
-    def test_text_display_default_should_be_boxed(self):
-        scrolly_img = self.create_scrolly_image()
-        self.assertEqual('boxed', scrolly_img.text_display)
-
     def test_layout_desktop_attribute_should_be_stored_in_xml(self):
         from zeit.content.article.edit.scrolly_image import ScrollyImage
 
@@ -67,7 +54,7 @@ class ScrollyImageTest(zeit.content.article.testing.FunctionalTestCase):
         from zeit.content.article.edit.scrolly_image import ScrollyImage
 
         scrolly_img = ScrollyImage(None, lxml.builder.E.scrolly_image())
-        layout_mobile = 'padded'
+        layout_mobile = 'contain-padded'
         scrolly_img.layout_mobile = layout_mobile
         self.assertEqual(layout_mobile, scrolly_img.layout_mobile)
         self.assertEqual(layout_mobile, scrolly_img.xml.get('layout-mobile'))

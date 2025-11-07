@@ -398,18 +398,12 @@ class IScrollyChapter(IReference):
     )
 
 
-class ScrollyImageTextDisplaySource(zeit.cms.content.sources.SimpleFixedValueSource):
-    values = {
-        'boxed': _('mit Rahmen'),
-        'unboxed': _('ohne Rahmen'),
-    }
-
-
 class ScrollyImageLayoutSource(zeit.cms.content.sources.SimpleFixedValueSource):
     values = {
-        'cover': _('Bildschirmfüllend'),
-        'contain': _('Eingepasst (ohne Rand)'),
-        'padded': _('Eingepasst (mit Rand)'),
+        'cover': _('Cover'),
+        'cover-textbox': _('Cover (with textbox)'),
+        'contain': _('Contain'),
+        'contain-padded': _('Contain (with whitespace)'),
     }
 
 
@@ -423,24 +417,17 @@ class IScrollyImage(IReference):
         required=True,
     )
 
-    text_display = zope.schema.Choice(
-        title=_('Textdarstellung'),
-        source=ScrollyImageTextDisplaySource(),
-        default='boxed',
-        required=True,
-    )
-
     text = zope.schema.Text(title=_('Text'), required=False)
 
     layout_desktop = zope.schema.Choice(
-        title=_('Layout Desktop'),
+        title=_('Layout desktop'),
         source=ScrollyImageLayoutSource(),
         default='cover',
         required=True,
     )
 
     layout_mobile = zope.schema.Choice(
-        title=_('Layout Mobil'),
+        title=_('Layout mobile'),
         source=ScrollyImageLayoutSource(),
         default='cover',
         required=True,
