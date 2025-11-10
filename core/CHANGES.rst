@@ -3,6 +3,16 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.222.0 (2025-11-10)
+--------------------
+
+- ES-449: Add scrollytelling image module (ScrollyImage)
+
+
+MAINT:
+- WCM-1186: Remove toggle after successful production deployment
+
+
 7.221.0 (2025-11-05)
 --------------------
 
