@@ -6,6 +6,7 @@ import zope.i18n.translationdomain
 
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
+from zeit.content.image.testing import create_image_group
 import zeit.cms.checkout.helper
 import zeit.cms.testing.i18n
 import zeit.content.article.interfaces
@@ -143,6 +144,71 @@ class TestAdding(zeit.content.article.testing.BrowserTestCase):
         self.browser.getControl('Publish and push').click()
         article = ICMSContent('http://xml.zeit.de/deutschland/meinung/2018-01/foo')
         self.assertEqual((('Deutschland', 'Meinung'),), article.channels)
+
+    def test_breaking_news_fallback_image_only_visible_with_toggle(self):
+        from zeit.cms.content.sources import FEATURE_TOGGLES
+
+        FEATURE_TOGGLES.unset('breaking_news_fallback_image')
+        self.repository['imagegroup'] = create_image_group()
+        image = self.repository['imagegroup']
+        zeit.cms.config.set('zeit.push', 'breaking-news-fallback-image', image.uniqueId)
+        b = self.browser
+        self.create_breakingnews()
+        self.fill_in_required_values()
+        with self.assertRaises(LookupError):
+            b.getControl('Breaking news image')
+        b.getControl('Publish and push').click()
+        article = ICMSContent('http://xml.zeit.de/online/2007/01/foo')
+        self.assertIsNone(article.main_image.target)
+
+    def test_breaking_news_fallback_image_is_missing(self):
+        zeit.cms.config.set(
+            'zeit.push', 'breaking-news-fallback-image', 'http://xml.zeit.de/missing-image'
+        )
+        b = self.browser
+        self.create_breakingnews()
+        self.fill_in_required_values()
+        self.assertEqual(b.getControl('Breaking news image').value, '')
+        b.getControl('Publish and push').click()
+        article = ICMSContent('http://xml.zeit.de/online/2007/01/foo')
+        self.assertIsNone(article.main_image.target)
+
+    def test_breaking_news_fallback_image_is_removed(self):
+        self.repository['imagegroup'] = create_image_group()
+        image = self.repository['imagegroup']
+        zeit.cms.config.set('zeit.push', 'breaking-news-fallback-image', image.uniqueId)
+        b = self.browser
+        self.create_breakingnews()
+        self.fill_in_required_values()
+        b.getControl('Breaking news image').value = ''
+        b.getControl('Publish and push').click()
+        article = ICMSContent('http://xml.zeit.de/online/2007/01/foo')
+        self.assertIsNone(article.main_image.target)
+
+    def test_breaking_news_fallback_image_is_overwritten(self):
+        self.repository['default-imagegroup'] = create_image_group()
+        self.repository['user-imagegroup'] = create_image_group()
+        image = self.repository['default-imagegroup']
+        zeit.cms.config.set('zeit.push', 'breaking-news-fallback-image', image.uniqueId)
+        b = self.browser
+        self.create_breakingnews()
+        self.fill_in_required_values()
+        b.getControl('Breaking news image').value = self.repository['user-imagegroup'].uniqueId
+        b.getControl('Publish and push').click()
+        article = ICMSContent('http://xml.zeit.de/online/2007/01/foo')
+        self.assertEqual(self.repository['user-imagegroup'], article.main_image.target)
+
+    def test_breaking_news_fallback_image(self):
+        self.repository['imagegroup'] = create_image_group()
+        image = self.repository['imagegroup']
+        zeit.cms.config.set('zeit.push', 'breaking-news-fallback-image', image.uniqueId)
+        b = self.browser
+        self.create_breakingnews()
+        self.fill_in_required_values()
+        self.assertEqual(b.getControl('Breaking news image').value, image.uniqueId)
+        b.getControl('Publish and push').click()
+        article = ICMSContent('http://xml.zeit.de/online/2007/01/foo')
+        self.assertEqual(image, article.main_image.target)
 
 
 class RetractBannerTest(zeit.content.article.testing.SeleniumTestCase):
