@@ -233,6 +233,17 @@
       />
   </class>
 
+  <class class=".scrolly_image.ScrollyImage">
+    <require
+      interface=".interfaces.IScrollyImage"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IScrollyImage"
+      permission="zeit.EditContent"
+      />
+  </class>
+
   <class class=".citation_comment.CitationComment">
     <require
       interface=".interfaces.ICitationComment"

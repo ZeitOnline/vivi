@@ -358,14 +358,7 @@ class IQuiz(IBlock, zeit.content.modules.interfaces.IQuiz):
     pass
 
 
-class ScrollyChapterFontStyleSource(zeit.cms.content.sources.SimpleFixedValueSource):
-    values = {
-        'tablet-gothic': _('Tablet Gothic'),
-        'tiemann': _('Tiemann'),
-    }
-
-
-class ScrollyChapterMediaSource(zeit.cms.content.contentsource.CMSContentSource):
+class ScrollyMediaReferenceSource(zeit.cms.content.contentsource.CMSContentSource):
     """Source for images and animation objects."""
 
     name = 'scrolly-chapter-media'
@@ -376,13 +369,20 @@ class ScrollyChapterMediaSource(zeit.cms.content.contentsource.CMSContentSource)
     )
 
 
+class ScrollyChapterFontStyleSource(zeit.cms.content.sources.SimpleFixedValueSource):
+    values = {
+        'tablet-gothic': _('Tablet Gothic'),
+        'tiemann': _('Tiemann'),
+    }
+
+
 class IScrollyChapter(IReference):
     """Scrollytelling chapter divider block."""
 
     references = zope.schema.Choice(
         title=_('Image'),
         description=_('Drag image group or animation here'),
-        source=ScrollyChapterMediaSource(),
+        source=ScrollyMediaReferenceSource(),
         required=True,
     )
 
@@ -394,6 +394,42 @@ class IScrollyChapter(IReference):
         title=_('Font Style'),
         source=ScrollyChapterFontStyleSource(),
         default='tablet-gothic',
+        required=True,
+    )
+
+
+class ScrollyImageLayoutSource(zeit.cms.content.sources.SimpleFixedValueSource):
+    values = {
+        'cover': _('Cover'),
+        'cover-textbox': _('Cover (with textbox)'),
+        'contain': _('Contain'),
+        'contain-padded': _('Contain (with whitespace)'),
+    }
+
+
+class IScrollyImage(IReference):
+    """Scrollytelling image block."""
+
+    references = zope.schema.Choice(
+        title=_('Image'),
+        description=_('Drag image group or animation here'),
+        source=ScrollyMediaReferenceSource(),
+        required=True,
+    )
+
+    text = zope.schema.Text(title=_('Text'), required=False)
+
+    layout_desktop = zope.schema.Choice(
+        title=_('Layout desktop'),
+        source=ScrollyImageLayoutSource(),
+        default='cover',
+        required=True,
+    )
+
+    layout_mobile = zope.schema.Choice(
+        title=_('Layout mobile'),
+        source=ScrollyImageLayoutSource(),
+        default='cover',
         required=True,
     )
 

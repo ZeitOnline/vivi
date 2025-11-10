@@ -8,8 +8,12 @@
   <module id="division">Seitenumbruch</module>
   <module id="embed">Social Embed</module>
   <module id="animation">Animation</module>
-  <module id="gallery">Bildergalerie</module>
   <module id="image">Bild</module>
+  <module id="gallery">Bildergalerie</module>
+  <module id="image_row">Bilderreihe</module>
+  <module id="image_parallax_properties">Bilder-Parallax-Modul</module>
+  <module id="scrolly_image">Scrollytelling-Bild</module>
+  <module id="scrolly_chapter">Scrollytelling-Kapitel</module>
   <module id="infobox">Infobox</module>
   <module id="ingredientdice">Zutatenwürfel</module>
   <module id="jobboxticker">Jobticker Modul</module>
@@ -27,7 +31,4 @@
   <module id="topicbox">Themenbox</module>
   <module id="video">Video</module>
   <module id="volume">Ausgabe</module>
-  <module id="image_row">Bilderreihe</module>
-  <module id="image_parallax_properties">Bilder-Parallax-Modul</module>
-  <module id="scrolly_chapter">Scrollytelling-Kapitel</module>
 </modules>

@@ -2063,3 +2063,27 @@
 .type-article .block.type-volume .block-inner {
     height: 370px;
 }
+
+/* ScrollyImage Layout: Display layout fields side-by-side */
+
+.block.type-scrolly_image .fieldname-layout_desktop,
+.block.type-scrolly_image .fieldname-layout_mobile {
+  /* using box-sizing & padding to avoid unnecessary line breaks on smaller screens */
+  box-sizing: border-box;
+  display: inline-block !important;
+  width: 50% !important;
+  padding-right: 12px !important;
+  margin-right: -4px !important;
+  margin-top: 12px;
+  vertical-align: top;
+}
+
+.block.type-scrolly_image .fieldname-layout_mobile {
+  padding-right: 0 !important;
+}
+
+.block.type-scrolly_image select {
+  width: 100%;
+}
+
+/* End of ScrollyImage Layout */

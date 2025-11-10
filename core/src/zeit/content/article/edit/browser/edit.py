@@ -340,6 +340,17 @@ class EditScrollyChapter(zeit.edit.browser.form.InlineForm):
         return 'scrollychapter.{0}'.format(self.context.__name__)
 
 
+class EditScrollyImage(zeit.edit.browser.form.InlineForm):
+    legend = None
+    form_fields = zope.formlib.form.FormFields(
+        zeit.content.article.edit.interfaces.IScrollyImage
+    ).select('references', 'text', 'layout_desktop', 'layout_mobile')
+
+    @property
+    def prefix(self):
+        return 'scrollyimage.{0}'.format(self.context.__name__)
+
+
 class EditPuzzleForm(zeit.edit.browser.form.InlineForm):
     legend = None
     form_fields = zope.formlib.form.FormFields(

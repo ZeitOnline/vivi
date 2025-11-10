@@ -481,6 +481,26 @@
     permission="zope.View"
     />
 
+  <!-- scrolly image -->
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IScrollyImage"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit-scrolly-image"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IScrollyImage"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-scrolly-image"
+    class=".edit.EditScrollyImage"
+    permission="zope.View"
+    />
+
   <!-- puzzle form -->
 
   <browser:viewlet
