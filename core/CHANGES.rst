@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.223.0 (2025-11-10)
+--------------------
+
+- WCM-1145: new imageupload uses metadata from mdb
+
+
 7.222.0 (2025-11-10)
 --------------------
 
