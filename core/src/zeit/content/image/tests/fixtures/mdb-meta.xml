@@ -121,7 +121,7 @@
         <data>Testbilder Honorar</data>
       </mediadata_content>
       <mediadata_content placeholder_name="credit" type="text">
-        <data></data>
+        <data>mdb-copyright-foo</data>
       </mediadata_content>
       <mediadata_content placeholder_name="erstellungsdatum" type="date">
         <data>0000-00-00 00:00:00</data>
@@ -170,7 +170,7 @@ exif:GPSLongitudeRef: W
         <data></data>
       </mediadata_content>
       <mediadata_content placeholder_name="titel" type="text">
-        <data></data>
+        <data>mdb-bild-titel</data>
       </mediadata_content>
       <mediadata_content placeholder_name="url_quelle" type="text">
         <data></data>

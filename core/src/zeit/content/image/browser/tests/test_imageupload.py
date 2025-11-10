@@ -698,6 +698,10 @@ class ImageUploadSeleniumTest(zeit.content.image.testing.SeleniumTestCase):
         s.assertValue('css=.imageupload__mdb-ids', '')
         s.click('css=.imageupload__button--submit')
         s.waitForLocation('*/repository/@@edit-images?files=*')
+        self.selenium.assertValue('name=target_name[0]', 'mdb-bild-titel-bild')
+        self.selenium.assertValue('name=copyright[0]', 'mdb-copyright-foo/Peter Schwalbach')
+        self.selenium.assertValue('name=title[0]', 'mdb-bild-titel')
+        self.selenium.assertValue('name=caption[0]', 'Testbilder Honorar')
 
 
 class AddCentralImageUploadTest(zeit.content.image.testing.SeleniumTestCase):

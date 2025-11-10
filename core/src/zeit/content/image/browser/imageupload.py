@@ -6,6 +6,7 @@ import uuid
 
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
+import opentelemetry.trace
 import zope.event
 import zope.formlib.form
 import zope.formlib.widgets
@@ -86,6 +87,32 @@ class UploadForm(zeit.cms.browser.view.Base, zeit.content.image.browser.form.Cre
             self.send_message(error_message, type='error')
             return super().__call__()
 
+    def _populate_metadata_from_source(self, imagegroup, image, mdb_id):
+        fields = {}
+        if mdb_id:
+            try:
+                mdb = zope.component.getUtility(zeit.content.image.interfaces.IMDB)
+                metadata = mdb.get_metadata(mdb_id)
+                fields = parse_fields_from_metadata(metadata)
+            except Exception as exc:
+                opentelemetry.trace.get_current_span().record_exception(exc)
+
+        if not any(fields.values()):
+            fields = parse_fields_from_metadata(image.embedded_metadata_flattened())
+
+        metadata = zeit.content.image.interfaces.IImageMetadata(imagegroup)
+        metadata.copyright = (
+            None,
+            'Andere',
+            fields.get('copyright', ''),
+            None,
+            False,
+        )
+        metadata.title = fields.get('title', '')
+        metadata.caption = fields.get('caption', '')
+        if mdb_id:
+            metadata.mdb_id = mdb_id
+
     def _upload_imagegroup(self, file, parent):
         imagegroup = zeit.content.image.imagegroup.ImageGroup()
         image = self.create_image(file)
@@ -94,6 +121,9 @@ class UploadForm(zeit.cms.browser.view.Base, zeit.content.image.browser.form.Cre
         name = f'{uuid.uuid4()}.tmp'
         zeit.cms.repository.interfaces.IAutomaticallyRenameable(imagegroup).renameable = True
         zope.event.notify(zope.lifecycleevent.ObjectCreatedEvent(imagegroup))
+        mdb_id = getattr(file, 'mdb_id', '')
+        self._populate_metadata_from_source(imagegroup, image, mdb_id)
+
         parent[name] = imagegroup
         imagegroup[image.__name__] = image
         return name
@@ -292,18 +322,17 @@ class EditForm(zeit.cms.browser.view.Base):
             filenames = (filenames,)
 
         name_provider = ImageNameProvider(self.folder)
+
         for tmp_name in filenames:
             imggroup = self.folder[tmp_name]
 
-            meta = parse_fields_from_embedded_metadata(
-                imggroup[imggroup.master_image].embedded_metadata_flattened()
-            )
-
+            # metadata already parsed within upload
+            meta = zeit.content.image.interfaces.IImageMetadata(imggroup)
             name_base = None
             if from_name:
                 name_base = from_name
-            elif meta['title'] is not None:
-                name_base = zeit.cms.interfaces.normalize_filename(meta['title'])
+            elif meta.title:
+                name_base = zeit.cms.interfaces.normalize_filename(meta.title)
             else:
                 filename = os.path.splitext(imggroup.master_image)[0]
                 name_base = zeit.cms.interfaces.normalize_filename(filename)
@@ -313,12 +342,16 @@ class EditForm(zeit.cms.browser.view.Base):
             else:
                 name = ''
 
+            copyright_freetext = ''
+            if meta.copyright:
+                copyright_freetext = meta.copyright[2]
+
             yield {
                 'tmp_name': tmp_name,
                 'target_name': name,
-                'title': meta['title'],
-                'copyright': meta['copyright'],
-                'caption': meta['caption'],
+                'title': meta.title or '',
+                'copyright': copyright_freetext or '',
+                'caption': meta.caption or '',
                 'thumbnail': self.url(imggroup, 'thumbnail'),
             }
 
@@ -390,12 +423,31 @@ class EditForm(zeit.cms.browser.view.Base):
         """
 
 
-def parse_fields_from_embedded_metadata(metadata):
-    """Get title, copyright, caption from embedded metadata"""
+def parse_fields_from_metadata(metadata):
+    """Get title, copyright, caption from embedded or mdb metadata"""
     key_mapping = {
-        'title': ['xmp:xmpmeta:Headline', 'xmp:xmpmeta:title:text'],
-        'caption': ['xmp:xmpmeta:description:text'],
-        'copyright': ['xmp:xmpmeta:creator', 'xmp:xmpmeta:Credit'],
+        'title': [
+            # embedded
+            'xmp:xmpmeta:Headline',
+            'xmp:xmpmeta:title:text',
+            # mdb
+            'titel',
+        ],
+        'caption': [
+            # embedded
+            'xmp:xmpmeta:description:text',
+            # mdb
+            'beschreibung',
+        ],
+        'copyright': [
+            # embedded
+            'xmp:xmpmeta:creator',
+            'xmp:xmpmeta:Credit',
+            # mdb
+            'credit',
+            'rechteinhaber',
+            'fotograf',
+        ],
     }
 
     def first_value(keys):
