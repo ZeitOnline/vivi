@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.224.0 (2025-11-11)
+--------------------
+
+- WCM-1147: Make conflicts less likely when storing connector cache access times
+
+- WCM-1068: add breaking news image
+
+
 7.223.0 (2025-11-10)
 --------------------
 
