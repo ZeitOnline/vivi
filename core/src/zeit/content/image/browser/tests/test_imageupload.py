@@ -4,6 +4,7 @@ import unittest
 import urllib
 
 from selenium.webdriver.common.keys import Keys
+import pendulum
 import zope.component
 
 from zeit.cms.content.sources import FEATURE_TOGGLES
@@ -17,7 +18,11 @@ import zeit.cms.browser.interfaces
 import zeit.cms.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.cms.workingcopy.interfaces
+import zeit.content.image.interfaces
+import zeit.content.image.mdb
 import zeit.content.image.testing
+import zeit.workflow.interfaces
+import zeit.workflow.timebased
 
 
 class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
@@ -685,9 +690,22 @@ class ImageUploadSeleniumTest(zeit.content.image.testing.SeleniumTestCase):
         self.selenium.waitForLocation('*/repository/@@edit-images?files=*')
 
     def test_enter_mdb_id(self):
+        login_as = 'globalmgr:globalmgrpw'
         s = self.selenium
-        zope.component.getGlobalSiteManager().registerUtility(zeit.content.image.mdb.FakeMDB())
-        self.open('/repository/@@upload-images')
+
+        # avoid circular import for workflow zeit.push imports zeit.content.image imports zeit.push
+        # therefore register just what we need!
+        # Unfortunately we miss out on the metadata view we actually need,
+        # so we mix our seleniumtest with unittest
+        gsm = zope.component.getGlobalSiteManager()
+        gsm.registerAdapter(
+            zeit.workflow.timebased.TimeBasedWorkflow,
+            required=(zeit.cms.interfaces.ICMSContent,),
+            provided=zeit.workflow.interfaces.ITimeBasedPublishing,
+        )
+
+        gsm.registerUtility(zeit.content.image.mdb.FakeMDB())
+        self.open('/repository/@@upload-images', login_as)
         s.type('css=.imageupload__mdb-ids', '12345')
         s.keyPress('css=.imageupload__mdb-ids', Keys.RETURN)
         s.waitForElementPresent('css=.imageupload__gallery li')
@@ -698,10 +716,19 @@ class ImageUploadSeleniumTest(zeit.content.image.testing.SeleniumTestCase):
         s.assertValue('css=.imageupload__mdb-ids', '')
         s.click('css=.imageupload__button--submit')
         s.waitForLocation('*/repository/@@edit-images?files=*')
-        self.selenium.assertValue('name=target_name[0]', 'mdb-bild-titel-bild')
-        self.selenium.assertValue('name=copyright[0]', 'mdb-copyright-foo/Peter Schwalbach')
-        self.selenium.assertValue('name=title[0]', 'mdb-bild-titel')
-        self.selenium.assertValue('name=caption[0]', 'Testbilder Honorar')
+        s.assertValue('name=target_name[0]', 'mdb-bild-titel-bild')
+        s.assertValue('name=copyright[0]', 'mdb-copyright-foo/Peter Schwalbach')
+        s.assertValue('name=title[0]', 'mdb-bild-titel')
+        s.assertValue('name=caption[0]', 'Testbilder Honorar')
+
+        s.click('name=upload_and_open')
+        s.waitForLocation('*/repository/*bild/@@variant.html')
+
+        imagegroup = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/mdb-bild-titel-bild')
+        workflow = zeit.workflow.interfaces.ITimeBasedPublishing(imagegroup)
+        self.assertEqual(
+            (None, pendulum.parse('2019-01-01', tz='Europe/Berlin')), workflow.release_period
+        )
 
 
 class AddCentralImageUploadTest(zeit.content.image.testing.SeleniumTestCase):

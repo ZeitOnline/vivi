@@ -7,6 +7,7 @@ import uuid
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
 import opentelemetry.trace
+import pendulum
 import zope.event
 import zope.formlib.form
 import zope.formlib.widgets
@@ -93,6 +94,9 @@ class UploadForm(zeit.cms.browser.view.Base, zeit.content.image.browser.form.Cre
             try:
                 mdb = zope.component.getUtility(zeit.content.image.interfaces.IMDB)
                 metadata = mdb.get_metadata(mdb_id)
+                if expires := metadata.get('expires', None):
+                    workflow = zeit.workflow.interfaces.ITimeBasedPublishing(imagegroup)
+                    workflow.release_period = (None, pendulum.parse(expires))
                 fields = parse_fields_from_metadata(metadata)
             except Exception as exc:
                 opentelemetry.trace.get_current_span().record_exception(exc)
