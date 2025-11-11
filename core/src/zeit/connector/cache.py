@@ -17,21 +17,12 @@ import ZODB.POSException
 import zope.interface
 import zope.security.proxy
 
-from zeit.cms.content.sources import FEATURE_TOGGLES
 import zeit.cms.cli
 import zeit.cms.config
 import zeit.connector.interfaces
 
 
 log = logging.getLogger(__name__)
-
-
-def get_storage_key(key):
-    if not FEATURE_TOGGLES.find('connector_cache_encode_keys'):
-        return key
-    if isinstance(key, str):
-        return key.encode('utf-8')
-    return key
 
 
 class StringRef(persistent.Persistent):
@@ -144,8 +135,6 @@ class AccessTimes:
         if stored == new:
             return
         self._access_time_by_id[key] = new
-        if FEATURE_TOGGLES.find('connector_cache_encode_keys'):
-            key = key.decode('utf-8')
         self._sorted_access_time.pop(f'{stored}_{key}', None)
         self._sorted_access_time[f'{new}_{key}'] = 1
 
@@ -166,7 +155,7 @@ class AccessTimes:
                     _, _, key = item.partition('_')
                     log.info('Evicting %s', key)
                     self.pop(key, None)
-                    self._access_time_by_id.pop(get_storage_key(key), None)
+                    self._access_time_by_id.pop(key, None)
                     self._sorted_access_time.pop(item, None)
 
     def _get_time_key(self, timestamp):
@@ -180,17 +169,16 @@ class ResourceCache(AccessTimes, persistent.Persistent):
         self._data = BTrees.family64.OO.BTree()
 
     def __getitem__(self, uniqueid):
-        key = get_storage_key(uniqueid)
         try:
-            value = self._data.get(key)
+            value = self._data.get(uniqueid)
             if value is None:
                 raise KeyError('Object %r is not cached.' % uniqueid)
-            self._update_cache_access(key)
+            self._update_cache_access(uniqueid)
             return value.open()
         except ZODB.POSException.POSKeyError as err:
             current_span = opentelemetry.trace.get_current_span()
             current_span.record_exception(err)
-            raise KeyError(key)
+            raise KeyError(uniqueid)
 
     def get(self, uniqueid, default=None):
         try:
@@ -199,11 +187,10 @@ class ResourceCache(AccessTimes, persistent.Persistent):
             return default
 
     def __contains__(self, uniqueid):
-        key = get_storage_key(uniqueid)
         try:
-            result = key in self._data
+            result = uniqueid in self._data
             if result:
-                self._update_cache_access(key)
+                self._update_cache_access(uniqueid)
             return result
         except ZODB.POSException.POSKeyError as err:
             current_span = opentelemetry.trace.get_current_span()
@@ -211,23 +198,21 @@ class ResourceCache(AccessTimes, persistent.Persistent):
             return False
 
     def update(self, uniqueid, value):
-        key = get_storage_key(uniqueid)
-        stored = self._data.get(key)
+        stored = self._data.get(uniqueid)
         if not isinstance(stored, Body):
-            self._data[key] = stored = Body()
+            self._data[uniqueid] = stored = Body()
         try:
             stored.update_data(value)
         except ZODB.POSException.POSKeyError as err:
             current_span = opentelemetry.trace.get_current_span()
             current_span.record_exception(err)
-            self._data[key] = stored = Body()
+            self._data[uniqueid] = stored = Body()
             stored.update_data(value)
-        self._update_cache_access(key)
+        self._update_cache_access(uniqueid)
         return stored.open()
 
     def pop(self, unique_id, default=None):
-        key = get_storage_key(unique_id)
-        return self._data.pop(key, default)
+        return self._data.pop(unique_id, default)
 
     remove = pop
 
@@ -241,10 +226,9 @@ class PersistentCache(AccessTimes, persistent.Persistent):
         self._storage = BTrees.family32.OO.BTree()
 
     def __getitem__(self, key):
-        skey = get_storage_key(key)
         try:
             try:
-                value = self._storage[skey]
+                value = self._storage[key]
             except KeyError:
                 raise KeyError(key)
             if self._is_deleted(value):
@@ -254,7 +238,7 @@ class PersistentCache(AccessTimes, persistent.Persistent):
             current_span = opentelemetry.trace.get_current_span()
             current_span.record_exception(err)
             raise KeyError(key)
-        self._update_cache_access(skey)
+        self._update_cache_access(key)
         return value
 
     def get(self, key, default=None):
@@ -265,7 +249,6 @@ class PersistentCache(AccessTimes, persistent.Persistent):
 
     def __contains__(self, key):
         try:
-            key = get_storage_key(key)
             value = self._storage.get(key, self)
             if value is not self:
                 self._update_cache_access(key)
@@ -276,10 +259,6 @@ class PersistentCache(AccessTimes, persistent.Persistent):
             return False
 
     def keys(self, include_deleted=False, min=None, max=None):
-        if min is not None:
-            min = get_storage_key(min)
-        if max is not None:
-            max = get_storage_key(max)
         keys = self._storage.keys(min=min, max=max)
         if include_deleted:
             return keys
@@ -287,7 +266,7 @@ class PersistentCache(AccessTimes, persistent.Persistent):
 
     def __delitem__(self, key):
         try:
-            value = self._storage[get_storage_key(key)]
+            value = self._storage[key]
             if isinstance(value, self.CACHE_VALUE_CLASS):
                 self._mark_deleted(value)
             else:
@@ -298,21 +277,20 @@ class PersistentCache(AccessTimes, persistent.Persistent):
             self.remove(key)
 
     def remove(self, key):
-        del self._storage[get_storage_key(key)]
+        del self._storage[key]
 
     def pop(self, key, default):
-        return self._storage.pop(get_storage_key(key), default)
+        return self._storage.pop(key, default)
 
     def __setitem__(self, key, value):
         try:
-            skey = get_storage_key(key)
-            old_value = self._storage.get(skey)
+            old_value = self._storage.get(key)
             if isinstance(old_value, self.CACHE_VALUE_CLASS):
                 self._set_value(old_value, value)
             else:
                 value = self.CACHE_VALUE_CLASS(value)
-                self._storage[skey] = value
-            self._update_cache_access(skey)
+                self._storage[key] = value
+            self._update_cache_access(key)
         except ZODB.POSException.POSKeyError as err:
             current_span = opentelemetry.trace.get_current_span()
             current_span.record_exception(err)
