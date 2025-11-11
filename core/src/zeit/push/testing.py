@@ -2,6 +2,7 @@ import importlib.resources
 import logging
 import urllib.parse
 
+import transaction
 import zope.interface
 
 import zeit.cms.config
@@ -89,6 +90,7 @@ class UrbanairshipTemplateLayer(zeit.cms.testing.Layer):
                 template.text = text
                 template.title = name.split('.')[0].capitalize()
                 folder[name] = template
+                transaction.commit()
 
     def setUp(self):
         self['create_template'] = self.create_template
