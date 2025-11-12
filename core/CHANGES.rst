@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.225.0 (2025-11-12)
+--------------------
+
+- WCM-1147: Remove obsolete get_storage_key codepath
+
+- WCM-1145: set expiry date from mdb metadata
+
+
 7.224.0 (2025-11-11)
 --------------------
 
