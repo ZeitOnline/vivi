@@ -476,10 +476,7 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
         self.assertEqual(2, zeit.content.gallery.interfaces.IVisibleEntryCount(content))
 
     def test_converts_dynamicfolder(self):
-        folder = create_dynamic_folder(
-            'zeit.content.dynamicfolder:tests/fixtures/dynamic-centerpages/',
-            files=['config.xml', 'tags.xml', 'template.xml'],
-        )
+        folder = create_dynamic_folder()
         self.repository['dynamic'] = folder
         data = zeit.retresco.interfaces.ITMSRepresentation(self.repository['dynamic'])()
         self.assertEqual(

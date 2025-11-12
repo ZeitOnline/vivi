@@ -34,17 +34,16 @@ ZCML_LAYER = ZCMLLayer(
     (zeit.brightcove.testing.CONFIG_LAYER, zeit.retresco.testing.CONFIG_LAYER),
     features=['zeit.connector.sql.zope'],
 )
-ZOPE_LAYER = zeit.cms.testing.ZopeLayer((ZCML_LAYER, zeit.retresco.testing.TMS_MOCK_LAYER))
 
 
-class SecurityPolicyLayer(zeit.cms.testing.ContentFixtureLayer):
-    def create_fixture(self):
-        repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
-        repository['folder'] = zeit.cms.repository.folder.Folder()
+def create_fixture(repository):
+    repository['folder'] = zeit.cms.repository.folder.Folder()
 
 
-LAYER = SecurityPolicyLayer(ZOPE_LAYER)
-WSGI_LAYER = zeit.cms.testing.WSGILayer(LAYER)
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer(
+    (ZCML_LAYER, zeit.retresco.testing.TMS_MOCK_LAYER), create_fixture
+)
+WSGI_LAYER = zeit.cms.testing.WSGILayer(ZOPE_LAYER)
 
 
 def make_xls_test(*args):

@@ -19,7 +19,7 @@ def Text(content=''):
 
 
 class JavascriptDownload(zeit.cms.testing.FunctionalTestCase):
-    layer = zeit.sourcepoint.testing.LAYER
+    layer = zeit.sourcepoint.testing.ZOPE_LAYER
 
     def setUp(self):
         super().setUp()

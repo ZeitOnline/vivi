@@ -24,7 +24,7 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
     bases=(zeit.content.author.testing.CONFIG_LAYER,),
 )
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(config_file='ftesting-mock.zcml', bases=CONFIG_LAYER)
-ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
+ZOPE_LAYER = zeit.cms.testing.RawZopeLayer(ZCML_LAYER)
 WSGI_LAYER = zeit.cms.testing.WSGILayer(ZOPE_LAYER)
 
 

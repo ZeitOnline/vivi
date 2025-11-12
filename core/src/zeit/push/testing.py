@@ -54,11 +54,17 @@ class ArticleConfigLayer(zeit.cms.testing.ProductConfigLayer):
         super().setUp()
 
 
+def create_fixture(repository):
+    create_payload_template('', 'foo.json')
+    create_payload_template('', 'eilmeldung.json')
+
+
 ARTICLE_CONFIG_LAYER = ArticleConfigLayer({}, package='zeit.content.article')
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     (CONFIG_LAYER, ARTICLE_CONFIG_LAYER), features=['zeit.connector.sql.zope']
 )
-ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
+_zope_layer = zeit.cms.testing.RawZopeLayer(ZCML_LAYER)
+ZOPE_LAYER = zeit.cms.testing.SQLIsolationSavepointLayer(_zope_layer, create_fixture)
 
 
 class PushMockLayer(zeit.cms.testing.Layer):
@@ -88,13 +94,7 @@ def create_payload_template(text=None, name='template.json'):
     transaction.commit()
 
 
-class FixtureLayer(zeit.cms.testing.ContentFixtureLayer):
-    def create_fixture(self):
-        create_payload_template('', 'foo.json')
-        create_payload_template('', 'eilmeldung.json')
-
-
-LAYER = FixtureLayer((ZOPE_LAYER, PUSH_MOCK_LAYER))
+LAYER = zeit.cms.testing.Layer((ZOPE_LAYER, PUSH_MOCK_LAYER))
 
 
 class TestCase(zeit.cms.testing.FunctionalTestCase):
@@ -102,7 +102,14 @@ class TestCase(zeit.cms.testing.FunctionalTestCase):
 
 
 WSGI_LAYER = zeit.cms.testing.WSGILayer(LAYER)
-HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(WSGI_LAYER)
+HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(
+    (
+        zeit.cms.testing.WSGILayer(
+            zeit.cms.testing.SQLIsolationTruncateLayer(_zope_layer, create_fixture)
+        ),
+        PUSH_MOCK_LAYER,
+    )
+)
 WEBDRIVER_LAYER = zeit.cms.testing.WebdriverLayer(HTTP_LAYER)
 
 

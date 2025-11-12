@@ -11,7 +11,7 @@ import zeit.connector.interfaces
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     config_file='ftesting.zcml', bases=zeit.cms.testing.CONFIG_LAYER
 )
-ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
+ZOPE_LAYER = zeit.cms.testing.RawZopeLayer(ZCML_LAYER)
 WSGI_LAYER = zeit.cms.testing.WSGILayer(ZOPE_LAYER)
 
 

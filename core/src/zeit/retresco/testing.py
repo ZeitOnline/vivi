@@ -97,7 +97,7 @@ TMS_MOCK_LAYER = TMSMockLayer()
 
 
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER)
-ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
+ZOPE_LAYER = zeit.cms.testing.RawZopeLayer(ZCML_LAYER)
 WSGI_LAYER = zeit.cms.testing.WSGILayer(ZOPE_LAYER)
 
 CELERY_LAYER = zeit.cms.testing.CeleryWorkerLayer(ZOPE_LAYER)

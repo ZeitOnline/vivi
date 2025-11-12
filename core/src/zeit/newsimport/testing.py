@@ -39,7 +39,17 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
 # NOTE author config layer is included in article config layer
 # NOTE article config layer is included in retresco config layer
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER, features=['zeit.connector.sql.zope'])
-ZOPE_LAYER = zeit.cms.testing.ZopeLayer((ZCML_LAYER, zeit.retresco.testhelper.TMS_MOCK_LAYER))
+
+
+def create_fixture(repository):
+    agency = zeit.content.author.author.Author()
+    agency.firstname = 'dpa'
+    repository['autoren'] = Folder()
+    repository['autoren']['dpa'] = agency
+
+
+_zope_layer = zeit.cms.testing.RawZopeLayer((ZCML_LAYER, zeit.retresco.testhelper.TMS_MOCK_LAYER))
+ZOPE_LAYER = zeit.cms.testing.SQLIsolationSavepointLayer(_zope_layer, create_fixture)
 
 
 class DPALayer(zeit.cms.testing.Layer):
@@ -122,19 +132,7 @@ class DPAMockLayer(zeit.cms.testing.Layer):
 
 
 DPA_MOCK_LAYER = DPAMockLayer()
-
-
-class FixtureLayer(zeit.cms.testing.ContentFixtureLayer):
-    def create_fixture(self):
-        agency = zeit.content.author.author.Author()
-        agency.firstname = 'dpa'
-        repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
-        repository['autoren'] = Folder()
-        repository['autoren']['dpa'] = agency
-
-
-FIXTURE_LAYER = FixtureLayer(ZOPE_LAYER)
-LAYER = zeit.cms.testing.Layer((FIXTURE_LAYER, DPA_MOCK_LAYER))
+LAYER = zeit.cms.testing.Layer((ZOPE_LAYER, DPA_MOCK_LAYER))
 
 
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
@@ -151,5 +149,6 @@ class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
         return news.publish(news.create())
 
 
-CELERY_LAYER = zeit.cms.testing.CeleryWorkerLayer(LAYER)
+ZOPE_TRUNCATE_LAYER = zeit.cms.testing.SQLIsolationTruncateLayer(_zope_layer, create_fixture)
+CELERY_LAYER = zeit.cms.testing.CeleryWorkerLayer((ZOPE_TRUNCATE_LAYER, DPA_MOCK_LAYER))
 CELERY_LAYER.queues += ('search',)

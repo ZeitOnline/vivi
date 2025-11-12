@@ -6,29 +6,22 @@ import zeit.cms.testing
 import zeit.content.article.testing
 
 
+def create_fixture(repository):
+    zett = zeit.cms.repository.folder.Folder()
+    zope.interface.alsoProvides(zett, IZTTSection)
+    zope.interface.alsoProvides(zett, IZTTFolder)
+    repository['zett'] = zett
+
+
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     zeit.content.article.testing.CONFIG_LAYER, features=['zeit.connector.sql.zope']
 )
-ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
-
-
-class Layer(zeit.cms.testing.ContentFixtureLayer):
-    defaultBases = (ZOPE_LAYER,)
-
-    def create_fixture(self):
-        repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
-        zett = zeit.cms.repository.folder.Folder()
-        zope.interface.alsoProvides(zett, IZTTSection)
-        zope.interface.alsoProvides(zett, IZTTFolder)
-        repository['zett'] = zett
-
-
-LAYER = Layer()
-WSGI_LAYER = zeit.cms.testing.WSGILayer(LAYER)
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER, create_fixture)
+WSGI_LAYER = zeit.cms.testing.WSGILayer(ZOPE_LAYER)
 
 
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
-    layer = LAYER
+    layer = ZOPE_LAYER
 
 
 class BrowserTestCase(zeit.cms.testing.BrowserTestCase):

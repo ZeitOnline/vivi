@@ -11,28 +11,21 @@ import zeit.cms.testing
 import zeit.content.cp.testing
 
 
+def create_fixture(repository):
+    repository['dynamicfolder'] = create_dynamic_folder()
+
+
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     zeit.content.cp.testing.CONFIG_LAYER, features=['zeit.connector.sql.zope']
 )
-ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER, create_fixture)
+WSGI_LAYER = zeit.cms.testing.WSGILayer(ZOPE_LAYER)
 
 
-class DynamicLayer(zeit.cms.testing.ContentFixtureLayer):
-    defaultBases = (ZOPE_LAYER,)
-
-    def __init__(self, path, files):
-        super().__init__()
-        self.path = path
-        self.files = files
-
-    def create_fixture(self):
-        repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
-        repository['dynamicfolder'] = create_dynamic_folder(
-            __package__ + ':' + self.path, self.files
-        )
-
-
-def create_dynamic_folder(package, files):
+def create_dynamic_folder(
+    package='zeit.content.dynamicfolder:tests/fixtures/dynamic-centerpages/',
+    files=['config.xml', 'tags.xml', 'template.xml'],
+):
     package, _, path = package.partition(':')
     repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
 
@@ -48,14 +41,8 @@ def create_dynamic_folder(package, files):
     return dynamic
 
 
-LAYER = DynamicLayer(
-    path='tests/fixtures/dynamic-centerpages/', files=['config.xml', 'tags.xml', 'template.xml']
-)
-WSGI_LAYER = zeit.cms.testing.WSGILayer(LAYER)
-
-
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
-    layer = LAYER
+    layer = ZOPE_LAYER
 
 
 class BrowserTestCase(zeit.cms.testing.BrowserTestCase):

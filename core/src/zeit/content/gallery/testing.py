@@ -19,9 +19,19 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
     bases=(zeit.crop.testing.CONFIG_LAYER, zeit.push.testing.CONFIG_LAYER),
 )
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER)
-ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
-PUSH_LAYER = zeit.push.testing.FixtureLayer(ZOPE_LAYER)
-WSGI_LAYER = zeit.cms.testing.WSGILayer(PUSH_LAYER)
+_zope_layer = zeit.cms.testing.RawZopeLayer(ZCML_LAYER)
+
+
+class PushLayer(zeit.cms.testing.Layer):
+    def testSetUp(self):
+        with zeit.cms.testing.site(self['zodbApp']):
+            repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
+            zeit.push.testing.create_fixture(repository)
+
+
+ZOPE_LAYER = PushLayer(_zope_layer)
+
+WSGI_LAYER = zeit.cms.testing.WSGILayer(ZOPE_LAYER)
 
 
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
