@@ -11,6 +11,7 @@ from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
 from zeit.content.article.interfaces import IArticle
 import zeit.cms.admin.browser.admin
 import zeit.mediaservice.mediaservice
+import zeit.workflow.browser.publish
 
 
 class PublishAction(zope.formlib.form.Action):
