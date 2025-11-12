@@ -39,15 +39,15 @@ takes precedence:
 The author image group is stored using the IImages interface.
 
 >>> from zeit.content.image.testing import create_image_group
->>> repository['image'] = create_image_group()
+>>> _ = create_image_group()
 >>> images = zeit.content.image.interfaces.IImages(shakespeare)
->>> images.image = repository['image']
+>>> images.image = repository['group']
 >>> repository['shakespeare'] = shakespeare
 >>> shakespeare = repository['shakespeare']
 >>> print(zeit.cms.testing.xmltotext(shakespeare.xml))
 <author...>
   ...
-  <image_group base-id="http://xml.zeit.de/image" type="jpg"/>
+  <image_group base-id="http://xml.zeit.de/group" type="jpg"/>
 </author>
 
 Using authors

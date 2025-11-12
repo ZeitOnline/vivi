@@ -37,32 +37,32 @@ class VolumeBrowserTest(zeit.content.volume.testing.BrowserTestCase):
         self.assertEllipsis("""...Portrait...Landscape...iPad...""", b.contents)
 
     def test_saves_imagegroup_reference_via_dynamic_form_field(self):
-        self.repository['imagegroup'] = create_image_group()
+        create_image_group()
         self.open_add_form()
         b = self.browser
         b.getControl('Add').click()
-        b.getControl('Landscape', index=0).value = 'http://xml.zeit.de/imagegroup'
+        b.getControl('Landscape', index=0).value = 'http://xml.zeit.de/group'
         b.getControl('Apply').click()
         b.getLink('Checkin').click()
         self.assertEllipsis(
-            '...<span class="uniqueId">http://xml.zeit.de/imagegroup</span>...', b.contents
+            '...<span class="uniqueId">http://xml.zeit.de/group</span>...', b.contents
         )
 
     def test_saves_imagegroup_for_dependent_project_in_xml(self):
-        self.repository['imagegroup'] = create_image_group()
+        create_image_group()
         self.open_add_form()
         b = self.browser
         b.getControl('Year').value = '2010'
         b.getControl(name='form.volume').value = '2'
         b.getControl('Add').click()
-        b.getControl('Landscape', index=1).value = 'http://xml.zeit.de/imagegroup'
+        b.getControl('Landscape', index=1).value = 'http://xml.zeit.de/group'
         b.getControl('Apply').click()
         b.getLink('Checkin').click()
         volume = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2010/02/ausgabe')
         xml = volume.xml.find('covers/cover')
         self.assertEqual('landscape', xml.get('id'))
         self.assertEqual('ZMLB', xml.get('product_id'))
-        self.assertEqual('http://xml.zeit.de/imagegroup', xml.get('href'))
+        self.assertEqual('http://xml.zeit.de/group', xml.get('href'))
 
     def test_displays_warning_if_volume_with_same_name_already_exists(self):
         b = self.browser

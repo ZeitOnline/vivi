@@ -32,12 +32,12 @@ import zeit.find.interfaces
 class TestVolumeCovers(zeit.content.volume.testing.FunctionalTestCase):
     def setUp(self):
         super().setUp()
-        self.repository['imagegroup'] = create_image_group()
-        self.cover = self.repository['imagegroup']
+        create_image_group()
+        self.cover = self.repository['group']
         self.volume = Volume()
         self.volume.product = zeit.cms.content.sources.Product('ZEI')
 
-    def add_ipad_cover(self, product_id='ZEI', unique_id='http://xml.zeit.de/imagegroup'):
+    def add_ipad_cover(self, product_id='ZEI', unique_id='http://xml.zeit.de/group'):
         node = lxml.builder.E.cover(href=unique_id, id='ipad', product_id=product_id)
         self.volume.xml.find('covers').append(node)
 
@@ -46,14 +46,14 @@ class TestVolumeCovers(zeit.content.volume.testing.FunctionalTestCase):
             self.volume.set_cover('ipad', 'TEST', self.cover)
 
     def test_stores_uniqueId_in_xml_of_volume(self):
-        self.volume.set_cover('ipad', 'ZEI', self.repository['imagegroup'])
+        self.volume.set_cover('ipad', 'ZEI', self.repository['group'])
         xml = self.volume.xml.find('covers/cover')
         self.assertEqual('ipad', xml.get('id'))
         self.assertEqual('ZEI', xml.get('product_id'))
-        self.assertEqual('http://xml.zeit.de/imagegroup', xml.get('href'))
+        self.assertEqual('http://xml.zeit.de/group', xml.get('href'))
 
     def test_deletes_existing_node_if_value_is_None(self):
-        self.volume.set_cover('ipad', 'ZEI', self.repository['imagegroup'])
+        self.volume.set_cover('ipad', 'ZEI', self.repository['group'])
         self.volume.set_cover('ipad', 'ZEI', None)
         self.assertEqual(
             '<covers/>',
@@ -62,7 +62,7 @@ class TestVolumeCovers(zeit.content.volume.testing.FunctionalTestCase):
 
     def test_raises_value_error_if_invalid_product_id_used_in_set_cover(self):
         with self.assertRaises(ValueError):
-            self.volume.set_cover('ipad', 'TEST', self.repository['imagegroup'])
+            self.volume.set_cover('ipad', 'TEST', self.repository['group'])
 
     def test_returns_none_if_invalid_product_id_used_in_get_cover(self):
         self.assertEqual(None, self.volume.get_cover('ipad', 'TEST'))
@@ -80,11 +80,11 @@ class TestVolumeCovers(zeit.content.volume.testing.FunctionalTestCase):
         self.assertEqual(self.cover, self.volume.get_cover('ipad', 'ZMLB'))
 
     def test_extract_references_finds_covers(self):
-        self.repository['othergroup'] = create_image_group()
+        create_image_group(groupname='othergroup')
         self.add_ipad_cover()
         self.add_ipad_cover('ZMLB', 'http://xml.zeit.de/othergroup')
         references = [x['target'] for x in zeit.cms.references.references.extract(self.volume)]
-        for name in ['imagegroup', 'othergroup']:
+        for name in ['group', 'othergroup']:
             self.assertIn(self.repository[name], references)
 
 
@@ -154,9 +154,8 @@ class TestVolume(zeit.content.volume.testing.FunctionalTestCase):
         volume.product = zeit.cms.content.sources.Product('ZEI')
         self.repository['2015'] = Folder()
         self.repository['2015']['01'] = Folder()
-        # Add a cover image-group
-        self.repository['imagegroup'] = create_image_group()
-        volume.set_cover('ipad', 'ZEI', self.repository['imagegroup'])
+        create_image_group()
+        volume.set_cover('ipad', 'ZEI', self.repository['group'])
         self.repository['2015']['01']['ausgabe'] = volume
 
     def test_looks_up_centerpage_from_product_setting(self):
@@ -197,11 +196,9 @@ class TestVolume(zeit.content.volume.testing.FunctionalTestCase):
 
     def test_covers_are_published_with_the_volume(self):
         volume = self.repository['2015']['01']['ausgabe']
+        self.assertIn(self.repository['group'], IPublicationDependencies(volume).get_dependencies())
         self.assertIn(
-            self.repository['imagegroup'], IPublicationDependencies(volume).get_dependencies()
-        )
-        self.assertIn(
-            self.repository['imagegroup'],
+            self.repository['group'],
             IPublicationDependencies(volume).get_retract_dependencies(),
         )
 

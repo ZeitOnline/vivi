@@ -149,8 +149,8 @@ class TestAdding(zeit.content.article.testing.BrowserTestCase):
         from zeit.cms.content.sources import FEATURE_TOGGLES
 
         FEATURE_TOGGLES.unset('breaking_news_fallback_image')
-        self.repository['imagegroup'] = create_image_group()
-        image = self.repository['imagegroup']
+        create_image_group()
+        image = self.repository['group']
         zeit.cms.config.set('zeit.push', 'breaking-news-fallback-image', image.uniqueId)
         b = self.browser
         self.create_breakingnews()
@@ -174,8 +174,7 @@ class TestAdding(zeit.content.article.testing.BrowserTestCase):
         self.assertIsNone(article.main_image.target)
 
     def test_breaking_news_fallback_image_is_removed(self):
-        self.repository['imagegroup'] = create_image_group()
-        image = self.repository['imagegroup']
+        image = create_image_group()
         zeit.cms.config.set('zeit.push', 'breaking-news-fallback-image', image.uniqueId)
         b = self.browser
         self.create_breakingnews()
@@ -186,8 +185,8 @@ class TestAdding(zeit.content.article.testing.BrowserTestCase):
         self.assertIsNone(article.main_image.target)
 
     def test_breaking_news_fallback_image_is_overwritten(self):
-        self.repository['default-imagegroup'] = create_image_group()
-        self.repository['user-imagegroup'] = create_image_group()
+        create_image_group(groupname='default-imagegroup')
+        create_image_group(groupname='user-imagegroup')
         image = self.repository['default-imagegroup']
         zeit.cms.config.set('zeit.push', 'breaking-news-fallback-image', image.uniqueId)
         b = self.browser
@@ -199,8 +198,8 @@ class TestAdding(zeit.content.article.testing.BrowserTestCase):
         self.assertEqual(self.repository['user-imagegroup'], article.main_image.target)
 
     def test_breaking_news_fallback_image(self):
-        self.repository['imagegroup'] = create_image_group()
-        image = self.repository['imagegroup']
+        create_image_group()
+        image = self.repository['group']
         zeit.cms.config.set('zeit.push', 'breaking-news-fallback-image', image.uniqueId)
         b = self.browser
         self.create_breakingnews()
