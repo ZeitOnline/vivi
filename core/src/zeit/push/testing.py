@@ -72,44 +72,33 @@ class PushMockLayer(zeit.cms.testing.Layer):
 PUSH_MOCK_LAYER = PushMockLayer()
 
 
-class UrbanairshipTemplateLayer(zeit.cms.testing.Layer):
-    defaultBases = (ZOPE_LAYER,)
-
-    def create_template(self, text=None, name='template.json'):
-        if not text:
-            text = (
-                importlib.resources.files(__package__) / 'tests/fixtures/payloadtemplate.json'
-            ).read_text('utf-8')
-        with zeit.cms.testing.site(self['zodbApp']):
-            with zeit.cms.testing.interaction():
-                folder = zeit.cms.config.required('zeit.push', 'push-payload-templates')
-                folder = zeit.cms.content.add.find_or_create_folder(
-                    *urllib.parse.urlparse(folder).path[1:].split('/')
-                )
-                template = zeit.content.text.jinja.JinjaTemplate()
-                template.text = text
-                template.title = name.split('.')[0].capitalize()
-                folder[name] = template
-                transaction.commit()
-
-    def setUp(self):
-        self['create_template'] = self.create_template
-
-    def testSetUp(self):
-        self.create_template('', 'foo.json')
-        self.create_template('', 'eilmeldung.json')
+def create_payload_template(text=None, name='template.json'):
+    if not text:
+        text = (
+            importlib.resources.files(__package__) / 'tests/fixtures/payloadtemplate.json'
+        ).read_text('utf-8')
+    folder = zeit.cms.config.required('zeit.push', 'push-payload-templates')
+    folder = zeit.cms.content.add.find_or_create_folder(
+        *urllib.parse.urlparse(folder).path[1:].split('/')
+    )
+    template = zeit.content.text.jinja.JinjaTemplate()
+    template.text = text
+    template.title = name.split('.')[0].capitalize()
+    folder[name] = template
+    transaction.commit()
 
 
-URBANAIRSHIP_TEMPLATE_LAYER = UrbanairshipTemplateLayer()
+class FixtureLayer(zeit.cms.testing.ContentFixtureLayer):
+    def create_fixture(self):
+        create_payload_template('', 'foo.json')
+        create_payload_template('', 'eilmeldung.json')
 
-LAYER = zeit.cms.testing.Layer((URBANAIRSHIP_TEMPLATE_LAYER, PUSH_MOCK_LAYER))
+
+LAYER = FixtureLayer((ZOPE_LAYER, PUSH_MOCK_LAYER))
 
 
 class TestCase(zeit.cms.testing.FunctionalTestCase):
     layer = LAYER
-
-    def create_payload_template(self, text=None, name='template.json'):
-        self.layer['create_template'](text, name)
 
 
 WSGI_LAYER = zeit.cms.testing.WSGILayer(LAYER)

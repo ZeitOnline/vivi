@@ -13,7 +13,7 @@ import zeit.push.urbanairship
 class PayloadSourceTest(zeit.push.testing.TestCase):
     def setUp(self):
         super().setUp()
-        self.create_payload_template()
+        zeit.push.testing.create_payload_template()
         self.templates = list(zeit.push.interfaces.PAYLOAD_TEMPLATE_SOURCE)
 
     def test_getValues_returns_all_templates_as_text_objects(self):
@@ -82,11 +82,11 @@ class MessageTest(zeit.push.testing.TestCase):
 
     def test_changes_to_template_are_applied_immediately(self):
         message = zeit.push.urbanairship.Message(self.repository['testcontent'])
-        self.create_payload_template('{"messages": {"one": 1}}', 'foo.json')
+        zeit.push.testing.create_payload_template('{"messages": {"one": 1}}', 'foo.json')
         transaction.commit()
         message.config['payload_template'] = 'foo.json'
         self.assertEqual({'one': 1}, message.render())
-        self.create_payload_template('{"messages": {"two": 1}}', 'foo.json')
+        zeit.push.testing.create_payload_template('{"messages": {"two": 1}}', 'foo.json')
         transaction.commit()
         self.assertEqual({'two': 1}, message.render())
 
@@ -95,7 +95,7 @@ class MessageTest(zeit.push.testing.TestCase):
             "title": "{{article.title}}",
             "message": "{%if not uses_image %}Bildß{% endif %}"
         }]}"""
-        self.create_payload_template(template_content, 'bar.json')
+        zeit.push.testing.create_payload_template(template_content, 'bar.json')
         message = zope.component.getAdapter(
             self.create_content(), zeit.push.interfaces.IMessage, name=self.name
         )
@@ -120,7 +120,9 @@ class ChannelsTest(zeit.push.testing.TestCase):
         self.content = self.repository['content']
 
         for name in ['coffee', 'cake']:
-            self.create_payload_template('{"messages": {"sweets": 42}}', f'{name}.json')
+            zeit.push.testing.create_payload_template(
+                '{"messages": {"sweets": 42}}', f'{name}.json'
+            )
             template = self.repository['data']['urbanairship-templates'][f'{name}.json']
             with zeit.cms.checkout.helper.checked_out(template) as co:
                 co.channels = (('Push', name),)
@@ -163,7 +165,7 @@ class ChannelsTest(zeit.push.testing.TestCase):
         self.assertEqual((('Push', 'coffee'),), self.content.channels)
 
     def test_no_channel_template_does_not_break(self):
-        self.create_payload_template('{"messages": {"sweets": 42}}', 'cookies.json')
+        zeit.push.testing.create_payload_template('{"messages": {"sweets": 42}}', 'cookies.json')
         with zeit.cms.checkout.helper.checked_out(self.content) as co:
             co.channels = (('Politik', None),)
             push = zeit.push.interfaces.IPushMessages(co)
@@ -172,7 +174,7 @@ class ChannelsTest(zeit.push.testing.TestCase):
         self.assertEqual((('Politik', None),), self.content.channels)
 
     def test_only_mobile_templates_allowed(self):
-        self.create_payload_template('{"messages": {"sweets": 42}}', 'not_mobile.json')
+        zeit.push.testing.create_payload_template('{"messages": {"sweets": 42}}', 'not_mobile.json')
         with zeit.cms.checkout.helper.checked_out(self.content) as co:
             push = zeit.push.interfaces.IPushMessages(co)
             push.message_config = (self.message_config('not_mobile', template_type='stone'),)

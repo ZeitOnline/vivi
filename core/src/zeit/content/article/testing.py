@@ -56,7 +56,7 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
 )
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER, features=['zeit.connector.sql.zope'])
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
-PUSH_LAYER = zeit.push.testing.UrbanairshipTemplateLayer(ZOPE_LAYER)
+PUSH_LAYER = zeit.push.testing.FixtureLayer(ZOPE_LAYER)
 
 
 class ArticleLayer(zeit.cms.testing.ContentFixtureLayer):

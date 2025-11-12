@@ -20,9 +20,8 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
 )
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER)
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
-PUSH_LAYER = zeit.push.testing.UrbanairshipTemplateLayer(ZOPE_LAYER)
-LAYER = zeit.cms.testing.Layer(PUSH_LAYER)
-WSGI_LAYER = zeit.cms.testing.WSGILayer(LAYER)
+PUSH_LAYER = zeit.push.testing.FixtureLayer(ZOPE_LAYER)
+WSGI_LAYER = zeit.cms.testing.WSGILayer(PUSH_LAYER)
 
 
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
