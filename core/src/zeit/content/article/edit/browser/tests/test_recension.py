@@ -10,7 +10,7 @@ import zeit.content.article.testing
 class RecensionTest(zeit.content.article.testing.SeleniumTestCase):
     def create_recension(self):
         with zeit.cms.checkout.helper.checked_out(
-            zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+            zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/article')
         ) as co:
             recension = zeit.content.article.recension.BookRecension()
             recension.authors = ['William Shakespeare']
@@ -20,11 +20,10 @@ class RecensionTest(zeit.content.article.testing.SeleniumTestCase):
             recension.category = 'Belletristik'
             container = IBookRecensionContainer(co)
             container.append(recension)
-            transaction.commit()
+        transaction.commit()
 
         s = self.selenium
-        s.setTimeout(3600000)
-        self.open('/repository/online/2007/01/Somalia/@@checkout')
+        self.open('/repository/article/@@checkout')
         fold = 'css=#edit-form-recensions .fold-link'
         s.waitForElementPresent(fold)
         s.click(fold)
@@ -63,7 +62,7 @@ class RecensionTest(zeit.content.article.testing.SeleniumTestCase):
 
     def test_add_recension_should_happen_in_lightbox(self):
         s = self.selenium
-        self.open('/repository/online/2007/01/Somalia/@@checkout')
+        self.open('/repository/article/@@checkout')
         fold = 'css=#edit-form-recensions .fold-link'
         s.waitForElementPresent(fold)
         s.click(fold)

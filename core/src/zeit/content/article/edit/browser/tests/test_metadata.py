@@ -14,14 +14,14 @@ import zeit.content.author.author
 class HeadTest(zeit.content.article.edit.browser.testing.EditorTestCase):
     def setUp(self):
         super().setUp()
-        self.open('/repository/online/2007/01/Somalia/@@checkout')
+        self.open('/repository/article/@@checkout')
         s = self.selenium
         s.waitForElementPresent('id=print-metadata.year')
         s.click('css=#edit-form-print .fold-link')
 
     def test_form_should_highlight_changed_data(self):
         s = self.selenium
-        s.assertValue('id=print-metadata.year', '2007')
+        s.assertValue('id=print-metadata.year', '2011')
         s.assertElementNotPresent('css=.widget-outer.dirty')
         s.type('id=print-metadata.year', '2010')
         s.click('id=print-metadata.volume')
@@ -29,7 +29,7 @@ class HeadTest(zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def test_form_should_save_entered_text_on_blur(self):
         s = self.selenium
-        s.assertValue('id=print-metadata.year', '2007')
+        s.assertValue('id=print-metadata.year', '2011')
         s._find('id=print-metadata.year').clear()
         s.waitForElementNotPresent('css=.field.dirty')
         s.type('id=print-metadata.year', '2010')
@@ -56,28 +56,28 @@ class HeadTest(zeit.content.article.edit.browser.testing.EditorTestCase):
     def test_change_in_ressort_should_update_subressort_list(self):
         s = self.selenium
         s.click('css=#edit-form-metadata .fold-link')
-        s.assertSelectedLabel('id=metadata-a.ressort', 'International')
+        s.assertSelectedLabel('id=metadata-a.ressort', 'Deutschland')
+        s.pause(100)
+        self.assertEqual(
+            ['(nothing selected)', 'Datenschutz', 'Integration', 'Joschka Fisher', 'Meinung'],
+            s.getSelectOptions('id=metadata-a.sub_ressort'),
+        )
+        s.select('id=metadata-a.ressort', 'International')
         s.pause(100)
         self.assertEqual(
             ['(nothing selected)', 'Meinung', 'Nahost', 'US-Wahl'],
             s.getSelectOptions('id=metadata-a.sub_ressort'),
         )
-        s.select('id=metadata-a.ressort', 'Deutschland')
-        s.pause(100)
-        self.assertEqual(
-            ['(nothing selected)', 'Datenschutz', 'Integration', 'Joschka Fisher', 'Meinung'],
-            s.getSelectOptions('id=metadata-a.sub_ressort'),
-        )
         s.keyPress('id=metadata-a.sub_ressort', Keys.TAB)  # Trigger blur
         s.pause(500)
         self.assertEqual(
-            ['(nothing selected)', 'Datenschutz', 'Integration', 'Joschka Fisher', 'Meinung'],
+            ['(nothing selected)', 'Meinung', 'Nahost', 'US-Wahl'],
             s.getSelectOptions('id=metadata-a.sub_ressort'),
         )
 
     def test_invalid_input_should_display_error_message(self):
         s = self.selenium
-        s.assertValue('id=print-metadata.year', '2007')
+        s.assertValue('id=print-metadata.year', '2011')
         s.type('id=print-metadata.year', 'ASDF')
         s.keyPress('id=print-metadata.volume', Keys.TAB)
         s.keyPress('id=print-metadata.print_ressort', Keys.TAB)  # Trigger blur
@@ -120,7 +120,7 @@ class KeywordTest(
     def test_sorting_should_trigger_write(self):
         s = self.selenium
         self.setup_tags('t1', 't2', 't3')
-        self.open('/repository/online/2007/01/Somalia/@@checkout')
+        self.open('/repository/article/@@checkout')
         s.waitForElementPresent('id=metadata-a.keywords')
         s.waitForTextPresent('t1*t2*t3')
         s.dragAndDropToObject("xpath=//li[contains(., 't1')]", "xpath=//li[contains(., 't3')]")
@@ -131,7 +131,11 @@ class KeywordTest(
 class CommentsTest(zeit.content.article.edit.browser.testing.EditorTestCase):
     def setUp(self):
         super().setUp()
-        self.open('/repository/online/2007/01/Somalia/@@checkout')
+        with checked_out(self.repository['article']) as co:
+            co.commentSectionEnable = False
+            co.commentsAllowed = False
+        transaction.commit()
+        self.open('/repository/article/@@checkout')
         self.selenium.waitForElementPresent('id=print-metadata.year')
         self.selenium.click('css=#edit-form-comments .fold-link')
 
@@ -170,7 +174,7 @@ class HeaderTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         clipboard.addClip('Clip')
         transaction.commit()
 
-        self.open('/repository/online/2007/01/Somalia')
+        self.open('/repository/article')
         s = self.selenium
         clipboard = '//li[@uniqueid="Clip"]'
         s.click(clipboard)
@@ -191,11 +195,12 @@ class AuthorLocationTest(zeit.content.article.edit.browser.testing.EditorTestCas
         shakespeare.firstname = 'William'
         shakespeare.lastname = 'Shakespeare'
         self.repository['shakespeare'] = shakespeare
-        with checked_out(ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')) as co:
+        with checked_out(ICMSContent('http://xml.zeit.de/article')) as co:
             co.authorships = [co.authorships.create(self.repository['shakespeare'])]
+        transaction.commit()
 
     def test_entering_location_via_autocomplete(self):
-        self.open('/repository/online/2007/01/Somalia/@@checkout')
+        self.open('/repository/article/@@checkout')
         s = self.selenium
         fold = 'css=#edit-form-metadata .fold-link'
         s.waitForElementPresent(fold)

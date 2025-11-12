@@ -224,7 +224,7 @@ class ImageEmptyMarker(zeit.content.article.testing.FunctionalTestCase, EmptyMar
     block_type = 'image'
 
     def create_target(self):
-        return self.repository['2006']['DSC00109_2.JPG']
+        return self.repository['image']
 
     def set_reference(self, block, target):
         if target is None:

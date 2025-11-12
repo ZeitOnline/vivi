@@ -47,8 +47,7 @@ class ImageForm(zeit.content.article.edit.browser.testing.BrowserTestCase):
         self.get_article(with_block='image')
         b = self.browser
         b.open('editable-body/blockname/@@edit-image?show_form=1')
-        image_id = 'http://xml.zeit.de/2006/DSC00109_2.JPG'
-        b.getControl(name='EditImage.blockname.references').value = image_id
+        b.getControl(name='EditImage.blockname.references').value = 'http://xml.zeit.de/image'
         b.getControl('Apply').click()
         self.assertTrue(self.get_image_block().set_manually)
 
@@ -61,16 +60,13 @@ class ImageForm(zeit.content.article.edit.browser.testing.BrowserTestCase):
         self.assertFalse(self.get_image_block().set_manually)
 
     def test_png_teaser_images_should_enable_colorpicker(self):
-        article = zeit.content.article.testing.create_article()
-
         self.repository['image-group'] = zeit.content.image.imagegroup.ImageGroup()
         self.repository['image-group']['DSC00109_2.PNG'] = zeit.content.image.testing.create_image(
             'DSC00109_2.PNG', 'zeit.connector', 'testcontent/2016'
         )
+        article = zeit.cms.interfaces.ICMSWCContent('http://xml.zeit.de/article')
         zeit.content.image.interfaces.IImages(article).image = self.repository['image-group']
-        self.repository['article'] = article
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/article/@@checkout')
         b.open('@@edit.form.teaser-image?show_form=1')
         b.getControl(name='teaser-image.fill_color')
 
@@ -206,7 +202,7 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.assertElementPresent('css=.block.type-image .add_view.button')
 
     def add_image_to_clipboard(self):
-        add_to_clipboard(self.repository['2006']['DSC00109_2.JPG'], 'my_image')
+        add_to_clipboard(self.repository['image'], 'my_image')
         self.add_article()
         s = self.selenium
         s.clickAt('//li[@uniqueid="Clip"]', '10,10')
@@ -377,6 +373,7 @@ class VolumeEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         volume.volume = 23
         volume.product = zeit.cms.content.sources.Product('ZEI')
         volume.set_cover('portrait', 'ZEI', self.repository['imagegroup'])
+        self.repository['2006'] = zeit.cms.repository.folder.Folder()
         self.repository['2006']['23'] = volume
         add_to_clipboard(self.repository['2006']['23'], 'my_volume')
         self.add_article()

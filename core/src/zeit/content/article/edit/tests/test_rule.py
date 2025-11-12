@@ -35,7 +35,7 @@ error_if(IInfobox.providedBy(content[0]), 'foo')
 
     def test_IImage_content_returns_referenced_object(self):
         block = self.get_factory(self.get_article(), 'image')()
-        image = 'http://xml.zeit.de/2006/DSC00109_2.JPG'
+        image = 'http://xml.zeit.de/image'
         block.references = block.references.create(zeit.cms.interfaces.ICMSContent(image))
         r = Rule(
             """

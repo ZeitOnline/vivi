@@ -1,4 +1,5 @@
 from lxml import etree
+import transaction
 
 from zeit.cms.checkout.helper import checked_out
 from zeit.content.article.interfaces import IBreakingNews
@@ -50,6 +51,7 @@ class BreakingBannerTest(zeit.content.article.testing.FunctionalTestCase):
             co.xml = etree.fromstring(
                 '<xml><article_id>http://xml.zeit.de/article</article_id></xml>'
             )
+        transaction.commit()
         self.assertTrue(IBreakingNews(self.repository['article']).banner_matches())
 
     def test_url_not_equal_uniqueId_does_not_match(self):

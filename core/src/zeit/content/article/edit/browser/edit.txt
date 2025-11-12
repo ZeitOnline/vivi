@@ -16,8 +16,7 @@ Open editor:
 >>> import zeit.cms.testing
 >>> browser = zeit.cms.testing.Browser(layer['wsgi_app'])
 >>> browser.login('user', 'userpw')
->>> browser.open('http://localhost:8080/++skin++vivi/repository/online'
-...              '/2007/01/Somalia/@@checkout')
+>>> browser.open('http://localhost:8080/++skin++vivi/repository/article/@@checkout')
 >>> browser.open('@@contents')
 >>> browser.open('editable-body/@@contents')
 >>> contents_url = browser.url
@@ -25,7 +24,7 @@ Open editor:
 Add ul and let it render:
 
 >>> from lxml.builder import E
->>> article = getRootFolder()['workingcopy']['zope.user']['Somalia']
+>>> article = getRootFolder()['workingcopy']['zope.user']['article']
 >>> for p in article.xml.find('body/division').getchildren():
 ...     article.xml.find('body/division').remove(p)
 >>> article.xml.find('body/division').append(E.ul(E.li('eins'), E.li('zwei')))
@@ -88,12 +87,11 @@ are __name__ attributes:
 
 After checkin they're gone:
 
->>> browser.open('/workingcopy/zope.user/Somalia/@@checkin')
+>>> browser.open('/workingcopy/zope.user/article/@@checkin')
 >>> import zeit.cms.interfaces
 >>> import zeit.cms.testing
 >>> zeit.cms.testing.set_site()
->>> article = zeit.cms.interfaces.ICMSContent(
-...     'http://xml.zeit.de/online/2007/01/Somalia')
+>>> article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/article')
 >>> xml = zeit.cms.testing.xmltotext(article.xml)
 >>> print(xml)
 <article...

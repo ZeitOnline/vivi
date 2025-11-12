@@ -1,6 +1,7 @@
 # coding: utf8
 from unittest import mock
 
+import transaction
 import zope.component
 import zope.event
 import zope.interface
@@ -34,7 +35,7 @@ import zeit.magazin.interfaces
 class WorkflowTest(zeit.content.article.testing.FunctionalTestCase):
     def setUp(self):
         super().setUp()
-        self.article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        self.article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/article')
         self.info = zeit.cms.workflow.interfaces.IPublishInfo(self.article)
 
         sm = zope.component.getSiteManager()
@@ -104,6 +105,7 @@ class DivisionTest(zeit.content.article.testing.FunctionalTestCase):
         self.repository['article'] = article
         with checked_out(self.repository['article']):
             pass
+        transaction.commit()
         self.assertEqual(1, len(self.repository['article'].xml.findall('body/division')))
 
     def test_article_without_division_should_get_them_on_checkin(self):
@@ -116,6 +118,7 @@ class DivisionTest(zeit.content.article.testing.FunctionalTestCase):
         self.repository['article'] = article
         with checked_out(self.repository['article']):
             pass
+        transaction.commit()
         self.assertEqual(2, len(self.repository['article'].xml.findall('body/division')))
 
 
@@ -137,14 +140,14 @@ class MainImageTest(zeit.content.article.testing.FunctionalTestCase):
     def test_main_image_is_returned_if_first_block_contains_one(self):
         article = self.get_article()
         block = self.get_factory(article, 'image')()
-        image = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')
+        image = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/image')
         block.references = block.references.create(image)
         self.assertEqual(image, article.main_image.target)
 
     def test_setting_main_image_is_reflected_inside_body(self):
         article = self.get_article()
         block = self.get_factory(article, 'image')()
-        image = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')
+        image = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/image')
         article.main_image = article.main_image.create(image)
         block = article.body.values()[0]
         self.assertEqual(image, block.references.target)
@@ -152,7 +155,7 @@ class MainImageTest(zeit.content.article.testing.FunctionalTestCase):
 
     def test_setting_main_image_works_if_body_does_not_start_with_image(self):
         article = self.get_article()
-        image = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')
+        image = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/image')
         article.main_image = article.main_image.create(image)
         block = article.body.values()[0]
         self.assertEqual(image, block.references.target)
@@ -252,6 +255,7 @@ class DefaultTemplateByContentType(zeit.content.article.testing.FunctionalTestCa
         self.repository['article'] = article
         with checked_out(self.repository['article']):
             pass
+        transaction.commit()
         self.assertEqual('article', self.repository['article'].template)
         self.assertEqual('default', self.repository['article'].header_layout)
 
@@ -262,6 +266,7 @@ class DefaultTemplateByContentType(zeit.content.article.testing.FunctionalTestCa
         self.repository['article'] = article
         with checked_out(self.repository['article']):
             pass
+        transaction.commit()
         self.assertEqual('column', self.repository['article'].template)
         self.assertEqual('heiter', self.repository['article'].header_layout)
 
@@ -271,6 +276,7 @@ class DefaultTemplateByContentType(zeit.content.article.testing.FunctionalTestCa
         self.repository['article'] = article
         with checked_out(self.repository['article']):
             pass
+        transaction.commit()
         self.assertEqual('article', self.repository['article'].template)
 
     def test_article_should_have_default_variant_name_on_checkout(self):
@@ -279,6 +285,7 @@ class DefaultTemplateByContentType(zeit.content.article.testing.FunctionalTestCa
         self.repository['article'] = article
         with checked_out(self.repository['article']):
             pass
+        transaction.commit()
         self.assertEqual('original', self.repository['article'].main_image_variant_name)
 
     def test_checkout_change_variant_name_if_invalid(self):
@@ -288,6 +295,7 @@ class DefaultTemplateByContentType(zeit.content.article.testing.FunctionalTestCa
         self.repository['article'] = article
         with checked_out(self.repository['article']):
             pass
+        transaction.commit()
         self.assertEqual('original', self.repository['article'].main_image_variant_name)
 
     def test_changing_template_should_set_default_header(self):
@@ -362,6 +370,7 @@ class ArticleSpeechbertTest(zeit.content.article.testing.FunctionalTestCase):
         article = self.repository['article'] = article
         with checked_out(article) as co:
             IPublishInfo(co).urgent = True
+        transaction.commit()
         IPublish(article).publish()
 
         checksum = zeit.content.article.interfaces.ISpeechbertChecksum(self.repository['article'])
@@ -385,11 +394,15 @@ class ArticleSpeechbertTest(zeit.content.article.testing.FunctionalTestCase):
         assert checksum.checksum == 'd751713988987e9331980363e24189ce'
 
     def test_no_checksum_for_ignored_genres(self):
-        uid = 'http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept'
-        article = self.repository['article'] = zeit.cms.interfaces.ICMSContent(uid)
-        zeit.cms.config.set('zeit.workflow', 'speechbert-ignore-genres', 'rezept-vorstellung')
+        zeit.cms.config.set('zeit.workflow', 'speechbert-ignore-genres', 'rezept')
+        article = zeit.content.article.testing.create_article()
+        article.genre = 'rezept'
+        self.repository['article'] = article
+        article = self.repository['article']
+        IPublishInfo(article).urgent = True
+        transaction.commit()
         IPublish(article).publish()
-        checksum = zeit.content.article.interfaces.ISpeechbertChecksum(self.repository['article'])
+        checksum = zeit.content.article.interfaces.ISpeechbertChecksum(article)
         assert not checksum.checksum
 
 
@@ -404,6 +417,7 @@ class AudioArticle(zeit.content.article.testing.FunctionalTestCase):
                     co, zope.lifecycleevent.Attributes(audios, 'items')
                 )
             )
+        transaction.commit()
         self.article = self.repository['article']
 
     def setUp(self):
@@ -440,6 +454,7 @@ class AudioArticle(zeit.content.article.testing.FunctionalTestCase):
                     co, zope.lifecycleevent.Attributes(audios, 'items')
                 )
             )
+        transaction.commit()
         # without items, no changes
         assert self.article.header_layout != 'podcast'
 
@@ -495,6 +510,7 @@ class AudioArticle(zeit.content.article.testing.FunctionalTestCase):
         with checked_out(audio) as co:
             info = zeit.content.audio.interfaces.IPodcastEpisodeInfo(co)
             info.notes = notes
+        transaction.commit()
         self._add_audio_to_article()
         assert self.article.body.values()[1].text == p0
         assert self.article.body.values()[2].text == p1

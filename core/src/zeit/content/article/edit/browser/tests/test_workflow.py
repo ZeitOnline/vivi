@@ -32,9 +32,16 @@ class Checkin(zeit.content.article.testing.BrowserTestCase):
 class CheckinSelenium(
     zeit.content.article.edit.browser.testing.EditorTestCase, zeit.cms.tagging.testing.TaggingHelper
 ):
+    def setUp(self):
+        super().setUp()
+        zeit.cms.content.interfaces.ISemanticChange(
+            self.repository['article']
+        ).last_semantic_change = pendulum.datetime(2007, 1, 1, 8, 53)
+        transaction.commit()
+
     def test_form_with_semantic_change_shows_current_timestamp(self):
         s = self.selenium
-        self.open('/repository/online/2007/01/Somalia-Grill/@@checkout')
+        self.open('/repository/article/@@checkout')
         s.waitForElementPresent('id=publish.has_semantic_change')
         s.click('id=publish.has_semantic_change')
         s.waitForElementPresent('css=.timer')
@@ -49,7 +56,7 @@ class CheckinSelenium(
 
     def test_form_without_new_semantic_change_shows_last_timestamp(self):
         s = self.selenium
-        self.open('/repository/online/2007/01/Somalia-Grill/@@checkout')
+        self.open('/repository/article/@@checkout')
         s.waitForElementPresent('css=.timestamp')
         s.waitForNotText('css=.timestamp', '')
         date_format = '%d.%m.%Y %H:%Mh'
@@ -57,8 +64,12 @@ class CheckinSelenium(
         s.assertText('css=.timestamp', timestamp)
 
     def test_form_without_last_semantic_change_shows_current_timestamp(self):
+        zeit.cms.content.interfaces.ISemanticChange(
+            self.repository['article']
+        ).last_semantic_change = None
+        transaction.commit()
         s = self.selenium
-        self.open('/repository/online/2007/01/Somalia/@@checkout')
+        self.open('/repository/article/@@checkout')
         s.waitForElementPresent('css=.timer')
         s.waitForNotText('css=.timer', '')
         date_format = '%d.%m.%Y %H:%Mh'
@@ -109,23 +120,20 @@ class CheckinSelenium(
         s.waitForElementNotPresent(disabled_checkin_button)
 
     def test_checkin_does_not_set_last_semantic_change_by_default(self):
-        sc = zeit.cms.content.interfaces.ISemanticChange(
-            self.repository['online']['2007']['01']['Somalia']
-        )
+        sc = zeit.cms.content.interfaces.ISemanticChange(self.repository['article'])
         before = sc.last_semantic_change
-        self.open('/repository/online/2007/01/Somalia/@@checkout')
+        self.open('/repository/article/@@checkout')
         s = self.selenium
         s.waitForElementPresent('id=checkin')
         s.clickAndWait('id=checkin')
         self.assertIn('repository', s.getLocation())
+        transaction.abort()
         self.assertEqual(before, sc.last_semantic_change)
 
     def test_checkin_sets_last_semantic_change_if_checked(self):
-        sc = zeit.cms.content.interfaces.ISemanticChange(
-            self.repository['online']['2007']['01']['Somalia']
-        )
+        sc = zeit.cms.content.interfaces.ISemanticChange(self.repository['article'])
         before = sc.last_semantic_change
-        self.open('/repository/online/2007/01/Somalia/@@checkout')
+        self.open('/repository/article/@@checkout')
         s = self.selenium
         s.waitForElementPresent('id=checkin')
         s.click('id=publish.has_semantic_change')
@@ -135,10 +143,11 @@ class CheckinSelenium(
         s.waitForChecked('id=publish.has_semantic_change')
         s.clickAndWait('id=checkin')
         self.assertIn('repository', s.getLocation())
+        transaction.abort()
         self.assertNotEqual(before, sc.last_semantic_change)
 
     def test_semantic_change_checkbox_is_saved(self):
-        self.open('/repository/online/2007/01/Somalia/@@checkout')
+        self.open('/repository/article/@@checkout')
         s = self.selenium
         s.waitForElementPresent('id=checkin')
         s.click('id=publish.has_semantic_change')
@@ -153,7 +162,7 @@ class CheckinSelenium(
         s.waitForChecked('id=publish.has_semantic_change')
 
     def test_checkin_button_change_on_semantic_change(self):
-        self.open('/repository/online/2007/01/Somalia/@@checkout')
+        self.open('/repository/article/@@checkout')
         s = self.selenium
         s.waitForElementPresent('id=checkin')
         s.waitForElementNotPresent('css=.checkin-button.semantic-change')
@@ -169,7 +178,7 @@ class CheckinSelenium(
         ' to get the inlineform to submit. Maybe with Webdriver?'
     )
     def test_clicking_checkin_button_triggers_inlineform_save_beforehand(self):
-        self.open('/repository/online/2007/01/Somalia/@@checkout')
+        self.open('/repository/article/@@checkout')
         s = self.selenium
         s.waitForElementPresent('id=checkin')
         s.runScript(
@@ -187,7 +196,7 @@ zeit.cms.with_lock = function(callable) {
         self.assertEqual(None, self.eval('zeit.cms.with_lock_calls[1].NAME'))
 
     def test_save_state_button_should_load_page(self):
-        self.open('/repository/online/2007/01/Somalia')
+        self.open('/repository/article')
         s = self.selenium
         s.waitForElementPresent('css=#edit-form-workflow a.save')
         s.clickAndWait('css=#edit-form-workflow a.save')
@@ -199,7 +208,7 @@ zeit.cms.with_lock = function(callable) {
 class WorkflowEndToEnd(zeit.content.article.edit.browser.testing.EditorTestCase):
     def test_checkin_redirects_to_repository(self):
         s = self.selenium
-        self.open('/repository/online/2007/01/Somalia/@@checkout')
+        self.open('/repository/article/@@checkout')
         s.waitForElementPresent('id=checkin')
         self.assertNotIn('repository', s.getLocation())
         s.clickAndWait('id=checkin')
@@ -207,7 +216,7 @@ class WorkflowEndToEnd(zeit.content.article.edit.browser.testing.EditorTestCase)
 
     def test_checkout_redirects_to_working_copy(self):
         s = self.selenium
-        self.open('/repository/online/2007/01/Somalia/')
+        self.open('/repository/article/')
         checkout_button = 'xpath=//a[contains(@title, "Checkout")]'
         s.waitForElementPresent(checkout_button)
         self.assertIn('repository', s.getLocation())
@@ -216,7 +225,7 @@ class WorkflowEndToEnd(zeit.content.article.edit.browser.testing.EditorTestCase)
 
     def test_publish_shows_lightbox(self):
         s = self.selenium
-        self.open('/repository/online/2007/01/Somalia/')
+        self.open('/repository/article/')
         s.waitForElementPresent('id=publish.urgent')
         s.click('id=publish.urgent')
         s.pause(500)
@@ -228,7 +237,7 @@ class WorkflowEndToEnd(zeit.content.article.edit.browser.testing.EditorTestCase)
 
     def test_save_and_publish_shows_lightbox(self):
         s = self.selenium
-        self.open('/repository/online/2007/01/Somalia/@@checkout')
+        self.open('/repository/article/@@checkout')
         s.waitForElementPresent('id=publish.urgent')
         s.click('id=publish.urgent')
         s.pause(500)
@@ -238,7 +247,7 @@ class WorkflowEndToEnd(zeit.content.article.edit.browser.testing.EditorTestCase)
 
     def test_delete_shows_lightbox(self):
         s = self.selenium
-        self.open('/repository/online/2007/01/Somalia/')
+        self.open('/repository/article/')
         s.waitForElementPresent('id=delete_from_repository')
         s.click('id=delete_from_repository')
         s.waitForElementPresent('css=.lightbox')
@@ -266,7 +275,7 @@ class Publish(zeit.content.article.testing.BrowserTestCase):
 class Delete(zeit.content.article.testing.BrowserTestCase):
     def test_checked_out_article_has_cancel_but_no_delete(self):
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/online/2007/01/Somalia/@@checkout')
+        b.open('http://localhost/++skin++vivi/repository/article/@@checkout')
         b.open('@@edit.form.checkin-buttons?show_form=1')
         self.assertNothingRaised(b.getLink, 'Cancel')
         self.assertNotIn('Delete', b.contents)
@@ -275,7 +284,7 @@ class Delete(zeit.content.article.testing.BrowserTestCase):
         b = self.browser
         b.open(
             'http://localhost/++skin++vivi/repository'
-            '/online/2007/01/Somalia/@@edit.form.checkin-buttons?show_form=1'
+            '/article/@@edit.form.checkin-buttons?show_form=1'
         )
         self.assertNothingRaised(b.getLink, 'Delete')
         self.assertNotIn('Cancel', b.contents)
@@ -284,10 +293,10 @@ class Delete(zeit.content.article.testing.BrowserTestCase):
 class Objectlog(zeit.content.article.edit.browser.testing.EditorTestCase):
     def test_objectlog_is_wrapped(self):
         # this is a sanity check that the views are wired up correctly
-        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/article')
         zeit.objectlog.interfaces.ILog(article).log('example message')
         transaction.commit()
-        self.open('/++skin++vivi/repository/online/2007/01/Somalia/')
+        self.open('/++skin++vivi/repository/article')
         s = self.selenium
         fold = 'css=#edit-form-status .fold-link'
         s.waitForElementPresent(fold)

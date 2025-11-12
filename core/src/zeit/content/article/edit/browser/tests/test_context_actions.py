@@ -6,9 +6,8 @@ class WorkingcopyTest(zeit.content.article.testing.SeleniumTestCase):
         import transaction
 
         super().setUp()
-        self.selenium.setTimeout(3600000)
-        self.open('/repository/online/2007/01/Somalia/')
-        self.open('/repository/online/2007/01/Somalia/@@checkout')
+        self.open('/repository/article')
+        self.open('/repository/article/@@checkout')
         transaction.commit()
         self.selenium.open(self.selenium.getLocation())
         self.selenium.waitForElementPresent('id=checkin')

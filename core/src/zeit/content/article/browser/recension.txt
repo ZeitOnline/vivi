@@ -8,8 +8,7 @@ We need a testbrowser first:
 >>> browser = Browser(layer['wsgi_app'])
 >>> browser.login('user', 'userpw')
 
->>> browser.open('http://localhost/++skin++vivi/repository/online'
-...              '/2007/01/Somalia/@@checkout')
+>>> browser.open('http://localhost/++skin++vivi/repository/article/@@checkout')
 >>> browser.open('edit.form.recension-list')
 >>> listing = browser.url
 
@@ -25,8 +24,8 @@ is False:
 >>> import zeit.cms.testing
 >>> zeit.cms.testing.set_site()
 >>> with zeit.cms.testing.interaction():
-...     somalia = zeit.cms.checkout.interfaces.IWorkingcopy(None)['Somalia']
-...     print(somalia.has_recensions)
+...     article = zeit.cms.checkout.interfaces.IWorkingcopy(None)['article']
+...     print(article.has_recensions)
 False
 
 Let's add one:
@@ -51,8 +50,8 @@ After adding the first recensions, has_recensions is set (it's needed for
 XSLT). XXX Note that it currently is never removed again.
 
 >>> with zeit.cms.testing.interaction():
-...     somalia = zeit.cms.checkout.interfaces.IWorkingcopy(None)['Somalia']
-...     print(somalia.has_recensions)
+...     article = zeit.cms.checkout.interfaces.IWorkingcopy(None)['article']
+...     print(article.has_recensions)
 True
 
 Let's edit and add some more information:

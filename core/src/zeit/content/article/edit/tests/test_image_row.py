@@ -18,7 +18,7 @@ class ImageRowTest(zeit.content.article.testing.FunctionalTestCase):
         image_row = self.get_image_row()
         image_row.display_mode = 'square'
         image_row.variant_name = 'default'
-        image = ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')
+        image = ICMSContent('http://xml.zeit.de/image')
         content = self.repository['testcontent']
         ref = content.images.create(image)
         content.images = (ref,)
@@ -27,9 +27,7 @@ class ImageRowTest(zeit.content.article.testing.FunctionalTestCase):
         image_row.images = (ref,)
         self.assertEqual('square', image_row.xml.xpath('.')[0].get('display_mode'))
         self.assertEqual('default', image_row.xml.xpath('.')[0].get('variant_name'))
-        self.assertEqual(
-            'http://xml.zeit.de/2006/DSC00109_2.JPG', image_row.xml.xpath('./image')[0].get('src')
-        )
+        self.assertEqual('http://xml.zeit.de/image', image_row.xml.xpath('./image')[0].get('src'))
 
     def test_image_parallax_properties_should_be_set(self):
         image_properties = ImageParallaxProperties(None, lxml.builder.E.image_parallax_properties())

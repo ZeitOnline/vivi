@@ -93,7 +93,7 @@ class ScrollyImageTest(zeit.content.article.testing.FunctionalTestCase):
 
     def test_references_should_be_retrievable(self):
         scrolly_img = self.create_scrolly_image()
-        image_ref = self.repository['2006']['DSC00109_2.JPG']
+        image_ref = self.repository['image']
         scrolly_img.references = image_ref
         self.assertEqual(image_ref, scrolly_img.references)
 

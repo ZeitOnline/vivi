@@ -324,6 +324,7 @@ class TestEditingMultipleParagraphs(zeit.content.article.edit.browser.testing.Ed
             co.body.create_item('image')
             paragraph = co.body.create_item('p')
             paragraph.text = 'bar'
+        transaction.commit()
         self.open('/repository/article/@@checkout')
 
     def test_arrow_up_moves_across_non_text_block_and_places_cursor_at_end(self):

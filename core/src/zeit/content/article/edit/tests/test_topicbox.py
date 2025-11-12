@@ -49,7 +49,7 @@ class TestTopicbox(zeit.content.article.testing.FunctionalTestCase):
     def test_topicbox_values_does_not_contain_empty_reference(self):
         box = self.get_topicbox()
         box.automatic_type = 'manual'
-        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/article')
         box.first_reference = article
         self.assertEqual(
             [
@@ -83,7 +83,7 @@ class TestTopicbox(zeit.content.article.testing.FunctionalTestCase):
     def test_box_uses_cp_content(self):
         box = self.get_topicbox()
         box.automatic_type = 'manual'
-        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/article')
         cp = self.get_cp(
             content=[
                 article,
@@ -111,9 +111,7 @@ class TestTopicbox(zeit.content.article.testing.FunctionalTestCase):
         box.automatic_type = 'manual'
         cp = self.get_cp(content=[self.repository['foo']])
         box.first_reference = cp
-        box.second_reference = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/online/2007/01/Somalia'
-        )
+        box.second_reference = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/article')
         self.assertEqual(
             [
                 self.repository['foo'],
