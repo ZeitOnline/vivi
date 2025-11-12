@@ -9,7 +9,6 @@ import zope.component
 
 from zeit.cms.repository.folder import Folder
 import zeit.cms.testing
-import zeit.connector.interfaces
 import zeit.content.article.testing
 import zeit.content.author.author
 import zeit.newsimport.interfaces
@@ -138,9 +137,6 @@ class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
         self.repository['autoren']['dpa'] = agency
         self.dpa = zope.component.getUtility(zeit.newsimport.interfaces.IDPA, name='weblines')
         self.news = zeit.newsimport.news.ArticleEntry(self.dpa.get_entries()[0])
-
-        self.connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
-        self.connector.search_result = []
 
     def add_article_with_image(self):
         entry = self.dpa.get_entries()[-1].copy()
