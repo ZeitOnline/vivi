@@ -4,7 +4,6 @@ import unittest
 import urllib
 
 from selenium.webdriver.common.keys import Keys
-import pendulum
 import zope.component
 
 from zeit.cms.content.sources import FEATURE_TOGGLES
@@ -690,22 +689,9 @@ class ImageUploadSeleniumTest(zeit.content.image.testing.SeleniumTestCase):
         self.selenium.waitForLocation('*/repository/@@edit-images?files=*')
 
     def test_enter_mdb_id(self):
-        login_as = 'globalmgr:globalmgrpw'
         s = self.selenium
-
-        # avoid circular import for workflow zeit.push imports zeit.content.image imports zeit.push
-        # therefore register just what we need!
-        # Unfortunately we miss out on the metadata view we actually need,
-        # so we mix our seleniumtest with unittest
-        gsm = zope.component.getGlobalSiteManager()
-        gsm.registerAdapter(
-            zeit.workflow.timebased.TimeBasedWorkflow,
-            required=(zeit.cms.interfaces.ICMSContent,),
-            provided=zeit.workflow.interfaces.ITimeBasedPublishing,
-        )
-
-        gsm.registerUtility(zeit.content.image.mdb.FakeMDB())
-        self.open('/repository/@@upload-images', login_as)
+        zope.component.getGlobalSiteManager().registerUtility(zeit.content.image.mdb.FakeMDB())
+        self.open('/repository/@@upload-images')
         s.type('css=.imageupload__mdb-ids', '12345')
         s.keyPress('css=.imageupload__mdb-ids', Keys.RETURN)
         s.waitForElementPresent('css=.imageupload__gallery li')
@@ -724,11 +710,8 @@ class ImageUploadSeleniumTest(zeit.content.image.testing.SeleniumTestCase):
         s.click('name=upload_and_open')
         s.waitForLocation('*/repository/*bild/@@variant.html')
 
-        imagegroup = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/mdb-bild-titel-bild')
-        workflow = zeit.workflow.interfaces.ITimeBasedPublishing(imagegroup)
-        self.assertEqual(
-            (None, pendulum.parse('2019-01-01', tz='Europe/Berlin')), workflow.release_period
-        )
+        s.click('link=Workflow')
+        s.assertValue('id=form.release_period.combination_01', '2019-01-01*')
 
 
 class AddCentralImageUploadTest(zeit.content.image.testing.SeleniumTestCase):
