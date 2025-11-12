@@ -10,4 +10,22 @@
   <include package="zeit.content.image.browser" />
   <include package="zeit.addcentral" />
 
+  <!-- The "upload from MDB" test needs "timebased publishing",
+       but it's not worth including all of zeit.workflow just for that. -->
+  <include package="zeit.workflow.browser" />
+  <adapter factory="zeit.workflow.asset.AssetWorkflow"
+    provides="zeit.workflow.interfaces.IAssetWorkflow"
+    trusted="yes"
+    />
+  <class class="zeit.workflow.asset.AssetWorkflow">
+    <require
+      permission="zope.View"
+      interface="zeit.workflow.interfaces.IAssetWorkflow"
+      />
+    <require
+      permission="zeit.workflow.Publish"
+      set_schema="zeit.workflow.interfaces.IAssetWorkflow"
+      />
+  </class>
+
 </configure>

@@ -17,7 +17,11 @@ import zeit.cms.browser.interfaces
 import zeit.cms.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.cms.workingcopy.interfaces
+import zeit.content.image.interfaces
+import zeit.content.image.mdb
 import zeit.content.image.testing
+import zeit.workflow.interfaces
+import zeit.workflow.timebased
 
 
 class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
@@ -698,10 +702,16 @@ class ImageUploadSeleniumTest(zeit.content.image.testing.SeleniumTestCase):
         s.assertValue('css=.imageupload__mdb-ids', '')
         s.click('css=.imageupload__button--submit')
         s.waitForLocation('*/repository/@@edit-images?files=*')
-        self.selenium.assertValue('name=target_name[0]', 'mdb-bild-titel-bild')
-        self.selenium.assertValue('name=copyright[0]', 'mdb-copyright-foo/Peter Schwalbach')
-        self.selenium.assertValue('name=title[0]', 'mdb-bild-titel')
-        self.selenium.assertValue('name=caption[0]', 'Testbilder Honorar')
+        s.waitForValue('name=target_name[0]', 'mdb-bild-titel-bild')
+        s.assertValue('name=copyright[0]', 'mdb-copyright-foo/Peter Schwalbach')
+        s.assertValue('name=title[0]', 'mdb-bild-titel')
+        s.assertValue('name=caption[0]', 'Testbilder Honorar')
+
+        s.click('name=upload_and_open')
+        s.waitForLocation('*/repository/*bild/@@variant.html')
+
+        s.click('link=Workflow')
+        s.assertValue('id=form.release_period.combination_01', '2019-01-01*')
 
 
 class AddCentralImageUploadTest(zeit.content.image.testing.SeleniumTestCase):
