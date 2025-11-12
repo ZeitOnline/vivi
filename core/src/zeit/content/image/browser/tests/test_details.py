@@ -1,3 +1,4 @@
+import transaction
 import zope.component
 
 import zeit.cms.checkout.helper
@@ -17,6 +18,7 @@ class ImageDetails(zeit.content.image.testing.SeleniumTestCase):
         with zeit.cms.checkout.helper.checked_out(image) as co:
             meta = zeit.content.image.interfaces.IImageMetadata(co)
             meta.caption = 'foo'
+        transaction.commit()
 
         s = self.selenium
         self.open('/repository/image-with-metadata/@@wrap?view=object-details')

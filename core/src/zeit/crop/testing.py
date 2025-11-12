@@ -1,6 +1,8 @@
 # coding: utf8
 import importlib.resources
 
+import transaction
+
 import zeit.cms.testing
 import zeit.content.image.testing
 
@@ -37,11 +39,6 @@ class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
 
     def setUp(self):
         super().setUp()
-        self.create_group()
-        self.open_imp()
-
-    def create_group(self):
         zeit.content.image.testing.create_image_group()
-
-    def open_imp(self):
+        transaction.commit()
         self.open('/repository/group/@@imp.html')

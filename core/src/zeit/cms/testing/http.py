@@ -1,6 +1,7 @@
 import logging
 import os
 import threading
+import time
 
 import gocept.httpserverlayer.custom
 import waitress.server
@@ -69,6 +70,14 @@ class WSGIServerLayer(Layer):
         del self['http_host']
         del self['http_port']
         del self['http_address']
+
+    def testTearDown(self):
+        # Wait until all in-flight requests have completed, otherwise they can
+        # cause transaction errors when the next DatabaseLayer.testSetUp() wants
+        # to run already.
+        if hasattr(self['httpd'], 'task_dispatcher'):  # bw-compat with gocept.httpserverlayer
+            while self['httpd'].task_dispatcher.active_count > 0:
+                time.sleep(0.01)
 
 
 class RecordingRequestHandler(gocept.httpserverlayer.custom.RequestHandler):

@@ -8,7 +8,7 @@ import zope.component
 import zope.lifecycleevent
 
 from zeit.cms.content.sources import FEATURE_TOGGLES
-from zeit.cms.repository.interfaces import ICollection, INonRecursiveCollection
+from zeit.content.image.interfaces import IImageGroup
 from zeit.retresco.interfaces import ISkipEnrich
 import zeit.cms.celery
 import zeit.cms.checkout.interfaces
@@ -80,6 +80,16 @@ def index_after_move(event):
         return
     log.info('Move: Creating index job for %s', context.uniqueId)
     index_async.delay(context.uniqueId)
+
+    folder_items = zope.component.queryAdapter(
+        context,
+        zeit.cms.workflow.interfaces.IPublicationDependencies,
+        name='zeit.cms.repository.folder',
+    )
+    if folder_items and not IImageGroup.providedBy(context):
+        children = folder_items.get_dependencies()
+        for child in children:
+            index_async.delay(child.uniqueId)
 
 
 @grok.subscribe(zope.lifecycleevent.IObjectAddedEvent)
@@ -163,57 +173,49 @@ def index(content, enrich=False, update_keywords=False, publish=False):
     if update_keywords and not enrich:
         raise ValueError('enrich is required for update_keywords')
     conn = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
-    stack = [content]
-    errors = []
-    while stack:
-        content = stack.pop(0)
-        if ICollection.providedBy(content) and not INonRecursiveCollection.providedBy(content):
-            stack.extend(content.values())
-        if should_skip(content):
-            continue
-        uuid = getattr(zeit.cms.content.interfaces.IUUID(content, None), 'id', '<no-uuid>')
-        log.info(
-            'Updating: %s %s, enrich: %s, keywords: %s, publish: %s',
-            content.uniqueId,
-            uuid,
-            enrich,
-            update_keywords,
-            publish,
-        )
-        try:
-            data = {}
-            previous = conn.get_article_data(content)
-            if previous:
-                for key in PRESERVE_FIELDS:
-                    if key in previous:
-                        data[key] = previous[key]
+    if should_skip(content):
+        log.info('Skip index for %s, it matched should_skip()', content)
+        return
+    uuid = getattr(zeit.cms.content.interfaces.IUUID(content, None), 'id', '<no-uuid>')
+    log.info(
+        'Updating: %s %s, enrich: %s, keywords: %s, publish: %s',
+        content.uniqueId,
+        uuid,
+        enrich,
+        update_keywords,
+        publish,
+    )
+    try:
+        data = {}
+        previous = conn.get_article_data(content)
+        if previous:
+            for key in PRESERVE_FIELDS:
+                if key in previous:
+                    data[key] = previous[key]
 
-            if enrich and not ISkipEnrich.providedBy(content):
-                log.debug('Enriching: %s', content.uniqueId)
-                response = conn.enrich(content)
-                data['body'] = response.get('body')
-                if update_keywords:
-                    tagger = zeit.retresco.tagger.Tagger(content)
-                    tagger.update(conn.generate_keyword_list(response), clear_disabled=False)
+        if enrich and not ISkipEnrich.providedBy(content):
+            log.debug('Enriching: %s', content.uniqueId)
+            response = conn.enrich(content)
+            data['body'] = response.get('body')
+            if update_keywords:
+                tagger = zeit.retresco.tagger.Tagger(content)
+                tagger.update(conn.generate_keyword_list(response), clear_disabled=False)
 
-            conn.index(content, data)
+        conn.index(content, data)
 
-            if publish:
-                pub_info = zeit.cms.workflow.interfaces.IPublishInfo(content)
-                if pub_info.published:
-                    if zeit.retresco.interfaces.ITMSRepresentation(content)() is not None:
-                        log.info('Publishing: %s', content.uniqueId)
-                        conn.publish(content)
-                    else:
-                        log.info('Skip publish for %s, missing required fields', content.uniqueId)
-        except zeit.retresco.interfaces.TechnicalError as e:
-            log.info('Retrying %s due to %r', content.uniqueId, e)
-            raise
-        except Exception as e:
-            errors.append(e)
-            log.warning('Error indexing %s, giving up', content.uniqueId, exc_info=True)
-            continue
-    return errors
+        if publish:
+            pub_info = zeit.cms.workflow.interfaces.IPublishInfo(content)
+            if pub_info.published:
+                if zeit.retresco.interfaces.ITMSRepresentation(content)() is not None:
+                    log.info('Publishing: %s', content.uniqueId)
+                    conn.publish(content)
+                else:
+                    log.info('Skip publish for %s, missing required fields', content.uniqueId)
+    except zeit.retresco.interfaces.TechnicalError as e:
+        log.info('Retrying %s due to %r', content.uniqueId, e)
+        raise
+    except Exception:
+        log.warning('Error indexing %s, giving up', content.uniqueId, exc_info=True)
 
 
 @zeit.cms.celery.task(bind=True, queue='search')
@@ -255,8 +257,13 @@ def index_parallel(self, unique_id, enrich=False, publish=False):
         return
     except Exception:
         self.retry()
-    if ICollection.providedBy(content) and not INonRecursiveCollection.providedBy(content):
-        children = content.values()
+    folder_items = zope.component.queryAdapter(
+        content,
+        zeit.cms.workflow.interfaces.IPublicationDependencies,
+        name='zeit.cms.repository.folder',
+    )
+    if folder_items and not IImageGroup.providedBy(content):
+        children = folder_items.get_dependencies()
         for item in children:
             if should_skip(item):
                 continue
