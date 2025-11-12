@@ -429,20 +429,25 @@ def parse_fields_from_metadata(metadata):
         'title': [
             # embedded
             'xmp:xmpmeta:Headline',
+            'xmp:xapmeta:Headline',
             'xmp:xmpmeta:title:text',
+            'xmp:xapmeta:title:text',
             # mdb
             'titel',
         ],
         'caption': [
             # embedded
             'xmp:xmpmeta:description:text',
+            'xmp:xapmeta:description:text',
             # mdb
             'beschreibung',
         ],
         'copyright': [
             # embedded
             'xmp:xmpmeta:creator',
+            'xmp:xapmeta:creator',
             'xmp:xmpmeta:Credit',
+            'xmp:xapmeta:Credit',
             # mdb
             'credit',
             'rechteinhaber',
