@@ -121,20 +121,27 @@ class DPAMockLayer(zeit.cms.testing.Layer):
         self['dpa_mock'].reset_mock()
 
 
-DPA_MOCK_LAYER = DPAMockLayer(ZOPE_LAYER)
-CELERY_LAYER = zeit.cms.testing.CeleryWorkerLayer(DPA_MOCK_LAYER)
-CELERY_LAYER.queues += ('search',)
+DPA_MOCK_LAYER = DPAMockLayer()
+
+
+class FixtureLayer(zeit.cms.testing.ContentFixtureLayer):
+    def create_fixture(self):
+        agency = zeit.content.author.author.Author()
+        agency.firstname = 'dpa'
+        repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
+        repository['autoren'] = Folder()
+        repository['autoren']['dpa'] = agency
+
+
+FIXTURE_LAYER = FixtureLayer(ZOPE_LAYER)
+LAYER = zeit.cms.testing.Layer((FIXTURE_LAYER, DPA_MOCK_LAYER))
 
 
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
-    layer = DPA_MOCK_LAYER
+    layer = LAYER
 
     def setUp(self):
         super().setUp()
-        agency = zeit.content.author.author.Author()
-        agency.firstname = 'dpa'
-        self.repository['autoren'] = Folder()
-        self.repository['autoren']['dpa'] = agency
         self.dpa = zope.component.getUtility(zeit.newsimport.interfaces.IDPA, name='weblines')
         self.news = zeit.newsimport.news.ArticleEntry(self.dpa.get_entries()[0])
 
@@ -142,3 +149,7 @@ class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
         entry = self.dpa.get_entries()[-1].copy()
         news = zeit.newsimport.news.ArticleEntry(entry)
         return news.publish(news.create())
+
+
+CELERY_LAYER = zeit.cms.testing.CeleryWorkerLayer(LAYER)
+CELERY_LAYER.queues += ('search',)
