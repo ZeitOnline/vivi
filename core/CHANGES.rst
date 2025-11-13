@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.227.0 (2025-11-13)
+--------------------
+
+- WCM-43: Split sql test isolation into nested transactions and truncate/recreate
+
+
 7.226.0 (2025-11-13)
 --------------------
 
