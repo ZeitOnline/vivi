@@ -2,7 +2,9 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "dependencyDashboard": true,
   "commitMessagePrefix": "MAINT: ",
-  "schedule": ["before 8am on wednesday"],
+  "schedule": [
+    "before 8am on wednesday"
+  ],
   "enabledManagers": [
     "custom.regex",
     "github-actions",
@@ -14,7 +16,9 @@
   ],
   "lockFileMaintenance": {
     "enabled": true,
-    "schedule": ["before 8am on wednesday"],
+    "schedule": [
+      "before 8am on wednesday"
+    ],
     "commitMessageAction": "Update dependencies"
   },
   "pre-commit": {
@@ -24,7 +28,9 @@
     {
       "description": "Update commented VERSION variables",
       "customType": "regex",
-      "fileMatch": ["^.github/workflows/.*"],
+      "fileMatch": [
+        "^.github/workflows/.*"
+      ],
       "matchStrings": [
         "#\\s?renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?( extractVersion=(?<extractVersion>.+?))?\\s[^:]*: \"(?<currentValue>[^\"]*)\""
       ],
@@ -35,17 +41,29 @@
   "packageRules": [
     {
       "groupName": "All minor github-actions changes",
-      "matchManagers": ["github-actions"],
-      "matchUpdateTypes": ["minor", "patch"]
+      "matchManagers": [
+        "github-actions"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ]
     },
     {
       "groupName": "All pre-commit changes",
-      "matchManagers": ["pre-commit"]
+      "matchManagers": [
+        "pre-commit"
+      ]
     },
-		{
-			"groupName": "All minor npm changes",
-			"matchManagers": ["npm"],
-			"matchUpdateTypes": ["minor", "patch"]
-		},
+    {
+      "groupName": "All minor npm changes",
+      "matchManagers": [
+        "npm"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ]
+    }
   ]
 }
