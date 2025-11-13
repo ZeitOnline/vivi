@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.226.0 (2025-11-13)
+--------------------
+
+- WCM-1128: image property toggles cleanup
+
+- WCM-1190: read additional metadata from images
+
+
 7.225.0 (2025-11-12)
 --------------------
 
