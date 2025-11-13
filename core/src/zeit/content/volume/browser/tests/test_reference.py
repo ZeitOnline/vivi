@@ -11,14 +11,13 @@ class ReferenceDisplayTest(zeit.content.volume.testing.FunctionalTestCase):
         from zeit.content.image.testing import create_image_group
         from zeit.content.volume.reference import RelatedReference, XMLRelatedReference
 
-        self.repository['imagegroup'] = create_image_group()
-
+        create_image_group()
         volume = zeit.content.volume.volume.Volume()
         volume.year = 2014
         volume.volume = 49
         volume.product = zeit.cms.content.sources.Product('ZEI')
         if cover_image:
-            volume.set_cover('portrait', volume.product.id, self.repository['imagegroup'])
+            volume.set_cover('portrait', volume.product.id, self.repository['group'])
         self.repository['volume'] = volume
 
         xml = XMLRelatedReference(self.repository['volume'])
@@ -36,7 +35,7 @@ class ReferenceDisplayTest(zeit.content.volume.testing.FunctionalTestCase):
 
     def test_display_shows_cover_image(self):
         self.assertEllipsis(
-            '<img src=".../imagegroup/original__50x0/@@raw" ... />',
+            '<img src=".../group/original__50x0/@@raw" ... />',
             self.get_display_view().cover_image(),
         )
 

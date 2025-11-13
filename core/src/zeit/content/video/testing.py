@@ -10,8 +10,7 @@ import zeit.push.testing
 
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer({}, bases=zeit.push.testing.CONFIG_LAYER)
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER, features=['zeit.connector.sql.zope'])
-ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
-PUSH_LAYER = zeit.push.testing.UrbanairshipTemplateLayer(ZOPE_LAYER)
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER, zeit.push.testing.create_fixture)
 
 
 class PlayerMockLayer(zeit.cms.testing.Layer):
@@ -34,7 +33,7 @@ class PlayerMockLayer(zeit.cms.testing.Layer):
 PLAYER_MOCK_LAYER = PlayerMockLayer()
 
 
-LAYER = zeit.cms.testing.Layer((PUSH_LAYER, PLAYER_MOCK_LAYER))
+LAYER = zeit.cms.testing.Layer((ZOPE_LAYER, PLAYER_MOCK_LAYER))
 WSGI_LAYER = zeit.cms.testing.WSGILayer(LAYER)
 
 

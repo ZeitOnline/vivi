@@ -14,7 +14,7 @@ class TestForm(zeit.content.link.testing.BrowserTestCase):
 
     def test_adding_link_stores_values(self):
         with zeit.cms.testing.site(self.getRootFolder()):
-            self.repository['image'] = create_image_group()
+            create_image_group()
 
         b = self.browser
         b.open('/repository')
@@ -26,7 +26,7 @@ class TestForm(zeit.content.link.testing.BrowserTestCase):
         b.getControl('Ressort', index=0).displayValue = ['Leben']
         b.getControl('Link address').value = 'http://gocept.com'
         b.getControl('HTTP Status Code').displayValue = ['307']
-        b.getControl(name='form.image').value = 'http://xml.zeit.de/image'
+        b.getControl(name='form.image').value = 'http://xml.zeit.de/group'
         b.getControl(name='form.actions.add').click()
         self.assertFalse('There were errors' in b.contents)
         b.getLink('Source').click()
@@ -38,7 +38,7 @@ class TestForm(zeit.content.link.testing.BrowserTestCase):
             """
         <link...
         <head>...
-            <image base-id="http://xml.zeit.de/image" type="jpg"/>...
+            <image base-id="http://xml.zeit.de/group" type="jpg"/>...
          """,
             xml,
         )

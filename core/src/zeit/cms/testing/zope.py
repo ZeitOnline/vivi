@@ -296,19 +296,6 @@ class ZopeLayer(Layer):
         ]
         self._set_current_zca(self['zodbApp'])
         transaction.commit()
-        self._create_fixture()
-
-    def _create_fixture(self):
-        # Since "everyone" uses /testcontent, set this up in a central place.
-        with site(self['zodbApp']):
-            repository = zope.component.queryUtility(zeit.cms.repository.interfaces.IRepository)
-            typ = zope.component.queryUtility(
-                zeit.cms.interfaces.ITypeDeclaration, name='testcontenttype'
-            )
-            # Skip for e.g. zeit.connector, zeit.securitypolicy.
-            if repository is not None and typ is not None:
-                repository['testcontent'] = typ.factory()
-                transaction.commit()
 
     def testTearDown(self):
         zope.component.hooks.setSite(None)
@@ -320,14 +307,10 @@ class ZopeLayer(Layer):
         site.__bases__ = (self['zcaRegistry'],)
 
 
-class ContentFixtureLayer(Layer):
-    def testSetUp(self):
-        with site(self['zodbApp']):
-            self.create_fixture()
-            transaction.commit()
+def IsolatedZopeLayer(bases, create_fixture=None, create_testcontent=True):
+    from .sql import SQLIsolationSavepointLayer  # break circular import
 
-    def create_fixture(self):
-        raise NotImplementedError()
+    return SQLIsolationSavepointLayer(ZopeLayer(bases), create_fixture, create_testcontent)
 
 
 class WSGILayer(Layer):

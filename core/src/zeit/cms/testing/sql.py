@@ -5,6 +5,8 @@ from sqlalchemy import text as sql
 from sqlalchemy.exc import OperationalError
 import gcp_storage_emulator.server
 import sqlalchemy
+import transaction
+import zope.component
 
 import zeit.connector.interfaces
 import zeit.connector.models
@@ -14,7 +16,7 @@ from . import gcsemulator  # noqa activate monkey patches
 from .docker import LAYER as DOCKER_LAYER
 from .docker import get_random_port
 from .layer import Layer
-from .zope import ProductConfigLayer
+from .zope import ProductConfigLayer, site
 
 
 class SQLServerLayer(Layer):
@@ -81,27 +83,15 @@ class DatabaseLayer(Layer):
         engine.dispose()
 
         engine = sqlalchemy.create_engine(self['dsn'])
-        self['sql_engine'] = engine
-        self['sql_connection'] = c = engine.connect()
-        t = self['sql_connection'].begin()
-        zeit.connector.models.Base.metadata.drop_all(c)
-        zeit.connector.models.Base.metadata.create_all(c)
-        t.commit()
+        with engine.connect() as c:
+            t = c.begin()
+            zeit.connector.models.Base.metadata.drop_all(c)
+            zeit.connector.models.Base.metadata.create_all(c)
+            t.commit()
+        engine.dispose()
 
     def tearDown(self):
-        self['sql_connection'].close()
-        del self['sql_connection']
-        self['sql_engine'].dispose()
-        del self['sql_engine']
         del self['dsn']
-
-    def testSetUp(self):
-        c = self['sql_connection']
-        t = c.begin()
-        for mapper in zeit.connector.models.Base.registry.mappers:
-            table = mapper.class_.__tablename__
-            c.execute(sql(f'truncate {table} cascade'))
-        t.commit()
 
 
 DATABASE_LAYER = DatabaseLayer()
@@ -160,3 +150,110 @@ class SQLConfigLayer(ProductConfigLayer):
 
 
 SQL_CONFIG_LAYER = SQLConfigLayer(package='zeit.connector')
+
+
+class SQLIsolationSavepointLayer(Layer):
+    def __init__(self, bases=(), create_fixture=None, create_testcontent=True, connector=None):
+        if not isinstance(bases, tuple):
+            bases = (bases,)
+        super().__init__(bases)
+        self.create_fixture = create_fixture
+        self.create_testcontent = create_testcontent
+        self.connector = connector  # Used by content-storage-api
+
+    def setUp(self):
+        if self.connector is None:
+            self.connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+        self['sql_connection'] = self.connector.engine.connect()
+
+        # Configure sqlalchemy session to use only this specific connection,
+        # and to use savepoints instead of full commits. Thus it joins the
+        # transaction that we start in testSetUp() and roll back in testTearDown()
+        # See "Joining a Session into an External Transaction" in the sqlalchemy doc
+        sqlalchemy.orm.close_all_sessions()
+        self.connector.session.registry.clear()
+        self.connector.session.configure(
+            bind=self['sql_connection'], join_transaction_mode='create_savepoint'
+        )
+
+        self['sql_transaction_layer'] = self['sql_connection'].begin()
+
+        if not (self.create_testcontent or self.create_fixture):
+            return
+        if self.create_fixture and 'gcs_storage' in self:
+            self['gcs_storage'].stack_push()
+        with self['rootFolder'](self['zodbDB-layer']) as root:
+            with site(root):
+                repository = zope.component.queryUtility(zeit.cms.repository.interfaces.IRepository)
+                if self.create_testcontent:
+                    create_testcontent(repository)
+                if self.create_fixture:
+                    self.create_fixture(repository)
+
+    def tearDown(self):
+        self['sql_transaction_layer'].rollback()
+        del self['sql_transaction_layer']
+        self['sql_connection'].close()
+        del self['sql_connection']
+        if self.create_fixture and 'gcs_storage' in self:
+            self['gcs_storage'].stack_pop()
+
+    def testSetUp(self):
+        self['sql_transaction_test'] = self['sql_connection'].begin_nested()
+
+    def testTearDown(self):
+        transaction.abort()  # includes connector.session.close()
+        self['sql_transaction_test'].rollback()
+        del self['sql_transaction_test']
+
+
+class SQLIsolationTruncateLayer(Layer):
+    def __init__(self, bases=(), create_fixture=None, create_testcontent=True, connector=None):
+        if not isinstance(bases, tuple):
+            bases = (bases,)
+        super().__init__(bases)
+        self.create_fixture = create_fixture
+        self.create_testcontent = create_testcontent
+        self.connector = None  # Used by content-storage-api
+
+    def setUp(self):
+        if self.connector is None:
+            self.connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+        self['sql_connection'] = self.connector.engine.connect()
+        sqlalchemy.orm.close_all_sessions()
+        self.connector.session.registry.clear()
+        self.connector.session.configure(
+            bind=self.connector.engine, join_transaction_mode='conditional_savepoint'
+        )
+
+    def tearDown(self):
+        self.truncate_tables()
+        self['sql_connection'].close()
+        del self['sql_connection']
+
+    def testSetUp(self):
+        self.truncate_tables()
+
+        if not (self.create_testcontent or self.create_fixture):
+            return
+        with site(self['zodbApp']):
+            repository = zope.component.queryUtility(zeit.cms.repository.interfaces.IRepository)
+            if self.create_testcontent:
+                create_testcontent(repository)
+            if self.create_fixture:
+                self.create_fixture(repository)
+            transaction.commit()
+
+    def truncate_tables(self):
+        c = self['sql_connection']
+        t = c.begin()
+        for mapper in zeit.connector.models.Base.registry.mappers:
+            table = mapper.class_.__tablename__
+            c.execute(sql(f'truncate {table} cascade'))
+        t.commit()
+
+
+def create_testcontent(repository):
+    # Since "everyone" uses /testcontent, set this up in a central place.
+    typ = zope.component.getUtility(zeit.cms.interfaces.ITypeDeclaration, name='testcontenttype')
+    repository['testcontent'] = typ.factory()

@@ -23,6 +23,12 @@ checker = zope.testing.renormalizing.RENormalizing(
 checker.transformers[0:0] = zeit.cms.testing.doctest.checker.transformers
 
 
+def create_fixture(repository):
+    zeit.push.testing.create_fixture(repository)
+    repository['article'] = create_article()
+    repository['image'] = zeit.content.image.testing.create_image()
+
+
 HERE = importlib.resources.files(__package__)
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
     {
@@ -55,18 +61,8 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
     patches={'zeit.workflow': {}},
 )
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER, features=['zeit.connector.sql.zope'])
-ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
-PUSH_LAYER = zeit.push.testing.UrbanairshipTemplateLayer(ZOPE_LAYER)
-
-
-class ArticleLayer(zeit.cms.testing.ContentFixtureLayer):
-    def create_fixture(self):
-        repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
-        repository['article'] = create_article()
-        repository['image'] = zeit.content.image.testing.create_image()
-
-
-LAYER = ArticleLayer(PUSH_LAYER)
+_zope_layer = zeit.cms.testing.RawZopeLayer(ZCML_LAYER)
+ZOPE_LAYER = zeit.cms.testing.SQLIsolationSavepointLayer(_zope_layer, create_fixture)
 
 
 # This is a copy from z.c.cp ElasticsearchMockLayer with an
@@ -107,7 +103,7 @@ MOCK_LAYER = zeit.cms.testing.Layer(
 class FunctionalTestCase(
     zeit.cms.testing.FunctionalTestCase, zeit.cms.tagging.testing.TaggingHelper
 ):
-    layer = LAYER
+    layer = ZOPE_LAYER
 
     def get_article(self):
         wl = zope.component.getUtility(zeit.cms.tagging.interfaces.IWhitelist)
@@ -139,8 +135,12 @@ def create_article():
     return article
 
 
-WSGI_LAYER = zeit.cms.testing.WSGILayer(LAYER)
-HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(WSGI_LAYER)
+WSGI_LAYER = zeit.cms.testing.WSGILayer(ZOPE_LAYER)
+HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(
+    zeit.cms.testing.WSGILayer(
+        zeit.cms.testing.SQLIsolationTruncateLayer(_zope_layer, create_fixture)
+    )
+)
 WEBDRIVER_LAYER = zeit.cms.testing.WebdriverLayer(HTTP_LAYER)
 
 

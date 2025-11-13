@@ -12,10 +12,10 @@ class HeaderModules(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.select('id=options-template.template', 'Kolumne')
         s.keyPress('id=options-template.header_layout', Keys.TAB)
         s.waitForSelectedValue('id=options-template.header_layout', '')
-        s.pause(500)
+        s.pause(1000)
         s.select('id=options-template.header_layout', 'Standard')
         s.keyPress('id=options-template.header_layout', Keys.TAB)
-        s.pause(500)
+        s.pause(1000)
         s.click('css=#edit-form-misc .edit-bar .fold-link')
 
         block = 'quiz'

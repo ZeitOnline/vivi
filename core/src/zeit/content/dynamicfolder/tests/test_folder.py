@@ -260,13 +260,14 @@ class TestDynamicFolder(zeit.content.dynamicfolder.testing.FunctionalTestCase):
             self.assertIn(self.folder.content_template_file, deps)
 
 
-class MaterializeDynamicFolder(zeit.cms.testing.FunctionalTestCase):
-    layer = zeit.content.dynamicfolder.testing.DynamicLayer(
-        path='tests/fixtures/dynamic-articles/', files=['config.xml', 'template.xml']
-    )
-
+class MaterializeDynamicFolder(zeit.content.dynamicfolder.testing.FunctionalTestCase):
     def setUp(self):
         super().setUp()
+        self.repository['dynamicfolder'] = zeit.content.dynamicfolder.testing.create_dynamic_folder(
+            'zeit.content.dynamicfolder:tests/fixtures/dynamic-articles/',
+            ['config.xml', 'template.xml'],
+        )
+        transaction.commit()
         self.folder = self.repository['dynamicfolder']
 
     def test_checkin_materialized_content_preserves_materialization(self):

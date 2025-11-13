@@ -51,7 +51,7 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
     ),
 )
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER)
-ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
+ZOPE_LAYER = zeit.cms.testing.RawZopeLayer(ZCML_LAYER)
 
 
 class CPTemplateLayer(zeit.cms.testing.Layer):

@@ -16,7 +16,8 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
     bases=zeit.content.image.testing.CONFIG_LAYER,
 )
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER, features=['zeit.connector.sql.zope'])
-ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
+_zope_layer = zeit.cms.testing.RawZopeLayer(ZCML_LAYER)
+ZOPE_LAYER = zeit.cms.testing.SQLIsolationSavepointLayer(_zope_layer)
 WSGI_LAYER = zeit.cms.testing.WSGILayer(ZOPE_LAYER)
 
 
@@ -28,7 +29,9 @@ class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
     layer = WSGI_LAYER
 
 
-HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(WSGI_LAYER)
+HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(
+    zeit.cms.testing.WSGILayer(zeit.cms.testing.SQLIsolationTruncateLayer(_zope_layer))
+)
 WEBDRIVER_LAYER = zeit.cms.testing.WebdriverLayer(HTTP_LAYER)
 
 

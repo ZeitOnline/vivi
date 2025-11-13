@@ -16,32 +16,33 @@ ROOT = 'http://xml.zeit.de/testing'
 FILESYSTEM_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     features=['zeit.connector.filesystem'], bases=zeit.cms.testing.CONFIG_LAYER
 )
-FILESYSTEM_CONNECTOR_LAYER = zeit.cms.testing.ZopeLayer(FILESYSTEM_ZCML_LAYER)
+FILESYSTEM_CONNECTOR_LAYER = zeit.cms.testing.RawZopeLayer(FILESYSTEM_ZCML_LAYER)
 
 MOCK_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     features=['zeit.connector.mock'], bases=zeit.cms.testing.CONFIG_LAYER
 )
-MOCK_CONNECTOR_LAYER = zeit.cms.testing.ZopeLayer(MOCK_ZCML_LAYER)
+MOCK_CONNECTOR_LAYER = zeit.cms.testing.RawZopeLayer(MOCK_ZCML_LAYER)
 
 
-class ContentFixtureLayer(zeit.cms.testing.ContentFixtureLayer):
-    def create_fixture(self):
-        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
-        mkdir(connector, ROOT)
+def create_fixture(repository):
+    connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+    mkdir(connector, ROOT)
 
 
 SQL_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     features=['zeit.connector.sql'], bases=zeit.cms.testing.CONFIG_LAYER
 )
-SQL_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(SQL_ZCML_LAYER)
-SQL_CONNECTOR_LAYER = ContentFixtureLayer(SQL_ZOPE_LAYER)
+SQL_CONNECTOR_LAYER = zeit.cms.testing.ZopeLayer(
+    SQL_ZCML_LAYER, create_fixture, create_testcontent=False
+)
 
 
 ZOPE_SQL_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     features=['zeit.connector.sql.zope'], bases=zeit.cms.testing.CONFIG_LAYER
 )
-ZOPE_SQL_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZOPE_SQL_ZCML_LAYER)
-ZOPE_SQL_CONNECTOR_LAYER = ContentFixtureLayer(ZOPE_SQL_ZOPE_LAYER)
+ZOPE_SQL_CONNECTOR_LAYER = zeit.cms.testing.ZopeLayer(
+    ZOPE_SQL_ZCML_LAYER, create_fixture, create_testcontent=False
+)
 
 
 SQL_CONTENT_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
@@ -49,14 +50,15 @@ SQL_CONTENT_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     features=['zeit.connector.sql.zope'],
     bases=zeit.cms.testing.CONFIG_LAYER,
 )
-SQL_CONTENT_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(SQL_CONTENT_ZCML_LAYER)
-SQL_CONTENT_LAYER = ContentFixtureLayer(SQL_CONTENT_ZOPE_LAYER)
+SQL_CONTENT_LAYER = zeit.cms.testing.ZopeLayer(
+    SQL_CONTENT_ZCML_LAYER, create_fixture, create_testcontent=False
+)
 
 
 COLUMNS_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     config_file='testing-columns.zcml', bases=zeit.cms.testing.CONFIG_LAYER
 )
-COLUMNS_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(COLUMNS_ZCML_LAYER)
+COLUMNS_ZOPE_LAYER = zeit.cms.testing.RawZopeLayer(COLUMNS_ZCML_LAYER)
 
 
 class TestCase(zeit.cms.testing.FunctionalTestCase):

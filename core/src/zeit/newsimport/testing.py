@@ -9,7 +9,6 @@ import zope.component
 
 from zeit.cms.repository.folder import Folder
 import zeit.cms.testing
-import zeit.connector.interfaces
 import zeit.content.article.testing
 import zeit.content.author.author
 import zeit.newsimport.interfaces
@@ -40,7 +39,17 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
 # NOTE author config layer is included in article config layer
 # NOTE article config layer is included in retresco config layer
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER, features=['zeit.connector.sql.zope'])
-ZOPE_LAYER = zeit.cms.testing.ZopeLayer((ZCML_LAYER, zeit.retresco.testhelper.TMS_MOCK_LAYER))
+
+
+def create_fixture(repository):
+    agency = zeit.content.author.author.Author()
+    agency.firstname = 'dpa'
+    repository['autoren'] = Folder()
+    repository['autoren']['dpa'] = agency
+
+
+_zope_layer = zeit.cms.testing.RawZopeLayer((ZCML_LAYER, zeit.retresco.testhelper.TMS_MOCK_LAYER))
+ZOPE_LAYER = zeit.cms.testing.SQLIsolationSavepointLayer(_zope_layer, create_fixture)
 
 
 class DPALayer(zeit.cms.testing.Layer):
@@ -122,27 +131,24 @@ class DPAMockLayer(zeit.cms.testing.Layer):
         self['dpa_mock'].reset_mock()
 
 
-DPA_MOCK_LAYER = DPAMockLayer(ZOPE_LAYER)
-CELERY_LAYER = zeit.cms.testing.CeleryWorkerLayer(DPA_MOCK_LAYER)
-CELERY_LAYER.queues += ('search',)
+DPA_MOCK_LAYER = DPAMockLayer()
+LAYER = zeit.cms.testing.Layer((ZOPE_LAYER, DPA_MOCK_LAYER))
 
 
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
-    layer = DPA_MOCK_LAYER
+    layer = LAYER
 
     def setUp(self):
         super().setUp()
-        agency = zeit.content.author.author.Author()
-        agency.firstname = 'dpa'
-        self.repository['autoren'] = Folder()
-        self.repository['autoren']['dpa'] = agency
         self.dpa = zope.component.getUtility(zeit.newsimport.interfaces.IDPA, name='weblines')
         self.news = zeit.newsimport.news.ArticleEntry(self.dpa.get_entries()[0])
-
-        self.connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
-        self.connector.search_result = []
 
     def add_article_with_image(self):
         entry = self.dpa.get_entries()[-1].copy()
         news = zeit.newsimport.news.ArticleEntry(entry)
         return news.publish(news.create())
+
+
+ZOPE_TRUNCATE_LAYER = zeit.cms.testing.SQLIsolationTruncateLayer(_zope_layer, create_fixture)
+CELERY_LAYER = zeit.cms.testing.CeleryWorkerLayer((ZOPE_TRUNCATE_LAYER, DPA_MOCK_LAYER))
+CELERY_LAYER.queues += ('search',)

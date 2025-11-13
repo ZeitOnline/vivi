@@ -18,7 +18,7 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
     bases=zeit.content.audio.testing.CONFIG_LAYER,
 )
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER)
-ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
+ZOPE_LAYER = zeit.cms.testing.RawZopeLayer(ZCML_LAYER)
 
 
 class Layer(zeit.cms.testing.Layer):

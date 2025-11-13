@@ -8,13 +8,13 @@ class LinkRedirectTest(zeit.content.link.testing.BrowserTestCase):
     login_as = 'zmgr:mgrpw'
 
     def test_copies_metadata_fields(self):
-        self.repository['image'] = create_image_group()
+        create_image_group()
         with checked_out(self.repository['testcontent']) as co:
             co.title = 'My Title'
             co.ressort = 'Deutschland'
             co.sub_ressort = 'Integration'
             co.channels = [('Wirtschaft', None)]
-            IImages(co).image = self.repository['image']
+            IImages(co).image = self.repository['group']
         b = self.browser
         b.open('/repository/testcontent/@@redirect-box')
         b.getControl('Redirect path').value = '/link'
@@ -26,7 +26,7 @@ class LinkRedirectTest(zeit.content.link.testing.BrowserTestCase):
         link = self.repository['link']
         self.assertEqual('My Title', link.title)
         self.assertEqual('http://localhost/live-prefix/testcontent', link.url)
-        self.assertEqual(self.repository['image'], IImages(link).image)
+        self.assertEqual(self.repository['group'], IImages(link).image)
 
         self.assertEqual('Administratives', link.ressort)
         self.assertEqual(None, link.sub_ressort)

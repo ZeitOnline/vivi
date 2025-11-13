@@ -367,12 +367,12 @@ class VolumeEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
     def add_volume_to_clipboard(self):
         from zeit.content.image.testing import create_image_group
 
-        self.repository['imagegroup'] = create_image_group()
+        create_image_group()
         volume = zeit.content.volume.volume.Volume()
         volume.year = 2006
         volume.volume = 23
         volume.product = zeit.cms.content.sources.Product('ZEI')
-        volume.set_cover('portrait', 'ZEI', self.repository['imagegroup'])
+        volume.set_cover('portrait', 'ZEI', self.repository['group'])
         self.repository['2006'] = zeit.cms.repository.folder.Folder()
         self.repository['2006']['23'] = volume
         add_to_clipboard(self.repository['2006']['23'], 'my_volume')
@@ -394,7 +394,7 @@ class VolumeEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         # ensure object-details are displayed
         s.waitForElementPresent('css=.block.type-volume textarea ')
         s.assertTextPresent('Die Zeit, Jahrgang: 2006, Ausgabe 23')
-        s.assertAttribute('css=.block.type-volume img@src', '*/imagegroup/original__50x0/@@raw')
+        s.assertAttribute('css=.block.type-volume img@src', '*/group/original__50x0/@@raw')
 
 
 class PortraitboxForm(zeit.content.article.edit.browser.testing.BrowserTestCase):

@@ -1,7 +1,10 @@
-import zope.component
-
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
+
+
+def create_fixture(repository):
+    repository['sourcepoint'] = zeit.cms.repository.folder.Folder()
+    repository['addefend'] = zeit.cms.repository.folder.Folder()
 
 
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
@@ -18,17 +21,4 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     config_file='testing.zcml', bases=CONFIG_LAYER, features=['zeit.connector.sql.zope']
 )
-ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
-
-
-class Layer(zeit.cms.testing.Layer):
-    defaultBases = (ZOPE_LAYER,)
-
-    def testSetUp(self):
-        with zeit.cms.testing.site(self['zodbApp']):
-            repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
-            repository['sourcepoint'] = zeit.cms.repository.folder.Folder()
-            repository['addefend'] = zeit.cms.repository.folder.Folder()
-
-
-LAYER = Layer()
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER, create_fixture)

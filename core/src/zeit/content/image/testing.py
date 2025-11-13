@@ -15,6 +15,13 @@ import zeit.content.image.image
 import zeit.content.image.imagegroup
 
 
+def create_fixture(repository):
+    repository['image'] = create_image(
+        'DSC00109_2.JPG', package='zeit.connector', folder='testcontent/2006'
+    )
+    create_image_group()
+
+
 HERE = importlib.resources.files(__package__)
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
     {
@@ -29,7 +36,9 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
     bases=zeit.cms.testing.CONFIG_LAYER,
 )
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER, features=['zeit.connector.sql.zope'])
-ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
+_zope_layer = zeit.cms.testing.RawZopeLayer(ZCML_LAYER)
+ZOPE_LAYER = zeit.cms.testing.SQLIsolationSavepointLayer(_zope_layer, create_fixture)
+WSGI_LAYER = zeit.cms.testing.WSGILayer(ZOPE_LAYER)
 
 
 def fixture_bytes(filename, package=None, folder=None):
@@ -76,28 +85,21 @@ def add_file_multi(control, files):
     ]
 
 
-class FixtureLayer(zeit.cms.testing.ContentFixtureLayer):
-    def create_fixture(self):
-        repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
-        repository['image'] = create_image(
-            'DSC00109_2.JPG', package='zeit.connector', folder='testcontent/2006'
-        )
-        create_image_group()
-
-
-LAYER = FixtureLayer(ZOPE_LAYER)
-WSGI_LAYER = zeit.cms.testing.WSGILayer(LAYER)
-HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(WSGI_LAYER)
-HTTP_STATIC_LAYER = gocept.httpserverlayer.static.Layer(name='HTTPStaticLayer', bases=(HTTP_LAYER,))
-WEBDRIVER_LAYER = zeit.cms.testing.WebdriverLayer(HTTP_LAYER)
-
-
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
-    layer = LAYER
+    layer = ZOPE_LAYER
 
 
 class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
     layer = WSGI_LAYER
+
+
+HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(
+    zeit.cms.testing.WSGILayer(
+        zeit.cms.testing.SQLIsolationTruncateLayer(_zope_layer, create_fixture)
+    )
+)
+HTTP_STATIC_LAYER = gocept.httpserverlayer.static.Layer(name='HTTPStaticLayer', bases=(HTTP_LAYER,))
+WEBDRIVER_LAYER = zeit.cms.testing.WebdriverLayer(HTTP_LAYER)
 
 
 class StaticBrowserTestCase(zeit.cms.testing.BrowserTestCase):

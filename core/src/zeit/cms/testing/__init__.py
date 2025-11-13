@@ -10,20 +10,21 @@ from .layer import Layer
 from .mock import ResetMocks
 from .pytest import copy_inherited_functions
 from .selenium import SeleniumTestCase, WebdriverLayer
+from .sql import SQLIsolationSavepointLayer, SQLIsolationTruncateLayer
 from .utils import xmltotext
 from .zope import (
     AdditionalZCMLLayer,
-    ContentFixtureLayer,
     FunctionalTestCase,
     ProductConfigLayer,
     WSGILayer,
     ZCMLLayer,
-    ZopeLayer,
     create_interaction,
     interaction,
     set_site,
     site,
 )
+from .zope import IsolatedZopeLayer as ZopeLayer
+from .zope import ZopeLayer as RawZopeLayer
 
 
 HERE = importlib.resources.files('zeit.cms')
@@ -69,9 +70,11 @@ CONFIG_LAYER = ProductConfigLayer(
     },
 )
 ZCML_LAYER = ZCMLLayer(CONFIG_LAYER, features=['zeit.connector.sql.zope'])
-ZOPE_LAYER = ZopeLayer(ZCML_LAYER)
+_zope_layer = RawZopeLayer(ZCML_LAYER)
+ZOPE_LAYER = SQLIsolationSavepointLayer(_zope_layer)
 WSGI_LAYER = WSGILayer(ZOPE_LAYER)
-HTTP_LAYER = WSGIServerLayer(WSGI_LAYER)
+
+HTTP_LAYER = WSGIServerLayer(WSGILayer(SQLIsolationTruncateLayer(_zope_layer)))
 WEBDRIVER_LAYER = WebdriverLayer(HTTP_LAYER)
 
 

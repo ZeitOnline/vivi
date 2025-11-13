@@ -8,7 +8,7 @@ import zeit.cms.testing
 
 
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(zeit.cms.testing.CONFIG_LAYER)
-ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
+ZOPE_LAYER = zeit.cms.testing.RawZopeLayer(ZCML_LAYER)
 
 
 class SectionLayer(zeit.cms.testing.Layer):

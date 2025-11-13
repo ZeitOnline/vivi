@@ -26,7 +26,7 @@ Add some images to the folder:
 
 >>> for i in range(1, 5):
 ...     folder[f'{i:02d}.jpg'] = create_image(f'{i:02d}.jpg', 'zeit.content.gallery.browser', 'testdata')
->>> folder['05'] = create_image_group()
+>>> folder['05'] = create_image_group(groupname='05')
 
 Adding gallery
 ==============

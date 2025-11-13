@@ -73,7 +73,6 @@ class ScrollyImageTest(zeit.content.article.testing.FunctionalTestCase):
 
         scrolly_img = self.create_scrolly_image()
         image_group = create_image_group()
-        self.repository['imagegroup'] = image_group
         scrolly_img.references = image_group
         self.assertEqual(image_group.uniqueId, scrolly_img.xml.get('href'))
 

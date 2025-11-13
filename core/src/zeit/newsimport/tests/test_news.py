@@ -94,7 +94,6 @@ class TestNews(zeit.newsimport.testing.FunctionalTestCase):
         self.assertFalse(article)
 
         article = self.news.publish(self.news.create())
-        self.connector.search_result = [self.layer['dpa_article_id']]
         article = self.news.find_existing_content(urn)
         self.assertEqual(self.layer['dpa_article_id'], article.uniqueId)
 
@@ -103,7 +102,6 @@ class TestNews(zeit.newsimport.testing.FunctionalTestCase):
         info = IPublishInfo(article)
         self.assertTrue(info.published)
 
-        self.connector.search_result = [self.layer['dpa_article_id']]
         article = self.news.retract()
         info = IPublishInfo(article)
         self.assertFalse(info.published)
@@ -328,7 +326,6 @@ class TestImage(zeit.newsimport.testing.FunctionalTestCase):
         entry['version'] = 6
         entry['associations'][0]['version'] = 4
         entry['associations'][0]['version_created'] = '2022-02-03T10:45:31+01:00'
-        self.connector.search_result = [image_group_id]
         with mock.patch('zeit.content.image.image.get_remote_image') as image:
             image.return_value = None
             article = news.publish(news.update(article))
@@ -346,7 +343,6 @@ class TestImage(zeit.newsimport.testing.FunctionalTestCase):
         news.publish(news.create())
         entry['article_html'] = None
         entry['urn'] = entry['associations'][0]['urn']
-        self.connector.search_result = [f'{NEWS_ARTICLE_UNIQUEID}-image-group/']
         news = zeit.newsimport.news.ImageEntry(entry)
         self.assertEqual(NEWS_ARTICLE_UNIQUEID, news.article_context.uniqueId)
 
@@ -367,7 +363,6 @@ class TestImage(zeit.newsimport.testing.FunctionalTestCase):
         entry['associations'][0]['version'] = 4
         entry['associations'][0]['version_created'] = '2022-02-03T10:45:31+01:00'  # +1 day
 
-        self.connector.search_result = [f'{NEWS_ARTICLE_UNIQUEID}-image-group/']
         image_entry = zeit.newsimport.news.ImageEntry(entry)
         image_entry.do_import()
         article = ICMSContent(NEWS_ARTICLE_UNIQUEID)
@@ -387,7 +382,6 @@ class TestImage(zeit.newsimport.testing.FunctionalTestCase):
         entry['version'] = entry['associations'][0]['version']
         entry['version_created'] = entry['associations'][0]['version']
 
-        self.connector.search_result = [f'{NEWS_ARTICLE_UNIQUEID}-image-group/']
         image_entry = zeit.newsimport.news.ImageEntry(entry)
         image_entry.retract()
         imagegroup = ICMSContent(f'{NEWS_ARTICLE_UNIQUEID}-image-group/')
@@ -409,7 +403,6 @@ class TestImage(zeit.newsimport.testing.FunctionalTestCase):
         self.assertTrue(IPublishInfo(article).published)
         self.assertTrue(IPublishInfo(image_group).published)
 
-        self.connector.search_result = [article.uniqueId]
         article = news.retract()
         image_group = ICMSContent(image_group_id)
         self.assertFalse(IPublishInfo(article).published)
@@ -420,7 +413,6 @@ class TestImage(zeit.newsimport.testing.FunctionalTestCase):
         news = zeit.newsimport.news.ArticleEntry(entry)
         article = news.publish(news.create())
         self.assertTrue(IPublishInfo(article).published)
-        self.connector.search_result = [article.uniqueId]
         article = news.retract()
         self.assertFalse(IPublishInfo(article).published)
 
@@ -450,7 +442,6 @@ class TestProcess(zeit.newsimport.testing.FunctionalTestCase):
         zeit.newsimport.news.process_task(entry)
         transaction.commit()
 
-        self.connector.search_result = [self.layer['dpa_article_id']]
         entry['headline'] = 'Updated headline'
         entry['version'] = 7
         with mock.patch(FIND_IMAGE) as find_img:
@@ -468,7 +459,6 @@ class TestProcess(zeit.newsimport.testing.FunctionalTestCase):
         zeit.newsimport.news.process_task(entry)
         transaction.commit()
 
-        self.connector.search_result = [self.layer['dpa_article_id']]
         entry['pubstatus'] = 'canceled'
         zeit.newsimport.news.process_task(entry)
         transaction.commit()
@@ -488,7 +478,6 @@ class TestProcess(zeit.newsimport.testing.FunctionalTestCase):
         zeit.newsimport.news.process_task(entry)
         transaction.commit()
 
-        self.connector.search_result = [self.layer['dpa_article_id']]
         zeit.newsimport.news.process_task(entry)
         transaction.commit()
         self.assertEqual(2, self.layer['dpa_mock'].delete_entry.call_count)

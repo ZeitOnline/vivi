@@ -6,5 +6,5 @@ def test_suite():
     return zeit.cms.testing.FunctionalDocFileSuite(
         'recension.txt',
         package='zeit.content.article',
-        layer=zeit.content.article.testing.LAYER,
+        layer=zeit.content.article.testing.ZOPE_LAYER,
     )

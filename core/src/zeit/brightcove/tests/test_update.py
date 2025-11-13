@@ -270,7 +270,7 @@ class TestDownloadTeasers(zeit.brightcove.testing.StaticBrowserTestCase):
         bc.data['images']['poster']['src'] = src
         import_video(bc)
         # editor replaces automatically created video still with custom imagegroup
-        self.repository['foo-video_still'] = create_image_group()
+        create_image_group(groupname='foo-video_still')
         video = self.repository['video']['2017-05']['myvid']
         img = zeit.content.image.interfaces.IImages(video)
         img.image = self.repository['foo-video_still']
