@@ -1,3 +1,5 @@
+import transaction
+
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.content.image.testing import create_image_group
 from zeit.content.volume.volume import Volume
@@ -138,6 +140,7 @@ class TestVolumeCoverWidget(zeit.content.volume.testing.SeleniumTestCase):
         volume.product = zeit.cms.content.sources.Product('ZEI')
         zeit.cms.content.add.find_or_create_folder('2015', '01')
         self.repository['2015']['01']['ausgabe'] = volume
+        transaction.commit()
 
     def test_only_one_cover_add_form_is_visible_at_the_time(self):
         s = self.selenium
@@ -162,6 +165,7 @@ class TestVolumeCoverWidget(zeit.content.volume.testing.SeleniumTestCase):
         title_overrides.append(text_zmlb)
         volume.xml.append(title_overrides)
         self.repository['2015']['01']['ausgabe'] = volume
+        transaction.commit()
         self.open('/repository/2015/01/ausgabe/@@checkout')
         s.waitForElementPresent('css=#choose-cover')
         # Set title of Die Zeit
