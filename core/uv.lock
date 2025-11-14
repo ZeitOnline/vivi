@@ -3208,7 +3208,7 @@ requires-dist = [
     { name = "zc-set", marker = "extra == 'ui-zon'", specifier = "==1.0+importlib" },
     { name = "zc-sourcefactory" },
     { name = "zc-table", marker = "extra == 'ui'" },
-    { name = "zc-table", marker = "extra == 'ui-zon'", specifier = "==1.1+importlib.1" },
+    { name = "zc-table", marker = "extra == 'ui-zon'", specifier = "==2.0" },
     { name = "zconfig", marker = "extra == 'ui'" },
     { name = "zeep", marker = "extra == 'ui'" },
     { name = "zodb" },
@@ -3640,6 +3640,28 @@ wheels = [
 ]
 
 [[package]]
+name = "zc-resourcelibrary"
+version = "2.1.0"
+source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
+dependencies = [
+    { name = "setuptools" },
+    { name = "zope-browserpage" },
+    { name = "zope-browserresource" },
+    { name = "zope-component" },
+    { name = "zope-configuration" },
+    { name = "zope-interface" },
+    { name = "zope-publisher" },
+    { name = "zope-security" },
+    { name = "zope-site" },
+    { name = "zope-tales" },
+    { name = "zope-traversing" },
+]
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zc-resourcelibrary/zc.resourcelibrary-2.1.0.tar.gz", hash = "sha256:08726465303f6da9adea4e6922435e2a25046524cb2bfae345bd19692a2d9ee6" }
+wheels = [
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zc-resourcelibrary/zc.resourcelibrary-2.1.0-py2.py3-none-any.whl", hash = "sha256:eec3cbcd15590d763dcf5a207941251598b8c65bf4a33c2521e18cc16741bec8" },
+]
+
+[[package]]
 name = "zc-set"
 version = "1.0+importlib"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
@@ -3675,9 +3697,11 @@ wheels = [
 
 [[package]]
 name = "zc-table"
-version = "1.1+importlib.1"
+version = "2.0"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
 dependencies = [
+    { name = "setuptools" },
+    { name = "zc-resourcelibrary" },
     { name = "zope-browserpage" },
     { name = "zope-cachedescriptors" },
     { name = "zope-component" },
@@ -3686,9 +3710,9 @@ dependencies = [
     { name = "zope-interface" },
     { name = "zope-schema" },
 ]
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zc-table/zc_table-1.1+importlib.1.tar.gz", hash = "sha256:77d19a10bf0949972579a954d313f9256b21c7a8baf4b7a84245ca14d8cfa96c" }
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zc-table/zc_table-2.0.tar.gz", hash = "sha256:b7360e7a8a548178ee6a012280273765a17130a5db2460d82fc892329629f623" }
 wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zc-table/zc_table-1.1+importlib.1-py3-none-any.whl", hash = "sha256:43246a1e2eb4196c875b2bbaf0f4e5d7ea8d5a25fa988d1c4fb098a16fa645bb" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zc-table/zc_table-2.0-py3-none-any.whl", hash = "sha256:a0098c2d5ebbaac10a6655035d274af666f7be6f6a82ffa1debef2f9357b82d3" },
 ]
 
 [[package]]
