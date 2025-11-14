@@ -44,15 +44,14 @@ ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     features=['zeit.connector.sql.zope'],
     bases=(CONFIG_LAYER, ARTICLE_CONFIG_LAYER),
 )
-ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
+_zope_layer = zeit.cms.testing.RawZopeLayer(ZCML_LAYER)
+ZOPE_LAYER = zeit.cms.testing.SQLIsolationSavepointLayer(_zope_layer)
 BROWSER_LAYER = zeit.cms.testing.WSGILayer(ZOPE_LAYER)
 
 
-WORKFLOW_LAYER = zeit.cms.testing.ZCMLLayer(
-    config_file='ftesting.zcml', bases=(CONFIG_LAYER, ARTICLE_CONFIG_LAYER)
+CELERY_LAYER = zeit.cms.testing.CeleryWorkerLayer(
+    zeit.cms.testing.SQLIsolationTruncateLayer(_zope_layer)
 )
-WORKFLOW_ZOPE_LAYER = zeit.cms.testing.RawZopeLayer(WORKFLOW_LAYER)
-CELERY_LAYER = zeit.cms.testing.CeleryWorkerLayer(WORKFLOW_ZOPE_LAYER)
 WSGI_LAYER = zeit.cms.testing.WSGILayer(CELERY_LAYER)
 HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(WSGI_LAYER)
 WEBDRIVER_LAYER = zeit.cms.testing.WebdriverLayer(HTTP_LAYER)
