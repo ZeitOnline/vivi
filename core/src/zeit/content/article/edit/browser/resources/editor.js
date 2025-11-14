@@ -1044,7 +1044,7 @@ zeit.content.article.Editable = gocept.Class.extend({
                 document.execCommand(command, false, option);
             } catch(e) {
                 if (window.console) {
-                    log(e);
+                    zeit.cms.log_error(e);
                 }
             }
         }
