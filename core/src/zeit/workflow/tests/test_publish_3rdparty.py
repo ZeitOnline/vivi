@@ -4,6 +4,7 @@ import lxml.etree
 import pendulum
 import pytest
 import requests_mock
+import transaction
 import zope.app.appsetup.product
 import zope.component
 import zope.i18n
@@ -13,6 +14,7 @@ from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.tagging.tag import Tag
 from zeit.cms.workflow.interfaces import IPublish, IPublisher, IPublishInfo
+from zeit.content.article.testing import create_article
 from zeit.content.image.testing import create_image_group
 import zeit.cms.related.interfaces
 import zeit.cms.tagging.interfaces
@@ -38,40 +40,36 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         super().setUp()
         self.gsm = zope.component.getGlobalSiteManager()
         self.gsm.registerUtility(zeit.workflow.publisher.Publisher(), IPublisher)
+        self.repository['article'] = create_article()
+        transaction.commit()
 
     @pytest.fixture(autouse=True)
     def _caplog(self, caplog):
         self.caplog = caplog
 
     def test_ignore_3rdparty_list_is_respected(self):
-        article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        article = self.repository['article']
         self.assertFalse(IPublishInfo(article).published)
         IPublishInfo(article).urgent = True
-        article_2 = ICMSContent('http://xml.zeit.de/online/2007/01/Schrempp')
-        IPublishInfo(article_2).published = True
-        IPublishInfo(article_2).urgent = True
-        self.assertTrue(IPublishInfo(article_2).published)
+        zeit.workflow.publish_3rdparty.PublisherData.ignore = ['speechbert']
         with requests_mock.Mocker() as rmock:
-            zeit.workflow.publish_3rdparty.PublisherData.ignore = ['speechbert']
             response = rmock.post('http://localhost:8060/test/publish', status_code=200)
             IPublish(article).publish(background=True)
             (result,) = response.last_request.json()
             assert 'speechbert' not in result
             assert 'indexnow' in result
 
-            zeit.workflow.publish_3rdparty.PublisherData.ignore = ['speechbert']
             FEATURE_TOGGLES.set('disable_publisher_indexnow')
             response = rmock.post('http://localhost:8060/test/publish', status_code=200)
-            IPublish(article_2).publish(background=False)
+            IPublish(article).publish(background=False)
             (result,) = response.last_request.json()
             assert 'speechbert' not in result
             assert 'indexnow' not in result
         zeit.workflow.publish_3rdparty.PublisherData.ignore = []  # reset
         self.assertTrue(IPublishInfo(article).published)
-        self.assertTrue(IPublishInfo(article_2).published)
 
     def test_bigquery_is_published(self):
-        article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        article = self.repository['article']
         self.assertFalse(IPublishInfo(article).published)
         IPublishInfo(article).urgent = True
         with requests_mock.Mocker() as rmock:
@@ -80,7 +78,7 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             (result,) = response.last_request.json()
             result_bq = result['bigquery']
             self.assertEqual(
-                'http://localhost/live-prefix/online/2007/01/Somalia',
+                'http://localhost/live-prefix/article',
                 result_bq['properties']['meta']['url'],
             )
         self.assertTrue(IPublishInfo(article).published)
@@ -152,7 +150,7 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             )
 
     def test_comments_are_published(self):
-        article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        article = self.repository['article']
         self.assertFalse(IPublishInfo(article).published)
         IPublishInfo(article).urgent = True
         with requests_mock.Mocker() as rmock:
@@ -195,7 +193,7 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         )
 
     def test_speechbert_is_published(self):
-        article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        article = self.repository['article']
         self.assertFalse(IPublishInfo(article).published)
         IPublishInfo(article).urgent = True
         with requests_mock.Mocker() as rmock:
@@ -221,7 +219,7 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         self.assertTrue(IPublishInfo(article).published)
 
     def test_speechbert_audio_speechbert_is_false(self):
-        article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        article = self.repository['article']
         json = zeit.workflow.testing.publish_json(article, 'speechbert')
         assert json is not None
         with checked_out(article) as co:
@@ -230,8 +228,11 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         assert json is None
 
     def test_speechbert_ignore_genres(self):
-        article = ICMSContent('http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept')
         zeit.cms.config.set('zeit.workflow', 'speechbert-ignore-genres', 'rezept-vorstellung')
+        article = self.repository['article']
+        with checked_out(article) as co:
+            co.genre = 'rezept-vorstellung'
+        transaction.commit()
         json = zeit.workflow.testing.publish_json(article, 'speechbert')
         assert json is None
         zeit.cms.config.set('zeit.workflow', 'speechbert-ignore-genres', '')
@@ -239,8 +240,11 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         assert json is not None
 
     def test_speechbert_ignore_templates(self):
-        article = ICMSContent('http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept')
         zeit.cms.config.set('zeit.workflow', 'speechbert-ignore-templates', 'article')
+        article = self.repository['article']
+        with checked_out(article) as co:
+            co.template = 'article'
+        transaction.commit()
         json = zeit.workflow.testing.publish_json(article, 'speechbert')
         assert json is None
         zeit.cms.config.set('zeit.workflow', 'speechbert-ignore-templates', '')
@@ -248,35 +252,44 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         assert json is not None
 
     def test_speechbert_ignores_dpa_news(self):
-        article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        article = self.repository['article']
         json = zeit.workflow.testing.publish_json(article, 'speechbert')
         assert json is not None
         with checked_out(article) as co:
             co.ressort = 'News'
+        transaction.commit()
         zeit.cms.config.set('zeit.workflow', 'speechbert-ignore-ressorts', 'news')
         json = zeit.workflow.testing.publish_json(article, 'speechbert')
         assert json is None
 
     def test_summy_ignore_genre_list(self):
-        article = ICMSContent('http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept')
         zeit.cms.config.set('zeit.workflow', 'summy-ignore-genres', 'rezept-vorstellung')
+        article = self.repository['article']
+        with checked_out(article) as co:
+            co.genre = 'rezept-vorstellung'
+        transaction.commit()
         payload = zeit.workflow.testing.publish_json(article, 'summy')
         assert payload == {}
 
     def test_summy_ignore_ressort_list(self):
-        article = ICMSContent('http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept')
         zeit.cms.config.set('zeit.workflow', 'summy-ignore-ressorts', 'zeit-magazin')
+        article = self.repository['article']
+        with checked_out(article) as co:
+            co.ressort = 'zeit-magazin'
+        transaction.commit()
         payload = zeit.workflow.testing.publish_json(article, 'summy')
         assert payload == {}
 
     def test_summy_ignore_products_list(self):
-        article = ICMSContent('http://xml.zeit.de/online/2022/08/trockenheit')
-
+        article = self.repository['article']
         payload = zeit.workflow.testing.publish_json(article, 'summy')
         assert payload is not None
         assert len(payload['text']) > 1
 
         zeit.cms.config.set('zeit.workflow', 'summy-ignore-products', 'dpaBY')
+        with checked_out(article) as co:
+            co.product = zeit.cms.content.interfaces.ICommonMetadata['product'].source.find('dpaBY')
+        transaction.commit()
         payload = zeit.workflow.testing.publish_json(article, 'summy')
         assert payload == {}
 
@@ -345,13 +358,16 @@ class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
         }
 
     def test_speechbert_payload_access_free(self):
-        article = ICMSContent('http://xml.zeit.de/online/2007/01/weissrussland-russland-gas')
+        article = self.repository['article']
+        with checked_out(article) as co:
+            co.access = 'free'
+        transaction.commit()
         payload = zeit.workflow.testing.publish_json(article, 'speechbert')
         assert article.access == 'free'
         assert 'access' not in payload
 
     def test_speechbert_payload_multiple_authors(self):
-        article = ICMSContent('http://xml.zeit.de/online/2022/08/kaenguru-comics-folge-448')
+        article = self.repository['article']
         with checked_out(article) as co:
             self.create_author('Marc-Uwe', 'Kling', 'a1')
             self.create_author('Bernd', 'Kissel', 'a2')
@@ -362,8 +378,9 @@ class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
                 co.authorships.create(self.repository['a3']),
             ]
             co.authorships[2].role = 'Illustration'
+        transaction.commit()
 
-        article = ICMSContent('http://xml.zeit.de/online/2022/08/kaenguru-comics-folge-448')
+        article = self.repository['article']
         payload = zeit.workflow.testing.publish_json(article, 'speechbert')
         raw_authors = [(author.target.display_name, author.role) for author in article.authorships]
         assert raw_authors == [
@@ -374,31 +391,37 @@ class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
         assert payload['authors'] == ['Marc-Uwe Kling', 'Bernd Kissel']
 
     def test_speechbert_payload_no_entry_if_attribute_none(self):
-        article = ICMSContent('http://xml.zeit.de/online/2007/01/weissrussland-russland-gas')
+        article = self.repository['article']
         payload = zeit.workflow.testing.publish_json(article, 'speechbert')
         assert article.channels == ()
         assert 'channels' not in payload
 
     def test_speechbert_payload_single_channel(self):
-        article = ICMSContent('http://xml.zeit.de/online/2022/08/trockenheit')
+        article = self.repository['article']
+        with checked_out(article) as co:
+            co.channels == (('News', None),)
+        transaction.commit()
         payload = zeit.workflow.testing.publish_json(article, 'speechbert')
-        assert article.channels == (('News', None),)
         assert payload['channels'] == 'News'
 
     def test_speechbert_payload_series(self):
-        article = ICMSContent('http://xml.zeit.de/online/2007/01/weissrussland-russland-gas')
+        article = self.repository['article']
+        with checked_out(article) as co:
+            co.series = 'Geschafft!'
+        transaction.commit()
         payload = zeit.workflow.testing.publish_json(article, 'speechbert')
-        assert article.serie is not None
         assert payload['series'] == 'Geschafft!'
 
     def test_speechbert_payload_supertitle(self):
-        article = ICMSContent('http://xml.zeit.de/online/2007/01/weissrussland-russland-gas')
+        article = self.repository['article']
+        with checked_out(article) as co:
+            co.supertitle = 'Geopolitik'
+        transaction.commit()
         payload = zeit.workflow.testing.publish_json(article, 'speechbert')
-        assert article.supertitle == 'Geopolitik'
         assert payload['supertitle'] == 'Geopolitik'
 
     def test_includes_child_tags_in_body(self):
-        article = zeit.content.article.testing.create_article()
+        article = create_article()
         p = article.body.create_item('p')
         p.text = 'before <em>during</em> after'
         article = self.repository['article'] = article
@@ -452,7 +475,7 @@ class TMSPayloadTest(zeit.workflow.testing.FunctionalTestCase):
     layer = zeit.workflow.testing.CONTENT_LAYER
 
     def test_tms_wait_for_index_article(self):
-        article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        article = create_article()
         data_factory = zope.component.getAdapter(
             article, zeit.workflow.interfaces.IPublisherData, name='tms'
         )
@@ -485,21 +508,25 @@ class TMSPayloadTest(zeit.workflow.testing.FunctionalTestCase):
 class BigQueryPayloadTest(zeit.workflow.testing.FunctionalTestCase):
     layer = zeit.workflow.testing.CONTENT_LAYER
 
+    def setUp(self):
+        super().setUp()
+        self.repository['article'] = create_article()
+        transaction.commit()
+
     def test_includes_uniqueid_under_meta(self):
-        article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         data = zope.component.getAdapter(
-            article, zeit.workflow.interfaces.IPublisherData, name='bigquery'
+            self.repository['article'], zeit.workflow.interfaces.IPublisherData, name='bigquery'
         )
         for action in ['publish', 'retract']:
             d = getattr(data, f'{action}_json')()
             self.assertEqual(
-                'http://localhost/live-prefix/online/2007/01/Somalia',
+                'http://localhost/live-prefix/article',
                 d['properties']['meta']['url'],
             )
             self.assertStartsWith('{urn:uuid:', d['properties']['document']['uuid'])
 
     def test_moves_rtr_keywords_under_tagging(self):
-        article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        article = self.repository['article']
         with checked_out(article) as co:
             co.keywords = (Tag('Hannover', 'location'), Tag('Paris', 'location'))
 
@@ -514,7 +541,7 @@ class BigQueryPayloadTest(zeit.workflow.testing.FunctionalTestCase):
 </body>
 """
         # fmt: on
-        article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        article = self.repository['article']
         article.xml.replace(
             article.xml.find('body'),
             lxml.etree.fromstring(body_string),
@@ -642,35 +669,38 @@ class DatasciencePayloadTest(zeit.workflow.testing.FunctionalTestCase):
 class FollowingsPayloadTest(zeit.workflow.testing.FunctionalTestCase):
     layer = zeit.workflow.testing.CONTENT_LAYER
 
+    def setUp(self):
+        super().setUp()
+        article = create_article()
+        article.series = 'Chefsache'
+        self.repository['article'] = article
+        self.repository['serie'] = zeit.cms.repository.folder.Folder()
+        self.repository['serie']['chefsache'] = zeit.content.cp.centerpage.CenterPage()
+        transaction.commit()
+        self.article = self.repository['article']
+        self.cp = self.repository['serie']['chefsache']
+
     def test_followings_podcast(self):
         from zeit.content.audio.testing import AudioBuilder
 
-        article = ICMSContent('http://xml.zeit.de/online/2022/08/kaenguru-comics-folge-448')
-        self.repository['serie'] = zeit.cms.repository.folder.Folder()
-        self.repository['serie']['chefsache'] = zeit.content.cp.centerpage.CenterPage()
-        cp = self.repository['serie']['chefsache']
         audio = AudioBuilder().with_audio_type('podcast').build()
         audio = self.repository['audio'] = audio
-        date = zeit.cms.workflow.interfaces.IPublishInfo(article).date_first_released
+        date = zeit.cms.workflow.interfaces.IPublishInfo(self.article).date_first_released
 
-        audios_refs = zeit.content.audio.interfaces.IAudioReferences(article)
+        audios_refs = zeit.content.audio.interfaces.IAudioReferences(self.article)
         audios_refs.add(audio)
-        expected_uuid = zeit.cms.content.interfaces.IUUID(cp).shortened
+        expected_uuid = zeit.cms.content.interfaces.IUUID(self.cp).shortened
 
-        data = zeit.workflow.testing.publish_json(article, 'followings')
+        data = zeit.workflow.testing.publish_json(self.article, 'followings')
         self.assertEqual(data['parent_uuids'][0], expected_uuid)
         self.assertEqual(data['created'], date.isoformat())
 
     def test_followings_series(self):
-        article = ICMSContent('http://xml.zeit.de/online/2022/08/kaenguru-comics-folge-448')
-        self.repository['serie'] = zeit.cms.repository.folder.Folder()
-        self.repository['serie']['chefsache'] = zeit.content.cp.centerpage.CenterPage()
-        cp = self.repository['serie']['chefsache']
-        date = zeit.cms.workflow.interfaces.IPublishInfo(article).date_first_released
+        date = zeit.cms.workflow.interfaces.IPublishInfo(self.article).date_first_released
 
-        expected_uuid = zeit.cms.content.interfaces.IUUID(cp).shortened
+        expected_uuid = zeit.cms.content.interfaces.IUUID(self.cp).shortened
 
-        data = zeit.workflow.testing.publish_json(article, 'followings')
+        data = zeit.workflow.testing.publish_json(self.article, 'followings')
         self.assertEqual(data['parent_uuids'][0], expected_uuid)
         self.assertEqual(data['created'], date.isoformat())
 
@@ -679,10 +709,9 @@ class FollowingsPayloadTest(zeit.workflow.testing.FunctionalTestCase):
         author.firstname = 'Mark-Uwe'
         author.lastname = 'Kling'
         self.repository['author'] = author
-        article = ICMSContent('http://xml.zeit.de/online/2022/08/trockenheit')
-        article.authorships = [article.authorships.create(self.repository['author'])]
+        self.article.authorships = [self.article.authorships.create(self.repository['author'])]
         expected_uuid = zeit.cms.content.interfaces.IUUID(self.repository['author']).shortened
-        data = zeit.workflow.testing.publish_json(article, 'followings')
+        data = zeit.workflow.testing.publish_json(self.article, 'followings')
         self.assertEqual(data['parent_uuids'][0], expected_uuid)
 
     def test_followings_series_author_combination(self):
@@ -690,26 +719,24 @@ class FollowingsPayloadTest(zeit.workflow.testing.FunctionalTestCase):
         author.firstname = 'Mark-Uwe'
         author.lastname = 'Kling'
         self.repository['author'] = author
-        article = ICMSContent('http://xml.zeit.de/online/2022/08/kaenguru-comics-folge-448')
-        article.authorships = [article.authorships.create(self.repository['author'])]
-        self.repository['serie'] = zeit.cms.repository.folder.Folder()
-        self.repository['serie']['chefsache'] = zeit.content.cp.centerpage.CenterPage()
-        cp = self.repository['serie']['chefsache']
-        date = zeit.cms.workflow.interfaces.IPublishInfo(article).date_first_released
+        self.article.authorships = [self.article.authorships.create(self.repository['author'])]
+        date = zeit.cms.workflow.interfaces.IPublishInfo(self.article).date_first_released
 
-        expected_series_uuid = zeit.cms.content.interfaces.IUUID(cp).shortened
+        expected_series_uuid = zeit.cms.content.interfaces.IUUID(self.cp).shortened
         expected_author_uuid = zeit.cms.content.interfaces.IUUID(
             self.repository['author']
         ).shortened
 
-        data = zeit.workflow.testing.publish_json(article, 'followings')
+        data = zeit.workflow.testing.publish_json(self.article, 'followings')
         self.assertEqual(len(data['parent_uuids']), 2)
         self.assertIn(expected_series_uuid, data['parent_uuids'])
         self.assertIn(expected_author_uuid, data['parent_uuids'])
         self.assertEqual(data['created'], date.isoformat())
 
     def test_followings_recipe_categories(self):
-        article = ICMSContent('http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept')
+        article = create_article()
+        article.genre = 'rezept'
+        self.repository['recipe'] = article
 
         self.repository['rezepte'] = zeit.cms.repository.folder.Folder()
         self.repository['rezepte']['herbst'] = zeit.content.cp.centerpage.CenterPage()
@@ -733,7 +760,6 @@ class FollowingsPayloadTest(zeit.workflow.testing.FunctionalTestCase):
             self.assertEqual(data['created'], date.isoformat())
 
     def test_followings_no_series(self):
-        article = ICMSContent('http://xml.zeit.de/online/2022/08/trockenheit')
-
-        data = zeit.workflow.testing.publish_json(article, 'followings')
+        self.repository['noseries'] = create_article()
+        data = zeit.workflow.testing.publish_json(self.repository['noseries'], 'followings')
         self.assertEqual(data, None)
