@@ -109,7 +109,7 @@ class Add(zeit.cms.browser.form.AddForm, zeit.cms.browser.form.CharlimitMixin):
             }
 
             if image := data.get('breaking_news_image'):
-                config['image'] = image
+                config['image'] = image.uniqueId
             message_config.append(config)
         if data.pop('homepage', False):
             message_config.append({'type': 'homepage', 'enabled': True})
