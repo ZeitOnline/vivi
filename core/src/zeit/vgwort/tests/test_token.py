@@ -4,6 +4,7 @@ import pendulum
 import transaction
 import zope.component
 
+from zeit.cms.repository.folder import Folder
 from zeit.vgwort.token import _order_tokens
 import zeit.cms.interfaces
 import zeit.vgwort.interfaces
@@ -71,6 +72,7 @@ class ObjectCopyTest(zeit.vgwort.testing.TestCase):
         info = zeit.vgwort.interfaces.IReportInfo(content)
         info.reported_on = pendulum.now('UTC')
         info.reported_error = 'error'
+        self.repository['online'] = Folder()
         online = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/')
         zope.copypastemove.interfaces.IObjectCopier(content).copyTo(online, 'foo')
         copy = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/foo')
@@ -85,11 +87,12 @@ class ObjectCopyTest(zeit.vgwort.testing.TestCase):
 class SecurityObjectCopyTest(zeit.vgwort.testing.BrowserTestCase):
     def test_copying_should_work_even_with_security_on(self):
         # see #9960
+        self.repository['online'] = Folder()
         self.browser.handleErrors = False
         self.assertNothingRaised(
             self.browser.open,
             'http://localhost/++skin++vivi/repository/online/@@copy?unique_id='
-            'http%3A%2F%2Fxml.zeit.de%2Fonline%2F2007%2F01%2FSomalia',
+            'http%3A%2F%2Fxml.zeit.de%2Ftestcontent',
         )
 
 

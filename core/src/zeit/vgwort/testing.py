@@ -23,29 +23,23 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
     },
     bases=(zeit.content.author.testing.CONFIG_LAYER,),
 )
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(config_file='ftesting-mock.zcml', bases=CONFIG_LAYER)
-ZOPE_LAYER = zeit.cms.testing.RawZopeLayer(ZCML_LAYER)
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
+    CONFIG_LAYER,
+    'ftesting-mock.zcml',
+    features=['zeit.connector.sql.zope'],
+)
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
 WSGI_LAYER = zeit.cms.testing.WSGILayer(ZOPE_LAYER)
 
 
-SQL_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    config_file='ftesting-mock.zcml',
-    features=['zeit.connector.sql.zope'],
-    bases=CONFIG_LAYER,
-)
-SQL_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(SQL_ZCML_LAYER)
-
-
 class XMLRPCLayer(zeit.cms.testing.Layer):
-    defaultBases = (WSGI_LAYER,)
-
     def setUp(self):
         token_service = zeit.vgwort.token.TokenService()
         token_service.ServerProxy = lambda x: zeit.cms.webtest.ServerProxy(x, self['wsgi_app'])
         zope.component.getSiteManager().registerUtility(token_service)
 
 
-XMLRPC_LAYER = XMLRPCLayer()
+XMLRPC_LAYER = XMLRPCLayer(WSGI_LAYER)
 
 
 class IntegrationConfigLayer(zeit.cms.testing.ProductConfigLayer):
@@ -60,17 +54,13 @@ class IntegrationConfigLayer(zeit.cms.testing.ProductConfigLayer):
 
 SOAP_CONFIG_LAYER = IntegrationConfigLayer(CONFIG_LAYER.config)
 SOAP_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    config_file='ftesting-soap.zcml', bases=SOAP_CONFIG_LAYER
+    SOAP_CONFIG_LAYER, 'ftesting-soap.zcml', features=['zeit.connector.sql.zope']
 )
 SOAP_LAYER = zeit.cms.testing.ZopeLayer(SOAP_ZCML_LAYER)
 
 
 class TestCase(zeit.cms.testing.FunctionalTestCase):
     layer = ZOPE_LAYER
-
-
-class SQLTestCase(zeit.cms.testing.FunctionalTestCase):
-    layer = SQL_ZOPE_LAYER
 
 
 class BrowserTestCase(zeit.cms.testing.BrowserTestCase):

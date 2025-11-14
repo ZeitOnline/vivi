@@ -162,17 +162,18 @@ class SQLIsolationSavepointLayer(Layer):
         self.connector = connector  # Used by content-storage-api
 
     def setUp(self):
-        if self.connector is None:
-            self.connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
-        self['sql_connection'] = self.connector.engine.connect()
+        connector = self.connector
+        if connector is None:
+            connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+        self['sql_connection'] = connector.engine.connect()
 
         # Configure sqlalchemy session to use only this specific connection,
         # and to use savepoints instead of full commits. Thus it joins the
         # transaction that we start in testSetUp() and roll back in testTearDown()
         # See "Joining a Session into an External Transaction" in the sqlalchemy doc
         sqlalchemy.orm.close_all_sessions()
-        self.connector.session.registry.clear()
-        self.connector.session.configure(
+        connector.session.registry.clear()
+        connector.session.configure(
             bind=self['sql_connection'], join_transaction_mode='create_savepoint'
         )
 
@@ -217,13 +218,14 @@ class SQLIsolationTruncateLayer(Layer):
         self.connector = None  # Used by content-storage-api
 
     def setUp(self):
-        if self.connector is None:
-            self.connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
-        self['sql_connection'] = self.connector.engine.connect()
+        connector = self.connector
+        if connector is None:
+            connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+        self['sql_connection'] = connector.engine.connect()
         sqlalchemy.orm.close_all_sessions()
-        self.connector.session.registry.clear()
-        self.connector.session.configure(
-            bind=self.connector.engine, join_transaction_mode='conditional_savepoint'
+        connector.session.registry.clear()
+        connector.session.configure(
+            bind=connector.engine, join_transaction_mode='conditional_savepoint'
         )
 
     def tearDown(self):
