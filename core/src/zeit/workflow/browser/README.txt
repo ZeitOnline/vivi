@@ -182,8 +182,13 @@ back to the server  on check in. Live properties must survive this.
 
 Check out an unpublished object:
 
->>> browser.open('http://localhost:8080/++skin++cms/repository/online'
-...              '/2007/01/Saarland')
+>>> import zope.component
+>>> import zeit.cms.repository.interfaces
+>>> repository = zope.component.getUtility(
+...     zeit.cms.repository.interfaces.IRepository)
+>>> from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
+>>> repository['t2'] = ExampleContentType()
+>>> browser.open('/repository/t2')
 >>> browser.getLink('Workflow').click()
 >>> print(browser.contents)
 <?xml ...
@@ -208,7 +213,7 @@ Do a publish/retract cycle to set the property to false:
 >>> browser.getControl('publish').click()
 >>> print(browser.contents)
 <?xml ...
-        <li class="message">http://xml.zeit.de/online/2007/01/Saarland has been scheduled for publishing.</li>
+        <li class="message">http://xml.zeit.de/t2 has been scheduled for publishing.</li>
         ...
 
 >>> wait_for_celery()
@@ -233,7 +238,7 @@ The retract action is protected by javascript (which doesn't matter here):
 >>> browser.getControl('retract').click()
 >>> print(browser.contents)
 <?xml ...
-        <li class="message">http://xml.zeit.de/online/2007/01/Saarland has been scheduled for retracting.</li>
+        <li class="message">http://xml.zeit.de/t2 has been scheduled for retracting.</li>
         ...
 >>> wait_for_celery()
 
@@ -244,15 +249,13 @@ Check out:
 
 Go back to the repository and publish:
 
->>> browser.open('http://localhost:8080/++skin++cms/repository/online'
-...              '/2007/01/Saarland')
->>> browser.getLink('Workflow').click()
+>>> browser.open('/repository/t2/@@workflow.html')
 >>> browser.getControl('Urgent').selected = True
 >>> browser.getControl('publish').click()
 >>> 'There were errors' in browser.contents
 False
 >>> wait_for_celery()
->>> browser.getLink('Workflow').click()
+>>> browser.open('/repository/t2/@@workflow.html')
 >>> print(browser.contents)
 <?xml ...
         ...<input class="checkboxType" checked="checked"...
@@ -285,7 +288,7 @@ checked out:
 >>> browser.getControl('publish').click()
 >>> print(browser.contents)
 <?xml ...
-        <li class="message">http://xml.zeit.de/online/2007/01/Saarland has been scheduled for publishing.</li>
+        <li class="message">http://xml.zeit.de/t2 has been scheduled for publishing.</li>
         ...
 >>> wait_for_celery()
 >>> browser.getLink('Checkout').click()
@@ -293,16 +296,15 @@ checked out:
 
 Unpublish now:
 
->>> browser.open('http://localhost:8080/++skin++cms/repository/online'
-...              '/2007/01/Saarland')
->>> browser.getLink('Workflow').click()
+>>> browser.open('/repository/t2')
+>>> browser.open('/repository/t2/@@workflow.html')
 >>> browser.getControl('retract').click()
 >>> print(browser.contents)
 <?xml ...
-        <li class="message">http://xml.zeit.de/online/2007/01/Saarland has been scheduled for retracting.</li>
+        <li class="message">http://xml.zeit.de/t2 has been scheduled for retracting.</li>
         ...
 >>> wait_for_celery()
->>> browser.getLink('Workflow').click()
+>>> browser.open('/repository/t2/@@workflow.html')
 >>> print(browser.contents)
 <?xml ...
         ...<input class="checkboxType" id="...
@@ -363,11 +365,7 @@ shown:
 This is really only a matter of displaying the log; the complete object log is
 still accessible:
 
->>> import zope.component
->>> import zeit.cms.repository.interfaces
->>> repository = zope.component.getUtility(
-...     zeit.cms.repository.interfaces.IRepository)
->>> content = repository['online']['2007']['01']['Saarland']
+>>> content = repository['t2']
 >>> import zeit.objectlog.interfaces
 >>> log = zeit.objectlog.interfaces.ILog(content)
 >>> len(list(log.get_log()))
@@ -382,7 +380,9 @@ Folder workflow
 Folders do not have a workflow. Their workflow tab has no actions but shows the
 other information
 
->>> browser.open('http://localhost/++skin++cms/repository/online')
+>>> from zeit.cms.repository.folder import Folder
+>>> repository['folder'] = Folder()
+>>> browser.open('/repository/folder')
 >>> browser.getLink('Workflow').click()
 >>> print(browser.contents)
 <?xml ...

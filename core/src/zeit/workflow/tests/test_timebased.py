@@ -4,7 +4,6 @@ import logging
 import pendulum
 import transaction
 
-from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import zeit.cms.testing
 import zeit.cms.workflow
 import zeit.workflow.testing
@@ -12,11 +11,10 @@ import zeit.workflow.testing
 from ..cli import _publish_scheduled_content, _retract_scheduled_content
 
 
-class TimeBasedEndToEndTest(zeit.workflow.testing.SQLTestCase):
+class TimeBasedEndToEndTest(zeit.workflow.testing.FunctionalTestCase):
     def setUp(self):
         super().setUp()
 
-        self.repository['testcontent'] = ExampleContentType()
         self.content = self.repository['testcontent']
         info = zeit.cms.workflow.interfaces.IPublishInfo(self.content)
         info.urgent = True

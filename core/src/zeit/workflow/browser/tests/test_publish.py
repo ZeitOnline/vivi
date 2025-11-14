@@ -19,6 +19,7 @@ class TestPublish(
 
         content = zeit.cms.interfaces.ICMSContent(id)
         IContentWorkflow(content).urgent = True
+        transaction.commit()
 
     def test_action_should_be_available(self):
         self.selenium.assertElementPresent('link=Publish')
@@ -95,6 +96,7 @@ class TestPublish(
         s.waitForElementPresent('css=li.busy[action=start_job]')
         s.waitForElementNotPresent('css=li.busy[action=start_job]')
         s.waitForPageToLoad()
+        transaction.abort()
         self.assertFalse(IPublishInfo(self.repository['testcontent']).published)
         self.assertTrue(IPublishInfo(self.repository['other']).published)
 
@@ -103,6 +105,7 @@ class TestRetract(zeit.workflow.testing.SeleniumTestCase):
     def setUp(self):
         super().setUp()
         self.publish_info.published = True
+        transaction.commit()
         self.open('/repository/testcontent')
 
     @property
@@ -112,6 +115,7 @@ class TestRetract(zeit.workflow.testing.SeleniumTestCase):
 
     def test_action_should_not_be_available_on_unpublished_content(self):
         self.publish_info.published = False
+        transaction.commit()
         self.open('/repository/testcontent')
         self.selenium.assertElementNotPresent('link=Retract')
 
@@ -128,6 +132,7 @@ class TestRetract(zeit.workflow.testing.SeleniumTestCase):
         s.waitForPageToLoad()
         s.click('css=li.workflow')
         s.assertText('css=.fieldname-logs .widget', '*Retracted*')
+        transaction.abort()
         self.assertFalse(self.publish_info.published)
 
 
