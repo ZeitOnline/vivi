@@ -1032,13 +1032,23 @@ zeit.content.article.Editable = gocept.Class.extend({
             return;
         }
         log("Executing", command, option);
-        try {
-            document.execCommand(command, false, option);
-        } catch(e) {
-            if (window.console) {
-                console.log(e);
+
+        // Chrome has a "bug" where execCommand('insertunorderedlist') on a <p> element
+        // creates invalid HTML (<ul> inside <p>). The browser auto-corrects this by
+        // moving the <ul> outside the <p>, which removes the list entirely.
+        // We work around this by manually manipulating the DOM instead of using execCommand.
+        if (command === 'insertunorderedlist' || command === 'insertorderedlist') {
+            self._manual_toggle_list(command === 'insertorderedlist' ? 'ol' : 'ul');
+        } else {
+            try {
+                document.execCommand(command, false, option);
+            } catch(e) {
+                if (window.console) {
+                    zeit.cms.log_error(e);
+                }
             }
         }
+
         if (typeof refocus === 'undefined' || refocus === true) {
             self.editable.focus();
         }

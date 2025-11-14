@@ -298,6 +298,48 @@ class TestTextEditing(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.selectWindow(self.selenium.getAllWindowIds()[1])
         self.assertEndsWith('@@upload-images', s.getLocation())
 
+    def test_toolbar_insert_unorderedlist(self):
+        s = self.selenium
+        self.create('<p>foo</p><p>bar</p><p>baz</p>')
+        s.click('css=.block.type-p .editable')
+        toolbar = 'css=.block.type-p.editing .rte-toolbar'
+        s.waitForElementPresent(toolbar)
+
+        self.execute(
+            """(function() {
+            var editable = document.getElementsByClassName('editable')[0];
+            var range = window.getSelection().getRangeAt(0);
+            range.setStart(editable, 0);
+            range.setEnd(editable, 3);
+        })();"""
+        )
+        # XXX WARUM FUNKTIONIERT DAS NUR WENN ICH IM BREAKPOINT DAS SELBST KLICKE?
+        s.click('css=.rte-toolbar a[href="insertunorderedlist"]')
+        s.waitForElementPresent('css=.block.type-p .editable ul')
+        s.assertCssCount('css=.block.type-p .editable ul li', 3)
+        s.assertElementPresent('jquery=.block.type-p .editable ul li:contains(foo)')
+        s.assertElementPresent('jquery=.block.type-p .editable ul li:contains(bar)')
+        s.assertElementPresent('jquery=.block.type-p .editable ul li:contains(baz)')
+
+        self.execute(
+            """(function() {
+            var editable = document.getElementsByClassName('editable')[0];
+            var range = window.getSelection().getRangeAt(0);
+            range.selectNodeContents(editable);
+        })();"""
+        )
+
+        s.click('css=.rte-toolbar a[href="insertunorderedlist"]')
+
+        s.waitForElementNotPresent('css=.block.type-p .editable ul')
+        s.waitForElementPresent('css=.block.type-p .editable p')
+        s.assertCssCount('css=.block.type-p .editable > p', 1)
+        s.assertCssCount('css=.block.type-p .editable p br', 2)
+
+        s.assertElementPresent('jquery=.block.type-p .editable p:contains(foo)')
+        s.assertElementPresent('jquery=.block.type-p .editable p:contains(bar)')
+        s.assertElementPresent('jquery=.block.type-p .editable p:contains(baz)')
+
 
 @unittest.skip('Sending arrow keys does not work')
 class TestEditingMultipleParagraphs(zeit.content.article.edit.browser.testing.EditorTestCase):

@@ -60,6 +60,7 @@ Resource(
 Resource('strftime.js')
 Resource('jsuri.js')
 Resource('citation_comment.js')
+Resource('commands.js', depends=[zeit.cms.browser.resources.base, editor_js])  # noqa
 
 
 # XXX zeit.content.article needs zeit.workflow to function,
