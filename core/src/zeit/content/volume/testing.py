@@ -40,7 +40,7 @@ class ArticleConfigLayer(zeit.cms.testing.ProductConfigLayer):
 
 ARTICLE_CONFIG_LAYER = ArticleConfigLayer({}, package='zeit.content.article')
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    config_file='ftesting-workflow.zcml',
+    config_file='ftesting.zcml',
     features=['zeit.connector.sql.zope'],
     bases=(CONFIG_LAYER, ARTICLE_CONFIG_LAYER),
 )
@@ -49,7 +49,7 @@ BROWSER_LAYER = zeit.cms.testing.WSGILayer(ZOPE_LAYER)
 
 
 WORKFLOW_LAYER = zeit.cms.testing.ZCMLLayer(
-    config_file='ftesting-workflow.zcml', bases=(CONFIG_LAYER, ARTICLE_CONFIG_LAYER)
+    config_file='ftesting.zcml', bases=(CONFIG_LAYER, ARTICLE_CONFIG_LAYER)
 )
 WORKFLOW_ZOPE_LAYER = zeit.cms.testing.RawZopeLayer(WORKFLOW_LAYER)
 CELERY_LAYER = zeit.cms.testing.CeleryWorkerLayer(WORKFLOW_ZOPE_LAYER)
