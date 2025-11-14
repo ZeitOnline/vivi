@@ -17,13 +17,12 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
     },
     bases=zeit.content.audio.testing.CONFIG_LAYER,
 )
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER)
-ZOPE_LAYER = zeit.cms.testing.RawZopeLayer(ZCML_LAYER)
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER, features=['zeit.connector.sql.zope'])
+_zope_layer = zeit.cms.testing.RawZopeLayer(ZCML_LAYER)
+ZOPE_LAYER = zeit.cms.testing.SQLIsolationSavepointLayer(_zope_layer)
 
 
-class Layer(zeit.cms.testing.Layer):
-    defaultBases = (ZOPE_LAYER,)
-
+class CannedSearchLayer(zeit.cms.testing.Layer):
     def setUp(self):
         self.search = zope.component.getUtility(zeit.find.interfaces.ICMSSearch)
 
@@ -38,10 +37,13 @@ class Layer(zeit.cms.testing.Layer):
         self.search.client.search.return_value = json.loads(value)
 
 
-LAYER = Layer()
-
+LAYER = CannedSearchLayer(ZOPE_LAYER)
 WSGI_LAYER = zeit.cms.testing.WSGILayer(LAYER)
-HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(WSGI_LAYER)
+HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(
+    zeit.cms.testing.WSGILayer(
+        zeit.cms.testing.SQLIsolationTruncateLayer(CannedSearchLayer(_zope_layer))
+    )
+)
 WEBDRIVER_LAYER = zeit.cms.testing.WebdriverLayer(HTTP_LAYER)
 
 
