@@ -28,8 +28,8 @@
     {
       "description": "Update commented VERSION variables",
       "customType": "regex",
-      "fileMatch": [
-        "^.github/workflows/.*"
+      "managerFilePatterns": [
+        "/^.github/workflows/.*/"
       ],
       "matchStrings": [
         "#\\s?renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?( extractVersion=(?<extractVersion>.+?))?\\s[^:]*: \"(?<currentValue>[^\"]*)\""
