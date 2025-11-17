@@ -21,7 +21,7 @@ class QueryTest(FunctionalTestCase):
     layer = LAYER
 
     def test_query(self):
-        self.layer.set_result(__package__, 'data/obama.json')
+        self.layer['search_result'].set(__package__, 'data/obama.json')
         elastic = getUtility(ICMSSearch)
         q = zeit.find.search.query('Obama')
         result = elastic.search(q)
@@ -29,12 +29,12 @@ class QueryTest(FunctionalTestCase):
         self.assertEqual(
             '/2018/25/donald-trump-golf-schummeln-golfplatz-weltpolitik', result[-1]['url']
         )
-        req = self.layer.search.client.search
+        req = self.layer['search_result']
         self.assertEqual(1, req.call_count)
 
     def test_disable_elastichsearch(self):
         FEATURE_TOGGLES.set('disable_elasticsearch')
-        self.layer.set_result(__package__, 'data/obama.json')
+        self.layer['search_result'].set(__package__, 'data/obama.json')
         elastic = getUtility(ICMSSearch)
         result = elastic.search(zeit.find.search.query('Obama'))
         self.assertEqual(0, result.hits)

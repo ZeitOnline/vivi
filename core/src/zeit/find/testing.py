@@ -24,17 +24,20 @@ ZOPE_LAYER = zeit.cms.testing.SQLIsolationSavepointLayer(_zope_layer)
 
 class CannedSearchLayer(zeit.cms.testing.Layer):
     def setUp(self):
+        def set_result(self, package, filename):
+            value = (importlib.resources.files(package) / filename).read_text('utf-8')
+            self.return_value = json.loads(value)
+
         self.search = zope.component.getUtility(zeit.find.interfaces.ICMSSearch)
+        self['search_result'] = mock.Mock()
+        self['search_result'].set = set_result.__get__(self['search_result'])
+        self.search.client.search = self['search_result']
+
+    def tearDown(self):
+        del self['search_result']
 
     def testSetUp(self):
-        self.search.client.search = mock.Mock()
-
-    def testTearDown(self):
-        del self.search.client.search
-
-    def set_result(self, package, filename):
-        value = (importlib.resources.files(package) / filename).read_text('utf-8')
-        self.search.client.search.return_value = json.loads(value)
+        self['search_result'].reset()
 
 
 LAYER = CannedSearchLayer(ZOPE_LAYER)
