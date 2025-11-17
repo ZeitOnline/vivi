@@ -12,6 +12,10 @@ from ..cli import _publish_scheduled_content, _retract_scheduled_content
 
 
 class TimeBasedEndToEndTest(zeit.workflow.testing.FunctionalTestCase):
+    # Cannot use savepoint isolation, since `now()` returns the transaction
+    # start time, which does not change in nested transactions.
+    layer = zeit.workflow.testing.CELERY_LAYER
+
     def setUp(self):
         super().setUp()
 
