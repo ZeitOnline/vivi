@@ -305,15 +305,18 @@ class TestTextEditing(zeit.content.article.edit.browser.testing.EditorTestCase):
         toolbar = 'css=.block.type-p.editing .rte-toolbar'
         s.waitForElementPresent(toolbar)
 
+        # Have to be very precise how we select text here. Apparently, FF wants
+        # exactly <edit><p>|....|</p></edit> -- with e.g. selectNodeContents(),
+        # which probably means <edit>|<p>...</p>|</edit>, clicking the
+        # ul-button simply does nothing).
         self.execute(
             """(function() {
-            var editable = document.getElementsByClassName('editable')[0];
+            var para = document.querySelectorAll('.editable *');
             var range = window.getSelection().getRangeAt(0);
-            range.setStart(editable, 0);
-            range.setEnd(editable, 3);
+            range.setStart(para[0], 0);
+            range.setEnd(para[2], 1);
         })();"""
         )
-        # XXX WARUM FUNKTIONIERT DAS NUR WENN ICH IM BREAKPOINT DAS SELBST KLICKE?
         s.click('css=.rte-toolbar a[href="insertunorderedlist"]')
         s.waitForElementPresent('css=.block.type-p .editable ul')
         s.assertCssCount('css=.block.type-p .editable ul li', 3)
@@ -323,9 +326,10 @@ class TestTextEditing(zeit.content.article.edit.browser.testing.EditorTestCase):
 
         self.execute(
             """(function() {
-            var editable = document.getElementsByClassName('editable')[0];
+            var para = document.querySelectorAll('.editable *');
             var range = window.getSelection().getRangeAt(0);
-            range.selectNodeContents(editable);
+            range.setStart(para[0], 0);
+            range.setEnd(para[2], 1);
         })();"""
         )
 
