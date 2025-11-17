@@ -208,6 +208,18 @@ class TestAdding(zeit.content.article.testing.BrowserTestCase):
         b.getControl('Publish and push').click()
         article = ICMSContent('http://xml.zeit.de/foo')
         self.assertEqual(image, article.main_image.target)
+        push = zeit.push.interfaces.IPushMessages(article)
+        self.assertIn(
+            {
+                'type': 'mobile',
+                'image': 'http://xml.zeit.de/group',
+                'enabled': 1,
+                'title': 'Default title',
+                'variant': 'manual',
+                'payload_template': 'eilmeldung.json',
+            },
+            push.message_config,
+        )
 
 
 class RetractBannerTest(zeit.content.article.testing.SeleniumTestCase):
