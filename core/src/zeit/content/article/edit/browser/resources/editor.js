@@ -1055,6 +1055,27 @@ zeit.content.article.Editable = gocept.Class.extend({
         self.update_toolbar();
     },
 
+    // Orchestrates the conversion between paragraphs and lists (both directions).
+    _manual_toggle_list: function(listType) {
+        var self = this;
+        var selection = window.getSelection();
+        if (!selection.rangeCount) {
+            log('No selection for list toggle');
+            return;
+        }
+        var range = selection.getRangeAt(0);
+        var blocks = zeit.content.article.commands.get_selected_blocks(range, self.editable);
+        if (blocks.length === 0) {
+            return;
+        }
+
+        if (zeit.content.article.commands.all_blocks_are_lists(blocks)) {
+            zeit.content.article.commands.convert_lists_to_paragraphs(blocks);
+        } else {
+            zeit.content.article.commands.convert_blocks_to_list(blocks, listType, range);
+        }
+    },
+
     init_shortcuts: function() {
         var self = this;
         self.events.push(MochiKit.Signal.connect(
