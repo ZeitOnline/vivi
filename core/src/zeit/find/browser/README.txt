@@ -139,8 +139,7 @@ Search
 
 The search view returns all data for rendering the result:
 
->>> import zeit.find.testing
->>> zeit.find.testing.LAYER.set_result('zeit.find.tests', 'data/obama.json')
+>>> layer['search_result'].set('zeit.find.tests', 'data/obama.json')
 >>> browser.open('/search_result?title=Obama')
 >>> result = json.loads(browser.contents)
 >>> pprint.pprint(result)

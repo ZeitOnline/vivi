@@ -10,7 +10,7 @@ import zeit.cms.testing
 
 
 class ApplyMarkersTest(zeit.cms.testing.FunctionalTestCase):
-    layer = zeit.cms.section.testing.SECTION_LAYER
+    layer = zeit.cms.section.testing.ZOPE_LAYER
 
     def test_adding_content_to_folder_marks_it_with_general_interface(self):
         self.repository['example']['test'] = Folder()
@@ -75,7 +75,7 @@ class ApplyMarkersTest(zeit.cms.testing.FunctionalTestCase):
 
 
 class FindSectionTest(zeit.cms.testing.FunctionalTestCase):
-    layer = zeit.cms.section.testing.SECTION_LAYER
+    layer = zeit.cms.section.testing.ZOPE_LAYER
 
     def test_content_not_in_section_returns_zon(self):
         # since the repository provides IZONSection

@@ -7,22 +7,16 @@ import zeit.cms.testcontenttype.interfaces
 import zeit.cms.testing
 
 
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(zeit.cms.testing.CONFIG_LAYER)
-ZOPE_LAYER = zeit.cms.testing.RawZopeLayer(ZCML_LAYER)
+def create_fixture(repository):
+    example = zeit.cms.repository.folder.Folder()
+    zope.interface.alsoProvides(example, IExampleSection)
+    repository['example'] = example
 
 
-class SectionLayer(zeit.cms.testing.Layer):
-    defaultBases = (ZOPE_LAYER,)
-
-    def testSetUp(self):
-        with zeit.cms.testing.site(self['zodbApp']):
-            repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
-            example = zeit.cms.repository.folder.Folder()
-            zope.interface.alsoProvides(example, IExampleSection)
-            repository['example'] = example
-
-
-SECTION_LAYER = SectionLayer()
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
+    zeit.cms.testing.CONFIG_LAYER, features=['zeit.connector.sql.zope']
+)
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER, create_fixture)
 
 
 class IExampleSection(zeit.cms.section.interfaces.ISection):

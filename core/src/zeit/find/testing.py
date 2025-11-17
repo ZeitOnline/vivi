@@ -17,31 +17,36 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
     },
     bases=zeit.content.audio.testing.CONFIG_LAYER,
 )
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER)
-ZOPE_LAYER = zeit.cms.testing.RawZopeLayer(ZCML_LAYER)
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER, features=['zeit.connector.sql.zope'])
+_zope_layer = zeit.cms.testing.RawZopeLayer(ZCML_LAYER)
+ZOPE_LAYER = zeit.cms.testing.SQLIsolationSavepointLayer(_zope_layer)
 
 
-class Layer(zeit.cms.testing.Layer):
-    defaultBases = (ZOPE_LAYER,)
-
+class CannedSearchLayer(zeit.cms.testing.Layer):
     def setUp(self):
+        def set_result(self, package, filename):
+            value = (importlib.resources.files(package) / filename).read_text('utf-8')
+            self.return_value = json.loads(value)
+
         self.search = zope.component.getUtility(zeit.find.interfaces.ICMSSearch)
+        self['search_result'] = mock.Mock()
+        self['search_result'].set = set_result.__get__(self['search_result'])
+        self.search.client.search = self['search_result']
+
+    def tearDown(self):
+        del self['search_result']
 
     def testSetUp(self):
-        self.search.client.search = mock.Mock()
-
-    def testTearDown(self):
-        del self.search.client.search
-
-    def set_result(self, package, filename):
-        value = (importlib.resources.files(package) / filename).read_text('utf-8')
-        self.search.client.search.return_value = json.loads(value)
+        self['search_result'].reset()
 
 
-LAYER = Layer()
-
+LAYER = CannedSearchLayer(ZOPE_LAYER)
 WSGI_LAYER = zeit.cms.testing.WSGILayer(LAYER)
-HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(WSGI_LAYER)
+HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(
+    zeit.cms.testing.WSGILayer(
+        zeit.cms.testing.SQLIsolationTruncateLayer(CannedSearchLayer(_zope_layer))
+    )
+)
 WEBDRIVER_LAYER = zeit.cms.testing.WebdriverLayer(HTTP_LAYER)
 
 

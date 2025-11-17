@@ -10,7 +10,7 @@ class TestSearch(zeit.find.testing.SeleniumTestCase):
 
     def setUp(self):
         super().setUp()
-        zeit.find.testing.LAYER.set_result('zeit.find.tests', 'data/obama.json')
+        self.layer['search_result'].set('zeit.find.tests', 'data/obama.json')
         self.types_patch = mock.patch(
             'zeit.find.browser.find.SearchForm.CONTENT_TYPES',
             new=['collection', 'file', 'image', 'testcontenttype', 'unknown'],
@@ -58,9 +58,7 @@ class TestSearch(zeit.find.testing.SeleniumTestCase):
         s.verifyText('css=#type_search_info span', 'Unknown Resource')
 
     def test_last_query_should_be_saved(self):
-        zeit.find.testing.LAYER.search.client.search.return_value = {
-            'hits': {'hits': [], 'total': 0}
-        }
+        self.layer['search_result'].return_value = {'hits': {'hits': [], 'total': 0}}
         s = self.selenium
         s.click('id=extended_search_button')
         s.waitForVisible('id=extended_search')

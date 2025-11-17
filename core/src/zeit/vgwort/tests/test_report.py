@@ -5,7 +5,6 @@ import transaction
 import zope.component
 import zope.interface
 
-from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import zeit.cms.testcontenttype.testcontenttype
 import zeit.find.interfaces
 import zeit.retresco.interfaces
@@ -14,11 +13,10 @@ import zeit.vgwort.report
 import zeit.vgwort.testing
 
 
-class ReportTest(zeit.vgwort.testing.SQLTestCase):
+class ReportTest(zeit.vgwort.testing.TestCase):
     def setUp(self):
         super().setUp()
         self.vgwort = zope.component.getUtility(zeit.vgwort.interfaces.IMessageService)
-        self.repository['testcontent'] = ExampleContentType()
         self.content = self.repository['testcontent']
 
     def tearDown(self):
