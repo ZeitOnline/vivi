@@ -265,31 +265,6 @@ class ChoicePropertyWithObjectSource:
 
 
 @zope.component.adapter(
-    zope.schema.interfaces.IChoice,
-    zope.schema.interfaces.IIterableVocabulary,
-    zeit.connector.interfaces.IWebDAVReadProperties,
-    PropertyKey,
-)
-@zope.interface.implementer(zeit.cms.content.interfaces.IDAVPropertyConverter)
-class ChoicePropertyWithIterableVocabulary:
-    def __init__(self, context, vocabulary, properties, propertykey):
-        self.context = context
-        self.vocabulary = vocabulary
-
-    def fromProperty(self, value):
-        for term in self.vocabulary:
-            if term.token == value:
-                return term.value
-        raise ValueError(value)
-
-    def toProperty(self, value):
-        for term in self.vocabulary:
-            if term.value == value:
-                return term.token
-        raise ValueError(value)
-
-
-@zope.component.adapter(
     zope.schema.Bool, zeit.connector.interfaces.IWebDAVReadProperties, PropertyKey
 )
 @zope.interface.implementer(zeit.cms.content.interfaces.IDAVPropertyConverter)
