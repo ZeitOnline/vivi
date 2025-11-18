@@ -59,7 +59,7 @@ class Add(zeit.cms.browser.form.AddForm, zeit.cms.browser.form.CharlimitMixin):
             css_class='wide-widgets column-left',
         ),
         gocept.form.grouped.Fields(
-            '', ('ressort', 'sub_ressort', 'channels'), css_class='column-right'
+            '', ('channels', 'ressort', 'sub_ressort'), css_class='column-right'
         ),
     )
 
