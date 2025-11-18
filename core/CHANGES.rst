@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.228.0 (2025-11-18)
+--------------------
+
+- WCM-1189: List button in edit-toolbar works now in Chrome
+
+
 7.227.0 (2025-11-13)
 --------------------
 
