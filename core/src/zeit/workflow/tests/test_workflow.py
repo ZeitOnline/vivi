@@ -16,20 +16,16 @@ import zeit.workflow.testing
 class AssetWorkflowTests(zeit.workflow.testing.FunctionalTestCase):
     def setUp(self):
         super().setUp()
-        self.old_implements = list(
-            zope.interface.implementedBy(zeit.cms.repository.unknown.PersistentUnknownResource)
-        )
+        self.old_implements = list(zope.interface.implementedBy(ExampleContentType))
         zope.interface.classImplementsOnly(
-            zeit.cms.repository.unknown.PersistentUnknownResource,
+            ExampleContentType,
             zeit.cms.interfaces.IAsset,
             zeit.cms.repository.interfaces.IUnknownResource,
             zope.annotation.interfaces.IAttributeAnnotatable,
         )
 
     def tearDown(self):
-        zope.interface.classImplementsOnly(
-            zeit.cms.repository.unknown.PersistentUnknownResource, *self.old_implements
-        )
+        zope.interface.classImplementsOnly(ExampleContentType, *self.old_implements)
         super().tearDown()
 
     def test_asset_workflow(self):
@@ -38,14 +34,14 @@ class AssetWorkflowTests(zeit.workflow.testing.FunctionalTestCase):
         But there are no constraints in regard to when an asset can be
         published.
         """
-        somalia = self.repository['online']['2007']['01']['Somalia']
-        workflow = zeit.cms.workflow.interfaces.IPublishInfo(somalia)
+        content = self.repository['testcontent']
+        workflow = zeit.cms.workflow.interfaces.IPublishInfo(content)
         assert isinstance(workflow, zeit.workflow.asset.AssetWorkflow)
         assert 'can-publish-success' == workflow.can_publish()
         assert not workflow.published
 
         # Publish an asset:
-        publish = zeit.cms.workflow.interfaces.IPublish(somalia)
+        publish = zeit.cms.workflow.interfaces.IPublish(content)
         publish.publish(background=False)
         assert workflow.published
 

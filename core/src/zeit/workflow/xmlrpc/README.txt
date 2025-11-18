@@ -23,44 +23,42 @@ Setup:
 
 Let's see if we can publish Somalia:
 
->>> can_publish('http://xml.zeit.de/online/2007/01/Somalia')
+>>> can_publish('http://xml.zeit.de/testcontent')
 False
+
+When we try to publish an object which is not publishable, False will be
+returned by publish:
+
+
+>>> publish('http://xml.zeit.de/testcontent')
+False
+
 
 Right. Let's set the urgent flag via python:
 
 >>> import zeit.workflow.interfaces
 >>> _ = zeit.cms.testing.create_interaction()
->>> workflow = zeit.workflow.interfaces.IContentWorkflow(
-...     repository['online']['2007']['01']['Somalia'])
+>>> workflow = zeit.workflow.interfaces.IContentWorkflow(repository['testcontent'])
 >>> workflow.urgent = True
 >>> zope.security.management.endInteraction()
 
 Let's see now:
 
->>> can_publish('http://xml.zeit.de/online/2007/01/Somalia')
+>>> can_publish('http://xml.zeit.de/testcontent')
 True
 >>> not not workflow.published
 False
 
 Good. Let's publish:
 
->>> job_id = publish('http://xml.zeit.de/online/2007/01/Somalia')
+>>> job_id = publish('http://xml.zeit.de/testcontent')
 >>> wait_for_celery()
 >>> workflow.published
 True
 
-
-When we try to publish an object which is not publishable, False will be
-returned by publish:
-
->>> can_publish('http://xml.zeit.de/online/2007/01/eta-zapatero')
-False
->>> publish('http://xml.zeit.de/online/2007/01/eta-zapatero')
-False
-
 Retract:
 
->>> job_id = retract('http://xml.zeit.de/online/2007/01/Somalia')
+>>> job_id = retract('http://xml.zeit.de/testcontent')
 >>> wait_for_celery()
 >>> workflow.published
 False
@@ -68,7 +66,7 @@ False
 
 Helper for timebased jobs:
 
->>> server.setup_timebased_jobs('http://xml.zeit.de/online/2007/01/Somalia')
+>>> server.setup_timebased_jobs('http://xml.zeit.de/testcontent')
 False
 
 >>> import pendulum
@@ -76,5 +74,5 @@ False
 >>> workflow.release_period = (None, pendulum.now('UTC').add(days=1))
 >>> zope.security.management.endInteraction()
 
->>> server.setup_timebased_jobs('http://xml.zeit.de/online/2007/01/Somalia')
+>>> server.setup_timebased_jobs('http://xml.zeit.de/testcontent')
 True

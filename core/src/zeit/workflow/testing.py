@@ -2,6 +2,7 @@ import zope.app.appsetup.product
 import zope.component
 import zope.interface
 
+from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR, CAN_PUBLISH_WARNING
 import zeit.cms.testcontenttype.interfaces
 import zeit.cms.testing
@@ -21,15 +22,24 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
     },
     bases=zeit.push.testing.CONFIG_LAYER,
 )
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER)
-ZOPE_LAYER = zeit.cms.testing.RawZopeLayer(ZCML_LAYER)
-CELERY_LAYER = zeit.cms.testing.CeleryWorkerLayer(ZOPE_LAYER)
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER, features=['zeit.connector.sql.zope'])
+
+
+def create_fixture(repository):
+    repository['one'] = ExampleContentType()
+    repository['two'] = ExampleContentType()
+    repository['three'] = ExampleContentType()
+
+
+_zope_layer = zeit.cms.testing.RawZopeLayer(ZCML_LAYER)
+ZOPE_LAYER = zeit.cms.testing.SQLIsolationSavepointLayer(_zope_layer, create_fixture)
+
+CELERY_LAYER = zeit.cms.testing.CeleryWorkerLayer(
+    zeit.cms.testing.SQLIsolationTruncateLayer(_zope_layer, create_fixture)
+)
 WSGI_LAYER = zeit.cms.testing.WSGILayer(CELERY_LAYER)
 HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(WSGI_LAYER)
 WEBDRIVER_LAYER = zeit.cms.testing.WebdriverLayer(HTTP_LAYER)
-
-SQL_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER, features=['zeit.connector.sql.zope'])
-SQL_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(SQL_ZCML_LAYER)
 
 CONTENT_LAYER = zeit.cms.testing.AdditionalZCMLLayer(
     config_file='ftesting-content.zcml',
@@ -47,10 +57,6 @@ class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
 
 class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
     layer = WEBDRIVER_LAYER
-
-
-class SQLTestCase(zeit.cms.testing.FunctionalTestCase):
-    layer = SQL_ZOPE_LAYER
 
 
 @zope.interface.implementer(zeit.cms.workflow.interfaces.IPublishInfo)

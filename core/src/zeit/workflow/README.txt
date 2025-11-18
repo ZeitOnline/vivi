@@ -17,23 +17,23 @@ Der Workflow ist statusorientiert. Ein Dokument hat allerdings mehrere den
 Workflow betreffende Status. Aus Nutzersicht ergeben sich quasi parallele
 Aktivitäten.
 
->>> somalia = repository['online']['2007']['01']['Somalia']
+>>> article = repository['testcontent']
 >>> import zeit.workflow.interfaces
->>> workflow = zeit.workflow.interfaces.IContentWorkflow(somalia)
+>>> workflow = zeit.workflow.interfaces.IContentWorkflow(article)
 >>> workflow
 <zeit.workflow.workflow.ContentWorkflow...>
 
 Make sure adapting to IPublishInfo yields the same:
 
 >>> import zeit.cms.workflow.interfaces
->>> zeit.cms.workflow.interfaces.IPublishInfo(somalia)
+>>> zeit.cms.workflow.interfaces.IPublishInfo(article)
 <zeit.workflow.workflow.ContentWorkflow...>
 
 >>> import zope.interface.verify
 >>> zope.interface.verify.verifyObject(
 ...     zeit.workflow.interfaces.IContentWorkflow, workflow)
 True
->>> publish = zeit.cms.workflow.interfaces.IPublish(somalia)
+>>> publish = zeit.cms.workflow.interfaces.IPublish(article)
 >>> publish
 <zeit.workflow.publish.Publish...>
 
@@ -162,36 +162,36 @@ We did quite some stuff now. Verify the object log:
 
 >>> import zeit.objectlog.interfaces
 >>> log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
->>> result = log.get_log(somalia)
+>>> result = log.get_log(article)
 >>> import zope.i18n
 >>> def print_log(result):
 ...     for e in result:
 ...         print(e.get_object().uniqueId)
 ...         print('    ' + zope.i18n.translate(e.message))
 >>> print_log(result)
-http://xml.zeit.de/online/2007/01/Somalia
+http://xml.zeit.de/testcontent
      status-edited: yes
-http://xml.zeit.de/online/2007/01/Somalia
+http://xml.zeit.de/testcontent
      status-corrected: yes
-http://xml.zeit.de/online/2007/01/Somalia
+http://xml.zeit.de/testcontent
      status-edited: notnecessary
-http://xml.zeit.de/online/2007/01/Somalia
+http://xml.zeit.de/testcontent
      status-corrected: notnecessary
-http://xml.zeit.de/online/2007/01/Somalia
+http://xml.zeit.de/testcontent
      status-edited: no
-http://xml.zeit.de/online/2007/01/Somalia
+http://xml.zeit.de/testcontent
      Urgent: yes
-http://xml.zeit.de/online/2007/01/Somalia
+http://xml.zeit.de/testcontent
      Urgent: no
-http://xml.zeit.de/online/2007/01/Somalia
+http://xml.zeit.de/testcontent
      Urgent: yes
-http://xml.zeit.de/online/2007/01/Somalia
+http://xml.zeit.de/testcontent
      Published
-http://xml.zeit.de/online/2007/01/Somalia
+http://xml.zeit.de/testcontent
      Published
-http://xml.zeit.de/online/2007/01/Somalia
+http://xml.zeit.de/testcontent
      Urgent: no
-http://xml.zeit.de/online/2007/01/Somalia
+http://xml.zeit.de/testcontent
      Retracted
 
 
@@ -203,7 +203,9 @@ When an object is published for the first time, the "date first released" is
 set by the workflow engine.
 
 >>> import zeit.workflow.interfaces
->>> article = repository['testcontent']
+>>> from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
+>>> repository['t2'] = ExampleContentType()
+>>> article = repository['t2']
 >>> article
 <zeit.cms.testcontenttype.testcontenttype.ExampleContentType...>
 >>> workflow = zeit.workflow.interfaces.IContentWorkflow(article)
@@ -238,7 +240,9 @@ Recursive publish
 It is possible to publish entire folder structures. The default for folders
 though is that they're not publishable at all:
 
->>> container = repository['online']['2007']['01']
+>>> from zeit.cms.repository.folder import Folder
+>>> repository['folder'] = Folder()
+>>> container = repository['folder']
 >>> workflow = zeit.cms.workflow.interfaces.IPublishInfo(container)
 >>> workflow
 <zeit.workflow.publishinfo.NotPublishablePublishInfo...>
@@ -256,7 +260,7 @@ Let's pretend a folder was editoral content:
 
 Now recursive publishing works by simply publishing a container.
 
->>> container = repository['online']['2007']['01']
+>>> container = repository['folder']
 >>> workflow = zeit.cms.workflow.interfaces.IPublishInfo(container)
 >>> publish = zeit.cms.workflow.interfaces.IPublish(container)
 >>> bool(workflow.published)
@@ -264,8 +268,10 @@ False
 
 Let's have a look a another object. It is not published:
 
+>>> from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
+>>> container['content'] = ExampleContentType()
 >>> not not zeit.cms.workflow.interfaces.IPublishInfo(
-...     container['eta-zapatero']).published
+...     container['content']).published
 False
 
 Now publish the folder:
@@ -280,16 +286,16 @@ True
 Now also all subitems are published:
 
 >>> zeit.cms.workflow.interfaces.IPublishInfo(
-...     container['eta-zapatero']).published
+...     container['content']).published
 True
 
 This is also logged:
 
->>> result = log.get_log(container['eta-zapatero'])
+>>> result = log.get_log(container['content'])
 >>> print_log(result)
-http://xml.zeit.de/online/2007/01/eta-zapatero
+http://xml.zeit.de/folder/content
     Urgent: yes
-http://xml.zeit.de/online/2007/01/eta-zapatero
+http://xml.zeit.de/folder/content
     Published
 
 
@@ -302,19 +308,19 @@ False
 Make sure the subobjects are also retracted:
 
 >>> zeit.cms.workflow.interfaces.IPublishInfo(
-...     container['eta-zapatero']).published
+...     container['content']).published
 False
 
 
 This is also logged:
 
->>> result = log.get_log(container['eta-zapatero'])
+>>> result = log.get_log(container['content'])
 >>> print_log(result)
-http://xml.zeit.de/online/2007/01/eta-zapatero
+http://xml.zeit.de/folder/content
     Urgent: yes
-http://xml.zeit.de/online/2007/01/eta-zapatero
+http://xml.zeit.de/folder/content
     Published
-http://xml.zeit.de/online/2007/01/eta-zapatero
+http://xml.zeit.de/folder/content
     Retracted
 
 Dependencies
@@ -327,49 +333,51 @@ published together with the gallery automatically.
 Simple dependencies
 +++++++++++++++++++
 
-Let's assume the Somalia article has a dependency on another article. This
+Let's assume the article has a dependency on another article. This
 is done via a named adapter to IPublicationDependencies:
 
->>> class SomaliaFeed(zeit.cms.workflow.dependency.DependencyBase):
+>>> repository['dependency'] = ExampleContentType()
+>>> zeit.cms.workflow.interfaces.IPublishInfo(repository['dependency']).urgent = True
+>>> class TestDependencies(zeit.cms.workflow.dependency.DependencyBase):
 ...     def get_dependencies(self):
-...         if self.context.uniqueId.endswith('Somalia'):
-...             return (repository['2006']['49']['Zinsen'],)
+...         if self.context.uniqueId == 'http://xml.zeit.de/testcontent':
+...             return (repository['dependency'],)
 ...         return ()
 ...
 >>> gsm = zope.component.getGlobalSiteManager()
 >>> gsm.registerAdapter(
-...     SomaliaFeed,
-...     (zeit.cms.repository.interfaces.IUnknownResource,),
+...     TestDependencies,
+...     (zeit.cms.testcontenttype.interfaces.IExampleContentType,),
 ...     zeit.cms.workflow.interfaces.IPublicationDependencies,
-...     name='somalia')
+...     name='testing')
 
-Get the dependencies for the somalia article. There is an adapter which gathers
+Get the dependencies for the main article. There is an adapter which gathers
 all the named adapters:
 
+>>> content = repository['testcontent']
 >>> deps = zeit.cms.workflow.interfaces.IPublicationDependencies(
-...     somalia).get_dependencies()
+...     content).get_dependencies()
 >>> deps
-[<zeit.cms.repository.unknown...>]
+[<zeit.cms.testcontenttype.testcontenttype.ExampleContentType...>]
 >>> len(deps)
 1
 >>> deps[0].uniqueId
-'http://xml.zeit.de/2006/49/Zinsen'
->>> feed = deps[0]
+'http://xml.zeit.de/dependency'
+>>> dep = deps[0]
 
 Currently neither the article nor the image is published:
 
->>> workflow = zeit.cms.workflow.interfaces.IPublishInfo(somalia)
+>>> workflow = zeit.cms.workflow.interfaces.IPublishInfo(content)
 >>> workflow.published
 False
 >>> workflow.urgent = True
 >>> workflow.can_publish()
 'can-publish-success'
->>> feed_workflow = zeit.cms.workflow.interfaces.IPublishInfo(feed)
->>> feed_workflow.urgent = True
->>> not not feed_workflow.published
+>>> dep_workflow = zeit.cms.workflow.interfaces.IPublishInfo(dep)
+>>> not not dep_workflow.published
 False
 
-When we publish somalia now the feed is published
+When we publish main now the dependency is published
 automatically:
 
 We register event handlers to all the publish/retract events to see the master
@@ -381,31 +389,31 @@ We register event handlers to all the publish/retract events to see the master
 >>> gsm.registerHandler(pr_handler,
 ...     (zeit.cms.workflow.interfaces.IWithMasterObjectEvent,))
 
->>> publish = zeit.cms.workflow.interfaces.IPublish(somalia)
+>>> publish = zeit.cms.workflow.interfaces.IPublish(content)
 >>> job_id = publish.publish(background=False)
 BeforePublishEvent
-    Object: http://xml.zeit.de/online/2007/01/Somalia
-    Master: http://xml.zeit.de/online/2007/01/Somalia
+    Object: http://xml.zeit.de/testcontent
+    Master: http://xml.zeit.de/testcontent
 BeforePublishEvent
-    Object: http://xml.zeit.de/2006/49/Zinsen
-    Master: http://xml.zeit.de/online/2007/01/Somalia
+    Object: http://xml.zeit.de/dependency
+    Master: http://xml.zeit.de/testcontent
 PublishedEvent
-    Object: http://xml.zeit.de/online/2007/01/Somalia
-    Master: http://xml.zeit.de/online/2007/01/Somalia
+    Object: http://xml.zeit.de/testcontent
+    Master: http://xml.zeit.de/testcontent
 PublishedEvent
-    Object: http://xml.zeit.de/2006/49/Zinsen
-    Master: http://xml.zeit.de/online/2007/01/Somalia
+    Object: http://xml.zeit.de/dependency
+    Master: http://xml.zeit.de/testcontent
 >>> workflow.published
 True
->>> feed_workflow.published
+>>> dep_workflow.published
 True
 
-Of couse the feed as a log entry:
+Of couse the dependency as a log entry:
 
->>> print_log(log.get_log(feed))
-http://xml.zeit.de/2006/49/Zinsen
+>>> print_log(log.get_log(dep))
+http://xml.zeit.de/dependency
      Urgent: yes
-http://xml.zeit.de/2006/49/Zinsen
+http://xml.zeit.de/dependency
      Published
 
 
@@ -416,81 +424,81 @@ Retract does *not* honour dependencies by default:
 
 >>> job_id = publish.retract(background=False)
 BeforeRetractEvent
-    Object: http://xml.zeit.de/online/2007/01/Somalia
-    Master: http://xml.zeit.de/online/2007/01/Somalia
+    Object: http://xml.zeit.de/testcontent
+    Master: http://xml.zeit.de/testcontent
 RetractedEvent
-    Object: http://xml.zeit.de/online/2007/01/Somalia
-    Master: http://xml.zeit.de/online/2007/01/Somalia
->>> feed_workflow.published
+    Object: http://xml.zeit.de/testcontent
+    Master: http://xml.zeit.de/testcontent
+>>> dep_workflow.published
 True
 
 Make sure the file would actually have been removed:
 
 If the dependencies adapter allows it, the dependencies are retracted as well:
 
->>> SomaliaFeed.retract_dependencies = True
+>>> TestDependencies.retract_dependencies = True
 >>> job_id = publish.retract(background=False)
 BeforeRetractEvent
-    Object: http://xml.zeit.de/online/2007/01/Somalia
-    Master: http://xml.zeit.de/online/2007/01/Somalia
+    Object: http://xml.zeit.de/testcontent
+    Master: http://xml.zeit.de/testcontent
 BeforeRetractEvent
-    Object: http://xml.zeit.de/2006/49/Zinsen
-    Master: http://xml.zeit.de/online/2007/01/Somalia
+    Object: http://xml.zeit.de/dependency
+    Master: http://xml.zeit.de/testcontent
 RetractedEvent
-    Object: http://xml.zeit.de/online/2007/01/Somalia
-    Master: http://xml.zeit.de/online/2007/01/Somalia
+    Object: http://xml.zeit.de/testcontent
+    Master: http://xml.zeit.de/testcontent
 RetractedEvent
-    Object: http://xml.zeit.de/2006/49/Zinsen
-    Master: http://xml.zeit.de/online/2007/01/Somalia
->>> feed_workflow.published
+    Object: http://xml.zeit.de/dependency
+    Master: http://xml.zeit.de/testcontent
+>>> dep_workflow.published
 False
 
 
 Recursive dependencies
 ++++++++++++++++++++++
 
-When the feed references the article nothing special happens: both are
+When the dependency also references the article nothing special happens: both are
 published when either is published.
 
 Add the reverse dependency:
 
->>> class FeedSomalia(zeit.cms.workflow.dependency.DependencyBase):
+>>> class TestDependencies2(zeit.cms.workflow.dependency.DependencyBase):
 ...     def get_dependencies(self):
-...         if self.context == feed:
-...             return (somalia,)
+...         if self.context == dep:
+...             return (content,)
 ...         return ()
 ...
 >>> import zeit.content.cp.interfaces
 >>> gsm.registerAdapter(
-...     FeedSomalia,
-...     (zeit.content.cp.interfaces.IFeed,),
+...     TestDependencies2,
+...     (zeit.cms.testcontenttype.interfaces.IExampleContentType,),
 ...     zeit.cms.workflow.interfaces.IPublicationDependencies,
-...     name='feed')
+...     name='test2')
 
 
-Publish somalia again:
+Publish content again:
 
 >>> job_id = publish.publish(background=False)
 BeforePublishEvent
-    Object: http://xml.zeit.de/online/2007/01/Somalia
-    Master: http://xml.zeit.de/online/2007/01/Somalia
+    Object: http://xml.zeit.de/testcontent
+    Master: http://xml.zeit.de/testcontent
 BeforePublishEvent
-    Object: http://xml.zeit.de/2006/49/Zinsen
-    Master: http://xml.zeit.de/online/2007/01/Somalia
+    Object: http://xml.zeit.de/dependency
+    Master: http://xml.zeit.de/testcontent
 PublishedEvent
-    Object: http://xml.zeit.de/online/2007/01/Somalia
-    Master: http://xml.zeit.de/online/2007/01/Somalia
+    Object: http://xml.zeit.de/testcontent
+    Master: http://xml.zeit.de/testcontent
 PublishedEvent
-    Object: http://xml.zeit.de/2006/49/Zinsen
-    Master: http://xml.zeit.de/online/2007/01/Somalia
->>> print_log(log.get_log(feed))
-http://xml.zeit.de/2006/49/Zinsen
+    Object: http://xml.zeit.de/dependency
+    Master: http://xml.zeit.de/testcontent
+>>> print_log(log.get_log(dep))
+http://xml.zeit.de/dependency
     Urgent: yes
-http://xml.zeit.de/2006/49/Zinsen
+http://xml.zeit.de/dependency
     Published
-http://xml.zeit.de/2006/49/Zinsen
+http://xml.zeit.de/dependency
     Retracted
-http://xml.zeit.de/2006/49/Zinsen
+http://xml.zeit.de/dependency
     Published
 
 >>> gsm.unregisterHandler(pr_handler,

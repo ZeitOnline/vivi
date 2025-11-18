@@ -82,6 +82,7 @@ class CeleryWorkerLayer(Layer):
         wait_for_celery()
 
     def tearDown(self):
+        wait_for_celery()
         self['celery_worker'].__exit__(None, None, None)
         del self['celery_worker']
 
