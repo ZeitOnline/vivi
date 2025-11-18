@@ -3,7 +3,6 @@ import zope.component
 
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.content.interfaces import IUUID
-from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import zeit.cms.testing
 
@@ -11,7 +10,6 @@ import zeit.cms.testing
 class ExtractReferencesTest(zeit.cms.testing.ZeitCmsTestCase):
     def setUp(self):
         super().setUp()
-        FEATURE_TOGGLES.set('store_references')
 
         # Maybe just implementing IExtractReferences for IRelatedContent
         # would be easier than doing this dance to pretend we have authors?
