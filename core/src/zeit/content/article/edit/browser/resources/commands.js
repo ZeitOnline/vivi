@@ -1,6 +1,31 @@
 (function () {
   zeit.cms.declare_namespace('zeit.content.article.commands');
 
+  // Orchestrates the conversion between paragraphs and lists (both directions).
+  // Chrome has a bug where execCommand('insertunorderedlist') on a <p> element
+  // creates invalid HTML (<ul> inside <p>). The browser auto-corrects this by
+  // moving the <ul> outside the <p>, which removes the list entirely.
+  // We work around this by manually manipulating the DOM instead of using execCommand.
+  zeit.content.article.commands.insert_list = function(listType, editableElement) {
+    var self = this;
+    var selection = window.getSelection();
+    if (!selection.rangeCount) {
+      log('No selection for list toggle');
+      return;
+    }
+    var range = selection.getRangeAt(0);
+    var blocks = zeit.content.article.commands.get_selected_blocks(range, editableElement);
+    if (blocks.length === 0) {
+      return;
+    }
+
+    if (zeit.content.article.commands.all_blocks_are_lists(blocks)) {
+      zeit.content.article.commands.convert_lists_to_paragraphs(blocks);
+    } else {
+      zeit.content.article.commands.convert_blocks_to_list(blocks, listType, range);
+    }
+  };
+
   // Finds the block-level element (P, DIV, UL, OL) that is a direct child of
   // the editable container and contains the given node.
   zeit.content.article.commands.find_editable_block = function(node, editable) {

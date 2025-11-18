@@ -1033,12 +1033,8 @@ zeit.content.article.Editable = gocept.Class.extend({
         }
         log("Executing", command, option);
 
-        // Chrome has a "bug" where execCommand('insertunorderedlist') on a <p> element
-        // creates invalid HTML (<ul> inside <p>). The browser auto-corrects this by
-        // moving the <ul> outside the <p>, which removes the list entirely.
-        // We work around this by manually manipulating the DOM instead of using execCommand.
         if (command === 'insertunorderedlist' || command === 'insertorderedlist') {
-            self._manual_toggle_list(command === 'insertorderedlist' ? 'ol' : 'ul');
+            zeit.content.article.commands.insert_list(command === 'insertorderedlist' ? 'ol' : 'ul', self.editable);
         } else {
             try {
                 document.execCommand(command, false, option);
@@ -1053,27 +1049,6 @@ zeit.content.article.Editable = gocept.Class.extend({
             self.editable.focus();
         }
         self.update_toolbar();
-    },
-
-    // Orchestrates the conversion between paragraphs and lists (both directions).
-    _manual_toggle_list: function(listType) {
-        var self = this;
-        var selection = window.getSelection();
-        if (!selection.rangeCount) {
-            log('No selection for list toggle');
-            return;
-        }
-        var range = selection.getRangeAt(0);
-        var blocks = zeit.content.article.commands.get_selected_blocks(range, self.editable);
-        if (blocks.length === 0) {
-            return;
-        }
-
-        if (zeit.content.article.commands.all_blocks_are_lists(blocks)) {
-            zeit.content.article.commands.convert_lists_to_paragraphs(blocks);
-        } else {
-            zeit.content.article.commands.convert_blocks_to_list(blocks, listType, range);
-        }
     },
 
     init_shortcuts: function() {
