@@ -1,9 +1,11 @@
+from urllib.parse import urlparse
 import base64
 import datetime
 import importlib.metadata
 import json
 import logging
 
+from opentelemetry.instrumentation.utils import suppress_http_instrumentation
 import requests
 import requests.exceptions
 import requests.utils
@@ -90,43 +92,61 @@ class Honorar:
         if retries > 1:
             raise ValueError('Request %s failed' % request)
 
-        verb, path = request.split(' ')
         auth_token = self.auth_token(db)
+        verb, path = request.split(' ')
         method = getattr(requests, verb.lower())
-        try:
-            r = method(
-                self.urls[db] + path,
-                headers={
-                    'Authorization': 'Bearer %s' % auth_token,
-                    'User-Agent': requests.utils.default_user_agent(
-                        'zeit.content.author-%s/python-requests'
-                        % (importlib.metadata.version('vivi.core'))
-                    ),
-                },
-                **kw,
+        url = self.urls[db] + path
+
+        tracer = zope.component.getUtility(zeit.cms.interfaces.ITracer)
+        with tracer.start_as_current_span(verb) as span:
+            span.set_attributes(
+                {
+                    'server.address': urlparse(url).netloc,
+                    'url.full': url,
+                    'http.request.method': verb.upper(),
+                }
             )
-            r.raise_for_status()
-            return r.json()
-        except requests.exceptions.HTTPError as err:
-            status = getattr(err.response, 'status_code', 599)
-            if status == 401:
-                self.auth_token.invalidate(self)
-                return self._request(request, retries=retries + 1)
-            if status == 500:
-                r = err.response.json()
-                messages = r.get('messages', ())
-                if not messages:
-                    raise
-                if messages[0].get('code') == '401':
-                    # "No records match the request", wonderful API. :-(
-                    return {'response': {'data': []}}
-                elif messages[0].get('code') == '101':
-                    # Even wonderfuller API: `create` with GET has no "normal"
-                    # FileMaker result, so it complains.
-                    return r
-                else:
-                    err.args += tuple(messages)
-            raise
+            try:
+                with suppress_http_instrumentation():
+                    r = method(
+                        url,
+                        headers={
+                            'Authorization': 'Bearer %s' % auth_token,
+                            'User-Agent': requests.utils.default_user_agent(
+                                'zeit.content.author-%s/python-requests'
+                                % (importlib.metadata.version('vivi.core'))
+                            ),
+                        },
+                        **kw,
+                    )
+                span.set_attribute('http.result', r.text)
+                r.raise_for_status()
+                status = r.status_code
+                return r.json()
+            except requests.exceptions.HTTPError as err:
+                status = getattr(err.response, 'status_code', 599)
+                if status == 401:
+                    self.auth_token.invalidate(self)
+                    return self._request(request, retries=retries + 1)
+                if status == 500:
+                    r = err.response.json()
+                    messages = r.get('messages', ())
+                    if not messages:
+                        raise
+                    if messages[0].get('code') == '401':
+                        # "No records match the request", wonderful API. :-(
+                        status = 404
+                        return {'response': {'data': []}}
+                    elif messages[0].get('code') == '101':
+                        # Even wonderfuller API: `create` with GET has no "normal"
+                        # FileMaker result, so it complains.
+                        status = 201
+                        return r
+                    else:
+                        err.args += tuple(messages)
+                raise
+            finally:
+                span.set_attribute('http.response.status_code', status)
 
     @CONFIG_CACHE.cache_on_arguments()
     def auth_token(self, db):
