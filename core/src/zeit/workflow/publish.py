@@ -161,6 +161,29 @@ MODE_PUBLISH = 'publish'
 MODE_RETRACT = 'retract'
 
 
+class PublishContext:
+    """Encapsulates state for publish/retract operations."""
+
+    def __init__(self, all_content, requested_content):
+        #: Dict mapping uniqueId -> content object (includes dependencies)
+        self.all_content = all_content
+        #: Set of uniqueIds that were explicitly requested
+        self.requested_content = requested_content
+        #: Content still valid to process
+        self.processable_content = set(all_content.keys())
+        self.errors = []
+        self._initiating_cache = {}
+
+    def get_initiating_content(self, uid):
+        if uid not in self._initiating_cache:
+            if uid in self.requested_content:
+                self._initiating_cache[uid] = self.all_content[uid]
+            else:
+                # For dependencies, initiating content is the first requested object
+                self._initiating_cache[uid] = self.all_content[next(iter(self.requested_content))]
+        return self._initiating_cache[uid]
+
+
 class PublishRetractTask:
     mode = NotImplemented  # MODE_PUBLISH or MODE_RETRACT
 
@@ -293,53 +316,74 @@ class PublishRetractTask:
             return obj
         return obj
 
-    def recurse(self, method, start_obj, *args):
-        """Apply method recursively on start_obj."""
+    def build_dependency_tree(self, start_obj):
+        """Queries dependencies before any state changes occur (e.g. published=True)."""
         DEPENDENCY_PUBLISH_LIMIT = int(
             zeit.cms.config.get('zeit.workflow', 'dependency-publish-limit', 1)
         )
         stack = [start_obj]
         seen = set()
-        result = None
-        while stack:
-            current_obj = stack.pop(0)
-            if current_obj.uniqueId in seen:
-                continue
-            seen.add(current_obj.uniqueId)
-            logger.debug('%s %s' % (method.__name__, current_obj.uniqueId))
-            with zeit.cms.tracing.use_span(
-                __name__,
-                f'publish {method.__name__}',
-                attributes={'app.uniqueid': current_obj.uniqueId},
-            ):
-                new_obj = method(current_obj, *args)
-            if new_obj is None:
-                new_obj = current_obj
-            if result is None:  # Return possible update for start_obj
-                result = new_obj
-            if len(seen) > DEPENDENCY_PUBLISH_LIMIT:
-                # "strictly greater" comparison since the starting object
-                # should not count towards the limit
-                break
+        result = []
 
-            # Dive into dependent objects
-            with zeit.cms.tracing.use_span(
-                __name__,
-                'resolve dependencies',
-                attributes={'app.uniqueid': current_obj.uniqueId, 'app.operation': method.__name__},
-            ):
-                deps = zeit.cms.workflow.interfaces.IPublicationDependencies(new_obj)
-                if self.mode == MODE_PUBLISH:
-                    stack.extend(deps.get_dependencies())
-                elif self.mode == MODE_RETRACT:
-                    stack.extend(deps.get_retract_dependencies())
-                else:
-                    raise ValueError(
-                        'Task mode must be %r or %r, not %r'
-                        % (MODE_PUBLISH, MODE_RETRACT, self.mode)
-                    )
+        with zeit.cms.tracing.use_span(
+            __name__,
+            'build dependency tree',
+            attributes={'app.uniqueid': start_obj.uniqueId, 'app.mode': self.mode},
+        ):
+            while stack:
+                current_obj = stack.pop(0)
+                if current_obj.uniqueId in seen:
+                    continue
+                seen.add(current_obj.uniqueId)
+                result.append(current_obj)
+
+                if len(seen) > DEPENDENCY_PUBLISH_LIMIT:
+                    # "strictly greater" comparison since the starting object
+                    # should not count towards the limit
+                    break
+
+                # Resolve dependencies before any state changes
+                with zeit.cms.tracing.use_span(
+                    __name__,
+                    'resolve dependencies',
+                    attributes={'app.uniqueid': current_obj.uniqueId},
+                ):
+                    deps = zeit.cms.workflow.interfaces.IPublicationDependencies(current_obj)
+                    if self.mode == MODE_PUBLISH:
+                        stack.extend(deps.get_dependencies())
+                    elif self.mode == MODE_RETRACT:
+                        stack.extend(deps.get_retract_dependencies())
+                    else:
+                        raise ValueError(
+                            'Task mode must be %r or %r, not %r'
+                            % (MODE_PUBLISH, MODE_RETRACT, self.mode)
+                        )
 
         return result
+
+    def _execute_phase(self, ctx, phase_name, phase_fn, needs_initiating_content=False):
+        for uid in list(ctx.processable_content):
+            content = ctx.all_content[uid]
+            try:
+                logger.debug('%s %s' % (phase_name, content.uniqueId))
+                with zeit.cms.tracing.use_span(
+                    __name__,
+                    f'{self.mode} {phase_name}',
+                    attributes={'app.uniqueid': content.uniqueId},
+                ):
+                    if needs_initiating_content:
+                        initiating_content = ctx.get_initiating_content(uid)
+                        new_content = phase_fn(content, initiating_content)
+                    else:
+                        new_content = phase_fn(content)
+
+                    # cycle may update content during checkin event (but I really don't know
+                    # and hopefully we can remove it in the future and skip that check)
+                    if new_content is not None and new_content is not content:
+                        ctx.all_content[uid] = new_content
+            except Exception as e:
+                ctx.errors.append((content, e))
+                ctx.processable_content.discard(uid)
 
     def serialize(self, obj, result):
         result.append(zeit.workflow.interfaces.IPublisherData(obj)(self.mode))
@@ -391,42 +435,41 @@ class PublishTask(PublishRetractTask):
 
     def _run(self, objs):
         logger.info('Publishing %s' % ', '.join(obj.uniqueId for obj in objs))
-        errors = []
 
-        okay = []
-        for obj in objs:
-            try:
-                okay.append(self.recurse(self.can_publish, obj))
-            except Exception as e:
-                errors.append((obj, e))
+        all_content = {}
+        requested_content = set()
+        for content in objs:
+            requested_content.add(content.uniqueId)
+            tree = self.build_dependency_tree(content)
+            for tree_content in tree:
+                if tree_content.uniqueId not in all_content:
+                    all_content[tree_content.uniqueId] = tree_content
 
-        objs = okay
-        okay = []
-        for obj in objs:
-            try:
-                okay.append(self.recurse(self.lock, obj))
-            except Exception as e:
-                errors.append((obj, e))
-        locked = okay
+        ctx = PublishContext(all_content, requested_content)
+        self._execute_phase(ctx, 'can_publish', self.can_publish, needs_initiating_content=False)
+        self._execute_phase(ctx, 'lock', self.lock, needs_initiating_content=False)
+        locked_content = list(ctx.processable_content)
         # Persist locks as soon as possible, to prevent concurrent access.
         transaction.commit()
 
-        objs = okay
-        okay = []
-        for obj in objs:
-            try:
-                okay.append(self.recurse(self.before_publish, obj, obj))
-            except Exception as e:
-                errors.append((obj, e))
+        self._execute_phase(
+            ctx, 'before_publish', self.before_publish, needs_initiating_content=True
+        )
 
         to_publish = []
-        for obj in okay:
+        for uid in list(ctx.processable_content):
+            content = ctx.all_content[uid]
             try:
-                deps = []
-                self.recurse(self.serialize, obj, deps)
-                to_publish.extend(deps)
+                logger.debug('serialize %s' % content.uniqueId)
+                with zeit.cms.tracing.use_span(
+                    __name__,
+                    f'{self.mode} serialize',
+                    attributes={'app.uniqueid': content.uniqueId},
+                ):
+                    self.serialize(content, to_publish)
             except Exception as e:
-                errors.append((obj, e))
+                ctx.errors.append((content, e))
+                ctx.processable_content.discard(uid)
 
         try:
             if to_publish:
@@ -437,28 +480,42 @@ class PublishTask(PublishRetractTask):
         except transaction.interfaces.TransientError:
             raise
         except zeit.workflow.publisher.PublisherError as e:
-            errors.extend(self._assign_publisher_errors_to_objects(e, okay))
+            ctx.errors.extend(
+                self._assign_publisher_errors_to_objects(
+                    e, [ctx.all_content[uid] for uid in ctx.processable_content]
+                )
+            )
         except Exception as e:
-            for obj in okay:
-                errors.append((obj, e))
+            for uid in ctx.processable_content:
+                ctx.errors.append((ctx.all_content[uid], e))
 
-        for obj in okay:
+        self._execute_phase(ctx, 'after_publish', self.after_publish, needs_initiating_content=True)
+        for uid in locked_content:
+            if uid not in ctx.all_content:
+                logger.warning(
+                    'Content %s was locked but not found in all_content during unlock', uid
+                )
+                continue
+            content = ctx.all_content[uid]
+            initiating_content = ctx.get_initiating_content(uid)
             try:
-                self.recurse(self.after_publish, obj, obj)
+                logger.debug('unlock %s' % content.uniqueId)
+                with zeit.cms.tracing.use_span(
+                    __name__,
+                    f'{self.mode} unlock',
+                    attributes={'app.uniqueid': content.uniqueId},
+                ):
+                    self.unlock(content, initiating_content)
             except Exception as e:
-                errors.append((obj, e))
+                # Don't fail the whole operation if unlock fails, but track the error
+                ctx.errors.append((content, e))
 
-        for obj in locked:
-            try:
-                self.recurse(self.unlock, obj, obj)
-            except Exception as e:
-                errors.append((obj, e))
         # No commit here, as it would also commit any after_publish changes.
-        # We may leave objects locked, if an error occurred, but that's the
+        # We may leave content locked, if an error occurred, but that's the
         # lesser evil of the two.
 
-        if errors:
-            raise MultiPublishError(errors)
+        if ctx.errors:
+            raise MultiPublishError(ctx.errors)
 
         return 'Published.'
 
@@ -515,36 +572,45 @@ class RetractTask(PublishRetractTask):
 
     def _run(self, objs):
         logger.info('Retracting %s' % ', '.join(obj.uniqueId for obj in objs))
-        errors = []
 
-        okay = []
-        for obj in objs:
-            info = zeit.cms.workflow.interfaces.IPublishInfo(obj)
+        all_content = {}
+        requested_content = set()
+        for content in objs:
+            info = zeit.cms.workflow.interfaces.IPublishInfo(content)
             if not info.published:
-                logger.warning('Retracting object %s which is not published.', obj.uniqueId)
-            try:
-                okay.append(self.recurse(self.lock, obj, obj))
-            except Exception as e:
-                errors.append((obj, e))
-        locked = okay
+                logger.warning('Retracting content %s which is not published.', content.uniqueId)
+            requested_content.add(content.uniqueId)
+            tree = self.build_dependency_tree(content)
+            for tree_content in tree:
+                if tree_content.uniqueId not in all_content:
+                    all_content[tree_content.uniqueId] = tree_content
+
+        ctx = PublishContext(all_content, requested_content)
+        self._execute_phase(ctx, 'lock', self.lock, needs_initiating_content=False)
+        locked_content = list(ctx.processable_content)
+        # Persist locks as soon as possible, to prevent concurrent access.
         transaction.commit()
 
-        objs = okay
-        okay = []
-        for obj in objs:
-            try:
-                okay.append(self.recurse(self.before_retract, obj, obj))
-            except Exception as e:
-                errors.append((obj, e))
+        self._execute_phase(
+            ctx, 'before_retract', self.before_retract, needs_initiating_content=True
+        )
 
         to_retract = []
-        for obj in okay:
+        for uid in list(ctx.processable_content):
+            content = ctx.all_content[uid]
             try:
-                deps = []
-                self.recurse(self.serialize, obj, deps)
-                to_retract.extend(reversed(deps))
+                logger.debug('serialize %s' % content.uniqueId)
+                with zeit.cms.tracing.use_span(
+                    __name__,
+                    f'{self.mode} serialize',
+                    attributes={'app.uniqueid': content.uniqueId},
+                ):
+                    self.serialize(content, to_retract)
             except Exception as e:
-                errors.append((obj, e))
+                ctx.errors.append((content, e))
+                ctx.processable_content.discard(uid)
+
+        to_retract = list(reversed(to_retract))
 
         try:
             if to_retract:
@@ -554,25 +620,38 @@ class RetractTask(PublishRetractTask):
         except transaction.interfaces.TransientError:
             raise
         except zeit.workflow.publisher.PublisherError as e:
-            errors.extend(self._assign_publisher_errors_to_objects(e, okay))
+            ctx.errors.extend(
+                self._assign_publisher_errors_to_objects(
+                    e, [ctx.all_content[uid] for uid in ctx.processable_content]
+                )
+            )
         except Exception as e:
-            for obj in okay:
-                errors.append((obj, e))
+            for uid in ctx.processable_content:
+                ctx.errors.append((ctx.all_content[uid], e))
 
-        for obj in okay:
+        self._execute_phase(ctx, 'after_retract', self.after_retract, needs_initiating_content=True)
+
+        for uid in locked_content:
+            if uid not in ctx.all_content:
+                logger.warning(
+                    'Content %s was locked but not found in all_content during unlock', uid
+                )
+                continue
+            content = ctx.all_content[uid]
+            initiating_content = ctx.get_initiating_content(uid)
             try:
-                self.recurse(self.after_retract, obj, obj)
+                logger.debug('unlock %s' % content.uniqueId)
+                with zeit.cms.tracing.use_span(
+                    __name__,
+                    f'{self.mode} unlock',
+                    attributes={'app.uniqueid': content.uniqueId},
+                ):
+                    self.unlock(content, initiating_content)
             except Exception as e:
-                errors.append((obj, e))
+                ctx.errors.append((content, e))
 
-        for obj in locked:
-            try:
-                self.recurse(self.unlock, obj, obj)
-            except Exception as e:
-                errors.append((obj, e))
-
-        if errors:
-            raise MultiPublishError(errors)
+        if ctx.errors:
+            raise MultiPublishError(ctx.errors)
 
         return 'Retracted.'
 
