@@ -100,6 +100,13 @@ class ProductSourceTest(zeit.cms.testing.ZeitCmsTestCase):
         source = zeit.cms.content.sources.PRODUCT_SOURCE
         self.values = list(source(None))
 
+    def test_returns_product_objects(self):
+        product = self.values[-1]
+        self.assertEqual('ZEDE', product.id)
+        self.assertEqual('Online', product.title)
+        source = zeit.cms.content.sources.PRODUCT_SOURCE(None)
+        self.assertEqual('1234abc', source.find('KINZ').vgwort_code)
+
     def test_zeit_has_zeit_magazin_as_dependent_products(self):
         for value in self.values:
             if value.id == 'ZEI':
@@ -119,6 +126,62 @@ class ProductSourceTest(zeit.cms.testing.ZeitCmsTestCase):
                 break
 
 
+# Cannot use /testcontent here, see `different_context_objects` below
+@zope.interface.implementer(zeit.cms.content.interfaces.ICommonMetadata)
+class FakeRessort:
+    pass
+
+
+class SubRessortSourceTest(zeit.cms.testing.ZeitCmsTestCase):
+    def setUp(self):
+        super().setUp()
+        self.source = zeit.cms.content.sources.SubRessortSource()
+
+    def test_constrains_values_to_parent_value(self):
+        fake = FakeRessort()
+        source = self.source(fake)
+
+        fake.ressort = 'Deutschland'
+        self.assertEqual(
+            ['Datenschutz', 'Integration', 'Joschka Fisher', 'Meinung'], sorted(list(source))
+        )
+
+        fake.ressort = None
+        self.assertIn('Meinung', list(source))
+
+    def test_same_child_value_can_exist_for_multiple_parents(self):
+        fake = FakeRessort()
+        source = self.source(fake)
+        fake.ressort = 'Deutschland'
+        self.assertIn('Meinung', list(source))
+        fake.ressort = 'International'
+        self.assertIn('Meinung', list(source))
+
+    def test_invalid_value_returns_the_raw_value_as_title(self):
+        self.assertEqual('Invalid', self.source.factory.getTitle(None, 'Invalid'))
+
+    def test_works_with_different_context_objects(self):
+        # There's some weird interaction between .browser.widget.SubNavigationUpdater
+        # and the workflow in some forms regarding what is saved when, which lead
+        # to somewhat strange edge case handling, see e.g. b21e631 and 261aacd
+        # XXX It is unclear which of these cases are still relevant today.
+
+        # ICMSContent does not constrain the values at all. This is apparently
+        # relevant for not having to save the ressort before selecting a subressort
+        source = self.source(self.repository['testcontent'])
+        self.assertIn('US-Wahl', list(source))
+
+        # Strings are treated as the parent value, even though the normal context
+        # type is ICommonMetadata
+        source = self.source('Deutschland')
+        self.assertEqual(
+            ['Datenschutz', 'Integration', 'Joschka Fisher', 'Meinung'], sorted(list(source))
+        )
+
+        # Objects that don't provide the interface still work somewhat
+        self.assertEqual('Meinung', self.source.factory.getTitle(object(), 'Meinung'))
+
+
 class PrintRessortTest(zeit.cms.testing.ZeitCmsTestCase):
     def test_source_has_title(self):
         source = zeit.cms.content.sources.PRINT_RESSORT_SOURCE
@@ -126,6 +189,13 @@ class PrintRessortTest(zeit.cms.testing.ZeitCmsTestCase):
 
 
 class SerieSourceTest(zeit.cms.testing.ZeitCmsTestCase):
+    def test_returns_series_objects(self):
+        source = zeit.cms.content.sources.SerieSource()(None)
+        items = sorted(list(source), key=lambda x: x.serienname)
+        serie = items[0]
+        self.assertEqual('Autotest', serie.title)
+        self.assertEqual('zeitmagazin-autotest', serie.url)
+
     def test_does_not_break_on_nonexistent_values(self):
         source = zeit.cms.content.sources.SerieSource(None)
         context = None
