@@ -68,9 +68,10 @@ class Add(zeit.cms.browser.form.AddForm, zeit.cms.browser.form.CharlimitMixin):
             self.form_fields = self.form_fields.omit('breaking_news_image')
 
         GET = self.request.form
-        GET['form.channels.0..combination_00'] = GET.get('form.ressort')
-        GET['form.channels.0..combination_01'] = GET.get('form.sub_ressort')
-        GET['form.channels.count'] = '1'
+        if self.request.method == 'GET':
+            GET['form.channels.0..combination_00'] = GET.get('form.ressort')
+            GET['form.channels.0..combination_01'] = GET.get('form.sub_ressort')
+            GET['form.channels.count'] = '1'
         super().setUpWidgets(*args, **kw)
         self.set_charlimit('title')
         self.widgets['title'].cssClass = 'breakingnews-title'
