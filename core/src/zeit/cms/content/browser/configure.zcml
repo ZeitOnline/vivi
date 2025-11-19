@@ -63,6 +63,15 @@
     permission="zope.Public"
     />
 
+  <adapter
+    for="zeit.cms.content.field.PermissiveChoice
+         zeit.cms.content.sources.IPermissiveSource
+         zope.publisher.interfaces.browser.IBrowserRequest"
+    provides="zope.formlib.interfaces.ISimpleInputWidget"
+    factory=".widget.PermissiveDropdownWidget"
+    permission="zope.Public"
+    />
+
   <!-- Metadata preview for ICommonMetadata -->
 
   <browser:page

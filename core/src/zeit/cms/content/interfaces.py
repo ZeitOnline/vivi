@@ -81,7 +81,7 @@ class ICommonMetadata(zope.interface.Interface):
 
     page = zope.schema.Int(title=_('Page'), required=False)
 
-    ressort = zope.schema.Choice(
+    ressort = zeit.cms.content.field.PermissiveChoice(
         title=_('Ressort'), source=zeit.cms.content.sources.RessortSource()
     )
 

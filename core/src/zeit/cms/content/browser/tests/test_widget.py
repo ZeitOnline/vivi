@@ -50,3 +50,19 @@ class XMLSourceEditWidgetTest(zeit.cms.testing.ZeitCmsTestCase):
         self.assertIn(
             '<div class="pygments"><pre><span></span><span class="nt">&lt;a&gt;</span>', widget()
         )
+
+
+class PermissiveDropdownTest(zeit.cms.testing.ZeitCmsBrowserTestCase):
+    def test_displays_value_even_if_not_present_in_source(self):
+        b = self.browser
+        b.open('/repository/testcontent/@@checkout')
+        self.content = zeit.cms.interfaces.ICMSWCContent('http://xml.zeit.de/testcontent')
+        self.content.title = 'required title'
+        self.content.ressort = 'Nonexistent'
+        b.reload()
+
+        self.assertEqual(['Obsolete value Nonexistent'], b.getControl('Ressort').displayValue)
+
+        b.getControl('Apply').click()
+        self.assertEllipsis('...Updated on...', b.contents)
+        self.assertEqual('Nonexistent', self.content.ressort)

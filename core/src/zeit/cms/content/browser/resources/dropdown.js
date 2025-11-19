@@ -125,6 +125,7 @@ zeit.cms.configure_channel_dropdowns = function(
  */
 zeit.cms.style_dropdowns = function(container) {
     jQuery('.required option[value = ""]', container).parent().css('color', 'red');
+    jQuery('option.unknown', container).parent().css('color', 'darkgoldenrod');
 };
 
 

@@ -1,5 +1,6 @@
 # coding: utf-8
 import json
+import urllib.parse
 
 import zope.browser.interfaces
 import zope.component
@@ -70,16 +71,14 @@ class SourceAPI(zeit.cms.testing.ZeitCmsBrowserTestCase):
 class SubnavigationTest(zeit.cms.testing.ZeitCmsBrowserTestCase):
     def test_unknown_value_returns_empty_list(self):
         b = self.browser
-        b.open('/repository/@@subnavigationupdater.json?parent_token=nonexistent')
+        token = self._get_token('nonexistent')
+        b.open(f'/repository/@@subnavigationupdater.json?parent_token={token}')
         self.assertEqual([], json.loads(b.contents))
 
     def test_returns_child_values_for_parent(self):
-        source = zeit.cms.content.interfaces.ICommonMetadata['ressort'].source(None)
-        request = zope.publisher.browser.TestRequest()
-        terms = zope.component.getMultiAdapter((source, request), zope.browser.interfaces.ITerms)
-        parent = terms.getTerm('Deutschland').token
         b = self.browser
-        b.open(f'/repository/@@subnavigationupdater.json?parent_token={parent}')
+        token = self._get_token('Deutschland')
+        b.open(f'/repository/@@subnavigationupdater.json?parent_token={token}')
 
         data = json.loads(b.contents)
         self.assertEqual(
@@ -87,3 +86,11 @@ class SubnavigationTest(zeit.cms.testing.ZeitCmsBrowserTestCase):
         )
 
         self.assertEqual('public;max-age=3600', b.headers['Cache-Control'])
+
+    @staticmethod
+    def _get_token(value):
+        source = zeit.cms.content.interfaces.ICommonMetadata['ressort'].source(None)
+        request = zope.publisher.browser.TestRequest()
+        terms = zope.component.getMultiAdapter((source, request), zope.browser.interfaces.ITerms)
+        token = terms.getTerm(value).token
+        return urllib.parse.quote(token)
