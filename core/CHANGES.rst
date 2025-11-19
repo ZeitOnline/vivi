@@ -3,6 +3,16 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.229.0 (2025-11-19)
+--------------------
+
+- WCM-1068: correctly set image for push notification
+
+- WCM-1196: communicate with publisher via ingress
+
+- WCM-1201: Trace hdok requests manually so we can record their results more accurately
+
+
 7.228.0 (2025-11-18)
 --------------------
 
