@@ -61,7 +61,7 @@ class ImageGroupTest(zeit.content.image.testing.FunctionalTestCase):
         """
         image = self.traverse('master-image.jpg')
         with self.assertRaises(AttributeError):
-            image.variant_source
+            image.variant_source  # noqa: B018
 
     def test_getitem_uses_primary_master_image_if_no_viewport_was_given(self):
         image = self.traverse('square')

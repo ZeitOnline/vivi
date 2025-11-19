@@ -1,3 +1,4 @@
+# ruff: noqa: B018 we use useless expressions just to warm up the cache
 from contextlib import contextmanager
 from functools import partial
 from io import BytesIO
