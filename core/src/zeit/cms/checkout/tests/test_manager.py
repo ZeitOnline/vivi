@@ -27,7 +27,7 @@ class IContent(zeit.cms.interfaces.ICMSContent):
 
 @zope.interface.implementer(IContent, zope.annotation.interfaces.IAttributeAnnotatable)
 class Content:
-    uniqueId = 'testcontent://'
+    uniqueId = 'http://xml.zeit.de/testcontent'
     __name__ = 'karlheinz'
 
 
