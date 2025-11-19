@@ -12,7 +12,7 @@ select = [
     "E", # pycodestyle
     "F", # Pyflakes
     # "UP", # pyupgrade
-    # "B", # flake8-bugbear
+    "B", # flake8-bugbear
     # "SIM", # flake8-simplify
     "I", # isort
 ]
@@ -29,6 +29,8 @@ ignore = [
     "G",    # flake8-logging-format
     "Q000", # bad-quotes-inline-string
     "Q001", # bad-quotes-multiline-string
+    "B017", # blind exception
+    "B904", # raise exception inside exception
 ]
 
 # Allow fix for all enabled rules (when `--fix`) is provided.
