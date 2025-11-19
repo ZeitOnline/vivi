@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.230.0 (2025-11-19)
+--------------------
+
+- ENG-85: Add bookmarks to 3rd party retract
+
+
 7.229.0 (2025-11-19)
 --------------------
 
