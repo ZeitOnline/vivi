@@ -68,10 +68,28 @@ class Add(zeit.cms.browser.form.AddForm, zeit.cms.browser.form.CharlimitMixin):
             self.form_fields = self.form_fields.omit('breaking_news_image')
 
         GET = self.request.form
-        if self.request.method == 'GET':
-            GET['form.channels.0..combination_00'] = GET.get('form.ressort')
+        if self.request.method == 'GET' and 'form.ressort' in GET:
+            # ressort uses a different term/token implementation
+            source = zeit.content.article.interfaces.IBreakingNews['ressort'].source(self.context)
+            terms = zope.component.getMultiAdapter(
+                (source, self.request), zope.browser.interfaces.ITerms
+            )
+            ressort = terms.getValue(GET.get('form.ressort'))
+            source = (
+                zeit.content.article.interfaces.IBreakingNews['channels']
+                .value_type.fields[0]
+                .source(self.context)
+            )
+            terms = zope.component.getMultiAdapter(
+                (source, self.request), zope.browser.interfaces.ITerms
+            )
+            # We assume the configuration always contains a channel per ressort
+            GET['form.channels.0..combination_00'] = terms.getTerm(ressort).token
+            # subchannel and subressort currently use the same token implementation,
+            # so we can simply copy over the token.
             GET['form.channels.0..combination_01'] = GET.get('form.sub_ressort')
             GET['form.channels.count'] = '1'
+
         super().setUpWidgets(*args, **kw)
         self.set_charlimit('title')
         self.widgets['title'].cssClass = 'breakingnews-title'
