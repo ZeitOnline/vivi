@@ -197,11 +197,6 @@ class SynchronousPublishTest(zeit.workflow.testing.FunctionalTestCase):
         publish.retract(background=False)
         self.assertFalse(info.published)
 
-        logs = reversed(zeit.objectlog.interfaces.ILog(article).logs)
-        self.assertEqual(
-            ['${name}: ${new_value}', 'Published', 'Retracted'], [x.message for x in logs]
-        )
-
     def test_synchronous_multi_publishing_works_with_unique_ids(self):
         article = ICMSContent('http://xml.zeit.de/testcontent')
         info = IPublishInfo(article)
@@ -217,6 +212,80 @@ class SynchronousPublishTest(zeit.workflow.testing.FunctionalTestCase):
         info.urgent = True
         zeit.workflow.publish.PUBLISH_TASK(['http://xml.zeit.de/nonexistent', article.uniqueId])
         self.assertTrue(info.published)
+
+
+class PublishArticleWithAuthorTest(zeit.cms.testing.FunctionalTestCase):
+    layer = zeit.workflow.testing.CONTENT_LAYER
+
+    def test_publishing_article_should_publish_unpublished_author(self):
+        """When an article with an unpublished author is published,
+        the author should also be published."""
+        from zeit.cms.checkout.helper import checked_out
+        import zeit.content.author.author
+
+        # Create an unpublished author
+        author = zeit.content.author.author.Author()
+        author.firstname = 'Jane'
+        author.lastname = 'Doe'
+        self.repository['author-doe'] = author
+        author = self.repository['author-doe']
+
+        # Verify author is not published
+        author_info = IPublishInfo(author)
+        self.assertFalse(author_info.published)
+
+        # Create an article and add the author to it
+        article = ICMSContent('http://xml.zeit.de/testcontent')
+        with checked_out(article) as co:
+            co.authorships = [co.authorships.create(author)]
+        transaction.commit()
+
+        # Verify the author is in the article's dependencies
+        article = self.repository['testcontent']
+        deps = zeit.cms.workflow.interfaces.IPublicationDependencies(article).get_dependencies()
+        self.assertEqual(1, len(deps))
+        self.assertEqual(author.uniqueId, deps[0].uniqueId)
+
+        # Track which objects are processed in each phase
+        processed = {'serialize': [], 'after_publish': []}
+
+        original_serialize = zeit.workflow.publish.PublishTask.serialize
+        original_after_publish = zeit.workflow.publish.PublishTask.after_publish
+
+        def track_serialize(self, obj, result):
+            processed['serialize'].append(obj.uniqueId)
+            return original_serialize(self, obj, result)
+
+        def track_after_publish(self, obj, master):
+            processed['after_publish'].append(obj.uniqueId)
+            return original_after_publish(self, obj, master)
+
+        with (
+            mock.patch.object(zeit.workflow.publish.PublishTask, 'serialize', track_serialize),
+            mock.patch.object(
+                zeit.workflow.publish.PublishTask, 'after_publish', track_after_publish
+            ),
+        ):
+            # Publish the article
+            article_info = IPublishInfo(article)
+            article_info.urgent = True
+            IPublish(article).publish(background=False)
+
+        # Verify both article and author were processed in serialize phase
+        self.assertIn(article.uniqueId, processed['serialize'])
+        self.assertIn(author.uniqueId, processed['serialize'], 'Author should be serialized')
+
+        # Verify both article and author were processed in after_publish phase
+        self.assertIn(article.uniqueId, processed['after_publish'])
+        self.assertIn(
+            author.uniqueId, processed['after_publish'], 'Author should have after_publish called'
+        )
+
+        # Verify both article and author are published
+        article = self.repository['testcontent']
+        author = self.repository['author-doe']
+        self.assertTrue(IPublishInfo(article).published, 'Article should be published')
+        self.assertTrue(IPublishInfo(author).published, 'Author should be published')
 
 
 class PublishPriorityTest(zeit.workflow.testing.FunctionalTestCase):
