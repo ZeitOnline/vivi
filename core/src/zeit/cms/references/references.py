@@ -17,7 +17,7 @@ def update_references(context, event):
 
 def extract(context):
     result = []
-    for name, extract in sorted(
+    for _, extract in sorted(
         zope.component.getAdapters((context,), zeit.cms.references.interfaces.IExtractReferences)
     ):
         result.extend(extract())
