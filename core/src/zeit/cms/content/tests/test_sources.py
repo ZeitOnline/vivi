@@ -197,7 +197,7 @@ class SerieSourceTest(zeit.cms.testing.ZeitCmsTestCase):
         self.assertEqual('zeitmagazin-autotest', serie.url)
 
     def test_does_not_break_on_nonexistent_values(self):
-        source = zeit.cms.content.sources.SerieSource(None)
+        source = zeit.cms.content.sources.SerieSource()
         context = None
         self.assertEqual(None, source.factory.getTitle(context, None))
         self.assertEqual(None, source.factory.getToken(context, None))
