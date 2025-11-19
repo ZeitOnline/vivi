@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Fri Nov 14 15:02:34 2025\n"
+"POT-Creation-Date: Wed Nov 19 10:55:57 2025\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -579,6 +579,10 @@ msgstr ""
 
 #: zeit/cms/content/browser/typechange.pt:38
 msgid "Type changed. Loading ..."
+msgstr ""
+
+#: zeit/cms/content/browser/widget.py:136
+msgid "Obsolete value ${value}"
 msgstr ""
 
 #: zeit/cms/content/interfaces.py:48
