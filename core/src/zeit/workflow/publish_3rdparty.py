@@ -552,7 +552,7 @@ class Followings(grok.Adapter, IgnoreMixin):
 
 
 @grok.implementer(zeit.workflow.interfaces.IPublisherData)
-class Bookmarks(grok.Adapter, IgnoreMixin):
+class Bookmarks(grok.Adapter):
     grok.context(zeit.cms.interfaces.ICMSContent)
     grok.name('bookmarks')
 
