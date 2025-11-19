@@ -163,7 +163,7 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
 
     def items(self):
         """Return the items of the mapping object."""
-        return list(zip(list(self.keys()), list(self.values())))
+        return list(zip(list(self.keys()), list(self.values()), strict=False))
 
     def __len__(self):
         if self._image_folder is None:

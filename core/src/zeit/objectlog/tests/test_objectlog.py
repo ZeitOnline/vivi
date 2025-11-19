@@ -61,7 +61,7 @@ class ObjectLog(zeit.objectlog.testing.FunctionalTestCase):
         log.move('http://xml.zeit.de/2025/testcontent', content2)
         changed_log = list(zeit.objectlog.interfaces.ILog(content2).get_log())
         self.assertEqual(len(original_log), len(changed_log))
-        for old, copied in zip(original_log, changed_log):
+        for old, copied in zip(original_log, changed_log, strict=False):
             self.assertEqual(old.message, copied.message)
             self.assertEqual(old.time, copied.time)
             self.assertEqual(old.uniqueId, copied.uniqueId)

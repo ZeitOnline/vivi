@@ -38,8 +38,8 @@ class BlobWidget(zope.formlib.textwidgets.FileWidget):
         if input is None or input == '':
             return self.context.missing_value
         try:
-            input.seek
-            input.read
+            input.seek  # noqa: B018
+            input.read  # noqa: B018
         except AttributeError as e:
             raise zope.formlib.interfaces.ConversionError(_('Form input is not a file object'), e)
         else:

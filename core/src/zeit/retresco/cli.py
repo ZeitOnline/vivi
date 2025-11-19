@@ -56,8 +56,6 @@ def delete_content_from_tms_indexes():
                 errors.append((f'tms unpublishing/deleting: {e}', uniqueId))  # noqa
             except Exception as e:
                 errors.append((f'Error: {e}', uniqueId))
-            finally:
-                continue
 
     if errors:
         current_time = pendulum.now('UTC').strftime('%Y%m%d%H%M%S')

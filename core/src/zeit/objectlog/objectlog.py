@@ -33,7 +33,7 @@ class ObjectLog(persistent.Persistent):
         for key in list(object_log):
             value = object_log[key]
             try:
-                value.message
+                value.message  # noqa: B018
             except ZODB.POSException.POSKeyError:
                 logger.warning(
                     'ZODB.POSException.POSKeyError, removing lost key %s for %s',

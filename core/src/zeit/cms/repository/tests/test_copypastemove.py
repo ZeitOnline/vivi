@@ -50,7 +50,7 @@ class MoveContentBaseTest(zeit.cms.testing.ZeitCmsTestCase):
         changed = self.repository['changed']
         changed_log = list(zeit.objectlog.interfaces.ILog(changed).get_log())
         self.assertEqual(len(original_log), len(changed_log))
-        for old, copied in zip(original_log, changed_log):
+        for old, copied in zip(original_log, changed_log, strict=False):
             self.assertEqual(old.message, copied.message)
             self.assertEqual(old.time, copied.time)
 
@@ -68,6 +68,6 @@ class MoveContentBaseTest(zeit.cms.testing.ZeitCmsTestCase):
         changed = self.repository['folder']['changed']
         changed_log = list(zeit.objectlog.interfaces.ILog(changed).get_log())
         self.assertEqual(len(original_log), len(changed_log))
-        for old, copied in zip(original_log, changed_log):
+        for old, copied in zip(original_log, changed_log, strict=False):
             self.assertEqual(old.message, copied.message)
             self.assertEqual(old.time, copied.time)

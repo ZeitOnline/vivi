@@ -85,7 +85,7 @@ def xml_tree_equal(a, b):
     if len(a_children) != len(b_children):
         return False
 
-    for a_child, b_child in zip(a_children, b_children):
+    for a_child, b_child in zip(a_children, b_children, strict=False):
         if not xml_tree_equal(a_child, b_child):
             return False
 

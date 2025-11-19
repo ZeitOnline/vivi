@@ -306,7 +306,7 @@ def determine_accent_color(pil):
     color_populations = (pop for pop, _ in quantized.getcolors(10))
     colors = itertools.batched(palette, 3, strict=True)
     colors = (rgb_to_hls(r / 255, g / 255, b / 255) for r, g, b in colors)
-    colors = sorted(zip(colors, color_populations), key=lambda x: -x[1])
+    colors = sorted(zip(colors, color_populations, strict=False), key=lambda x: -x[1])
 
     rgb = None
     light = 0
