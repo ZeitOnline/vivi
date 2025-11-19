@@ -549,3 +549,15 @@ class Followings(grok.Adapter, IgnoreMixin):
 
     def retract_json(self):
         return {}
+
+
+@grok.implementer(zeit.workflow.interfaces.IPublisherData)
+class Bookmarks(grok.Adapter):
+    grok.context(zeit.cms.interfaces.ICMSContent)
+    grok.name('bookmarks')
+
+    def publish_json(self):
+        return None
+
+    def retract_json(self):
+        return {}
