@@ -50,6 +50,16 @@
       ]
     },
     {
+        "groupName": "All minor docker changes",
+        "matchManagers": [
+            "dockerfile"
+        ],
+        "matchUpdateTypes": [
+            "minor",
+            "patch"
+        ]
+    },
+    {
       "groupName": "All pre-commit changes",
       "matchManagers": [
         "pre-commit"
