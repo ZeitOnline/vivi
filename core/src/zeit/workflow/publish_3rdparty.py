@@ -26,6 +26,7 @@ import zeit.content.video.interfaces
 import zeit.content.volume.interfaces
 import zeit.objectlog.interfaces
 import zeit.retresco.interfaces
+import zeit.wochenende.interfaces
 import zeit.workflow.interfaces
 
 
@@ -551,46 +552,55 @@ class ArticleFollowings(grok.Adapter, IgnoreMixin):
         return {}
 
 
+class IFollowingParent(zope.interface.Interface):
+    """Marker interface that provides parent uuids"""
+
+    def get_parent_uuids(self):
+        return []
+
+
+@grok.implementer(IFollowingParent)
+@grok.adapter(zeit.content.volume.interfaces.IVolume)
+class VolumeFollowingParent:
+    def __init__(self, context):
+        self.context = context
+
+    def get_parent_uuids(self):
+        parent = zeit.cms.interfaces.ICMSContent(f'{zeit.cms.interfaces.ID_NAMESPACE}index')
+        return [zeit.cms.content.interfaces.IUUID(parent).shortened]
+
+
+@grok.implementer(IFollowingParent)
+@grok.adapter(zeit.wochenende.interfaces.IZWEContent)
+class WochenendeFollowingParent:
+    def __init__(self, context):
+        self.context = context
+
+    def get_parent_uuids(self):
+        parent = zeit.cms.interfaces.ICMSContent(
+            f'{zeit.cms.interfaces.ID_NAMESPACE}wochenende/index'
+        )
+        return [zeit.cms.content.interfaces.IUUID(parent).shortened]
+
+
 @grok.implementer(zeit.workflow.interfaces.IPublisherData)
 class CenterPageFollowings(grok.Adapter, IgnoreMixin):
     grok.context(zeit.content.cp.interfaces.ICenterPage)
     grok.name('followings')
 
-    def get_volume_unique_id(self):
-        if zeit.wochenende.interfaces.IZWEContent.providedBy(self.context):
-            return f'{zeit.cms.interfaces.ID_NAMESPACE}wochenende/index'
-
-        unique_id = getattr(self.context, 'uniqueId', '')
-        ressort = getattr(self.context, 'ressort', '')
-        year = getattr(self.context, 'year', None)
-        type_ = getattr(self.context, 'type', None)
-        volume = getattr(self.context, 'volume', None)
-
-        if unique_id.endswith('/playlist') and ressort == 'Administratives':
-            return f'{unique_id.removesuffix("/playlist")[:-3]}/index'
-        elif type_ == 'volume' and volume is not None and year:
-            return f'{zeit.cms.interfaces.ID_NAMESPACE}index'
-
-        return None
-
-    def get_volume_overview_uuid(self):
-        unique_id = self.get_volume_unique_id()
-        if unique_id is None:
-            return None
-        content = zeit.cms.interfaces.ICMSContent(unique_id)
-        return zeit.cms.content.interfaces.IUUID(content).shortened
-
     def publish_json(self):
-        volume_uuid = self.get_volume_overview_uuid()
-        if volume_uuid is None:
+        parent = IFollowingParent(self.context, None)
+        if parent is None:
             return None
+
+        parent_uuids = parent.get_parent_uuids()
+        if len(parent_uuids) == 0:
+            return None
+
         created = zeit.cms.workflow.interfaces.IPublishInfo(
             self.context
         ).date_first_released.isoformat()
-        return {'parent_uuids': [volume_uuid], 'created': created}
-
-    def retract_json(self):
-        return {}
+        return {'parent_uuids': parent_uuids, 'created': created}
 
 
 @grok.implementer(zeit.workflow.interfaces.IPublisherData)
