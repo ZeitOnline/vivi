@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.231.0 (2025-11-20)
+--------------------
+
+- WCM-1170: remove toggle store_references
+
+
 7.230.0 (2025-11-19)
 --------------------
 
