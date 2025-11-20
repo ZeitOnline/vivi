@@ -759,6 +759,7 @@ class FollowingsPayloadTest(zeit.workflow.testing.FunctionalTestCase):
         self.repository['2025']['10'] = zeit.cms.repository.folder.Folder()
         cp = self.repository['2025']['10']['index'] = zeit.content.cp.centerpage.CenterPage()
         self.repository['index'] = zeit.content.cp.centerpage.CenterPage()
+        zope.interface.alsoProvides(cp, zeit.content.volume.interfaces.IVolume)
 
         with checked_out(cp):
             cp.year = 2025
