@@ -12,7 +12,7 @@ class XMLPickleException(zeit.cms.testing.ZeitCmsTestCase):
             co.xml.append(lxml.etree.fromstring('<em eiscafé="foo"/>'))
             transaction.commit()
             co._p_invalidate()  # evict from ZODB cache and unpickle afresh
-            co.uniqueId  # noqa: B018
+            _ = co.uniqueId
             self.assertEllipsis(
                 '<error>...value for attribute eiscaf...</error>',
                 zeit.cms.testing.xmltotext(co.xml),

@@ -69,7 +69,7 @@ class CachingTest(zeit.connector.testing.FilesystemConnectorTest):
         self.assertIn('http://xml.zeit.de/testcontent', self.connector.property_cache)
 
     def test_caches_body(self):
-        self.connector['http://xml.zeit.de/testcontent'].data  # noqa: B018
+        _ = self.connector['http://xml.zeit.de/testcontent'].data
         self.assertIn('http://xml.zeit.de/testcontent', self.connector.body_cache)
 
     def test_caches_childnames(self):

@@ -195,7 +195,7 @@ class Breadcrumbs(zeit.cms.testing.ZeitCmsTestCase):
         self.repository['foo'] = content
         view = BreadcrumbsView(content)
         view.get_breadcrumbs_from_path = mock.Mock()
-        view.get_breadcrumbs  # noqa: B018
+        _ = view.get_breadcrumbs
         self.assertTrue(view.get_breadcrumbs_from_path.called)
 
     def test_missing_option_should_use_from_path_only(self):
@@ -206,7 +206,7 @@ class Breadcrumbs(zeit.cms.testing.ZeitCmsTestCase):
         self.repository['foo'] = content
         view = BreadcrumbsView(content)
         view.get_breadcrumbs_from_path = mock.Mock()
-        view.get_breadcrumbs  # noqa: B018
+        _ = view.get_breadcrumbs
         self.assertTrue(view.get_breadcrumbs_from_path.called)
 
     def test_missing_config_should_use_from_path_only(self):
@@ -218,7 +218,7 @@ class Breadcrumbs(zeit.cms.testing.ZeitCmsTestCase):
         self.repository['foo'] = content
         view = BreadcrumbsView(content)
         view.get_breadcrumbs_from_path = mock.Mock()
-        view.get_breadcrumbs  # noqa: B018
+        _ = view.get_breadcrumbs
         self.assertTrue(view.get_breadcrumbs_from_path.called)
 
     def test_deconfigured_no_icommonmetadata_in_wc_lists_wc_path(self):

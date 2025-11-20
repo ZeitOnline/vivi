@@ -38,7 +38,7 @@ class HeaderAreaTest(zeit.content.article.testing.FunctionalTestCase):
         with checked_out(article, temporary=False) as co:
             co = zope.security.proxy.ProxyFactory(co)
             with self.assertNothingRaised():
-                co.header  # noqa: B018
+                _ = co.header
 
     def test_contains_at_most_one_module(self):
         article = Article()
