@@ -145,7 +145,7 @@ class ValidateCheckinTest(zeit.cms.testing.ZeitCmsTestCase):
 
     def test_veto_message_is_available_on_manager(self):
         manager = ICheckinManager(self.checked_out)
-        manager.canCheckin
+        _ = manager.canCheckin
         self.assertEqual('provoked veto', manager.last_validation_error)
 
     def test_checkin_with_veto_should_raise(self):

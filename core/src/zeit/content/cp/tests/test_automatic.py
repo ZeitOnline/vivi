@@ -790,7 +790,7 @@ class AutomaticRSSTest(zeit.content.cp.testing.FunctionalTestCase):
         items = feed_xml.xpath('/rss/channel/item')
         item = zeit.content.cp.blocks.rss.RSSLink(self.feed, items[0])
         with self.assertRaises(AttributeError):
-            item.foo
+            _ = item.foo
 
     def test_rss_content_query_creates_teasers_from_rss_feed(self):
         area = create_automatic_area(self.cp, count=3, type='rss-feed')

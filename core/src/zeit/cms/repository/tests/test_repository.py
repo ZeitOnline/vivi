@@ -167,7 +167,7 @@ class RepositoryTest(zeit.cms.testing.ZeitCmsTestCase):
         self.repository['kultur']['kunst'] = Folder()
         transaction.commit()
         with self.assertRaises(AttributeError):
-            self.repository['kultur']._v_local_unique_map
+            _ = self.repository['kultur']._v_local_unique_map
 
         self.repository['kultur'].keys()  # Cause cache to be populated
         self.assertEqual(
@@ -180,7 +180,7 @@ class RepositoryTest(zeit.cms.testing.ZeitCmsTestCase):
         transaction.abort()
         self.assertEqual({}, self.repository._content)
         with self.assertRaises(AttributeError):
-            self.repository['kultur']._v_local_unique_map
+            _ = self.repository['kultur']._v_local_unique_map
 
 
 class ContentBaseTest(zeit.cms.testing.ZeitCmsTestCase):

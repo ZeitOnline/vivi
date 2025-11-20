@@ -587,7 +587,7 @@ class ImageUploadBrowserTest(zeit.content.image.testing.BrowserTestCase):
         )
         b.getForm(name='imageupload').submit()
         b.getForm(name='edit-images')
-        b.getControl(name='target_name[0]').value == 'testcontent-bild'
+        self.assertEqual(b.getControl(name='target_name[0]').value, 'testcontent-bild')
         b.getForm(name='edit-images').getControl(name='upload_and_open').click()
 
         self.assertEndsWith('/repository/testcontent-bild/@@variant.html', b.url)

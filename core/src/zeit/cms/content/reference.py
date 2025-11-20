@@ -512,7 +512,7 @@ class OverridableProperty:
         elif original:
             return getattr(original, self.field.__name__)
         else:
-            self.field.missing_value
+            return self.field.missing_value
 
     def __set__(self, inst, value):
         setattr(inst, '_%s_local' % self.field.__name__, value)

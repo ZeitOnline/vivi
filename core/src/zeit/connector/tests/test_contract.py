@@ -583,7 +583,7 @@ class ContractCache:
     @unittest.skip('Waiting for WCM-10')
     def test_setitem_removes_body_cache(self):
         res = self.add_resource('foo', body=b'foo')
-        self.connector[res.id].data
+        _ = self.connector[res.id].data
         self.assertTrue(self.has_body_cache(res.id))
         self.connector.add(res)
         self.assertFalse(self.has_body_cache(res.id))
@@ -610,7 +610,7 @@ class ContractCache:
 
     def test_resource_read_populates_body_cache(self):
         res = self.add_resource('foo', body=b'foo')
-        self.connector[res.id].data
+        _ = self.connector[res.id].data
         self.assertEqual(b'foo', self.connector.body_cache[res.id].read())
 
     def test_listCollection_populates_child_name_cache(self):
@@ -669,7 +669,7 @@ class ContractCache:
 
     def test_delitem_removes_body_cache(self):
         res = self.add_resource('foo', body=b'foo')
-        self.connector[res.id].data
+        _ = self.connector[res.id].data
         self.assertTrue(self.has_body_cache(res.id))
         del self.connector[res.id]
         self.assertFalse(self.has_body_cache(res.id))
@@ -730,7 +730,7 @@ class ContractCache:
 
     def test_move_removes_body_cache(self):
         res = self.add_resource('foo', body=b'foo')
-        self.connector[res.id].data
+        _ = self.connector[res.id].data
         self.assertTrue(self.has_body_cache(res.id))
         self.connector.move(res.id, 'http://xml.zeit.de/testing/bar')
         self.assertFalse(self.has_body_cache(res.id))
@@ -777,7 +777,7 @@ class ContractCache:
     @unittest.skip('Waiting for WCM-10')
     def test_invalidate_removes_body_cache(self):
         res = self.add_resource('foo', body=b'foo')
-        self.connector[res.id].data
+        _ = self.connector[res.id].data
         self.assertTrue(self.has_body_cache(res.id))
         self.change_body_in_storage(res.id, b'bar')
         transaction.commit()
@@ -789,8 +789,8 @@ class ContractCache:
 
         def get(uniqueid):
             res = self.connector[uniqueid]
-            res.properties
-            res.data
+            _ = res.properties
+            _ = res.data
 
         get(res.id)
         transaction.commit()

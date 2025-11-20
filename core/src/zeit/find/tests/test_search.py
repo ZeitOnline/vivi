@@ -38,6 +38,3 @@ class QueryTest(FunctionalTestCase):
         elastic = getUtility(ICMSSearch)
         result = elastic.search(zeit.find.search.query('Obama'))
         self.assertEqual(0, result.hits)
-
-    def test_suggest(self):
-        NotImplemented

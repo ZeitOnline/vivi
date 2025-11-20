@@ -138,7 +138,7 @@ class Container(ContentBase):
 
     def items(self):
         """See interface `IReadContainer`"""
-        return list(zip(list(self.keys()), list(self.values())))
+        return list(zip(list(self.keys()), list(self.values()), strict=False))
 
     def __contains__(self, key):
         """See interface `IReadContainer`"""

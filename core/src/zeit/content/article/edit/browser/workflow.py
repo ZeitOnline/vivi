@@ -76,7 +76,7 @@ class CheckinErrors:
     @cachedproperty
     def checkin_errors(self):
         manager = zeit.cms.checkout.interfaces.ICheckoutManager(self.context)
-        manager.canCheckin  # cause last_validation_error to be populated
+        _ = manager.canCheckin  # cause last_validation_error to be populated
         errors = manager.last_validation_error
         if (
             not errors

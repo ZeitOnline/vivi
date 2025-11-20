@@ -363,7 +363,7 @@ class Connector:
             [x.id for x in to_delete if x.binary_body],
             lambda id: self.bucket.delete_blob(id),
         )
-        for id, response in zip(to_delete, responses):
+        for id, response in zip(to_delete, responses, strict=False):
             if 200 <= response.status_code < 300:
                 continue
             if response.status_code == 404:

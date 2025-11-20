@@ -24,7 +24,7 @@ WSGI_LAYER = zeit.cms.testing.WSGILayer(ZOPE_LAYER)
 
 def create_dynamic_folder(
     package='zeit.content.dynamicfolder:tests/fixtures/dynamic-centerpages/',
-    files=['config.xml', 'tags.xml', 'template.xml'],
+    files=['config.xml', 'tags.xml', 'template.xml'],  # noqa: B006
 ):
     package, _, path = package.partition(':')
     repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)

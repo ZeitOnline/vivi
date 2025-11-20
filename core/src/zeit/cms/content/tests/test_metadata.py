@@ -9,7 +9,7 @@ import zeit.cms.testing
 class CommonMetadata(zeit.cms.testing.ZeitCmsTestCase):
     def test_class_is_not_polluted_by_property_for_loops(self):
         with self.assertRaises(AttributeError):
-            self.repository['testcontent'].prop
+            _ = self.repository['testcontent'].prop
 
 
 class ChannelCopying(zeit.cms.testing.ZeitCmsTestCase):
