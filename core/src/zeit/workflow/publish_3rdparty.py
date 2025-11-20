@@ -26,6 +26,7 @@ import zeit.content.video.interfaces
 import zeit.content.volume.interfaces
 import zeit.objectlog.interfaces
 import zeit.retresco.interfaces
+import zeit.wochenende.interfaces
 import zeit.workflow.interfaces
 
 
@@ -495,7 +496,7 @@ class VideoDataScience(DataScience):
 
 
 @grok.implementer(zeit.workflow.interfaces.IPublisherData)
-class Followings(grok.Adapter, IgnoreMixin):
+class ArticleFollowings(grok.Adapter, IgnoreMixin):
     grok.context(zeit.content.article.interfaces.IArticle)
     grok.name('followings')
 
@@ -549,6 +550,57 @@ class Followings(grok.Adapter, IgnoreMixin):
 
     def retract_json(self):
         return {}
+
+
+class IFollowingParent(zope.interface.Interface):
+    """Marker interface that provides parent uuids"""
+
+    def get_parent_uuids(self):
+        return []
+
+
+@grok.implementer(IFollowingParent)
+@grok.adapter(zeit.content.volume.interfaces.IVolume)
+class VolumeFollowingParent:
+    def __init__(self, context):
+        self.context = context
+
+    def get_parent_uuids(self):
+        parent = zeit.cms.interfaces.ICMSContent(f'{zeit.cms.interfaces.ID_NAMESPACE}index')
+        return [zeit.cms.content.interfaces.IUUID(parent).shortened]
+
+
+@grok.implementer(IFollowingParent)
+@grok.adapter(zeit.wochenende.interfaces.IZWEContent)
+class WochenendeFollowingParent:
+    def __init__(self, context):
+        self.context = context
+
+    def get_parent_uuids(self):
+        parent = zeit.cms.interfaces.ICMSContent(
+            f'{zeit.cms.interfaces.ID_NAMESPACE}wochenende/index'
+        )
+        return [zeit.cms.content.interfaces.IUUID(parent).shortened]
+
+
+@grok.implementer(zeit.workflow.interfaces.IPublisherData)
+class CenterPageFollowings(grok.Adapter, IgnoreMixin):
+    grok.context(zeit.content.cp.interfaces.ICenterPage)
+    grok.name('followings')
+
+    def publish_json(self):
+        parent = IFollowingParent(self.context, None)
+        if parent is None:
+            return None
+
+        parent_uuids = parent.get_parent_uuids()
+        if len(parent_uuids) == 0:
+            return None
+
+        created = zeit.cms.workflow.interfaces.IPublishInfo(
+            self.context
+        ).date_first_released.isoformat()
+        return {'parent_uuids': parent_uuids, 'created': created}
 
 
 @grok.implementer(zeit.workflow.interfaces.IPublisherData)
