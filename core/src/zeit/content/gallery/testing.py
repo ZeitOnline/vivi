@@ -12,6 +12,18 @@ import zeit.crop.testing
 import zeit.push.testing
 
 
+def create_fixture(repository):
+    repository['folder'] = Folder()
+    zeit.content.gallery.testing.add_image('folder', '01.jpg')
+    zeit.content.gallery.testing.add_image('folder', '02.jpg')
+    zeit.content.gallery.testing.add_image('folder', '03.jpg')
+    transaction.commit()
+    gallery = zeit.content.gallery.gallery.Gallery()
+    gallery.image_folder = repository['folder']
+    repository['gallery'] = gallery
+    transaction.commit()
+
+
 HERE = importlib.resources.files(__package__)
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
     {
@@ -24,32 +36,14 @@ ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER, features=['zeit.connector.
 _zope_layer = zeit.cms.testing.RawZopeLayer(ZCML_LAYER)
 
 
-class PushLayer(zeit.cms.testing.Layer):
-    def testSetUp(self):
-        with zeit.cms.testing.site(self['zodbApp']):
-            repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
-            zeit.push.testing.create_fixture(repository)
+ZOPE_LAYER = zeit.cms.testing.SQLIsolationSavepointLayer(_zope_layer, create_fixture)
 
-
-ZOPE_LAYER = PushLayer(_zope_layer)
 
 WSGI_LAYER = zeit.cms.testing.WSGILayer(ZOPE_LAYER)
 
 
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
     layer = ZOPE_LAYER
-
-    def setUp(self):
-        super().setUp()
-        self.repository['folder'] = Folder()
-        zeit.content.gallery.testing.add_image('folder', '01.jpg')
-        zeit.content.gallery.testing.add_image('folder', '02.jpg')
-        zeit.content.gallery.testing.add_image('folder', '03.jpg')
-        transaction.commit()
-        gallery = zeit.content.gallery.gallery.Gallery()
-        gallery.image_folder = self.repository['folder']
-        self.repository['gallery'] = gallery
-        transaction.commit()
 
 
 class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
