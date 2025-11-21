@@ -203,8 +203,6 @@ class ChoicePropertyWithIterableSource:
             if zeit.cms.content.interfaces.IDAVToken(possible_value) == value:
                 return possible_value
         return value
-        # XXX what to do here?
-        raise ValueError(value)
 
     def toProperty(self, value):
         return zeit.cms.content.interfaces.IDAVToken(value)
@@ -264,31 +262,6 @@ class ChoicePropertyWithObjectSource:
 
     def toProperty(self, value):
         return self.terms.getTerm(value).token
-
-
-@zope.component.adapter(
-    zope.schema.interfaces.IChoice,
-    zope.schema.interfaces.IIterableVocabulary,
-    zeit.connector.interfaces.IWebDAVReadProperties,
-    PropertyKey,
-)
-@zope.interface.implementer(zeit.cms.content.interfaces.IDAVPropertyConverter)
-class ChoicePropertyWithIterableVocabulary:
-    def __init__(self, context, vocabulary, properties, propertykey):
-        self.context = context
-        self.vocabulary = vocabulary
-
-    def fromProperty(self, value):
-        for term in self.vocabulary:
-            if term.token == value:
-                return term.value
-        raise ValueError(value)
-
-    def toProperty(self, value):
-        for term in self.vocabulary:
-            if term.value == value:
-                return term.token
-        raise ValueError(value)
 
 
 @zope.component.adapter(

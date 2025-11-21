@@ -1,3 +1,5 @@
+import urllib.parse
+
 from zope.browser.interfaces import ITerms
 import zope.component
 import zope.publisher.browser
@@ -31,7 +33,7 @@ class TestAdding(zeit.content.article.testing.BrowserTestCase):
         menu.displayValue = ['Article']
         url = menu.value[0]
         url = '{0}?form.ressort={1}&form.sub_ressort={2}'.format(
-            url, ressort_token, sub_ressort_token
+            url, urllib.parse.quote(ressort_token), sub_ressort_token
         )
         self.browser.open(url)
         article = self.get_article()
@@ -47,7 +49,7 @@ class TestAdding(zeit.content.article.testing.BrowserTestCase):
         menu = self.browser.getControl(name='add_menu')
         menu.displayValue = ['Article']
         url = menu.value[0]
-        url = '{0}?form.ressort={1}'.format(url, ressort_token)
+        url = '{0}?form.ressort={1}'.format(url, urllib.parse.quote(ressort_token))
         self.browser.open(url)
         article = self.get_article()
         self.assertEqual((('Deutschland', None),), article.channels)

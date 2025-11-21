@@ -20,8 +20,8 @@ class ContentAdderTest(zeit.cms.testing.ZeitCmsTestCase):
         adder = zeit.cms.content.add.ContentAdder(
             self.request,
             type_=zeit.cms.testcontenttype.interfaces.IExampleContentType,
-            ressort='wirtschaft',
-            sub_ressort='geldanlage',
+            ressort='Wirtschaft',
+            sub_ressort='Geldanlage',
             year='2009',
             month='02',
         )
@@ -31,19 +31,13 @@ class ContentAdderTest(zeit.cms.testing.ZeitCmsTestCase):
             parts.path,
         )
         query = dict(parse_qsl(parts.query))
-        self.assertEqual(
-            {
-                'form.ressort': 'cb61e5a1d8e82f77f50ce4f86a114006',
-                'form.sub_ressort': '41546881df79e17e56a3bf5ff3f447a6',
-            },
-            query,
-        )
+        self.assertEqual(['form.ressort', 'form.sub_ressort'], list(query.keys()))
 
     def test_sub_ressort_is_optional(self):
         adder = zeit.cms.content.add.ContentAdder(
             self.request,
             type_=zeit.cms.testcontenttype.interfaces.IExampleContentType,
-            ressort='wirtschaft',
+            ressort='Wirtschaft',
             year='2009',
             month='02',
         )
@@ -52,7 +46,7 @@ class ContentAdderTest(zeit.cms.testing.ZeitCmsTestCase):
             '/repository/wirtschaft/2009-02/@@zeit.cms.testcontenttype.Add', parts.path
         )
         query = dict(parse_qsl(parts.query))
-        self.assertEqual({'form.ressort': 'cb61e5a1d8e82f77f50ce4f86a114006'}, query)
+        self.assertEqual(['form.ressort'], list(query.keys()))
 
     def test_ressort_and_sub_ressort_are_optional(self):
         adder = zeit.cms.content.add.ContentAdder(

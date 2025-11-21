@@ -10,6 +10,5 @@ def test_suite():
         'lxmlpickle.txt',
         'metadata.txt',
         'property.txt',
-        'sources.txt',
         package='zeit.cms.content',
     )

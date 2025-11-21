@@ -145,6 +145,27 @@ class TestAdding(zeit.content.article.testing.BrowserTestCase):
         article = ICMSContent('http://xml.zeit.de/deutschland/meinung/2018-01/foo')
         self.assertEqual((('Deutschland', 'Meinung'),), article.channels)
 
+    def test_channel_can_be_changed(self):
+        request = zope.publisher.browser.TestRequest(
+            skin=zeit.cms.browser.interfaces.ICMSSkin,
+            environ={'SERVER_URL': 'http://localhost/++skin++vivi'},
+        )
+        adder = zeit.cms.content.add.ContentAdder(
+            request,
+            type_=zeit.content.article.interfaces.IBreakingNews,
+            ressort='Deutschland',
+            year='2018',
+            month='01',
+        )
+        b = self.browser
+        b.open(adder())
+        b.getControl('Title').value = 'Mytitle'
+        b.getControl('File name').value = 'foo'
+        b.getControl('Channel').displayValue = ['Deutschland']
+        b.getControl('Publish and push').click()
+        article = ICMSContent('http://xml.zeit.de/deutschland/2018-01/foo')
+        self.assertEqual((('Deutschland', None),), article.channels)
+
     def test_breaking_news_fallback_image_only_visible_with_toggle(self):
         from zeit.cms.content.sources import FEATURE_TOGGLES
 

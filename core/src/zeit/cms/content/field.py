@@ -83,6 +83,21 @@ class DurationField(zope.schema.Int):
     """A field containing a duration in seconds."""
 
 
+class PermissiveChoice(zope.schema.Choice):
+    """A choice that allows any values, to support still displaying and editing
+    obsolete or renamed values.
+
+    Works in concert with a zeit.cms.content.sources.PermissiveSource subclass.
+    (Using only a source that always returns True for contains is not enough,
+    since we still want to detect if the current value is not available.)"""
+
+    def _validate(self, value):
+        if self._init_field:
+            return
+        # Skip immediate baseclass: don't check if `value in self.source`
+        return super(zope.schema.Choice, self)._validate(value)
+
+
 EMPTY = object()
 
 

@@ -1,5 +1,6 @@
 from collections import defaultdict
 from functools import reduce
+import base64
 import logging
 import operator
 import os
@@ -289,7 +290,28 @@ class ContextualDictSource(zc.sourcefactory.contextual.BasicContextualSourceFact
         return self.values.get(value, value)
 
 
-class RessortSource(XMLSource):
+class IPermissiveSource(zope.schema.interfaces.ISource):
+    pass
+
+
+class PermissiveSource:
+    """Support for saving values that are not contained in the source,
+    works in concert with zeit.cms.content.field.PermissiveChoice."""
+
+    @zope.interface.implementer(IPermissiveSource)
+    class source_class(zc.sourcefactory.source.FactoredContextualSource):
+        pass
+
+    def getValue(self, context, source, token):
+        if not token:  # when value==field.missing_value, see zope.formlib.ItemsEditWidgetBase
+            raise KeyError("No value with token '%s'" % token)
+        return base64.b64decode(token).decode('utf-8')
+
+    def getToken(self, context, value):
+        return base64.b64encode(value.encode('utf-8'))
+
+
+class RessortSource(PermissiveSource, XMLSource):
     config_url = 'source-ressorts'
     default_filename = 'ressorts.xml'
     attribute = 'name'
@@ -307,7 +329,9 @@ class ParentChildSource(XMLSource):
 
     def getValues(self, context):
         parent_nodes = self._get_parent_nodes(context)
-        child_nodes = reduce(operator.add, [node.findall(self.child_tag) for node in parent_nodes])
+        child_nodes = reduce(
+            operator.add, [node.findall(self.child_tag) for node in parent_nodes], []
+        )
         result = {
             str(node.get(self.attribute)) for node in child_nodes if self.isAvailable(node, context)
         }
@@ -357,9 +381,6 @@ class ParentChildSource(XMLSource):
                 value=parent_value,
             )
         )
-        if not nodes:
-            return None
-        # XXX assert len(nodes) == 1
         return nodes
 
     def _get_parent_value(self, context):

@@ -124,10 +124,8 @@ zeit.cms.configure_channel_dropdowns = function(
  * 'attribute != value' comparison, we need to use JS for this.
  */
 zeit.cms.style_dropdowns = function(container) {
-    jQuery('.required option[value = ""]', container).parent().css(
-        'color', 'red');
-    jQuery('.required option[value = ""]', container).css('color', 'red');
-    jQuery('.required option[value != ""]', container).css('color', 'black');
+    jQuery('.required option[value = ""]', container).parent().css('color', 'red');
+    jQuery('option.unknown', container).parent().css('color', 'darkgoldenrod');
 };
 
 

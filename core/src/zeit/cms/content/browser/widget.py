@@ -9,11 +9,13 @@ import zope.app.pagetemplate
 import zope.browser.interfaces
 import zope.component
 import zope.formlib.interfaces
+import zope.formlib.source
 import zope.formlib.textwidgets
 import zope.formlib.widget
 import zope.formlib.widgets
 import zope.interface
 
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.interfaces
 import zeit.cms.content.sources
 
@@ -118,3 +120,26 @@ class SubNavigationUpdater(ParentChildDropdownUpdater):
 class ChannelUpdater(ParentChildDropdownUpdater):
     parent_source = zeit.cms.content.sources.ChannelSource()
     child_source = zeit.cms.content.sources.SubChannelSource()
+
+
+class PermissiveDropdownWidget(zope.formlib.source.SourceDropdownWidget):
+    def renderItemsWithValues(self, values):
+        result = super().renderItemsWithValues(values)
+        # copy&paste from superclass. Seems rather inconsistent that `values`
+        # contains "form value" when missing, but "field value" otherwise.
+        missing = self._toFormValue(self.context.missing_value)
+        if missing not in values and len(values) == 1 and values[0] not in self.vocabulary:
+            result.insert(
+                0,
+                self.renderSelectedItem(
+                    None,
+                    zope.i18n.translate(
+                        _('Obsolete value ${value}', mapping={'value': values[0]}),
+                        context=self.request,
+                    ),
+                    self.vocabulary.getTerm(values[0]).token,
+                    self.name,
+                    self.cssClass + ' unknown',
+                ),
+            )
+        return result
