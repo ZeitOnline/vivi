@@ -490,8 +490,8 @@ class PublishTask(PublishRetractTask):
                 logger.debug('serialize %s' % content.uniqueId)
                 with zeit.cms.tracing.use_span(
                     __name__,
-                    f'{self.mode} serialize',
-                    attributes={'app.uniqueid': content.uniqueId},
+                    'serialize',
+                    attributes={'app.uniqueid': content.uniqueId, 'app.mode': self.mode},
                 ):
                     self.serialize(content, to_publish)
             except Exception as e:
@@ -529,8 +529,8 @@ class PublishTask(PublishRetractTask):
                 logger.debug('unlock %s' % content.uniqueId)
                 with zeit.cms.tracing.use_span(
                     __name__,
-                    f'{self.mode} unlock',
-                    attributes={'app.uniqueid': content.uniqueId},
+                    'unlock',
+                    attributes={'app.uniqueid': content.uniqueId, 'app.mode': self.mode},
                 ):
                     self.unlock(content, initiator)
             except Exception as e:
@@ -623,8 +623,8 @@ class RetractTask(PublishRetractTask):
                 logger.debug('serialize %s' % content.uniqueId)
                 with zeit.cms.tracing.use_span(
                     __name__,
-                    f'{self.mode} serialize',
-                    attributes={'app.uniqueid': content.uniqueId},
+                    'serialize',
+                    attributes={'app.uniqueid': content.uniqueId, 'app.mode': self.mode},
                 ):
                     self.serialize(content, to_retract)
             except Exception as e:
@@ -664,8 +664,8 @@ class RetractTask(PublishRetractTask):
                 logger.debug('unlock %s' % content.uniqueId)
                 with zeit.cms.tracing.use_span(
                     __name__,
-                    f'{self.mode} unlock',
-                    attributes={'app.uniqueid': content.uniqueId},
+                    'unlock',
+                    attributes={'app.uniqueid': content.uniqueIdi, 'app.mode': self.mode},
                 ):
                     self.unlock(content, initiator)
             except Exception as e:
