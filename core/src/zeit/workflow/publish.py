@@ -214,6 +214,9 @@ class Worklist:
         self.all_content[uid] = new_content
 
     def __delitem__(self, uid):
+        """we only remove the content from the content that will be further processed,
+        but keep the overall list for reporting errors and such
+        """
         self.processable_content.discard(uid)
 
 
@@ -475,7 +478,7 @@ class PublishTask(PublishRetractTask):
         worklist = Worklist.build(trees)
         self._execute_phase(worklist, 'can_publish', self.can_publish)
         self._execute_phase(worklist, 'lock', self.lock)
-        locked_content = list(worklist.processable_content)
+        locked_content = list(worklist)
         # Persist locks as soon as possible, to prevent concurrent access.
         transaction.commit()
 
@@ -608,7 +611,7 @@ class RetractTask(PublishRetractTask):
         trees = {content: self.build_dependencies(content) for content in items}
         worklist = Worklist.build(trees)
         self._execute_phase(worklist, 'lock', self.lock)
-        locked_content = list(worklist.processable_content)
+        locked_content = list(worklist)
         # Persist locks as soon as possible, to prevent concurrent access.
         transaction.commit()
 
