@@ -396,9 +396,9 @@ class PublishRetractTask:
 
         return result
 
-    def _execute_phase(self, ctx, phase_name, phase_fn, needs_initiating_content=False):
-        for uid in list(ctx):
-            content = ctx[uid]
+    def _execute_phase(self, worklist, phase_name, phase_fn, needs_initiating_content=False):
+        for uid in list(worklist):
+            content = worklist[uid]
             try:
                 logger.debug('%s %s' % (phase_name, content.uniqueId))
                 with zeit.cms.tracing.use_span(
@@ -407,7 +407,7 @@ class PublishRetractTask:
                     attributes={'app.uniqueid': content.uniqueId, 'app.mode': self.mode},
                 ):
                     if needs_initiating_content:
-                        initiator = ctx.initiating(content)
+                        initiator = worklist.initiating(content)
                         new_content = phase_fn(content, initiator)
                     else:
                         new_content = phase_fn(content)
@@ -415,10 +415,10 @@ class PublishRetractTask:
                     # cycle may update content during checkin event (but I really don't know
                     # and hopefully we can remove it in the future and skip that check)
                     if new_content is not None and new_content is not content:
-                        ctx[uid] = new_content
+                        worklist[uid] = new_content
             except Exception as e:
-                ctx.errors.append((content, e))
-                del ctx[uid]
+                worklist.errors.append((content, e))
+                del worklist[uid]
 
     def serialize(self, content, result):
         result.append(zeit.workflow.interfaces.IPublisherData(content)(self.mode))
@@ -472,20 +472,20 @@ class PublishTask(PublishRetractTask):
         logger.info('Publishing %s' % ', '.join(content.uniqueId for content in items))
 
         trees = {content: self.build_dependencies(content) for content in items}
-        ctx = Worklist.build(trees)
-        self._execute_phase(ctx, 'can_publish', self.can_publish, needs_initiating_content=False)
-        self._execute_phase(ctx, 'lock', self.lock, needs_initiating_content=False)
-        locked_content = list(ctx.processable_content)
+        worklist = Worklist.build(trees)
+        self._execute_phase(worklist, 'can_publish', self.can_publish)
+        self._execute_phase(worklist, 'lock', self.lock)
+        locked_content = list(worklist.processable_content)
         # Persist locks as soon as possible, to prevent concurrent access.
         transaction.commit()
 
         self._execute_phase(
-            ctx, 'before_publish', self.before_publish, needs_initiating_content=True
+            worklist, 'before_publish', self.before_publish, needs_initiating_content=True
         )
 
         to_publish = []
-        for uid in list(ctx):
-            content = ctx[uid]
+        for uid in list(worklist):
+            content = worklist[uid]
             try:
                 logger.debug('serialize %s' % content.uniqueId)
                 with zeit.cms.tracing.use_span(
@@ -495,8 +495,8 @@ class PublishTask(PublishRetractTask):
                 ):
                     self.serialize(content, to_publish)
             except Exception as e:
-                ctx.errors.append((content, e))
-                del ctx[uid]
+                worklist.errors.append((content, e))
+                del worklist[uid]
 
         try:
             if to_publish:
@@ -507,22 +507,24 @@ class PublishTask(PublishRetractTask):
         except transaction.interfaces.TransientError:
             raise
         except zeit.workflow.publisher.PublisherError as e:
-            ctx.errors.extend(
-                self._assign_publisher_errors_to_objects(e, [ctx[uid] for uid in ctx])
+            worklist.errors.extend(
+                self._assign_publisher_errors_to_objects(e, [worklist[uid] for uid in worklist])
             )
         except Exception as e:
-            for uid in ctx:
-                ctx.errors.append((ctx[uid], e))
+            for uid in worklist:
+                worklist.errors.append((worklist[uid], e))
 
-        self._execute_phase(ctx, 'after_publish', self.after_publish, needs_initiating_content=True)
+        self._execute_phase(
+            worklist, 'after_publish', self.after_publish, needs_initiating_content=True
+        )
         for uid in locked_content:
-            if uid not in ctx:
+            if uid not in worklist:
                 logger.warning(
                     'Content %s was locked but not found in all_content during unlock', uid
                 )
                 continue
-            content = ctx[uid]
-            initiator = ctx.initiating(content)
+            content = worklist[uid]
+            initiator = worklist.initiating(content)
             try:
                 logger.debug('unlock %s' % content.uniqueId)
                 with zeit.cms.tracing.use_span(
@@ -533,14 +535,14 @@ class PublishTask(PublishRetractTask):
                     self.unlock(content, initiator)
             except Exception as e:
                 # Don't fail the whole operation if unlock fails, but track the error
-                ctx.errors.append((content, e))
+                worklist.errors.append((content, e))
 
         # No commit here, as it would also commit any after_publish changes.
         # We may leave content locked, if an error occurred, but that's the
         # lesser evil of the two.
 
-        if ctx.errors:
-            raise MultiPublishError(ctx.errors)
+        if worklist.errors:
+            raise MultiPublishError(worklist.errors)
 
         return 'Published.'
 
@@ -604,19 +606,19 @@ class RetractTask(PublishRetractTask):
                 logger.warning('Retracting content %s which is not published.', content.uniqueId)
 
         trees = {content: self.build_dependencies(content) for content in items}
-        ctx = Worklist.build(trees)
-        self._execute_phase(ctx, 'lock', self.lock, needs_initiating_content=False)
-        locked_content = list(ctx.processable_content)
+        worklist = Worklist.build(trees)
+        self._execute_phase(worklist, 'lock', self.lock)
+        locked_content = list(worklist.processable_content)
         # Persist locks as soon as possible, to prevent concurrent access.
         transaction.commit()
 
         self._execute_phase(
-            ctx, 'before_retract', self.before_retract, needs_initiating_content=True
+            worklist, 'before_retract', self.before_retract, needs_initiating_content=True
         )
 
         to_retract = []
-        for uid in list(ctx):
-            content = ctx[uid]
+        for uid in list(worklist):
+            content = worklist[uid]
             try:
                 logger.debug('serialize %s' % content.uniqueId)
                 with zeit.cms.tracing.use_span(
@@ -626,8 +628,8 @@ class RetractTask(PublishRetractTask):
                 ):
                     self.serialize(content, to_retract)
             except Exception as e:
-                ctx.errors.append((content, e))
-                del ctx[uid]
+                worklist.errors.append((content, e))
+                del worklist[uid]
 
         to_retract = list(reversed(to_retract))
 
@@ -639,23 +641,25 @@ class RetractTask(PublishRetractTask):
         except transaction.interfaces.TransientError:
             raise
         except zeit.workflow.publisher.PublisherError as e:
-            ctx.errors.extend(
-                self._assign_publisher_errors_to_objects(e, [ctx[uid] for uid in ctx])
+            worklist.errors.extend(
+                self._assign_publisher_errors_to_objects(e, [worklist[uid] for uid in worklist])
             )
         except Exception as e:
-            for uid in ctx:
-                ctx.errors.append((ctx[uid], e))
+            for uid in worklist:
+                worklist.errors.append((worklist[uid], e))
 
-        self._execute_phase(ctx, 'after_retract', self.after_retract, needs_initiating_content=True)
+        self._execute_phase(
+            worklist, 'after_retract', self.after_retract, needs_initiating_content=True
+        )
 
         for uid in locked_content:
-            if uid not in ctx:
+            if uid not in worklist:
                 logger.warning(
                     'Content %s was locked but not found in all_content during unlock', uid
                 )
                 continue
-            content = ctx[uid]
-            initiator = ctx.initiating(content)
+            content = worklist[uid]
+            initiator = worklist.initiating(content)
             try:
                 logger.debug('unlock %s' % content.uniqueId)
                 with zeit.cms.tracing.use_span(
@@ -665,10 +669,10 @@ class RetractTask(PublishRetractTask):
                 ):
                     self.unlock(content, initiator)
             except Exception as e:
-                ctx.errors.append((content, e))
+                worklist.errors.append((content, e))
 
-        if ctx.errors:
-            raise MultiPublishError(ctx.errors)
+        if worklist.errors:
+            raise MultiPublishError(worklist.errors)
 
         return 'Retracted.'
 
