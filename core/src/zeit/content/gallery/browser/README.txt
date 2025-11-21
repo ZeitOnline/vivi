@@ -19,8 +19,11 @@ For creating a gallery we need a folder containing images:
 >>> import zope.component
 >>> zeit.cms.testing.set_site()
 >>> repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
->>> repository['online']['2007']['01']['gallery'] = Folder()
->>> folder = repository['online']['2007']['01']['gallery']
+>>> repository['online'] = Folder()
+>>> import transaction
+>>> transaction.commit()
+>>> repository['online']['gallery'] = Folder()
+>>> folder = repository['online']['gallery']
 
 Add some images to the folder:
 
@@ -33,7 +36,7 @@ Adding gallery
 
 To add the gallery we go back to 2007/01:
 
->>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
+>>> browser.open('http://localhost/++skin++cms/repository/online')
 >>> menu = browser.getControl(name='add_menu')
 >>> menu.displayValue = ['Gallery']
 >>> browser.open(menu.value[0])
@@ -44,7 +47,7 @@ Set the most important values:
 >>> browser.getControl('Title').value = 'Auf den Spuren der Elfen'
 >>> browser.getControl('Ressort', index=0).displayValue = ['Reisen']
 >>> browser.getControl(name="form.image_folder").value = (
-...     'http://xml.zeit.de/online/2007/01/gallery')
+...     'http://xml.zeit.de/online/gallery')
 >>> browser.getControl(name='form.keywords').value = (
 ...     '[{"code": "tag://test\\\\u2603Testtag", "pinned": false}]')
 >>> browser.getControl(name="form.actions.add").click()
@@ -59,15 +62,15 @@ thumbnails of the images in the gallery together with the texts:
 <!DOCTYPE ...
     <ul class="gallery-overview">
     ...
-        <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/thumbnails/01.jpg/@@raw" alt="" height="50" width="50" border="0" />
+        <img src="http://localhost/++skin++cms/repository/online/gallery/thumbnails/01.jpg/@@raw" alt="" height="50" width="50" border="0" />
     ...
-        <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/thumbnails/02.jpg/@@raw" alt="" height="50" width="50" border="0" />
+        <img src="http://localhost/++skin++cms/repository/online/gallery/thumbnails/02.jpg/@@raw" alt="" height="50" width="50" border="0" />
     ...
-        <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/thumbnails/03.jpg/@@raw" alt="" height="50" width="50" border="0" />
+        <img src="http://localhost/++skin++cms/repository/online/gallery/thumbnails/03.jpg/@@raw" alt="" height="50" width="50" border="0" />
     ...
-        <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/thumbnails/04.jpg/@@raw" alt="" height="50" width="50" border="0" />
+        <img src="http://localhost/++skin++cms/repository/online/gallery/thumbnails/04.jpg/@@raw" alt="" height="50" width="50" border="0" />
     ...
-        <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/thumbnails/05/@@raw" alt="" height="28" width="50" border="0" />
+        <img src="http://localhost/++skin++cms/repository/online/gallery/thumbnails/05/@@raw" alt="" height="28" width="50" border="0" />
     ...
 </ul>...
 
@@ -123,14 +126,14 @@ Sometimes it will be necessary to manually reload the image folder, i.e. when
 images were added. Remove the image 03.jpg from the gallery folder:
 
 >>> browser.open(
-...     'http://localhost/++skin++cms/repository/online/2007/01/gallery/03.jpg/delete.html')
+...     'http://localhost/++skin++cms/repository/online/gallery/03.jpg/delete.html')
 >>> print(browser.contents)
 <div ...
       Do you really want to delete the object from the folder
       "<span class="containerName">gallery</span>"?
       ...
       <span>03.jpg</span>
-      (<span>http://xml.zeit.de/online/2007/01/gallery/03.jpg</span>)
+      (<span>http://xml.zeit.de/online/gallery/03.jpg</span>)
     ...
 >>> browser.getControl("Delete").click()
 
@@ -143,13 +146,13 @@ listed:
 <!DOCTYPE ...
     <ul class="gallery-overview">
     ...
-        <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/thumbnails/01.jpg/@@raw" alt="" height="50" width="50" border="0" />
+        <img src="http://localhost/++skin++cms/repository/online/gallery/thumbnails/01.jpg/@@raw" alt="" height="50" width="50" border="0" />
     ...
-        <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/thumbnails/02.jpg/@@raw" alt="" height="50" width="50" border="0" />
+        <img src="http://localhost/++skin++cms/repository/online/gallery/thumbnails/02.jpg/@@raw" alt="" height="50" width="50" border="0" />
     ...
-        <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/thumbnails/04.jpg/@@raw" alt="" height="50" width="50" border="0" />
+        <img src="http://localhost/++skin++cms/repository/online/gallery/thumbnails/04.jpg/@@raw" alt="" height="50" width="50" border="0" />
     ...
-        <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/thumbnails/05/@@raw" alt="" height="28" width="50" border="0" />
+        <img src="http://localhost/++skin++cms/repository/online/gallery/thumbnails/05/@@raw" alt="" height="28" width="50" border="0" />
     ...
     </ul>...
 
@@ -181,7 +184,7 @@ Synchronising the image folder is also necessary when the metadata (especially
 the caption) of the image changes:
 
 >>> browser.open(
-...     'http://localhost/++skin++cms/repository/online/2007/01/'
+...     'http://localhost/++skin++cms/repository/online/'
 ...     'gallery/01.jpg/@@view.html')
 >>> browser.getLink('Checkout').click()
 >>> browser.getControl('Image sub text').value = 'Bite my shiny metal ass'
@@ -219,7 +222,7 @@ Auf den Spuren der Elfen – View gallery metadata
 There is also a metdata preview showing the images:
 
 >>> browser.open(
-...     'http://localhost/++skin++cms/repository/online/2007/01/island'
+...     'http://localhost/++skin++cms/repository/online/island'
 ...     '/@@metadata_preview')
 >>> print(browser.contents)
 <div class="contextViewsAndActions">
@@ -229,23 +232,23 @@ There is also a metdata preview showing the images:
 </div>
 <div id="metadata_preview">
     <div class="image-group-image-preview">
-      <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/01.jpg/thumbnail" alt="" height="100" width="100" border="0" />
+      <img src="http://localhost/++skin++cms/repository/online/gallery/01.jpg/thumbnail" alt="" height="100" width="100" border="0" />
     </div>
     <div class="image-group-image-preview">
-      <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/02.jpg/thumbnail" alt="" height="100" width="100" border="0" />
+      <img src="http://localhost/++skin++cms/repository/online/gallery/02.jpg/thumbnail" alt="" height="100" width="100" border="0" />
     </div>
     <div class="image-group-image-preview">
-      <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/04.jpg/thumbnail" alt="" height="100" width="100" border="0" />
+      <img src="http://localhost/++skin++cms/repository/online/gallery/04.jpg/thumbnail" alt="" height="100" width="100" border="0" />
     </div>
     <div class="image-group-image-preview">
-      <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/05/master-image.jpg/thumbnail" alt="" height="75" width="100" border="0" />
+      <img src="http://localhost/++skin++cms/repository/online/gallery/05/master-image.jpg/thumbnail" alt="" height="75" width="100" border="0" />
     </div>
     ...
 
 
 The default view while a gallery is checked in, is the metadata page:
 
->>> browser.open('/repository/online/2007/01/island')
+>>> browser.open('/repository/online/island')
 >>> print(browser.title.strip())
 Auf den Spuren der Elfen – View gallery metadata
 >>> nodes = lxml.cssselect.CSSSelector(
@@ -273,7 +276,7 @@ setup:
 >>> connector = zope.component.getUtility(
 ...     zeit.connector.interfaces.IConnector)
 >>> connector.changeProperties(
-...     'http://xml.zeit.de/',
+...     'http://xml.zeit.de/online',
 ...     {('base-folder', 'http://namespaces.zeit.de/CMS/Image'):
 ...      'http://xml.zeit.de/bilder'})
 
@@ -281,11 +284,11 @@ setup:
 For the island gallery we currently have its container as location, because the
 image folder doesn't exist:
 
->>> gallery = repository['online']['2007']['01']['island']
+>>> gallery = repository['online']['island']
 >>> gallery
 <zeit.content.gallery.gallery.Gallery...>
 >>> get_location(gallery)
-'http://xml.zeit.de/online/2007/01'
+'http://xml.zeit.de/online'
 
 Create the image folder:
 
