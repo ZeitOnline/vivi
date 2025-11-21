@@ -8,13 +8,14 @@ IMP for Galleries
 
 >>> import zeit.content.gallery.browser.testing
 >>> from zeit.content.gallery.browser.testing import add_image
->>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
+>>> from zeit.cms.repository.folder import Folder
+>>> browser.open('http://localhost/++skin++cms/repository/folder')
 >>> zeit.content.gallery.browser.testing.add_folder(browser, 'gallery')
 >>> ignore = add_image(browser, '01.jpg')
 >>> ignore = add_image(browser, '02.jpg')
 >>> ignore = add_image(browser, '03.jpg')
 
->>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
+>>> browser.open('http://localhost/++skin++cms/repository/folder')
 >>> menu = browser.getControl(name='add_menu')
 >>> menu.displayValue = ['Gallery']
 >>> browser.open(menu.value[0])
@@ -22,7 +23,7 @@ IMP for Galleries
 >>> browser.getControl('Title').value = 'Auf den Spuren der Elfen'
 >>> browser.getControl('Ressort', index=0).displayValue = ['Reisen']
 >>> browser.getControl(name="form.image_folder").value = (
-...     'http://xml.zeit.de/online/2007/01/gallery')
+...     'http://xml.zeit.de/folder/gallery')
 >>> browser.getControl(name='form.keywords').value = (
 ...     '[{"code": "tag://test\\\\u2603Testtag", "pinned": false}]')
 >>> browser.getControl(name="form.actions.add").click()
