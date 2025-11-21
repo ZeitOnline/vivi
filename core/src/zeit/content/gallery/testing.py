@@ -21,7 +21,10 @@ def create_fixture(repository):
     gallery = zeit.content.gallery.gallery.Gallery()
     gallery.image_folder = repository['folder']
     repository['gallery'] = gallery
+
     transaction.commit()
+
+    zeit.push.testing.create_fixture(repository)
 
 
 HERE = importlib.resources.files(__package__)
