@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.232.0 (2025-11-21)
+--------------------
+
+- WCM-1203: Display values in ressort dropdown even if they're not present in the source anymore
+
+
 7.231.0 (2025-11-20)
 --------------------
 
