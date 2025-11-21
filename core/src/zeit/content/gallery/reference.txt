@@ -8,6 +8,7 @@ gallery:
 >>> zeit.cms.testing.set_site()
 >>> p = zeit.cms.testing.create_interaction()
 
+
 >>> from zeit.content.gallery.gallery import Gallery
 >>> gallery = Gallery()
 >>> import zeit.cms.repository.interfaces
@@ -16,6 +17,8 @@ gallery:
 ...     zeit.cms.repository.interfaces.IRepository)
 >>> repository['gallery'] = gallery
 >>> gallery = repository['gallery']
+>>> from zeit.cms.repository.folder import Folder
+>>> repository['online'] = Folder()
 
 Create a testcontent:
 
