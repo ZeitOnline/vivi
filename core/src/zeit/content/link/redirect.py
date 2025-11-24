@@ -5,11 +5,11 @@ from zeit.cms.checkout.helper import checked_out
 from zeit.cms.content.interfaces import ICommonMetadata
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import IPublishInfo
+from zeit.content.article.interfaces import IArticle
 from zeit.content.image.interfaces import IImages
 from zeit.content.link.link import Link
 import zeit.cms.config
 import zeit.cms.interfaces
-import zeit.content.article.interfaces
 import zeit.objectlog.interfaces
 
 
@@ -29,15 +29,13 @@ def create(content, uniqueId):
             zeit.cms.interfaces.ID_NAMESPACE,
             zeit.cms.config.required('zeit.cms', 'live-prefix'),
         )
+        if IArticle.providedBy(co) and co.genre == 'nachricht':
+            co.authorships = ()
     _adjust_workflow(content, link)
     return link
 
 
 def _copy_values(source, target):
-    is_news_article = (
-        zeit.content.article.interfaces.IArticle.providedBy(source) and source.ressort == 'News'
-    )
-
     for iface in [ICommonMetadata, IImages]:
         src = iface(source)
         tgt = iface(target)
@@ -45,8 +43,6 @@ def _copy_values(source, target):
             if name in SKIP_FIELDS:
                 continue
             if field.readonly:
-                continue
-            if name == 'authorships' and is_news_article:
                 continue
             value = field.get(src)
             if value != field.missing_value and value != field.default:
