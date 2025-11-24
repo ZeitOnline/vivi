@@ -9,6 +9,7 @@ from zeit.content.image.interfaces import IImages
 from zeit.content.link.link import Link
 import zeit.cms.config
 import zeit.cms.interfaces
+import zeit.content.article.interfaces
 import zeit.objectlog.interfaces
 
 
@@ -33,6 +34,10 @@ def create(content, uniqueId):
 
 
 def _copy_values(source, target):
+    is_news_article = (
+        zeit.content.article.interfaces.IArticle.providedBy(source) and source.ressort == 'News'
+    )
+
     for iface in [ICommonMetadata, IImages]:
         src = iface(source)
         tgt = iface(target)
@@ -40,6 +45,8 @@ def _copy_values(source, target):
             if name in SKIP_FIELDS:
                 continue
             if field.readonly:
+                continue
+            if name == 'authorships' and is_news_article:
                 continue
             value = field.get(src)
             if value != field.missing_value and value != field.default:
