@@ -1,11 +1,43 @@
+import zope.interface
+
 from zeit.cms.checkout.helper import checked_out
+from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.content.image.interfaces import IImages
 from zeit.content.image.testing import create_image_group
+import zeit.content.author.author
 import zeit.content.link.testing
 
 
 class LinkRedirectTest(zeit.content.link.testing.BrowserTestCase):
     login_as = 'zmgr:mgrpw'
+
+    def test_remove_authorships_for_genre_nachricht(self):
+        shakespeare = zeit.content.author.author.Author()
+        shakespeare.title = 'Sir'
+        shakespeare.firstname = 'William'
+        shakespeare.lastname = 'Shakespeare'
+        shakespeare.vgwort_id = 12345
+        self.repository['shakespeare'] = shakespeare
+        shakespeare = self.repository['shakespeare']
+
+        content = ExampleContentType()
+        zope.interface.alsoProvides(content, zeit.content.article.interfaces.IArticle)
+        self.repository['testarticle'] = content
+
+        with checked_out(self.repository['testarticle']) as co:
+            co.authorships = [co.authorships.create(shakespeare)]
+            co.title = 'My Title'
+            co.genre = 'nachricht'
+        b = self.browser
+        b.open('/repository/testarticle/@@redirect-box')
+        b.getControl('Redirect path').value = '/link'
+        b.getControl('Create redirect').click()
+        self.assertEllipsis(
+            '...<span class="nextURL">http://localhost/++skin++vivi/repository/link...',
+            b.contents,
+        )
+        link = self.repository['link']
+        self.assertEqual((), link.authorships)
 
     def test_copies_metadata_fields(self):
         create_image_group()

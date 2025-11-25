@@ -29,7 +29,7 @@ def create(content, uniqueId):
             zeit.cms.interfaces.ID_NAMESPACE,
             zeit.cms.config.required('zeit.cms', 'live-prefix'),
         )
-        if IArticle.providedBy(co) and co.genre == 'nachricht':
+        if IArticle.providedBy(content) and content.genre == 'nachricht':
             co.authorships = ()
     _adjust_workflow(content, link)
     return link
