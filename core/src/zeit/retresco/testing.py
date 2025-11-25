@@ -8,7 +8,6 @@ import zope.app.appsetup.product
 import zeit.cms.content.interfaces
 import zeit.cms.testcontenttype.testcontenttype
 import zeit.cms.testing
-import zeit.content.article.testing
 import zeit.content.link.testing
 import zeit.find.testing
 import zeit.wochenmarkt.testing
@@ -46,7 +45,6 @@ CONFIG_LAYER = ProductConfigLayer(
     },
     bases=(
         HTTP_LAYER,
-        zeit.content.article.testing.CONFIG_LAYER,
         zeit.content.link.testing.CONFIG_LAYER,
         zeit.content.volume.testing.CONFIG_LAYER,
         zeit.wochenmarkt.testing.CONFIG_LAYER,

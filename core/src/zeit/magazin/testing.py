@@ -4,7 +4,6 @@ import zope.interface
 from zeit.magazin.interfaces import IZMOFolder, IZMOSection
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
-import zeit.content.article.testing
 import zeit.content.link.testing
 
 
@@ -18,7 +17,7 @@ def create_fixture(repository):
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
     {},
     patches={'zeit.cms': {'zmo-preview-prefix': 'http://localhost/zmo-preview-prefix'}},
-    bases=(zeit.content.article.testing.CONFIG_LAYER, zeit.content.link.testing.CONFIG_LAYER),
+    bases=zeit.content.link.testing.CONFIG_LAYER,
 )
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER, features=['zeit.connector.sql.zope'])
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER, create_fixture)
