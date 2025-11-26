@@ -11,7 +11,7 @@ from zeit.cms.content.add import find_or_create_folder
 from zeit.cms.content.interfaces import ISemanticChange
 from zeit.cms.workflow.interfaces import PRIORITY_LOW, IPublish, IPublishInfo
 from zeit.connector.search import SearchVar
-from zeit.content.audio.interfaces import IAudio, IPodcastEpisodeInfo
+from zeit.content.audio.interfaces import IAudio, IPodcast, IPodcastEpisodeInfo
 import zeit.cms.checkout.helper
 import zeit.cms.config
 import zeit.cms.interfaces
@@ -163,7 +163,6 @@ class Simplecast:
             log.info('Podcast Episode %s successfully updated.', episode.uniqueId)
 
     def _update_properties(self, episode_data, audio):
-        audio.audio_type = 'podcast'
         for iface, properties in self._properties.items():
             obj = iface(audio)
             for vivi, simplecast in properties.items():
@@ -172,11 +171,14 @@ class Simplecast:
         podcast_id = episode_data['podcast']['id']
         info = IPodcastEpisodeInfo(audio)
         info.podcast_id = podcast_id
-        info.podcast = (
-            IPodcastEpisodeInfo['podcast']
-            .source(None)
-            .find_by_property('external_id', episode_data['podcast']['id'])
+        podcast = (
+            IPodcastEpisodeInfo['podcast'].source(None).find_by_property('external_id', podcast_id)
         )
+        if podcast:
+            info.podcast = podcast
+            audio.audio_type = podcast.audio_type
+        else:
+            audio.audio_type = IPodcast['audio_type'].default
 
         ISemanticChange(audio).last_semantic_change = pendulum.parse(episode_data['updated_at'])
 

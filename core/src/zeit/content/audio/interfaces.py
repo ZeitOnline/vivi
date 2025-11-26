@@ -19,6 +19,7 @@ class AudioTypeSource(zeit.cms.content.sources.SimpleFixedValueSource):
         'podcast': _('Podcast'),
         'tts': _('Text to Speech'),
         'premium': _('Premium Audio'),
+        'premium-simplecast': _('Premium Simplecast'),
         'custom': _('Custom Audio'),
     }
 
@@ -69,6 +70,7 @@ class IPodcast(zope.interface.Interface):
     rss_image = zope.schema.URI(title=_('rss_image'))
     release_frequency = zope.interface.Attribute('release_frequency')
     contact_email = zope.interface.Attribute('contact_email')
+    audio_type = zope.schema.Choice(source=AudioTypeSource(), required=False, default='podcast')
     folder = zope.schema.URI(title='parent folder', required=False)
 
 
@@ -91,6 +93,7 @@ class Podcast(zeit.cms.content.sources.AllowedBase):
         rss_image=None,
         release_frequency=None,
         contact_email=None,
+        audio_type=IPodcast['audio_type'].default,
         folder=None,
     ):
         super().__init__(id, title, available=None)
@@ -109,6 +112,7 @@ class Podcast(zeit.cms.content.sources.AllowedBase):
         self.rss_image = rss_image
         self.release_frequency = release_frequency
         self.contact_email = contact_email
+        self.audio_type = audio_type
         self.folder = folder
 
 
@@ -146,6 +150,7 @@ class PodcastSource(zeit.cms.content.sources.ObjectSource, zeit.cms.content.sour
             node.get('rss_image'),
             node.get('release_frequency'),
             node.get('contact_email'),
+            node.get('audio_type', IPodcast['audio_type'].default),
             node.get('folder'),
         )
         return podcast

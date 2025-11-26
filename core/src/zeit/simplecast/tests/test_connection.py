@@ -174,11 +174,18 @@ class TestImportAudio(zeit.simplecast.testing.FunctionalTestCase):
         self.episode_info['title'] = 'Cat Jokes Pawdcast - Folge 2'
         self.synchronize()
         episode = self.repository['podcasts']['2023-08'][self.episode_id]
+        self.assertEqual('podcast', episode.audio_type)
         self.assertEqual('Cat Jokes Pawdcast - Folge 2', episode.title)
         self.assertEqual(
             pendulum.datetime(2020, 7, 13, 14, 21, 39, tz='UTC'),
             ISemanticChange(episode).last_semantic_change,
         )
+
+    def test_audio_type_is_configurable_in_podcast_xml(self):
+        self.episode_info['podcast']['id'] = '5678'
+        self.synchronize()
+        episode = self.repository['special']['case']['2023-08'][self.episode_id]
+        self.assertEqual('premium-simplecast', episode.audio_type)
 
     def test_should_skip_update_for_already_locked_object(self):
         self.synchronize()
