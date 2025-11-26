@@ -58,7 +58,7 @@ class SearchForm(JSONView):
         )
         for value in source:
             title = terms.getTerm(value).title
-            result.append({value_name: value, title_name: title})
+            result.append({value_name: value, title_name: title or ''})
         return result
 
     @property
