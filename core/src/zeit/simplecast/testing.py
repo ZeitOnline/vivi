@@ -1,3 +1,5 @@
+from copy import deepcopy
+
 import zeit.cms.testing
 import zeit.content.audio.testing
 
@@ -56,7 +58,14 @@ WSGI_LAYER = zeit.cms.testing.WSGILayer(ZOPE_LAYER)
 
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
     layer = ZOPE_LAYER
-    episode_info = EPISODE_200
+
+    def setUp(self):
+        super().setUp()
+        self.episode_info = deepcopy(EPISODE_200)
+
+    @property
+    def episode_id(self):
+        return self.episode_info['id']
 
 
 class BrowserTestCase(zeit.cms.testing.BrowserTestCase):

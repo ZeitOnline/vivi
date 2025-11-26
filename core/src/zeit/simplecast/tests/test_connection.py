@@ -18,13 +18,7 @@ import zeit.workflow.asset
 import zeit.workflow.publish_3rdparty
 
 
-class TestSimplecast(zeit.simplecast.testing.FunctionalTestCase):
-    def create_audio(self, json):
-        with mock.patch.object(self.simplecast, 'fetch_episode') as request:
-            request.return_value = json
-            self.simplecast.synchronize_episode(json['id'])
-        transaction.commit()
-
+class TestSimplecastAPI(zeit.simplecast.testing.FunctionalTestCase):
     def setUp(self):
         super().setUp()
         self.simplecast = zeit.simplecast.connection.Simplecast()
@@ -94,6 +88,23 @@ class TestSimplecast(zeit.simplecast.testing.FunctionalTestCase):
             result = self.simplecast.fetch_episode(episode_id)
             self.assertEqual(result, self.episode_info)
 
+    @requests_mock.Mocker()
+    def test_fetch_episode_translates_notfound_to_none(self, m):
+        episode_id = self.episode_info['id']
+        m.get(f'https://testapi.simplecast.com/episodes/{episode_id}', status_code=404)
+        self.assertEqual(None, self.simplecast.fetch_episode(episode_id))
+
+
+class TestImportAudio(zeit.simplecast.testing.FunctionalTestCase):
+    def setUp(self):
+        super().setUp()
+        self.simplecast = zeit.simplecast.connection.Simplecast()
+        mock.patch.object(self.simplecast, 'fetch_episode', return_value=self.episode_info).start()
+
+    def synchronize(self):
+        self.simplecast.synchronize_episode(self.episode_info['id'])
+        transaction.commit()
+
     def test_simplecast_gets_podcast_folder(self):
         container = self.simplecast._find_or_create_folder(self.episode_info['created_at'])
         self.assertEqual(container, self.repository['podcasts']['2023-08'])
@@ -101,15 +112,11 @@ class TestSimplecast(zeit.simplecast.testing.FunctionalTestCase):
     def _test_publish_retract_behavior(
         self, initial_state, updated_state, publish_expected, retract_expected
     ):
-        episode_info = self.episode_info.copy()
-        episode_info['is_published'] = initial_state
-        episode_id = episode_info['id']
-        self.create_audio(episode_info)
-        audio_object = self.repository['podcasts']['2023-08'][episode_id]
+        self.episode_info['is_published'] = initial_state
+        self.synchronize()
+        audio_object = self.repository['podcasts']['2023-08'][self.episode_id]
         assert zeit.cms.workflow.interfaces.IPublishInfo(audio_object).published == initial_state
-        episode_info['is_published'] = updated_state
-        m_simple = requests_mock.Mocker()
-        m_simple.get(f'https://testapi.simplecast.com/episodes/{episode_id}', json=episode_info)
+        self.episode_info['is_published'] = updated_state
         retract = mock.Mock()
         publish = mock.Mock()
         zope.component.getGlobalSiteManager().registerHandler(
@@ -118,8 +125,7 @@ class TestSimplecast(zeit.simplecast.testing.FunctionalTestCase):
         zope.component.getGlobalSiteManager().registerHandler(
             publish, (zeit.cms.workflow.interfaces.IPublishedEvent,)
         )
-        with m_simple:
-            self.simplecast.synchronize_episode(episode_id)
+        self.synchronize()
         self.assertEqual(publish_expected, publish.called)
         self.assertEqual(retract_expected, retract.called)
 
@@ -156,19 +162,13 @@ class TestSimplecast(zeit.simplecast.testing.FunctionalTestCase):
         )
 
     def test_update_episode(self):
-        episode_id = self.episode_info['id']
-        self.create_audio(self.episode_info)
+        self.synchronize()
         self.assertEqual(
-            'Cat Jokes Pawdcast', self.repository['podcasts']['2023-08'][episode_id].title
+            'Cat Jokes Pawdcast', self.repository['podcasts']['2023-08'][self.episode_id].title
         )
-        json = self.episode_info.copy()
-        json['title'] = 'Cat Jokes Pawdcast - Folge 2'
-        m_simple = requests_mock.Mocker()
-        m_simple.get(f'https://testapi.simplecast.com/episodes/{episode_id}', json=json)
-        with m_simple:
-            self.simplecast.synchronize_episode(episode_id)
-        transaction.commit()
-        episode = self.repository['podcasts']['2023-08'][episode_id]
+        self.episode_info['title'] = 'Cat Jokes Pawdcast - Folge 2'
+        self.synchronize()
+        episode = self.repository['podcasts']['2023-08'][self.episode_id]
         self.assertEqual('Cat Jokes Pawdcast - Folge 2', episode.title)
         self.assertEqual(
             pendulum.datetime(2020, 7, 13, 14, 21, 39, tz='UTC'),
@@ -176,70 +176,49 @@ class TestSimplecast(zeit.simplecast.testing.FunctionalTestCase):
         )
 
     def test_should_skip_update_for_already_locked_object(self):
-        episode_id = self.episode_info['id']
-        self.create_audio(self.episode_info)
-        json = self.episode_info.copy()
-        json['title'] = 'Cat Jokes Pawdcast - Folge 2'
-        m_simple = requests_mock.Mocker()
-        m_simple.get(f'https://testapi.simplecast.com/episodes/{episode_id}', json=json)
-
-        episode = self.repository['podcasts']['2023-08'][episode_id]
+        self.synchronize()
+        self.episode_info['title'] = 'Cat Jokes Pawdcast - Folge 2'
+        episode = self.repository['podcasts']['2023-08'][self.episode_id]
         zope.security.management.endInteraction()
         with zeit.cms.testing.interaction('zope.producer'):
             zeit.cms.checkout.interfaces.ICheckoutManager(episode).checkout()
         zeit.cms.testing.create_interaction('zope.user')
 
-        with m_simple:
-            self.simplecast.synchronize_episode(episode_id)
-        episode = self.repository['podcasts']['2023-08'][episode_id]
-        self.assertNotEqual(json['title'], episode.title)
+        self.synchronize()
+        episode = self.repository['podcasts']['2023-08'][self.episode_id]
+        self.assertNotEqual(self.episode_info['title'], episode.title)
 
-    @requests_mock.Mocker()
-    def test_publish(self, m):
-        simplecast_resp = self.episode_info.copy()
-        simplecast_resp['is_published'] = True
-        self.create_audio(simplecast_resp)
-        content = self.repository['podcasts']['2023-08'][self.episode_info['id']]
+    def test_publish(self):
+        self.episode_info['is_published'] = True
+        self.synchronize()
+        content = self.repository['podcasts']['2023-08'][self.episode_id]
 
         workflow = zeit.cms.workflow.interfaces.IPublishInfo(content)
         assert workflow.can_publish() == zeit.cms.workflow.interfaces.CAN_PUBLISH_SUCCESS
         assert workflow.published
 
-        m.get(
-            f'https://testapi.simplecast.com/episodes/{self.episode_info["id"]}',
-            json=simplecast_resp,
-        )
-
         # publish again, should have no effect
-        self.simplecast.synchronize_episode(self.episode_info['id'])
+        self.synchronize()
         assert workflow.published
 
-    @requests_mock.Mocker()
-    def test_retract(self, m):
-        simplecast_resp = self.episode_info.copy()
-        simplecast_resp['is_published'] = True
-        self.create_audio(simplecast_resp)
-        content = self.repository['podcasts']['2023-08'][self.episode_info['id']]
+    def test_retract(self):
+        self.episode_info['is_published'] = True
+        self.synchronize()
+        content = self.repository['podcasts']['2023-08'][self.episode_id]
         workflow = zeit.cms.workflow.interfaces.IPublishInfo(content)
         assert workflow.published
 
-        m.get(
-            f'https://testapi.simplecast.com/episodes/{self.episode_info["id"]}',
-            json=self.episode_info,
-        )
-        self.simplecast.synchronize_episode(self.episode_info['id'])
+        self.episode_info['is_published'] = False
+        self.synchronize()
         assert IPodcastEpisodeInfo(content).is_published is False, (
             'retract should set is_published to False'
         )
-
         assert not workflow.published
 
-    @requests_mock.Mocker()
-    def test_deleted_podcast_should_be_retracted(self, m):
-        simplecast_resp = self.episode_info.copy()
-        simplecast_resp['is_published'] = True
-        self.create_audio(simplecast_resp)
-        content = self.repository['podcasts']['2023-08'][self.episode_info['id']]
+    def test_deleted_podcast_should_be_retracted(self):
+        self.episode_info['is_published'] = True
+        self.synchronize()
+        content = self.repository['podcasts']['2023-08'][self.episode_id]
         workflow = zeit.cms.workflow.interfaces.IPublishInfo(content)
         assert workflow.published
 
@@ -248,23 +227,14 @@ class TestSimplecast(zeit.simplecast.testing.FunctionalTestCase):
             retract, (zeit.cms.workflow.interfaces.IRetractedEvent,)
         )
 
-        m_simple = requests_mock.Mocker()
-        m_simple.get(
-            f'https://testapi.simplecast.com/episodes/{self.episode_info["id"]}', status_code=404
-        )
-        with m_simple:
-            self.simplecast.synchronize_episode(self.episode_info['id'])
+        with mock.patch.object(self.simplecast, 'fetch_episode', return_value=None):
+            self.synchronize()
         self.assertEqual(True, retract.called)
         assert not workflow.published
 
     def test_no_episode_and_no_audio_in_vivi(self):
-        episode_id = self.episode_info['id']
-        json = self.episode_info.copy()
-        json['title'] = 'Cat Jokes Pawdcast - Folge 2'
-        m_simple = requests_mock.Mocker()
-        m_simple.get(f'https://testapi.simplecast.com/episodes/{episode_id}', status_code=404)
-        with m_simple:
-            self.simplecast.synchronize_episode(episode_id)
+        self.episode_info['title'] = 'Cat Jokes Pawdcast - Folge 2'
+        self.synchronize()
         retract = mock.Mock()
         zope.component.getGlobalSiteManager().registerHandler(
             retract, (zeit.cms.workflow.interfaces.IRetractedEvent,)
