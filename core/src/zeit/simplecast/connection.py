@@ -6,6 +6,7 @@ import requests
 import zope.component
 import zope.interface
 
+from zeit.cms.content.add import find_or_create_folder
 from zeit.cms.content.interfaces import ISemanticChange
 from zeit.cms.workflow.interfaces import PRIORITY_LOW, IPublish, IPublishInfo
 from zeit.connector.search import SearchVar
@@ -132,24 +133,14 @@ class Simplecast:
             return None
 
     def create(self, episode_id, episode_data):
-        container = self._find_or_create_folder(episode_data['created_at'])
+        created = pendulum.parse(episode_data['created_at']).strftime('%Y-%m')
+        parent = zeit.cms.config.required('zeit.simplecast', 'podcast-folder')
+        container = find_or_create_folder(parent, created)
         audio = zeit.content.audio.audio.Audio()
         self._update_properties(episode_data, audio)
         container[episode_id] = audio
         log.info('Podcast Episode %s successfully created.', audio.uniqueId)
         return container[episode_id]
-
-    def _find_or_create_folder(self, episode_create_at):
-        """Podcast should end up in this folder by default"""
-        repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
-        podcasts = zeit.cms.config.required('zeit.simplecast', 'podcast-folder')
-        date_created = pendulum.parse(episode_create_at)
-        yyyy_mm = date_created.strftime('%Y-%m')
-        if podcasts not in repository:
-            repository[podcasts] = zeit.cms.repository.folder.Folder()
-        if yyyy_mm not in repository[podcasts]:
-            repository[podcasts][yyyy_mm] = zeit.cms.repository.folder.Folder()
-        return repository[podcasts][yyyy_mm]
 
     def update(self, audio, episode_data):
         with zeit.cms.checkout.helper.checked_out(audio) as episode:
