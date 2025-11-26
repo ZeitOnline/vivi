@@ -21,7 +21,6 @@ class PodcastSourceTest(FunctionalTestCase):
         podcast_source = PodcastSource().factory
         context = Mock()
         values = podcast_source.getValues(context)
-        assert len(values) == 1
         distribution_channels = {
             'itunes': 'http://example.com/itunes',
             'google': 'http://example.com/google',

@@ -105,9 +105,14 @@ class TestImportAudio(zeit.simplecast.testing.FunctionalTestCase):
         self.simplecast.synchronize_episode(self.episode_info['id'])
         transaction.commit()
 
-    def test_simplecast_gets_podcast_folder(self):
-        container = self.simplecast._find_or_create_folder(self.episode_info['created_at'])
-        self.assertEqual(container, self.repository['podcasts']['2023-08'])
+    def test_parent_folder_is_configurable_in_podcast_xml(self):
+        self.synchronize()
+        del self.repository['podcasts']['2023-08'][self.episode_id]
+        transaction.commit()
+        self.episode_info['podcast']['id'] = '5678'
+        self.synchronize()
+        with self.assertNothingRaised():
+            _ = self.repository['special']['case']['2023-08'][self.episode_id]
 
     def _test_publish_retract_behavior(
         self, initial_state, updated_state, publish_expected, retract_expected

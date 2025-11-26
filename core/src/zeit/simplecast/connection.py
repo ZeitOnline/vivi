@@ -1,3 +1,4 @@
+from urllib.parse import urlparse
 import logging
 
 from opentelemetry.trace import SpanKind
@@ -133,9 +134,19 @@ class Simplecast:
             return None
 
     def create(self, episode_id, episode_data):
+        podcast = (
+            IPodcastEpisodeInfo['podcast']
+            .source(None)
+            .find_by_property('external_id', episode_data['podcast']['id'])
+        )
+        if podcast and podcast.folder:
+            parent = urlparse(podcast.folder).path.split('/')[1:]
+        else:
+            parent = [zeit.cms.config.required('zeit.simplecast', 'podcast-folder')]
         created = pendulum.parse(episode_data['created_at']).strftime('%Y-%m')
-        parent = zeit.cms.config.required('zeit.simplecast', 'podcast-folder')
-        container = find_or_create_folder(parent, created)
+        parent.append(created)
+        container = find_or_create_folder(*parent)
+
         audio = zeit.content.audio.audio.Audio()
         self._update_properties(episode_data, audio)
         container[episode_id] = audio

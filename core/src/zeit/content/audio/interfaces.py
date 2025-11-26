@@ -69,6 +69,7 @@ class IPodcast(zope.interface.Interface):
     rss_image = zope.schema.URI(title=_('rss_image'))
     release_frequency = zope.interface.Attribute('release_frequency')
     contact_email = zope.interface.Attribute('contact_email')
+    folder = zope.schema.URI(title='parent folder', required=False)
 
 
 @zope.interface.implementer(IPodcast)
@@ -90,6 +91,7 @@ class Podcast(zeit.cms.content.sources.AllowedBase):
         rss_image=None,
         release_frequency=None,
         contact_email=None,
+        folder=None,
     ):
         super().__init__(id, title, available=None)
         self.external_id = external_id
@@ -107,6 +109,7 @@ class Podcast(zeit.cms.content.sources.AllowedBase):
         self.rss_image = rss_image
         self.release_frequency = release_frequency
         self.contact_email = contact_email
+        self.folder = folder
 
 
 class PodcastSource(zeit.cms.content.sources.ObjectSource, zeit.cms.content.sources.XMLSource):
@@ -143,6 +146,7 @@ class PodcastSource(zeit.cms.content.sources.ObjectSource, zeit.cms.content.sour
             node.get('rss_image'),
             node.get('release_frequency'),
             node.get('contact_email'),
+            node.get('folder'),
         )
         return podcast
 
