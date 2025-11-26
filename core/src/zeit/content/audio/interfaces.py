@@ -108,26 +108,6 @@ class Podcast(zeit.cms.content.sources.AllowedBase):
         self.release_frequency = release_frequency
         self.contact_email = contact_email
 
-    def __eq__(self, other):
-        return (
-            zope.security.proxy.isinstance(other, self.__class__)
-            and self.id == other.id
-            and self.title == other.title
-            and self.external_id == other.external_id
-            and self.subtitle == other.subtitle
-            and self.color == other.color
-            and self.image == other.image
-            and self.distribution_channels == other.distribution_channels
-            and self.feed == other.feed
-            and self.explicit == other.explicit
-            and self.author == other.author
-            and self.category == other.category
-            and self.podcast_type == other.podcast_type
-            and self.rss_image == other.rss_image
-            and self.release_frequency == other.release_frequency
-            and self.contact_email == other.contact_email
-        )
-
 
 class PodcastSource(zeit.cms.content.sources.ObjectSource, zeit.cms.content.sources.XMLSource):
     product_configuration = 'zeit.content.audio'
