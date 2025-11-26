@@ -5,6 +5,7 @@ from zeit.cms.checkout.helper import checked_out
 from zeit.cms.content.interfaces import ICommonMetadata
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import IPublishInfo
+from zeit.content.article.interfaces import IArticle
 from zeit.content.image.interfaces import IImages
 from zeit.content.link.link import Link
 import zeit.cms.config
@@ -28,6 +29,8 @@ def create(content, uniqueId):
             zeit.cms.interfaces.ID_NAMESPACE,
             zeit.cms.config.required('zeit.cms', 'live-prefix'),
         )
+        if IArticle.providedBy(content) and content.genre == 'nachricht':
+            co.authorships = ()
     _adjust_workflow(content, link)
     return link
 
