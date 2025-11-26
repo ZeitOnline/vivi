@@ -95,7 +95,7 @@ class TestSimplecast(zeit.simplecast.testing.FunctionalTestCase):
             self.assertEqual(result, self.episode_info)
 
     def test_simplecast_gets_podcast_folder(self):
-        container = self.simplecast.folder(self.episode_info['created_at'])
+        container = self.simplecast._find_or_create_folder(self.episode_info['created_at'])
         self.assertEqual(container, self.repository['podcasts']['2023-08'])
 
     def _test_publish_retract_behavior(
