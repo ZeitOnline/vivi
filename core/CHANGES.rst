@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.233.0 (2025-11-26)
+--------------------
+
+- WCM-1205: no author references for redirects of news
+
+
 7.232.0 (2025-11-21)
 --------------------
 
