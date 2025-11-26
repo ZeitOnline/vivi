@@ -16,9 +16,11 @@ on:
 
 jobs:
   build:
-    uses: zeitonline/gh-action-workflows/.github/workflows/nightwatch-build.yaml@ce2752f66fb61ff521cc8279d8cd0429a7eba2eb # 2.8.0
+    uses: zeitonline/gh-action-workflows/.github/workflows/nightwatch-build.yaml@dcc81c5553e20d1237e687118988059b02b04dd5 # 2.9.0
     secrets: inherit
     with:
+      enviornment: staging
+      gke_cluster: staging
       versions: smoketest/k8s/base/versions
       # copy&paste from k8s/base and k8s/staging manifest
       args: |
