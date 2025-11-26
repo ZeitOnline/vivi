@@ -72,6 +72,7 @@ class IPodcast(zope.interface.Interface):
     contact_email = zope.interface.Attribute('contact_email')
     audio_type = zope.schema.Choice(source=AudioTypeSource(), required=False, default='podcast')
     folder = zope.schema.URI(title='parent folder', required=False)
+    default_access = zope.interface.Attribute('default_access')
 
 
 @zope.interface.implementer(IPodcast)
@@ -95,6 +96,7 @@ class Podcast(zeit.cms.content.sources.AllowedBase):
         contact_email=None,
         audio_type=IPodcast['audio_type'].default,
         folder=None,
+        default_access=None,
     ):
         super().__init__(id, title, available=None)
         self.external_id = external_id
@@ -114,6 +116,7 @@ class Podcast(zeit.cms.content.sources.AllowedBase):
         self.contact_email = contact_email
         self.audio_type = audio_type
         self.folder = folder
+        self.default_access = default_access
 
 
 class PodcastSource(zeit.cms.content.sources.ObjectSource, zeit.cms.content.sources.XMLSource):
@@ -152,6 +155,7 @@ class PodcastSource(zeit.cms.content.sources.ObjectSource, zeit.cms.content.sour
             node.get('contact_email'),
             node.get('audio_type', IPodcast['audio_type'].default),
             node.get('folder'),
+            node.get('access'),
         )
         return podcast
 

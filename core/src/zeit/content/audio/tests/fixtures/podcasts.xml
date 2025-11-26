@@ -4,5 +4,5 @@
         <distribution_channel id="itunes" href="http://example.com/itunes">Apple Podcasts</distribution_channel>
         <distribution_channel id="google" href="http://example.com/google">Google Podcasts</distribution_channel>
     </podcast>
-    <podcast id="special-case" external_id="5678" audio_type="premium-simplecast" folder="http://xml.zeit.de/special/case" />
+    <podcast id="special-case" external_id="5678" audio_type="premium-simplecast" folder="http://xml.zeit.de/special/case" access="abo" />
 </podcasts>

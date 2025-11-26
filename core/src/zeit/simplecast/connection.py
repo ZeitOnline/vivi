@@ -177,6 +177,8 @@ class Simplecast:
         if podcast:
             info.podcast = podcast
             audio.audio_type = podcast.audio_type
+            if podcast.default_access:
+                audio.access = podcast.default_access
         else:
             audio.audio_type = IPodcast['audio_type'].default
 
