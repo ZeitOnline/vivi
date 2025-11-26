@@ -211,6 +211,9 @@ class Worklist:
             if uid not in self._removed:
                 yield uid
 
+    def locked_items(self):
+        return iter(self._locked)
+
     def mark_all_current_as_locked(self):
         """Mark all currently processable items as locked.
 
@@ -461,8 +464,11 @@ class PublishRetractTask:
 
         return result
 
-    def _execute_phase(self, worklist, phase_name, phase_fn, needs_initiating_content=False):
-        for uid in list(worklist):
+    def _execute_phase(
+        self, worklist, phase_name, phase_fn, needs_initiating_content=False, all_locked=False
+    ):
+        items = worklist.locked_items() if all_locked else worklist
+        for uid in list(items):
             if uid not in worklist:
                 logger.warning('Content %s not found in worklist during %s', uid, phase_name)
                 continue
@@ -487,7 +493,10 @@ class PublishRetractTask:
                         worklist[uid] = new_content
             except Exception as e:
                 worklist.errors.append((content, e))
-                del worklist[uid]
+                # Don't delete from worklist during unlock phase, as we want to
+                # ensure all locks are released even if unlock fails
+                if not all_locked:
+                    del worklist[uid]
 
     def serialize(self, content, result):
         result.append(zeit.workflow.interfaces.IPublisherData(content)(self.mode))
@@ -592,7 +601,7 @@ class PublishTask(PublishRetractTask):
         self._execute_phase(
             worklist, 'after_publish', self.after_publish, needs_initiating_content=True
         )
-        self._execute_phase(worklist, 'unlock', self.unlock)
+        self._execute_phase(worklist, 'unlock', self.unlock, all_locked=True)
 
         # No commit here, as it would also commit any after_publish changes.
         # We may leave content locked, if an error occurred, but that's the
@@ -787,7 +796,7 @@ class RetractTask(PublishRetractTask):
         self._execute_phase(
             worklist, 'after_retract', self.after_retract, needs_initiating_content=True
         )
-        self._execute_phase(worklist, 'unlock', self.unlock)
+        self._execute_phase(worklist, 'unlock', self.unlock, all_locked=True)
 
         if worklist.errors:
             raise MultiPublishError(worklist.errors)
