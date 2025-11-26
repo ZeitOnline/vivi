@@ -61,4 +61,3 @@ class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
 
 class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
     layer = WSGI_LAYER
-    episode_info = EPISODE_200
