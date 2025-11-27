@@ -1,7 +1,7 @@
 import grokcore.component as grok
 import zope.interface
 
-from zeit.content.audio.interfaces import IAudioReferences
+from zeit.content.audio.interfaces import IAudio, IAudioReferences
 import zeit.cms.content.interfaces
 import zeit.entitlements.interfaces
 
@@ -26,6 +26,8 @@ class AcceptedEntitlements(grok.Adapter):
                     result.add('wochenmarkt')
 
                 if IAudioReferences(content).get_by_type('podcast'):
+                    result.add('podcast')
+                if IAudio.providedBy(content) and content.audio_type == 'premium_simplecast':
                     result.add('podcast')
 
                 return result

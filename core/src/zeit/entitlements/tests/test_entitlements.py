@@ -46,6 +46,12 @@ class Entitlements(zeit.entitlements.testing.FunctionalTestCase):
             {'podcast', 'zplus'}, zeit.entitlements.accepted(self.repository['testarticle'])
         )
 
+    def test_premium_simplecast_audio_adds_entitlement(self):
+        AudioBuilder().with_attribute('audio_type', 'premium_simplecast').build()
+        with checked_out(self.repository['audio']) as co:
+            co.access = 'abo'
+        self.assertEqual({'podcast', 'zplus'}, zeit.entitlements.accepted(self.repository['audio']))
+
     def test_accepted_entitlements(self):
         self.content.access = 'abo'
         self.content.accepted_entitlements = 'podcast,wochenmarkt'
