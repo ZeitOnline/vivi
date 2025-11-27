@@ -53,7 +53,7 @@ class TestWebHook(zeit.simplecast.testing.BrowserTestCase):
         self.caplog.clear()
 
         mocker = requests_mock.Mocker()
-        mocker.get(episode_url(), json=self.episode_info)
+        mocker.get(episode_url(), json=zeit.simplecast.testing.EPISODE_200)
 
         with mocker:
             browser = self.browser

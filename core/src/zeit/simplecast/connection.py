@@ -1,3 +1,4 @@
+from urllib.parse import urlparse
 import logging
 
 from opentelemetry.trace import SpanKind
@@ -6,10 +7,11 @@ import requests
 import zope.component
 import zope.interface
 
+from zeit.cms.content.add import find_or_create_folder
 from zeit.cms.content.interfaces import ISemanticChange
 from zeit.cms.workflow.interfaces import PRIORITY_LOW, IPublish, IPublishInfo
 from zeit.connector.search import SearchVar
-from zeit.content.audio.interfaces import IAudio, IPodcastEpisodeInfo
+from zeit.content.audio.interfaces import IAudio, IPodcast, IPodcastEpisodeInfo
 import zeit.cms.checkout.helper
 import zeit.cms.config
 import zeit.cms.interfaces
@@ -94,17 +96,24 @@ class Simplecast:
         """Request episode data from simplecast, return json body"""
         return self._request(f'GET episodes/{episode_id}')
 
-    def folder(self, episode_create_at):
-        """Podcast should end up in this folder by default"""
-        repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
-        podcasts = zeit.cms.config.required('zeit.simplecast', 'podcast-folder')
-        date_created = pendulum.parse(episode_create_at)
-        yyyy_mm = date_created.strftime('%Y-%m')
-        if podcasts not in repository:
-            repository[podcasts] = zeit.cms.repository.folder.Folder()
-        if yyyy_mm not in repository[podcasts]:
-            repository[podcasts][yyyy_mm] = zeit.cms.repository.folder.Folder()
-        return repository[podcasts][yyyy_mm]
+    def synchronize_episode(self, episode_id):
+        audio = self._find_existing_episode(episode_id)
+        episode_data = self.fetch_episode(episode_id)
+        if audio and episode_data:
+            self.update(audio, episode_data)
+        elif not audio and episode_data:
+            audio = self.create(episode_id, episode_data)
+        elif audio and not episode_data:
+            self.delete(audio)
+            return
+        elif not audio and not episode_data:
+            log.warning('No podcast episode %s in vivi and simplecast found.', episode_id)
+            return
+
+        if IPodcastEpisodeInfo(audio).is_published:
+            self.publish(audio)
+        elif IPublishInfo(audio).published and not IPodcastEpisodeInfo(audio).is_published:
+            self.retract(audio)
 
     def _find_existing_episode(self, episode_id):
         connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
@@ -124,51 +133,20 @@ class Simplecast:
             )
             return None
 
-    def _update_properties(self, episode_data, audio):
-        audio.audio_type = 'podcast'
-        for iface, properties in self._properties.items():
-            obj = iface(audio)
-            for vivi, simplecast in properties.items():
-                setattr(obj, vivi, episode_data[simplecast])
-
-        podcast_id = episode_data['podcast']['id']
-        info = IPodcastEpisodeInfo(audio)
-        info.podcast_id = podcast_id
-        info.podcast = (
+    def create(self, episode_id, episode_data):
+        podcast = (
             IPodcastEpisodeInfo['podcast']
             .source(None)
             .find_by_property('external_id', episode_data['podcast']['id'])
         )
+        if podcast and podcast.folder:
+            parent = urlparse(podcast.folder).path.split('/')[1:]
+        else:
+            parent = [zeit.cms.config.required('zeit.simplecast', 'podcast-folder')]
+        created = pendulum.parse(episode_data['created_at']).strftime('%Y-%m')
+        parent.append(created)
+        container = find_or_create_folder(*parent)
 
-        ISemanticChange(audio).last_semantic_change = pendulum.parse(episode_data['updated_at'])
-
-    def synchronize_episode(self, episode_id):
-        audio = self._find_existing_episode(episode_id)
-        episode_data = self.fetch_episode(episode_id)
-        if audio and episode_data:
-            self.update(audio, episode_data)
-        elif not audio and episode_data:
-            audio = self._create(episode_id, episode_data)
-        elif audio and not episode_data:
-            self._delete(audio)
-            return
-        elif not audio and not episode_data:
-            log.warning('No podcast episode %s in vivi and simplecast found.', episode_id)
-            return
-
-        if self._publish_state_needs_sync(audio):
-            self.publish(audio)
-        elif self._retract_state_needs_sync(audio):
-            self._retract(audio)
-
-    def _retract_state_needs_sync(self, audio):
-        return IPublishInfo(audio).published and not IPodcastEpisodeInfo(audio).is_published
-
-    def _publish_state_needs_sync(self, audio):
-        return IPodcastEpisodeInfo(audio).is_published
-
-    def _create(self, episode_id, episode_data):
-        container = self.folder(episode_data['created_at'])
         audio = zeit.content.audio.audio.Audio()
         self._update_properties(episode_data, audio)
         container[episode_id] = audio
@@ -184,18 +162,40 @@ class Simplecast:
             self._update_properties(episode_data, episode)
             log.info('Podcast Episode %s successfully updated.', episode.uniqueId)
 
+    def _update_properties(self, episode_data, audio):
+        for iface, properties in self._properties.items():
+            obj = iface(audio)
+            for vivi, simplecast in properties.items():
+                setattr(obj, vivi, episode_data[simplecast])
+
+        podcast_id = episode_data['podcast']['id']
+        info = IPodcastEpisodeInfo(audio)
+        info.podcast_id = podcast_id
+        podcast = (
+            IPodcastEpisodeInfo['podcast'].source(None).find_by_property('external_id', podcast_id)
+        )
+        if podcast:
+            info.podcast = podcast
+            audio.audio_type = podcast.audio_type
+            if podcast.default_access:
+                audio.access = podcast.default_access
+        else:
+            audio.audio_type = IPodcast['audio_type'].default
+
+        ISemanticChange(audio).last_semantic_change = pendulum.parse(episode_data['updated_at'])
+
+    def delete(self, audio):
+        self.retract(audio)
+        unique_id = audio.uniqueId
+        del audio.__parent__[audio.__name__]
+        self.__parent__ = None
+        log.info('Podcast Episode %s successfully deleted.', unique_id)
+
     def publish(self, audio):
         # XXX countdown is workaround race condition between celery/redis BUG-796
         IPublish(audio).publish(priority=PRIORITY_LOW, countdown=5)
         log.info('Podcast Episode %s successfully published.', audio.uniqueId)
 
-    def _retract(self, audio):
+    def retract(self, audio):
         IPublish(audio).retract(background=False)
         log.info('Podcast Episode %s successfully retracted.', audio.uniqueId)
-
-    def _delete(self, audio):
-        self._retract(audio)
-        unique_id = audio.uniqueId
-        del audio.__parent__[audio.__name__]
-        self.__parent__ = None
-        log.info('Podcast Episode %s successfully deleted.', unique_id)

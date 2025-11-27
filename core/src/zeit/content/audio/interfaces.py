@@ -19,6 +19,7 @@ class AudioTypeSource(zeit.cms.content.sources.SimpleFixedValueSource):
         'podcast': _('Podcast'),
         'tts': _('Text to Speech'),
         'premium': _('Premium Audio'),
+        'premium-simplecast': _('Premium Simplecast'),
         'custom': _('Custom Audio'),
     }
 
@@ -69,6 +70,9 @@ class IPodcast(zope.interface.Interface):
     rss_image = zope.schema.URI(title=_('rss_image'))
     release_frequency = zope.interface.Attribute('release_frequency')
     contact_email = zope.interface.Attribute('contact_email')
+    audio_type = zope.schema.Choice(source=AudioTypeSource(), required=False, default='podcast')
+    folder = zope.schema.URI(title='parent folder', required=False)
+    default_access = zope.interface.Attribute('default_access')
 
 
 @zope.interface.implementer(IPodcast)
@@ -90,6 +94,9 @@ class Podcast(zeit.cms.content.sources.AllowedBase):
         rss_image=None,
         release_frequency=None,
         contact_email=None,
+        audio_type=IPodcast['audio_type'].default,
+        folder=None,
+        default_access=None,
     ):
         super().__init__(id, title, available=None)
         self.external_id = external_id
@@ -107,26 +114,9 @@ class Podcast(zeit.cms.content.sources.AllowedBase):
         self.rss_image = rss_image
         self.release_frequency = release_frequency
         self.contact_email = contact_email
-
-    def __eq__(self, other):
-        return (
-            zope.security.proxy.isinstance(other, self.__class__)
-            and self.id == other.id
-            and self.title == other.title
-            and self.external_id == other.external_id
-            and self.subtitle == other.subtitle
-            and self.color == other.color
-            and self.image == other.image
-            and self.distribution_channels == other.distribution_channels
-            and self.feed == other.feed
-            and self.explicit == other.explicit
-            and self.author == other.author
-            and self.category == other.category
-            and self.podcast_type == other.podcast_type
-            and self.rss_image == other.rss_image
-            and self.release_frequency == other.release_frequency
-            and self.contact_email == other.contact_email
-        )
+        self.audio_type = audio_type
+        self.folder = folder
+        self.default_access = default_access
 
 
 class PodcastSource(zeit.cms.content.sources.ObjectSource, zeit.cms.content.sources.XMLSource):
@@ -163,6 +153,9 @@ class PodcastSource(zeit.cms.content.sources.ObjectSource, zeit.cms.content.sour
             node.get('rss_image'),
             node.get('release_frequency'),
             node.get('contact_email'),
+            node.get('audio_type', IPodcast['audio_type'].default),
+            node.get('folder'),
+            node.get('access'),
         )
         return podcast
 
