@@ -307,7 +307,7 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
                 ],
             }
         )
-        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/article')
         result = tms.get_content_containing_topicpages(article)
         self.assertEqual('Arbeit', result[0].label)
         self.assertEqual('keyword', result[0].entity_type)

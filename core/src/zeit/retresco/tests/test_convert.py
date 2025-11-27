@@ -1,7 +1,10 @@
 # coding: utf-8
 
+import importlib.resources
+
 from pendulum import datetime
 import pendulum
+import transaction
 
 from zeit.cms.checkout.helper import checked_out
 from zeit.content.dynamicfolder.testing import create_dynamic_folder
@@ -10,6 +13,7 @@ import zeit.cms.content.interfaces
 import zeit.cms.content.sources
 import zeit.cms.interfaces
 import zeit.cms.tagging.tag
+import zeit.connector.filesystem
 import zeit.content.audio.audio
 import zeit.content.audio.testing
 import zeit.content.author.author
@@ -221,6 +225,8 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
         volume.year = content.year
         volume.volume = content.volume
         volume.product = zeit.cms.content.sources.Product('ZEI')
+        self.repository['2006'] = zeit.cms.repository.folder.Folder()
+        self.repository['2006']['49'] = zeit.cms.repository.folder.Folder()
         self.repository['2006']['49']['ausgabe'] = volume
 
         found = zeit.content.volume.interfaces.IVolume(content)
@@ -246,7 +252,7 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
         self.assertNotIn('countings', data['payload']['document'])
 
     def test_converts_image(self):
-        image = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')
+        image = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/imagefolder/image')
         with checked_out(image):
             pass  # satisfy editing fields
         data = zeit.retresco.interfaces.ITMSRepresentation(image)()
@@ -254,71 +260,31 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
         self.assertEqual(
             {
                 'body': '<body/>',
-                'date': '1970-01-01T00:00:00Z',
+                'date': '2025-11-27T10:21:08Z',
                 'doc_type': 'image',
                 'payload': {
                     'document': {
-                        'author': 'Jochen Stahnke',
-                        'banner': True,
+                        'date_created': '2025-11-27T10:21:08+00:00',
+                        'last-semantic-change': '2025-11-27T10:21:08+00:00',
                         'last_modified_by': 'zope.user',
                     },
-                    'image': {'height': 1536, 'mime_type': 'image/jpeg', 'width': 2048},
+                    'image': {'height': 160, 'mime_type': 'image/jpeg', 'width': 119},
                     'meta': {'type': 'image'},
-                    'body': {
-                        'title': 'DSC00109_2.JPG',
-                        'text': 'DSC00109_2.JPG',
-                    },
+                    'body': {'text': 'image', 'title': 'image'},
                     'tagging': {},
                     'vivi': {
                         'cms_icon': ('/@@/zeit-content-image-interfaces-IImage-zmi_icon.png'),
-                        'cms_preview_url': ('/repository/2006/DSC00109_2.JPG/thumbnail'),
+                        'cms_preview_url': ('/repository/imagefolder/image/thumbnail'),
                         'publish_status': 'not-published',
                     },
+                    'workflow': {'published': False},
                 },
-                'url': '/2006/DSC00109_2.JPG',
-                'title': 'DSC00109_2.JPG',
-                'teaser': 'DSC00109_2.JPG',
+                'url': '/imagefolder/image',
+                'title': 'image',
+                'teaser': 'image',
             },
             data,
         )
-
-    def test_converts_recipe_attributes(self):
-        recipe = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept'
-        )
-        with checked_out(recipe):
-            pass
-        data = zeit.retresco.interfaces.ITMSRepresentation(recipe)()
-        payload = {
-            'search': [
-                'Die leckere Fleisch-Kombi:subheading',
-                'Grillwurst:ingredient',
-                'Hähnchen:ingredient',
-                'Hühnchen:ingredient',
-                'Pastagerichte:category',
-                'Tomate:ingredient',
-                'Tomaten-Grieß:recipe_title',
-                'Tomaten:ingredient',
-                'Vier Rezepte für eine Herdplatte:title',
-                'Wurst-Hähnchen:recipe_title',
-                'Wurst:ingredient',
-                'Wurstiges:category',
-            ],
-            'subheadings': ['Die leckere Fleisch-Kombi'],
-            'titles': ['Tomaten-Grieß', 'Wurst-Hähnchen'],
-            'categories': ['pastagerichte', 'wurstiges'],
-            'complexities': ['ambitioniert', 'einfach'],
-            'servings': ['2', '6'],
-            'times': ['unter 30 Minuten', 'über 60 Minuten'],
-            'ingredients': [
-                'brathaehnchen',
-                'bratwurst',
-                'chicken-nuggets',
-                'gurke',
-                'tomate',
-            ],
-        }
-        self.assertEqual(payload, {k: sorted(v) for k, v in data['payload']['recipe'].items()})
 
     def test_converts_imagegroup(self):
         group = zeit.content.image.testing.create_image_group()
@@ -361,6 +327,7 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
                         'cms_preview_url': '/repository/group/thumbnail',
                         'publish_status': 'not-published',
                     },
+                    'workflow': {'published': False},
                 },
                 'url': '/group',
                 'title': 'mytitle',
@@ -469,12 +436,12 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
         gallery = zeit.content.gallery.gallery.Gallery()
         gallery.title = 'title'
         gallery.teaserText = 'teaser'
-        gallery.image_folder = self.repository['2006']
+        gallery.image_folder = self.repository['imagefolder']
         self.repository['gallery'] = gallery
         data = zeit.retresco.interfaces.ITMSRepresentation(self.repository['gallery'])()
-        self.assertEqual(2, data['payload']['head']['visible_entry_count'])
+        self.assertEqual(1, data['payload']['head']['visible_entry_count'])
         content = zeit.retresco.interfaces.ITMSContent(data)
-        self.assertEqual(2, zeit.content.gallery.interfaces.IVisibleEntryCount(content))
+        self.assertEqual(1, zeit.content.gallery.interfaces.IVisibleEntryCount(content))
 
     def test_converts_dynamicfolder(self):
         folder = create_dynamic_folder()
@@ -485,8 +452,55 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
         )
 
     def test_converts_article_with_audio(self):
-        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/article')
         audio = zeit.content.audio.testing.AudioBuilder().referenced_by(article).build()
-        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/article')
         data = zeit.retresco.interfaces.ITMSRepresentation(article)()
         assert data['payload']['head']['audio_references'] == [audio.uniqueId]
+
+
+class ConvertRecipeTest(zeit.retresco.testing.FunctionalTestCase):
+    def setUp(self):
+        super().setUp()
+        fs = zeit.connector.filesystem.Connector(
+            str(importlib.resources.files('zeit.connector') / 'testcontent')
+        )
+        res = fs['http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept']
+        self.repository.connector['http://xml.zeit.de/rezept'] = res
+        transaction.commit()
+
+    def test_converts_recipe_attributes(self):
+        recipe = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/rezept')
+        with checked_out(recipe):
+            pass
+        data = zeit.retresco.interfaces.ITMSRepresentation(recipe)()
+        payload = {
+            'search': [
+                'Die leckere Fleisch-Kombi:subheading',
+                'Grillwurst:ingredient',
+                'Hähnchen:ingredient',
+                'Hühnchen:ingredient',
+                'Pastagerichte:category',
+                'Tomate:ingredient',
+                'Tomaten-Grieß:recipe_title',
+                'Tomaten:ingredient',
+                'Vier Rezepte für eine Herdplatte:title',
+                'Wurst-Hähnchen:recipe_title',
+                'Wurst:ingredient',
+                'Wurstiges:category',
+            ],
+            'subheadings': ['Die leckere Fleisch-Kombi'],
+            'titles': ['Tomaten-Grieß', 'Wurst-Hähnchen'],
+            'categories': ['pastagerichte', 'wurstiges'],
+            'complexities': ['ambitioniert', 'einfach'],
+            'servings': ['2', '6'],
+            'times': ['unter 30 Minuten', 'über 60 Minuten'],
+            'ingredients': [
+                'brathaehnchen',
+                'bratwurst',
+                'chicken-nuggets',
+                'gurke',
+                'tomate',
+            ],
+        }
+        self.assertEqual(payload, {k: sorted(v) for k, v in data['payload']['recipe'].items()})

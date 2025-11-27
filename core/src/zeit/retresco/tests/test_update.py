@@ -80,11 +80,14 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
         self.assertFalse(self.tms.enrich.called)
 
     def test_moving_folder_should_index_recursively(self):
-        folder = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2007/01')
+        folder = zeit.cms.repository.folder.Folder()
+        self.repository['recursive'] = folder
+        self.repository['recursive']['test'] = ExampleContentType()
+        self.tms.index.reset_mock()
         renamer = zope.copypastemove.interfaces.IContainerItemRenamer(folder.__parent__)
-        renamer.renameItem('01', '01-moved')
-        # 1 Folder + 40 objects contained in it
-        self.assertEqual(41, self.tms.index.call_count)
+        renamer.renameItem('recursive', 'recursive-moved')
+        # 1 Folder + 1 object contained in it
+        self.assertEqual(2, self.tms.index.call_count)
 
     def test_non_recursive_folders_should_not_be_indexed_recursively(self):
         folder = zeit.cms.repository.folder.Folder()
@@ -212,7 +215,7 @@ class UpdatePublishTest(zeit.retresco.testing.FunctionalTestCase):
         zeit.cms.workflow.interfaces.IPublish(content).publish(background=False)
         self.assertEqual([True], published)
 
-        content = self.repository['2006']['DSC00109_2.JPG']
+        content = self.repository['imagefolder']['image']
         zeit.cms.workflow.interfaces.IPublish(content).publish(background=False)
         self.assertEqual([True, True], published)
 
@@ -228,7 +231,7 @@ class UpdatePublishTest(zeit.retresco.testing.FunctionalTestCase):
         zeit.cms.workflow.interfaces.IPublish(content).retract(background=False)
         self.assertEqual([False], published)
 
-        content = self.repository['2006']['DSC00109_2.JPG']
+        content = self.repository['imagefolder']['image']
         zeit.cms.workflow.interfaces.IPublishInfo(content).published = True
         zeit.cms.workflow.interfaces.IPublish(content).retract(background=False)
         self.assertEqual([False, False], published)
@@ -245,8 +248,12 @@ class IndexParallelTest(zeit.retresco.testing.FunctionalTestCase):
         super().tearDown()
 
     def test_should_create_job_per_folder_entry(self):
-        zeit.retresco.update.index_parallel.delay('http://xml.zeit.de/online/2007/')
-        self.assertEqual(54, self.index.call_count)
+        self.repository['folder'] = zeit.cms.repository.folder.Folder()
+        self.repository['folder']['entry-1'] = ExampleContentType()
+        self.repository['folder']['entry-2'] = ExampleContentType()
+        self.index.reset_mock()
+        zeit.retresco.update.index_parallel.delay('http://xml.zeit.de/folder/')
+        self.assertEqual(2, self.index.call_count)
 
     def test_should_not_recurse_into_nonrecursive_collections(self):
         folder = zeit.cms.repository.folder.Folder()
@@ -258,6 +265,7 @@ class IndexParallelTest(zeit.retresco.testing.FunctionalTestCase):
         self.assertEqual(1, self.index.call_count)
 
     def test_should_pass_parameters_through_recursion(self):
+        self.repository['testing'] = zeit.cms.repository.folder.Folder()
         self.repository['testing']['foo'] = ExampleContentType()
         zeit.retresco.update.index_parallel.delay(
             'http://xml.zeit.de/testing/', enrich=True, publish=True
