@@ -28,11 +28,18 @@ import zeit.retresco.testing
 import zeit.seo.interfaces
 
 
-class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
-    maxDiff = None
+class ConvertArticleTest(zeit.retresco.testing.FunctionalTestCase):
+    def setUp(self):
+        super().setUp()
+        fs = zeit.connector.filesystem.Connector(
+            str(importlib.resources.files('zeit.connector') / 'testcontent')
+        )
+        res = fs['http://xml.zeit.de/online/2007/01/Somalia']
+        self.repository.connector['http://xml.zeit.de/somalia'] = res
+        transaction.commit()
 
     def test_smoke_converts_lots_of_fields(self):
-        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/somalia')
         with checked_out(article) as co:
             co.breaking_news = True
             co.product = zeit.cms.content.sources.Product('KINZ')
@@ -40,10 +47,10 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
                 zeit.cms.tagging.tag.Tag('Code1', 'keyword'),
                 zeit.cms.tagging.tag.Tag('Code2', 'keyword'),
             )
-        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/somalia')
 
         images = zeit.content.image.interfaces.IImages(article)
-        image = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')
+        image = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/imagefolder/image')
         with checked_out(image) as co:
             zeit.content.image.interfaces.IImageMetadata(co).expires = datetime(2007, 4, 1)
         images.image = zeit.cms.interfaces.ICMSContent(image.uniqueId)
@@ -109,7 +116,7 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
                         'authors': [],
                         'audio_references': [],
                         'agencies': [],
-                        'teaser_image': 'http://xml.zeit.de/2006/DSC00109_2.JPG',
+                        'teaser_image': 'http://xml.zeit.de/imagefolder/image',
                     },
                     'meta': {
                         'type': 'article',
@@ -123,6 +130,7 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
                     'workflow': {
                         'last-modified-by': 'hegenscheidt',
                         'product-id': 'KINZ',
+                        'published': False,
                         'status': 'OK',
                     },
                 },
@@ -135,13 +143,15 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
                 'section': '/International',
                 'supertitle': 'Somalia',
                 'teaser': teaser,
-                'teaser_img_url': '/2006/DSC00109_2.JPG',
+                'teaser_img_url': '/imagefolder/image',
                 'title': 'Rückkehr der Warlords',
-                'url': '/online/2007/01/Somalia',
+                'url': '/somalia',
             },
             data,
         )
 
+
+class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
     def assert_editing_fields(self, data):
         self.assertStartsWith('{urn:uuid:', data.pop('doc_id'))
         self.assertStartsWith('{urn:uuid:', data['payload']['document'].pop('uuid'))
