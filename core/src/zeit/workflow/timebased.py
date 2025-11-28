@@ -4,6 +4,7 @@ import zope.component
 import zope.interface
 
 from zeit.cms.content.interfaces import WRITEABLE_ALWAYS
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.celery
 import zeit.cms.cli
@@ -12,6 +13,7 @@ import zeit.cms.content.xmlsupport
 import zeit.workflow.interfaces
 import zeit.workflow.publish
 import zeit.workflow.publishinfo
+import zeit.workflow.scheduled.interfaces
 
 
 WORKFLOW_NS = zeit.workflow.interfaces.WORKFLOW_NS
@@ -23,13 +25,13 @@ log = logging.getLogger(__name__)
 class TimeBasedWorkflow(zeit.workflow.publishinfo.PublishInfo):
     """Timebased workflow."""
 
-    zeit.cms.content.dav.mapProperty(
+    _released_from = zeit.cms.content.dav.DAVProperty(
         zeit.workflow.interfaces.ITimeBasedPublishing['release_period'].fields[0],
         WORKFLOW_NS,
         'released_from',
         writeable=WRITEABLE_ALWAYS,
     )
-    zeit.cms.content.dav.mapProperty(
+    _released_to = zeit.cms.content.dav.DAVProperty(
         zeit.workflow.interfaces.ITimeBasedPublishing['release_period'].fields[1],
         WORKFLOW_NS,
         'released_to',
@@ -38,6 +40,68 @@ class TimeBasedWorkflow(zeit.workflow.publishinfo.PublishInfo):
 
     def __init__(self, context):
         self.context = self.__parent__ = context
+
+    @property
+    def released_from(self):
+        if FEATURE_TOGGLES.find('use_scheduled_operations'):
+            try:
+                ops = zeit.workflow.scheduled.interfaces.IScheduledOperations(self.context)
+                if publish_ops := ops.list(operation='publish'):
+                    return publish_ops[0].scheduled_on
+            except Exception as e:
+                log.warning('Error reading scheduled operations, falling back: %s', e)
+        return self._released_from
+
+    @released_from.setter
+    def released_from(self, value):
+        if FEATURE_TOGGLES.find('use_scheduled_operations'):
+            try:
+                ops = zeit.workflow.scheduled.interfaces.IScheduledOperations(self.context)
+                existing = ops.list(operation='publish')
+
+                if value is None:
+                    for op in existing:
+                        ops.remove(op.id)
+                elif existing:
+                    ops.update(existing[0].id, scheduled_on=value)
+                else:
+                    ops.add('publish', value)
+            except Exception as e:
+                log.warning('Error updating scheduled operations, falling back: %s', e)
+                self._released_from = value
+        else:
+            self._released_from = value
+
+    @property
+    def released_to(self):
+        if FEATURE_TOGGLES.find('use_scheduled_operations'):
+            try:
+                ops = zeit.workflow.scheduled.interfaces.IScheduledOperations(self.context)
+                if retract_ops := ops.list(operation='retract'):
+                    return retract_ops[0].scheduled_on
+            except Exception as e:
+                log.warning('Error reading scheduled operations, falling back: %s', e)
+        return self._released_to
+
+    @released_to.setter
+    def released_to(self, value):
+        if FEATURE_TOGGLES.find('use_scheduled_operations'):
+            try:
+                ops = zeit.workflow.scheduled.interfaces.IScheduledOperations(self.context)
+                existing = ops.list(operation='retract')
+
+                if value is None:
+                    for op in existing:
+                        ops.remove(op.id)
+                elif existing:
+                    ops.update(existing[0].id, scheduled_on=value)
+                else:
+                    ops.add('retract', value)
+            except Exception as e:
+                log.warning('Error updating scheduled operations, falling back: %s', e)
+                self._released_to = value
+        else:
+            self._released_to = value
 
     @property
     def release_period(self):
@@ -53,7 +117,8 @@ class TimeBasedWorkflow(zeit.workflow.publishinfo.PublishInfo):
             self.log('publish', released_from)
         if self.released_to != released_to:
             self.log('retract', released_to)
-        self.released_from, self.released_to = value
+        self.released_from = released_from
+        self.released_to = released_to
 
     def log(self, task, timestamp):
         log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
