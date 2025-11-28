@@ -1,6 +1,7 @@
 # coding: utf-8
 # ruff: noqa: E501
 from unittest import mock
+import datetime
 import importlib.resources
 import json
 
@@ -363,11 +364,22 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
             name='cp_with_teaser', contents=[t1, t2, t3]
         )
         zeit.cms.checkout.interfaces.ICheckinManager(cp_with_teaser).checkin()
+        transaction.commit()
         self.elasticsearch = zope.component.getUtility(zeit.retresco.interfaces.IElasticsearch)
 
         self.cp = self.create_and_checkout_centerpage()
         self.area = create_automatic_area(self.cp)
         self.area.referenced_cp = self.repository['cp_with_teaser']
+
+        self.connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+        self.search_sql_mock = mock.patch.object(
+            self.connector, 'search_sql', wraps=self.connector.search_sql
+        )
+        self.search_sql = self.search_sql_mock.start()
+
+    def tearDown(self):
+        self.search_sql_mock.stop()
+        super().tearDown()
 
     def assertUniqueIds(self, area, *uniqueIds):
         self.assertEqual(
@@ -675,14 +687,11 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
 
         id1 = zeit.cms.content.interfaces.IUUID(self.repository['t1']).shortened.replace('-', '')
         id2 = zeit.cms.content.interfaces.IUUID(self.repository['t2']).shortened.replace('-', '')
-        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
-
         sorted_ids = [id1, id2]
         sorted_ids.sort()
-
         self.assertEllipsis(
             f"...AND (properties.id NOT IN ('{sorted_ids[0]}', '{sorted_ids[1]}'))...",
-            connector.search_args[0],
+            self.compile_sql(self.search_sql.call_args[0][0]),
         )
 
     def test_sql_query_preserves_duplicates(self):
@@ -694,10 +703,9 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
         lead.append(self.repository['t2'])
 
         IRenderedArea(self.area).values()
-        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
         self.assertNotEllipsis(
             '...AND (properties.id NOT IN...',
-            connector.search_args[0],
+            self.compile_sql(self.search_sql.call_args[0][0]),
         )
 
 
@@ -843,15 +851,25 @@ class AutomaticAreaSQLTest(zeit.content.cp.testing.FunctionalTestCase):
         self.area.sql_query = "type='article'"
         self.repository['cp'] = self.cp
         self.connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+        self.search_sql_mock = mock.patch.object(
+            self.connector, 'search_sql', wraps=self.connector.search_sql
+        )
+        self.search_sql = self.search_sql_mock.start()
+
+    def tearDown(self):
+        self.search_sql_mock.stop()
+        super().tearDown()
 
     def test_cms_content_iter_returns_filled_in_blocks(self):
-        self.connector.search_result = ['http://xml.zeit.de/online/2007/01/Somalia']
-        content = list(zeit.edit.interfaces.IElementReferences(self.area))
+        with mock.patch(
+            'sqlalchemy.func.current_date', return_value=datetime.datetime(2025, 11, 11)
+        ):
+            content = list(zeit.edit.interfaces.IElementReferences(self.area))
         self.assertEqual(
-            ['http://xml.zeit.de/online/2007/01/Somalia'],
+            ['http://xml.zeit.de/article'],
             [x.uniqueId for x in content],
         )
-        self.assertEqual('International', content[0].ressort)
+        self.assertEqual('Politik', content[0].ressort)
 
     def test_clauses_extend_query(self):
         self.area.sql_query = "type='article' OR ressort='International'"
@@ -860,56 +878,58 @@ class AutomaticAreaSQLTest(zeit.content.cp.testing.FunctionalTestCase):
         query = """
 ...WHERE (type='article' OR ressort='International') AND published=true ORDER...
 """
-        self.assertEllipsis(query, self.connector.search_args[0])
+        self.assertEllipsis(query, self.compile_sql(self.search_sql.call_args[0][0]))
 
     def test_query_order_default(self):
         IRenderedArea(self.area).values()
         query = '...ORDER BY date_last_published_semantic desc nulls last...'
-        self.assertEllipsis(query, self.connector.search_args[0])
+        self.assertEllipsis(query, self.compile_sql(self.search_sql.call_args[0][0]))
 
     def test_set_query_order(self):
         self.area.sql_order = 'date_first_released desc'
         IRenderedArea(self.area).values()
         query = '...ORDER BY date_first_released desc...'
-        self.assertEllipsis(query, self.connector.search_args[0])
+        self.assertEllipsis(query, self.compile_sql(self.search_sql.call_args[0][0]))
 
     def test_limit_query_results(self):
         IRenderedArea(self.area).values()
-        self.assertEllipsis('...LIMIT 3...', self.connector.search_args[0])
+        self.assertEllipsis('...LIMIT 3...', self.compile_sql(self.search_sql.call_args[0][0]))
 
     def test_offset_query_results_for_pagination(self):
         self.area.start = 5
         IRenderedArea(self.area).values()
-        self.assertEllipsis('...OFFSET 5...', self.connector.search_args[0])
+        self.assertEllipsis('...OFFSET 5...', self.compile_sql(self.search_sql.call_args[0][0]))
 
     def test_get_total_hits(self):
-        self.connector.search_result = ['http://xml.zeit.de/testcontent']
-        self.assertEqual(1, IRenderedArea(self.area)._content_query.total_hits)
-        self.assertNotIn('CURRENT_DATE', self.connector.search_args[0])
+        with mock.patch.object(
+            self.connector, 'search_sql_count', wraps=self.connector.search_sql_count
+        ) as count:
+            self.assertEqual(1, IRenderedArea(self.area)._content_query.total_hits)
+            self.assertNotIn('CURRENT_DATE', self.compile_sql(count.call_args[0][0]))
 
     def test_does_not_execute_query_if_limit_is_zero(self):
         self.area.count = 0
         self.assertFalse(IRenderedArea(self.area).values())
-        self.assertFalse(self.connector.search_args)
+        self.assertFalse(self.search_sql.call_args)
 
     def test_restrict_time_adds_clause(self):
         IRenderedArea(self.area).values()
         self.assertEllipsis(
             '...AND properties.date_last_published_semantic >= CURRENT_DATE - make_interval(0, 0, 0, 7)...',
-            self.connector.search_args[0],
+            self.compile_sql(self.search_sql.call_args[0][0]),
         )
 
     def test_restrict_time_can_be_disabled(self):
         self.area.sql_restrict_time = False
         IRenderedArea(self.area).values()
-        self.assertNotIn('CURRENT_DATE', self.connector.search_args[0])
+        self.assertNotIn('CURRENT_DATE', self.compile_sql(self.search_sql.call_args[0][0]))
 
     def test_restrict_time_applies_to_order_column(self):
         self.area.sql_order = 'date_first_released desc nulls last'
         IRenderedArea(self.area).values()
         self.assertEllipsis(
             '...AND properties.date_first_released >= CURRENT_DATE...',
-            self.connector.search_args[0],
+            self.compile_sql(self.search_sql.call_args[0][0]),
         )
 
     def test_restrict_time_falls_back_to_dlps(self):
@@ -917,25 +937,26 @@ class AutomaticAreaSQLTest(zeit.content.cp.testing.FunctionalTestCase):
         IRenderedArea(self.area).values()
         self.assertEllipsis(
             '...AND properties.date_last_published_semantic >= CURRENT_DATE...',
-            self.connector.search_args[0],
+            self.compile_sql(self.search_sql.call_args[0][0]),
         )
 
     def test_restrict_time_respects_freeze_now(self):
         zeit.cms.config.set('zeit.reach', 'freeze-now', '2024-01-01T01:01Z')
         IRenderedArea(self.area).values()
         self.assertEllipsis(
-            "...>= CAST('2024-01-01 01:01:00+00:00' AS TIMESTAMP WITH TIME ZONE) - make_interval(0, 0, 0, 7)...",
-            self.connector.search_args[0],
+            "...>= CAST('2024-01-01 01:01:00+00:00' AS TIMESTAMP WITH TIME ZONE) - make_interval(...",
+            self.compile_sql(self.search_sql.call_args[0][0]),
         )
         # ProductConfigLayer does not foreign packages. Maybe it should?
         zeit.cms.config.set('zeit.reach', 'freeze-now', None)
 
     def test_force_queryplan_compiles_to_cte_with_offset_to_force_filter_before_sort(self):
         self.area.sql_force_queryplan = True
-        IRenderedArea(self.area).values()
+        with mock.patch.object(self.connector, 'support_locking', False):
+            IRenderedArea(self.area).values()
         self.assertEllipsis(
             "WITH...WHERE (type='article'...OFFSET 0)...ORDER BY...LIMIT 3 OFFSET 0...",
-            self.connector.search_args[0],
+            self.compile_sql(self.search_sql.call_args[0][0]),
         )
 
     def test_reference_query_adds_clause(self):
@@ -945,7 +966,7 @@ class AutomaticAreaSQLTest(zeit.content.cp.testing.FunctionalTestCase):
             """...AND properties.id IN
 (SELECT content_references.source FROM content_references
 WHERE (type='teaser-image'))...""",
-            self.connector.search_args[0],
+            self.compile_sql(self.search_sql.call_args[0][0]),
         )
 
 
@@ -959,25 +980,35 @@ class AutomaticAreaSQLCustomTest(zeit.content.cp.testing.FunctionalTestCase):
         self.area.automatic_type = 'custom'
         self.repository['cp'] = self.cp
         self.connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+        self.search_sql_mock = mock.patch.object(
+            self.connector, 'search_sql', wraps=self.connector.search_sql
+        )
+        self.search_sql = self.search_sql_mock.start()
+
+    def tearDown(self):
+        self.search_sql_mock.stop()
+        super().tearDown()
 
     def test_builds_query_from_conditions(self):
         source = zeit.cms.content.interfaces.ICommonMetadata['serie'].source(None)
         self.area.query = (('serie', 'eq', source.find('Autotest')),)
         IRenderedArea(self.area).values()
         query = "...series = 'Autotest' AND published=true..."
-        self.assertEllipsis(query, self.connector.search_args[0])
+        self.assertEllipsis(query, self.compile_sql(self.search_sql.call_args[0][0]))
 
     def test_respects_column_name_exceptions(self):
         self.area.query = (('content_type', 'eq', zeit.content.article.interfaces.IArticle),)
         IRenderedArea(self.area).values()
-        self.assertEllipsis("...type = 'article'...", self.connector.search_args[0])
+        self.assertEllipsis(
+            "...type = 'article'...", self.compile_sql(self.search_sql.call_args[0][0])
+        )
 
     def test_applies_configured_operator(self):
         self.area.query = (('content_type', 'neq', zeit.content.article.interfaces.IArticle),)
         IRenderedArea(self.area).values()
         self.assertEllipsis(
             "...(properties.type != 'article' OR properties.type IS NULL)...",
-            self.connector.search_args[0],
+            self.compile_sql(self.search_sql.call_args[0][0]),
         )
 
     def test_creates_appropriate_condition_for_channels(self):
@@ -988,10 +1019,10 @@ class AutomaticAreaSQLCustomTest(zeit.content.cp.testing.FunctionalTestCase):
         IRenderedArea(self.area).values()
         query = """
 ...((properties.channels @> '[["International", "Nahost"]]')
-OR (properties.channels @> '[["Wissen"]]'))
+OR (properties.channels @>  '[["Wissen"]]'))
 AND published=true...
 """
-        self.assertEllipsis(query, self.connector.search_args[0])
+        self.assertEllipsis(query, self.compile_sql(self.search_sql.call_args[0][0]))
 
     def test_creates_appropriate_condition_for_ressort(self):
         self.area.query = (
@@ -1005,7 +1036,7 @@ AND properties.sub_ressort = 'Nahost'
 OR properties.ressort = 'Wissen')
 AND published=true...
 """
-        self.assertEllipsis(query, self.connector.search_args[0])
+        self.assertEllipsis(query, self.compile_sql(self.search_sql.call_args[0][0]))
 
     def test_joins_different_fields_with_AND_but_same_fields_with_OR(self):
         self.area.query = (
@@ -1020,27 +1051,28 @@ AND (properties.ressort = 'International'
 OR properties.ressort = 'Wissen')
 AND published=true...
 """
-        self.assertEllipsis(query, self.connector.search_args[0])
+        self.assertEllipsis(query, self.compile_sql(self.search_sql.call_args[0][0]))
 
     def test_restrict_time_adds_clause(self):
         IRenderedArea(self.area).values()
         self.assertEllipsis(
             '...AND properties.date_last_published_semantic >= CURRENT_DATE - make_interval(0, 0, 0, 7)...',
-            self.connector.search_args[0],
+            self.compile_sql(self.search_sql.call_args[0][0]),
         )
 
     def test_restrict_time_can_be_disabled(self):
         self.area.query_restrict_time = False
         IRenderedArea(self.area).values()
-        self.assertNotIn('CURRENT_DATE', self.connector.search_args[0])
+        self.assertNotIn('make_interval', self.compile_sql(self.search_sql.call_args[0][0]))
 
     def test_supports_force_queryplan(self):
         self.area.query = (('ressort', 'eq', 'Wissen', None),)
         self.area.query_force_queryplan = True
-        IRenderedArea(self.area).values()
+        with mock.patch.object(self.connector, 'support_locking', False):
+            IRenderedArea(self.area).values()
         self.assertEllipsis(
             "WITH...WHERE properties.ressort = 'Wissen'...OFFSET 0)...ORDER BY...LIMIT 3 OFFSET 0...",
-            self.connector.search_args[0],
+            self.compile_sql(self.search_sql.call_args[0][0]),
         )
 
     def test_print_queries(self):
@@ -1057,11 +1089,11 @@ AND published=true...
  AND properties.print_ressort = 'Politik'...
  ORDER BY print_page ASC NULLS LAST, id DESC...
 """
-        self.assertEllipsis(query, self.connector.search_args[0])
+        self.assertEllipsis(query, self.compile_sql(self.search_sql.call_args[0][0]))
 
     def test_custom_query_order_defaults_to_semantic_publish(self):
         self.area.automatic_type = 'custom'
         self.area.query = (('ressort', 'eq', 'International', 'Nahost'),)
         IRenderedArea(self.area).values()
         query = '...ORDER BY date_last_published_semantic DESC...'
-        self.assertEllipsis(query, self.connector.search_args[0])
+        self.assertEllipsis(query, self.compile_sql(self.search_sql.call_args[0][0]))

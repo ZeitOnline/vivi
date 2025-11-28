@@ -36,7 +36,7 @@ When a centerpage is created the toplist is automatically added:
 >>> principal = zeit.cms.testing.create_interaction()
 
 >>> import zeit.cms.interfaces
->>> container = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/')
+>>> container = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/folder/')
 >>> container['cp'] = zeit.content.cp.centerpage.CenterPage()
 >>> mr = container['cp'].body['informatives'].values()[0]
 >>> mr.type
