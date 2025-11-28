@@ -333,7 +333,7 @@ class Content(
     )
 
     scheduled_operations = relationship(
-        'ScheduledOperation', back_populates='content', cascade='all, delete-orphan', lazy='noload'
+        'ScheduledOperation', back_populates='_content', cascade='all, delete-orphan', lazy='noload'
     )
 
     @classmethod
@@ -530,7 +530,7 @@ class ScheduledOperation(Base):
 
     id = mapped_column(Uuid(as_uuid=False), primary_key=True)
     content = mapped_column(
-        Integer, ForeignKey('properties.id', ondelete='CASCADE'), nullable=False
+        Uuid(as_uuid=False), ForeignKey('properties.id', ondelete='CASCADE'), nullable=False
     )
     operation = mapped_column(Unicode, nullable=False)
     scheduled_on = mapped_column(TIMESTAMP, nullable=False)

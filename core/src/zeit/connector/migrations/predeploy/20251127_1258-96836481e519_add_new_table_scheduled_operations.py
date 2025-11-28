@@ -24,7 +24,7 @@ def upgrade() -> None:
     op.create_table(
         'scheduled_operations',
         sa.Column('id', sa.Uuid(as_uuid=False), nullable=False),
-        sa.Column('content', sa.Integer(), nullable=False),
+        sa.Column('content', sa.Uuid(as_uuid=False), nullable=False),
         sa.Column('operation', sa.Unicode(), nullable=False),
         sa.Column('scheduled_on', sa.TIMESTAMP(timezone=True), nullable=False),
         sa.Column('property_changes', postgresql.JSONB(astext_type=sa.Text()), nullable=True),
