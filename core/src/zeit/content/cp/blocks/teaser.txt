@@ -24,15 +24,15 @@ The teaser block contains a list of teasers.
 >>> repository = zope.component.getUtility(
 ...     zeit.cms.repository.interfaces.IRepository)
 
->>> teasers.insert(0, repository['testcontent'])
->>> teasers.insert(1, repository['2007']['test'])
+>>> teasers.insert(0, repository['folder']['testcontent'])
+>>> teasers.insert(1, repository['article'])
 
 >>> print(zeit.cms.testing.xmltotext(teasers.xml))
 <container ...
     cp:type="teaser" module="leader"...
     cp:__name__="id-fa40681a-fbbd-414f-92ce-dbbd884ef3b5"...>
-  <block uniqueId="http://xml.zeit.de/testcontent" href="http://xml.zeit.de/testcontent"/>
-  <block uniqueId="http://xml.zeit.de/2007/test" href="http://xml.zeit.de/2007/test"/>
+  <block uniqueId="http://xml.zeit.de/folder/testcontent" href="http://xml.zeit.de/folder/testcontent"/>
+  <block uniqueId="http://xml.zeit.de/article" href="http://xml.zeit.de/article"/>
 </container>
 
 

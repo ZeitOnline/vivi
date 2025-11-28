@@ -270,7 +270,7 @@ class AreaConfigurationTest(zeit.content.cp.testing.BrowserTestCase):
             'body/landing-zone-drop-module?order=top&block_type=region'
             '&block_params=%s' % json.dumps(params)
         )
-        cp = zeit.cms.interfaces.ICMSWCContent('http://xml.zeit.de/online/2007/01/island')
+        cp = zeit.cms.interfaces.ICMSWCContent('http://xml.zeit.de/folder/island')
         area = cp.body.values()[0].values()[0]
         self.assertEqual(True, area.apply_teaser_layouts_automatically)
         self.assertEqual('leader-upright', area.first_teaser_layout.id)

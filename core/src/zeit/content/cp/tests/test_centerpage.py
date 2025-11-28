@@ -69,7 +69,7 @@ class CenterpageTest(zeit.content.cp.testing.FunctionalTestCase):
     def test_regression_bug_217_copying_actually_copies(self):
         self.repository['cp'] = zeit.content.cp.centerpage.CenterPage()
         copier = zope.copypastemove.interfaces.IObjectCopier(self.repository['cp'])
-        copier.copyTo(self.repository['online'])
+        copier.copyTo(self.repository['folder'])
         with self.assertNothingRaised():
             self.repository['cp']
 
