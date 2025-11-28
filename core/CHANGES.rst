@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.234.0 (2025-11-28)
+--------------------
+
+- WCM-1213: Make podcast parent folder, audio_type, access configurable
+
+
 7.233.0 (2025-11-26)
 --------------------
 
