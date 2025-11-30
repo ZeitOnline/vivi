@@ -1,7 +1,10 @@
 # coding: utf-8
 
+import importlib.resources
+
 from pendulum import datetime
 import pendulum
+import transaction
 
 from zeit.cms.checkout.helper import checked_out
 from zeit.content.dynamicfolder.testing import create_dynamic_folder
@@ -10,6 +13,7 @@ import zeit.cms.content.interfaces
 import zeit.cms.content.sources
 import zeit.cms.interfaces
 import zeit.cms.tagging.tag
+import zeit.connector.filesystem
 import zeit.content.audio.audio
 import zeit.content.audio.testing
 import zeit.content.author.author
@@ -26,117 +30,6 @@ import zeit.seo.interfaces
 
 class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
     maxDiff = None
-
-    def test_smoke_converts_lots_of_fields(self):
-        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
-        with checked_out(article) as co:
-            co.breaking_news = True
-            co.product = zeit.cms.content.sources.Product('KINZ')
-            co.keywords = (
-                zeit.cms.tagging.tag.Tag('Code1', 'keyword'),
-                zeit.cms.tagging.tag.Tag('Code2', 'keyword'),
-            )
-        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
-
-        images = zeit.content.image.interfaces.IImages(article)
-        image = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')
-        with checked_out(image) as co:
-            zeit.content.image.interfaces.IImageMetadata(co).expires = datetime(2007, 4, 1)
-        images.image = zeit.cms.interfaces.ICMSContent(image.uniqueId)
-
-        data = zeit.retresco.interfaces.ITMSRepresentation(article)()
-        # hint: attributes defined with use_default=True don't occur in data
-
-        # Extract fields for which we cannot easily/sensibly use assertEqual().
-        self.assert_editing_fields(data)
-        self.assertStartsWith('<body', data.pop('body'))
-
-        teaser = (
-            'Im Zuge des äthiopischen Vormarsches auf Mogadischu kriechen '
-            'in Somalia auch die alten Miliz-Chefs wieder hervor.'
-        )
-        self.assertEqual(
-            {
-                'date': '1970-01-01T00:00:00Z',
-                'doc_type': 'article',
-                'payload': {
-                    'body': {
-                        'subtitle': teaser,
-                        'supertitle': 'Somalia',
-                        'title': 'Rückkehr der Warlords',
-                    },
-                    'document': {
-                        'artbox_thema': False,
-                        'audio_speechbert': True,
-                        'author': 'Hans Meiser',
-                        'banner': True,
-                        'banner_content': True,
-                        'color_scheme': 'Redaktion',
-                        'comments': False,
-                        'comments_premoderate': False,
-                        'copyrights': 'DIE ZEIT',
-                        'has_recensions': False,
-                        'header_layout': 'default',
-                        'hide_adblocker_notification': False,
-                        'hide_ligatus_recommendations': False,
-                        'avoid_create_summary': False,
-                        'imagecount': '0',
-                        'in_rankings': 'yes',
-                        'is_content': 'yes',
-                        'last_modified_by': 'zope.user',
-                        'mostread': 'yes',
-                        'new_comments': '1',
-                        'overscrolling': True,
-                        'pagelabel': 'Online',
-                        'paragraphsperpage': '6',
-                        'prevent_ligatus_indexing': False,
-                        'ressort': 'International',
-                        'revision': '11',
-                        'serie': 'Geschafft!',
-                        'show_commentthread': False,
-                        'template': 'article',
-                        'text-length': 1036,
-                        'title': 'R\xfcckkehr der Warlords',
-                        'topic': 'Politik',
-                        'volume': 1,
-                        'year': 2007,
-                    },
-                    'head': {
-                        'authors': [],
-                        'audio_references': [],
-                        'agencies': [],
-                        'teaser_image': 'http://xml.zeit.de/2006/DSC00109_2.JPG',
-                    },
-                    'meta': {
-                        'type': 'article',
-                    },
-                    'tagging': {},
-                    'teaser': {'text': teaser, 'title': 'Rückkehr der Warlords'},
-                    'vivi': {
-                        'cms_icon': '/@@/zeit-content-article-interfaces-IArticle-zmi_icon.png',
-                        'publish_status': 'not-published',
-                    },
-                    'workflow': {
-                        'last-modified-by': 'hegenscheidt',
-                        'product-id': 'KINZ',
-                        'status': 'OK',
-                    },
-                },
-                'rtr_events': [],
-                'rtr_keywords': ['Code1', 'Code2'],
-                'rtr_locations': [],
-                'rtr_organisations': [],
-                'rtr_persons': [],
-                'rtr_products': [],
-                'section': '/International',
-                'supertitle': 'Somalia',
-                'teaser': teaser,
-                'teaser_img_url': '/2006/DSC00109_2.JPG',
-                'title': 'Rückkehr der Warlords',
-                'url': '/online/2007/01/Somalia',
-            },
-            data,
-        )
 
     def assert_editing_fields(self, data):
         self.assertStartsWith('{urn:uuid:', data.pop('doc_id'))
@@ -156,6 +49,118 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
             '<ns0:rankedTags', data['payload'].get('tagging', {}).pop('keywords', '<ns0:rankedTags')
         )
 
+    def test_article_keywords_convert(self):
+        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/article')
+        with checked_out(article) as co:
+            co.keywords = (
+                zeit.cms.tagging.tag.Tag('Code1', 'keyword'),
+                zeit.cms.tagging.tag.Tag('Code2', 'keyword'),
+            )
+        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/article')
+        data = zeit.retresco.interfaces.ITMSRepresentation(article)()
+        self.assertEqual(['Code1', 'Code2'], data['rtr_keywords'])
+        self.assertEqual([], data['rtr_events'])
+        self.assertEqual([], data['rtr_locations'])
+        self.assertEqual([], data['rtr_organisations'])
+        self.assertEqual([], data['rtr_persons'])
+        self.assertEqual([], data['rtr_products'])
+        self.assertStartsWith('<ns0:rankedTags ', data['payload']['tagging']['keywords'])
+        self.assertStartsWith(
+            str(pendulum.today().year), data['payload']['document'].pop('date_last_checkout')
+        )
+
+    def test_article_with_image_converts(self):
+        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/article')
+        images = zeit.content.image.interfaces.IImages(article)
+        image = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/imagefolder/image')
+        with checked_out(image) as co:
+            meta = zeit.content.image.interfaces.IImageMetadata(co)
+            meta.caption = 'image caption'
+            meta.expires = datetime(2025, 12, 31)
+
+        images.image = zeit.cms.interfaces.ICMSContent(image.uniqueId)
+        data = zeit.retresco.interfaces.ITMSRepresentation(article)()
+        self.assertEqual(
+            'http://xml.zeit.de/imagefolder/image', data['payload']['head']['teaser_image']
+        )
+        self.assertEqual('/imagefolder/image', data['teaser_img_url'])
+        self.assertEqual('image caption', data['teaser_img_subline'])
+
+    def test_article_body_converts(self):
+        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/article')
+        article.body.create_item('p').text = 'Das Krümelmonster gibt alles zu!'
+        data = zeit.retresco.interfaces.ITMSRepresentation(article)()
+        self.assertStartsWith('<body', data['body'])
+        self.assertIn('Das Krümelmonster gibt alles zu!', data['body'])
+        self.assertEqual(
+            {'subtitle': 'It ate all the cookies', 'supertitle': 'Blue', 'title': 'Cookie monster'},
+            data['payload']['body'],
+        )
+
+    def test_article_metadata_converts(self):
+        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/article')
+        with checked_out(article) as co:
+            co.breaking_news = True
+            co.product = zeit.cms.content.sources.Product('KINZ')
+        data = zeit.retresco.interfaces.ITMSRepresentation(article)()
+        year = str(pendulum.today().year)
+        self.assertStartsWith('{urn:uuid:', data['doc_id'])
+        self.assertStartsWith('{urn:uuid:', data['payload']['document'].pop('uuid'))
+        self.assertEqual('article', data['doc_type'])
+        self.assertEqual('article', data['payload']['meta']['type'])
+        self.assertStartsWith(year, data['payload']['meta']['tms_last_indexed'])
+        self.assertStartsWith(year, data['payload']['document'].pop('date_created'))
+        self.assertStartsWith(year, data['payload']['document'].pop('date_last_checkout'))
+        self.assertStartsWith(year, data['payload']['document'].pop('date_last_modified'))
+        self.assertStartsWith(year, data['payload']['document'].pop('last-semantic-change'))
+        self.assertStartsWith('<pickle', data['payload']['meta']['provides'])
+        self.assertEqual(
+            {
+                'access': 'free',
+                'artbox_thema': False,
+                'audio_speechbert': True,
+                'avoid_create_summary': False,
+                'banner': True,
+                'banner_content': True,
+                'comments': True,
+                'comments_premoderate': False,
+                'copyrights': 'ZEIT',
+                'has_recensions': False,
+                'header_layout': 'default',
+                'hide_adblocker_notification': False,
+                'hide_ligatus_recommendations': False,
+                'last_modified_by': 'zope.user',
+                'overscrolling': True,
+                'prevent_ligatus_indexing': False,
+                'ressort': 'Politik',
+                'serie': 'Autotest',
+                'show_commentthread': True,
+                'template': 'article',
+                'year': int(year),
+            },
+            data['payload']['document'],
+        )
+        self.assertEqual(
+            {
+                'supertitle': 'Sesame Street News',
+                'text': 'No cookies left',
+                'title': 'Cookie monster detained',
+            },
+            data['payload']['teaser'],
+        )
+
+    def test_article_worflow_fields_convert(self):
+        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/article')
+        data = zeit.retresco.interfaces.ITMSRepresentation(article)()
+        self.assertEqual(
+            {
+                'cms_icon': '/@@/zeit-content-article-interfaces-IArticle-zmi_icon.png',
+                'publish_status': 'not-published',
+            },
+            data['payload']['vivi'],
+        )
+        self.assertEqual({'product-id': 'ZEDE'}, data['payload']['workflow'])
+
     def test_converts_channels_correctly(self):
         content = create_testcontent()
         content.channels = (('Mainchannel', None),)
@@ -163,20 +168,13 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
         self.assertEqual(['Mainchannel'], data['payload']['document']['channels'])
 
     def test_converts_authorships(self):
-        author = zeit.content.author.author.Author()
-        author.firstname = 'William'
-        author.lastname = 'Shakespeare'
-        self.repository['author'] = author
         content = create_testcontent()
         content.authorships = [content.authorships.create(self.repository['author'])]
         data = zeit.retresco.interfaces.ITMSRepresentation(content)()
         self.assertEqual(['http://xml.zeit.de/author'], data['payload']['head']['authors'])
+        self.assertEqual([], data['payload']['head']['agencies'])
 
     def test_converts_agencies(self):
-        author = zeit.content.author.author.Author()
-        author.firstname = 'William'
-        author.lastname = 'Shakespeare'
-        self.repository['author'] = author
         content = create_testcontent()
         content.agencies = [self.repository['author']]
         data = zeit.retresco.interfaces.ITMSRepresentation(content)()
@@ -221,6 +219,8 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
         volume.year = content.year
         volume.volume = content.volume
         volume.product = zeit.cms.content.sources.Product('ZEI')
+        self.repository['2006'] = zeit.cms.repository.folder.Folder()
+        self.repository['2006']['49'] = zeit.cms.repository.folder.Folder()
         self.repository['2006']['49']['ausgabe'] = volume
 
         found = zeit.content.volume.interfaces.IVolume(content)
@@ -246,7 +246,7 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
         self.assertNotIn('countings', data['payload']['document'])
 
     def test_converts_image(self):
-        image = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')
+        image = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/imagefolder/image')
         with checked_out(image):
             pass  # satisfy editing fields
         data = zeit.retresco.interfaces.ITMSRepresentation(image)()
@@ -254,71 +254,31 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
         self.assertEqual(
             {
                 'body': '<body/>',
-                'date': '1970-01-01T00:00:00Z',
+                'date': '2025-11-27T10:21:08Z',
                 'doc_type': 'image',
                 'payload': {
                     'document': {
-                        'author': 'Jochen Stahnke',
-                        'banner': True,
+                        'date_created': '2025-11-27T10:21:08+00:00',
+                        'last-semantic-change': '2025-11-27T10:21:08+00:00',
                         'last_modified_by': 'zope.user',
                     },
-                    'image': {'height': 1536, 'mime_type': 'image/jpeg', 'width': 2048},
+                    'image': {'height': 160, 'mime_type': 'image/jpeg', 'width': 119},
                     'meta': {'type': 'image'},
-                    'body': {
-                        'title': 'DSC00109_2.JPG',
-                        'text': 'DSC00109_2.JPG',
-                    },
+                    'body': {'text': 'image', 'title': 'image'},
                     'tagging': {},
                     'vivi': {
                         'cms_icon': ('/@@/zeit-content-image-interfaces-IImage-zmi_icon.png'),
-                        'cms_preview_url': ('/repository/2006/DSC00109_2.JPG/thumbnail'),
+                        'cms_preview_url': ('/repository/imagefolder/image/thumbnail'),
                         'publish_status': 'not-published',
                     },
+                    'workflow': {'published': False},
                 },
-                'url': '/2006/DSC00109_2.JPG',
-                'title': 'DSC00109_2.JPG',
-                'teaser': 'DSC00109_2.JPG',
+                'url': '/imagefolder/image',
+                'title': 'image',
+                'teaser': 'image',
             },
             data,
         )
-
-    def test_converts_recipe_attributes(self):
-        recipe = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept'
-        )
-        with checked_out(recipe):
-            pass
-        data = zeit.retresco.interfaces.ITMSRepresentation(recipe)()
-        payload = {
-            'search': [
-                'Die leckere Fleisch-Kombi:subheading',
-                'Grillwurst:ingredient',
-                'Hähnchen:ingredient',
-                'Hühnchen:ingredient',
-                'Pastagerichte:category',
-                'Tomate:ingredient',
-                'Tomaten-Grieß:recipe_title',
-                'Tomaten:ingredient',
-                'Vier Rezepte für eine Herdplatte:title',
-                'Wurst-Hähnchen:recipe_title',
-                'Wurst:ingredient',
-                'Wurstiges:category',
-            ],
-            'subheadings': ['Die leckere Fleisch-Kombi'],
-            'titles': ['Tomaten-Grieß', 'Wurst-Hähnchen'],
-            'categories': ['pastagerichte', 'wurstiges'],
-            'complexities': ['ambitioniert', 'einfach'],
-            'servings': ['2', '6'],
-            'times': ['unter 30 Minuten', 'über 60 Minuten'],
-            'ingredients': [
-                'brathaehnchen',
-                'bratwurst',
-                'chicken-nuggets',
-                'gurke',
-                'tomate',
-            ],
-        }
-        self.assertEqual(payload, {k: sorted(v) for k, v in data['payload']['recipe'].items()})
 
     def test_converts_imagegroup(self):
         group = zeit.content.image.testing.create_image_group()
@@ -361,6 +321,7 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
                         'cms_preview_url': '/repository/group/thumbnail',
                         'publish_status': 'not-published',
                     },
+                    'workflow': {'published': False},
                 },
                 'url': '/group',
                 'title': 'mytitle',
@@ -469,12 +430,12 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
         gallery = zeit.content.gallery.gallery.Gallery()
         gallery.title = 'title'
         gallery.teaserText = 'teaser'
-        gallery.image_folder = self.repository['2006']
+        gallery.image_folder = self.repository['imagefolder']
         self.repository['gallery'] = gallery
         data = zeit.retresco.interfaces.ITMSRepresentation(self.repository['gallery'])()
-        self.assertEqual(2, data['payload']['head']['visible_entry_count'])
+        self.assertEqual(1, data['payload']['head']['visible_entry_count'])
         content = zeit.retresco.interfaces.ITMSContent(data)
-        self.assertEqual(2, zeit.content.gallery.interfaces.IVisibleEntryCount(content))
+        self.assertEqual(1, zeit.content.gallery.interfaces.IVisibleEntryCount(content))
 
     def test_converts_dynamicfolder(self):
         folder = create_dynamic_folder()
@@ -485,8 +446,55 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
         )
 
     def test_converts_article_with_audio(self):
-        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/article')
         audio = zeit.content.audio.testing.AudioBuilder().referenced_by(article).build()
-        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/article')
         data = zeit.retresco.interfaces.ITMSRepresentation(article)()
         assert data['payload']['head']['audio_references'] == [audio.uniqueId]
+
+
+class ConvertRecipeTest(zeit.retresco.testing.FunctionalTestCase):
+    def setUp(self):
+        super().setUp()
+        fs = zeit.connector.filesystem.Connector(
+            str(importlib.resources.files('zeit.connector') / 'testcontent')
+        )
+        res = fs['http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept']
+        self.repository.connector['http://xml.zeit.de/rezept'] = res
+        transaction.commit()
+
+    def test_converts_recipe_attributes(self):
+        recipe = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/rezept')
+        with checked_out(recipe):
+            pass
+        data = zeit.retresco.interfaces.ITMSRepresentation(recipe)()
+        payload = {
+            'search': [
+                'Die leckere Fleisch-Kombi:subheading',
+                'Grillwurst:ingredient',
+                'Hähnchen:ingredient',
+                'Hühnchen:ingredient',
+                'Pastagerichte:category',
+                'Tomate:ingredient',
+                'Tomaten-Grieß:recipe_title',
+                'Tomaten:ingredient',
+                'Vier Rezepte für eine Herdplatte:title',
+                'Wurst-Hähnchen:recipe_title',
+                'Wurst:ingredient',
+                'Wurstiges:category',
+            ],
+            'subheadings': ['Die leckere Fleisch-Kombi'],
+            'titles': ['Tomaten-Grieß', 'Wurst-Hähnchen'],
+            'categories': ['pastagerichte', 'wurstiges'],
+            'complexities': ['ambitioniert', 'einfach'],
+            'servings': ['2', '6'],
+            'times': ['unter 30 Minuten', 'über 60 Minuten'],
+            'ingredients': [
+                'brathaehnchen',
+                'bratwurst',
+                'chicken-nuggets',
+                'gurke',
+                'tomate',
+            ],
+        }
+        self.assertEqual(payload, {k: sorted(v) for k, v in data['payload']['recipe'].items()})

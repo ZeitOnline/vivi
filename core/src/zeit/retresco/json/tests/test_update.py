@@ -11,7 +11,6 @@ class TMSUpdateRequestTest(zeit.retresco.testing.BrowserTestCase):
     def setUp(self):
         super().setUp()
         self.browser = zeit.cms.testing.Browser(self.layer['wsgi_app'])
-        self.repository.connector.search_result = ['http://xml.zeit.de/online/2007/01/Somalia']
 
     def test_endpoint_avoids_get(self):
         b = self.browser
@@ -31,20 +30,21 @@ class TMSUpdateRequestTest(zeit.retresco.testing.BrowserTestCase):
             self.assertIn('HTTP Error 400', str(e.exception))
 
     def test_endpoint_calls_enrich_and_publish(self):
+        uuid = zeit.cms.content.interfaces.IUUID(
+            zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/article')
+        )
         b = self.browser
         with mock.patch('zeit.retresco.update.index') as index:
             b.post(
                 'http://localhost/@@update_keywords',
-                '{"doc_ids" : ['
-                '"{urn:uuid:9cb93717-2467-4af5-9521-25110e1a7ed8}", '
-                '"{urn:uuid:0da8cb59-1a72-4ae2-bbe2-006e6b1ff621}"]}',
+                f'{{"doc_ids" : ["{uuid.id}"]}}',
                 'application/x-javascript',
             )
             self.assertEqual({'message': 'OK'}, json.loads(b.contents))
             self.assertEqual('200 Ok', b.headers.get('status'))
-            self.assertEqual(2, index.call_count)
+            self.assertEqual(1, index.call_count)
             self.assertEqual(
-                zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia'),
+                zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/article'),
                 index.call_args[0][0],
             )
             self.assertEqual(
@@ -52,7 +52,7 @@ class TMSUpdateRequestTest(zeit.retresco.testing.BrowserTestCase):
             )
 
     def test_should_preserve_disabled_keywords(self):
-        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/article')
         tagger = zeit.cms.tagging.interfaces.ITagger(article)
         tag = zeit.cms.tagging.tag.Tag('Berlin', 'location')
         tagger[tag.code] = tag
