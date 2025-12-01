@@ -39,12 +39,12 @@ class XMLRPCTest(zeit.retresco.testing.BrowserTestCase):
         super().tearDown()
 
     def test_xmlrpc_update_should_call_index(self):
-        id = 'http://xml.zeit.de/online/2007/01/Somalia'
+        id = 'http://xml.zeit.de/article'
         self.update(id)
         self.tms.index.assert_called_with(zeit.cms.interfaces.ICMSContent(id), {'body': None})
         self.tms.enrich.assert_called_with(zeit.cms.interfaces.ICMSContent(id))
         self.assertIn(
-            "zope.index triggered TMS index update for 'http://xml.zeit.de/online/2007/01/Somalia'",
+            "zope.index triggered TMS index update for 'http://xml.zeit.de/article'",
             self.log.getvalue(),
         )
 

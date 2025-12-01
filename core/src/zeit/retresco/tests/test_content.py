@@ -37,16 +37,12 @@ class ContentTest(zeit.retresco.testing.FunctionalTestCase):
             self.fail('\n'.join(errors))
 
     def test_convert_tms_result_to_cmscontent(self):
-        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
-        author = zeit.content.author.author.Author()
-        author.firstname = 'William'
-        author.lastname = 'Shakespeare'
-        self.repository['shake'] = author
+        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/article')
         with checked_out(article) as co:
             co.keywords = (zeit.cms.tagging.tag.Tag('Berlin', 'location'),)
-            co.authorships = (co.authorships.create(self.repository['shake']),)
-            co.agencies = (self.repository['shake'],)
-        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+            co.authorships = (co.authorships.create(self.repository['author']),)
+            co.agencies = (self.repository['author'],)
+        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/article')
 
         data = zeit.retresco.interfaces.ITMSRepresentation(article)()
         content = zeit.retresco.interfaces.ITMSContent(data)
@@ -60,7 +56,7 @@ class ContentTest(zeit.retresco.testing.FunctionalTestCase):
         )
 
     def test_dav_adapter_work_with_ITMSContent(self):
-        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/article')
         props = zeit.connector.interfaces.IWebDAVProperties(article)
         props[('published', zeit.workflow.interfaces.WORKFLOW_NS)] = 'yes'
         self.assertEqual(True, zeit.workflow.publishinfo.PublishInfo(article).published)
@@ -78,7 +74,7 @@ class ContentTest(zeit.retresco.testing.FunctionalTestCase):
         self.assertEqual(True, zeit.workflow.publishinfo.PublishInfo(content).published)
 
     def test_restores_provided_interfaces(self):
-        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/article')
         with checked_out(article) as co:
             zope.interface.alsoProvides(co, IExample)
         data = zeit.retresco.interfaces.ITMSRepresentation(article)()
@@ -86,11 +82,11 @@ class ContentTest(zeit.retresco.testing.FunctionalTestCase):
         self.assertTrue(IExample.providedBy(content))
 
     def test_IImages_work_with_TMSContent(self):
-        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
-        image = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')
+        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/article')
+        image = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/imagefolder/image')
         with checked_out(article) as co:
             zeit.content.image.interfaces.IImages(co).image = image
-        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/article')
 
         data = zeit.retresco.interfaces.ITMSRepresentation(article)()
         content = zeit.retresco.interfaces.ITMSContent(data)
@@ -99,13 +95,8 @@ class ContentTest(zeit.retresco.testing.FunctionalTestCase):
         self.assertEqual(None, images.fill_color)
 
     def test_IImages_work_with_TMSAuthor(self):
-        author = zeit.content.author.author.Author()
-        author.firstname = 'William'
-        author.lastname = 'Shakespeare'
-        self.repository['shake'] = author
-        author = self.repository['shake']
-
-        image = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')
+        author = self.repository['author']
+        image = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/imagefolder/image')
         zeit.content.image.interfaces.IImages(author).image = image
 
         data = zeit.retresco.interfaces.ITMSRepresentation(author)()
@@ -116,7 +107,7 @@ class ContentTest(zeit.retresco.testing.FunctionalTestCase):
 
     def test_quotes_dot_for_elasticsearch_field_names(self):
         gallery_type = ('type', 'http://namespaces.zeit.de/CMS/zeit.content.gallery')
-        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/article')
         with checked_out(article) as co:
             props = zeit.connector.interfaces.IWebDAVProperties(co)
             props[gallery_type] = 'standalone'
@@ -131,11 +122,7 @@ class ContentTest(zeit.retresco.testing.FunctionalTestCase):
         self.assertTrue(zeit.cms.repository.interfaces.IUnknownResource.providedBy(content))
 
     def test_author_finds_its_properties(self):
-        author = zeit.content.author.author.Author()
-        author.firstname = 'William'
-        author.lastname = 'Shakespeare'
-        self.repository['shake'] = author
-        author = self.repository['shake']
+        author = self.repository['author']
         data = zeit.retresco.interfaces.ITMSRepresentation(author)()
         content = zeit.retresco.interfaces.ITMSContent(data)
         self.assertIsInstance(content, zeit.content.author.author.Author)
@@ -177,7 +164,7 @@ class ContentTest(zeit.retresco.testing.FunctionalTestCase):
         self.compare(zeit.content.link.interfaces.ILink, link, content, ['xml'])
 
     def test_kpi_data_can_be_accessed_via_adapter(self):
-        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/article')
         with checked_out(article):
             pass
         data = zeit.retresco.interfaces.ITMSRepresentation(article)()
@@ -192,11 +179,11 @@ class ContentTest(zeit.retresco.testing.FunctionalTestCase):
 
     def test_convert_tms_result_with_audio_to_cmscontent(self):
         audio = zeit.content.audio.testing.AudioBuilder().build()
-        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/article')
         with checked_out(article) as co:
             audios = IAudioReferences
             audios(co).items = (self.repository['audio'],)
-        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/article')
         data = zeit.retresco.interfaces.ITMSRepresentation(article)()
         content = zeit.retresco.interfaces.ITMSContent(data)
 

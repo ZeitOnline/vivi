@@ -3,14 +3,56 @@ import copy
 import importlib.resources
 import json
 
+import pendulum
 import zope.app.appsetup.product
+import zope.event
 
+from zeit.content.article.article import Article
+from zeit.content.article.interfaces import IArticle
+from zeit.content.image.testing import create_image
+import zeit.cms.content.field
 import zeit.cms.content.interfaces
 import zeit.cms.testcontenttype.testcontenttype
 import zeit.cms.testing
+import zeit.cms.workflow.interfaces
+import zeit.connector.filesystem
+import zeit.content.author.author
 import zeit.content.link.testing
 import zeit.find.testing
 import zeit.wochenmarkt.testing
+
+
+def create_fixture(repository):
+    article = Article()
+    zeit.cms.content.field.apply_default_values(article, IArticle)
+    article.year = 2025
+    article.title = 'Cookie monster'
+    article.ressort = 'Politik'
+    article.supertitle = 'Blue'
+    article.subtitle = 'It ate all the cookies'
+    article.teaserTitle = 'Cookie monster detained'
+    article.teaserText = 'No cookies left'
+    article.teaserSupertitle = 'Sesame Street News'
+    article.copyrights = 'ZEIT'
+    article.access = 'free'
+    article.serie = (
+        zeit.cms.content.interfaces.ICommonMetadata['serie'].source(None).find('Autotest')
+    )
+    zope.event.notify(zope.lifecycleevent.ObjectCreatedEvent(article))
+    repository['article'] = article
+
+    author = zeit.content.author.author.Author()
+    author.firstname = 'William'
+    author.lastname = 'Shakespeare'
+    repository['author'] = author
+
+    repository['imagefolder'] = zeit.cms.repository.folder.Folder()
+    image = create_image()
+    modified = zeit.cms.workflow.interfaces.IModified(image)
+    modified.date_created = pendulum.datetime(2025, 11, 27, 10, 21, 8, 0)
+    semantic = zeit.cms.content.interfaces.ISemanticChange(image)
+    semantic.last_semantic_change = pendulum.datetime(2025, 11, 27, 10, 21, 8, 0)
+    repository['imagefolder']['image'] = image
 
 
 HTTP_LAYER = zeit.cms.testing.HTTPLayer()
@@ -94,11 +136,14 @@ class TMSMockLayer(zeit.cms.testing.Layer):
 TMS_MOCK_LAYER = TMSMockLayer()
 
 
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER)
-ZOPE_LAYER = zeit.cms.testing.RawZopeLayer(ZCML_LAYER)
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER, features=['zeit.connector.sql.zope'])
+_zope_layer = zeit.cms.testing.RawZopeLayer(ZCML_LAYER)
+ZOPE_LAYER = zeit.cms.testing.SQLIsolationSavepointLayer(_zope_layer, create_fixture)
 WSGI_LAYER = zeit.cms.testing.WSGILayer(ZOPE_LAYER)
 
-CELERY_LAYER = zeit.cms.testing.CeleryWorkerLayer(ZOPE_LAYER)
+CELERY_LAYER = zeit.cms.testing.CeleryWorkerLayer(
+    zeit.cms.testing.SQLIsolationTruncateLayer(_zope_layer, create_fixture)
+)
 CELERY_LAYER.queues += ('search',)
 
 
