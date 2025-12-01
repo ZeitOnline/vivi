@@ -166,26 +166,30 @@ MODE_RETRACT = 'retract'
 class Worklist:
     """Manages content to be published/retracted with their dependencies."""
 
-    def __init__(self, all_content, initiating_map):
+    def __init__(self, content, initiating):
         #: Dict mapping uniqueId -> content object (includes dependencies)
-        self.all_content = all_content
+        # BBB to support the `execute_phase_with_content_update` usecase,
+        # convert to simple list after WCM-57.
+        self._content = content
         #: Dict mapping each content's uniqueId to its initiator's uniqueId
-        self._initiating_map = initiating_map
+        self._initiating = initiating
+        #: List of tuples (ICMSContent, Exception) to collect errors across phases
         self.errors = []
 
     @classmethod
-    def build(cls, trees_by_content):
-        all_content = {}
-        initiating_map = {}
+    def build(cls, trees):
+        _content = {}
+        _initiating = {}
 
-        for content, tree in trees_by_content.items():
-            for tree_content in tree:
-                if tree_content.uniqueId not in all_content:
-                    all_content[tree_content.uniqueId] = tree_content
+        for initiating, dependencies in trees.items():
+            _content[initiating.uniqueId] = initiating
+            for content in dependencies:
+                if content.uniqueId not in _content:
+                    _content[content.uniqueId] = content
                     # Track which requested content caused this to be added
-                    initiating_map[tree_content.uniqueId] = content.uniqueId
+                    _initiating[content.uniqueId] = initiating.uniqueId
 
-        return cls(all_content, initiating_map)
+        return cls(_content, _initiating)
 
     def snapshot(self):
         """Copy the current state. This is used to unlock all content that was
@@ -193,7 +197,7 @@ class Worklist:
         Note that the `errors` list is intentionally shared between snapshots,
         so that we can report all errors, regardless of where they occur.
         """
-        result = type(self)(self.all_content.copy(), self.initiating_map)
+        result = type(self)(self._content.copy(), self._initiating)
         result.errors = self.errors
         return result
 
@@ -203,18 +207,18 @@ class Worklist:
         For requested content, returns itself. For dependencies, returns the first
         requested content that added this dependency to the tree.
         """
-        return self.all_content[self._initiating_map[content.uniqueId]]
+        return self._content[self._initiating[content.uniqueId]]
 
     def __iter__(self):
         """Return items that should be processed in the current phase."""
         # Need to make a copy to allow for remove() while iterating.
-        return iter(list(self.all_content.values()))
+        return iter(list(self._content.values()))
 
     def update(self, content):
-        self.all_content[content.uniqueId] = content
+        self._content[content.uniqueId] = content
 
     def remove(self, content, error):
-        del self.all_content[content.uniqueId]
+        del self._content[content.uniqueId]
         self.errors.append((content, error))
 
 
