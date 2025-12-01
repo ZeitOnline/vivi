@@ -445,6 +445,7 @@ class PublishRetractTask:
         return result
 
     def _execute_phase(self, worklist, phase_name, phase_fn, needs_initiating_content=False):
+        result = []
         for content in worklist:
             try:
                 logger.debug('%s %s' % (phase_name, content.uniqueId))
@@ -453,20 +454,29 @@ class PublishRetractTask:
                     phase_name,
                     attributes={'app.uniqueid': content.uniqueId, 'app.mode': self.mode},
                 ):
+                    params = []
                     if needs_initiating_content:
-                        initiator = worklist.initiating(content)
-                        new_content = phase_fn(content, initiator)
-                    else:
-                        new_content = phase_fn(content)
-
-                    # cycle may update content during checkin event (but I really don't know
-                    # and hopefully we can remove it in the future and skip that check)
-                    if new_content is not None and new_content is not content:
-                        worklist.update(new_content)
+                        params.append(worklist.initiating(content))
+                    value = phase_fn(content, *params)
+                    result.append(value)
             except Exception as e:
                 worklist.remove(content, e)
+        return result
 
-    def serialize(self, content, result):
+    def _execute_phase_with_content_update(
+        self, worklist, phase_name, phase_fn, needs_initiating_content=False
+    ):
+        # cycle may update content during checkin event (but I really don't know
+        # and hopefully we can remove it in the future and skip that check)
+        for content in self._execute_phase(
+            worklist, phase_name, phase_fn, needs_initiating_content
+        ):
+            worklist.update(content)
+
+    def serialize(self, content):
+        return zeit.workflow.interfaces.IPublisherData(content)(self.mode)
+
+    def serialize_legacy(self, content, result):
         result.append(zeit.workflow.interfaces.IPublisherData(content)(self.mode))
 
     def log(self, content, message):
@@ -531,23 +541,11 @@ class PublishTask(PublishRetractTask):
         # Persist locks as soon as possible, to prevent concurrent access.
         transaction.commit()
 
-        self._execute_phase(
+        self._execute_phase_with_content_update(
             worklist, 'before_publish', self.before_publish, needs_initiating_content=True
         )
 
-        to_publish = []
-        for content in worklist:
-            try:
-                logger.debug('serialize %s' % content.uniqueId)
-                with zeit.cms.tracing.use_span(
-                    __name__,
-                    'serialize',
-                    attributes={'app.uniqueid': content.uniqueId, 'app.mode': self.mode},
-                ):
-                    self.serialize(content, to_publish)
-            except Exception as e:
-                worklist.remove(content, e)
-
+        to_publish = self._execute_phase(worklist, 'serialize', self.serialize)
         try:
             if to_publish:
                 # Persist changes before having an external system read them.
@@ -610,7 +608,7 @@ class PublishTask(PublishRetractTask):
         for obj in okay:
             try:
                 deps = []
-                self.recurse(self.serialize, obj, deps)
+                self.recurse(self.serialize_legacy, obj, deps)
                 to_publish.extend(deps)
             except Exception as e:
                 errors.append((obj, e))
@@ -721,24 +719,12 @@ class RetractTask(PublishRetractTask):
         # Persist locks as soon as possible, to prevent concurrent access.
         transaction.commit()
 
-        self._execute_phase(
+        self._execute_phase_with_content_update(
             worklist, 'before_retract', self.before_retract, needs_initiating_content=True
         )
 
-        to_retract = []
-        for content in worklist:
-            try:
-                logger.debug('serialize %s' % content.uniqueId)
-                with zeit.cms.tracing.use_span(
-                    __name__,
-                    'serialize',
-                    attributes={'app.uniqueid': content.uniqueId, 'app.mode': self.mode},
-                ):
-                    self.serialize(content, to_retract)
-            except Exception as e:
-                worklist.remove(content, e)
-
-        to_retract = list(reversed(to_retract))
+        to_retract = self._execute_phase(worklist, 'serialize', self.serialize)
+        to_retract.reverse()
 
         try:
             if to_retract:
@@ -793,7 +779,7 @@ class RetractTask(PublishRetractTask):
         for obj in okay:
             try:
                 deps = []
-                self.recurse(self.serialize, obj, deps)
+                self.recurse(self.serialize_legacy, obj, deps)
                 to_retract.extend(reversed(deps))
             except Exception as e:
                 errors.append((obj, e))
