@@ -32,7 +32,7 @@ class IScheduledOperations(zope.interface.Interface):
 
         operation: 'publish' or 'retract'
         scheduled_on: datetime when to execute
-        property_changes: dict of properties to changes
+        property_changes: dict of properties to change
 
         returns operation_id (str): UUID of created operation
         raises ValueError if operation or property_changes invalid
