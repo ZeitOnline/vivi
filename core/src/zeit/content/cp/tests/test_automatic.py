@@ -317,10 +317,10 @@ class AutomaticAreaTopicpageListTest(zeit.content.cp.testing.FunctionalTestCase)
 
     def test_returns_teasers_to_ITopicpages_entries(self):
         area = create_automatic_area(self.cp, 1, 'topicpagelist')
-        self.topics.get_topics.return_value = zeit.cms.interfaces.Result([{'id': 'test'}])
+        self.topics.get_topics.return_value = zeit.cms.interfaces.Result([{'id': 'testcontent'}])
         auto = IRenderedArea(area).values()
         self.assertEqual(1, len(auto))
-        self.assertEqual('http://xml.zeit.de/2007/test', list(auto[0])[0].uniqueId)
+        self.assertEqual('http://xml.zeit.de/folder/testcontent', list(auto[0])[0].uniqueId)
 
 
 class AutomaticAreaReachTest(zeit.content.cp.testing.FunctionalTestCase):
