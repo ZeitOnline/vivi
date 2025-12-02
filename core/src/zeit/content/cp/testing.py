@@ -70,7 +70,7 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
             'rules-url': 'file://%s/tests/fixtures/example_rules.py'
             % importlib.resources.files(__package__)
         },
-        'zeit.retresco': {'topicpage-prefix': '/2007'},
+        'zeit.retresco': {'topicpage-prefix': '/folder'},
     },
     bases=(
         zeit.content.image.testing.CONFIG_LAYER,
