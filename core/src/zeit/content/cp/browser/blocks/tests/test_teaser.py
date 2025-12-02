@@ -183,14 +183,6 @@ class FunctionalTeaserDisplayTest(zeit.content.cp.testing.FunctionalTestCase):
             block.insert(0, self.repository['t%s' % i])
         return block
 
-    def create_gallery(self):
-        gallery = zeit.content.gallery.gallery.Gallery()
-        gallery.image_folder = self.repository['2007']
-        self.repository['2007']['image01'] = ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')
-        transaction.commit()
-        gallery.reload_image_folder()
-        return gallery
-
     def test_layout_without_image_pattern_shows_no_header_image(self):
         view = teaser_view(self.create_teaserimage_block(layout='short'))
         self.assertEqual(None, view.header_image)
