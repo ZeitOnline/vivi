@@ -9,6 +9,7 @@ import persistent
 import zope.annotation.interfaces
 import zope.component
 import zope.security.management
+import zope.security.proxy
 
 from zeit.cms.i18n import MessageFactory as _
 from zeit.connector import models
@@ -82,7 +83,7 @@ class ScheduledOperation:
 @grok.adapter(zeit.cms.checkout.interfaces.ILocalContent)
 class ZODBScheduledOperationsStorage:
     def __init__(self, context):
-        self.context = context
+        self.context = zope.security.proxy.removeSecurityProxy(context)
         self._storage = self._get_annotations_storage()
 
     def _get_annotations_storage(self):
@@ -143,8 +144,8 @@ class ZODBScheduledOperationsStorage:
 @grok.adapter(zeit.cms.interfaces.ICMSContent)
 class SQLScheduledOperationsStorage:
     def __init__(self, context):
-        self.context = context
-        self.content_id = zeit.cms.content.interfaces.IUUID(context).shortened
+        self.context = zope.security.proxy.removeSecurityProxy(context)
+        self.content_id = zeit.cms.content.interfaces.IUUID(self.context).shortened
         self._connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
 
     def add(
