@@ -96,15 +96,6 @@ Authors are published along with the articles that reference them:
 ...     repository['testcontent']).get_dependencies()
 [<zeit.content.author.author.Author http://xml.zeit.de/shakespeare>]
 
-But not if they are already published (there are no changes that could be
-relevant for the article):
-
->>> info = zeit.cms.workflow.interfaces.IPublishInfo(repository['shakespeare'])
->>> info.published = True
->>> zeit.cms.workflow.interfaces.IPublicationDependencies(
-...     repository['testcontent']).get_dependencies()
-[]
-
 
 Equality
 ========

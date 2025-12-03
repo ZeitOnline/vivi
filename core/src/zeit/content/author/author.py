@@ -10,6 +10,7 @@ import zope.lifecycleevent
 import zope.security.proxy
 
 from zeit.cms.content.property import ObjectPathProperty
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.interfaces import META_SCHEMA_NS
 from zeit.connector.search import SearchVar
@@ -224,8 +225,12 @@ class Dependencies(zeit.cms.workflow.dependency.DependencyBase):
         result = []
         for ref in self.context.authorships:
             author = ref.target
-            if not zeit.cms.workflow.interfaces.IPublishInfo(author).published:
-                result.append(author)
+            if (
+                FEATURE_TOGGLES.find('author_publish_dependency_only_unpublished')
+                and zeit.cms.workflow.interfaces.IPublishInfo(author).published
+            ):
+                continue
+            result.append(author)
         return result
 
 
