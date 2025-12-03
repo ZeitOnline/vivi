@@ -15,7 +15,7 @@ class VideoIdResolverTest(zeit.brightcove.testing.FunctionalTestCase):
             )
 
     def test_should_raise_if_no_object_is_found(self):
-        with mock.patch('zeit.connector.mock.Connector.search') as search:
+        with mock.patch('zeit.connector.postgresql.Connector.search') as search:
             search.return_value = iter(())
             self.assertRaises(LookupError, zeit.brightcove.resolve.resolve_video_id, '1234')
 
