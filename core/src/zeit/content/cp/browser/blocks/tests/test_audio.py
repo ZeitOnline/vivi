@@ -1,5 +1,6 @@
 import zeit.content.cp
 import zeit.content.cp.centerpage
+import zeit.content.cp.testing
 
 
 class TestPodcastHeader(zeit.content.cp.testing.BrowserTestCase):
