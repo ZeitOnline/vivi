@@ -21,6 +21,7 @@ jobs:
     with:
       environment: staging
       gke_cluster: staging
+      k8s_base: smoketest/k8s
       versions: smoketest/k8s/base/versions
       # copy&paste from k8s/base and k8s/staging manifest
       args: |
