@@ -400,7 +400,6 @@ class TopiclistUpdateTest(zeit.retresco.testing.FunctionalTestCase):
         requests = self.layer['request_handler'].requests
         requests.clear()
 
-        self.repository.connector.search_result = ['http://xml.zeit.de/testcontent']
         kpi = zope.component.getUtility(zeit.kpi.interfaces.IKPIDatasource)
         kpi.result = [
             (self.repository['testcontent'], mock.Mock(visits=1, comments=2, subscriptions=3))
@@ -418,7 +417,6 @@ class TopiclistUpdateTest(zeit.retresco.testing.FunctionalTestCase):
         requests = self.layer['request_handler'].requests
         requests.clear()
 
-        self.repository.connector.search_result = ['http://xml.zeit.de/testcontent']
         kpi = zope.component.getUtility(zeit.kpi.interfaces.IKPIDatasource)
         kpi.result = [
             (self.repository['testcontent'], mock.Mock(visits=1, comments=2, subscriptions=3))
