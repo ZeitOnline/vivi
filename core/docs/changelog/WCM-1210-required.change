@@ -1,0 +1,1 @@
+WCM-1210: Mark image non-required in scrolly modules, to avoid validation false positives

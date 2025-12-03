@@ -383,7 +383,7 @@ class IScrollyChapter(IReference):
         title=_('Image'),
         description=_('Drag image group or animation here'),
         source=ScrollyMediaReferenceSource(),
-        required=True,
+        required=False,
     )
 
     kicker = zope.schema.TextLine(title=_('Kicker'), required=False, max_length=140)
@@ -414,7 +414,7 @@ class IScrollyImage(IReference):
         title=_('Image'),
         description=_('Drag image group or animation here'),
         source=ScrollyMediaReferenceSource(),
-        required=True,
+        required=False,
     )
 
     text = zope.schema.Text(title=_('Text'), required=False)
