@@ -34,6 +34,7 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
     {
         'zeit-comments-api-url': 'https://comments.staging.zeit.de',
         'book-recension-categories': f'file://{HERE}/tests/recension_categories.xml',
+        'followings': f'file://{HERE}/tests/followings.xml',
         'genre-url': f'file://{HERE}/tests/article-genres.xml',
         'image-display-mode-source': f'file://{HERE}/edit/tests/image-display-modes.xml',
         'legacy-display-mode-source': f'file://{HERE}/edit/tests/legacy-display-modes.xml',
