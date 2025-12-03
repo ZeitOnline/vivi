@@ -116,7 +116,6 @@ class HonorarLookupTest(zeit.content.author.testing.BrowserTestCase):
         exists = zeit.content.author.author.Author()
         exists.hdok_id = 12345
         self.repository['exists'] = exists
-        self.repository.connector.search_result = ['http://xml.zeit.de/exists']
 
         b = self.browser
         b.open('http://localhost/++skin++vivi/@@zeit.content.author.add_contextfree')
