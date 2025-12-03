@@ -339,6 +339,10 @@ class EditScrollyChapter(zeit.edit.browser.form.InlineForm):
     def prefix(self):
         return 'scrollychapter.{0}'.format(self.context.__name__)
 
+    def __call__(self):
+        zope.interface.alsoProvides(self.request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
+        return super().__call__()
+
 
 class EditScrollyImage(zeit.edit.browser.form.InlineForm):
     legend = None
@@ -349,6 +353,10 @@ class EditScrollyImage(zeit.edit.browser.form.InlineForm):
     @property
     def prefix(self):
         return 'scrollyimage.{0}'.format(self.context.__name__)
+
+    def __call__(self):
+        zope.interface.alsoProvides(self.request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
+        return super().__call__()
 
 
 class EditPuzzleForm(zeit.edit.browser.form.InlineForm):
