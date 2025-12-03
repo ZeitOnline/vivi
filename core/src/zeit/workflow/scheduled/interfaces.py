@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Any
 
 import zope.interface
 import zope.schema
@@ -56,7 +57,7 @@ class IScheduledOperations(zope.interface.Interface):
         raises KeyError if operation_id not found
         """
 
-    def list(operation=None) -> list[IScheduledOperation]:
+    def list(operation: str | None = None) -> list[IScheduledOperation]:
         """Return scheduled operations.
 
         operation: Filter by type ('publish' or 'retract'), or None for all
@@ -64,8 +65,52 @@ class IScheduledOperations(zope.interface.Interface):
         returns List of IScheduledOperation objects, sorted by scheduled_on
         """
 
-    def get(operation_id) -> IScheduledOperation:
+    def get(operation_id: str) -> IScheduledOperation:
         """Get a specific operation by ID.
 
         raises KeyError if operation_id not found
+        """
+
+
+class IScheduledOperationsStorage(zope.interface.Interface):
+    """Storage backend for scheduled operations.
+
+    This interface abstracts the persistence layer.
+    """
+
+    def add(
+        operation_id: str,
+        operation: str,
+        scheduled_on: datetime,
+        property_changes: dict | None,
+        created_by: str | None,
+        date_created: datetime | None = None,
+    ):
+        """Add a new scheduled operation to storage."""
+
+    def remove(operation_id: str):
+        """Remove operation from storage.
+
+        Raises KeyError if operation_id not found.
+        """
+
+    def update(
+        operation_id: str,
+        scheduled_on: datetime | None = None,
+        property_changes: dict | None = None,
+    ):
+        """Update operation in storage.
+
+        Only updates fields that are not None.
+        Raises KeyError if operation_id not found.
+        """
+
+    def list(operation: str | None = None) -> list[Any]:
+        """List all operations for this content, optionally filtered by operation type."""
+
+    def get(operation_id: str) -> Any:
+        """Get single operation from storage.
+
+        Returns storage-specific operation object.
+        Raises KeyError if operation_id not found.
         """

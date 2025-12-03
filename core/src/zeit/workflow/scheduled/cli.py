@@ -25,10 +25,10 @@ log = logging.getLogger(__name__)
 
 class ScheduledOperationProcessor:
     def __init__(self):
-        self.connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
-        self.repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
-        self.session = self.connector.session
-        self.objectlog = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
+        self._connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+        self._repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
+        self._session = self._connector.session
+        self._objectlog = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
 
     def execute_all(self):
         query_timeout = int(
@@ -41,7 +41,7 @@ class ScheduledOperationProcessor:
             .options(joinedload(ScheduledOperation._content))
         )
 
-        operations = list(self.connector.execute_sql(query, query_timeout).scalars())
+        operations = list(self._connector.execute_sql(query, query_timeout).scalars())
         log.debug('Found %d scheduled operations to execute', len(operations))
 
         # Objects are getting detached, because of a transaction boundary somewhere
@@ -55,7 +55,7 @@ class ScheduledOperationProcessor:
                     'operation': op.operation,
                     'scheduled_on': op.scheduled_on,
                     'property_changes': op.property_changes,
-                    'content': self.repository.getContent(op._content.uniqueid),
+                    'content': self._repository.getContent(op._content.uniqueid),
                 }
             )
 
@@ -74,7 +74,7 @@ class ScheduledOperationProcessor:
         content = task['content']
         if not content:
             log.warning('Content not found for operation %s, deleting operation', task['id'])
-            self.session.delete(task['db_object'])
+            self._session.delete(task['db_object'])
             return
 
         self._apply_property_changes(content, task['property_changes'])
@@ -86,7 +86,7 @@ class ScheduledOperationProcessor:
             # the forbidden route that we will never hit, I promise
             log.warning('Unknown operation type: %s', task['operation'])
 
-        self.session.delete(task['db_object'])
+        self._session.delete(task['db_object'])
 
     def _apply_property_changes(self, content, property_changes):
         if not property_changes:
@@ -99,7 +99,7 @@ class ScheduledOperationProcessor:
                 if hasattr(co, name):
                     old_value = getattr(co, name, None)
                     setattr(co, name, new_value)
-                    self.objectlog.log(
+                    self._objectlog.log(
                         content,
                         msg(
                             '${name} changed from "${old}" to "${new}"',
@@ -125,5 +125,5 @@ class ScheduledOperationProcessor:
 
 @zeit.cms.cli.runner(principal=zeit.cms.cli.from_config('zeit.workflow', 'schedule-principal'))
 def execute_scheduled_operations_cli():
-    executor = ScheduledOperationProcessor()
-    executor.execute_all()
+    processor = ScheduledOperationProcessor()
+    processor.execute_all()

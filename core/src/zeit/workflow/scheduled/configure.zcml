@@ -11,5 +11,17 @@
     for="zeit.cms.interfaces.ICMSContent"
     />
 
+  <adapter
+    factory=".operations.ZODBScheduledOperationsStorage"
+    provides=".interfaces.IScheduledOperationsStorage"
+    for="zeit.cms.checkout.interfaces.ILocalContent"
+    />
+
+  <adapter
+    factory=".operations.SQLScheduledOperationsStorage"
+    provides=".interfaces.IScheduledOperationsStorage"
+    for="zeit.cms.interfaces.ICMSContent"
+    />
+
 
 </configure>

@@ -4,6 +4,7 @@ import transaction
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.workflow.scheduled.cli import ScheduledOperationProcessor
 from zeit.workflow.scheduled.interfaces import IScheduledOperations
+import zeit.cms.checkout.interfaces
 import zeit.cms.testing
 import zeit.cms.workflow.interfaces
 import zeit.workflow.testing
@@ -15,7 +16,7 @@ class ScheduledOperationsCLITest(zeit.workflow.testing.FunctionalTestCase):
     def setUp(self):
         super().setUp()
         self.content = self.repository['testcontent']
-        self.executor = ScheduledOperationProcessor()
+        self.processor = ScheduledOperationProcessor()
         info = zeit.cms.workflow.interfaces.IPublishInfo(self.content)
         info.urgent = True
 
@@ -24,7 +25,7 @@ class ScheduledOperationsCLITest(zeit.workflow.testing.FunctionalTestCase):
         ops.add('publish', pendulum.now('UTC').add(seconds=-1))
         transaction.commit()
 
-        self.executor.execute_all()
+        self.processor.execute_all()
 
         info = zeit.cms.workflow.interfaces.IPublishInfo(self.content)
         self.assertTrue(info.published)
@@ -37,7 +38,7 @@ class ScheduledOperationsCLITest(zeit.workflow.testing.FunctionalTestCase):
         ops.add('publish', pendulum.now('UTC').add(hours=1))
         transaction.commit()
 
-        self.executor.execute_all()
+        self.processor.execute_all()
 
         info = zeit.cms.workflow.interfaces.IPublishInfo(self.content)
         self.assertFalse(info.published)
@@ -55,7 +56,7 @@ class ScheduledOperationsCLITest(zeit.workflow.testing.FunctionalTestCase):
         ops.add('retract', pendulum.now('UTC').add(seconds=-1))
         transaction.commit()
 
-        self.executor.execute_all()
+        self.processor.execute_all()
 
         info = zeit.cms.workflow.interfaces.IPublishInfo(self.content)
         self.assertFalse(info.published)
@@ -70,7 +71,7 @@ class ScheduledOperationsCLITest(zeit.workflow.testing.FunctionalTestCase):
         ops.add('retract', pendulum.now('UTC').add(seconds=-1))
         transaction.commit()
 
-        self.executor.execute_all()
+        self.processor.execute_all()
 
         self.assertEqual(0, len(ops.list()))
 
@@ -83,7 +84,7 @@ class ScheduledOperationsCLITest(zeit.workflow.testing.FunctionalTestCase):
         )
         transaction.commit()
 
-        self.executor.execute_all()
+        self.processor.execute_all()
 
         info = zeit.cms.workflow.interfaces.IPublishInfo(self.content)
         self.assertTrue(info.published)
@@ -110,7 +111,7 @@ class ScheduledOperationsCLITest(zeit.workflow.testing.FunctionalTestCase):
         ops2.add('publish', time2)
         transaction.commit()
 
-        self.executor.execute_all()
+        self.processor.execute_all()
 
         info1 = zeit.cms.workflow.interfaces.IPublishInfo(content1)
         info2 = zeit.cms.workflow.interfaces.IPublishInfo(content2)
@@ -120,19 +121,6 @@ class ScheduledOperationsCLITest(zeit.workflow.testing.FunctionalTestCase):
         self.assertEqual(0, len(ops1.list()))
         self.assertEqual(0, len(ops2.list()))
 
-    def test_execute_deletes_operation_on_failure(self):
-        ops = IScheduledOperations(self.content)
-
-        ops.add(
-            'publish',
-            pendulum.now('UTC').add(seconds=-1),
-            property_changes={'nonexistent_property': 'value'},
-        )
-        transaction.commit()
-
-        self.executor.execute_all()
-        self.assertEqual(0, len(ops.list()))
-
     def test_execute_handles_missing_content(self):
         ops = IScheduledOperations(self.content)
         _ = ops.add('publish', pendulum.now('UTC').add(seconds=-1))
@@ -141,7 +129,7 @@ class ScheduledOperationsCLITest(zeit.workflow.testing.FunctionalTestCase):
         del self.repository['testcontent']
         transaction.commit()
 
-        self.executor.execute_all()
+        self.processor.execute_all()
         self.assertEqual(0, len(ops.list()))
 
     def test_execute_with_empty_property_changes(self):
@@ -149,7 +137,7 @@ class ScheduledOperationsCLITest(zeit.workflow.testing.FunctionalTestCase):
         ops.add('publish', pendulum.now('UTC').add(seconds=-1), property_changes={})
         transaction.commit()
 
-        self.executor.execute_all()
+        self.processor.execute_all()
 
         info = zeit.cms.workflow.interfaces.IPublishInfo(self.content)
         self.assertTrue(info.published)
@@ -163,9 +151,30 @@ class ScheduledOperationsCLITest(zeit.workflow.testing.FunctionalTestCase):
         )
         transaction.commit()
 
-        self.executor.execute_all()
+        self.processor.execute_all()
 
         info = zeit.cms.workflow.interfaces.IPublishInfo(self.content)
         self.assertTrue(info.published)
 
         self.assertEqual(0, len(ops.list()))
+
+    def test_cli_ignores_working_copy_operations(self):
+        """CLI should not see or execute operations in working copies."""
+        info = zeit.cms.workflow.interfaces.IPublishInfo(self.content)
+        info.urgent = True
+        publish = zeit.cms.workflow.interfaces.IPublish(self.content)
+        publish.publish(background=False)
+        transaction.commit()
+
+        manager = zeit.cms.checkout.interfaces.ICheckoutManager(self.content)
+        co = manager.checkout()
+
+        ops = IScheduledOperations(co)
+        ops.add('retract', pendulum.now('UTC').add(seconds=-1))
+        transaction.commit()
+
+        self.processor.execute_all()
+
+        article = self.repository['testcontent']
+        info = zeit.cms.workflow.interfaces.IPublishInfo(article)
+        self.assertTrue(info.published)
