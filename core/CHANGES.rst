@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.235.0 (2025-12-03)
+--------------------
+
+- WCM-1197: Always publish author objects alongside their articles
+
+
 7.234.0 (2025-11-28)
 --------------------
 
