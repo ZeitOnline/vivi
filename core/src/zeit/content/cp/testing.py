@@ -87,8 +87,6 @@ class CPTemplateLayer(zeit.cms.testing.Layer):
     # BBB We have too many tests that use lead/informatives. Rewriting them
     # to create their own areas is too time-consuming to do at once.
 
-    defaultBases = (ZOPE_LAYER,)
-
     def setUp(self):
         self['cp-template-patch'] = mock.patch(
             'zeit.content.cp.centerpage.CenterPage.default_template',
@@ -103,7 +101,7 @@ class CPTemplateLayer(zeit.cms.testing.Layer):
         del self['cp-template-patch']
 
 
-CP_TEMPLATE_LAYER = CPTemplateLayer()
+CP_TEMPLATE_LAYER = CPTemplateLayer(ZOPE_LAYER)
 
 
 LAYER = zeit.cms.testing.Layer(
@@ -169,7 +167,14 @@ class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
 
 
 WSGI_LAYER = zeit.cms.testing.WSGILayer(LAYER)
-HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(WSGI_LAYER)
+WSGI_SQL_LAYER = zeit.cms.testing.WSGILayer(
+    bases=(
+        CPTemplateLayer(),
+        zeit.retresco.testhelper.ELASTICSEARCH_MOCK_LAYER,
+        zeit.cms.testing.SQLIsolationTruncateLayer(_zope_layer),
+    )
+)
+HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(WSGI_SQL_LAYER)
 WEBDRIVER_LAYER = zeit.cms.testing.WebdriverLayer(HTTP_LAYER)
 
 
