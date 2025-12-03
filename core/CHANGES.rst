@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.236.0 (2025-12-03)
+--------------------
+
+- WCM-1210: Mark image non-required in scrolly modules, to avoid validation false positives
+
+- WCM-1210: Use modern image widget for scrolly modules, so it always displays the image preview
+
+
 7.235.0 (2025-12-03)
 --------------------
 
