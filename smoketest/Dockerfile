@@ -1,5 +1,5 @@
 # ZeitOnline/gh-action-workflows:nightwatch-build.yaml uses `target: nightwatch`
-FROM python:3.14.1-slim@sha256:9200f77df642830fcded51b873dde4d8f0643b46713823ee0c104df955107ee3 AS nightwatch
+FROM python:3.14.1-slim@sha256:b823ded4377ebb5ff1af5926702df2284e53cecbc6e3549e93a19d8632a1897e AS nightwatch
 
 COPY --from=ghcr.io/astral-sh/uv:0.9.15@sha256:4c1ad814fe658851f50ff95ecd6948673fffddb0d7994bdb019dcb58227abd52 /uv /usr/bin/
 ENV UV_NO_MANAGED_PYTHON=1 \
