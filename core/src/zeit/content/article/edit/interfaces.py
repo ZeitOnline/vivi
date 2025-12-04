@@ -407,8 +407,7 @@ class ScrollyImageLayoutSource(zeit.cms.content.sources.SimpleFixedValueSource):
     }
 
 
-class ScrollyImageLayoutSourceDesktop(
-        zeit.cms.content.sources.SimpleFixedValueSource):
+class ScrollyImageLayoutSourceDesktop(zeit.cms.content.sources.SimpleFixedValueSource):
     values = {
         'cover': _('Cover'),
         'cover-textbox': _('Cover (with textbox)'),
