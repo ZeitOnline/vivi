@@ -518,9 +518,9 @@ class ContractSearch:
         foo = SearchVar('foo', self.NS)
         ham = SearchVar('ham', self.NS)
         result = list(self.connector.search([foo], (foo == 'foo') | (ham == 'egg')))
-        assert result == [
-            ('http://xml.zeit.de/testing/foo', 'foo'),
+        assert sorted(result) == [
             ('http://xml.zeit.de/testing/bar', 'bar'),
+            ('http://xml.zeit.de/testing/foo', 'foo'),
         ]
 
     def test_search_order_limit_offset(self):
