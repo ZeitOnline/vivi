@@ -10,5 +10,6 @@
   <include package="zeit.content.cp" />
   <include package="zeit.content.image" />
   <include package="zeit.content.video" />
+  <include package="zeit.content.volume" />
 
 </configure>

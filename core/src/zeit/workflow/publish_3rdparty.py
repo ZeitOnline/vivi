@@ -499,12 +499,37 @@ class VideoDataScience(DataScience):
     grok.context(zeit.content.video.interfaces.IVideo)
 
 
-@grok.implementer(zeit.workflow.interfaces.IPublisherData)
-class ArticleFollowings(grok.Adapter, IgnoreMixin):
-    grok.context(zeit.content.article.interfaces.IArticle)
-    grok.name('followings')
+class IFollowingParent(zope.interface.Interface):
+    """Marker interface that provides parent uuids"""
 
-    def get_series_uuids(self):
+    def get_parent_uuids(self):
+        return []
+
+
+@grok.implementer(IFollowingParent)
+class WochenendeFollowingParent(grok.Adapter):
+    grok.context(IZWEContent)
+
+    def get_parent_uuids(self):
+        followings_source = zeit.content.cp.source.Followings().factory
+        return [followings_source.getTitle(None, 'volume_zwe')]
+
+
+@grok.implementer(IFollowingParent)
+class VolumeFollowingParent(grok.Adapter):
+    grok.context(IVolume)
+
+    def get_parent_uuids(self):
+        following_types = ['volume', 'volume_audio']
+        followings_source = zeit.content.cp.source.Followings().factory
+        return [followings_source.getTitle(None, type) for type in following_types]
+
+
+@grok.implementer(IFollowingParent)
+class ArticleFollowings(grok.Adapter):
+    grok.context(zeit.content.article.interfaces.IArticle)
+
+    def _get_series_uuids(self):
         if self.context.serie is None or self.context.serie.url is None:
             return []
         series_content = zeit.cms.interfaces.ICMSContent(
@@ -512,13 +537,13 @@ class ArticleFollowings(grok.Adapter, IgnoreMixin):
         )
         return [zeit.cms.content.interfaces.IUUID(series_content).shortened]
 
-    def get_author_uuids(self):
+    def _get_author_uuids(self):
         return [
             zeit.cms.content.interfaces.IUUID(author.target).shortened
             for author in self.context.authorships
         ]
 
-    def get_recipe_categories(self):
+    def _get_recipe_categories(self):
         if self.context.genre is None or 'rezept' not in self.context.genre:
             return []
         try:
@@ -538,56 +563,19 @@ class ArticleFollowings(grok.Adapter, IgnoreMixin):
             opentelemetry.trace.get_current_span().record_exception(err)
             return []
 
-    def publish_json(self):
-        if self.ignore():
-            return None
-        series_uuids = self.get_series_uuids()
-        author_uuids = self.get_author_uuids()
-        recipe_categories_uuids = self.get_recipe_categories()
-        all_uuids = series_uuids + author_uuids + recipe_categories_uuids
-        if not all_uuids:
-            return None
-        created = zeit.cms.workflow.interfaces.IPublishInfo(
-            self.context
-        ).date_first_released.isoformat()
-        return {'parent_uuids': all_uuids, 'created': created}
-
-    def retract_json(self):
-        return {}
-
-
-class IFollowingParent(zope.interface.Interface):
-    """Marker interface that provides parent uuids"""
-
     def get_parent_uuids(self):
-        return []
-
-
-@grok.implementer(IFollowingParent)
-class VolumeFollowingParent(grok.Adapter):
-    grok.context(IVolume)
-
-    def get_parent_uuids(self):
-        following_types = ['volume', 'volume_audio']
-        followings_source = zeit.content.cp.source.Followings().factory
-        return [followings_source.getTitle(None, type) for type in following_types]
-
-
-@grok.implementer(IFollowingParent)
-class WochenendeFollowingParent(grok.Adapter):
-    grok.context(IZWEContent)
-
-    def get_parent_uuids(self):
-        followings_source = zeit.content.cp.source.Followings().factory
-        return [followings_source.getTitle(None, 'volume_zwe')]
+        return self._get_author_uuids() + self._get_recipe_categories() + self._get_series_uuids()
 
 
 @grok.implementer(zeit.workflow.interfaces.IPublisherData)
-class CenterPageFollowings(grok.Adapter, IgnoreMixin):
-    grok.context(zeit.content.cp.interfaces.ICenterPage)
+class Followings(grok.Adapter, IgnoreMixin):
+    grok.context(zeit.cms.interfaces.ICMSContent)
     grok.name('followings')
 
     def publish_json(self):
+        if self.ignore():
+            return None
+
         parent = IFollowingParent(self.context, None)
         if parent is None:
             return None
@@ -602,6 +590,8 @@ class CenterPageFollowings(grok.Adapter, IgnoreMixin):
         return {'parent_uuids': parent_uuids, 'created': created}
 
     def retract_json(self):
+        if self.ignore():
+            return None
         return {}
 
 

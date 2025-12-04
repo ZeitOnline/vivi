@@ -26,6 +26,7 @@ import zeit.content.author.author
 import zeit.content.cp.centerpage
 import zeit.content.gallery.gallery
 import zeit.content.video.video
+import zeit.content.volume.volume
 import zeit.objectlog.interfaces
 import zeit.workflow.interfaces
 import zeit.workflow.publish
@@ -759,18 +760,16 @@ class FollowingsPayloadTest(zeit.workflow.testing.FunctionalTestCase):
         volume_audio_uuid = '18ba93e7-54a4-4cc4-8c76-05ee063382db'
         self.repository['2025'] = zeit.cms.repository.folder.Folder()
         self.repository['2025']['10'] = zeit.cms.repository.folder.Folder()
-        cp = self.repository['2025']['10']['index'] = zeit.content.cp.centerpage.CenterPage()
-        self.repository['index'] = zeit.content.cp.centerpage.CenterPage()
-        zope.interface.alsoProvides(cp, zeit.content.volume.interfaces.IVolume)
+        volume = self.repository['2025']['10']['ausgabe'] = zeit.content.volume.volume.Volume()
 
-        cp.year = 2025
-        cp.volume = 10
-        cp.type = 'volume'
-        info = zeit.cms.workflow.interfaces.IPublishInfo(cp)
+        volume.year = 2025
+        volume.volume = 10
+        volume.type = 'volume'
+        info = zeit.cms.workflow.interfaces.IPublishInfo(volume)
         info.date_first_released = pendulum.datetime(2025, 3, 5, 8, 18)
 
-        data = zeit.workflow.testing.publish_json(cp, 'followings')
-        date = zeit.cms.workflow.interfaces.IPublishInfo(cp).date_first_released
+        data = zeit.workflow.testing.publish_json(volume, 'followings')
+        date = zeit.cms.workflow.interfaces.IPublishInfo(volume).date_first_released
         self.assertEqual(
             data,
             {
