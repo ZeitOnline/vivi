@@ -416,10 +416,10 @@ class ScrollyImageLayoutSourceDesktop(
         'contain-padded': _('Contain (with whitespace)'),
         'left': _('Left Cover'),
         'right': _('Right Cover'),
-        'left-contain': _('Left Contain'),
-        'right-contain': _('Right Contain'),
-        'left-padded': _('Left Contain (with whitespace)'),
-        'right-padded': _('Right Contain (with whitespace)'),
+        'contain-left': _('Left Contain'),
+        'contain-right': _('Right Contain'),
+        'contain-padded-left': _('Left Contain (with whitespace)'),
+        'contain-padded-right': _('Right Contain (with whitespace)'),
     }
 
 
