@@ -572,7 +572,7 @@ class Followings(grok.Adapter, IgnoreMixin):
     grok.context(zeit.cms.interfaces.ICMSContent)
     grok.name('followings')
 
-    def publish_json(self):
+    def _parents(self):
         if self.ignore():
             return None
 
@@ -580,19 +580,20 @@ class Followings(grok.Adapter, IgnoreMixin):
         if parent is None:
             return None
 
-        parent_uuids = parent.get_parent_uuids()
-        if not parent_uuids:
-            return None
+        return parent.get_parent_uuids()
 
-        created = zeit.cms.workflow.interfaces.IPublishInfo(
-            self.context
-        ).date_first_released.isoformat()
-        return {'parent_uuids': parent_uuids, 'created': created}
+    def publish_json(self):
+        if parent_uuids := self._parents():
+            created = zeit.cms.workflow.interfaces.IPublishInfo(
+                self.context
+            ).date_first_released.isoformat()
+            return {'parent_uuids': parent_uuids, 'created': created}
+        return None
 
     def retract_json(self):
-        if self.ignore():
-            return None
-        return {}
+        if self._parents():
+            return {}
+        return None
 
 
 @grok.implementer(zeit.workflow.interfaces.IPublisherData)
