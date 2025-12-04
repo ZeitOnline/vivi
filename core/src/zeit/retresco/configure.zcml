@@ -6,8 +6,8 @@
 
     <grok:grok package="." exclude="json metrics testhelper xmlrpc" />
 
-    <utility factory=".connection.from_product_config" />
-    <utility factory=".search.from_product_config" />
+    <utility factory=".connection.from_product_config" zcml:condition="not-have zeit.cms.testing" />
+    <utility factory=".search.from_product_config" zcml:condition="not-have zeit.cms.testing" />
 
     <utility
       component=".content.TMSAuthor"

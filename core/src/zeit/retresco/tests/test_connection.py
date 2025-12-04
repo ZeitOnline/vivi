@@ -4,6 +4,7 @@ import json
 import urllib.parse
 
 from sqlalchemy import select
+import transaction
 import zope.component
 
 from zeit.cms.checkout.helper import checked_out
@@ -24,13 +25,29 @@ import zeit.retresco.tagger
 import zeit.retresco.testing
 
 
-class TMSTest(zeit.retresco.testing.FunctionalTestCase):
+HTTP_LAYER = zeit.cms.testing.HTTPLayer()
+CONNECTION_LAYER = zeit.cms.testing.Layer(
+    (zeit.retresco.testing.ZOPE_LAYER, HTTP_LAYER), name='ConnectionLayer'
+)
+
+
+class HTTPTestCase(zeit.cms.testing.FunctionalTestCase):
+    layer = CONNECTION_LAYER
+
+    def testSetUp(self):
+        # Remove TMS requests triggered by e.g. ZopeLayer.testSetUp()
+        self.layer['request_handler'].reset()
+
+
+class TMSTest(HTTPTestCase):
     def setUp(self):
         super().setUp()
         patcher = mock.patch('zeit.retresco.convert.TMSRepresentation._is_valid')
         validate = patcher.start()
         validate.return_value = True
         self.addCleanup(patcher.stop)
+
+        self.tms = zeit.retresco.connection.TMS(f'http://localhost:{self.layer["http_port"]}')
 
     def add_tag(self, tagger, label, typ, pinned):
         tag = zeit.cms.tagging.tag.Tag(label, typ)
@@ -45,8 +62,7 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
                 'rtr_locations': ['Berlin', 'Washington'],
             }
         )
-        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
-        result = tms.extract_keywords(self.repository['testcontent'])
+        result = self.tms.extract_keywords(self.repository['testcontent'])
         self.assertEqual(
             ['Berlin', 'Merkel', 'Obama', 'Washington'], sorted([x.label for x in result])
         )
@@ -71,8 +87,7 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
                 'num_found': 2,
             }
         )
-        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
-        result = list(tms.get_keywords('Sch'))
+        result = list(self.tms.get_keywords('Sch'))
         self.assertEqual(2, len(result))
         self.assertTrue(zeit.cms.tagging.interfaces.ITag.providedBy(result[0]))
         self.assertEqual(['Schmerz', 'Walter Schmögner'], [x.label for x in result])
@@ -91,34 +106,29 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
                 'num_found': 1,
             }
         )
-        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
-        result = list(tms.get_locations('Kro'))
+        result = list(self.tms.get_locations('Kro'))
         self.assertTrue(zeit.cms.tagging.interfaces.ITag.providedBy(result[0]))
         self.assertEqual(['Kroatien'], [x.label for x in result])
 
     def test_get_locations_filters_by_entity_type_location(self):
-        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
-        with mock.patch.object(tms, '_request') as request:
+        with mock.patch.object(self.tms, '_request') as request:
             request.return_value = {'entities': [], 'num_found': 0}
-            list(tms.get_locations(''))
+            list(self.tms.get_locations(''))
             self.assertEqual({'q': '', 'item_type': 'location'}, request.call_args[1]['params'])
 
     def test_raises_technical_error_for_5xx(self):
         self.layer['request_handler'].response_code = 500
-        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
         with self.assertRaises(zeit.retresco.interfaces.TechnicalError):
-            tms.extract_keywords(self.repository['testcontent'])
+            self.tms.extract_keywords(self.repository['testcontent'])
 
     def test_raises_domain_error_for_4xx(self):
         self.layer['request_handler'].response_code = 400
-        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
         with self.assertRaises(zeit.retresco.interfaces.TMSError):
-            tms.extract_keywords(self.repository['testcontent'])
+            self.tms.extract_keywords(self.repository['testcontent'])
 
     def test_ignores_404_on_delete(self):
         self.layer['request_handler'].response_code = 404
-        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
-        tms.delete_id('any')
+        self.tms.delete_id('any')
 
     def test_tms_returns_enriched_article_body(self):
         with checked_out(self.repository['testcontent']):
@@ -126,30 +136,27 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
         self.layer['request_handler'].response_body = json.dumps(
             {'body': '<body>lorem ipsum</body>'}
         )
-        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
-        result = tms.get_article_body(self.repository['testcontent'])
+        result = self.tms.get_article_body(self.repository['testcontent'])
         self.assertEqual('<body>lorem ipsum</body>', result)
 
     def test_get_topicpages_pagination(self):
-        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
-        with mock.patch.object(tms, '_request') as request:
+        with mock.patch.object(self.tms, '_request') as request:
             request.return_value = {'num_found': 0, 'docs': []}
             # Default values
-            tms.get_topicpages()
+            self.tms.get_topicpages()
             self.assertEqual(1, request.call_args[1]['params']['page'])
             self.assertEqual(25, request.call_args[1]['params']['rows'])
             # Passes through rows
-            tms.get_topicpages(0, 7)
+            self.tms.get_topicpages(0, 7)
             self.assertEqual(1, request.call_args[1]['params']['page'])
             self.assertEqual(7, request.call_args[1]['params']['rows'])
             # Calculates page from start
-            tms.get_topicpages(5, 5)
+            self.tms.get_topicpages(5, 5)
             self.assertEqual(2, request.call_args[1]['params']['page'])
-            tms.get_topicpages(10, 5)
+            self.tms.get_topicpages(10, 5)
             self.assertEqual(3, request.call_args[1]['params']['page'])
 
     def test_get_topicpages_dicts_have_id_and_title(self):
-        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
         self.layer['request_handler'].response_body = json.dumps(
             {
                 'num_found': 1,
@@ -164,19 +171,18 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
                 ],
             }
         )
-        result = tms.get_topicpages()
+        result = self.tms.get_topicpages()
         self.assertEqual(1, result.hits)
         self.assertEqual('mytopic', result[0]['id'])
         self.assertEqual('Mytopic', result[0]['title'])
 
     def test_get_all_topicpages_delegates_to_get_topicpages(self):
-        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
-        with mock.patch.object(tms, 'get_topicpages') as get:
+        with mock.patch.object(self.tms, 'get_topicpages') as get:
             get.side_effect = [
                 Result([{'id': 'mytopic', 'title': 'Mytopic'}]),
                 Result(),
             ]
-            result = list(tms.get_all_topicpages())
+            result = list(self.tms.get_all_topicpages())
             self.assertEqual(1, len(result))
             self.assertEqual('mytopic', result[0]['id'])
             self.assertEqual('Mytopic', result[0]['title'])
@@ -254,19 +260,14 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
                 },
             }
         )
-        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
-        result = tms.get_article_topiclinks(self.repository['testcontent'])
+        result = self.tms.get_article_topiclinks(self.repository['testcontent'])
         self.assertEqual(
             ['New York', 'Obama', 'Merkel', 'Clinton', 'Berlin'], [x.label for x in result]
         )
         self.assertEqual('thema/newyork', result[0].link)
 
     def test_get_article_topiclinks_uses_published_content_endpoint_as_default(self):
-        with checked_out(self.repository['testcontent']):
-            pass  # Trigger mock connector uuid creation
-        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
-        tms.get_article_topiclinks(self.repository['testcontent'])
-        # First requests will be enrich and index
+        self.tms.get_article_topiclinks(self.repository['testcontent'])
         content = self.repository['testcontent']
         uuid = zeit.cms.content.interfaces.IUUID(content).id
         self.assertEqual(
@@ -274,24 +275,17 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
                 '{} {}'.format(r['verb'], urllib.parse.unquote(r['path']))
                 for r in self.layer['request_handler'].requests
             ],
-            [
-                'GET /content/{}'.format(uuid),
-                'POST /enrich?in-text-linked',
-                'PUT /content/{}'.format(uuid),
-                'GET /in-text-linked-documents/{}'.format(uuid),
-            ],
+            ['GET /in-text-linked-documents/{}'.format(uuid)],
         )
 
     def test_get_article_topiclinks_uses_preview_endpoint_if_param_set(self):
-        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
-        tms.get_article_topiclinks(self.repository['testcontent'], published=False)
+        self.tms.get_article_topiclinks(self.repository['testcontent'], published=False)
         self.assertEqual(
             '/in-text-linked-documents-preview',
             self.layer['request_handler'].requests[0].get('path'),
         )
 
     def test_get_content_containing_topicpages_returns_list_of_tags(self):
-        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
         self.layer['request_handler'].response_body = json.dumps(
             {
                 'num_found': 1,
@@ -308,20 +302,18 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
             }
         )
         article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/article')
-        result = tms.get_content_containing_topicpages(article)
+        result = self.tms.get_content_containing_topicpages(article)
         self.assertEqual('Arbeit', result[0].label)
         self.assertEqual('keyword', result[0].entity_type)
 
     def test_disable_tms(self):
         FEATURE_TOGGLES.set('disable_tms')
-        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
         self.layer['request_handler'].response_body = json.dumps(
             {
                 'rtr_persons': ['Merkel', 'Obama'],
             }
         )
-        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
-        result = tms.extract_keywords(self.repository['testcontent'])
+        result = self.tms.extract_keywords(self.repository['testcontent'])
         self.assertEqual([], result)
 
 
@@ -335,18 +327,16 @@ class TopiclistUpdateTest(zeit.retresco.testing.FunctionalTestCase):
         zeit.cms.config.set('zeit.retresco', 'topiclist', 'http://xml.zeit.de/topics')
         zeit.cms.config.set('zeit.retresco', 'topic-redirect-id', 'http://xml.zeit.de/redirects')
 
-        with mock.patch(
-            'zeit.retresco.connection.TMS.get_all_topicpages',
-            return_value=[
-                {
-                    'id': 'berlin',
-                    'title': 'Berlin',
-                    'topic_type': 'location',
-                    'redirect': '/thema/hamburg',
-                }
-            ],
-        ):
-            zeit.retresco.connection._update_topiclist()
+        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
+        tms.get_all_topicpages.return_value = [
+            {
+                'id': 'berlin',
+                'title': 'Berlin',
+                'topic_type': 'location',
+                'redirect': '/thema/hamburg',
+            }
+        ]
+        zeit.retresco.connection._update_topiclist()
 
         topics = self.repository['topics']
         self.assertEqual(True, IPublishInfo(topics).published)
@@ -395,27 +385,25 @@ class TopiclistUpdateTest(zeit.retresco.testing.FunctionalTestCase):
         text = zeit.retresco.connection._build_topic_redirects(pages)
         self.assertEllipsis('.../thema/berlin = http://www.zeit.de/thema/hamburg\n', text)
 
+
+class KPIUpdateTest(zeit.retresco.testing.FunctionalTestCase):
     def test_event_calls_update_kpi(self):
         IPublish(self.repository['testcontent']).publish(background=False)
-        requests = self.layer['request_handler'].requests
-        requests.clear()
 
         kpi = zope.component.getUtility(zeit.kpi.interfaces.IKPIDatasource)
-        kpi.result = [
-            (self.repository['testcontent'], mock.Mock(visits=1, comments=2, subscriptions=3))
-        ]
+        data = mock.Mock(visits=1, comments=2, subscriptions=3)
+        kpi.result = [(self.repository['testcontent'], data)]
         zeit.kpi.update.update(select(Content), 1, 1)
 
-        payload = json.loads(requests[0]['body'])
-        self.assertEqual({'kpi_1': 1, 'kpi_2': 2, 'kpi_3': 3}, payload)
-        self.assertEndsWith('/publish', requests[1]['path'])
+        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
+        self.assertEqual((self.repository['testcontent'], data), tms.update_kpi.call_args[0])
+        self.assertTrue(tms.publish.called)
 
     def test_update_kpi_does_not_publish_changed_objects(self):
         IPublish(self.repository['testcontent']).publish(background=False)
         with checked_out(self.repository['testcontent']):
             pass  # update date_last_modified
-        requests = self.layer['request_handler'].requests
-        requests.clear()
+        transaction.commit()
 
         kpi = zope.component.getUtility(zeit.kpi.interfaces.IKPIDatasource)
         kpi.result = [
@@ -423,7 +411,6 @@ class TopiclistUpdateTest(zeit.retresco.testing.FunctionalTestCase):
         ]
         zeit.kpi.update.update(select(Content), 1, 10)
 
-        (request,) = requests
-        payload = json.loads(request['body'])
-        self.assertEqual({'kpi_1': 1, 'kpi_2': 2, 'kpi_3': 3}, payload)
-        self.assertNotEllipsis('.../publish', request['path'])
+        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
+        self.assertTrue(tms.update_kpi.called)
+        self.assertFalse(tms.publish.called)

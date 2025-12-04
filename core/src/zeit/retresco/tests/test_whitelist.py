@@ -1,5 +1,4 @@
 # coding: utf-8
-from unittest import mock
 import json
 
 import zope.component
@@ -30,9 +29,9 @@ class TestWhitelist(zeit.retresco.testing.FunctionalTestCase):
         self.assertEqual(None, self.whitelist.get('66ef0e83-f760-43fa-ae24-8bf9ce14ebf0'))
 
     def test_search_uses_TMS_get_keywords_for_searching(self):
-        with mock.patch('zeit.retresco.connection.TMS.get_keywords') as kw:
-            self.whitelist.search('Foo-Bar')
-        self.assertEqual('Foo-Bar', kw.call_args[0][0])
+        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
+        self.whitelist.search('Foo-Bar')
+        self.assertEqual('Foo-Bar', tms.get_keywords.call_args[0][0])
 
 
 class TestWhitelistLocationAutocomplete(zeit.cms.testing.ZeitCmsBrowserTestCase):
@@ -48,11 +47,11 @@ class TestWhitelistLocationAutocomplete(zeit.cms.testing.ZeitCmsBrowserTestCase)
             (zeit.cms.tagging.source.locationSource(None), request),
             zeit.cms.browser.interfaces.ISourceQueryURL,
         )
-        with mock.patch('zeit.retresco.connection.TMS.get_locations') as gl:
-            gl.return_value = [Tag('Schweiz', 'location'), Tag('Frankreich', 'location')]
-            b = self.browser
-            b.open(url + '?term=ei')
-            result = json.loads(b.contents)
+        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
+        tms.get_locations.return_value = [Tag('Schweiz', 'location'), Tag('Frankreich', 'location')]
+        b = self.browser
+        b.open(url + '?term=ei')
+        result = json.loads(b.contents)
         self.assertEqual(
             [
                 {'label': 'Schweiz', 'value': 'tag://location\\u2603Schweiz'},

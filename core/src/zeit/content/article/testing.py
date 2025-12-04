@@ -12,7 +12,6 @@ import zeit.content.author.testing
 import zeit.content.gallery.testing
 import zeit.content.volume.testing
 import zeit.push.testing
-import zeit.retresco.testhelper
 import zeit.wochenmarkt.testing
 
 
@@ -63,16 +62,6 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER, features=['zeit.connector.sql.zope'])
 _zope_layer = zeit.cms.testing.RawZopeLayer(ZCML_LAYER)
 ZOPE_LAYER = zeit.cms.testing.SQLIsolationSavepointLayer(_zope_layer, create_fixture)
-
-
-MOCK_LAYER = zeit.cms.testing.Layer(
-    name='MockLayer',
-    bases=(
-        ZOPE_LAYER,
-        zeit.retresco.testhelper.ELASTICSEARCH_MOCK_LAYER,
-        zeit.retresco.testhelper.TMS_MOCK_LAYER,
-    ),
-)
 
 
 class FunctionalTestCase(

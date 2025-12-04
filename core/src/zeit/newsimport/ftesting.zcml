@@ -14,6 +14,7 @@
 
   <!-- Use the actual implementation, not the mocks from zeit.cms.tagging. -->
   <includeOverrides package="zeit.retresco" />
+  <include package="zeit.retresco" file="ctesting.zcml" />
 
   <includeOverrides package="zeit.workflow" />
   <!-- required by zeit.workflow, but we cannot use ftesting.zcml which includes it,

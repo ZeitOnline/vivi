@@ -98,6 +98,11 @@ class AutomaticEditForm(zeit.content.cp.testing.BrowserTestCase):
         )
 
     def test_stores_common_module_properties_and_changes_in_xml(self):
+        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
+        tms.get_topicpage_documents.return_value = zeit.cms.interfaces.Result(
+            [{'url': '/testcontent'}]
+        )
+
         def _assert_force_mobile_image(self, expected_value):
             self.browser.open(self.content_url)
             self.browser.open('contents')

@@ -1,7 +1,4 @@
-from unittest import mock
-import copy
 import importlib.resources
-import json
 
 import pendulum
 import zope.app.appsetup.product
@@ -55,30 +52,9 @@ def create_fixture(repository):
     repository['imagefolder']['image'] = image
 
 
-HTTP_LAYER = zeit.cms.testing.HTTPLayer()
-
-
-class ProductConfigLayer(zeit.cms.testing.ProductConfigLayer):
-    def __init__(self, config, **kw):
-        # pytest may setUp/tearDown the same layer multiple times, so we have to
-        # perform the `port` replacement each time.
-        self.raw_config = copy.deepcopy(config)
-        super().__init__(config, **kw)
-
-    def setUp(self):
-        for key, value in self.raw_config.items():
-            if '{port}' in value:
-                self.config[key] = value.format(port=self['http_port'])
-        super().setUp()
-
-
 HERE = importlib.resources.files(__package__)
-CONFIG_LAYER = ProductConfigLayer(
+CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
     {
-        'base-url': 'http://localhost:{port}',
-        'elasticsearch-url': 'http://tms-backend.staging.zeit.de:80/elasticsearch',
-        'elasticsearch-index': 'zeit_pool',
-        'elasticsearch-connection-class': 'zeit.retresco.search.Connection',
         'topic-redirect-prefix': 'http://www.zeit.de',
         'index-principal': 'zope.user',
         'kpi-fields': f'file://{HERE}/tests/kpi.xml',
@@ -86,30 +62,11 @@ CONFIG_LAYER = ProductConfigLayer(
         'topicpage-prefix': '/thema',
     },
     bases=(
-        HTTP_LAYER,
         zeit.content.link.testing.CONFIG_LAYER,
         zeit.content.volume.testing.CONFIG_LAYER,
         zeit.wochenmarkt.testing.CONFIG_LAYER,
     ),
 )
-
-
-class ElasticsearchMockLayer(zeit.cms.testing.Layer):
-    def setUp(self):
-        self['elasticsearch_mocker'] = mock.patch('elasticsearch.Elasticsearch.search')
-        self['elasticsearch'] = self['elasticsearch_mocker'].start()
-        response = (
-            importlib.resources.files('zeit.retresco.tests') / 'elasticsearch_result.json'
-        ).read_text('utf-8')
-        self['elasticsearch'].return_value = json.loads(response)
-
-    def tearDown(self):
-        del self['elasticsearch']
-        self['elasticsearch_mocker'].stop()
-        del self['elasticsearch_mocker']
-
-
-ELASTICSEARCH_MOCK_LAYER = ElasticsearchMockLayer()
 
 
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER, features=['zeit.connector.sql.zope'])
@@ -123,19 +80,11 @@ CELERY_LAYER = zeit.cms.testing.CeleryWorkerLayer(
 CELERY_LAYER.queues += ('search',)
 
 
-MOCK_LAYER = zeit.cms.testing.Layer(
-    bases=(ZOPE_LAYER, ELASTICSEARCH_MOCK_LAYER),
-    name='MockLayer',
-)
-
-
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
     layer = ZOPE_LAYER
 
     def setUp(self):
         super().setUp()
-        # Remove TMS requests triggered by e.g. ZopeLayer.testSetUp()
-        self.layer['request_handler'].reset()
 
 
 class BrowserTestCase(zeit.cms.testing.BrowserTestCase):

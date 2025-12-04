@@ -12,7 +12,6 @@ import zeit.cms.testing
 import zeit.content.article.testing
 import zeit.content.author.author
 import zeit.newsimport.interfaces
-import zeit.retresco.testhelper
 import zeit.retresco.testing
 import zeit.workflow.testing
 
@@ -48,7 +47,7 @@ def create_fixture(repository):
     repository['autoren']['dpa'] = agency
 
 
-_zope_layer = zeit.cms.testing.RawZopeLayer((ZCML_LAYER, zeit.retresco.testhelper.TMS_MOCK_LAYER))
+_zope_layer = zeit.cms.testing.RawZopeLayer(ZCML_LAYER)
 ZOPE_LAYER = zeit.cms.testing.SQLIsolationSavepointLayer(_zope_layer, create_fixture)
 
 
