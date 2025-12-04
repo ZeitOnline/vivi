@@ -27,7 +27,7 @@ While a centerpage has validation errors, it can not be published:
 >>> browser.getLink('Workflow').click()
 >>> browser.getControl('Save state and publish now').click()
 >>> print(browser.contents)
-<...Could not publish http://xml.zeit.de/online/2007/01/island
+<...Could not publish http://xml.zeit.de/folder/island
 since it has validation errors...
 
 Technical detail: The centerpage's workflow form inherits from the default
@@ -57,7 +57,7 @@ Now we can publish:
 >>> browser.open('@@checkin')
 >>> browser.getLink('Workflow').click()
 >>> browser.getControl('Save state and publish now').click()
-Publishing: http://xml.zeit.de/online/2007/01/island
+Publishing: http://xml.zeit.de/folder/island
 >>> print(browser.contents)
-<...http://xml.zeit.de/online/2007/01/island has been scheduled
+<...http://xml.zeit.de/folder/island has been scheduled
 for publishing...

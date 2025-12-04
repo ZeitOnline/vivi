@@ -145,7 +145,7 @@ class TestAutomaticArea(zeit.content.cp.testing.SeleniumTestCase):
         teaser = self.create_content('t1', 'Teaser Title')
         cp_with_teaser = self.create_and_checkout_centerpage('cp_with_teaser', contents=[teaser])
         zeit.cms.checkout.interfaces.ICheckinManager(cp_with_teaser).checkin()
-
+        transaction.commit()
         self.cp = self.create_and_checkout_centerpage('cp')
         transaction.commit()
         self.open_centerpage(create_cp=False)

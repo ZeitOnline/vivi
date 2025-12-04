@@ -5,7 +5,7 @@ Centerpage
 >>> import zeit.cms.testing
 >>> browser = zeit.cms.testing.Browser(layer['wsgi_app'])
 >>> browser.login('user', 'userpw')
->>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
+>>> browser.open('http://localhost/++skin++cms/repository/folder')
 
 >>> menu = browser.getControl(name='add_menu')
 >>> menu.displayValue = ['CenterPage']

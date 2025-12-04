@@ -173,7 +173,7 @@ class FunctionalTeaserDisplayTest(zeit.content.cp.testing.FunctionalTestCase):
 
     def create_teaserimage_block(self, layout):
         block = self.create_teaserblock(layout)
-        image = ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')
+        image = ICMSContent('http://xml.zeit.de/imagefolder/image')
         for i in range(3):
             id = 't%s' % i
             self.repository[id] = ExampleContentType()
@@ -183,27 +183,19 @@ class FunctionalTeaserDisplayTest(zeit.content.cp.testing.FunctionalTestCase):
             block.insert(0, self.repository['t%s' % i])
         return block
 
-    def create_gallery(self):
-        gallery = zeit.content.gallery.gallery.Gallery()
-        gallery.image_folder = self.repository['2007']
-        self.repository['2007']['image01'] = ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')
-        transaction.commit()
-        gallery.reload_image_folder()
-        return gallery
-
     def test_layout_without_image_pattern_shows_no_header_image(self):
         view = teaser_view(self.create_teaserimage_block(layout='short'))
         self.assertEqual(None, view.header_image)
 
     def test_layout_with_image_pattern_shows_header_image(self):
         view = teaser_view(self.create_teaserimage_block(layout='large'))
-        self.assertEqual('http://127.0.0.1/repository/2006/DSC00109_2.JPG/@@raw', view.header_image)
+        self.assertEqual('http://127.0.0.1/repository/imagefolder/image/@@raw', view.header_image)
 
     def test_shows_list_representation_title_for_non_metadata(self):
         block = self.cp.body['lead'].create_item('teaser')
-        block.insert(0, self.repository['2007'])
+        block.insert(0, self.repository['folder'])
         view = teaser_view(block)
-        self.assertEqual('2007', view.teasers[0]['texts'][0]['content'])
+        self.assertEqual('folder', view.teasers[0]['texts'][0]['content'])
 
     def test_quote_teaser_shows_citation_text_if_article_has_citation(self):
         _, view = self.tab.with_citation('Foo').build(self.create_teaserblock('zar-quote-yellow'))

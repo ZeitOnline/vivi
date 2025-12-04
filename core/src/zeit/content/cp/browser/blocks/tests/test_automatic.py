@@ -14,7 +14,7 @@ class TestAutomaticTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
 
         cp_with_teaser = self.create_and_checkout_centerpage('cp_with_teaser', contents=[teaser])
         zeit.cms.checkout.interfaces.ICheckinManager(cp_with_teaser).checkin()
-
+        transaction.commit()
         self.cp = self.create_and_checkout_centerpage('cp')
         del self.cp.body['feature']['lead']
         del self.cp.body['feature']['informatives']

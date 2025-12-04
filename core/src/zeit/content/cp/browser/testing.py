@@ -2,7 +2,7 @@ import lxml.cssselect
 
 
 def create_cp(browser, filename='island'):
-    browser.open('http://localhost/++skin++cms/repository/online/2007/01')
+    browser.open('http://localhost/++skin++cms/repository/folder')
 
     menu = browser.getControl(name='add_menu')
     menu.displayValue = ['CenterPage']

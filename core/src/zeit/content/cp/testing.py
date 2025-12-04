@@ -2,21 +2,49 @@ from unittest import mock
 import importlib.resources
 import re
 
+from sqlalchemy.dialects import postgresql
+import pendulum
 import transaction
 import zope.component
 import zope.interface
 import zope.security.management
 import zope.testing.renormalizing
 
+from zeit.content.article.article import Article
+from zeit.content.article.interfaces import IArticle
+import zeit.cms.content.field
 import zeit.cms.interfaces
+import zeit.cms.repository.folder
 import zeit.cms.testcontenttype.testcontenttype
 import zeit.cms.testing
 import zeit.cms.testing.doctest
+import zeit.cms.workflow.interfaces
 import zeit.content.image.testing
 import zeit.content.modules.testing
 import zeit.content.text.testing
 import zeit.retresco.interfaces
 import zeit.retresco.testhelper
+
+
+def create_fixture(repository):
+    article = Article()
+    zeit.cms.content.field.apply_default_values(article, IArticle)
+    article.year = 2025
+    article.title = 'Cookie monster'
+    article.ressort = 'Politik'
+    info = zeit.cms.workflow.interfaces.IPublishInfo(article)
+    info.published = True
+    info.date_last_published_semantic = pendulum.datetime(2025, 11, 10)
+    repository['article'] = article
+
+    content = zeit.cms.testcontenttype.testcontenttype.ExampleContentType()
+    content.title = 'foo'
+    repository['folder'] = zeit.cms.repository.folder.Folder()
+    repository['folder']['testcontent'] = content
+
+    repository['imagefolder'] = zeit.cms.repository.folder.Folder()
+    repository['imagefolder']['image'] = zeit.content.image.testing.create_image()
+    repository['imagegroup'] = zeit.content.image.testing.create_image_group()
 
 
 FIXTURES = importlib.resources.files(__package__) / 'tests/fixtures'
@@ -42,7 +70,7 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
             'rules-url': 'file://%s/tests/fixtures/example_rules.py'
             % importlib.resources.files(__package__)
         },
-        'zeit.retresco': {'topicpage-prefix': '/2007'},
+        'zeit.retresco': {'topicpage-prefix': '/folder'},
     },
     bases=(
         zeit.content.image.testing.CONFIG_LAYER,
@@ -50,15 +78,14 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
         zeit.content.text.testing.CONFIG_LAYER,
     ),
 )
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER)
-ZOPE_LAYER = zeit.cms.testing.RawZopeLayer(ZCML_LAYER)
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER, features=['zeit.connector.sql.zope'])
+_zope_layer = zeit.cms.testing.RawZopeLayer(ZCML_LAYER)
+ZOPE_LAYER = zeit.cms.testing.SQLIsolationSavepointLayer(_zope_layer, create_fixture)
 
 
 class CPTemplateLayer(zeit.cms.testing.Layer):
     # BBB We have too many tests that use lead/informatives. Rewriting them
     # to create their own areas is too time-consuming to do at once.
-
-    defaultBases = (ZOPE_LAYER,)
 
     def setUp(self):
         self['cp-template-patch'] = mock.patch(
@@ -74,7 +101,7 @@ class CPTemplateLayer(zeit.cms.testing.Layer):
         del self['cp-template-patch']
 
 
-CP_TEMPLATE_LAYER = CPTemplateLayer()
+CP_TEMPLATE_LAYER = CPTemplateLayer(ZOPE_LAYER)
 
 
 LAYER = zeit.cms.testing.Layer(
@@ -115,10 +142,16 @@ def FunctionalDocFileSuite(*args, **kw):
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
     layer = LAYER
 
+    def compile_sql(self, stmt):
+        return str(
+            stmt.compile(dialect=postgresql.dialect(), compile_kwargs={'literal_binds': True})
+        )
+
     def create_content(self, name, title):
         content = zeit.cms.testcontenttype.testcontenttype.ExampleContentType()
         content.teaserTitle = title
         self.repository[name] = content
+        transaction.commit()
         return content
 
     def create_and_checkout_centerpage(self, name='cp', contents=None):
@@ -134,7 +167,14 @@ class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
 
 
 WSGI_LAYER = zeit.cms.testing.WSGILayer(LAYER)
-HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(WSGI_LAYER)
+WSGI_SQL_LAYER = zeit.cms.testing.WSGILayer(
+    bases=(
+        CPTemplateLayer(),
+        zeit.retresco.testhelper.ELASTICSEARCH_MOCK_LAYER,
+        zeit.cms.testing.SQLIsolationTruncateLayer(_zope_layer),
+    )
+)
+HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(WSGI_SQL_LAYER)
 WEBDRIVER_LAYER = zeit.cms.testing.WebdriverLayer(HTTP_LAYER)
 
 

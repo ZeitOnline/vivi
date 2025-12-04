@@ -22,11 +22,11 @@ Some setup to fill a centerpage:
 >>> repository = zope.component.getUtility(
 ...     zeit.cms.repository.interfaces.IRepository)
 
->>> teasers.insert(0, repository['testcontent'])
->>> teasers.insert(1, repository['2007']['test'])
+>>> teasers.insert(0, repository['folder']['testcontent'])
+>>> teasers.insert(1, repository['article'])
 
 Now we can iterate over the centerpage and we get all contents in a flat list.
 
 >>> list(zeit.edit.interfaces.IElementReferences(cp))
 [<zeit.cms.testcontenttype.testcontenttype.ExampleContentType...>,
- <zeit.cms.repository.unknown.PersistentUnknownResource...>]
+ <zeit.content.article.article.Article...>]

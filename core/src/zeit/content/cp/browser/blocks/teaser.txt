@@ -72,7 +72,7 @@ Objects which are not adaptable to ICommonMetadata are also supported. That is
 the CPE doesn't break, even when the object is removed from the repository
 afterwards:
 
->>> url = '%s?uniqueId=http://xml.zeit.de/online/2007/01/Somalia' % (drop_url,)
+>>> url = '%s?uniqueId=http://xml.zeit.de/article' % (drop_url,)
 >>> browser.open(url)
 >>> browser.open(contents_url)
 
