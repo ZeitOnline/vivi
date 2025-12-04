@@ -3,6 +3,16 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.238.0 (2025-12-04)
+--------------------
+
+- WCM-1223: Change vivi logo to santa
+
+
+MAINT:
+- WCM-1097: Move zeit.content.cp tests to sql connector test layer
+
+
 7.237.0 (2025-12-03)
 --------------------
 
