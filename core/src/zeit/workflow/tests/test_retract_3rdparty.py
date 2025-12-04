@@ -1,3 +1,5 @@
+import unittest
+
 import requests_mock
 import transaction
 import zope.component
@@ -147,13 +149,30 @@ class Retract3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
     def test_followings_retract(self):
         article = self.repository['article']
         zope.interface.alsoProvides(article, zeit.content.cp.interfaces.ICenterPage)
-        zope.interface.alsoProvides(article, zeit.content.audio.interfaces.IAudioReferences)
+        with unittest.mock.patch(
+            'zeit.workflow.publish_3rdparty.Followings._parents'
+        ) as mock_adapter:
+            # If following has parents, always retract
+            mock_adapter.return_value = ['9b37d353-de68-47b4-be65-ee4adf6d33ac']
+            data_factory = zope.component.getAdapter(
+                article, zeit.workflow.interfaces.IPublisherData, name='followings'
+            )
+            data = data_factory.retract_json()
+            assert data == {}
 
-        data_factory = zope.component.getAdapter(
-            article, zeit.workflow.interfaces.IPublisherData, name='followings'
-        )
-        data = data_factory.retract_json()
-        assert data == {}
+    def test_followings_no_retract(self):
+        article = self.repository['article']
+        zope.interface.alsoProvides(article, zeit.content.cp.interfaces.ICenterPage)
+        with unittest.mock.patch(
+            'zeit.workflow.publish_3rdparty.Followings._parents'
+        ) as mock_adapter:
+            # If following has parents, always retract
+            mock_adapter.return_value = []
+            data_factory = zope.component.getAdapter(
+                article, zeit.workflow.interfaces.IPublisherData, name='followings'
+            )
+            data = data_factory.retract_json()
+            assert data is None
 
     def test_bookmarks_retract_article(self):
         content = self.repository['testcontent']
