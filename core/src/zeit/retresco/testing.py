@@ -112,30 +112,6 @@ class ElasticsearchMockLayer(zeit.cms.testing.Layer):
 ELASTICSEARCH_MOCK_LAYER = ElasticsearchMockLayer()
 
 
-class TMSMockLayer(zeit.cms.testing.Layer):
-    def setUp(self):
-        registry = zope.component.getGlobalSiteManager()
-        self['old_tms'] = registry.queryUtility(zeit.retresco.interfaces.ITMS)
-        self['tms_mock'] = mock.Mock()
-        self['tms_mock'].url = 'http://tms.example.com'
-        self['tms_mock'].get_article_topiclinks.return_value = []
-        registry.registerUtility(self['tms_mock'], zeit.retresco.interfaces.ITMS)
-
-    def tearDown(self):
-        del self['tms_mock']
-        if self['old_tms'] is not None:
-            zope.component.getGlobalSiteManager().registerUtility(
-                self['old_tms'], zeit.retresco.interfaces.ITMS
-            )
-        del self['old_tms']
-
-    def testTearDown(self):
-        self['tms_mock'].reset_mock()
-
-
-TMS_MOCK_LAYER = TMSMockLayer()
-
-
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER, features=['zeit.connector.sql.zope'])
 _zope_layer = zeit.cms.testing.RawZopeLayer(ZCML_LAYER)
 ZOPE_LAYER = zeit.cms.testing.SQLIsolationSavepointLayer(_zope_layer, create_fixture)
