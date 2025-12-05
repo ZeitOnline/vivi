@@ -146,7 +146,7 @@ class ZCMLLayer(Layer):
         self,
         bases=(),
         config_file='ftesting.zcml',
-        features=('zeit.connector.mock',),
+        features=('zeit.connector.sql.zope',),
     ):
         from .sql import SQL_CONFIG_LAYER  # break circular import
 

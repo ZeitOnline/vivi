@@ -8,9 +8,7 @@ import zeit.cms.webtest
 import zeit.connector.interfaces
 
 
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    zeit.cms.testing.CONFIG_LAYER, features=['zeit.connector.sql.zope']
-)
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(zeit.cms.testing.CONFIG_LAYER)
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
 WSGI_LAYER = zeit.cms.testing.WSGILayer(ZOPE_LAYER)
 

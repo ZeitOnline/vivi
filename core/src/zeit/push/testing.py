@@ -60,9 +60,7 @@ def create_fixture(repository):
 
 
 ARTICLE_CONFIG_LAYER = ArticleConfigLayer({}, package='zeit.content.article')
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    (CONFIG_LAYER, ARTICLE_CONFIG_LAYER), features=['zeit.connector.sql.zope']
-)
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer((CONFIG_LAYER, ARTICLE_CONFIG_LAYER))
 _zope_layer = zeit.cms.testing.RawZopeLayer(ZCML_LAYER)
 ZOPE_LAYER = zeit.cms.testing.SQLIsolationSavepointLayer(_zope_layer, create_fixture)
 

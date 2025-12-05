@@ -15,9 +15,7 @@ def create_fixture(repository):
     repository['dynamicfolder'] = create_dynamic_folder()
 
 
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    zeit.content.cp.testing.CONFIG_LAYER, features=['zeit.connector.sql.zope']
-)
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(zeit.content.cp.testing.CONFIG_LAYER)
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER, create_fixture)
 WSGI_LAYER = zeit.cms.testing.WSGILayer(ZOPE_LAYER)
 

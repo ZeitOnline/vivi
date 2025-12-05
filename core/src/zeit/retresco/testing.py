@@ -69,7 +69,7 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
 )
 
 
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER, features=['zeit.connector.sql.zope'])
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER)
 _zope_layer = zeit.cms.testing.RawZopeLayer(ZCML_LAYER)
 ZOPE_LAYER = zeit.cms.testing.SQLIsolationSavepointLayer(_zope_layer, create_fixture)
 WSGI_LAYER = zeit.cms.testing.WSGILayer(ZOPE_LAYER)

@@ -49,9 +49,9 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
         'principal': 'zope.simplecast',
         'retry-delay-seconds': '0',
     },
-    bases=(zeit.content.audio.testing.CONFIG_LAYER,),
+    bases=zeit.content.audio.testing.CONFIG_LAYER,
 )
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER, features=['zeit.connector.sql.zope'])
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER)
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
 WSGI_LAYER = zeit.cms.testing.WSGILayer(ZOPE_LAYER)
 

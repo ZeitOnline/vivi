@@ -39,11 +39,7 @@ class ArticleConfigLayer(zeit.cms.testing.ProductConfigLayer):
 
 
 ARTICLE_CONFIG_LAYER = ArticleConfigLayer({}, package='zeit.content.article')
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    config_file='ftesting.zcml',
-    features=['zeit.connector.sql.zope'],
-    bases=(CONFIG_LAYER, ARTICLE_CONFIG_LAYER),
-)
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer((CONFIG_LAYER, ARTICLE_CONFIG_LAYER))
 _zope_layer = zeit.cms.testing.RawZopeLayer(ZCML_LAYER)
 ZOPE_LAYER = zeit.cms.testing.SQLIsolationSavepointLayer(_zope_layer)
 BROWSER_LAYER = zeit.cms.testing.WSGILayer(ZOPE_LAYER)
