@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Wed Nov 19 10:55:57 2025\n"
+"POT-Creation-Date: Mon Dec  1 14:46:37 2025\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -581,7 +581,7 @@ msgstr ""
 msgid "Type changed. Loading ..."
 msgstr ""
 
-#: zeit/cms/content/browser/widget.py:136
+#: zeit/cms/content/browser/widget.py:137
 msgid "Obsolete value ${value}"
 msgstr ""
 
@@ -652,6 +652,7 @@ msgstr ""
 #: zeit/cms/content/interfaces.py:132
 #: zeit/content/volume/browser/toc-listing.pt:10
 #: zeit/content/volume/browser/toc_listing.py:58
+#: zeit/workflow/scheduled/browser/form.py:43
 msgid "Access"
 msgstr ""
 
@@ -1364,6 +1365,7 @@ msgid "Date last checked out"
 msgstr ""
 
 #: zeit/cms/workflow/interfaces.py:42
+#: zeit/workflow/scheduled/interfaces.py:24
 msgid "Date created"
 msgstr ""
 
@@ -1545,7 +1547,7 @@ msgstr ""
 msgid "breaking-news-homepage"
 msgstr ""
 
-#: zeit/content/article/browser/breaking.py:93
+#: zeit/content/article/browser/breaking.py:112
 msgid "Publish and push"
 msgstr ""
 
@@ -3864,7 +3866,7 @@ msgstr ""
 msgid "Blog"
 msgstr ""
 
-#: zeit/content/link/redirect.py:63
+#: zeit/content/link/redirect.py:66
 msgid "Redirect created for ${url}"
 msgstr ""
 
@@ -4946,15 +4948,109 @@ msgstr ""
 msgid "${name}: ${new_value}"
 msgstr ""
 
+#: zeit/workflow/scheduled/browser/form.py:26
+msgid "Operation"
+msgstr ""
+
+#: zeit/workflow/scheduled/browser/form.py:30
+#: zeit/workflow/scheduled/interfaces.py:16
+msgid "Execute at"
+msgstr ""
+
+#: zeit/workflow/scheduled/browser/form.py:31
+msgid "When should this operation be executed?"
+msgstr ""
+
+#: zeit/workflow/scheduled/browser/form.py:37
+msgid "Change access?"
+msgstr ""
+
+#: zeit/workflow/scheduled/browser/form.py:38
+msgid "Modify access setting during operation"
+msgstr ""
+
+#: zeit/workflow/scheduled/browser/form.py:49
+msgid "Change product?"
+msgstr ""
+
+#: zeit/workflow/scheduled/browser/form.py:50
+msgid "Modify product during operation"
+msgstr ""
+
+#: zeit/workflow/scheduled/browser/form.py:55
+msgid "Product"
+msgstr ""
+
+#: zeit/workflow/scheduled/browser/form.py:106
+#: zeit/workflow/scheduled/browser/form.py:161
+#: zeit/workflow/scheduled/browser/form.py:229
+msgid "None"
+msgstr ""
+
+#: zeit/workflow/scheduled/browser/form.py:172
+msgid "Scheduled Operations"
+msgstr ""
+
+#: zeit/workflow/scheduled/browser/form.py:236
+msgid "Add Operation"
+msgstr ""
+
+#: zeit/workflow/scheduled/browser/form.py:256
+#. Default: "Scheduled operation added successfully (ID: ${id})"
+msgid "scheduled-operation-added"
+msgstr ""
+
+#: zeit/workflow/scheduled/browser/form.py:264
+#. Default: "Error adding scheduled operation: ${error}"
+msgid "scheduled-operation-add-error"
+msgstr ""
+
+#: zeit/workflow/scheduled/browser/form.py:276
+msgid "No operation ID provided"
+msgstr ""
+
+#: zeit/workflow/scheduled/browser/form.py:282
+msgid "Scheduled operation deleted successfully"
+msgstr ""
+
+#: zeit/workflow/scheduled/browser/form.py:284
+msgid "Operation not found"
+msgstr ""
+
+#: zeit/workflow/scheduled/browser/form.py:287
+#. Default: "Error deleting scheduled operation: ${error}"
+msgid "scheduled-operation-delete-error"
+msgstr ""
+
+#: zeit/workflow/scheduled/interfaces.py:12
+msgid "Operation ID"
+msgstr ""
+
+#: zeit/workflow/scheduled/interfaces.py:14
+msgid "Operation type"
+msgstr ""
+
+#: zeit/workflow/scheduled/interfaces.py:18
+msgid "Property changes (applied during operation)"
+msgstr ""
+
+#: zeit/workflow/scheduled/interfaces.py:23
+msgid "Created by"
+msgstr ""
+
+#: zeit/workflow/scheduled/operations.py:82
+msgid "Scheduled ${op} for ${date}"
+msgstr ""
+
 #: zeit/workflow/source.py:43
 msgid "not necessary"
 msgstr ""
 
-#: zeit/workflow/timebased.py:84
+#: zeit/workflow/timebased.py:149
 msgid "timebased-publish-add"
 msgstr ""
 
-#: zeit/workflow/timebased.py:85
+#: zeit/workflow/timebased.py:150
 msgid "timebased-retract-add"
 msgstr ""
 

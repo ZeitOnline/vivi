@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Wed Nov 19 10:55:57 2025\n"
+"POT-Creation-Date: Mon Dec  1 14:46:37 2025\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -553,7 +553,7 @@ msgstr "Typ ändern"
 msgid "Type changed. Loading ..."
 msgstr "Typ geändert. Lade …"
 
-#: zeit/cms/content/browser/widget.py:136
+#: zeit/cms/content/browser/widget.py:137
 msgid "Obsolete value ${value}"
 msgstr "${value} (nur Bestandscontent)"
 
@@ -621,6 +621,7 @@ msgstr "Agenturen"
 #: zeit/cms/content/interfaces.py:132
 #: zeit/content/volume/browser/toc-listing.pt:10
 #: zeit/content/volume/browser/toc_listing.py:58
+#: zeit/workflow/scheduled/browser/form.py:43
 msgid "Access"
 msgstr "Verfügbarkeit"
 
@@ -1333,7 +1334,7 @@ msgstr "Zuletzt geändert am"
 msgid "Date last checked out"
 msgstr "Beginn der Bearbeitung"
 
-#: zeit/cms/workflow/interfaces.py:42
+#: zeit/cms/workflow/interfaces.py:42 zeit/workflow/scheduled/interfaces.py:24
 msgid "Date created"
 msgstr "Angelegt am"
 
@@ -1512,7 +1513,7 @@ msgstr "Push versenden"
 msgid "breaking-news-homepage"
 msgstr "Eilmeldungsbanner anzeigen"
 
-#: zeit/content/article/browser/breaking.py:93
+#: zeit/content/article/browser/breaking.py:112
 msgid "Publish and push"
 msgstr "Veröffentlichen & Push"
 
@@ -3811,7 +3812,7 @@ msgstr "HTTP Statuscode"
 msgid "Blog"
 msgstr "Blog"
 
-#: zeit/content/link/redirect.py:63
+#: zeit/content/link/redirect.py:66
 msgid "Redirect created for ${url}"
 msgstr "Weiterleitung eingerichtet für ${url}"
 
@@ -4903,15 +4904,109 @@ msgstr "Sperrvermerk »${reason}«"
 msgid "${name}: ${new_value}"
 msgstr "${name}: ${new_value}"
 
+#: zeit/workflow/scheduled/browser/form.py:26
+msgid "Operation"
+msgstr "Vorgang"
+
+#: zeit/workflow/scheduled/browser/form.py:30
+#: zeit/workflow/scheduled/interfaces.py:16
+msgid "Execute at"
+msgstr ""
+
+#: zeit/workflow/scheduled/browser/form.py:31
+msgid "When should this operation be executed?"
+msgstr ""
+
+#: zeit/workflow/scheduled/browser/form.py:37
+msgid "Change access?"
+msgstr "Zugriff ändern?"
+
+#: zeit/workflow/scheduled/browser/form.py:38
+msgid "Modify access setting during operation"
+msgstr ""
+
+#: zeit/workflow/scheduled/browser/form.py:49
+msgid "Change product?"
+msgstr "Produkt ändern?"
+
+#: zeit/workflow/scheduled/browser/form.py:50
+msgid "Modify product during operation"
+msgstr ""
+
+#: zeit/workflow/scheduled/browser/form.py:55
+msgid "Product"
+msgstr "Produkt"
+
+#: zeit/workflow/scheduled/browser/form.py:106
+#: zeit/workflow/scheduled/browser/form.py:161
+#: zeit/workflow/scheduled/browser/form.py:229
+msgid "None"
+msgstr ""
+
+#: zeit/workflow/scheduled/browser/form.py:172
+msgid "Scheduled Operations"
+msgstr ""
+
+#: zeit/workflow/scheduled/browser/form.py:236
+msgid "Add Operation"
+msgstr "Vorgang hinzufügen"
+
+#. Default: "Scheduled operation added successfully (ID: ${id})"
+#: zeit/workflow/scheduled/browser/form.py:256
+msgid "scheduled-operation-added"
+msgstr ""
+
+#. Default: "Error adding scheduled operation: ${error}"
+#: zeit/workflow/scheduled/browser/form.py:264
+msgid "scheduled-operation-add-error"
+msgstr ""
+
+#: zeit/workflow/scheduled/browser/form.py:276
+msgid "No operation ID provided"
+msgstr ""
+
+#: zeit/workflow/scheduled/browser/form.py:282
+msgid "Scheduled operation deleted successfully"
+msgstr ""
+
+#: zeit/workflow/scheduled/browser/form.py:284
+msgid "Operation not found"
+msgstr ""
+
+#. Default: "Error deleting scheduled operation: ${error}"
+#: zeit/workflow/scheduled/browser/form.py:287
+msgid "scheduled-operation-delete-error"
+msgstr ""
+
+#: zeit/workflow/scheduled/interfaces.py:12
+msgid "Operation ID"
+msgstr "Vorgangs-ID"
+
+#: zeit/workflow/scheduled/interfaces.py:14
+msgid "Operation type"
+msgstr ""
+
+#: zeit/workflow/scheduled/interfaces.py:18
+msgid "Property changes (applied during operation)"
+msgstr ""
+
+#: zeit/workflow/scheduled/interfaces.py:23
+msgid "Created by"
+msgstr "Angelegt von"
+
+#: zeit/workflow/scheduled/operations.py:82
+msgid "Scheduled ${op} for ${date}"
+msgstr ""
+
 #: zeit/workflow/source.py:43
 msgid "not necessary"
 msgstr "nicht nötig"
 
-#: zeit/workflow/timebased.py:84
+#: zeit/workflow/timebased.py:149
 msgid "timebased-publish-add"
 msgstr "Automatisch veröffentlichen am ${date}"
 
-#: zeit/workflow/timebased.py:85
+#: zeit/workflow/timebased.py:150
 msgid "timebased-retract-add"
 msgstr "Automatisch zurückziehen am ${date}"
 

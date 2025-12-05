@@ -33,6 +33,10 @@ class TimeBasedEndToEndTest(zeit.workflow.testing.FunctionalTestCase):
             self.oldlevels[name] = log.level
             log.setLevel(logging.INFO)
 
+        from zeit.cms.content.sources import FEATURE_TOGGLES
+
+        FEATURE_TOGGLES.unset('use_scheduled_operations')
+
     def tearDown(self):
         logging.root.removeHandler(self.handler)
         for name in self.loggers:
