@@ -4,7 +4,7 @@ import zeit.cms.testing
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
     {'freeze-now': ''}, bases=zeit.cms.testing.CONFIG_LAYER
 )
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER, features=['zeit.connector.sql.zope'])
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER)
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
 
 HTTP_LAYER = zeit.cms.testing.HTTPLayer()

@@ -23,11 +23,7 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
     },
     bases=(zeit.content.author.testing.CONFIG_LAYER,),
 )
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    CONFIG_LAYER,
-    'ftesting-mock.zcml',
-    features=['zeit.connector.sql.zope'],
-)
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER, 'ftesting-mock.zcml')
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
 WSGI_LAYER = zeit.cms.testing.WSGILayer(ZOPE_LAYER)
 
@@ -53,9 +49,7 @@ class IntegrationConfigLayer(zeit.cms.testing.ProductConfigLayer):
 
 
 SOAP_CONFIG_LAYER = IntegrationConfigLayer(CONFIG_LAYER.config)
-SOAP_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    SOAP_CONFIG_LAYER, 'ftesting-soap.zcml', features=['zeit.connector.sql.zope']
-)
+SOAP_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(SOAP_CONFIG_LAYER, 'ftesting-soap.zcml')
 SOAP_LAYER = zeit.cms.testing.ZopeLayer(SOAP_ZCML_LAYER)
 
 

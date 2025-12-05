@@ -30,10 +30,7 @@ class ZCMLLayer(zeit.cms.testing.ZCMLLayer):
         plone.testing.zca.popGlobalRegistry()
 
 
-ZCML_LAYER = ZCMLLayer(
-    (zeit.brightcove.testing.CONFIG_LAYER, zeit.retresco.testing.CONFIG_LAYER),
-    features=['zeit.connector.sql.zope'],
-)
+ZCML_LAYER = ZCMLLayer((zeit.brightcove.testing.CONFIG_LAYER, zeit.retresco.testing.CONFIG_LAYER))
 
 
 def create_fixture(repository):

@@ -13,9 +13,7 @@ def create_fixture(repository):
     repository['zett'] = zett
 
 
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    zeit.content.article.testing.CONFIG_LAYER, features=['zeit.connector.sql.zope']
-)
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(zeit.content.article.testing.CONFIG_LAYER)
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER, create_fixture)
 WSGI_LAYER = zeit.cms.testing.WSGILayer(ZOPE_LAYER)
 

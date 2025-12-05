@@ -37,7 +37,7 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
 )
 # NOTE author config layer is included in article config layer
 # NOTE article config layer is included in retresco config layer
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER, features=['zeit.connector.sql.zope'])
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER)
 
 
 def create_fixture(repository):

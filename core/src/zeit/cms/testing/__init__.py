@@ -69,7 +69,7 @@ CONFIG_LAYER = ProductConfigLayer(
         }
     },
 )
-ZCML_LAYER = ZCMLLayer(CONFIG_LAYER, features=['zeit.connector.sql.zope'])
+ZCML_LAYER = ZCMLLayer(CONFIG_LAYER)
 _zope_layer = RawZopeLayer(ZCML_LAYER)
 ZOPE_LAYER = SQLIsolationSavepointLayer(_zope_layer)
 WSGI_LAYER = WSGILayer(ZOPE_LAYER)

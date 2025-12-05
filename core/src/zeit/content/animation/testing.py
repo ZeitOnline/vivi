@@ -10,9 +10,7 @@ def create_fixture(repository):
     repository['image2'] = zeit.content.image.testing.create_image()
 
 
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    zeit.content.article.testing.CONFIG_LAYER, features=['zeit.connector.sql.zope']
-)
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(zeit.content.article.testing.CONFIG_LAYER)
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER, create_fixture)
 
 

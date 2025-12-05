@@ -18,7 +18,5 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
     },
     bases=(zeit.cms.testing.CONFIG_LAYER,),
 )
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    config_file='testing.zcml', bases=CONFIG_LAYER, features=['zeit.connector.sql.zope']
-)
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER, 'testing.zcml')
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER, create_fixture)

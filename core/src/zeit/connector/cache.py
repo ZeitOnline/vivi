@@ -345,14 +345,6 @@ class WebDAVPropertyKey:
         return (WebDAVPropertyKey, (self.name,))
 
 
-try:
-    import zope.testing.cleanup
-
-    zope.testing.cleanup.addCleanUp(WebDAVPropertyKey._instances.clear)
-except ImportError:
-    pass
-
-
 class Properties(persistent.mapping.PersistentMapping):
     cached_time = None
 
