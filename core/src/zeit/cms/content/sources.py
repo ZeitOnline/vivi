@@ -8,7 +8,6 @@ import urllib.request
 import xml.sax.saxutils
 
 import lxml.objectify
-import pyramid_dogpile_cache2
 import zc.sourcefactory.basic
 import zc.sourcefactory.contextual
 import zope.component
@@ -24,13 +23,6 @@ import zeit.connector.interfaces
 
 
 logger = logging.getLogger('zeit.cms.content.sources')
-
-try:
-    import zope.testing.cleanup
-
-    zope.testing.cleanup.addCleanUp(pyramid_dogpile_cache2.clear)
-except ImportError:
-    pass
 
 
 def load(url):

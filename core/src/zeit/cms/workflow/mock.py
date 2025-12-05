@@ -189,14 +189,6 @@ def reset():
     _publish_count.clear()
 
 
-try:
-    import zope.testing.cleanup
-
-    zope.testing.cleanup.addCleanUp(reset)
-except ImportError:
-    pass
-
-
 @zope.component.adapter(zeit.cms.workflow.interfaces.IPublishInfo)
 @zope.interface.implementer(zeit.connector.interfaces.IWebDAVProperties)
 def workflow_dav_properties(context):
