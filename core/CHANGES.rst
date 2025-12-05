@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.239.0 (2025-12-05)
+--------------------
+
+- ENG-453: consider followings for volumes
+
+
 7.238.0 (2025-12-04)
 --------------------
 
