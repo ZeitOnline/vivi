@@ -407,6 +407,21 @@ class ScrollyImageLayoutSource(zeit.cms.content.sources.SimpleFixedValueSource):
     }
 
 
+class ScrollyImageLayoutSourceDesktop(zeit.cms.content.sources.SimpleFixedValueSource):
+    values = {
+        'cover': _('Cover'),
+        'cover-textbox': _('Cover (with textbox)'),
+        'contain': _('Contain'),
+        'contain-padded': _('Contain (with whitespace)'),
+        'cover-left': _('Left Cover'),
+        'cover-right': _('Right Cover'),
+        'contain-left': _('Left Contain'),
+        'contain-right': _('Right Contain'),
+        'contain-padded-left': _('Left Contain (with whitespace)'),
+        'contain-padded-right': _('Right Contain (with whitespace)'),
+    }
+
+
 class IScrollyImage(IReference):
     """Scrollytelling image block."""
 
@@ -421,7 +436,7 @@ class IScrollyImage(IReference):
 
     layout_desktop = zope.schema.Choice(
         title=_('Layout desktop'),
-        source=ScrollyImageLayoutSource(),
+        source=ScrollyImageLayoutSourceDesktop(),
         default='cover',
         required=True,
     )
