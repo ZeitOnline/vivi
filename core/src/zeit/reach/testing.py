@@ -1,22 +1,15 @@
 import zeit.cms.testing
-import zeit.retresco.testing
 
 
-HTTP_LAYER = zeit.cms.testing.HTTPLayer()
-CONFIG_LAYER = zeit.retresco.testing.ProductConfigLayer(
-    {
-        'url': 'http://localhost:{port}',
-        'freeze-now': '',
-    },
-    package='zeit.reach',
-    bases=(
-        HTTP_LAYER,
-        zeit.cms.testing.CONFIG_LAYER,
-    ),
+CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
+    {'freeze-now': ''}, bases=zeit.cms.testing.CONFIG_LAYER
 )
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER, features=['zeit.connector.sql.zope'])
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER)
 
+HTTP_LAYER = zeit.cms.testing.HTTPLayer()
+LAYER = zeit.cms.testing.Layer((ZOPE_LAYER, HTTP_LAYER))
+
 
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
-    layer = ZOPE_LAYER
+    layer = LAYER

@@ -6,5 +6,6 @@
 
     <grok:grok package="." />
 
-    <utility factory=".reach.from_product_config" />
+    <utility factory=".reach.from_product_config" zcml:condition="not-have zeit.cms.testing" />
+    <utility factory=".reach.MockReach" zcml:condition="have zeit.cms.testing" />
 </configure>

@@ -16,6 +16,7 @@
   <include package="zeit.content.video" file="ctesting.zcml" />
 
   <include package="zeit.retresco" file="ctesting.zcml" />
+  <include package="zeit.reach" />
   <include package="zeit.workflow.browser" />
   <include package="zeit.workflow.json" />
 

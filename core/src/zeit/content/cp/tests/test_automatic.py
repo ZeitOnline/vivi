@@ -327,10 +327,6 @@ class AutomaticAreaReachTest(zeit.content.cp.testing.FunctionalTestCase):
     def setUp(self):
         super().setUp()
         self.repository['cp'] = zeit.content.cp.centerpage.CenterPage()
-        self.reach = mock.Mock()
-        zope.component.getGlobalSiteManager().registerUtility(
-            self.reach, zeit.reach.interfaces.IReach
-        )
 
     def test_passes_parameters_to_reach(self):
         lead = self.repository['cp'].body['lead']
@@ -338,9 +334,9 @@ class AutomaticAreaReachTest(zeit.content.cp.testing.FunctionalTestCase):
         lead.automatic = True
         lead.reach_service = 'comments'
         lead.automatic_type = 'reach'
-        self.reach.get_ranking.return_value = []
         IRenderedArea(lead).values()
-        args, kw = self.reach.get_ranking.call_args
+        reach = zope.component.getUtility(zeit.reach.interfaces.IReach)
+        args, kw = reach.get_ranking.call_args
         self.assertEqual('comments', args[0])
         self.assertEqual({'limit': 1}, kw)
 
