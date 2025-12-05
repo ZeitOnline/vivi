@@ -1,4 +1,5 @@
 from io import StringIO
+from unittest import mock
 import logging
 
 import grokcore.component as grok
@@ -435,3 +436,25 @@ def update_kpi(event):
                 )
         except Exception as e:
             opentelemetry.trace.get_current_span().record_exception(e)
+
+
+@zope.interface.implementer(zeit.retresco.interfaces.ITMS)
+def MockTMS():
+    self = mock.Mock()
+    zope.interface.alsoProvides(self, zeit.retresco.interfaces.ITMS)
+    reset_mock(self)
+    return self
+
+
+def reset_mock(utility=None):
+    if utility is None:
+        utility = zope.component.queryUtility(zeit.retresco.interfaces.ITMS)
+    if isinstance(utility, mock.Mock):
+        utility.reset_mock(side_effect=True)
+        utility.extract_keywords.return_value = []
+        utility.generate_keyword_list.return_value = []
+        utility.get_article_data.return_value = {}
+        utility.get_article_topiclinks.return_value = []
+        utility.get_locations.return_value = []
+        utility.get_related_documents.return_value = zeit.cms.interfaces.Result()
+        utility.get_topicpage_documents.return_value = zeit.cms.interfaces.Result()

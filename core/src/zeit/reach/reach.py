@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+from unittest import mock
 import logging
 
 import grokcore.component as grok
@@ -67,6 +67,14 @@ class Reach:
 def from_product_config():
     config = zeit.cms.config.package('zeit.reach')
     return Reach(config['url'], config['freeze-now'] or None)
+
+
+@zope.interface.implementer(zeit.reach.interfaces.IReach)
+def MockReach():
+    self = mock.Mock()
+    zope.interface.alsoProvides(self, zeit.reach.interfaces.IReach)
+    self.get_ranking.return_value = []
+    return self
 
 
 @grok.implementer(zeit.reach.interfaces.IKPI)

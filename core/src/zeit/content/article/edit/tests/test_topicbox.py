@@ -12,8 +12,6 @@ import zeit.edit.interfaces
 
 
 class TestTopicbox(zeit.content.article.testing.FunctionalTestCase):
-    layer = zeit.content.article.testing.MOCK_LAYER
-
     def setUp(self):
         super().setUp()
         self.repository['art1'] = zeit.content.article.article.Article()

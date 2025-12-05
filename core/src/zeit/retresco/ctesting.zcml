@@ -1,0 +1,16 @@
+<configure
+   xmlns="http://namespaces.zope.org/zope"
+   xmlns:meta="http://namespaces.zope.org/meta"
+   i18n_domain="zope"
+   >
+
+  <utility factory=".connection.MockTMS" />
+  <subscriber
+    handler="zeit.retresco.connection.reset_mock"
+    for="zeit.cms.testing.ResetMocks" />
+  <utility factory=".search.MockElasticsearch" />
+  <subscriber
+    handler="zeit.retresco.search.reset_mock"
+    for="zeit.cms.testing.ResetMocks" />
+
+</configure>

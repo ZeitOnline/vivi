@@ -40,9 +40,7 @@ def create_fixture(repository):
     repository['folder'] = zeit.cms.repository.folder.Folder()
 
 
-ZOPE_LAYER = zeit.cms.testing.ZopeLayer(
-    (ZCML_LAYER, zeit.retresco.testing.TMS_MOCK_LAYER), create_fixture
-)
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer(ZCML_LAYER, create_fixture)
 WSGI_LAYER = zeit.cms.testing.WSGILayer(ZOPE_LAYER)
 
 

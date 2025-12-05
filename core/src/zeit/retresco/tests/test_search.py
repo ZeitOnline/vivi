@@ -1,22 +1,26 @@
-import unittest
-
-import zope.component
+from unittest import mock
+import importlib.resources
+import json
 
 from zeit.cms.interfaces import IResult
-from zeit.retresco.interfaces import IElasticsearch
+import zeit.retresco.search
 import zeit.retresco.testing
 
 
-class TestElasticsearch(unittest.TestCase):
+class TestElasticsearch(zeit.retresco.testing.FunctionalTestCase):
     """Testing ..search.Elasticsearch."""
-
-    layer = zeit.retresco.testing.MOCK_LAYER
 
     query = {'query': {'query_string': {'query': 'Salafisten'}}, 'sort': [{'title': 'asc'}]}
 
     def setUp(self):
         super().setUp()
-        self.elasticsearch = zope.component.getUtility(IElasticsearch)
+        self.elasticsearch = zeit.retresco.search.Elasticsearch('https://example.com', 'index')
+        response = (
+            importlib.resources.files('zeit.retresco.tests') / 'elasticsearch_result.json'
+        ).read_text('utf-8')
+        mock.patch.object(
+            self.elasticsearch.client, 'search', return_value=json.loads(response)
+        ).start()
 
     def test_search_returns_a_result_object(self):
         result = self.elasticsearch.search(self.query, rows=2)

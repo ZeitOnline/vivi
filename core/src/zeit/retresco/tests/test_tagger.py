@@ -392,29 +392,27 @@ class TaggerUpdateTest(
         # when we pin a manual tag first, and then also pin a tag that
         # comes in via update() again, we used to screw it up,
         # since we compared against a generator multiple times
-        extract_keywords = 'zeit.retresco.connection.TMS.extract_keywords'
-        with mock.patch(extract_keywords) as extract_keywords:
-            extract_keywords.return_value = [Tag('Foo', ''), Tag('Bar', '')]
-            content = create_testcontent()
-            tagger = Tagger(content)
-            tagger.update()
-            self.assertEqual(2, len(tagger))
-            tagger['☃Qux'] = Tag('Qux', '')
-            tagger.set_pinned(['☃Qux', '☃Foo'])
-            tagger.update()
-            self.assertEqual(['Foo', 'Bar', 'Qux'], [tagger[x].label.strip() for x in tagger])
+        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
+        tms.extract_keywords.return_value = [Tag('Foo', ''), Tag('Bar', '')]
+        content = create_testcontent()
+        tagger = Tagger(content)
+        tagger.update()
+        self.assertEqual(2, len(tagger))
+        tagger['☃Qux'] = Tag('Qux', '')
+        tagger.set_pinned(['☃Qux', '☃Foo'])
+        tagger.update()
+        self.assertEqual(['Foo', 'Bar', 'Qux'], [tagger[x].label.strip() for x in tagger])
 
     def test_update_should_discard_disabled_tags(self):
-        extract_keywords = 'zeit.retresco.connection.TMS.extract_keywords'
-        with mock.patch(extract_keywords) as extract_keywords:
-            extract_keywords.return_value = [Tag('Foo', ''), Tag('Bar', '')]
-            content = create_testcontent()
-            tagger = Tagger(content)
-            tagger.update()
-            self.assertEqual(2, len(tagger))
-            del tagger['☃Foo']
-            tagger.update()
-            self.assertEqual(['☃Bar'], list(tagger))
+        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
+        tms.extract_keywords.return_value = [Tag('Foo', ''), Tag('Bar', '')]
+        content = create_testcontent()
+        tagger = Tagger(content)
+        tagger.update()
+        self.assertEqual(2, len(tagger))
+        del tagger['☃Foo']
+        tagger.update()
+        self.assertEqual(['☃Bar'], list(tagger))
 
     def test_update_should_clear_disabled_tags(self):
         content = create_testcontent()
@@ -453,25 +451,26 @@ class TaggerUpdateTest(
 <tag uuid="uid-berlin" type="location">Berlin</tag>""",
         )
         tagger = Tagger(content)
-        with mock.patch('zeit.retresco.connection.TMS._request') as request:
-            tagger.update()
-            data = request.call_args[1]['json']
-            self.assertEqual(['Karen Duve'], data['rtr_keywords'])
-            self.assertEqual(['Berlin'], data['rtr_locations'])
+        tms = zeit.retresco.connection.TMS('patched')
+        tms._request = mock.Mock(return_value={})
+        zope.component.getGlobalSiteManager().registerUtility(tms)
+        tagger.update()
+        data = tms._request.call_args[1]['json']
+        self.assertEqual(['Karen Duve'], data['rtr_keywords'])
+        self.assertEqual(['Berlin'], data['rtr_locations'])
 
     def test_links_to_topicpages_are_retrieved_from_tms(self):
+        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
         content = create_testcontent()
         tagger = Tagger(content)
-        article_keywords = 'zeit.retresco.connection.TMS.get_article_topiclinks'
-        with mock.patch(article_keywords) as article_keywords:
-            tag1 = Tag('Foo', '')
-            tag1.link = 'thema/foo'
-            tag2 = Tag('Bar', '')
-            article_keywords.return_value = [tag1, tag2]
-            self.assertEqual(
-                {
-                    tag1.uniqueId: 'http://localhost/live-prefix/thema/foo',
-                    tag2.uniqueId: None,
-                },
-                tagger.links,
-            )
+        tag1 = Tag('Foo', '')
+        tag1.link = 'thema/foo'
+        tag2 = Tag('Bar', '')
+        tms.get_article_topiclinks.return_value = [tag1, tag2]
+        self.assertEqual(
+            {
+                tag1.uniqueId: 'http://localhost/live-prefix/thema/foo',
+                tag2.uniqueId: None,
+            },
+            tagger.links,
+        )

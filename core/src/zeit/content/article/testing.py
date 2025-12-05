@@ -1,4 +1,3 @@
-from unittest import mock
 import importlib.resources
 import re
 
@@ -13,7 +12,6 @@ import zeit.content.author.testing
 import zeit.content.gallery.testing
 import zeit.content.volume.testing
 import zeit.push.testing
-import zeit.retresco.testhelper
 import zeit.wochenmarkt.testing
 
 
@@ -64,41 +62,6 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(CONFIG_LAYER, features=['zeit.connector.sql.zope'])
 _zope_layer = zeit.cms.testing.RawZopeLayer(ZCML_LAYER)
 ZOPE_LAYER = zeit.cms.testing.SQLIsolationSavepointLayer(_zope_layer, create_fixture)
-
-
-# This is a copy from z.c.cp ElasticsearchMockLayer with an
-# additional TMS mock.
-# A better solution would be a abstraction of these test mock layers
-# in zeit.cms so they could be used by z.c.article and z.c.cp
-class ElasticsearchMockLayer(zeit.cms.testing.Layer):
-    def testSetUp(self):
-        self['elasticsearch'] = mock.Mock()
-        self['elasticsearch'].search.return_value = zeit.cms.interfaces.Result()
-        zope.interface.alsoProvides(self['elasticsearch'], zeit.retresco.interfaces.IElasticsearch)
-        zope.component.getSiteManager().registerUtility(self['elasticsearch'])
-        self['tms'] = mock.Mock()
-        self['tms'].get_topicpage_documents.return_value = zeit.cms.interfaces.Result()
-        self['tms'].get_related_documents.return_value = zeit.cms.interfaces.Result()
-
-        zope.interface.alsoProvides(self['tms'], zeit.retresco.interfaces.ITMS)
-        zope.component.getSiteManager().registerUtility(self['tms'])
-
-    def testTearDown(self):
-        zope.component.getSiteManager().unregisterUtility(self['elasticsearch'])
-        del self['elasticsearch']
-        zope.component.getSiteManager().unregisterUtility(self['tms'])
-        del self['tms']
-
-
-ELASTICSEARCH_MOCK_LAYER = ElasticsearchMockLayer()
-MOCK_LAYER = zeit.cms.testing.Layer(
-    name='MockLayer',
-    bases=(
-        ZOPE_LAYER,
-        zeit.retresco.testhelper.ELASTICSEARCH_MOCK_LAYER,
-        zeit.retresco.testhelper.TMS_MOCK_LAYER,
-    ),
-)
 
 
 class FunctionalTestCase(

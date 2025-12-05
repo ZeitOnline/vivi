@@ -1,3 +1,4 @@
+from unittest import mock
 import importlib.metadata
 
 import elastic_transport
@@ -106,3 +107,17 @@ def from_product_config():
         config['elasticsearch-index'],
         zope.dottedname.resolve.resolve(config['elasticsearch-connection-class']),
     )
+
+
+@zope.interface.implementer(zeit.retresco.interfaces.IElasticsearch)
+def MockElasticsearch():
+    self = mock.Mock()
+    self.search.return_value = zeit.cms.interfaces.Result()
+    return self
+
+
+def reset_mock():
+    utility = zope.component.queryUtility(zeit.retresco.interfaces.IElasticsearch)
+    if isinstance(utility, mock.Mock):
+        utility.search.reset_mock(side_effect=True)
+        utility.search.return_value = zeit.cms.interfaces.Result()

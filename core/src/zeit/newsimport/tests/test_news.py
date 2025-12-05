@@ -10,7 +10,6 @@ from zeit.cms.interfaces import ICMSContent
 from zeit.cms.workflow.interfaces import IPublishInfo
 from zeit.content.article.article import Article
 from zeit.content.image.imagegroup import ImageGroup
-from zeit.retresco.interfaces import ITMS
 import zeit.cms.tagging.tag
 import zeit.content.image.interfaces
 import zeit.newsimport.interfaces
@@ -530,12 +529,12 @@ class DPATOTMSTest(zeit.newsimport.testing.FunctionalTestCase):
         self.caplog = caplog
 
     def tearDown(self):
-        self.layer['tms'].generate_keyword_list.return_value = mock.DEFAULT
+        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
+        tms.generate_keyword_list.return_value = []
         super().tearDown()
 
     def test_article_should_send_keywords_to_tms_before_publish(self):
-        tms = self.layer['tms']
-        zope.component.getGlobalSiteManager().registerUtility(tms, ITMS)
+        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
         tms.generate_keyword_list.return_value = [
             zeit.cms.tagging.tag.Tag(label='one', entity_type='keyword'),
             zeit.cms.tagging.tag.Tag(label='two', entity_type='keyword'),

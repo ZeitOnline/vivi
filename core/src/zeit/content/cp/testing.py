@@ -23,7 +23,6 @@ import zeit.content.image.testing
 import zeit.content.modules.testing
 import zeit.content.text.testing
 import zeit.retresco.interfaces
-import zeit.retresco.testhelper
 
 
 def create_fixture(repository):
@@ -101,12 +100,7 @@ class CPTemplateLayer(zeit.cms.testing.Layer):
         del self['cp-template-patch']
 
 
-CP_TEMPLATE_LAYER = CPTemplateLayer(ZOPE_LAYER)
-
-
-LAYER = zeit.cms.testing.Layer(
-    (CP_TEMPLATE_LAYER, zeit.retresco.testhelper.ELASTICSEARCH_MOCK_LAYER)
-)
+LAYER = CPTemplateLayer(ZOPE_LAYER)
 
 
 checker = zope.testing.renormalizing.RENormalizing(
@@ -167,19 +161,21 @@ class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
 
 
 WSGI_LAYER = zeit.cms.testing.WSGILayer(LAYER)
-WSGI_SQL_LAYER = zeit.cms.testing.WSGILayer(
-    bases=(
-        CPTemplateLayer(),
-        zeit.retresco.testhelper.ELASTICSEARCH_MOCK_LAYER,
-        zeit.cms.testing.SQLIsolationTruncateLayer(_zope_layer),
-    )
-)
-HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(WSGI_SQL_LAYER)
-WEBDRIVER_LAYER = zeit.cms.testing.WebdriverLayer(HTTP_LAYER)
 
 
 class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
     layer = WSGI_LAYER
+
+
+HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(
+    zeit.cms.testing.WSGILayer(
+        bases=(
+            CPTemplateLayer(),
+            zeit.cms.testing.SQLIsolationTruncateLayer(_zope_layer),
+        )
+    )
+)
+WEBDRIVER_LAYER = zeit.cms.testing.WebdriverLayer(HTTP_LAYER)
 
 
 class SeleniumTestCase(FunctionalTestCase, zeit.cms.testing.SeleniumTestCase):

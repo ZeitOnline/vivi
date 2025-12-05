@@ -26,6 +26,7 @@
   <include package="zeit.content.volume.browser" />
 
   <include package="zeit.push" file="ctesting.zcml" />
+  <include package="zeit.retresco" file="ctesting.zcml" />
 
   <include package="zeit.wochenmarkt" />
   <include package="zeit.wochenmarkt.browser" />
