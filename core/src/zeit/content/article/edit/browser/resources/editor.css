@@ -2087,3 +2087,19 @@
 }
 
 /* End of ScrollyImage Layout */
+
+/* Scheduled Operations Layout */
+
+fieldset.scheduled-operation-entry > legend {
+  margin-top: 4px;
+}
+
+.scheduled-operation-field {
+    margin-bottom: 10px;
+}
+
+.scheduled-operation-field .field-widget {
+    margin: 4px 0 4px 0;
+}
+
+/* End of Scheduled Operations Layout */

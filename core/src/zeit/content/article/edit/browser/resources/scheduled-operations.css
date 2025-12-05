@@ -1,0 +1,14 @@
+/* Scheduled Operations Styling */
+
+.scheduled-operations-list {
+    margin: 1em 0;
+}
+
+/* Individual scheduled operation */
+.scheduled-operation-field {
+    margin-bottom: 10px;
+}
+
+.scheduled-operation-field .field-widget {
+    margin: 4px 0 4px 0;
+}

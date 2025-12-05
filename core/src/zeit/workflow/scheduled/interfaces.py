@@ -1,10 +1,13 @@
 from collections.abc import Iterable
 from datetime import datetime
 
+import zc.form.field
 import zope.interface
 import zope.schema
 
 from zeit.cms.i18n import MessageFactory as _
+import zeit.cms.content.interfaces
+import zeit.cms.content.sources
 
 
 class IScheduledOperation(zope.interface.Interface):
@@ -92,3 +95,51 @@ class IScheduledOperationsExecutor(zope.interface.Interface):
 
         raises ValueError if operation type is unknown
         """
+
+
+class IScheduledOperationsForm(zope.interface.Interface):
+    """Container interface for scheduled operations list."""
+
+    operations = zope.schema.Tuple(
+        title=_('Scheduled operations'),
+        value_type=zc.form.field.Combination(
+            (
+                zope.schema.TextLine(
+                    title=_('Operation ID'), required=False, missing_value=None
+                ),  # Hidden field for tracking updates
+                zope.schema.Datetime(title=_('Execute at'), required=False),
+                zope.schema.Choice(
+                    title=_('Access'),
+                    source=zeit.cms.content.interfaces.AccessSource(),
+                    required=False,
+                ),
+                zope.schema.Tuple(
+                    title=_('Channels'),
+                    value_type=zc.form.field.Combination(
+                        (
+                            zope.schema.Choice(
+                                title=_('Channel'),
+                                source=zeit.cms.content.sources.ChannelSource(),
+                                required=False,
+                            ),
+                            zope.schema.Choice(
+                                title=_('Subchannel'),
+                                source=zeit.cms.content.sources.SubChannelSource(),
+                                required=False,
+                            ),
+                        )
+                    ),
+                    default=(),
+                    required=False,
+                ),
+            )
+        ),
+        default=(),
+        required=False,
+    )
+
+
+zope.interface.alsoProvides(
+    IScheduledOperationsForm['operations'].value_type.fields[3].value_type,
+    zeit.cms.content.interfaces.IChannelField,
+)
