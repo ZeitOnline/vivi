@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Wed Nov 19 10:55:57 2025\n"
+"POT-Creation-Date: Tue Dec  9 14:18:36 2025\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -202,7 +202,7 @@ msgstr ""
 #: zeit/cms/browser/listing.py:260
 #: zeit/content/article/edit/interfaces.py:218
 #: zeit/content/article/interfaces.py:185
-#: zeit/content/author/author.py:134
+#: zeit/content/author/author.py:135
 #: zeit/content/author/browser/form.py:216
 msgid "Author"
 msgstr ""
@@ -216,7 +216,7 @@ msgstr ""
 #: zeit/content/article/edit/interfaces.py:598
 #: zeit/content/article/interfaces.py:188
 #: zeit/content/article/interfaces.py:228
-#: zeit/content/audio/interfaces.py:36
+#: zeit/content/audio/interfaces.py:37
 #: zeit/content/author/interfaces.py:36
 #: zeit/content/cp/interfaces.py:190
 #: zeit/content/cp/interfaces.py:293
@@ -581,7 +581,7 @@ msgstr ""
 msgid "Type changed. Loading ..."
 msgstr ""
 
-#: zeit/cms/content/browser/widget.py:136
+#: zeit/cms/content/browser/widget.py:137
 msgid "Obsolete value ${value}"
 msgstr ""
 
@@ -805,8 +805,8 @@ msgstr ""
 
 #: zeit/cms/content/interfaces.py:485
 #: zeit/content/audio/browser/object-details-body.pt:10
-#: zeit/content/audio/interfaces.py:40
-#: zeit/content/audio/interfaces.py:68
+#: zeit/content/audio/interfaces.py:41
+#: zeit/content/audio/interfaces.py:69
 #: zeit/content/image/browser/image_view.pt:6
 #: zeit/content/volume/browser/toc_listing.py:61
 msgid "Type"
@@ -1364,6 +1364,7 @@ msgid "Date last checked out"
 msgstr ""
 
 #: zeit/cms/workflow/interfaces.py:42
+#: zeit/workflow/scheduled/interfaces.py:25
 msgid "Date created"
 msgstr ""
 
@@ -1545,7 +1546,7 @@ msgstr ""
 msgid "breaking-news-homepage"
 msgstr ""
 
-#: zeit/content/article/browser/breaking.py:93
+#: zeit/content/article/browser/breaking.py:112
 msgid "Publish and push"
 msgstr ""
 
@@ -2028,7 +2029,7 @@ msgstr ""
 
 #: zeit/content/article/edit/interfaces.py:336
 #: zeit/content/article/edit/interfaces.py:346
-#: zeit/content/audio/interfaces.py:38
+#: zeit/content/audio/interfaces.py:39
 #: zeit/content/video/interfaces.py:59
 #: zeit/wysiwyg/browser/resources/citation/dialog.pt:23
 #: zeit/wysiwyg/browser/resources/reference/gallery.pt:17
@@ -2335,7 +2336,7 @@ msgid "Breaking news article"
 msgstr ""
 
 #: zeit/content/article/interfaces.py:256
-#: zeit/content/audio/interfaces.py:211
+#: zeit/content/audio/interfaces.py:204
 msgid "Speechbert Checksum"
 msgstr ""
 
@@ -2404,7 +2405,7 @@ msgid "View audio"
 msgstr ""
 
 #: zeit/content/audio/browser/object-details-body.pt:6
-#: zeit/content/audio/interfaces.py:39
+#: zeit/content/audio/interfaces.py:40
 msgid "Duration"
 msgstr ""
 
@@ -2429,78 +2430,82 @@ msgid "Premium Audio"
 msgstr ""
 
 #: zeit/content/audio/interfaces.py:22
+msgid "Premium Simplecast"
+msgstr ""
+
+#: zeit/content/audio/interfaces.py:23
 msgid "Custom Audio"
 msgstr ""
 
-#: zeit/content/audio/interfaces.py:37
+#: zeit/content/audio/interfaces.py:38
 msgid "External Id"
 msgstr ""
 
-#: zeit/content/audio/interfaces.py:50
+#: zeit/content/audio/interfaces.py:51
 msgid "Serial"
 msgstr ""
 
-#: zeit/content/audio/interfaces.py:51
+#: zeit/content/audio/interfaces.py:52
 msgid "Episodic"
 msgstr ""
 
-#: zeit/content/audio/interfaces.py:52
+#: zeit/content/audio/interfaces.py:53
 msgid "Episodic seasons"
 msgstr ""
 
-#: zeit/content/audio/interfaces.py:62
+#: zeit/content/audio/interfaces.py:63
 msgid "show art"
 msgstr ""
 
-#: zeit/content/audio/interfaces.py:64
+#: zeit/content/audio/interfaces.py:65
 msgid "feed"
 msgstr ""
 
-#: zeit/content/audio/interfaces.py:65
+#: zeit/content/audio/interfaces.py:66
 msgid "Explicit"
 msgstr ""
 
-#: zeit/content/audio/interfaces.py:69
+#: zeit/content/audio/interfaces.py:70
 msgid "rss_image"
 msgstr ""
 
-#: zeit/content/audio/interfaces.py:174
+#: zeit/content/audio/interfaces.py:167
 msgid "Podcast Serie"
 msgstr ""
 
-#: zeit/content/audio/interfaces.py:176
+#: zeit/content/audio/interfaces.py:169
 msgid "External Podcast Id"
 msgstr ""
 
-#: zeit/content/audio/interfaces.py:177
+#: zeit/content/audio/interfaces.py:170
 msgid "Episode No"
 msgstr ""
 
-#: zeit/content/audio/interfaces.py:178
+#: zeit/content/audio/interfaces.py:171
 msgid "URL ad-free"
 msgstr ""
 
-#: zeit/content/audio/interfaces.py:179
+#: zeit/content/audio/interfaces.py:172
 msgid "Episode Summary"
 msgstr ""
 
-#: zeit/content/audio/interfaces.py:180
+#: zeit/content/audio/interfaces.py:173
 msgid "Episode Notes"
 msgstr ""
 
-#: zeit/content/audio/interfaces.py:181
+#: zeit/content/audio/interfaces.py:174
 msgid "Is Published"
 msgstr ""
 
-#: zeit/content/audio/interfaces.py:182
+#: zeit/content/audio/interfaces.py:175
 msgid "Dashboard Link"
 msgstr ""
 
-#: zeit/content/audio/interfaces.py:192
+#: zeit/content/audio/interfaces.py:185
 msgid "AudioReferences"
 msgstr ""
 
-#: zeit/content/audio/interfaces.py:209
+#: zeit/content/audio/interfaces.py:202
 msgid "Preview URL"
 msgstr ""
 
@@ -3864,7 +3869,7 @@ msgstr ""
 msgid "Blog"
 msgstr ""
 
-#: zeit/content/link/redirect.py:63
+#: zeit/content/link/redirect.py:66
 msgid "Redirect created for ${url}"
 msgstr ""
 
@@ -4638,7 +4643,7 @@ msgid "Payload Template"
 msgstr ""
 
 #: zeit/push/message.py:90
-#: zeit/workflow/publish_3rdparty.py:95
+#: zeit/workflow/publish_3rdparty.py:100
 msgid "Push notification for \"${name}\" sent. (Message: \"${message}\", Details: ${details})"
 msgstr ""
 
@@ -4944,6 +4949,42 @@ msgstr ""
 #: zeit/workflow/publishinfo.py:136
 #: zeit/workflow/workflow.py:61
 msgid "${name}: ${new_value}"
+msgstr ""
+
+#: zeit/workflow/scheduled/interfaces.py:13
+msgid "Operation ID"
+msgstr ""
+
+#: zeit/workflow/scheduled/interfaces.py:15
+msgid "Operation type"
+msgstr ""
+
+#: zeit/workflow/scheduled/interfaces.py:17
+msgid "Execute at"
+msgstr ""
+
+#: zeit/workflow/scheduled/interfaces.py:19
+msgid "Property changes (applied during operation)"
+msgstr ""
+
+#: zeit/workflow/scheduled/interfaces.py:24
+msgid "Created by"
+msgstr ""
+
+#: zeit/workflow/scheduled/interfaces.py:27
+msgid "Date executed or cancelled"
+msgstr ""
+
+#: zeit/workflow/scheduled/interfaces.py:28
+msgid "When the operation was executed or cancelled. NULL means still pending."
+msgstr ""
+
+#: zeit/workflow/scheduled/operations.py:93
+msgid "Scheduled ${op} for ${date}"
+msgstr ""
+
+#: zeit/workflow/scheduled/operations.py:334
+msgid "${name} changed from \"${old}\" to \"${new}\""
 msgstr ""
 
 #: zeit/workflow/source.py:43
