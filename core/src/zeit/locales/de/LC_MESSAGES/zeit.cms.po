@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Thu Dec  4 10:25:47 2025\n"
+"POT-Creation-Date: Tue Dec 16 08:04:47 2025\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -150,6 +150,7 @@ msgstr "Bearbeiten"
 #: zeit/content/article/edit/browser/form.py:497
 #: zeit/content/article/edit/browser/push.py:52
 #: zeit/content/article/edit/browser/reference.py:51
+#: zeit/content/article/edit/browser/workflow.py:241
 #: zeit/content/cp/browser/view.py:11 zeit/content/image/browser/form.py:109
 #: zeit/content/image/browser/imagegroup.py:322 zeit/edit/browser/form.py:65
 #: zeit/edit/browser/view.py:104 zeit/seo/browser/form.py:31
@@ -180,7 +181,7 @@ msgid "There are no objects in this folder."
 msgstr "Es gibt keine Objekte in diesem Ordner."
 
 #: zeit/cms/browser/listing.py:260 zeit/content/article/edit/interfaces.py:218
-#: zeit/content/article/interfaces.py:185 zeit/content/author/author.py:134
+#: zeit/content/article/interfaces.py:185 zeit/content/author/author.py:135
 #: zeit/content/author/browser/form.py:216
 msgid "Author"
 msgstr "Autor"
@@ -192,7 +193,7 @@ msgstr "Autor"
 #: zeit/content/article/edit/interfaces.py:451
 #: zeit/content/article/edit/interfaces.py:598
 #: zeit/content/article/interfaces.py:188
-#: zeit/content/article/interfaces.py:228 zeit/content/audio/interfaces.py:36
+#: zeit/content/article/interfaces.py:228 zeit/content/audio/interfaces.py:37
 #: zeit/content/author/interfaces.py:36 zeit/content/cp/interfaces.py:190
 #: zeit/content/cp/interfaces.py:293 zeit/content/cp/interfaces.py:425
 #: zeit/content/cp/interfaces.py:474 zeit/content/gallery/interfaces.py:100
@@ -553,7 +554,7 @@ msgstr "Typ ändern"
 msgid "Type changed. Loading ..."
 msgstr "Typ geändert. Lade …"
 
-#: zeit/cms/content/browser/widget.py:136
+#: zeit/cms/content/browser/widget.py:137
 msgid "Obsolete value ${value}"
 msgstr "${value} (nur Bestandscontent)"
 
@@ -603,6 +604,7 @@ msgid "Channels"
 msgstr "Channels"
 
 #: zeit/cms/content/interfaces.py:97
+#: zeit/content/article/edit/browser/workflow.py:305
 msgid "Channel"
 msgstr "Channel"
 
@@ -619,6 +621,7 @@ msgid "Agencies"
 msgstr "Agenturen"
 
 #: zeit/cms/content/interfaces.py:132
+#: zeit/content/article/edit/browser/workflow.py:293
 #: zeit/content/volume/browser/toc-listing.pt:10
 #: zeit/content/volume/browser/toc_listing.py:58
 msgid "Access"
@@ -768,7 +771,7 @@ msgstr "Memo"
 
 #: zeit/cms/content/interfaces.py:485
 #: zeit/content/audio/browser/object-details-body.pt:10
-#: zeit/content/audio/interfaces.py:40 zeit/content/audio/interfaces.py:68
+#: zeit/content/audio/interfaces.py:41 zeit/content/audio/interfaces.py:69
 #: zeit/content/image/browser/image_view.pt:6
 #: zeit/content/volume/browser/toc_listing.py:61
 msgid "Type"
@@ -1333,7 +1336,7 @@ msgstr "Zuletzt geändert am"
 msgid "Date last checked out"
 msgstr "Beginn der Bearbeitung"
 
-#: zeit/cms/workflow/interfaces.py:42
+#: zeit/cms/workflow/interfaces.py:42 zeit/workflow/scheduled/interfaces.py:26
 msgid "Date created"
 msgstr "Angelegt am"
 
@@ -1443,6 +1446,7 @@ msgstr "Metadaten anzeigen"
 #: zeit/content/animation/interfaces.py:28 zeit/content/article/article.py:211
 #: zeit/content/article/browser/configure.zcml:82
 #: zeit/content/article/edit/browser/form.py:58
+#: zeit/content/article/edit/browser/workflow.py:27
 msgid "Article"
 msgstr "Artikel"
 
@@ -1512,12 +1516,12 @@ msgstr "Push versenden"
 msgid "breaking-news-homepage"
 msgstr "Eilmeldungsbanner anzeigen"
 
-#: zeit/content/article/browser/breaking.py:93
+#: zeit/content/article/browser/breaking.py:112
 msgid "Publish and push"
 msgstr "Veröffentlichen & Push"
 
 #: zeit/content/article/browser/configure.zcml:18
-#: zeit/content/article/edit/browser/workflow.py:32
+#: zeit/content/article/edit/browser/workflow.py:60
 #: zeit/workflow/browser/configure.zcml:21 zeit/workflow/browser/form.py:89
 msgid "Workflow"
 msgstr "Workflowstatus"
@@ -1774,7 +1778,7 @@ msgstr "Jetzt veröffentlichen"
 msgid "Retract"
 msgstr "Depublizieren"
 
-#: zeit/content/article/edit/browser/workflow.py:18
+#: zeit/content/article/edit/browser/workflow.py:23
 msgid "Workflow time"
 msgstr "Veröffentlichungszeit"
 
@@ -1976,7 +1980,7 @@ msgstr "Zitatgeber"
 
 #: zeit/content/article/edit/interfaces.py:336
 #: zeit/content/article/edit/interfaces.py:346
-#: zeit/content/audio/interfaces.py:38 zeit/content/video/interfaces.py:59
+#: zeit/content/audio/interfaces.py:39 zeit/content/video/interfaces.py:59
 #: zeit/wysiwyg/browser/resources/citation/dialog.pt:23
 #: zeit/wysiwyg/browser/resources/reference/gallery.pt:17
 #: zeit/wysiwyg/browser/resources/reference/infobox.pt:17
@@ -2304,7 +2308,7 @@ msgstr "Preis in €"
 msgid "Breaking news article"
 msgstr "Eilmeldungsartikel"
 
-#: zeit/content/article/interfaces.py:256 zeit/content/audio/interfaces.py:211
+#: zeit/content/article/interfaces.py:256 zeit/content/audio/interfaces.py:204
 msgid "Speechbert Checksum"
 msgstr "TTS Checksumme"
 
@@ -2373,7 +2377,7 @@ msgid "View audio"
 msgstr "Audio anzeigen"
 
 #: zeit/content/audio/browser/object-details-body.pt:6
-#: zeit/content/audio/interfaces.py:39
+#: zeit/content/audio/interfaces.py:40
 msgid "Duration"
 msgstr "Laufzeit"
 
@@ -2398,78 +2402,82 @@ msgid "Premium Audio"
 msgstr "Premium Audio"
 
 #: zeit/content/audio/interfaces.py:22
+msgid "Premium Simplecast"
+msgstr "Premium Simplecast"
+
+#: zeit/content/audio/interfaces.py:23
 msgid "Custom Audio"
 msgstr "Benutzerdefiniertes Audio"
 
-#: zeit/content/audio/interfaces.py:37
+#: zeit/content/audio/interfaces.py:38
 msgid "External Id"
 msgstr "Externe ID"
 
-#: zeit/content/audio/interfaces.py:50
+#: zeit/content/audio/interfaces.py:51
 msgid "Serial"
 msgstr "Fortlaufend"
 
-#: zeit/content/audio/interfaces.py:51
+#: zeit/content/audio/interfaces.py:52
 msgid "Episodic"
 msgstr "Episodisch"
 
-#: zeit/content/audio/interfaces.py:52
+#: zeit/content/audio/interfaces.py:53
 msgid "Episodic seasons"
 msgstr "Staffeln"
 
-#: zeit/content/audio/interfaces.py:62
+#: zeit/content/audio/interfaces.py:63
 msgid "show art"
 msgstr "Show art"
 
-#: zeit/content/audio/interfaces.py:64
+#: zeit/content/audio/interfaces.py:65
 msgid "feed"
 msgstr "RSS (Web-Feed)"
 
-#: zeit/content/audio/interfaces.py:65
+#: zeit/content/audio/interfaces.py:66
 msgid "Explicit"
 msgstr "Explicit"
 
-#: zeit/content/audio/interfaces.py:69
+#: zeit/content/audio/interfaces.py:70
 msgid "rss_image"
 msgstr "URL zum RSS Bild"
 
-#: zeit/content/audio/interfaces.py:174
+#: zeit/content/audio/interfaces.py:167
 msgid "Podcast Serie"
 msgstr "Podcast"
 
-#: zeit/content/audio/interfaces.py:176
+#: zeit/content/audio/interfaces.py:169
 msgid "External Podcast Id"
 msgstr "Externe Podcast ID"
 
-#: zeit/content/audio/interfaces.py:177
+#: zeit/content/audio/interfaces.py:170
 msgid "Episode No"
 msgstr "Nummer der Folge"
 
-#: zeit/content/audio/interfaces.py:178
+#: zeit/content/audio/interfaces.py:171
 msgid "URL ad-free"
 msgstr "Ad-free URL"
 
-#: zeit/content/audio/interfaces.py:179
+#: zeit/content/audio/interfaces.py:172
 msgid "Episode Summary"
 msgstr "Zusammenfassung der Folge"
 
-#: zeit/content/audio/interfaces.py:180
+#: zeit/content/audio/interfaces.py:173
 msgid "Episode Notes"
 msgstr "Beschreibung der Folge"
 
-#: zeit/content/audio/interfaces.py:181
+#: zeit/content/audio/interfaces.py:174
 msgid "Is Published"
 msgstr "Veröffentlicht"
 
-#: zeit/content/audio/interfaces.py:182
+#: zeit/content/audio/interfaces.py:175
 msgid "Dashboard Link"
 msgstr "Dashboard Link"
 
-#: zeit/content/audio/interfaces.py:192
+#: zeit/content/audio/interfaces.py:185
 msgid "AudioReferences"
 msgstr "Audioreferenzen"
 
-#: zeit/content/audio/interfaces.py:209
+#: zeit/content/audio/interfaces.py:202
 msgid "Preview URL"
 msgstr "Vorschau URL"
 
@@ -3839,7 +3847,7 @@ msgstr "HTTP Statuscode"
 msgid "Blog"
 msgstr "Blog"
 
-#: zeit/content/link/redirect.py:63
+#: zeit/content/link/redirect.py:66
 msgid "Redirect created for ${url}"
 msgstr "Weiterleitung eingerichtet für ${url}"
 
@@ -4612,7 +4620,7 @@ msgstr "Push mit Buttons"
 msgid "Payload Template"
 msgstr "Empfänger"
 
-#: zeit/push/message.py:90 zeit/workflow/publish_3rdparty.py:95
+#: zeit/push/message.py:90 zeit/workflow/publish_3rdparty.py:100
 msgid ""
 "Push notification for \"${name}\" sent. (Message: \"${message}\", Details: $"
 "{details})"
@@ -4931,6 +4939,44 @@ msgstr "Sperrvermerk »${reason}«"
 msgid "${name}: ${new_value}"
 msgstr "${name}: ${new_value}"
 
+#: zeit/workflow/scheduled/interfaces.py:14
+msgid "Operation ID"
+msgstr "Vorgangs-ID"
+
+#: zeit/workflow/scheduled/interfaces.py:16
+msgid "Operation type"
+msgstr "Vorgangstyp"
+
+#: zeit/workflow/scheduled/interfaces.py:18
+msgid "Execute at"
+msgstr "Von"
+
+#: zeit/workflow/scheduled/interfaces.py:20
+msgid "Property changes (applied during operation)"
+msgstr "Eigenschaftsänderungen (während des Vorgangs angewendet)"
+
+#: zeit/workflow/scheduled/interfaces.py:25
+msgid "Created by"
+msgstr "Angelegt von"
+
+#: zeit/workflow/scheduled/interfaces.py:28
+msgid "Date executed or cancelled"
+msgstr "Datum der Ausführung oder Stornierung"
+
+#: zeit/workflow/scheduled/interfaces.py:29
+msgid "When the operation was executed or cancelled. NULL means still pending."
+msgstr ""
+"Wann wurde der Vorgang ausgeführt oder abgebrochen worden ist. NULL "
+"bedeutet, dass er noch aussteht."
+
+#: zeit/workflow/scheduled/operations.py:95
+msgid "Scheduled ${op} ${properties}for ${date}"
+msgstr "Automatisch ${op} ${properties}am ${date}"
+
+#: zeit/workflow/scheduled/operations.py:250
+msgid "${name} changed from \"${old}\" to \"${new}\""
+msgstr "${name} wurde von „${old}“ in „${new}“ geändert"
+
 #: zeit/workflow/source.py:43
 msgid "not necessary"
 msgstr "nicht nötig"
@@ -5017,6 +5063,21 @@ msgstr "Format"
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:53
 msgid "with info"
 msgstr "mit Info"
+
+#~ msgid "Operation"
+#~ msgstr "Vorgang"
+
+#~ msgid "Change access?"
+#~ msgstr "Zugriff ändern?"
+
+#~ msgid "Change product?"
+#~ msgstr "Produkt ändern?"
+
+#~ msgid "Product"
+#~ msgstr "Produkt"
+
+#~ msgid "Add Operation"
+#~ msgstr "Vorgang hinzufügen"
 
 #~ msgid "With frame"
 #~ msgstr "Mit Rahmen"

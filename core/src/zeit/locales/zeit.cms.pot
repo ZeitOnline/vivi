@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Thu Dec  4 10:25:47 2025\n"
+"POT-Creation-Date: Tue Dec 16 08:04:47 2025\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -166,6 +166,7 @@ msgstr ""
 #: zeit/content/article/edit/browser/form.py:497
 #: zeit/content/article/edit/browser/push.py:52
 #: zeit/content/article/edit/browser/reference.py:51
+#: zeit/content/article/edit/browser/workflow.py:241
 #: zeit/content/cp/browser/view.py:11
 #: zeit/content/image/browser/form.py:109
 #: zeit/content/image/browser/imagegroup.py:322
@@ -634,6 +635,7 @@ msgid "Channels"
 msgstr ""
 
 #: zeit/cms/content/interfaces.py:97
+#: zeit/content/article/edit/browser/workflow.py:305
 msgid "Channel"
 msgstr ""
 
@@ -650,6 +652,7 @@ msgid "Agencies"
 msgstr ""
 
 #: zeit/cms/content/interfaces.py:132
+#: zeit/content/article/edit/browser/workflow.py:293
 #: zeit/content/volume/browser/toc-listing.pt:10
 #: zeit/content/volume/browser/toc_listing.py:58
 msgid "Access"
@@ -1364,6 +1367,7 @@ msgid "Date last checked out"
 msgstr ""
 
 #: zeit/cms/workflow/interfaces.py:42
+#: zeit/workflow/scheduled/interfaces.py:26
 msgid "Date created"
 msgstr ""
 
@@ -1474,6 +1478,7 @@ msgstr ""
 #: zeit/content/article/article.py:211
 #: zeit/content/article/browser/configure.zcml:82
 #: zeit/content/article/edit/browser/form.py:58
+#: zeit/content/article/edit/browser/workflow.py:27
 msgid "Article"
 msgstr ""
 
@@ -1550,7 +1555,7 @@ msgid "Publish and push"
 msgstr ""
 
 #: zeit/content/article/browser/configure.zcml:18
-#: zeit/content/article/edit/browser/workflow.py:32
+#: zeit/content/article/edit/browser/workflow.py:60
 #: zeit/workflow/browser/configure.zcml:21
 #: zeit/workflow/browser/form.py:89
 msgid "Workflow"
@@ -1816,7 +1821,7 @@ msgstr ""
 msgid "Retract"
 msgstr ""
 
-#: zeit/content/article/edit/browser/workflow.py:18
+#: zeit/content/article/edit/browser/workflow.py:23
 msgid "Workflow time"
 msgstr ""
 
@@ -4976,6 +4981,42 @@ msgstr ""
 #: zeit/workflow/publishinfo.py:136
 #: zeit/workflow/workflow.py:61
 msgid "${name}: ${new_value}"
+msgstr ""
+
+#: zeit/workflow/scheduled/interfaces.py:14
+msgid "Operation ID"
+msgstr ""
+
+#: zeit/workflow/scheduled/interfaces.py:16
+msgid "Operation type"
+msgstr ""
+
+#: zeit/workflow/scheduled/interfaces.py:18
+msgid "Execute at"
+msgstr ""
+
+#: zeit/workflow/scheduled/interfaces.py:20
+msgid "Property changes (applied during operation)"
+msgstr ""
+
+#: zeit/workflow/scheduled/interfaces.py:25
+msgid "Created by"
+msgstr ""
+
+#: zeit/workflow/scheduled/interfaces.py:28
+msgid "Date executed or cancelled"
+msgstr ""
+
+#: zeit/workflow/scheduled/interfaces.py:29
+msgid "When the operation was executed or cancelled. NULL means still pending."
+msgstr ""
+
+#: zeit/workflow/scheduled/operations.py:95
+msgid "Scheduled ${op} ${properties}for ${date}"
+msgstr ""
+
+#: zeit/workflow/scheduled/operations.py:250
+msgid "${name} changed from \"${old}\" to \"${new}\""
 msgstr ""
 
 #: zeit/workflow/source.py:43
