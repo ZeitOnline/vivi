@@ -5,216 +5,216 @@ version = "7.240.0.dev0"
 requires-python = ">=3.13"
 
 dependencies = [
-    "beautifulsoup4",
-    "btrees",
-    "collective.monkeypatcher",
-    "cryptography",  # so pyjwt can offer rsa
-    "elasticsearch >= 9.0.0.dev0",
-    "filetype",
-    "gocept.cache >= 2.1",
-    "google-cloud-storage>=2.1.0.dev0",
-    "grokcore.component",
-    "jinja2 >= 2.11.0.dev0",
-    "lxml",
-    "lxml-html-clean",
-    "markdown",
-    "markdownify",
-    "martian",
-    "msal",  # XXX Should be [ui], but ZODB contains persistent objects
-    "openapi-schema-validator>=0.6.0.dev0",
-    "opentelemetry-api>=1.23.0.dev.0",
-    "opentelemetry-instrumentation",
-    "opentelemetry-instrumentation-sqlalchemy>=0.38b0",
-    "pendulum>=3.0.0.dev0",
-    "persistent",
-    "pillow",
-    "prometheus-client",
-    "pyjwt>=2.0.0",
-    "pyramid_dogpile_cache2",
-    "python-rapidjson",
-    "pyyaml",
-    "requests",
-    "requests_file",
-    "sqlalchemy>=2.0.0.dev0",
-    "greenlet",  # XXX sqlalchemy dependency, that pip-compile does not recognize
-    "transaction",
-    "webob",
-    "werkzeug",
-    "z3c.celery >= 1.2.0.dev0",  # XXX Should be [ui], but is entrenched
-    "z3c.traverser",  # XXX Should be [ui], but is entrenched
-    "zc.form",  # Should be [ui], but it also contains schema fields
-    "zc.queue",
-    "zc.set",
-    "zc.sourcefactory",
-    "zodb",
-    "zodburi",
-    "zope.annotation",
-    "zope.app.appsetup",
-    "zope.app.locking",
-    "zope.cachedescriptors",
-    "zope.component",
-    "zope.container>=3.8.1",
-    "zope.copypastemove",
-    "zope.deferredimport",  # undeclared by zc.form
-    "zope.dottedname",
-    "zope.event",
-    "zope.exceptions",
-    "zope.file",
-    "zope.generations",
-    "zope.i18n>3.4.0",
-    "zope.index",
-    "zope.interface",
-    "zope.lifecycleevent",
-    "zope.location>=3.4.0b2",
-    "zope.principalannotation",  # XXX Should be [ui], but ZODB contains persistent objects
-    "zope.proxy",
-    "zope.publisher >= 6.0.0.dev0",  # XXX Should be [ui], but is entrenched
-    "zope.schema",
-    "zope.security",
-    "zope.securitypolicy",
-    "zope.site",
-    "zope.sqlalchemy",
-    "zope.traversing",  # XXX Should be [ui], but is entrenched
-    "zope.xmlpickle",
+  "beautifulsoup4",
+  "btrees",
+  "collective.monkeypatcher",
+  "cryptography",                                     # so pyjwt can offer rsa
+  "elasticsearch >= 9.0.0.dev0",
+  "filetype",
+  "gocept.cache >= 2.1",
+  "google-cloud-storage>=2.1.0.dev0",
+  "grokcore.component",
+  "jinja2 >= 2.11.0.dev0",
+  "lxml",
+  "lxml-html-clean",
+  "markdown",
+  "markdownify",
+  "martian",
+  "msal",                                             # XXX Should be [ui], but ZODB contains persistent objects
+  "openapi-schema-validator>=0.6.0.dev0",
+  "opentelemetry-api>=1.23.0.dev.0",
+  "opentelemetry-instrumentation",
+  "opentelemetry-instrumentation-sqlalchemy>=0.38b0",
+  "pendulum>=3.0.0.dev0",
+  "persistent",
+  "pillow",
+  "prometheus-client",
+  "pyjwt>=2.0.0",
+  "pyramid_dogpile_cache2",
+  "python-rapidjson",
+  "pyyaml",
+  "requests",
+  "requests_file",
+  "sqlalchemy>=2.0.0.dev0",
+  "greenlet",                                         # XXX sqlalchemy dependency, that pip-compile does not recognize
+  "transaction",
+  "webob",
+  "werkzeug",
+  "z3c.celery >= 1.2.0.dev0",                         # XXX Should be [ui], but is entrenched
+  "z3c.traverser",                                    # XXX Should be [ui], but is entrenched
+  "zc.form",                                          # Should be [ui], but it also contains schema fields
+  "zc.queue",
+  "zc.set",
+  "zc.sourcefactory",
+  "zodb",
+  "zodburi",
+  "zope.annotation",
+  "zope.app.appsetup",
+  "zope.app.locking",
+  "zope.cachedescriptors",
+  "zope.component",
+  "zope.container>=3.8.1",
+  "zope.copypastemove",
+  "zope.deferredimport",                              # undeclared by zc.form
+  "zope.dottedname",
+  "zope.event",
+  "zope.exceptions",
+  "zope.file",
+  "zope.generations",
+  "zope.i18n>3.4.0",
+  "zope.index",
+  "zope.interface",
+  "zope.lifecycleevent",
+  "zope.location>=3.4.0b2",
+  "zope.principalannotation",                         # XXX Should be [ui], but ZODB contains persistent objects
+  "zope.proxy",
+  "zope.publisher >= 6.0.0.dev0",                     # XXX Should be [ui], but is entrenched
+  "zope.schema",
+  "zope.security",
+  "zope.securitypolicy",
+  "zope.site",
+  "zope.sqlalchemy",
+  "zope.traversing",                                  # XXX Should be [ui], but is entrenched
+  "zope.xmlpickle",
 ]
 
 [project.optional-dependencies]
 ui = [
-    "celery >= 4.0",
-    "celery_redis_sync",
-    "docutils",
-    "fanstatic",
-    "gocept.fckeditor[fanstatic]",
-    "gocept.form[formlib]>=0.7.5",
-    "gocept.pagelet",
-    "js.backbone",
-    "js.cropper",
-    "js.handlebars",
-    "js.jquery",
-    "js.jqueryui",
-    "js.mochikit",
-    "js.select2",
-    "js.underscore",
-    "js.vanderlee_colorpicker",
-    "lxml",
-    "lxml_html_clean",
-    "opentelemetry-instrumentation-celery",
-    "opentelemetry-instrumentation-requests",
-    "opentelemetry-instrumentation-wsgi",
-    "pygments",
-    "pypandoc",
-    "redis",
-    "repoze.vhm",
-    "z3c.flashmessage",
-    "z3c.menu.simple>=0.5.1",
-    "z3c.noop",
-    "zc.datetimewidget",
-    "zc.table",
-    "zconfig",
-    "zeep",
-    "zope.app.authentication",
-    "zope.app.basicskin",
-    "zope.app.container",
-    "zope.app.exception",
-    "zope.app.locales",
-    "zope.app.pagetemplate",
-    "zope.app.publication",
-    "zope.app.publisher",
-    "zope.app.tree",
-    "zope.app.wsgi",
-    "zope.authentication",
-    "zope.browser",
-    "zope.browserpage",
-    "zope.componentvocabulary",
-    "zope.configuration",
-    "zope.error",
-    "zope.formlib",
-    "zope.login",
-    "zope.pluggableauth",
-    "zope.principalregistry",
-    "zope.session",
-    "zope.viewlet",
+  "celery >= 4.0",
+  "celery_redis_sync",
+  "docutils",
+  "fanstatic",
+  "gocept.fckeditor[fanstatic]",
+  "gocept.form[formlib]>=0.7.5",
+  "gocept.pagelet",
+  "js.backbone",
+  "js.cropper",
+  "js.handlebars",
+  "js.jquery",
+  "js.jqueryui",
+  "js.mochikit",
+  "js.select2",
+  "js.underscore",
+  "js.vanderlee_colorpicker",
+  "lxml",
+  "lxml_html_clean",
+  "opentelemetry-instrumentation-celery",
+  "opentelemetry-instrumentation-requests",
+  "opentelemetry-instrumentation-wsgi",
+  "pygments",
+  "pypandoc",
+  "redis",
+  "repoze.vhm",
+  "z3c.flashmessage",
+  "z3c.menu.simple>=0.5.1",
+  "z3c.noop",
+  "zc.datetimewidget",
+  "zc.table",
+  "zconfig",
+  "zeep",
+  "zope.app.authentication",
+  "zope.app.basicskin",
+  "zope.app.container",
+  "zope.app.exception",
+  "zope.app.locales",
+  "zope.app.pagetemplate",
+  "zope.app.publication",
+  "zope.app.publisher",
+  "zope.app.tree",
+  "zope.app.wsgi",
+  "zope.authentication",
+  "zope.browser",
+  "zope.browserpage",
+  "zope.componentvocabulary",
+  "zope.configuration",
+  "zope.error",
+  "zope.formlib",
+  "zope.login",
+  "zope.pluggableauth",
+  "zope.principalregistry",
+  "zope.session",
+  "zope.viewlet",
 ]
 
 test = [
-    "celery >= 5.0",
-    "cssselect",
-    "docker",
-    "fs",
-    "gcp-storage-emulator",
-    "gocept.httpserverlayer>=1.4.0.dev0",
-    "gocept.jasmine",
-    "gocept.selenium",
-    "gocept.testing>=1.4.0.dev0",
-    "opentelemetry-exporter-otlp",
-    "opentelemetry-sdk",
-    "packaging",
-    "plone.testing[zca,zodb]",
-    "pytest",
-    "pytest-cov",
-    "pytest-remove-stale-bytecode",
-    "pytest-rerunfailures",
-    "pytest-xdist",
-    "requests-mock",
-    "selenium >= 4.0.0.dev0",
-    "time-machine",
-    "waitress",
-    "webtest",
-    "xlrd",
-    "xmldiff",
-    "zope.app.wsgi",
-    "zope.configuration",
-    "zope.error",
-    "zope.pytestlayer",
-    "zope.testbrowser",
-    "zope.testing>=3.8.0",
+  "celery >= 5.0",
+  "cssselect",
+  "docker",
+  "fs",
+  "gcp-storage-emulator",
+  "gocept.httpserverlayer>=1.4.0.dev0",
+  "gocept.jasmine",
+  "gocept.selenium",
+  "gocept.testing>=1.4.0.dev0",
+  "opentelemetry-exporter-otlp",
+  "opentelemetry-sdk",
+  "packaging",
+  "plone.testing[zca,zodb]",
+  "pytest",
+  "pytest-cov",
+  "pytest-remove-stale-bytecode",
+  "pytest-rerunfailures",
+  "pytest-xdist",
+  "requests-mock",
+  "selenium >= 4.0.0.dev0",
+  "time-machine",
+  "waitress",
+  "webtest",
+  "xlrd",
+  "xmldiff",
+  "zope.app.wsgi",
+  "zope.configuration",
+  "zope.error",
+  "zope.pytestlayer",
+  "zope.testbrowser",
+  "zope.testing>=3.8.0",
 ]
 
 deploy = [
-    "alembic",
-    "celery-redis-prometheus>=1.5.0.dev0",
-    "celery-worker-healthcheck",
-    "flower",
-    "fluent-logger",
-    "grpcio-status",  # warning instead of required by google-api-core
-    "gunicorn",
-    "gunicorn_environmentconfig",
-    "gunicorn_worker_healthcheck",
-    "opentelemetry-exporter-otlp",
-    "opentelemetry-exporter-prometheus",
-    "opentelemetry-sdk",
-    "opentelemetry-sdk-extension-prometheus-multiprocess >= 1.2.0.dev0",
-    "pastedeploy",
-    "psycopg2-binary",
-    "python-json-logger",
-    "relstorage",
-    "repoze.vhm",
-    "sqlalchemy-bigquery",
-    "waitress",
+  "alembic",
+  "celery-redis-prometheus>=1.5.0.dev0",
+  "celery-worker-healthcheck",
+  "flower",
+  "fluent-logger",
+  "grpcio-status",                                                     # warning instead of required by google-api-core
+  "gunicorn",
+  "gunicorn_environmentconfig",
+  "gunicorn_worker_healthcheck",
+  "opentelemetry-exporter-otlp",
+  "opentelemetry-exporter-prometheus",
+  "opentelemetry-sdk",
+  "opentelemetry-sdk-extension-prometheus-multiprocess >= 1.2.0.dev0",
+  "pastedeploy",
+  "psycopg2-binary",
+  "python-json-logger",
+  "relstorage",
+  "repoze.vhm",
+  "sqlalchemy-bigquery",
+  "waitress",
 ]
 
 zon = [
-    "gocept.cache==6.1+importlib",  # https://github.com/ZeitOnline/gocept.cache/tree/importlib
-    "zope.app.locking==3.5.0+py3.4",  # https://github.com/ZeitOnline/zope.app.locking
-    "zope.file==2.1+importlib",  # https://github.com/ZeitOnline/zope.file
-    "zope.xmlpickle==4.0.0+py3k2",  # https://github.com/ZeitOnline/zope.xmlpickle/tree/py3
+  "gocept.cache==6.1+importlib",   # https://github.com/ZeitOnline/gocept.cache/tree/importlib
+  "zope.app.locking==3.5.0+py3.4", # https://github.com/ZeitOnline/zope.app.locking
+  "zope.file==2.1+importlib",      # https://github.com/ZeitOnline/zope.file
+  "zope.xmlpickle==4.0.0+py3k2",   # https://github.com/ZeitOnline/zope.xmlpickle/tree/py3
 ]
 test-zon = [
-    "gocept.jasmine==0.7+py3.4",  # https://github.com/ZeitOnline/gocept.jasmine
-    "gocept.selenium==7.1+importlib.2",  # https://github.com/ZeitOnline/gocept.selenium
+  "gocept.jasmine==0.7+py3.4",        # https://github.com/ZeitOnline/gocept.jasmine
+  "gocept.selenium==7.1+importlib.2", # https://github.com/ZeitOnline/gocept.selenium
 ]
 ui-zon = [
-    "gocept.fckeditor==2.6.4.1+importlib",  # https://github.com/ZeitOnline/gocept.fckeditor/tree/py3
-    "js.jqueryui==1.10.3+tooltip.2",  # https://github.com/ZeitOnline/js.jqueryui
-    "z3c.noop==1.0+py3.3",  # https://github.com/ZeitOnline/z3c.noop
-    "z3c.menu.simple==0.6.0+py3.6",  # https://github.com/ZeitOnline/z3c.menu.simple
-    "z3c.traverser==2.0.0+notests",  # https://github.com/ZeitOnline/z3c.traverser
-    "zc.datetimewidget==0.8.0+py3.6",  # https://github.com/ZeitOnline/zc.datetimewidget
-    "zc.queue==3.0+importlib",  # https://github.com/ZeitOnline/zc.queue
-    "zc.set==1.0+importlib",  # https://github.com/ZeitOnline/zc.set
-    "zc.table==1.1+importlib.1",  # https://github.com/ZeitOnline/zc.table
-    "zope.app.exception==5.1+importlib",  # https://github.com/ZeitOnline/zope.app.exception
-    "zope.app.tree==5.0+importlib",  # https://github.com/ZeitOnline/zope.app.tree
+  "gocept.fckeditor==2.6.4.1+importlib", # https://github.com/ZeitOnline/gocept.fckeditor/tree/py3
+  "js.jqueryui==1.10.3+tooltip.2",       # https://github.com/ZeitOnline/js.jqueryui
+  "z3c.noop==1.0+py3.3",                 # https://github.com/ZeitOnline/z3c.noop
+  "z3c.menu.simple==0.6.0+py3.6",        # https://github.com/ZeitOnline/z3c.menu.simple
+  "z3c.traverser==2.0.0+notests",        # https://github.com/ZeitOnline/z3c.traverser
+  "zc.datetimewidget==0.8.0+py3.6",      # https://github.com/ZeitOnline/zc.datetimewidget
+  "zc.queue==3.0+importlib",             # https://github.com/ZeitOnline/zc.queue
+  "zc.set==1.0+importlib",               # https://github.com/ZeitOnline/zc.set
+  "zc.table==1.1+importlib.1",           # https://github.com/ZeitOnline/zc.table
+  "zope.app.exception==5.1+importlib",   # https://github.com/ZeitOnline/zope.app.exception
+  "zope.app.tree==5.0+importlib",        # https://github.com/ZeitOnline/zope.app.tree
 ]
 
 [dependency-groups]
@@ -253,6 +253,7 @@ refresh-cache = "zeit.connector.cli:refresh_cache"
 retract-content = "zeit.cms.workflow.cli:retract"
 retract-scheduled-content = "zeit.workflow.cli:retract_scheduled_content"
 publish-scheduled-content = "zeit.workflow.cli:publish_scheduled_content"
+execute-scheduled-operations = "zeit.workflow.scheduled.cli:execute_scheduled_operations_cli"
 search-elastic = "zeit.find.cli:search_elastic"
 tms-reindex-object = "zeit.retresco.update:reindex"
 ua-payload-doc = "zeit.push.urbanairship:print_payload_documentation"
@@ -315,9 +316,7 @@ build-backend = "uv_build"
 [tool.uv.build-backend]
 module-name = "zeit"
 namespace = true
-source-exclude = [
-    "src/zeit/connector/testcontent/**",
-]
+source-exclude = ["src/zeit/connector/testcontent/**"]
 
 
 [tool.towncrier]
