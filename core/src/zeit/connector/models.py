@@ -332,6 +332,10 @@ class Content(
         passive_deletes=True,  # Disable any heuristics, only ever explicitly delete Locks
     )
 
+    scheduled_operations = relationship(
+        'ScheduledOperation', back_populates='_content', cascade='all, delete-orphan', lazy='noload'
+    )
+
     @classmethod
     def column_by_name(cls, name, namespace, mode='always'):
         namespace = namespace.replace(cls.NS, '', 1)
@@ -519,3 +523,32 @@ class Reference(Base):
 
     def __hash__(self):
         return hash((self.source, self.target, self.type))
+
+
+class ScheduledOperation(Base):
+    @declared_attr
+    def __table_args__(cls):
+        return (
+            cls.Index(
+                'executed_on',
+                'scheduled_on',
+                name='pending',
+            ),
+            cls.Index('content', 'operation', name='list'),
+            cls.Index('content'),
+        )
+
+    __tablename__ = 'scheduled_operations'
+
+    id = mapped_column(Uuid(as_uuid=False), primary_key=True, default=lambda: str(uuid4()))
+    content = mapped_column(
+        Uuid(as_uuid=False), ForeignKey('properties.id', ondelete='CASCADE'), nullable=False
+    )
+    operation = mapped_column(Unicode, nullable=False)
+    scheduled_on = mapped_column(TIMESTAMP, nullable=False)
+    executed_on = mapped_column(TIMESTAMP, nullable=True)
+    property_changes = mapped_column(JSONB, default={})
+    created_by = mapped_column(Unicode, nullable=False)
+    date_created = mapped_column(TIMESTAMP, server_default=sqlalchemy.func.now())
+
+    _content = relationship('Content', back_populates='scheduled_operations')
