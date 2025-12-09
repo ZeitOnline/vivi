@@ -20,7 +20,7 @@ jobs:
     secrets: inherit
     with:
       environment: staging
-      gke_cluster: staging
+      gke_cluster: main-staging-25-01
       k8s_base: smoketest/k8s
       versions: smoketest/k8s/base/versions
       # copy&paste from k8s/base and k8s/staging manifest
