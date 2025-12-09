@@ -1,8 +1,8 @@
 import pendulum
-import pytest
 import transaction
 
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
+from zeit.workflow.interfaces import ITimeBasedPublishing
 from zeit.workflow.scheduled.interfaces import IScheduledOperations
 import zeit.cms.testing
 import zeit.workflow.testing
@@ -172,10 +172,31 @@ class ScheduledOperationsTest(zeit.workflow.testing.FunctionalTestCase):
         operation = ops.get(op_id)
         self.assertEqual({}, operation.property_changes)
 
-    @pytest.mark.xfail(reason='This needs to be resolved!')
-    def test_non_persisted_content(self):
+    def test_non_persisted_content_creates_operations_on_add(self):
         testcontent = ExampleContentType()
-        ops = IScheduledOperations(testcontent)
-        scheduled_time = pendulum.now('UTC').add(hours=1)
-        ops.add('publish', scheduled_time, property_changes={})
-        self.assertEqual(1, len(ops.list()))
+        publish_time = pendulum.now('UTC').add(days=1)
+        retract_time = pendulum.now('UTC').add(days=7)
+
+        timebased = ITimeBasedPublishing(testcontent)
+        timebased.release_period = (publish_time, retract_time)
+
+        name = 'testcontent-with-release-period'
+        self.repository[name] = testcontent
+        transaction.commit()
+
+        # Verify scheduled operations were created from release_period
+        persisted_content = self.repository[name]
+        ops = IScheduledOperations(persisted_content)
+        operations = ops.list()
+
+        self.assertEqual(2, len(operations))
+
+        # Check publish operation
+        publish_ops = [op for op in operations if op.operation == 'publish']
+        self.assertEqual(1, len(publish_ops))
+        self.assertEqual(publish_time, publish_ops[0].scheduled_on)
+
+        # Check retract operation
+        retract_ops = [op for op in operations if op.operation == 'retract']
+        self.assertEqual(1, len(retract_ops))
+        self.assertEqual(retract_time, retract_ops[0].scheduled_on)
