@@ -1,0 +1,23 @@
+<fieldset class="scheduled-operation-entry"
+          i18n:domain="zeit.workflow">
+  <legend i18n:translate="">Scheduled Operation</legend>
+
+  <tal:block repeat="widget view/widgets">
+    <!-- First field is the hidden operation ID -->
+    <tal:block condition="repeat/widget/start">
+      <input type="hidden"
+             tal:attributes="name widget/name; value widget/value | nothing" />
+    </tal:block>
+
+    <!-- Remaining fields are visible -->
+    <div class="scheduled-operation-field"
+         tal:condition="not:repeat/widget/start">
+      <label tal:attributes="for widget/name">
+        <strong tal:content="widget/label" i18n:translate="">Label</strong>
+      </label>
+      <div class="field-widget">
+        <tal:block replace="structure widget" />
+      </div>
+    </div>
+  </tal:block>
+</fieldset>
