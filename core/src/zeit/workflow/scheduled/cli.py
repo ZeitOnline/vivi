@@ -7,6 +7,7 @@ import pendulum
 import zope.component
 
 from zeit.cms.cli import commit_with_retry
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.connector.models import ScheduledOperation
 from zeit.workflow.scheduled.interfaces import IScheduledOperation, IScheduledOperations
 import zeit.cms.cli
@@ -57,4 +58,6 @@ def execute_scheduled_operations():
 
 @zeit.cms.cli.runner(principal=zeit.cms.cli.from_config('zeit.workflow', 'schedule-principal'))
 def execute_scheduled_operations_cli():
+    if not FEATURE_TOGGLES.find('use_scheduled_cronjob'):
+        return
     execute_scheduled_operations()
