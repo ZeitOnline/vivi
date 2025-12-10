@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.241.0 (2025-12-10)
+--------------------
+
+- ES-488: Add Layout Options for Scrolly Image Module
+
+
 7.240.0 (2025-12-10)
 --------------------
 
