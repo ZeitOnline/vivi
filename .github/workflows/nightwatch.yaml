@@ -16,7 +16,7 @@ on:
 
 jobs:
   build:
-    uses: zeitonline/gh-action-workflows/.github/workflows/nightwatch-build.yaml@38afa722de014788932f4725126f4aa08af052a8 # 2.10.0
+    uses: zeitonline/gh-action-workflows/.github/workflows/nightwatch-build.yaml@4241bed0752a9d591a002a07a1e46dd0514cf951 # 2.10.1
     secrets: inherit
     with:
       environment: staging
