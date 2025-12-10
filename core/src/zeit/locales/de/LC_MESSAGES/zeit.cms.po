@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Wed Nov 19 10:55:57 2025\n"
+"POT-Creation-Date: Thu Dec  4 10:25:47 2025\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -2003,31 +2003,59 @@ msgid "Font Style"
 msgstr "Schriftart"
 
 #: zeit/content/article/edit/interfaces.py:403
+#: zeit/content/article/edit/interfaces.py:413
 msgid "Cover"
 msgstr "Bildschirmfüllend"
 
 #: zeit/content/article/edit/interfaces.py:404
+#: zeit/content/article/edit/interfaces.py:414
 msgid "Cover (with textbox)"
 msgstr "Bildschirmfüllend (mit Textbox)"
 
 #: zeit/content/article/edit/interfaces.py:405
+#: zeit/content/article/edit/interfaces.py:415
 msgid "Contain"
 msgstr "Eingepasst"
 
 #: zeit/content/article/edit/interfaces.py:406
+#: zeit/content/article/edit/interfaces.py:416
 msgid "Contain (with whitespace)"
 msgstr "Einpassen (mit Weißraum)"
 
-#: zeit/content/article/edit/interfaces.py:423
+#: zeit/content/article/edit/interfaces.py:417
+msgid "Left Cover"
+msgstr "Links"
+
+#: zeit/content/article/edit/interfaces.py:418
+msgid "Right Cover"
+msgstr "Rechts"
+
+#: zeit/content/article/edit/interfaces.py:419
+msgid "Left Contain"
+msgstr "Links eingepasst"
+
+#: zeit/content/article/edit/interfaces.py:420
+msgid "Right Contain"
+msgstr "Rechts eingepasst"
+
+#: zeit/content/article/edit/interfaces.py:421
+msgid "Left Contain (with whitespace)"
+msgstr "Links eingepasst (mit Weißraum)"
+
+#: zeit/content/article/edit/interfaces.py:422
+msgid "Right Contain (with whitespace)"
+msgstr "Rechts eingepasst (mit Weißraum)"
+
+#: zeit/content/article/edit/interfaces.py:439
 msgid "Layout desktop"
 msgstr "Layout Desktop"
 
-#: zeit/content/article/edit/interfaces.py:430
+#: zeit/content/article/edit/interfaces.py:446
 msgid "Layout mobile"
 msgstr "Layout Mobil"
 
-#: zeit/content/article/edit/interfaces.py:445
-#: zeit/content/article/edit/interfaces.py:595
+#: zeit/content/article/edit/interfaces.py:461
+#: zeit/content/article/edit/interfaces.py:611
 #: zeit/content/cp/interfaces.py:291 zeit/content/cp/interfaces.py:424
 #: zeit/content/infobox/interfaces.py:15
 #: zeit/content/video/browser/object-details-body.pt:20
