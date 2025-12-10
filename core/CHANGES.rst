@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.240.0 (2025-12-10)
+--------------------
+
+MAINT:
+- Update dependencies
+
+
 7.239.0 (2025-12-05)
 --------------------
 
