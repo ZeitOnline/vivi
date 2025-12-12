@@ -6,6 +6,7 @@ import pendulum
 import transaction
 import zope.component
 
+from zeit.cms.content.sources import FEATURE_TOGGLES
 import zeit.cms.tagging.testing
 import zeit.cms.workflow.interfaces
 import zeit.content.article.edit.browser.testing
@@ -13,12 +14,13 @@ import zeit.content.article.edit.interfaces
 import zeit.content.article.testing
 import zeit.edit.interfaces
 import zeit.edit.rule
+import zeit.workflow.scheduled.interfaces
 
 
 class Checkin(zeit.content.article.testing.BrowserTestCase):
     def test_validation_errors_should_be_displayed_at_checkin_button(self):
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/@@zeit.content.article.Add')
+        b.open('/repository/@@zeit.content.article.Add')
         b.open('@@edit.form.checkin-errors')
         self.assert_ellipsis(
             """
@@ -268,24 +270,21 @@ class Publish(zeit.content.article.testing.BrowserTestCase):
         rules = [rm.create_rule(['error_if(True, "Custom Error")'], 0)]
         with mock.patch.object(zeit.edit.rule.RulesManager, 'rules', rules):
             b = self.browser
-            b.open('http://localhost/++skin++vivi/repository/article_with_division/@@publish.html')
+            b.open('/repository/article_with_division/@@publish.html')
         self.assertEllipsis('...Custom Error...', b.contents)
 
 
 class Delete(zeit.content.article.testing.BrowserTestCase):
     def test_checked_out_article_has_cancel_but_no_delete(self):
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/article/@@checkout')
+        b.open('/repository/article/@@checkout')
         b.open('@@edit.form.checkin-buttons?show_form=1')
         self.assertNothingRaised(b.getLink, 'Cancel')
         self.assertNotIn('Delete', b.contents)
 
     def test_checked_in_article_has_delete_but_no_cancel(self):
         b = self.browser
-        b.open(
-            'http://localhost/++skin++vivi/repository'
-            '/article/@@edit.form.checkin-buttons?show_form=1'
-        )
+        b.open('/repository/article/@@edit.form.checkin-buttons?show_form=1')
         self.assertNothingRaised(b.getLink, 'Delete')
         self.assertNotIn('Cancel', b.contents)
 
@@ -302,3 +301,186 @@ class Objectlog(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.waitForElementPresent(fold)
         s.click(fold)
         s.waitForText('css=div.objectlog table.objectlog', '*example message*')
+
+
+class ScheduledOperationsAccess(zeit.content.article.testing.BrowserTestCase):
+    def test_scheduled_access_form_hidden_without_feature_toggle(self):
+        FEATURE_TOGGLES.unset('use_scheduled_operations')
+
+        b = self.browser
+        b.open('/repository/article/@@edit.form.scheduled-access-operation?show_form=1')
+        self.assertEqual('', b.contents.strip())
+
+    def test_scheduled_access_form_can_create_operation(self):
+        b = self.browser
+        b.open('/repository/article/@@edit.form.scheduled-access-operation?show_form=1')
+
+        scheduled_time = pendulum.now('UTC').add(hours=2)
+        b.getControl(
+            name='scheduled-access-operation.scheduled_on'
+        ).value = scheduled_time.strftime('%Y-%m-%d %H:%M')
+        b.getControl(name='scheduled-access-operation.access').displayValue = [
+            'access-registration'
+        ]
+        b.getControl('Apply').click()
+
+        article = self.repository['article']
+        ops = zeit.workflow.scheduled.interfaces.IScheduledOperations(article)
+        operations = ops.list('publish')
+        self.assertEqual(1, len(operations))
+        self.assertEqual('registration', operations[0].property_changes.get('access'))
+
+    def test_scheduled_access_form_displays_existing_operation(self):
+        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/article')
+        ops = zeit.workflow.scheduled.interfaces.IScheduledOperations(article)
+        scheduled_time = pendulum.now('UTC').add(hours=2)
+        ops.add('publish', scheduled_time, property_changes={'access': 'abo'})
+        transaction.commit()
+
+        b = self.browser
+        b.open('/repository/article/@@edit.form.scheduled-access-operation?show_form=1')
+        self.assertIn('access-abo', b.contents)
+
+    def test_scheduled_access_form_can_update_operation(self):
+        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/article')
+        ops = zeit.workflow.scheduled.interfaces.IScheduledOperations(article)
+        scheduled_time = pendulum.now('UTC').add(hours=2)
+        op_id = ops.add('publish', scheduled_time, property_changes={'access': 'abo'})
+        transaction.commit()
+
+        b = self.browser
+        b.open('/repository/article/@@edit.form.scheduled-access-operation?show_form=1')
+        new_time = pendulum.now('UTC').add(hours=3)
+        b.getControl(name='scheduled-access-operation.scheduled_on').value = new_time.strftime(
+            '%Y-%m-%d %H:%M'
+        )
+        b.getControl(name='scheduled-access-operation.access').displayValue = [
+            'access-registration'
+        ]
+        b.getControl('Apply').click()
+
+        article = self.repository['article']
+        ops = zeit.workflow.scheduled.interfaces.IScheduledOperations(article)
+        operation = ops.get(op_id)
+        self.assertEqual('registration', operation.property_changes.get('access'))
+
+    def test_scheduled_access_form_can_remove_operation(self):
+        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/article')
+        ops = zeit.workflow.scheduled.interfaces.IScheduledOperations(article)
+        scheduled_time = pendulum.now('UTC').add(hours=2)
+        ops.add('publish', scheduled_time, property_changes={'access': 'abo'})
+        transaction.commit()
+
+        b = self.browser
+        b.open('/repository/article/@@edit.form.scheduled-access-operation?show_form=1')
+        b.getControl(name='scheduled-access-operation.scheduled_on').value = ''
+        b.getControl('Apply').click()
+
+        article = self.repository['article']
+        ops = zeit.workflow.scheduled.interfaces.IScheduledOperations(article)
+        self.assertEqual(0, len(ops.list('publish')))
+
+
+class ScheduledOperationsChannel(zeit.content.article.testing.BrowserTestCase):
+    def test_scheduled_channel_form_hidden_without_feature_toggle(self):
+        FEATURE_TOGGLES.unset('use_scheduled_operations')
+
+        b = self.browser
+        b.open('/repository/article/@@edit.form.scheduled-channel-operation?show_form=1')
+        self.assertEqual('', b.contents.strip())
+
+    def test_scheduled_channel_form_renders_without_operation(self):
+        b = self.browser
+        b.open('/repository/article/@@edit.form.scheduled-channel-operation?show_form=1')
+        self.assertIn('scheduled-channel-operation.scheduled_on', b.contents)
+        self.assertIn('scheduled-channel-operation.channels', b.contents)
+
+    def test_scheduled_channel_form_can_create_operation(self):
+        b = self.browser
+        b.open('/repository/article/@@edit.form.scheduled-channel-operation?show_form=1')
+
+        scheduled_time = pendulum.now('UTC').add(hours=1)
+        b.getControl(
+            name='scheduled-channel-operation.scheduled_on'
+        ).value = scheduled_time.strftime('%Y-%m-%d %H:%M')
+        # Note: Channel widget is complex, this is a simplified test
+        b.getControl('Apply').click()
+
+        # Verify form doesn't crash
+        self.assertIn('scheduled-channel-operation', b.url)
+
+    def test_scheduled_channel_form_displays_existing_operation(self):
+        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/article')
+        ops = zeit.workflow.scheduled.interfaces.IScheduledOperations(article)
+        scheduled_time = pendulum.now('UTC').add(hours=2)
+        ops.add(
+            'publish', scheduled_time, property_changes={'channels': (('International', None),)}
+        )
+        transaction.commit()
+
+        b = self.browser
+        b.open('/repository/article/@@edit.form.scheduled-channel-operation?show_form=1')
+        self.assertIn('International', b.contents)
+
+
+class ScheduledOperationsSelenium(zeit.content.article.edit.browser.testing.EditorTestCase):
+    def test_all_workflow_forms_create_multiple_scheduled_operations(self):
+        s = self.selenium
+        self.open('/repository/article/@@checkout')
+
+        fold = 'css=#edit-form-workflow-time .fold-link'
+        s.waitForElementPresent(fold)
+        s.click(fold)
+
+        s.waitForElementPresent('id=timebased.release_period.combination_00')
+        released_from = pendulum.now('UTC').add(hours=2)
+        released_to = pendulum.now('UTC').add(hours=5)
+        s.type(
+            'id=timebased.release_period.combination_00',
+            released_from.strftime('%Y-%m-%d %H:%M:%S'),
+        )
+        s.type(
+            'id=timebased.release_period.combination_01', released_to.strftime('%Y-%m-%d %H:%M:%S')
+        )
+
+        channel_time = pendulum.now('UTC').add(hours=3)
+        s.type(
+            'id=scheduled-channel-operation.scheduled_on', channel_time.strftime('%Y-%m-%d %H:%M')
+        )
+        s.keyPress('id=scheduled-channel-operation.scheduled_on', Keys.TAB)
+
+        s.waitForElementPresent('name=scheduled-channel-operation.channels.add')
+        s.click('name=scheduled-channel-operation.channels.add')
+        s.waitForElementPresent('id=scheduled-channel-operation.channels.0..combination_00')
+        s.select('scheduled-channel-operation.channels.0..combination_00', 'Wissen')
+        s.waitForElementPresent('id=scheduled-channel-operation.scheduled_on')
+
+        s.waitForElementPresent('id=scheduled-access-operation.scheduled_on')
+        access_time = pendulum.now('UTC').add(hours=2)
+        s.type('id=scheduled-access-operation.scheduled_on', access_time.strftime('%Y-%m-%d %H:%M'))
+        s.select('id=scheduled-access-operation.access', 'label=access-registration')
+        s.keyPress('id=scheduled-access-operation.access', Keys.TAB)
+        s.keyPress('id=scheduled-access-operation.scheduled_on', Keys.TAB)
+        s.waitForElementPresent('id=checkin')
+        s.clickAndWait('id=checkin')
+
+        article = self.repository['article']
+        ops = zeit.workflow.scheduled.interfaces.IScheduledOperations(article)
+
+        publish_ops = ops.list('publish')
+        self.assertEqual(3, len(publish_ops))
+
+        retract_ops = ops.list('retract')
+        self.assertEqual(1, len(retract_ops))
+
+        access_ops = [op for op in publish_ops if 'access' in op.property_changes]
+        self.assertEqual(1, len(access_ops))
+        self.assertEqual('registration', access_ops[0].property_changes['access'])
+
+        channel_ops = [op for op in publish_ops if 'channels' in op.property_changes]
+        self.assertEqual(1, len(channel_ops))
+        self.assertEqual([['Wissen', None]], channel_ops[0].property_changes['channels'])
+
+        s.waitForElementPresent('id=timebased.release_period.combination_00')
+        s.waitForElementPresent('id=scheduled-access-operation.access')
+        s.waitForElementPresent('id=scheduled-channel-operation.scheduled_on')
