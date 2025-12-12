@@ -1,17 +1,22 @@
 from unittest import mock
 
 from zope.cachedescriptors.property import Lazy as cachedproperty
+import pendulum
+import zope.app.pagetemplate
 import zope.component
 import zope.formlib.form
 import zope.formlib.interfaces
+import zope.formlib.sequencewidget
 import zope.formlib.widget
 import zope.i18n
 
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.repository.interfaces import IAutomaticallyRenameable
 import zeit.content.article.interfaces
 import zeit.edit.browser.form
 import zeit.workflow.interfaces
+import zeit.workflow.scheduled.interfaces
 
 
 class WorkflowTimeContainer(zeit.edit.browser.form.FoldableFormGroup):
@@ -19,11 +24,34 @@ class WorkflowTimeContainer(zeit.edit.browser.form.FoldableFormGroup):
 
 
 class Timebased(zeit.edit.browser.form.InlineForm):
-    legend = _('')
+    legend = _('Article')
     prefix = 'timebased'
     form_fields = zope.formlib.form.FormFields(zeit.workflow.interfaces.IContentWorkflow).select(
         'release_period'
     )
+
+    def _create_or_update_operation(self, ops, op_type, scheduled_on):
+        scheduled_op = next((op for op in ops.list(op_type) if not op.property_changes), None)
+        if scheduled_on and scheduled_on >= pendulum.now('UTC'):
+            if scheduled_op:
+                ops.update(scheduled_op.id, scheduled_on=scheduled_on)
+            else:
+                ops.add(op_type, scheduled_on)
+        elif scheduled_op:
+            ops.remove(scheduled_op.id)
+
+    def _success_handler(self):
+        if not FEATURE_TOGGLES.find('use_scheduled_operations'):
+            return
+
+        ops = zeit.workflow.scheduled.interfaces.IScheduledOperations(self.context)
+
+        released_from, released_to = None, None
+        if released_period := self.widgets['release_period'].getInputValue():
+            released_from, released_to = released_period
+
+        self._create_or_update_operation(ops, 'publish', released_from)
+        self._create_or_update_operation(ops, 'retract', released_to)
 
 
 class WorkflowContainer(zeit.edit.browser.form.FoldableFormGroup):
@@ -152,3 +180,135 @@ class ViewWidget(zope.formlib.widget.BrowserWidget):
     def __call__(self):
         view = zope.component.getMultiAdapter((self.context, self.request), name=self.view)
         return view()
+
+
+class ScheduledOperationFormBase(
+    zeit.edit.browser.form.InlineForm, zeit.cms.browser.form.WidgetCSSMixin
+):
+    property_key = NotImplemented
+    property_default = None
+    display_only = False
+
+    def __init__(self, *args, **kw):
+        super().__init__(*args, **kw)
+        self._operation_id = None
+        # Store partial input that hasn't been saved yet
+        self._pending_data = None
+
+    def render(self):
+        if not FEATURE_TOGGLES.find('use_scheduled_operations'):
+            return ''
+        return super().render()
+
+    def get_data(self):
+        if self._pending_data is not None:
+            return self._pending_data
+
+        ops = zeit.workflow.scheduled.interfaces.IScheduledOperations(self.context)
+        operation = self._find_operation(ops.list('publish'))
+        self._operation_id = operation.id if operation else None
+
+        return {
+            'scheduled_on': operation.scheduled_on if operation else None,
+            self.property_key: (
+                operation.property_changes.get(self.property_key, self.property_default)
+                if operation
+                else self.property_default
+            ),
+        }
+
+    def setUpWidgets(self, ignore_request=False):
+        self.widgets = zope.formlib.form.setUpDataWidgets(
+            self.form_fields,
+            self.prefix,
+            self.context,
+            self.request,
+            data=self.get_data(),
+            for_display=self.display_only,
+            ignore_request=ignore_request,
+        )
+
+        # XXX copy&paste from WidgetCSSMixin since we're skipping super()
+        for widget in self.widgets:
+            widget.field_css_class = self._assemble_css_classes.__get__(widget)
+
+    def _find_operation(self, operations):
+        for op in operations:
+            if self.property_key in op.property_changes:
+                return op
+        return None
+
+    @zope.formlib.form.action(_('Apply'), condition=zope.formlib.form.haveInputWidgets)
+    def handle_edit_action(self, action, data):
+        self._success_handler(data)
+
+    def _success_handler(self, data):
+        if not FEATURE_TOGGLES.find('use_scheduled_operations'):
+            return
+
+        if not data:
+            return
+
+        ops = zeit.workflow.scheduled.interfaces.IScheduledOperations(self.context)
+        scheduled_on = data.get('scheduled_on')
+        property_value = data.get(self.property_key)
+
+        has_scheduled_on = scheduled_on and scheduled_on >= pendulum.now('UTC')
+        has_property_value = property_value and property_value != self.property_default
+
+        if not scheduled_on:
+            if self._operation_id:
+                try:
+                    ops.remove(self._operation_id)
+                    self._operation_id = None
+                except KeyError:
+                    pass
+            self._pending_data = {
+                'scheduled_on': scheduled_on,
+                self.property_key: property_value if property_value else self.property_default,
+            }
+        elif has_scheduled_on and has_property_value:
+            self._create_or_update_operation(ops, scheduled_on, property_value)
+            self._pending_data = None
+        else:
+            self._pending_data = {
+                'scheduled_on': scheduled_on,
+                self.property_key: property_value if property_value else self.property_default,
+            }
+
+    def _create_or_update_operation(self, ops, scheduled_on, property_value):
+        property_changes = {self.property_key: property_value}
+        try:
+            if self._operation_id:
+                ops.update(
+                    self._operation_id, scheduled_on=scheduled_on, property_changes=property_changes
+                )
+            else:
+                self._operation_id = ops.add('publish', scheduled_on, property_changes)
+        except (ValueError, AttributeError, KeyError):
+            pass
+
+
+class ScheduledAccessOperation(ScheduledOperationFormBase):
+    legend = _('Access')
+    prefix = 'scheduled-access-operation'
+    css_class = 'scheduled-operation'
+    property_key = 'access'
+
+    form_fields = zope.formlib.form.FormFields(
+        zeit.workflow.scheduled.interfaces.IScheduledAccessOperation
+    )
+    form_fields['scheduled_on'].field.required = False
+
+
+class ScheduledChannelOperation(ScheduledOperationFormBase):
+    legend = _('Channel')
+    prefix = 'scheduled-channel-operation'
+    css_class = 'scheduled-operation'
+    property_key = 'channels'
+    property_default = ()
+
+    form_fields = zope.formlib.form.FormFields(
+        zeit.workflow.scheduled.interfaces.IScheduledChannelOperation
+    )
+    form_fields['scheduled_on'].field.required = False

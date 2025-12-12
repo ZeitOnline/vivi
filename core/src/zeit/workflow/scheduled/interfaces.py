@@ -4,6 +4,7 @@ from datetime import datetime
 import zope.interface
 import zope.schema
 
+from zeit.cms.content.interfaces import ICommonMetadata
 from zeit.cms.i18n import MessageFactory as _
 
 
@@ -88,3 +89,17 @@ class IScheduledOperations(zope.interface.Interface):
 
         raises ValueError if operation type is unknown
         """
+
+
+class IScheduledChannelOperation(zope.interface.Interface):
+    """Attention: the current implementation only allows changes
+    for properties that are not stored inside the body! (see WCM-10)
+    """
+
+    channels = ICommonMetadata['channels'].bind(object())
+    scheduled_on = IScheduledOperation['scheduled_on'].bind(object())
+
+
+class IScheduledAccessOperation(zope.interface.Interface):
+    access = ICommonMetadata['access'].bind(object())
+    scheduled_on = IScheduledOperation['scheduled_on'].bind(object())

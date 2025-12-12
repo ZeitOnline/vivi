@@ -937,6 +937,44 @@
     permission="zope.View"
     />
 
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".workflow.WorkflowTimeContainer"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.form.scheduled-access-operation"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="10"
+    />
+
+  <browser:page
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.form.scheduled-access-operation"
+    class=".workflow.ScheduledAccessOperation"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".workflow.WorkflowTimeContainer"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.form.scheduled-channel-operation"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="20"
+    />
+
+  <browser:page
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.form.scheduled-channel-operation"
+    class=".workflow.ScheduledChannelOperation"
+    permission="zope.View"
+    />
+
   <!-- social media -->
 
   <browser:viewlet
