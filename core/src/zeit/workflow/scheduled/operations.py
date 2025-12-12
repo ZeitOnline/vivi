@@ -82,13 +82,23 @@ class ScheduledOperationsBase:
             return interaction.participations[0].principal.id
         return None
 
-    def _log_operation(self, operation, scheduled_on):
+    def _log_operation(self, operation, scheduled_on, property_changes):
         log_util = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
+
+        properties = ''
+        if property_changes:
+            # There is only one entry in keys, the comma is never logged
+            properties = ','.join(property_changes.keys()) + ' '
+
         log_util.log(
             self.context,
             _(
-                'Scheduled ${op} for ${date}',
-                mapping={'op': operation, 'date': scheduled_on.isoformat()},
+                'Scheduled ${op} ${properties}for ${date}',
+                mapping={
+                    'op': operation,
+                    'date': scheduled_on.isoformat(),
+                    'properties': properties,
+                },
             ),
         )
 
@@ -114,7 +124,7 @@ class RepositoryScheduledOperations(grok.Adapter, ScheduledOperationsBase):
             executed_on=None,
         )
         self._connector.session.add(model)
-        self._log_operation(operation, scheduled_on)
+        self._log_operation(operation, scheduled_on, property_changes)
 
         return model.id
 
@@ -275,7 +285,7 @@ class WorkingCopyScheduledOperations(grok.Adapter, ScheduledOperationsBase):
         )
         self._storage[operation_id] = op
         self.context._p_changed = True
-        self._log_operation(operation, scheduled_on)
+        self._log_operation(operation, scheduled_on, property_changes)
 
         return operation_id
 
