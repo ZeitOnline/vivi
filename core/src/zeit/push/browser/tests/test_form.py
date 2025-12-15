@@ -34,24 +34,23 @@ class SocialFormTest(zeit.push.testing.BrowserTestCase):
         push = zeit.push.interfaces.IPushMessages(article)
         # No entries for Facebook Magazin and Campus are created, since they
         # are not included in the base form.
-        self.assertEqual(2, len(push.message_config))
-        self.assertIn(
-            {'type': 'facebook', 'account': 'fb-test', 'override_text': 'fb-main'},
+        self.assertEqual(3, len(push.message_config))
+        self.assertEqual(
+            (
+                {
+                    'enabled': 1,
+                    'override_text': 'mobile',
+                    'payload_template': 'foo.json',
+                    'title': 'mobile title',
+                    'type': 'mobile',
+                    'uses_image': 0,
+                    'variant': 'manual',
+                },
+                {'enabled': 0, 'type': 'homepage'},
+                {'account': 'fb-test', 'override_text': 'fb-main', 'type': 'facebook'},
+            ),
             push.message_config,
         )
-        self.assertIn(
-            {
-                'type': 'mobile',
-                'enabled': True,
-                'override_text': 'mobile',
-                'title': 'mobile title',
-                'uses_image': False,
-                'variant': 'manual',
-                'payload_template': 'foo.json',
-            },
-            push.message_config,
-        )
-
         self.open_form()
         self.assertTrue(b.getControl('Enable mobile push').selected)
 
@@ -59,25 +58,21 @@ class SocialFormTest(zeit.push.testing.BrowserTestCase):
         b.getControl('Apply').click()
         article = self.get_article()
         push = zeit.push.interfaces.IPushMessages(article)
-        self.assertEqual(2, len(push.message_config))
-        self.assertIn(
-            {
-                'type': 'facebook',
-                'account': 'fb-test',
-                'override_text': 'fb-main',
-            },
-            push.message_config,
-        )
-        self.assertIn(
-            {
-                'type': 'mobile',
-                'enabled': False,
-                'override_text': 'mobile',
-                'title': 'mobile title',
-                'uses_image': False,
-                'variant': 'manual',
-                'payload_template': 'foo.json',
-            },
+        self.assertEqual(3, len(push.message_config))
+        self.assertEqual(
+            (
+                {
+                    'enabled': 0,
+                    'override_text': 'mobile',
+                    'payload_template': 'foo.json',
+                    'title': 'mobile title',
+                    'type': 'mobile',
+                    'uses_image': 0,
+                    'variant': 'manual',
+                },
+                {'enabled': 0, 'type': 'homepage'},
+                {'account': 'fb-test', 'override_text': 'fb-main', 'type': 'facebook'},
+            ),
             push.message_config,
         )
 

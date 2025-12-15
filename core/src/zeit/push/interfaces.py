@@ -217,6 +217,7 @@ class IAccountData(zope.interface.Interface):
     mobile_enabled = zope.schema.Bool(title=_('Enable mobile push'), required=False)
 
     mobile_uses_image = zope.schema.Bool(title=_('Mobile push with image'), required=False)
+    homepage_banner = zope.schema.Bool(title=_('breaking-news-homepage'), required=False)
     mobile_image = ToggleDependentChoice(
         title=_('Mobile image'),
         description=_('Drag an image group here'),

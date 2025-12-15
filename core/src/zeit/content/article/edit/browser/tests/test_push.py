@@ -59,3 +59,11 @@ class MobileFormTest(zeit.content.article.testing.BrowserTestCase):
         push.set({'type': 'mobile', 'variant': 'automatic-author'}, enabled=True)
         self.open_form()
         self.assertEllipsis('...<div class="output">Author push enabled...', b.contents)
+
+    def test_homepage_banner_checkbox_stores_correct_config(self):
+        self.open_form()
+        b = self.browser
+        b.getControl(name='mobile.homepage_banner').value = True
+        b.getControl('Apply').click()
+        push = zeit.push.interfaces.IPushMessages(self.get_article())
+        self.assertIn({'type': 'homepage', 'enabled': True}, push.message_config)
