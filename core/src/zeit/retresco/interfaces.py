@@ -12,22 +12,32 @@
   with ``ITMSRepresentation`` and ``ITMSContent``
 """
 
+from dataclasses import dataclass
+
 import zope.interface
 
 import zeit.cms.content.sources
 import zeit.cms.interfaces
 
 
-ENTITY_TYPES = (
-    'person',
-    'location',
-    'organisation',
-    'product',
-    'event',
-    'keyword',
-)
-
 DAV_NAMESPACE_BASE = 'http://namespaces.zeit.de/CMS/'
+
+
+@dataclass
+class EntityType:
+    internal: str
+    external: str
+    main: str
+
+
+ENTITY_TYPES = (
+    EntityType('person', 'rtr_persons', 'rtr_persons_main'),
+    EntityType('location', 'rtr_locations', 'rtr_locations_main'),
+    EntityType('organisation', 'rtr_organisations', 'rtr_organisations_main'),
+    EntityType('product', 'rtr_products', 'rtr_products_main'),
+    EntityType('event', 'rtr_events', 'rtr_events_main'),
+    EntityType('keyword', 'rtr_keywords', 'rtr_keywords_main'),
+)
 
 
 class ITMS(zope.interface.Interface):
