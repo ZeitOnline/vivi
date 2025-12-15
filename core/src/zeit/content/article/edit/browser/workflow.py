@@ -312,3 +312,15 @@ class ScheduledChannelOperation(ScheduledOperationFormBase):
         zeit.workflow.scheduled.interfaces.IScheduledChannelOperation
     )
     form_fields['scheduled_on'].field.required = False
+
+    def render(self):
+        """Copied from class ChannelSelector"""
+        if not FEATURE_TOGGLES.find('use_scheduled_operations'):
+            return ''
+        result = super().render()
+        if result:
+            result += """\
+<script type="text/javascript">
+    zeit.cms.configure_channel_dropdowns("%s.", "channels", "00", "01");
+</script>""" % (self.prefix,)
+        return result
