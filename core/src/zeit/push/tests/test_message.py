@@ -90,3 +90,20 @@ class MessageTest(zeit.push.testing.TestCase):
         data.mobile_enabled = False
         errors = zope.schema.getSchemaValidationErrors(zeit.push.interfaces.IAccountData, data)
         assert not errors
+
+    def test_homepage_banner_creates_correct_config(self):
+        content = self.create_content()
+        data = zeit.push.interfaces.IAccountData(content)
+        self.assertIsNone(data.homepage_banner)
+        data.homepage_banner = True
+        push = zeit.push.interfaces.IPushMessages(content)
+        self.assertEqual(({'type': 'homepage', 'enabled': True},), push.message_config)
+        self.assertTrue(data.homepage_banner)
+
+    def test_homepage_banner_updates_config(self):
+        content = self.create_content()
+        push = zeit.push.interfaces.IPushMessages(content)
+        push.message_config = ({'type': 'homepage', 'enabled': True},)
+        data = zeit.push.interfaces.IAccountData(content)
+        data.homepage_banner = False
+        self.assertEqual(({'type': 'homepage', 'enabled': False},), push.message_config)

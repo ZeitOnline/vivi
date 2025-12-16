@@ -220,6 +220,15 @@ class AccountData(grok.Adapter):
         self._set_mobile_service(payload_template=token)
 
     @property
+    def homepage_banner(self):
+        service = self.push.get(type='homepage')
+        return service and service.get('enabled')
+
+    @homepage_banner.setter
+    def homepage_banner(self, value):
+        self.push.set({'type': 'homepage'}, enabled=value)
+
+    @property
     def _mobile_service(self):
         service = self.push.get(type='mobile', variant='manual')
         if service:
