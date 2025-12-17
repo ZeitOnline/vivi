@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.244.0 (2025-12-17)
+--------------------
+
+- WCM-799: add new cronjob for scheduled operations
+
+
 7.243.0 (2025-12-17)
 --------------------
 
