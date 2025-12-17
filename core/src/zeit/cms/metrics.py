@@ -92,6 +92,27 @@ def _collect_vgwort_token_count():
     metric.labels(environment()).set(len(tokens))
 
 
+def _collect_content_not_retracted_count():
+    """Report content that should be retracted but is still published
+    The 30 minute buffer accounts for normal cron execution delays (runs every 5 min)
+    """
+    metric = Gauge('vivi_content_not_retracted_total')
+    connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+
+    query = """
+        SELECT COUNT(DISTINCT so.content)
+        FROM scheduled_operations so
+        INNER JOIN properties c ON so.content = c.id
+        WHERE so.operation = 'retract'
+          AND so.scheduled_on <= NOW() - INTERVAL '30 minutes'
+          AND so.executed_on IS NULL
+          AND c.published = true
+    """
+    query = sql(query)
+
+    metric.labels(environment()).set(connector.search_sql_count(query))
+
+
 @zeit.cms.cli.runner()
 def collect():
     """Collects all app-specific metrics that we have. Mostly these are based

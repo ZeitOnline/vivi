@@ -8,4 +8,6 @@
   <contentquery_ui_show_elastic>true</contentquery_ui_show_elastic>
   <resolve_bsky_embed_url>true</resolve_bsky_embed_url>
   <breaking_news_fallback_image>true</breaking_news_fallback_image>
+  <use_scheduled_operations>true</use_scheduled_operations>
+  <use_scheduled_cronjob>true</use_scheduled_cronjob>
 </features>

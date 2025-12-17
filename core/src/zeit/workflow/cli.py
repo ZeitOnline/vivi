@@ -6,6 +6,7 @@ import opentelemetry.trace
 import zope.component
 
 from zeit.cms.cli import commit_with_retry, from_config, runner
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.connector.models import Content as ConnectorModel
 import zeit.cms.workflow.interfaces
 
@@ -72,9 +73,15 @@ def _publish_scheduled_content():
 
 @runner(principal=from_config('zeit.workflow', 'schedule-principal'))
 def retract_scheduled_content():
+    if FEATURE_TOGGLES.find('use_scheduled_cronjob'):
+        return
+
     _retract_scheduled_content()
 
 
 @runner(principal=from_config('zeit.workflow', 'schedule-principal'))
 def publish_scheduled_content():
+    if FEATURE_TOGGLES.find('use_scheduled_cronjob'):
+        return
+
     _publish_scheduled_content()
