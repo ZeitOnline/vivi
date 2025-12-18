@@ -86,6 +86,18 @@ class HomepageMessage(zeit.push.message.Message):
     get_text_from = 'short_text'
 
     @property
+    def text(self):
+        """Breaking news uses title and article itself reuses the mobile push field
+        to set the banner text"""
+        push = zeit.push.interfaces.IPushMessages(self.context)
+        mobile = push.get(type='mobile', variant='manual')
+        if not mobile:
+            mobile = push.get(type='mobile')
+        if mobile and mobile.get('override_text'):
+            return mobile['override_text']
+        return self.context.title
+
+    @property
     def url(self):
         # zeit.web expects a uniqueId and then renders the link itself.
         return self.context.uniqueId
