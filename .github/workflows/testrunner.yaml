@@ -69,7 +69,7 @@ jobs:
         with:
           # renovate: datasource=github-tags depName=python/cpython extractVersion=^v?(?<version>.+)$
           python-version: "3.13.7"
-      - uses: astral-sh/setup-uv@ed21f2f24f8dd64503750218de024bcf64c7250a  # v7.1.5
+      - uses: astral-sh/setup-uv@681c641aba71e4a1c380be3ab5e12ad51f415867  # v7.1.6
         with:
           version: ${{env.UV_VERSION}}
           enable-cache: true
@@ -136,7 +136,7 @@ jobs:
             exit $result
 
       - name: Publish test result
-        uses: enricomi/publish-unit-test-result-action@34d7c956a59aed1bfebf31df77b8de55db9bbaaf # v2.21.0
+        uses: enricomi/publish-unit-test-result-action@27d65e188ec43221b20d26de30f4892fad91df2f # v2.22.0
         if: always()
         with:
           comment_mode: "off"
