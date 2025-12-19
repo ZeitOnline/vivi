@@ -104,22 +104,19 @@ class ScheduledOperationsBase:
         if not scheduled_on:
             return
 
-        properties = ''
-        if property_changes:
-            # There is only one entry in keys, the comma is never logged
-            properties = ','.join(property_changes.keys()) + ' '
+        _msg = _  # Avoid i18nextract picking up constructed messageids.
 
-        log_util.log(
-            self.context,
-            _(
-                'Scheduled ${op} ${properties}for ${date}',
-                mapping={
-                    'op': operation,
-                    'date': self.format_datetime(scheduled_on),
-                    'properties': properties,
-                },
-            ),
-        )
+        mapping = {'date': self.format_datetime(scheduled_on)}
+
+        if property_changes:
+            mapping['properties'] = ', '.join(property_changes.keys())
+            msgid = f'scheduled-{operation}-with-properties'
+            default = f'To {operation} with changes to ${{properties}} on ${{date}}'
+        else:
+            msgid = f'scheduled-{operation}-add'
+            default = f'To {operation} on ${{date}}'
+
+        log_util.log(self.context, _msg(msgid, default=default, mapping=mapping))
 
 
 @grok.implementer(IScheduledOperations)
@@ -416,3 +413,11 @@ class WorkingCopyScheduledOperations(grok.Adapter, ScheduledOperationsBase):
             'Cannot execute operations on working copy. '
             'Check in first, then execute on repository content.'
         )
+
+
+# Declare the messageids we dynamically construct in _log_operation(), so
+# i18nextract can find them.
+_('scheduled-publish-add')
+_('scheduled-retract-add')
+_('scheduled-publish-with-properties')
+_('scheduled-retract-with-properties')
