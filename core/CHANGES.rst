@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.246.0 (2025-12-19)
+--------------------
+
+FIX:
+- WCM-799: collect metrics for overdue retracted content
+
+
 7.245.0 (2025-12-19)
 --------------------
 
