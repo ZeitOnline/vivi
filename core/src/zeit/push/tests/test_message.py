@@ -108,16 +108,7 @@ class MessageTest(zeit.push.testing.TestCase):
         data.homepage_banner = False
         self.assertEqual(({'type': 'homepage', 'enabled': False},), push.message_config)
 
-    def test_homepage_banner_uses_mobile_text(self):
-        content = self.create_content()
-        content.title = 'Article Title'
-        data = zeit.push.interfaces.IAccountData(content)
-        data.homepage_banner = True
-        data.mobile_text = 'Custom mobile text'
-        message = zope.component.getAdapter(content, zeit.push.interfaces.IMessage, name='homepage')
-        self.assertEqual('Custom mobile text', message.text)
-
-    def test_homepage_banner_falls_back_to_title(self):
+    def test_homepage_banner_uses_article_title(self):
         content = self.create_content()
         content.title = 'Article Title'
         data = zeit.push.interfaces.IAccountData(content)
