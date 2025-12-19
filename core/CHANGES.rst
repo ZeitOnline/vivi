@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.245.0 (2025-12-19)
+--------------------
+
+- WCM-1067: banner title set with article mobile push text
+
+
 7.244.0 (2025-12-17)
 --------------------
 
