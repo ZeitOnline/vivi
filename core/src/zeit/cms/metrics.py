@@ -110,7 +110,8 @@ def _collect_content_not_retracted_count():
     """
     query = sql(query)
 
-    metric.labels(environment()).set(connector.search_sql_count(query))
+    result = connector.execute_sql(query).scalar() or 0
+    metric.labels(environment()).set(result)
 
 
 @zeit.cms.cli.runner()
