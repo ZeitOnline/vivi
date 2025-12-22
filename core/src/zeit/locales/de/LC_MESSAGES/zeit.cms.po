@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Mon Dec 22 15:28:45 2025\n"
+"POT-Creation-Date: Mon Dec 22 17:48:22 2025\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -1475,6 +1475,10 @@ msgid "use images (manual navigation)"
 msgstr "Bilder verwenden (manuelle Navigation)"
 
 #: zeit/content/animation/interfaces.py:16
+msgid "use images and videos (manual navigation)"
+msgstr "Bilder und Videos verwenden (manuelle Navigation)"
+
+#: zeit/content/animation/interfaces.py:17
 msgid "use gallery (manual navigation)"
 msgstr "Bildergalerie verwenden (manuelle Navigation)"
 
@@ -1495,6 +1499,10 @@ msgstr "Video"
 #: zeit/content/gallery/browser/configure.zcml:93
 msgid "Images"
 msgstr "Bilder"
+
+#: zeit/content/animation/interfaces.py:58
+msgid "Images and videos"
+msgstr "Bilder und Videos"
 
 #: zeit/content/animation/interfaces.py:52
 msgid "Gallery to use for animation"

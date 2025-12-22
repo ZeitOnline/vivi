@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Mon Dec 22 15:28:45 2025\n"
+"POT-Creation-Date: Mon Dec 22 17:48:22 2025\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -1509,6 +1509,10 @@ msgid "use images (manual navigation)"
 msgstr ""
 
 #: zeit/content/animation/interfaces.py:16
+msgid "use images and videos (manual navigation)"
+msgstr ""
+
+#: zeit/content/animation/interfaces.py:16
 msgid "use gallery (manual navigation)"
 msgstr ""
 
@@ -1528,6 +1532,10 @@ msgstr ""
 #: zeit/content/article/edit/interfaces.py:670
 #: zeit/content/gallery/browser/configure.zcml:93
 msgid "Images"
+msgstr ""
+
+#: zeit/content/animation/interfaces.py:58
+msgid "Images and videos"
 msgstr ""
 
 #: zeit/content/animation/interfaces.py:52

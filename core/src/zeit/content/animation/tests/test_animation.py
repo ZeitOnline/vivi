@@ -37,6 +37,18 @@ class AnimationTest(zeit.content.animation.testing.FunctionalTestCase):
         assert len(animation.xml.findall('body/image')) == 2
         assert animation.xml.find('body/image').get('type') == 'jpeg'
 
+    def test_image_and_video_references(self):
+        image1 = ICMSContent('http://xml.zeit.de/image1')
+        image2 = ICMSContent('http://xml.zeit.de/image2')
+        self.repository['video'] = Video()
+        video = self.repository['video']
+        article = self.repository['article']
+        animation = zeit.content.animation.animation.Animation()
+        animation.article = article
+        animation.media = (image1, image2, video)
+        assert len(animation.xml.findall('body/media')) == 3
+        assert animation.xml.find('body/media').get('type') == 'intern'
+
     def test_genre_attribute(self):
         article = self.repository['article']
         animation = zeit.content.animation.animation.Animation()
