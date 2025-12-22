@@ -47,8 +47,11 @@ class TMS:
         result = []
         for entity_type in zeit.retresco.interfaces.ENTITY_TYPES:
             for keyword in response.get(entity_type.external, ()):
+                main = keyword in response.get(entity_type.main, ())
                 result.append(
-                    zeit.cms.tagging.tag.Tag(label=keyword, entity_type=entity_type.internal)
+                    zeit.cms.tagging.tag.Tag(
+                        label=keyword, entity_type=entity_type.internal, main=main
+                    )
                 )
         return result
 

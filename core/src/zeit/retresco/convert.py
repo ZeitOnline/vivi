@@ -223,11 +223,14 @@ class CommonMetadata(Converter):
         }
         for typ in zeit.retresco.interfaces.ENTITY_TYPES:
             result[typ.external] = []
+            result[typ.main] = []
         for kw in self.context.keywords:
             entity = self.entity_types.get(kw.entity_type)
             if not entity:
                 entity = self.entity_types.get('keyword')
             result[entity.external].append(kw.label)
+            if kw.main:
+                result[entity.main].append(kw.label)
 
         result['payload'] = {}
         result['payload']['head'] = {
