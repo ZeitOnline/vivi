@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.248.0 (2025-12-22)
+--------------------
+
+- WCM-799: update translations
+
+
 7.247.0 (2025-12-22)
 --------------------
 
