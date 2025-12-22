@@ -4,6 +4,7 @@ import zope.component
 import zope.interface
 
 from zeit.cms.content.interfaces import WRITEABLE_ALWAYS
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.celery
 import zeit.cms.cli
@@ -56,6 +57,8 @@ class TimeBasedWorkflow(zeit.workflow.publishinfo.PublishInfo):
         self.released_from, self.released_to = value
 
     def log(self, task, timestamp):
+        if FEATURE_TOGGLES.find('use_scheduled_operations'):
+            return
         log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
         _msg = _  # Avoid i18nextract picking up constructed messageids.
         if timestamp is not None:
