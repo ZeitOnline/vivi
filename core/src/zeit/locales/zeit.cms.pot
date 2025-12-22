@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Fri Dec 19 10:02:08 2025\n"
+"POT-Creation-Date: Mon Dec 22 15:28:45 2025\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -5036,11 +5036,11 @@ msgstr ""
 msgid "not necessary"
 msgstr ""
 
-#: zeit/workflow/timebased.py:84
+#: zeit/workflow/timebased.py:87
 msgid "timebased-publish-add"
 msgstr ""
 
-#: zeit/workflow/timebased.py:85
+#: zeit/workflow/timebased.py:88
 msgid "timebased-retract-add"
 msgstr ""
 

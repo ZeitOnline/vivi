@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Fri Dec 19 10:02:08 2025\n"
+"POT-Creation-Date: Mon Dec 22 15:28:45 2025\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -4974,14 +4974,10 @@ msgid "${name} changed from \"${old}\" to \"${new}\""
 msgstr "${name} wurde von „${old}“ in „${new}“ geändert"
 
 #: zeit/workflow/scheduled/operations.py:420
-#, fuzzy
-#| msgid "timebased-publish-add"
 msgid "scheduled-publish-add"
 msgstr "Automatisch veröffentlichen am ${date}"
 
 #: zeit/workflow/scheduled/operations.py:421
-#, fuzzy
-#| msgid "timebased-retract-add"
 msgid "scheduled-retract-add"
 msgstr "Automatisch zurückziehen am ${date}"
 
@@ -4997,11 +4993,11 @@ msgstr "Automatisch zurückziehen mit Änderungen an ${properties} am ${date}"
 msgid "not necessary"
 msgstr "nicht nötig"
 
-#: zeit/workflow/timebased.py:84
+#: zeit/workflow/timebased.py:87
 msgid "timebased-publish-add"
 msgstr "Automatisch veröffentlichen am ${date}"
 
-#: zeit/workflow/timebased.py:85
+#: zeit/workflow/timebased.py:88
 msgid "timebased-retract-add"
 msgstr "Automatisch zurückziehen am ${date}"
 
