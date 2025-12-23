@@ -78,4 +78,5 @@ class ExtractAnimationReferences(zeit.cms.references.references.Extract):
         ]
         references = [x.__get__(self.content, None) for x in properties]
         references.extend(self.content.images)
+        references.extend(self.content.media)
         return [{'target': x, 'type': 'body'} for x in references]
