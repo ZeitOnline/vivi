@@ -83,18 +83,12 @@ class Push:
 
 class HomepageMessage(zeit.push.message.Message):
     grok.name('homepage')
-    get_text_from = 'short_text'
 
     @property
     def text(self):
-        """Breaking news uses title and article itself reuses the mobile push field
-        to set the banner text"""
-        push = zeit.push.interfaces.IPushMessages(self.context)
-        mobile = push.get(type='mobile', variant='manual')
-        if not mobile:
-            mobile = push.get(type='mobile')
-        if mobile and mobile.get('override_text'):
-            return mobile['override_text']
+        # Banner always displays article title (see zeit.web).
+        # The text is only used for validation - banner XML only stores article_id,
+        # and zeit.web fetches and displays the article title from that ID.
         return self.context.title
 
     @property
