@@ -125,6 +125,12 @@ class TestTagger(zeit.retresco.testing.FunctionalTestCase, zeit.retresco.testing
         tagger['☃Berlin'] = Tag('Berlin', entity_type='Location')
         self.assertEqual('Location', tagger['Location☃Berlin'].entity_type)
 
+    def test_setitem_should_set_main_flag(self):
+        tagger = Tagger(ExampleContentType())
+        tagger['☃Berlin'] = Tag('Berlin', entity_type='Location', main=True)
+        self.assertEqual('Location', tagger['Location☃Berlin'].entity_type)
+        self.assertEqual(True, tagger['Location☃Berlin'].main)
+
     def test_iter_should_be_sorted_by_document_order(self):
         content = create_testcontent()
         self.set_tags(

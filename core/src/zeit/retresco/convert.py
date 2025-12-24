@@ -194,12 +194,17 @@ class CommonMetadata(Converter):
 
     entity_types = {
         # BBB map zeit.intrafind entity_type to retresco.
-        'Person': 'person',
-        'Location': 'location',
-        'Organization': 'organisation',
-        'free': 'keyword',
+        'Person': zeit.retresco.interfaces.EntityType('person', 'rtr_persons', 'rtr_persons_main'),
+        'Location': zeit.retresco.interfaces.EntityType(
+            'location', 'rtr_locations', 'rtr_locations_main'
+        ),
+        'Organization': zeit.retresco.interfaces.EntityType(
+            'organisation', 'rtr_organisations', 'rtr_organisations_main'
+        ),
+        'free': zeit.retresco.interfaces.EntityType('keyword', 'rtr_keywords', 'rtr_keywords_main'),
     }
-    entity_types.update({x: x for x in zeit.retresco.interfaces.ENTITY_TYPES})
+
+    entity_types.update({x.internal: x for x in zeit.retresco.interfaces.ENTITY_TYPES})
 
     def __call__(self):
         section = None
@@ -217,10 +222,15 @@ class CommonMetadata(Converter):
             'author': ', '.join([x.target.display_name for x in self.context.authorships]),
         }
         for typ in zeit.retresco.interfaces.ENTITY_TYPES:
-            result['rtr_{}s'.format(typ)] = []
+            result[typ.external] = []
+            result[typ.main] = []
         for kw in self.context.keywords:
-            key = 'rtr_{}s'.format(self.entity_types.get(kw.entity_type, 'keyword'))
-            result[key].append(kw.label)
+            entity = self.entity_types.get(kw.entity_type)
+            if not entity:
+                entity = self.entity_types.get('keyword')
+            result[entity.external].append(kw.label)
+            if kw.main:
+                result[entity.main].append(kw.label)
 
         result['payload'] = {}
         result['payload']['head'] = {

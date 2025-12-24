@@ -54,7 +54,7 @@ class Tag:
     # This is stored in DAV properties, changing it requires a mass-migration.
     SEPARATOR = '☃'
 
-    def __init__(self, label, entity_type, link=None):
+    def __init__(self, label, entity_type, link=None, main=False):
         self.label = label or ''
         self.entity_type = entity_type
         self.pinned = False  # pinned state is set from outside after init
@@ -64,6 +64,7 @@ class Tag:
         # the TMS-provided path to the corresponding topicpage; without a
         # leading slash, so it plays nice with route_url() which already has
         # the slash.
+        self.main = main
 
     @zope.cachedescriptors.property.Lazy
     def code(self):
