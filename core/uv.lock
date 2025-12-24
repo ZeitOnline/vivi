@@ -110,11 +110,11 @@ wheels = [
 
 [[package]]
 name = "cachetools"
-version = "6.2.2"
+version = "6.2.4"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/cachetools/cachetools-6.2.2.tar.gz", hash = "sha256:8e6d266b25e539df852251cfd6f990b4bc3a141db73b939058d809ebd2590fc6" }
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/cachetools/cachetools-6.2.4.tar.gz", hash = "sha256:82c5c05585e70b6ba2d3ae09ea60b79548872185d2f24ae1f2709d37299fd607" }
 wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/cachetools/cachetools-6.2.2-py3-none-any.whl", hash = "sha256:6c09c98183bf58560c97b2abfcedcbaf6a896a490f534b031b661d3723b45ace" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/cachetools/cachetools-6.2.4-py3-none-any.whl", hash = "sha256:69a7a52634fed8b8bf6e24a050fb60bff1c9bd8f6d24572b99c32d4e71e62a51" },
 ]
 
 [[package]]
@@ -480,11 +480,11 @@ wheels = [
 
 [[package]]
 name = "docutils"
-version = "0.22.3"
+version = "0.22.4"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/docutils/docutils-0.22.3.tar.gz", hash = "sha256:21486ae730e4ca9f622677b1412b879af1791efcfba517e4c6f60be543fc8cdd" }
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/docutils/docutils-0.22.4.tar.gz", hash = "sha256:4db53b1fde9abecbb74d91230d32ab626d94f6badfc575d6db9194a49df29968" }
 wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/docutils/docutils-0.22.3-py3-none-any.whl", hash = "sha256:bd772e4aca73aff037958d44f2be5229ded4c09927fcf8690c577b66234d6ceb" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/docutils/docutils-0.22.4-py3-none-any.whl", hash = "sha256:d0013f540772d1420576855455d050a2180186c91c15779301ac2ccb3eeb68de" },
 ]
 
 [[package]]
@@ -781,21 +781,21 @@ grpc = [
 
 [[package]]
 name = "google-auth"
-version = "2.43.0"
+version = "2.45.0"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
 dependencies = [
     { name = "cachetools" },
     { name = "pyasn1-modules" },
     { name = "rsa" },
 ]
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/google-auth/google_auth-2.43.0.tar.gz", hash = "sha256:88228eee5fc21b62a1b5fe773ca15e67778cb07dc8363adcb4a8827b52d81483" }
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/google-auth/google_auth-2.45.0.tar.gz", hash = "sha256:90d3f41b6b72ea72dd9811e765699ee491ab24139f34ebf1ca2b9cc0c38708f3" }
 wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/google-auth/google_auth-2.43.0-py2.py3-none-any.whl", hash = "sha256:af628ba6fa493f75c7e9dbe9373d148ca9f4399b5ea29976519e0a3848eddd16" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/google-auth/google_auth-2.45.0-py2.py3-none-any.whl", hash = "sha256:82344e86dc00410ef5382d99be677c6043d72e502b625aa4f4afa0bdacca0f36" },
 ]
 
 [[package]]
 name = "google-cloud-bigquery"
-version = "3.38.0"
+version = "3.39.0"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
 dependencies = [
     { name = "google-api-core", extra = ["grpc"] },
@@ -806,9 +806,9 @@ dependencies = [
     { name = "python-dateutil" },
     { name = "requests" },
 ]
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/google-cloud-bigquery/google_cloud_bigquery-3.38.0.tar.gz", hash = "sha256:8afcb7116f5eac849097a344eb8bfda78b7cfaae128e60e019193dd483873520" }
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/google-cloud-bigquery/google_cloud_bigquery-3.39.0.tar.gz", hash = "sha256:cb375e1d63dea9bd5bf735e66024338f294159d43afdf63e1d023f5fcbbf55ea" }
 wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/google-cloud-bigquery/google_cloud_bigquery-3.38.0-py3-none-any.whl", hash = "sha256:e06e93ff7b245b239945ef59cb59616057598d369edac457ebf292bd61984da6" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/google-cloud-bigquery/google_cloud_bigquery-3.39.0-py3-none-any.whl", hash = "sha256:dc7a64921465859105461b43c42562e38e797d7a73feb72b3cfc4865b7b1c5ef" },
 ]
 
 [[package]]
@@ -843,17 +843,20 @@ wheels = [
 
 [[package]]
 name = "google-crc32c"
-version = "1.7.1"
+version = "1.8.0"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/google-crc32c/google_crc32c-1.7.1.tar.gz", hash = "sha256:2bff2305f98846f3e825dbeec9ee406f89da7962accdb29356e4eadc251bd472" }
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/google-crc32c/google_crc32c-1.8.0.tar.gz", hash = "sha256:a428e25fb7691024de47fecfbff7ff957214da51eddded0da0ae0e0f03a2cf79" }
 wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/google-crc32c/google_crc32c-1.7.1-cp313-cp313-macosx_12_0_arm64.whl", hash = "sha256:df8b38bdaf1629d62d51be8bdd04888f37c451564c2042d36e5812da9eff3c35" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/google-crc32c/google_crc32c-1.7.1-cp313-cp313-macosx_12_0_x86_64.whl", hash = "sha256:e42e20a83a29aa2709a0cf271c7f8aefaa23b7ab52e53b322585297bb94d4638" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/google-crc32c/google_crc32c-1.7.1-cp313-cp313-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:905a385140bf492ac300026717af339790921f411c0dfd9aa5a9e69a08ed32eb" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/google-crc32c/google_crc32c-1.7.1-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:6b211ddaf20f7ebeec5c333448582c224a7c90a9d98826fbab82c0ddc11348e6" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/google-crc32c/google_crc32c-1.7.1-cp313-cp313-win_amd64.whl", hash = "sha256:0f99eaa09a9a7e642a61e06742856eec8b19fc0037832e03f941fe7cf0c8e4db" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/google-crc32c/google_crc32c-1.7.1-cp313-cp313t-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:32d1da0d74ec5634a05f53ef7df18fc646666a25efaaca9fc7dcfd4caf1d98c3" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/google-crc32c/google_crc32c-1.7.1-cp313-cp313t-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:e10554d4abc5238823112c2ad7e4560f96c7bf3820b202660373d769d9e6e4c9" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/google-crc32c/google_crc32c-1.8.0-cp313-cp313-macosx_12_0_arm64.whl", hash = "sha256:3ebb04528e83b2634857f43f9bb8ef5b2bbe7f10f140daeb01b58f972d04736b" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/google-crc32c/google_crc32c-1.8.0-cp313-cp313-macosx_12_0_x86_64.whl", hash = "sha256:450dc98429d3e33ed2926fc99ee81001928d63460f8538f21a5d6060912a8e27" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/google-crc32c/google_crc32c-1.8.0-cp313-cp313-manylinux1_x86_64.manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_5_x86_64.whl", hash = "sha256:3b9776774b24ba76831609ffbabce8cdf6fa2bd5e9df37b594221c7e333a81fa" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/google-crc32c/google_crc32c-1.8.0-cp313-cp313-manylinux2014_aarch64.manylinux_2_17_aarch64.whl", hash = "sha256:89c17d53d75562edfff86679244830599ee0a48efc216200691de8b02ab6b2b8" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/google-crc32c/google_crc32c-1.8.0-cp313-cp313-win_amd64.whl", hash = "sha256:57a50a9035b75643996fbf224d6661e386c7162d1dfdab9bc4ca790947d1007f" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/google-crc32c/google_crc32c-1.8.0-cp314-cp314-macosx_12_0_arm64.whl", hash = "sha256:e6584b12cb06796d285d09e33f63309a09368b9d806a551d8036a4207ea43697" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/google-crc32c/google_crc32c-1.8.0-cp314-cp314-macosx_12_0_x86_64.whl", hash = "sha256:f4b51844ef67d6cf2e9425983274da75f18b1597bb2c998e1c0a0e8d46f8f651" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/google-crc32c/google_crc32c-1.8.0-cp314-cp314-manylinux1_x86_64.manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_5_x86_64.whl", hash = "sha256:b0d1a7afc6e8e4635564ba8aa5c0548e3173e41b6384d7711a9123165f582de2" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/google-crc32c/google_crc32c-1.8.0-cp314-cp314-manylinux2014_aarch64.manylinux_2_17_aarch64.whl", hash = "sha256:8b3f68782f3cbd1bce027e48768293072813469af6a61a86f6bb4977a4380f21" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/google-crc32c/google_crc32c-1.8.0-cp314-cp314-win_amd64.whl", hash = "sha256:d511b3153e7011a27ab6ee6bb3a5404a55b994dc1a7322c0b87b29606d9790e2" },
 ]
 
 [[package]]
@@ -1495,45 +1498,45 @@ wheels = [
 
 [[package]]
 name = "opentelemetry-api"
-version = "1.39.0"
+version = "1.39.1"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
 dependencies = [
     { name = "importlib-metadata" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/opentelemetry-api/opentelemetry_api-1.39.0.tar.gz", hash = "sha256:6130644268c5ac6bdffaf660ce878f10906b3e789f7e2daa5e169b047a2933b9" }
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/opentelemetry-api/opentelemetry_api-1.39.1.tar.gz", hash = "sha256:fbde8c80e1b937a2c61f20347e91c0c18a1940cecf012d62e65a7caf08967c9c" }
 wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/opentelemetry-api/opentelemetry_api-1.39.0-py3-none-any.whl", hash = "sha256:3c3b3ca5c5687b1b5b37e5c5027ff68eacea8675241b29f13110a8ffbb8f0459" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/opentelemetry-api/opentelemetry_api-1.39.1-py3-none-any.whl", hash = "sha256:2edd8463432a7f8443edce90972169b195e7d6a05500cd29e6d13898187c9950" },
 ]
 
 [[package]]
 name = "opentelemetry-exporter-otlp"
-version = "1.39.0"
+version = "1.39.1"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
 dependencies = [
     { name = "opentelemetry-exporter-otlp-proto-grpc" },
     { name = "opentelemetry-exporter-otlp-proto-http" },
 ]
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/opentelemetry-exporter-otlp/opentelemetry_exporter_otlp-1.39.0.tar.gz", hash = "sha256:b405da0287b895fe4e2450dedb2a5b072debba1dfcfed5bdb3d1d183d8daa296" }
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/opentelemetry-exporter-otlp/opentelemetry_exporter_otlp-1.39.1.tar.gz", hash = "sha256:7cf7470e9fd0060c8a38a23e4f695ac686c06a48ad97f8d4867bc9b420180b9c" }
 wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/opentelemetry-exporter-otlp/opentelemetry_exporter_otlp-1.39.0-py3-none-any.whl", hash = "sha256:fe155d6968d581b325574ad6dc267c8de299397b18d11feeda2206d0a47928a9" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/opentelemetry-exporter-otlp/opentelemetry_exporter_otlp-1.39.1-py3-none-any.whl", hash = "sha256:68ae69775291f04f000eb4b698ff16ff685fdebe5cb52871bc4e87938a7b00fe" },
 ]
 
 [[package]]
 name = "opentelemetry-exporter-otlp-proto-common"
-version = "1.39.0"
+version = "1.39.1"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
 dependencies = [
     { name = "opentelemetry-proto" },
 ]
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/opentelemetry-exporter-otlp-proto-common/opentelemetry_exporter_otlp_proto_common-1.39.0.tar.gz", hash = "sha256:a135fceed1a6d767f75be65bd2845da344dd8b9258eeed6bc48509d02b184409" }
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/opentelemetry-exporter-otlp-proto-common/opentelemetry_exporter_otlp_proto_common-1.39.1.tar.gz", hash = "sha256:763370d4737a59741c89a67b50f9e39271639ee4afc999dadfe768541c027464" }
 wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/opentelemetry-exporter-otlp-proto-common/opentelemetry_exporter_otlp_proto_common-1.39.0-py3-none-any.whl", hash = "sha256:3d77be7c4bdf90f1a76666c934368b8abed730b5c6f0547a2ec57feb115849ac" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/opentelemetry-exporter-otlp-proto-common/opentelemetry_exporter_otlp_proto_common-1.39.1-py3-none-any.whl", hash = "sha256:08f8a5862d64cc3435105686d0216c1365dc5701f86844a8cd56597d0c764fde" },
 ]
 
 [[package]]
 name = "opentelemetry-exporter-otlp-proto-grpc"
-version = "1.39.0"
+version = "1.39.1"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
 dependencies = [
     { name = "googleapis-common-protos" },
@@ -1544,14 +1547,14 @@ dependencies = [
     { name = "opentelemetry-sdk" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/opentelemetry-exporter-otlp-proto-grpc/opentelemetry_exporter_otlp_proto_grpc-1.39.0.tar.gz", hash = "sha256:7e7bb3f436006836c0e0a42ac619097746ad5553ad7128a5bd4d3e727f37fc06" }
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/opentelemetry-exporter-otlp-proto-grpc/opentelemetry_exporter_otlp_proto_grpc-1.39.1.tar.gz", hash = "sha256:772eb1c9287485d625e4dbe9c879898e5253fea111d9181140f51291b5fec3ad" }
 wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/opentelemetry-exporter-otlp-proto-grpc/opentelemetry_exporter_otlp_proto_grpc-1.39.0-py3-none-any.whl", hash = "sha256:758641278050de9bb895738f35ff8840e4a47685b7e6ef4a201fe83196ba7a05" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/opentelemetry-exporter-otlp-proto-grpc/opentelemetry_exporter_otlp_proto_grpc-1.39.1-py3-none-any.whl", hash = "sha256:fa1c136a05c7e9b4c09f739469cbdb927ea20b34088ab1d959a849b5cc589c18" },
 ]
 
 [[package]]
 name = "opentelemetry-exporter-otlp-proto-http"
-version = "1.39.0"
+version = "1.39.1"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
 dependencies = [
     { name = "googleapis-common-protos" },
@@ -1562,9 +1565,9 @@ dependencies = [
     { name = "requests" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/opentelemetry-exporter-otlp-proto-http/opentelemetry_exporter_otlp_proto_http-1.39.0.tar.gz", hash = "sha256:28d78fc0eb82d5a71ae552263d5012fa3ebad18dfd189bf8d8095ba0e65ee1ed" }
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/opentelemetry-exporter-otlp-proto-http/opentelemetry_exporter_otlp_proto_http-1.39.1.tar.gz", hash = "sha256:31bdab9745c709ce90a49a0624c2bd445d31a28ba34275951a6a362d16a0b9cb" }
 wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/opentelemetry-exporter-otlp-proto-http/opentelemetry_exporter_otlp_proto_http-1.39.0-py3-none-any.whl", hash = "sha256:5789cb1375a8b82653328c0ce13a054d285f774099faf9d068032a49de4c7862" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/opentelemetry-exporter-otlp-proto-http/opentelemetry_exporter_otlp_proto_http-1.39.1-py3-none-any.whl", hash = "sha256:d9f5207183dd752a412c4cd564ca8875ececba13be6e9c6c370ffb752fd59985" },
 ]
 
 [[package]]
@@ -1583,7 +1586,7 @@ wheels = [
 
 [[package]]
 name = "opentelemetry-instrumentation"
-version = "0.60b0"
+version = "0.60b1"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
 dependencies = [
     { name = "opentelemetry-api" },
@@ -1591,28 +1594,28 @@ dependencies = [
     { name = "packaging" },
     { name = "wrapt" },
 ]
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/opentelemetry-instrumentation/opentelemetry_instrumentation-0.60b0.tar.gz", hash = "sha256:4e9fec930f283a2677a2217754b40aaf9ef76edae40499c165bc7f1d15366a74" }
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/opentelemetry-instrumentation/opentelemetry_instrumentation-0.60b1.tar.gz", hash = "sha256:57ddc7974c6eb35865af0426d1a17132b88b2ed8586897fee187fd5b8944bd6a" }
 wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/opentelemetry-instrumentation/opentelemetry_instrumentation-0.60b0-py3-none-any.whl", hash = "sha256:aaafa1483543a402819f1bdfb06af721c87d60dd109501f9997332862a35c76a" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/opentelemetry-instrumentation/opentelemetry_instrumentation-0.60b1-py3-none-any.whl", hash = "sha256:04480db952b48fb1ed0073f822f0ee26012b7be7c3eac1a3793122737c78632d" },
 ]
 
 [[package]]
 name = "opentelemetry-instrumentation-celery"
-version = "0.60b0"
+version = "0.60b1"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
 dependencies = [
     { name = "opentelemetry-api" },
     { name = "opentelemetry-instrumentation" },
     { name = "opentelemetry-semantic-conventions" },
 ]
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/opentelemetry-instrumentation-celery/opentelemetry_instrumentation_celery-0.60b0.tar.gz", hash = "sha256:e19e23141c0c8529b2aa75f7d6ec50252828fc7d18329d711bf4df2ca94213bb" }
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/opentelemetry-instrumentation-celery/opentelemetry_instrumentation_celery-0.60b1.tar.gz", hash = "sha256:896bb9eda2d7c4a39bbc5bee2caae9c06a3a41ba283bafc414b224bc8a0f04c8" }
 wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/opentelemetry-instrumentation-celery/opentelemetry_instrumentation_celery-0.60b0-py3-none-any.whl", hash = "sha256:4909203ee318c9801b7002d92afbc61c593878bd63033dd399b859a9c4310b1d" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/opentelemetry-instrumentation-celery/opentelemetry_instrumentation_celery-0.60b1-py3-none-any.whl", hash = "sha256:ee946f85a3e6893d8edf09402c2c773cacc09854dcea35ae2a694320f85403cf" },
 ]
 
 [[package]]
 name = "opentelemetry-instrumentation-requests"
-version = "0.60b0"
+version = "0.60b1"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
 dependencies = [
     { name = "opentelemetry-api" },
@@ -1620,14 +1623,14 @@ dependencies = [
     { name = "opentelemetry-semantic-conventions" },
     { name = "opentelemetry-util-http" },
 ]
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/opentelemetry-instrumentation-requests/opentelemetry_instrumentation_requests-0.60b0.tar.gz", hash = "sha256:5079ed8df96d01dab915a0766cd28a49be7c33439ce43d6d39843ed6dee3204f" }
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/opentelemetry-instrumentation-requests/opentelemetry_instrumentation_requests-0.60b1.tar.gz", hash = "sha256:9a1063c16c44a3ba6e81870c4fa42a0fac3ecef5a4d60a11d0976eec9046f3d4" }
 wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/opentelemetry-instrumentation-requests/opentelemetry_instrumentation_requests-0.60b0-py3-none-any.whl", hash = "sha256:e9957f3a650ae55502fa227b29ff985b37d63e41c85e6e1555d48039f092ea83" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/opentelemetry-instrumentation-requests/opentelemetry_instrumentation_requests-0.60b1-py3-none-any.whl", hash = "sha256:eec9fac3fab84737f663a2e08b12cb095b4bd67643b24587a8ecfa3cf4d0ca4c" },
 ]
 
 [[package]]
 name = "opentelemetry-instrumentation-sqlalchemy"
-version = "0.60b0"
+version = "0.60b1"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
 dependencies = [
     { name = "opentelemetry-api" },
@@ -1636,14 +1639,14 @@ dependencies = [
     { name = "packaging" },
     { name = "wrapt" },
 ]
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/opentelemetry-instrumentation-sqlalchemy/opentelemetry_instrumentation_sqlalchemy-0.60b0.tar.gz", hash = "sha256:df9fdc6f48709138343971cef95a055f52d0262331115231bd5d678c1a452891" }
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/opentelemetry-instrumentation-sqlalchemy/opentelemetry_instrumentation_sqlalchemy-0.60b1.tar.gz", hash = "sha256:b614e874a7c0a692838a0da613d1654e81a0612867836a1f0765e40e9c8cc49b" }
 wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/opentelemetry-instrumentation-sqlalchemy/opentelemetry_instrumentation_sqlalchemy-0.60b0-py3-none-any.whl", hash = "sha256:ff66ac39364bfb38fe127f823b36693c6f2a44f929926863640ac1575583a73f" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/opentelemetry-instrumentation-sqlalchemy/opentelemetry_instrumentation_sqlalchemy-0.60b1-py3-none-any.whl", hash = "sha256:486a5f264d264c44e07e0320e33fd19d09cecd2fd4b99c1064046e77a27d9f9f" },
 ]
 
 [[package]]
 name = "opentelemetry-instrumentation-wsgi"
-version = "0.60b0"
+version = "0.60b1"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
 dependencies = [
     { name = "opentelemetry-api" },
@@ -1651,35 +1654,35 @@ dependencies = [
     { name = "opentelemetry-semantic-conventions" },
     { name = "opentelemetry-util-http" },
 ]
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/opentelemetry-instrumentation-wsgi/opentelemetry_instrumentation_wsgi-0.60b0.tar.gz", hash = "sha256:5815195b1b9890f55c4baafec94ff98591579a7d9b16256064adea8ee5784651" }
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/opentelemetry-instrumentation-wsgi/opentelemetry_instrumentation_wsgi-0.60b1.tar.gz", hash = "sha256:eb553eec7ebfcf2945cc10d787a265e7abadb9ed1d1ebce8b13988d44fa0cf45" }
 wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/opentelemetry-instrumentation-wsgi/opentelemetry_instrumentation_wsgi-0.60b0-py3-none-any.whl", hash = "sha256:0ff80614c1e73f7e94a5860c7e6222a51195eebab3dc5f50d89013db3d5d2f13" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/opentelemetry-instrumentation-wsgi/opentelemetry_instrumentation_wsgi-0.60b1-py3-none-any.whl", hash = "sha256:5e7b432778ebf5a39af136227884a6ab2efc3c4e73e2dbb1d05ecf03ea196705" },
 ]
 
 [[package]]
 name = "opentelemetry-proto"
-version = "1.39.0"
+version = "1.39.1"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
 dependencies = [
     { name = "protobuf" },
 ]
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/opentelemetry-proto/opentelemetry_proto-1.39.0.tar.gz", hash = "sha256:c1fa48678ad1a1624258698e59be73f990b7fc1f39e73e16a9d08eef65dd838c" }
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/opentelemetry-proto/opentelemetry_proto-1.39.1.tar.gz", hash = "sha256:6c8e05144fc0d3ed4d22c2289c6b126e03bcd0e6a7da0f16cedd2e1c2772e2c8" }
 wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/opentelemetry-proto/opentelemetry_proto-1.39.0-py3-none-any.whl", hash = "sha256:1e086552ac79acb501485ff0ce75533f70f3382d43d0a30728eeee594f7bf818" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/opentelemetry-proto/opentelemetry_proto-1.39.1-py3-none-any.whl", hash = "sha256:22cdc78efd3b3765d09e68bfbd010d4fc254c9818afd0b6b423387d9dee46007" },
 ]
 
 [[package]]
 name = "opentelemetry-sdk"
-version = "1.39.0"
+version = "1.39.1"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
 dependencies = [
     { name = "opentelemetry-api" },
     { name = "opentelemetry-semantic-conventions" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/opentelemetry-sdk/opentelemetry_sdk-1.39.0.tar.gz", hash = "sha256:c22204f12a0529e07aa4d985f1bca9d6b0e7b29fe7f03e923548ae52e0e15dde" }
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/opentelemetry-sdk/opentelemetry_sdk-1.39.1.tar.gz", hash = "sha256:cf4d4563caf7bff906c9f7967e2be22d0d6b349b908be0d90fb21c8e9c995cc6" }
 wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/opentelemetry-sdk/opentelemetry_sdk-1.39.0-py3-none-any.whl", hash = "sha256:90cfb07600dfc0d2de26120cebc0c8f27e69bf77cd80ef96645232372709a514" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/opentelemetry-sdk/opentelemetry_sdk-1.39.1-py3-none-any.whl", hash = "sha256:4d5482c478513ecb0a5d938dcc61394e647066e0cc2676bee9f3af3f3f45f01c" },
 ]
 
 [[package]]
@@ -1698,24 +1701,24 @@ wheels = [
 
 [[package]]
 name = "opentelemetry-semantic-conventions"
-version = "0.60b0"
+version = "0.60b1"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
 dependencies = [
     { name = "opentelemetry-api" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/opentelemetry-semantic-conventions/opentelemetry_semantic_conventions-0.60b0.tar.gz", hash = "sha256:227d7aa73cbb8a2e418029d6b6465553aa01cf7e78ec9d0bc3255c7b3ac5bf8f" }
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/opentelemetry-semantic-conventions/opentelemetry_semantic_conventions-0.60b1.tar.gz", hash = "sha256:87c228b5a0669b748c76d76df6c364c369c28f1c465e50f661e39737e84bc953" }
 wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/opentelemetry-semantic-conventions/opentelemetry_semantic_conventions-0.60b0-py3-none-any.whl", hash = "sha256:069530852691136018087b52688857d97bba61cd641d0f8628d2d92788c4f78a" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/opentelemetry-semantic-conventions/opentelemetry_semantic_conventions-0.60b1-py3-none-any.whl", hash = "sha256:9fa8c8b0c110da289809292b0591220d3a7b53c1526a23021e977d68597893fb" },
 ]
 
 [[package]]
 name = "opentelemetry-util-http"
-version = "0.60b0"
+version = "0.60b1"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/opentelemetry-util-http/opentelemetry_util_http-0.60b0.tar.gz", hash = "sha256:e42b7bb49bba43b6f34390327d97e5016eb1c47949ceaf37c4795472a4e3a82d" }
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/opentelemetry-util-http/opentelemetry_util_http-0.60b1.tar.gz", hash = "sha256:0d97152ca8c8a41ced7172d29d3622a219317f74ae6bb3027cfbdcf22c3cc0d6" }
 wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/opentelemetry-util-http/opentelemetry_util_http-0.60b0-py3-none-any.whl", hash = "sha256:4f366f1a48adb74ffa6f80aee26f96882e767e01b03cd1cfb948b6e1020341fe" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/opentelemetry-util-http/opentelemetry_util_http-0.60b1-py3-none-any.whl", hash = "sha256:66381ba28550c91bee14dcba8979ace443444af1ed609226634596b4b0faf199" },
 ]
 
 [[package]]
@@ -1973,14 +1976,14 @@ wheels = [
 
 [[package]]
 name = "proto-plus"
-version = "1.26.1"
+version = "1.27.0"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
 dependencies = [
     { name = "protobuf" },
 ]
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/proto-plus/proto_plus-1.26.1.tar.gz", hash = "sha256:21a515a4c4c0088a773899e23c7bbade3d18f9c66c73edd4c7ee3816bc96a012" }
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/proto-plus/proto_plus-1.27.0.tar.gz", hash = "sha256:873af56dd0d7e91836aee871e5799e1c6f1bda86ac9a983e0bb9f0c266a568c4" }
 wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/proto-plus/proto_plus-1.26.1-py3-none-any.whl", hash = "sha256:13285478c2dcf2abb829db158e1047e2f1e8d63a077d94263c2b88b043c75a66" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/proto-plus/proto_plus-1.27.0-py3-none-any.whl", hash = "sha256:1baa7f81cf0f8acb8bc1f6d085008ba4171eaf669629d1b6d1673b21ed1c0a82" },
 ]
 
 [[package]]
@@ -2621,11 +2624,11 @@ wheels = [
 
 [[package]]
 name = "soupsieve"
-version = "2.8"
+version = "2.8.1"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/soupsieve/soupsieve-2.8.tar.gz", hash = "sha256:e2dd4a40a628cb5f28f6d4b0db8800b8f581b65bb380b97de22ba5ca8d72572f" }
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/soupsieve/soupsieve-2.8.1.tar.gz", hash = "sha256:4cf733bc50fa805f5df4b8ef4740fc0e0fa6218cf3006269afd3f9d6d80fd350" }
 wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/soupsieve/soupsieve-2.8-py3-none-any.whl", hash = "sha256:0cc76456a30e20f5d7f2e14a98a4ae2ee4e5abdc7c5ea0aafe795f344bc7984c" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/soupsieve/soupsieve-2.8.1-py3-none-any.whl", hash = "sha256:a11fe2a6f3d76ab3cf2de04eb339c1be5b506a8a47f2ceb6d139803177f85434" },
 ]
 
 [[package]]
@@ -2684,73 +2687,73 @@ wheels = [
 
 [[package]]
 name = "time-machine"
-version = "3.1.0"
+version = "3.2.0"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.1.0.tar.gz", hash = "sha256:90831c2cf9e18e4199abb85fafa0c0ca0c6c15d0894a03ef68d5005a796c4f27" }
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.2.0.tar.gz", hash = "sha256:a4ddd1cea17b8950e462d1805a42b20c81eb9aafc8f66b392dd5ce997e037d79" }
 wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.1.0-cp313-cp313-macosx_10_13_universal2.whl", hash = "sha256:99d91fc0d4d91be1e1ea92389e1e93b0f43bf60433409616cb43de69be6505a8" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.1.0-cp313-cp313-macosx_10_13_x86_64.whl", hash = "sha256:ff18d291b7e681af3dc2f069a182a367baee510ab9800120a487a01d2ec929a9" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.1.0-cp313-cp313-manylinux1_i686.manylinux_2_28_i686.manylinux_2_5_i686.whl", hash = "sha256:8fedc78cab733dfe1afeec09bd841aea314249b316eb02f17ad2e617c400fa4d" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.1.0-cp313-cp313-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl", hash = "sha256:62bb78376c4a13a0463b71bc9ffd81d9e3e6ed9efdbe500716d9c51ae5a2a60c" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.1.0-cp313-cp313-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:bc750d300bd8794a0581360632e20dd5896d21b5c1c6b74c7c01c72bebd65df2" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.1.0-cp313-cp313-musllinux_1_2_aarch64.whl", hash = "sha256:d23623c3223318cb4b43ad07e10b682821c59b6ab99cce3d9db0f80bc2206ead" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.1.0-cp313-cp313-musllinux_1_2_i686.whl", hash = "sha256:48a4ad44202dcafd302310739e086374c8e928d6604bb5812b1f5e755dbcd5e1" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.1.0-cp313-cp313-musllinux_1_2_x86_64.whl", hash = "sha256:8b6f8572c1e674d5ae43882ee9f39a03cea86c31cf9904ff3767905d41fc5e5a" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.1.0-cp313-cp313-win32.whl", hash = "sha256:8743edd11d3e2cb2d0244d4e83d96873fd96a375ba75364399f2f64fd95c7ec4" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.1.0-cp313-cp313-win_amd64.whl", hash = "sha256:3a99c68a1cc962f76709c2b67efdcf4c97c9ad4a950f694cccb413ab378f9d94" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.1.0-cp313-cp313-win_arm64.whl", hash = "sha256:7be2af8b69892615d897b2c6b546093e45dba7d9cde6af64c17f1e5da4f38dbc" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.1.0-cp313-cp313t-macosx_10_13_universal2.whl", hash = "sha256:56938d4a24435014d3d9141415aee81699cf1a5419462a24357c7e3181c67f06" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.1.0-cp313-cp313t-macosx_10_13_x86_64.whl", hash = "sha256:ecdd9b98305cecfbff29ad9b663f38cbcf728ff023dc1db63cc94bd439890da5" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.1.0-cp313-cp313t-manylinux1_i686.manylinux_2_28_i686.manylinux_2_5_i686.whl", hash = "sha256:e5f0dc8ba33fcd624d11dc4029fa3fd1712f96660ddc629ce61097c71d8f6400" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.1.0-cp313-cp313t-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl", hash = "sha256:812aad79acf4b3471d997d29a5e7010f0a914740b1fe5b6cefb81b462cb28824" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.1.0-cp313-cp313t-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:5b0218aa05865a16c000320cfdac921d0e02992ef51e711325bc366bacdc4aeb" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.1.0-cp313-cp313t-musllinux_1_2_aarch64.whl", hash = "sha256:3544ab394f4149e8884996f1c5047d52dbb08bb2396109c530eee6ecffd6f4c4" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.1.0-cp313-cp313t-musllinux_1_2_i686.whl", hash = "sha256:acf41d44e526cae2f62c9c6ac95daef42bdbd7d95bdb3bb60e071b4b61110723" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.1.0-cp313-cp313t-musllinux_1_2_x86_64.whl", hash = "sha256:bb7031a367209c223c41ab625172b38362e0ce07f13f1f1e7d75d5194fcdd0d7" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.1.0-cp313-cp313t-win32.whl", hash = "sha256:ecf49c418f854f42171b4f0859906a26ff56d73303dee2e83beb307747e11db1" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.1.0-cp313-cp313t-win_amd64.whl", hash = "sha256:ee93cf4c11452bf8211bf12a926d6f5179c241558f6af30c2de2669bf26ba1c1" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.1.0-cp313-cp313t-win_arm64.whl", hash = "sha256:9c317eebaa0578a370a29f40152db0ac00bd34b387b54c95bf01fd123bca178d" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.1.0-cp314-cp314-macosx_10_15_universal2.whl", hash = "sha256:2b07055e5327e04d725557a07a69523d14d2d897877d90781b9c27c70bd8997c" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.1.0-cp314-cp314-macosx_10_15_x86_64.whl", hash = "sha256:b71948998e3f709bda9b600b0d250bb4ad677b28fac32475b6093aa5b9e8969f" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.1.0-cp314-cp314-manylinux1_i686.manylinux_2_28_i686.manylinux_2_5_i686.whl", hash = "sha256:343dfb0663ccb1e5d5dc6dfb651b7b7233985c73b3a3f6af0fe58c9cf5b0f4ab" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.1.0-cp314-cp314-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl", hash = "sha256:3df9b834ec2ee8536a398c15c70f5d54dfe3bbb34344f6549ba29acf80916948" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.1.0-cp314-cp314-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:9e1ee0725a016f69fa8f0f37d793ba6d2d3870b32e164650a6922caf065f2ce2" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.1.0-cp314-cp314-musllinux_1_2_aarch64.whl", hash = "sha256:ed552f135efabca895e678044ce1dbb693e6a399003606e9d6a413b2eaf48a51" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.1.0-cp314-cp314-musllinux_1_2_i686.whl", hash = "sha256:c93451242de81fe2a96f699dad97aa463250688b10d2e8a72e98208df9bd62b1" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.1.0-cp314-cp314-musllinux_1_2_x86_64.whl", hash = "sha256:010c2dd1f084eae4687021f7b7fd798abc7a8472f2e783919aafe7b8fe624c8b" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.1.0-cp314-cp314-win32.whl", hash = "sha256:9b8e24de4ba47401dcec53733d98db9678a708f6bafb77a64e46636304eca64c" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.1.0-cp314-cp314-win_amd64.whl", hash = "sha256:6873c903c8de85884655afc49c8465136ea5d6c7500ad2bea31601cf6a48939f" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.1.0-cp314-cp314-win_arm64.whl", hash = "sha256:9a74b2da34e7e6aaa2db011556f40f8ea26e89a3a1683ffad43ceca1789b8af0" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.1.0-cp314-cp314t-macosx_10_15_universal2.whl", hash = "sha256:0c688897189b50f0820e2916579c7e88aefef2a86cd17aa05b5b7a6676dbd97e" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.1.0-cp314-cp314t-macosx_10_15_x86_64.whl", hash = "sha256:1715d221c4c49bd2a0bc73868d5543133ab15e02e0d9726d73d802ccf978e1c0" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.1.0-cp314-cp314t-manylinux1_i686.manylinux_2_28_i686.manylinux_2_5_i686.whl", hash = "sha256:8cecc83df46ab1095f93ff42dceaddb313e12efd9135cd153d0021a98b570390" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.1.0-cp314-cp314t-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl", hash = "sha256:be63019454e0e30138bfe414f3dd5f626d32b8a265ea99bdc4b107867b68128a" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.1.0-cp314-cp314t-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:ac1245d6a4a4ac40e308362e4236c1aad6ead836c97576c7e29167752a5283d0" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.1.0-cp314-cp314t-musllinux_1_2_aarch64.whl", hash = "sha256:9fde90d14b13396ecaa5ce2366f788f7c01b7bf4ac4246b798c622bc6369b861" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.1.0-cp314-cp314t-musllinux_1_2_i686.whl", hash = "sha256:15d83cc338d02dc6e674e24ce40a8c311d75191c86014b0be455a4267f27f00e" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.1.0-cp314-cp314t-musllinux_1_2_x86_64.whl", hash = "sha256:cbbd90494a9bc6626e3180594246cb9557418e32f2cb2c40edf8526a182f5e31" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.1.0-cp314-cp314t-win32.whl", hash = "sha256:6c00758d155601d710fa036c8d24d5ad3fb28531933cf70343006cf2be93092a" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.1.0-cp314-cp314t-win_amd64.whl", hash = "sha256:e00239b54b05255862e0965e6ae67728e467727ca7dc23d9a6c5a51c7b5b01c8" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.1.0-cp314-cp314t-win_arm64.whl", hash = "sha256:8b47da89595dc3c7f0b52f1e3f3f8da8325037f3746e66d74bebac9f42f2a989" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.2.0-cp313-cp313-macosx_10_13_universal2.whl", hash = "sha256:c421a8eb85a4418a7675a41bf8660224318c46cc62e4751c8f1ceca752059090" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.2.0-cp313-cp313-macosx_10_13_x86_64.whl", hash = "sha256:8f4e758f7727d0058c4950c66b58200c187072122d6f7a98b610530a4233ea7b" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.2.0-cp313-cp313-manylinux1_i686.manylinux_2_28_i686.manylinux_2_5_i686.whl", hash = "sha256:154bd3f75c81f70218b2585cc12b60762fb2665c507eec5ec5037d8756d9b4e0" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.2.0-cp313-cp313-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl", hash = "sha256:d50cfe5ebea422c896ad8d278af9648412b7533b8ea6adeeee698a3fd9b1d3b7" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.2.0-cp313-cp313-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:636576501724bd6a9124e69d86e5aef263479e89ef739c5db361469f0463a0a1" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.2.0-cp313-cp313-musllinux_1_2_aarch64.whl", hash = "sha256:40e6f40c57197fcf7ec32d2c563f4df0a82c42cdcc3cab27f688e98f6060df10" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.2.0-cp313-cp313-musllinux_1_2_i686.whl", hash = "sha256:a1bcf0b846bbfc19a79bc19e3fa04d8c7b1e8101c1b70340ffdb689cd801ea53" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.2.0-cp313-cp313-musllinux_1_2_x86_64.whl", hash = "sha256:ae55a56c179f4fe7a62575ad5148b6ed82f6c7e5cf2f9a9ec65f2f5b067db5f5" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.2.0-cp313-cp313-win32.whl", hash = "sha256:a66fe55a107e46916007a391d4030479df8864ec6ad6f6a6528221befc5c886e" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.2.0-cp313-cp313-win_amd64.whl", hash = "sha256:30c9ce57165df913e4f74e285a8ab829ff9b7aa3e5ec0973f88f642b9a7b3d15" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.2.0-cp313-cp313-win_arm64.whl", hash = "sha256:89cad7e179e9bdcc84dcf09efe52af232c4cc7a01b3de868356bbd59d95bd9b8" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.2.0-cp313-cp313t-macosx_10_13_universal2.whl", hash = "sha256:59d71545e62525a4b85b6de9ab5c02ee3c61110fd7f636139914a2335dcbfc9c" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.2.0-cp313-cp313t-macosx_10_13_x86_64.whl", hash = "sha256:999672c621c35362bc28e03ca0c7df21500195540773c25993421fd8d6cc5003" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.2.0-cp313-cp313t-manylinux1_i686.manylinux_2_28_i686.manylinux_2_5_i686.whl", hash = "sha256:5faf7397f0580c7b9d67288522c8d7863e85f0cffadc0f1fccdb2c3dfce5783e" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.2.0-cp313-cp313t-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl", hash = "sha256:d3dd886ec49f1fa5a00e844f5947e5c0f98ce574750c24b7424c6f77fc1c3e87" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.2.0-cp313-cp313t-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:da0ecd96bc7bbe450acaaabe569d84e81688f1be8ad58d1470e42371d145fb53" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.2.0-cp313-cp313t-musllinux_1_2_aarch64.whl", hash = "sha256:158220e946c1c4fb8265773a0282c88c35a7e3bb5d78e3561214e3b3231166f3" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.2.0-cp313-cp313t-musllinux_1_2_i686.whl", hash = "sha256:8c1aee29bc54356f248d5d7dfdd131e12ca825e850a08c0ebdb022266d073013" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.2.0-cp313-cp313t-musllinux_1_2_x86_64.whl", hash = "sha256:c8ed2224f09d25b1c2fc98683613aca12f90f682a427eabb68fc824d27014e4a" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.2.0-cp313-cp313t-win32.whl", hash = "sha256:3498719f8dab51da76d29a20c1b5e52ee7db083dddf3056af7fa69c1b94e1fe6" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.2.0-cp313-cp313t-win_amd64.whl", hash = "sha256:e0d90bee170b219e1d15e6a58164aa808f5170090e4f090bd0670303e34181b1" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.2.0-cp313-cp313t-win_arm64.whl", hash = "sha256:051de220fdb6e20d648111bbad423d9506fdbb2e44d4429cef3dc0382abf1fc2" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.2.0-cp314-cp314-macosx_10_15_universal2.whl", hash = "sha256:1398980c017fe5744d66f419e0115ee48a53b00b146d738e1416c225eb610b82" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.2.0-cp314-cp314-macosx_10_15_x86_64.whl", hash = "sha256:4f8f4e35f4191ef70c2ab8ff490761ee9051b891afce2bf86dde3918eb7b537b" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.2.0-cp314-cp314-manylinux1_i686.manylinux_2_28_i686.manylinux_2_5_i686.whl", hash = "sha256:6db498686ecf6163c5aa8cf0bcd57bbe0f4081184f247edf3ee49a2612b584f9" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.2.0-cp314-cp314-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl", hash = "sha256:027c1807efb74d0cd58ad16524dec94212fbe900115d70b0123399883657ac0f" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.2.0-cp314-cp314-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:92432610c05676edd5e6946a073c6f0c926923123ce7caee1018dc10782c713d" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.2.0-cp314-cp314-musllinux_1_2_aarch64.whl", hash = "sha256:c25586b62480eb77ef3d953fba273209478e1ef49654592cd6a52a68dfe56a67" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.2.0-cp314-cp314-musllinux_1_2_i686.whl", hash = "sha256:6bf3a2fa738d15e0b95d14469a0b8ea42635467408d8b490e263d5d45c9a177f" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.2.0-cp314-cp314-musllinux_1_2_x86_64.whl", hash = "sha256:ce76b82276d7ad2a66cdc85dad4df19d1422b69183170a34e8fbc4c3f35502f7" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.2.0-cp314-cp314-win32.whl", hash = "sha256:14d6778273c543441863dff712cd1d7803dee946b18de35921eb8df10714539d" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.2.0-cp314-cp314-win_amd64.whl", hash = "sha256:cbf821da96dbc80d349fa9e7c36e670b41d68a878d28c8850057992fed430eef" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.2.0-cp314-cp314-win_arm64.whl", hash = "sha256:71c75d71f8e68abc8b669bca26ed2ddd558430a6c171e32b8620288565f18c0e" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.2.0-cp314-cp314t-macosx_10_15_universal2.whl", hash = "sha256:4e374779021446fc2b5c29d80457ec9a3b1a5df043dc2aae07d7c1415d52323c" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.2.0-cp314-cp314t-macosx_10_15_x86_64.whl", hash = "sha256:122310a6af9c36e9a636da32830e591e7923e8a07bdd0a43276c3a36c6821c90" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.2.0-cp314-cp314t-manylinux1_i686.manylinux_2_28_i686.manylinux_2_5_i686.whl", hash = "sha256:ba3eeb0f018cc362dd8128befa3426696a2e16dd223c3fb695fde184892d4d8c" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.2.0-cp314-cp314t-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl", hash = "sha256:77d38ba664b381a7793f8786efc13b5004f0d5f672dae814430445b8202a67a6" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.2.0-cp314-cp314t-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:f09abeb8f03f044d72712207e0489a62098ad3ad16dac38927fcf80baca4d6a7" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.2.0-cp314-cp314t-musllinux_1_2_aarch64.whl", hash = "sha256:6b28367ce4f73987a55e230e1d30a57a3af85da8eb1a140074eb6e8c7e6ef19f" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.2.0-cp314-cp314t-musllinux_1_2_i686.whl", hash = "sha256:903c7751c904581da9f7861c3015bed7cdc40047321291d3694a3cdc783bbca3" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.2.0-cp314-cp314t-musllinux_1_2_x86_64.whl", hash = "sha256:528217cad85ede5f85c8bc78b0341868d3c3cfefc6ecb5b622e1cacb6c73247b" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.2.0-cp314-cp314t-win32.whl", hash = "sha256:75724762ffd517e7e80aaec1fad1ff5a7414bd84e2b3ee7a0bacfeb67c14926e" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.2.0-cp314-cp314t-win_amd64.whl", hash = "sha256:2526abbd053c5bca898d1b3e7898eec34626b12206718d8c7ce88fd12c1c9c5c" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/time-machine/time_machine-3.2.0-cp314-cp314t-win_arm64.whl", hash = "sha256:7f2fb6784b414edbe2c0b558bfaab0c251955ba27edd62946cce4a01675a992c" },
 ]
 
 [[package]]
 name = "tornado"
-version = "6.5.2"
+version = "6.5.4"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/tornado/tornado-6.5.2.tar.gz", hash = "sha256:ab53c8f9a0fa351e2c0741284e06c7a45da86afb544133201c5cc8578eb076a0" }
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/tornado/tornado-6.5.4.tar.gz", hash = "sha256:a22fa9047405d03260b483980635f0b041989d8bcc9a313f8fe18b411d84b1d7" }
 wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/tornado/tornado-6.5.2-cp39-abi3-macosx_10_9_universal2.whl", hash = "sha256:2436822940d37cde62771cff8774f4f00b3c8024fe482e16ca8387b8a2724db6" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/tornado/tornado-6.5.2-cp39-abi3-macosx_10_9_x86_64.whl", hash = "sha256:583a52c7aa94ee046854ba81d9ebb6c81ec0fd30386d96f7640c96dad45a03ef" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/tornado/tornado-6.5.2-cp39-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:b0fe179f28d597deab2842b86ed4060deec7388f1fd9c1b4a41adf8af058907e" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/tornado/tornado-6.5.2-cp39-abi3-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:b186e85d1e3536d69583d2298423744740986018e393d0321df7340e71898882" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/tornado/tornado-6.5.2-cp39-abi3-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:e792706668c87709709c18b353da1f7662317b563ff69f00bab83595940c7108" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/tornado/tornado-6.5.2-cp39-abi3-musllinux_1_2_aarch64.whl", hash = "sha256:06ceb1300fd70cb20e43b1ad8aaee0266e69e7ced38fa910ad2e03285009ce7c" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/tornado/tornado-6.5.2-cp39-abi3-musllinux_1_2_i686.whl", hash = "sha256:74db443e0f5251be86cbf37929f84d8c20c27a355dd452a5cfa2aada0d001ec4" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/tornado/tornado-6.5.2-cp39-abi3-musllinux_1_2_x86_64.whl", hash = "sha256:b5e735ab2889d7ed33b32a459cac490eda71a1ba6857b0118de476ab6c366c04" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/tornado/tornado-6.5.2-cp39-abi3-win32.whl", hash = "sha256:c6f29e94d9b37a95013bb669616352ddb82e3bfe8326fccee50583caebc8a5f0" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/tornado/tornado-6.5.2-cp39-abi3-win_amd64.whl", hash = "sha256:e56a5af51cc30dd2cae649429af65ca2f6571da29504a07995175df14c18f35f" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/tornado/tornado-6.5.2-cp39-abi3-win_arm64.whl", hash = "sha256:d6c33dc3672e3a1f3618eb63b7ef4683a7688e7b9e6e8f0d9aa5726360a004af" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/tornado/tornado-6.5.4-cp39-abi3-macosx_10_9_universal2.whl", hash = "sha256:d6241c1a16b1c9e4cc28148b1cda97dd1c6cb4fb7068ac1bedc610768dff0ba9" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/tornado/tornado-6.5.4-cp39-abi3-macosx_10_9_x86_64.whl", hash = "sha256:2d50f63dda1d2cac3ae1fa23d254e16b5e38153758470e9956cbc3d813d40843" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/tornado/tornado-6.5.4-cp39-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:d1cf66105dc6acb5af613c054955b8137e34a03698aa53272dbda4afe252be17" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/tornado/tornado-6.5.4-cp39-abi3-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:50ff0a58b0dc97939d29da29cd624da010e7f804746621c78d14b80238669335" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/tornado/tornado-6.5.4-cp39-abi3-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:e5fb5e04efa54cf0baabdd10061eb4148e0be137166146fff835745f59ab9f7f" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/tornado/tornado-6.5.4-cp39-abi3-musllinux_1_2_aarch64.whl", hash = "sha256:9c86b1643b33a4cd415f8d0fe53045f913bf07b4a3ef646b735a6a86047dda84" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/tornado/tornado-6.5.4-cp39-abi3-musllinux_1_2_i686.whl", hash = "sha256:6eb82872335a53dd063a4f10917b3efd28270b56a33db69009606a0312660a6f" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/tornado/tornado-6.5.4-cp39-abi3-musllinux_1_2_x86_64.whl", hash = "sha256:6076d5dda368c9328ff41ab5d9dd3608e695e8225d1cd0fd1e006f05da3635a8" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/tornado/tornado-6.5.4-cp39-abi3-win32.whl", hash = "sha256:1768110f2411d5cd281bac0a090f707223ce77fd110424361092859e089b38d1" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/tornado/tornado-6.5.4-cp39-abi3-win_amd64.whl", hash = "sha256:fa07d31e0cd85c60713f2b995da613588aa03e1303d75705dca6af8babc18ddc" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/tornado/tornado-6.5.4-cp39-abi3-win_arm64.whl", hash = "sha256:053e6e16701eb6cbe641f308f4c1a9541f91b6261991160391bfc342e8a551a1" },
 ]
 
 [[package]]
@@ -2829,11 +2832,11 @@ wheels = [
 
 [[package]]
 name = "tzdata"
-version = "2025.2"
+version = "2025.3"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/tzdata/tzdata-2025.2.tar.gz", hash = "sha256:b60a638fcc0daffadf82fe0f57e53d06bdec2f36c4df66280ae79bce6bd6f2b9" }
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/tzdata/tzdata-2025.3.tar.gz", hash = "sha256:de39c2ca5dc7b0344f2eba86f49d614019d29f060fc4ebc8a417896a620b56a7" }
 wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/tzdata/tzdata-2025.2-py2.py3-none-any.whl", hash = "sha256:1a403fada01ff9221ca8044d701868fa132215d84beb92242d9acd2147f667a8" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/tzdata/tzdata-2025.3-py2.py3-none-any.whl", hash = "sha256:06a47e5700f3081aab02b2e513160914ff0694bce9947d6b76ebd6bf57cfc5d1" },
 ]
 
 [[package]]
@@ -2850,11 +2853,11 @@ wheels = [
 
 [[package]]
 name = "urllib3"
-version = "2.6.1"
+version = "2.6.2"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/urllib3/urllib3-2.6.1.tar.gz", hash = "sha256:5379eb6e1aba4088bae84f8242960017ec8d8e3decf30480b3a1abdaa9671a3f" }
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/urllib3/urllib3-2.6.2.tar.gz", hash = "sha256:016f9c98bb7e98085cb2b4b17b87d2c702975664e4f060c6532e64d1c1a5e797" }
 wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/urllib3/urllib3-2.6.1-py3-none-any.whl", hash = "sha256:e67d06fe947c36a7ca39f4994b08d73922d40e6cca949907be05efa6fd75110b" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/urllib3/urllib3-2.6.2-py3-none-any.whl", hash = "sha256:ec21cddfe7724fc7cb4ba4bea7aa8e2ef36f607a4bab81aa6ce42a13dc3f03dd" },
 ]
 
 [package.optional-dependencies]
@@ -2882,7 +2885,7 @@ wheels = [
 
 [[package]]
 name = "vivi-core"
-version = "7.240.0.dev0"
+version = "7.246.0.dev0"
 source = { editable = "." }
 dependencies = [
     { name = "beautifulsoup4" },
@@ -5224,14 +5227,11 @@ wheels = [
 
 [[package]]
 name = "zope-testing"
-version = "6.0"
+version = "6.1"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
-dependencies = [
-    { name = "setuptools" },
-]
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zope-testing/zope_testing-6.0.tar.gz", hash = "sha256:7b34133a8f4a7135f3732fa5ba31d9968e9b9029881157d2a24493356d7fd54a" }
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zope-testing/zope_testing-6.1.tar.gz", hash = "sha256:69d2efef597a3e817de4ce9163270a27e6ed9f82f440dbbffdd5743450e78f60" }
 wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zope-testing/zope_testing-6.0-py3-none-any.whl", hash = "sha256:2d80fc061c361a57d651df91f2bbe82f54bdbacecd517805b8d2263b17aadcd6" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/zope-testing/zope_testing-6.1-py3-none-any.whl", hash = "sha256:98dd11b6e7eef4f74f93e821e76281257a2f4dc66a97b7c2d79d72ff19318a2c" },
 ]
 
 [[package]]
