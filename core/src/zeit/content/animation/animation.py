@@ -27,6 +27,7 @@ class Animation(zeit.cms.content.xmlsupport.XMLContentBase):
     article = zeit.cms.content.reference.SingleResource('.body.article', 'related')
     display_mode = zeit.cms.content.property.ObjectPathProperty('.body.display_mode')
     images = zeit.cms.content.reference.MultiResource('.body.image', 'image')
+    media = zeit.cms.content.reference.MultiResource('.body.media', 'related')
     video = zeit.cms.content.reference.SingleResource('.body.video', 'related')
     gallery = zeit.cms.content.reference.SingleResource('.body.gallery', 'related')
 
@@ -77,4 +78,5 @@ class ExtractAnimationReferences(zeit.cms.references.references.Extract):
         ]
         references = [x.__get__(self.content, None) for x in properties]
         references.extend(self.content.images)
+        references.extend(self.content.media)
         return [{'target': x, 'type': 'body'} for x in references]
