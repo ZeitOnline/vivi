@@ -87,8 +87,9 @@ class AnimationTest(zeit.content.animation.testing.FunctionalTestCase):
         animation.article = self.repository['article']
         animation.gallery = self.repository['gallery']
         animation.images = (self.repository['image1'],)
+        animation.media = (self.repository['image2'],)
         animation.video = self.repository['video']
 
         references = [x['target'] for x in zeit.cms.references.references.extract(animation)]
-        for name in ['article', 'gallery', 'image1', 'video']:
+        for name in ['article', 'gallery', 'image1', 'image2', 'video']:
             self.assertIn(self.repository[name], references)
