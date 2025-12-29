@@ -1,7 +1,7 @@
 [project]
 name = "vivi.core"
 authors = [{ name = "DIE ZEIT", email = "zon-backend@zeit.de" }]
-version = "7.249.0.dev0"
+version = "7.250.0.dev0"
 requires-python = ">=3.13"
 
 dependencies = [
@@ -282,6 +282,7 @@ zeit_cms_clipboard = "zeit.cms.clipboard.browser.resources:lib"
 zeit_content_article = "zeit.content.article.edit.browser.resources:lib"
 zeit_content_article_recension = "zeit.content.article.browser.resources:lib"
 zeit_content_author = "zeit.content.author.browser.resources:lib"
+zeit_content_animation = "zeit.content.animation.browser.resources:lib"
 zeit_content_cp = "zeit.content.cp.browser.resources:lib"
 zeit_content_gallery = "zeit.content.gallery.browser.resources:lib"
 zeit_content_image = "zeit.content.image.browser.resources:lib"

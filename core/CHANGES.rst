@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.249.0 (2025-12-24)
+--------------------
+
+- ES-146: Support video objects in animation image list
+
+
 7.248.0 (2025-12-22)
 --------------------
 
