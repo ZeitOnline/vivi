@@ -626,7 +626,19 @@
 .type-article .rte-toolbar > a[href='show_find_dialog']::before {
   background-image: url("/fanstatic/zeit.cms/icons/rte_search.png");
 }
+.type-article .rte-toolbar > a[href='quote']::before {
+  background-image: url("/fanstatic/zeit.cms/icons/rte_quote.png");
+}
+.type-article .rte-toolbar > a[href='locked']::before {
+  background-image: url("/fanstatic/zeit.cms/icons/rte_quote_lock.png");
+}
 
+.type-article .editable span.locked {
+   background-color: rgba(255, 0, 0, 0.1);
+   padding: 1px 2px;
+   border-radius: 2px;
+   font-weight: normal;
+}
 
 .type-article .link_input {
   background-color: #fff;
