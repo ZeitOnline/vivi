@@ -2,7 +2,6 @@
   <content_caching>true</content_caching>
   <reference_index>true</reference_index>
   <tms_enrich_on_checkin>true</tms_enrich_on_checkin>
-  <normalize_quotes>false</normalize_quotes>
   <simplecast_webhook>true</simplecast_webhook>
   <speech_webhook>true</speech_webhook>
   <contentquery_ui_show_elastic>true</contentquery_ui_show_elastic>
@@ -10,4 +9,5 @@
   <breaking_news_fallback_image>true</breaking_news_fallback_image>
   <use_scheduled_operations>true</use_scheduled_operations>
   <use_scheduled_cronjob>true</use_scheduled_cronjob>
+  <normalize_quotes>true</normalize_quotes>
 </features>
