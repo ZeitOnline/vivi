@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.250.0 (2025-12-30)
+--------------------
+
+- WCM-1253: removing zett package
+
+- WCM-1262: replace christmas logo
+
+
 7.249.0 (2025-12-24)
 --------------------
 
