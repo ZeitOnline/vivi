@@ -62,6 +62,7 @@ Resource('jsuri.js')
 Resource('citation_comment.js')
 Resource('commands.js', depends=[zeit.cms.browser.resources.base, editor_js])  # noqa
 
+Resource("normalize_quotes_in_fields.js", depends=[zeit.cms.browser.resources.base])
 
 # XXX zeit.content.article needs zeit.workflow to function,
 # should we declare that?
