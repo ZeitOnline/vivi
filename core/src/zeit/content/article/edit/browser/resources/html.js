@@ -140,6 +140,13 @@ var NORMALIZE_QUOTES = normalize_quotation_marks_to_inch_sign;
 
 function normalize_quotation_marks_to_inch_sign(tree) {
     forEach(tree.childNodes, function(el) {
+        // Skip locked spans
+        if (el.nodeType == el.ELEMENT_NODE &&
+            el.nodeName == 'SPAN' &&
+            $(el).hasClass('locked')) {
+            return;
+        }
+
         if (el.nodeType == el.TEXT_NODE) {
             el.nodeValue = el.nodeValue.replace(QUOTE_CHARACTERS, '"');
         } else {
@@ -150,6 +157,13 @@ function normalize_quotation_marks_to_inch_sign(tree) {
 
 function normalize_quotation_marks(tree) {
     forEach(tree.childNodes, function(el) {
+        // Skip locked spans
+        if (el.nodeType == el.ELEMENT_NODE &&
+            el.nodeName == 'SPAN' &&
+            $(el).hasClass('locked')) {
+            return;
+        }
+
         if (el.nodeType == el.TEXT_NODE) {
             el.nodeValue = el.nodeValue.replace(QUOTE_CHARACTERS_OPEN, '»$1');
             el.nodeValue = el.nodeValue.replace(QUOTE_CHARACTERS_CLOSE, '$1«');

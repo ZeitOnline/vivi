@@ -20,7 +20,7 @@ def keep_allowed_tags(tree, allowed_tags):
     return tree
 
 
-inline_tags = ['a', 'br', 'i', 'em', 'strong', 'b', 'u']
+inline_tags = ['a', 'br', 'i', 'em', 'strong', 'b', 'u', 'span']
 
 
 class ParagraphBase(zeit.content.article.edit.block.Block):

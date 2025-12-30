@@ -459,6 +459,10 @@ def normalize_quotation_marks(context, event):
 
 
 def normalize_quotes(node):
+    # Skip locked spans
+    if node.tag == 'span' and node.get('class') == 'locked':
+        return
+
     qc = QuoteCharacters()
     if node.text:
         node.text = qc.open.sub(r'»\1', node.text)
@@ -471,6 +475,10 @@ def normalize_quotes(node):
 
 
 def normalize_quotes_to_inch_sign(node):
+    # Skip locked spans
+    if node.tag == 'span' and node.get('class') == 'locked':
+        return
+
     qc = QuoteCharacters()
     if node.text:
         node.text = qc.chars.sub('"', node.text)

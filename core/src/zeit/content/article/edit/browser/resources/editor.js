@@ -444,15 +444,17 @@ zeit.content.article.Editable = gocept.Class.extend({
                  'style': 'display: block; opacity: 0'}),
             self.editable);
         self.toolbar.innerHTML = "\
-            <a title='fett [Cmd/Strg+b]' rel='command' href='bold'>B</a>\
-            <a title='kursiv [Cmd/Strg+i]' rel='command' href='italic'>I</a>\
-            <a title='Zwischenüberschrift [Cmd/Strg+h]' rel='command' href='formatBlock/h3'>H3</a>\
+            <a title='fett [Strg+b]' rel='command' href='bold'>B</a>\
+            <a title='kursiv [Strg+i]' rel='command' href='italic'>I</a>\
+            <a title='Zwischenüberschrift [Strg+h]' rel='command' href='formatBlock/h3'>H3</a>\
             <a title='Bild' rel='method' href='upload_image'>IMG</a>\
-            <a title='Link [Cmd/Strg+l]' rel='method' href='insert_link'>A</a>\
-            <a title='Link entfernen [Cmd/Strg+u]' rel='command' href='unlink'>A</a>\
+            <a title='Link [Strg+l]' rel='method' href='insert_link'>A</a>\
+            <a title='Link entfernen [Strg+u]' rel='command' href='unlink'>A</a>\
             <a title='Liste' rel='command' href='insertunorderedlist'>UL</a>\
-            <a title='Formatierungen entfernen [Cmd/Strg+r]' rel='command' href='removeFormat'>PL</a>\
-            <a title='Suchen [Cmd/Strg+F]' rel='method' href='show_find_dialog'>SEA</a>\
+            <a title='Formatierungen entfernen [Strg+r]' rel='command' href='removeFormat'>PL</a>\
+            <a title='Suchen [Strg+F]' rel='method' href='show_find_dialog'>SEA</a>\
+            <a title='Zitat [Strg+q]' rel='command' href='quote'>«»</a>\
+            <a title='Bereich für Ersetzungen von Zitatzeichen sperren [Strg+k]' rel='command' href='locked'>LCK</a>\
             ";
         self.events.push(MochiKit.Signal.connect(
             self.block, 'onclick',
@@ -487,6 +489,11 @@ zeit.content.article.Editable = gocept.Class.extend({
                       MochiKit.DOM.updateNodeAttributes(action, {'href': 'formatBlock/h3'});
                       action.innerHTML = 'H3';
                     }
+                }
+                // Spezielle Behandlung für locked spans
+                if (element.nodeName == 'SPAN' && element.className == 'locked' &&
+                    MochiKit.DOM.getNodeAttribute(action, 'href') == 'locked') {
+                    MochiKit.DOM.addElementClass(action, 'active');
                 }
             });
             element = element.parentNode;
@@ -733,10 +740,13 @@ zeit.content.article.Editable = gocept.Class.extend({
                 null, null, self.editable),
             function(element) {
                 if ((element.nodeName !== 'A') &&
-                    !$(element).hasClass('colorbox')) {
+                    !$(element).hasClass('colorbox') &&
+                    !(element.nodeName === 'SPAN' && $(element).hasClass('locked'))) {
                     element.removeAttribute('class');
                 }
-                element.removeAttribute('style');
+                if (!(element.nodeName === 'SPAN' && $(element).hasClass('locked'))) {
+                    element.removeAttribute('style');
+                }
                 var swapped = null;
                 // Yeah, I luv it!
                 if (element.nodeName === 'EM') {
@@ -1023,7 +1033,195 @@ zeit.content.article.Editable = gocept.Class.extend({
     toolbar_command: function(command, option, refocus) {
         var self = this;
         self.dirty = true;
+        if (command === 'quote') {
+            return self.toggle_quotes();
+        }
+        if (command === 'locked') {
+            return self.toggle_locked();
+        }
         return self.command(command, option, refocus);
+    },
+
+    toggle_quotes: function() {
+        var self = this;
+        var selection = window.getSelection();
+
+        if (!selection.rangeCount) {
+            return;
+        }
+
+        var range = selection.getRangeAt(0);
+
+        // Nur innerhalb eines einzelnen Textknotens arbeiten
+        if (range.startContainer !== range.endContainer) {
+            return; // Abbrechen wenn Selektion über mehrere Knoten geht
+        }
+
+        var textNode = range.startContainer;
+        if (textNode.nodeType !== Node.TEXT_NODE) {
+            return; // Nur in Textknoten arbeiten
+        }
+
+        var startOffset = range.startOffset;
+        var endOffset = range.endOffset;
+        var fullText = textNode.textContent;
+        var selectedText = fullText.substring(startOffset, endOffset);
+
+        // Erweiterte Prüfung: Schaue auch vor und nach der Selektion
+        var hasQuotesBefore = startOffset > 0 && fullText.charAt(startOffset - 1) === '»';
+        var hasQuotesAfter = endOffset < fullText.length && fullText.charAt(endOffset) === '«';
+        var hasQuotesInSelection = selectedText.includes('»') || selectedText.includes('«');
+
+        if (hasQuotesBefore && hasQuotesAfter) {
+            // Anführungszeichen um die Selektion herum entfernen
+            var beforeText = fullText.substring(0, startOffset - 1);
+            var afterText = fullText.substring(endOffset + 1);
+
+            textNode.textContent = beforeText + selectedText + afterText;
+
+            // Selektion anpassen (gleiche Position, aber ohne umgebende Quotes)
+            var newRange = document.createRange();
+            newRange.setStart(textNode, startOffset - 1);
+            newRange.setEnd(textNode, startOffset - 1 + selectedText.length);
+
+            selection.removeAllRanges();
+            selection.addRange(newRange);
+
+        } else if (hasQuotesInSelection) {
+            // Anführungszeichen innerhalb der Selektion entfernen
+            var newText = selectedText.replace(/[»«]/g, '');
+            var beforeText = fullText.substring(0, startOffset);
+            var afterText = fullText.substring(endOffset);
+
+            textNode.textContent = beforeText + newText + afterText;
+
+            // Selektion anpassen
+            var newRange = document.createRange();
+            newRange.setStart(textNode, startOffset);
+            newRange.setEnd(textNode, startOffset + newText.length);
+
+            selection.removeAllRanges();
+            selection.addRange(newRange);
+
+        } else {
+            // Anführungszeichen um die Selektion hinzufügen
+            var beforeText = fullText.substring(0, startOffset);
+            var afterText = fullText.substring(endOffset);
+
+            textNode.textContent = beforeText + '»' + selectedText + '«' + afterText;
+
+            // Selektion anpassen: NUR der ursprünglich selektierte Text bleibt selektiert
+            var newRange = document.createRange();
+            newRange.setStart(textNode, startOffset + 1); // +1 wegen des hinzugefügten »
+            newRange.setEnd(textNode, startOffset + 1 + selectedText.length);
+
+            selection.removeAllRanges();
+            selection.addRange(newRange);
+        }
+
+        self.dirty = true;
+        self.editable.focus();
+        self.update_toolbar();
+    },
+
+    toggle_locked: function() {
+        var self = this;
+        var selection = window.getSelection();
+
+        if (!selection.rangeCount) {
+            return;
+        }
+
+        var range = selection.getRangeAt(0);
+        var selectedText = selection.toString();
+
+        if (!selectedText) {
+            return; // Keine Selektion vorhanden
+        }
+
+        // Prüfe ob die Selektion bereits in einem locked span ist
+        var container = range.commonAncestorContainer;
+        if (container.nodeType === Node.TEXT_NODE) {
+            container = container.parentNode;
+        }
+
+        // Schaue ob wir uns bereits in einem locked span befinden
+        var lockedSpan = null;
+        var current = container;
+        while (current && current !== self.editable) {
+            if (current.nodeName === 'SPAN' &&
+                current.className === 'locked') {
+                lockedSpan = current;
+                break;
+            }
+            current = current.parentNode;
+        }
+
+        if (lockedSpan) {
+            // Entferne das locked span und behalte den Inhalt
+            var parent = lockedSpan.parentNode;
+            while (lockedSpan.firstChild) {
+                parent.insertBefore(lockedSpan.firstChild, lockedSpan);
+            }
+            parent.removeChild(lockedSpan);
+
+            // Normalisiere den Text und setze die Selektion neu
+            parent.normalize();
+            self._restore_selection_after_unwrap(parent, selectedText);
+
+        } else {
+            // Erstelle ein neues locked span um die Selektion
+            var span = document.createElement('span');
+            span.className = 'locked';
+            span.title = 'Dieser Bereich ist für die automatische Ersetzung von Anführungszeichen gesperrt.';
+
+            try {
+                // Extrahiere den selektierten Inhalt und umhülle ihn
+                var contents = range.extractContents();
+                span.appendChild(contents);
+                range.insertNode(span);
+
+                // Setze die Selektion auf den Inhalt des neuen spans
+                var newRange = document.createRange();
+                newRange.selectNodeContents(span);
+                selection.removeAllRanges();
+                selection.addRange(newRange);
+
+            } catch(e) {
+                if (window.console) {
+                    console.log('Error in toggle_locked:', e);
+                }
+            }
+        }
+
+        self.dirty = true;
+        self.editable.focus();
+        self.update_toolbar();
+    },
+
+    _restore_selection_after_unwrap: function(parent, originalText) {
+        // Hilfsfunktion um die Selektion nach dem Entfernen des spans wiederherzustellen
+        var walker = document.createTreeWalker(
+            parent,
+            NodeFilter.SHOW_TEXT,
+            null,
+            false
+        );
+
+        var textNode;
+        while (textNode = walker.nextNode()) {
+            var index = textNode.textContent.indexOf(originalText);
+            if (index !== -1) {
+                var range = document.createRange();
+                range.setStart(textNode, index);
+                range.setEnd(textNode, index + originalText.length);
+
+                var selection = window.getSelection();
+                selection.removeAllRanges();
+                selection.addRange(range);
+                break;
+            }
+        }
     },
 
     command: function(command, option, refocus) {
@@ -1070,6 +1268,9 @@ zeit.content.article.Editable = gocept.Class.extend({
                 } else if (key == 'KEY_I') {
                     e.preventDefault();
                     self.toolbar_command('italic');
+                } else if (key == 'KEY_Q') {
+                    e.preventDefault();
+                    self.toolbar_command('quote');
                 } else if (key == 'KEY_H') {
                     e.preventDefault();
                     self.toolbar_command('formatBlock', '<h3>');
@@ -1082,6 +1283,9 @@ zeit.content.article.Editable = gocept.Class.extend({
                 } else if (key == 'KEY_R') {
                     e.preventDefault();
                     self.toolbar_command('removeFormat');
+                } else if (key == 'KEY_K') {
+                    e.preventDefault();
+                    self.toolbar_command('locked');
                 } else if (key == 'KEY_A') {
                     if (self.get_selected_container().nodeName != 'INPUT') {
                       e.preventDefault();
