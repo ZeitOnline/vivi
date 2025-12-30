@@ -428,10 +428,18 @@ def ensure_block_ids(context, event):
     body.ensure_division()
 
 
-_QUOTE_CHARACTERS = r'[\u201c\u201d\u201e\u201f\u00ab\u00bb]'
-QUOTE_CHARACTERS = re.compile(_QUOTE_CHARACTERS)
-QUOTE_CHARACTERS_OPEN = re.compile(rf'{_QUOTE_CHARACTERS}(\w)')
-QUOTE_CHARACTERS_CLOSE = re.compile(rf'([\w\.]){_QUOTE_CHARACTERS}')
+class QuoteCharacters:
+    def __init__(self):
+        # Define quote characters to normalize
+        quote_chars = r'[\u201c\u201d\u201e\u201f\u00ab\u00bb'
+        if FEATURE_TOGGLES.find('normalize_quotes'):
+            quote_chars += r'\u0022'
+        quote_chars += r']'
+
+        # Compile regex patterns
+        self.chars = re.compile(quote_chars)
+        self.open = re.compile(f'{quote_chars}(\\w)')
+        self.close = re.compile(f'([\\w\\.]){quote_chars}')
 
 
 @grok.subscribe(
@@ -451,21 +459,23 @@ def normalize_quotation_marks(context, event):
 
 
 def normalize_quotes(node):
+    qc = QuoteCharacters()
     if node.text:
-        node.text = QUOTE_CHARACTERS_OPEN.sub(r'»\1', node.text)
-        node.text = QUOTE_CHARACTERS_CLOSE.sub(r'\1«', node.text)
+        node.text = qc.open.sub(r'»\1', node.text)
+        node.text = qc.close.sub(r'\1«', node.text)
     if node.tail:
-        node.tail = QUOTE_CHARACTERS_OPEN.sub(r'»\1', node.tail)
-        node.tail = QUOTE_CHARACTERS_CLOSE.sub(r'\1«', node.tail)
+        node.tail = qc.open.sub(r'»\1', node.tail)
+        node.tail = qc.close.sub(r'\1«', node.tail)
     for child in node.iterchildren():
         normalize_quotes(child)
 
 
 def normalize_quotes_to_inch_sign(node):
+    qc = QuoteCharacters()
     if node.text:
-        node.text = QUOTE_CHARACTERS.sub('"', node.text)
+        node.text = qc.chars.sub('"', node.text)
     if node.tail:
-        node.tail = QUOTE_CHARACTERS.sub('"', node.tail)
+        node.tail = qc.chars.sub('"', node.tail)
     for child in node.iterchildren():
         normalize_quotes_to_inch_sign(child)
 
