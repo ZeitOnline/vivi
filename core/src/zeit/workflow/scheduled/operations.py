@@ -109,9 +109,11 @@ class ScheduledOperationsBase:
         mapping = {'date': self.format_datetime(scheduled_on)}
 
         if property_changes:
-            mapping['properties'] = ', '.join(property_changes.keys())
-            msgid = f'scheduled-{operation}-with-properties'
-            default = f'To {operation} with changes to ${{properties}} on ${{date}}'
+            # XXX this only works as long as we keep only
+            # one property change per operation
+            property = next(iter(property_changes))
+            msgid = f'scheduled-{operation}-with-{property}-properties'
+            default = f'To {operation} with changes on ${{date}}'
         else:
             msgid = f'scheduled-{operation}-add'
             default = f'To {operation} on ${{date}}'
@@ -419,5 +421,7 @@ class WorkingCopyScheduledOperations(grok.Adapter, ScheduledOperationsBase):
 # i18nextract can find them.
 _('scheduled-publish-add')
 _('scheduled-retract-add')
-_('scheduled-publish-with-properties')
-_('scheduled-retract-with-properties')
+_('scheduled-publish-with-access-properties')
+_('scheduled-publish-with-channels-properties')
+_('scheduled-retract-with-access-properties')
+_('scheduled-retract-with-channels-properties')

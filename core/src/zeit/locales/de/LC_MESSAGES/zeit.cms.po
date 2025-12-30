@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Mon Dec 22 17:48:22 2025\n"
+"POT-Creation-Date: Tue Dec 30 15:09:36 2025\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -150,7 +150,7 @@ msgstr "Bearbeiten"
 #: zeit/content/article/edit/browser/form.py:497
 #: zeit/content/article/edit/browser/push.py:52
 #: zeit/content/article/edit/browser/reference.py:51
-#: zeit/content/article/edit/browser/workflow.py:241
+#: zeit/content/article/edit/browser/workflow.py:217
 #: zeit/content/cp/browser/view.py:11 zeit/content/image/browser/form.py:109
 #: zeit/content/image/browser/imagegroup.py:322 zeit/edit/browser/form.py:65
 #: zeit/edit/browser/view.py:104 zeit/seo/browser/form.py:31
@@ -484,7 +484,7 @@ msgstr ""
 "id}« kopieren möchten"
 
 #: zeit/cms/content/browser/form.py:13
-#: zeit/content/animation/browser/form.py:34
+#: zeit/content/animation/browser/form.py:36
 #: zeit/content/audio/browser/form.py:96 zeit/content/cp/browser/form.py:76
 #: zeit/content/markup/browser/form.py:29
 #: zeit/content/video/browser/video.py:65
@@ -604,7 +604,7 @@ msgid "Channels"
 msgstr "Channels"
 
 #: zeit/cms/content/interfaces.py:97
-#: zeit/content/article/edit/browser/workflow.py:305
+#: zeit/content/article/edit/browser/workflow.py:281
 msgid "Channel"
 msgstr "Channel"
 
@@ -621,7 +621,7 @@ msgid "Agencies"
 msgstr "Agenturen"
 
 #: zeit/cms/content/interfaces.py:132
-#: zeit/content/article/edit/browser/workflow.py:293
+#: zeit/content/article/edit/browser/workflow.py:269
 #: zeit/content/volume/browser/toc-listing.pt:10
 #: zeit/content/volume/browser/toc_listing.py:58
 msgid "Access"
@@ -1414,7 +1414,7 @@ msgstr "Keine Dokumente in Bearbeitung"
 msgid "Cancel workingcopy"
 msgstr "Bearbeitung abbrechen"
 
-#: zeit/content/animation/animation.py:46
+#: zeit/content/animation/animation.py:47
 #: zeit/content/animation/browser/configure.zcml:6
 #: zeit/content/article/edit/animation.py:19
 #: zeit/content/article/edit/interfaces.py:154
@@ -1443,14 +1443,14 @@ msgid "View metadata"
 msgstr "Metadaten anzeigen"
 
 #: zeit/content/animation/browser/form.py:21
-#: zeit/content/animation/interfaces.py:28 zeit/content/article/article.py:211
+#: zeit/content/animation/interfaces.py:44 zeit/content/article/article.py:211
 #: zeit/content/article/browser/configure.zcml:82
 #: zeit/content/article/edit/browser/form.py:58
-#: zeit/content/article/edit/browser/workflow.py:27
+#: zeit/content/article/edit/browser/workflow.py:26
 msgid "Article"
 msgstr "Artikel"
 
-#: zeit/content/animation/browser/form.py:22
+#: zeit/content/animation/browser/form.py:23
 #: zeit/content/article/edit/browser/form.py:321
 #: zeit/content/audio/browser/form.py:89 zeit/content/link/browser/form.py:33
 #: zeit/content/volume/browser/form.py:89 zeit/content/volume/interfaces.py:48
@@ -1458,53 +1458,53 @@ msgstr "Artikel"
 msgid "Teaser"
 msgstr "Teaser"
 
-#: zeit/content/animation/browser/form.py:27
+#: zeit/content/animation/browser/form.py:29
 msgid "Add animated teaser"
 msgstr "Animierten Teaser hinzufügen\t"
 
-#: zeit/content/animation/interfaces.py:13
+#: zeit/content/animation/interfaces.py:14
 msgid "use images (automatic animation)"
 msgstr "Bilder verwenden (automatische Animation)"
 
-#: zeit/content/animation/interfaces.py:14
+#: zeit/content/animation/interfaces.py:15
 msgid "use gallery (automatic animation)"
 msgstr "Bildergalerie verwenden (automatische Animation)"
 
-#: zeit/content/animation/interfaces.py:15
+#: zeit/content/animation/interfaces.py:16
 msgid "use images (manual navigation)"
 msgstr "Bilder verwenden (manuelle Navigation)"
 
-#: zeit/content/animation/interfaces.py:16
+#: zeit/content/animation/interfaces.py:17
 msgid "use images and videos (manual navigation)"
 msgstr "Bilder und Videos verwenden (manuelle Navigation)"
 
-#: zeit/content/animation/interfaces.py:17
+#: zeit/content/animation/interfaces.py:18
 msgid "use gallery (manual navigation)"
 msgstr "Bildergalerie verwenden (manuelle Navigation)"
 
-#: zeit/content/animation/interfaces.py:17
+#: zeit/content/animation/interfaces.py:19
 msgid "use video"
 msgstr "Video verwenden\t"
 
-#: zeit/content/animation/interfaces.py:34
+#: zeit/content/animation/interfaces.py:50
 msgid "Display mode"
 msgstr "Darstellungsform"
 
-#: zeit/content/animation/interfaces.py:38
+#: zeit/content/animation/interfaces.py:54
 msgid "Video to use for animation"
 msgstr "Video"
 
-#: zeit/content/animation/interfaces.py:44
+#: zeit/content/animation/interfaces.py:60
 #: zeit/content/article/edit/interfaces.py:670
 #: zeit/content/gallery/browser/configure.zcml:93
 msgid "Images"
 msgstr "Bilder"
 
-#: zeit/content/animation/interfaces.py:58
+#: zeit/content/animation/interfaces.py:68
 msgid "Images and videos"
 msgstr "Bilder und Videos"
 
-#: zeit/content/animation/interfaces.py:52
+#: zeit/content/animation/interfaces.py:76
 msgid "Gallery to use for animation"
 msgstr "Bildergalerie"
 
@@ -1529,7 +1529,7 @@ msgid "Publish and push"
 msgstr "Veröffentlichen & Push"
 
 #: zeit/content/article/browser/configure.zcml:18
-#: zeit/content/article/edit/browser/workflow.py:60
+#: zeit/content/article/edit/browser/workflow.py:36
 #: zeit/workflow/browser/configure.zcml:21 zeit/workflow/browser/form.py:89
 msgid "Workflow"
 msgstr "Workflowstatus"
@@ -1786,7 +1786,7 @@ msgstr "Jetzt veröffentlichen"
 msgid "Retract"
 msgstr "Depublizieren"
 
-#: zeit/content/article/edit/browser/workflow.py:23
+#: zeit/content/article/edit/browser/workflow.py:22
 msgid "Workflow time"
 msgstr "Veröffentlichungszeit"
 
@@ -4977,35 +4977,43 @@ msgstr ""
 "Wann wurde der Vorgang ausgeführt oder abgebrochen worden ist. NULL "
 "bedeutet, dass er noch aussteht."
 
-#: zeit/workflow/scheduled/operations.py:301
+#: zeit/workflow/scheduled/operations.py:303
 msgid "${name} changed from \"${old}\" to \"${new}\""
 msgstr "${name} wurde von „${old}“ in „${new}“ geändert"
 
-#: zeit/workflow/scheduled/operations.py:420
+#: zeit/workflow/scheduled/operations.py:422
 msgid "scheduled-publish-add"
 msgstr "Automatisch veröffentlichen am ${date}"
 
-#: zeit/workflow/scheduled/operations.py:421
+#: zeit/workflow/scheduled/operations.py:423
 msgid "scheduled-retract-add"
 msgstr "Automatisch zurückziehen am ${date}"
 
-#: zeit/workflow/scheduled/operations.py:422
-msgid "scheduled-publish-with-properties"
-msgstr "Automatisch veröffentlichen mit Änderungen an ${properties} am ${date}"
+#: zeit/workflow/scheduled/operations.py:424
+msgid "scheduled-publish-with-access-properties"
+msgstr "Automatisch veröffentlichen mit Status-Änderung am ${date}"
 
-#: zeit/workflow/scheduled/operations.py:423
-msgid "scheduled-retract-with-properties"
-msgstr "Automatisch zurückziehen mit Änderungen an ${properties} am ${date}"
+#: zeit/workflow/scheduled/operations.py:425
+msgid "scheduled-publish-with-channels-properties"
+msgstr "Automatisch veröffentlichen mit Channel-Änderung am ${date}"
+
+#: zeit/workflow/scheduled/operations.py:426
+msgid "scheduled-retract-with-access-properties"
+msgstr "Automatisch zurückziehen mit Status-Änderung am ${date}"
+
+#: zeit/workflow/scheduled/operations.py:427
+msgid "scheduled-retract-with-channels-properties"
+msgstr "Automatisch zurückziehen mit Channel-Änderung am ${date}"
 
 #: zeit/workflow/source.py:43
 msgid "not necessary"
 msgstr "nicht nötig"
 
-#: zeit/workflow/timebased.py:87
+#: zeit/workflow/timebased.py:134
 msgid "timebased-publish-add"
 msgstr "Automatisch veröffentlichen am ${date}"
 
-#: zeit/workflow/timebased.py:88
+#: zeit/workflow/timebased.py:135
 msgid "timebased-retract-add"
 msgstr "Automatisch zurückziehen am ${date}"
 
