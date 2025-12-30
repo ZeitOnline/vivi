@@ -1,5 +1,6 @@
 import logging
 
+import pendulum
 import zope.component
 import zope.interface
 
@@ -9,10 +10,12 @@ from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.celery
 import zeit.cms.cli
 import zeit.cms.content.dav
+import zeit.cms.content.interfaces
 import zeit.cms.content.xmlsupport
 import zeit.workflow.interfaces
 import zeit.workflow.publish
 import zeit.workflow.publishinfo
+import zeit.workflow.scheduled.interfaces
 
 
 WORKFLOW_NS = zeit.workflow.interfaces.WORKFLOW_NS
@@ -56,6 +59,8 @@ class TimeBasedWorkflow(zeit.workflow.publishinfo.PublishInfo):
             self.log('retract', released_to)
         self.released_from, self.released_to = value
 
+        self._sync_scheduled_operations(released_from, released_to)
+
     def log(self, task, timestamp):
         if FEATURE_TOGGLES.find('use_scheduled_operations'):
             return
@@ -80,6 +85,48 @@ class TimeBasedWorkflow(zeit.workflow.publishinfo.PublishInfo):
             dt = dt.astimezone(tzinfo)
         formatter = request.locale.dates.getFormatter('dateTime', 'medium')
         return formatter.format(dt)
+
+    def _sync_scheduled_operations(self, released_from, released_to):
+        if not FEATURE_TOGGLES.find('use_scheduled_operations'):
+            return
+
+        try:
+            uuid = zeit.cms.content.interfaces.IUUID(self.context).shortened
+        except (TypeError, AttributeError):
+            log.debug(
+                'Skipping scheduled operations sync (no UUID yet): %s',
+                getattr(self.context, 'uniqueId', '<unknown>'),
+            )
+            return
+
+        if not uuid:
+            log.debug(
+                'Skipping scheduled operations sync (empty UUID): %s',
+                getattr(self.context, 'uniqueId', '<unknown>'),
+            )
+            return
+
+        try:
+            ops = zeit.workflow.scheduled.interfaces.IScheduledOperations(self.context)
+        except zope.component.ComponentLookupError:
+            log.debug('IScheduledOperations adapter not available for %s', self.context.uniqueId)
+            return
+
+        self._create_or_update_operation(ops, 'publish', released_from)
+        self._create_or_update_operation(ops, 'retract', released_to)
+
+    def _create_or_update_operation(self, ops, operation, scheduled_on):
+        # Only manage simple operations, don't touch channel/access scheduling
+        existing = [op for op in ops.list(operation=operation) if not op.property_changes]
+        scheduled_op = existing[0] if existing else None
+
+        if scheduled_on and scheduled_on >= pendulum.now('UTC'):
+            if scheduled_op:
+                ops.update(scheduled_op.id, scheduled_on=scheduled_on)
+            else:
+                ops.add(operation, scheduled_on)
+        elif scheduled_op:
+            ops.remove(scheduled_op.id)
 
 
 # Declare the messageids we dynamically construct in log(), so
