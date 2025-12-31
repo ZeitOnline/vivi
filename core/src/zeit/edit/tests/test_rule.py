@@ -202,6 +202,10 @@ error_unless(scheduled_for_publishing(context))
         s = self.apply(r, tc)
         self.assertNotEqual(zeit.edit.rule.ERROR, s.status)
 
+        zope.component.getSiteManager().unregisterAdapter(
+            zeit.workflow.scheduled.operations.NoopScheduledOperations
+        )
+
     def test_globs_can_return_none_although_they_are_adapters(self):
         import zeit.edit.rule
 
