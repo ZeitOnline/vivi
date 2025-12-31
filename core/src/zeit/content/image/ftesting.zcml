@@ -9,6 +9,7 @@
   <include package="zeit.content.image" />
   <include package="zeit.content.image.browser" />
   <include package="zeit.addcentral" />
+  <include package="zeit.workflow.scheduled" />
 
   <!-- The "upload from MDB" test needs "timebased publishing",
        but it's not worth including all of zeit.workflow just for that. -->

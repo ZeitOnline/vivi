@@ -14,6 +14,7 @@ import zeit.edit.interfaces
 import zeit.edit.rule
 import zeit.edit.testing
 import zeit.workflow.browser.publish
+import zeit.workflow.scheduled.operations
 
 
 class RuleTest(unittest.TestCase):
@@ -174,9 +175,11 @@ error_unless(is_published(context))
                 pass
 
         zope.component.getSiteManager().registerAdapter(
+            zeit.workflow.scheduled.operations.NoopScheduledOperations
+        )
+        zope.component.getSiteManager().registerAdapter(
             Timebased, provided=zeit.cms.workflow.interfaces.IPublishInfo
         )
-
         r = zeit.edit.rule.Rule(
             """
 error_unless(scheduled_for_publishing(context))

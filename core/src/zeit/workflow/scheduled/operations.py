@@ -417,6 +417,35 @@ class WorkingCopyScheduledOperations(grok.Adapter, ScheduledOperationsBase):
         )
 
 
+# Register NOOP to avoid persisting test data to ZODB
+@zope.component.adapter(zope.interface.Interface)
+@zope.interface.implementer(IScheduledOperations)
+class NoopScheduledOperations:
+    def __init__(self, context):
+        self.context = context
+
+    def add(self, *args, **kwargs):
+        return 'noop-id'
+
+    def remove(self, *args, **kwargs):
+        pass
+
+    def update(self, *args, **kwargs):
+        pass
+
+    def list(self, *args, **kwargs):
+        return []
+
+    def get(self, *args, **kwargs):
+        raise KeyError('noop')
+
+    def synchronize(self, *args, **kwargs):
+        pass
+
+    def execute(self, *args, **kwargs):
+        pass
+
+
 # Declare the messageids we dynamically construct in _log_operation(), so
 # i18nextract can find them.
 _('scheduled-publish-add')

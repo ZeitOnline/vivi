@@ -8,6 +8,7 @@
 
   <include package="zeit.edit" />
   <include package="zeit.edit.browser" />
+  <include package="zeit.workflow.scheduled" />
 
   <grok:grok package="zeit.edit.tests.fixture" />
 
