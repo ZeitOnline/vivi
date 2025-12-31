@@ -183,6 +183,12 @@ class Retract:
         return self.breakingnews.is_breaking
 
     @property
+    def homepage_banner_enabled(self):
+        push = zeit.push.interfaces.IPushMessages(self.context)
+        service = push.get(type='homepage')
+        return service and service.get('enabled')
+
+    @property
     def banner_published(self):
         return IPublishInfo(self.banner).published
 
