@@ -119,22 +119,22 @@ wheels = [
 
 [[package]]
 name = "celery"
-version = "5.6.0+importlib"
+version = "5.6.1"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
 dependencies = [
     { name = "billiard" },
     { name = "click" },
     { name = "click-didyoumean" },
+    { name = "click-plugins" },
     { name = "click-repl" },
-    { name = "exceptiongroup" },
     { name = "kombu" },
     { name = "python-dateutil" },
     { name = "tzlocal" },
     { name = "vine" },
 ]
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/celery/celery-5.6.0+importlib.tar.gz", hash = "sha256:6e311951aadc21d76751fb9ddb316548c8f61225893f58374c801a169776b4cd" }
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/celery/celery-5.6.1.tar.gz", hash = "sha256:bdc9e02b1480dd137f2df392358c3e94bb623d4f47ae1bc0a7dc5821c90089c7" }
 wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/celery/celery-5.6.0+importlib-py3-none-any.whl", hash = "sha256:fdf84a584e642bb1cc84e3955f31f4032a77da6e90d4ae49455404da590e7ba6" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/celery/celery-5.6.1-py3-none-any.whl", hash = "sha256:ee87aa14d344c655fe83bfc44b2c93bbb7cba39ae11e58b88279523506159d44" },
 ]
 
 [[package]]
@@ -292,6 +292,18 @@ wheels = [
 ]
 
 [[package]]
+name = "click-plugins"
+version = "1.1.1.2"
+source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
+dependencies = [
+    { name = "click" },
+]
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/click-plugins/click_plugins-1.1.1.2.tar.gz", hash = "sha256:d7af3984a99d243c131aa1a828331e7630f4a88a9741fd05c927b204bcf92261" }
+wheels = [
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/click-plugins/click_plugins-1.1.1.2-py2.py3-none-any.whl", hash = "sha256:008d65743833ffc1f5417bf0e78e8d2c23aab04d9745ba817bd3e71b0feb6aa6" },
+]
+
+[[package]]
 name = "click-repl"
 version = "0.3.0"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
@@ -331,63 +343,63 @@ wheels = [
 
 [[package]]
 name = "coverage"
-version = "7.13.0"
+version = "7.13.1"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.0.tar.gz", hash = "sha256:a394aa27f2d7ff9bc04cf703817773a59ad6dfbd577032e690f961d2460ee936" }
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.1.tar.gz", hash = "sha256:b7593fe7eb5feaa3fbb461ac79aac9f9fc0387a5ca8080b0c6fe2ca27b091afd" }
 wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.0-cp313-cp313-macosx_10_13_x86_64.whl", hash = "sha256:28ee1c96109974af104028a8ef57cec21447d42d0e937c0275329272e370ebcf" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.0-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:d1e97353dcc5587b85986cda4ff3ec98081d7e84dd95e8b2a6d59820f0545f8a" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.0-cp313-cp313-manylinux1_i686.manylinux_2_28_i686.manylinux_2_5_i686.whl", hash = "sha256:99acd4dfdfeb58e1937629eb1ab6ab0899b131f183ee5f23e0b5da5cba2fec74" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.0-cp313-cp313-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl", hash = "sha256:ff45e0cd8451e293b63ced93161e189780baf444119391b3e7d25315060368a6" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.0-cp313-cp313-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:f4f72a85316d8e13234cafe0a9f81b40418ad7a082792fa4165bd7d45d96066b" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.0-cp313-cp313-manylinux_2_31_riscv64.manylinux_2_39_riscv64.whl", hash = "sha256:11c21557d0e0a5a38632cbbaca5f008723b26a89d70db6315523df6df77d6232" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.0-cp313-cp313-musllinux_1_2_aarch64.whl", hash = "sha256:76541dc8d53715fb4f7a3a06b34b0dc6846e3c69bc6204c55653a85dd6220971" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.0-cp313-cp313-musllinux_1_2_i686.whl", hash = "sha256:6e9e451dee940a86789134b6b0ffbe31c454ade3b849bb8a9d2cca2541a8e91d" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.0-cp313-cp313-musllinux_1_2_riscv64.whl", hash = "sha256:5c67dace46f361125e6b9cace8fe0b729ed8479f47e70c89b838d319375c8137" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.0-cp313-cp313-musllinux_1_2_x86_64.whl", hash = "sha256:f59883c643cb19630500f57016f76cfdcd6845ca8c5b5ea1f6e17f74c8e5f511" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.0-cp313-cp313-win32.whl", hash = "sha256:58632b187be6f0be500f553be41e277712baa278147ecb7559983c6d9faf7ae1" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.0-cp313-cp313-win_amd64.whl", hash = "sha256:73419b89f812f498aca53f757dd834919b48ce4799f9d5cad33ca0ae442bdb1a" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.0-cp313-cp313-win_arm64.whl", hash = "sha256:eb76670874fdd6091eedcc856128ee48c41a9bbbb9c3f1c7c3cf169290e3ffd6" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.0-cp313-cp313t-macosx_10_13_x86_64.whl", hash = "sha256:6e63ccc6e0ad8986386461c3c4b737540f20426e7ec932f42e030320896c311a" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.0-cp313-cp313t-macosx_11_0_arm64.whl", hash = "sha256:494f5459ffa1bd45e18558cd98710c36c0b8fbfa82a5eabcbe671d80ecffbfe8" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.0-cp313-cp313t-manylinux1_i686.manylinux_2_28_i686.manylinux_2_5_i686.whl", hash = "sha256:06cac81bf10f74034e055e903f5f946e3e26fc51c09fc9f584e4a1605d977053" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.0-cp313-cp313t-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl", hash = "sha256:f2ffc92b46ed6e6760f1d47a71e56b5664781bc68986dbd1836b2b70c0ce2071" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.0-cp313-cp313t-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:0602f701057c6823e5db1b74530ce85f17c3c5be5c85fc042ac939cbd909426e" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.0-cp313-cp313t-manylinux_2_31_riscv64.manylinux_2_39_riscv64.whl", hash = "sha256:25dc33618d45456ccb1d37bce44bc78cf269909aa14c4db2e03d63146a8a1493" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.0-cp313-cp313t-musllinux_1_2_aarch64.whl", hash = "sha256:71936a8b3b977ddd0b694c28c6a34f4fff2e9dd201969a4ff5d5fc7742d614b0" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.0-cp313-cp313t-musllinux_1_2_i686.whl", hash = "sha256:936bc20503ce24770c71938d1369461f0c5320830800933bc3956e2a4ded930e" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.0-cp313-cp313t-musllinux_1_2_riscv64.whl", hash = "sha256:af0a583efaacc52ae2521f8d7910aff65cdb093091d76291ac5820d5e947fc1c" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.0-cp313-cp313t-musllinux_1_2_x86_64.whl", hash = "sha256:f1c23e24a7000da892a312fb17e33c5f94f8b001de44b7cf8ba2e36fbd15859e" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.0-cp313-cp313t-win32.whl", hash = "sha256:5f8a0297355e652001015e93be345ee54393e45dc3050af4a0475c5a2b767d46" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.0-cp313-cp313t-win_amd64.whl", hash = "sha256:6abb3a4c52f05e08460bd9acf04fec027f8718ecaa0d09c40ffbc3fbd70ecc39" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.0-cp313-cp313t-win_arm64.whl", hash = "sha256:3ad968d1e3aa6ce5be295ab5fe3ae1bf5bb4769d0f98a80a0252d543a2ef2e9e" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.0-cp314-cp314-macosx_10_15_x86_64.whl", hash = "sha256:453b7ec753cf5e4356e14fe858064e5520c460d3bbbcb9c35e55c0d21155c256" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.0-cp314-cp314-macosx_11_0_arm64.whl", hash = "sha256:af827b7cbb303e1befa6c4f94fd2bf72f108089cfa0f8abab8f4ca553cf5ca5a" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.0-cp314-cp314-manylinux1_i686.manylinux_2_28_i686.manylinux_2_5_i686.whl", hash = "sha256:9987a9e4f8197a1000280f7cc089e3ea2c8b3c0a64d750537809879a7b4ceaf9" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.0-cp314-cp314-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl", hash = "sha256:3188936845cd0cb114fa6a51842a304cdbac2958145d03be2377ec41eb285d19" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.0-cp314-cp314-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:a2bdb3babb74079f021696cb46b8bb5f5661165c385d3a238712b031a12355be" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.0-cp314-cp314-manylinux_2_31_riscv64.manylinux_2_39_riscv64.whl", hash = "sha256:7464663eaca6adba4175f6c19354feea61ebbdd735563a03d1e472c7072d27bb" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.0-cp314-cp314-musllinux_1_2_aarch64.whl", hash = "sha256:8069e831f205d2ff1f3d355e82f511eb7c5522d7d413f5db5756b772ec8697f8" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.0-cp314-cp314-musllinux_1_2_i686.whl", hash = "sha256:6fb2d5d272341565f08e962cce14cdf843a08ac43bd621783527adb06b089c4b" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.0-cp314-cp314-musllinux_1_2_riscv64.whl", hash = "sha256:5e70f92ef89bac1ac8a99b3324923b4749f008fdbd7aa9cb35e01d7a284a04f9" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.0-cp314-cp314-musllinux_1_2_x86_64.whl", hash = "sha256:4b5de7d4583e60d5fd246dd57fcd3a8aa23c6e118a8c72b38adf666ba8e7e927" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.0-cp314-cp314-win32.whl", hash = "sha256:a6c6e16b663be828a8f0b6c5027d36471d4a9f90d28444aa4ced4d48d7d6ae8f" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.0-cp314-cp314-win_amd64.whl", hash = "sha256:0900872f2fdb3ee5646b557918d02279dc3af3dfb39029ac4e945458b13f73bc" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.0-cp314-cp314-win_arm64.whl", hash = "sha256:3a10260e6a152e5f03f26db4a407c4c62d3830b9af9b7c0450b183615f05d43b" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.0-cp314-cp314t-macosx_10_15_x86_64.whl", hash = "sha256:9097818b6cc1cfb5f174e3263eba4a62a17683bcfe5c4b5d07f4c97fa51fbf28" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.0-cp314-cp314t-macosx_11_0_arm64.whl", hash = "sha256:0018f73dfb4301a89292c73be6ba5f58722ff79f51593352759c1790ded1cabe" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.0-cp314-cp314t-manylinux1_i686.manylinux_2_28_i686.manylinux_2_5_i686.whl", hash = "sha256:166ad2a22ee770f5656e1257703139d3533b4a0b6909af67c6b4a3adc1c98657" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.0-cp314-cp314t-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl", hash = "sha256:f6aaef16d65d1787280943f1c8718dc32e9cf141014e4634d64446702d26e0ff" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.0-cp314-cp314t-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:e999e2dcc094002d6e2c7bbc1fb85b58ba4f465a760a8014d97619330cdbbbf3" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.0-cp314-cp314t-manylinux_2_31_riscv64.manylinux_2_39_riscv64.whl", hash = "sha256:00c3d22cf6fb1cf3bf662aaaa4e563be8243a5ed2630339069799835a9cc7f9b" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.0-cp314-cp314t-musllinux_1_2_aarch64.whl", hash = "sha256:22ccfe8d9bb0d6134892cbe1262493a8c70d736b9df930f3f3afae0fe3ac924d" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.0-cp314-cp314t-musllinux_1_2_i686.whl", hash = "sha256:9372dff5ea15930fea0445eaf37bbbafbc771a49e70c0aeed8b4e2c2614cc00e" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.0-cp314-cp314t-musllinux_1_2_riscv64.whl", hash = "sha256:69ac2c492918c2461bc6ace42d0479638e60719f2a4ef3f0815fa2df88e9f940" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.0-cp314-cp314t-musllinux_1_2_x86_64.whl", hash = "sha256:739c6c051a7540608d097b8e13c76cfa85263ced467168dc6b477bae3df7d0e2" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.0-cp314-cp314t-win32.whl", hash = "sha256:fe81055d8c6c9de76d60c94ddea73c290b416e061d40d542b24a5871bad498b7" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.0-cp314-cp314t-win_amd64.whl", hash = "sha256:445badb539005283825959ac9fa4a28f712c214b65af3a2c464f1adc90f5fcbc" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.0-cp314-cp314t-win_arm64.whl", hash = "sha256:de7f6748b890708578fc4b7bb967d810aeb6fcc9bff4bb77dbca77dab2f9df6a" },
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.0-py3-none-any.whl", hash = "sha256:850d2998f380b1e266459ca5b47bc9e7daf9af1d070f66317972f382d46f1904" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.1-cp313-cp313-macosx_10_13_x86_64.whl", hash = "sha256:cb237bfd0ef4d5eb6a19e29f9e528ac67ac3be932ea6b44fb6cc09b9f3ecff78" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.1-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:1dcb645d7e34dcbcc96cd7c132b1fc55c39263ca62eb961c064eb3928997363b" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.1-cp313-cp313-manylinux1_i686.manylinux_2_28_i686.manylinux_2_5_i686.whl", hash = "sha256:3d42df8201e00384736f0df9be2ced39324c3907607d17d50d50116c989d84cd" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.1-cp313-cp313-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl", hash = "sha256:fa3edde1aa8807de1d05934982416cb3ec46d1d4d91e280bcce7cca01c507992" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.1-cp313-cp313-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:9edd0e01a343766add6817bc448408858ba6b489039eaaa2018474e4001651a4" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.1-cp313-cp313-manylinux_2_31_riscv64.manylinux_2_39_riscv64.whl", hash = "sha256:985b7836931d033570b94c94713c6dba5f9d3ff26045f72c3e5dbc5fe3361e5a" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.1-cp313-cp313-musllinux_1_2_aarch64.whl", hash = "sha256:ffed1e4980889765c84a5d1a566159e363b71d6b6fbaf0bebc9d3c30bc016766" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.1-cp313-cp313-musllinux_1_2_i686.whl", hash = "sha256:8842af7f175078456b8b17f1b73a0d16a65dcbdc653ecefeb00a56b3c8c298c4" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.1-cp313-cp313-musllinux_1_2_riscv64.whl", hash = "sha256:ccd7a6fca48ca9c131d9b0a2972a581e28b13416fc313fb98b6d24a03ce9a398" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.1-cp313-cp313-musllinux_1_2_x86_64.whl", hash = "sha256:0403f647055de2609be776965108447deb8e384fe4a553c119e3ff6bfbab4784" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.1-cp313-cp313-win32.whl", hash = "sha256:549d195116a1ba1e1ae2f5ca143f9777800f6636eab917d4f02b5310d6d73461" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.1-cp313-cp313-win_amd64.whl", hash = "sha256:5899d28b5276f536fcf840b18b61a9fce23cc3aec1d114c44c07fe94ebeaa500" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.1-cp313-cp313-win_arm64.whl", hash = "sha256:868a2fae76dfb06e87291bcbd4dcbcc778a8500510b618d50496e520bd94d9b9" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.1-cp313-cp313t-macosx_10_13_x86_64.whl", hash = "sha256:67170979de0dacac3f3097d02b0ad188d8edcea44ccc44aaa0550af49150c7dc" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.1-cp313-cp313t-macosx_11_0_arm64.whl", hash = "sha256:f80e2bb21bfab56ed7405c2d79d34b5dc0bc96c2c1d2a067b643a09fb756c43a" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.1-cp313-cp313t-manylinux1_i686.manylinux_2_28_i686.manylinux_2_5_i686.whl", hash = "sha256:f83351e0f7dcdb14d7326c3d8d8c4e915fa685cbfdc6281f9470d97a04e9dfe4" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.1-cp313-cp313t-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl", hash = "sha256:bb3f6562e89bad0110afbe64e485aac2462efdce6232cdec7862a095dc3412f6" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.1-cp313-cp313t-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:77545b5dcda13b70f872c3b5974ac64c21d05e65b1590b441c8560115dc3a0d1" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.1-cp313-cp313t-manylinux_2_31_riscv64.manylinux_2_39_riscv64.whl", hash = "sha256:a4d240d260a1aed814790bbe1f10a5ff31ce6c21bc78f0da4a1e8268d6c80dbd" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.1-cp313-cp313t-musllinux_1_2_aarch64.whl", hash = "sha256:d2287ac9360dec3837bfdad969963a5d073a09a85d898bd86bea82aa8876ef3c" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.1-cp313-cp313t-musllinux_1_2_i686.whl", hash = "sha256:0d2c11f3ea4db66b5cbded23b20185c35066892c67d80ec4be4bab257b9ad1e0" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.1-cp313-cp313t-musllinux_1_2_riscv64.whl", hash = "sha256:3fc6a169517ca0d7ca6846c3c5392ef2b9e38896f61d615cb75b9e7134d4ee1e" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.1-cp313-cp313t-musllinux_1_2_x86_64.whl", hash = "sha256:d10a2ed46386e850bb3de503a54f9fe8192e5917fcbb143bfef653a9355e9a53" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.1-cp313-cp313t-win32.whl", hash = "sha256:75a6f4aa904301dab8022397a22c0039edc1f51e90b83dbd4464b8a38dc87842" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.1-cp313-cp313t-win_amd64.whl", hash = "sha256:309ef5706e95e62578cda256b97f5e097916a2c26247c287bbe74794e7150df2" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.1-cp313-cp313t-win_arm64.whl", hash = "sha256:92f980729e79b5d16d221038dbf2e8f9a9136afa072f9d5d6ed4cb984b126a09" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.1-cp314-cp314-macosx_10_15_x86_64.whl", hash = "sha256:97ab3647280d458a1f9adb85244e81587505a43c0c7cff851f5116cd2814b894" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.1-cp314-cp314-macosx_11_0_arm64.whl", hash = "sha256:8f572d989142e0908e6acf57ad1b9b86989ff057c006d13b76c146ec6a20216a" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.1-cp314-cp314-manylinux1_i686.manylinux_2_28_i686.manylinux_2_5_i686.whl", hash = "sha256:d72140ccf8a147e94274024ff6fd8fb7811354cf7ef88b1f0a988ebaa5bc774f" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.1-cp314-cp314-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl", hash = "sha256:d3c9f051b028810f5a87c88e5d6e9af3c0ff32ef62763bf15d29f740453ca909" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.1-cp314-cp314-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:f398ba4df52d30b1763f62eed9de5620dcde96e6f491f4c62686736b155aa6e4" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.1-cp314-cp314-manylinux_2_31_riscv64.manylinux_2_39_riscv64.whl", hash = "sha256:132718176cc723026d201e347f800cd1a9e4b62ccd3f82476950834dad501c75" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.1-cp314-cp314-musllinux_1_2_aarch64.whl", hash = "sha256:9e549d642426e3579b3f4b92d0431543b012dcb6e825c91619d4e93b7363c3f9" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.1-cp314-cp314-musllinux_1_2_i686.whl", hash = "sha256:90480b2134999301eea795b3a9dbf606c6fbab1b489150c501da84a959442465" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.1-cp314-cp314-musllinux_1_2_riscv64.whl", hash = "sha256:e825dbb7f84dfa24663dd75835e7257f8882629fc11f03ecf77d84a75134b864" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.1-cp314-cp314-musllinux_1_2_x86_64.whl", hash = "sha256:623dcc6d7a7ba450bbdbeedbaa0c42b329bdae16491af2282f12a7e809be7eb9" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.1-cp314-cp314-win32.whl", hash = "sha256:6e73ebb44dca5f708dc871fe0b90cf4cff1a13f9956f747cc87b535a840386f5" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.1-cp314-cp314-win_amd64.whl", hash = "sha256:be753b225d159feb397bd0bf91ae86f689bad0da09d3b301478cd39b878ab31a" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.1-cp314-cp314-win_arm64.whl", hash = "sha256:228b90f613b25ba0019361e4ab81520b343b622fc657daf7e501c4ed6a2366c0" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.1-cp314-cp314t-macosx_10_15_x86_64.whl", hash = "sha256:60cfb538fe9ef86e5b2ab0ca8fc8d62524777f6c611dcaf76dc16fbe9b8e698a" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.1-cp314-cp314t-macosx_11_0_arm64.whl", hash = "sha256:57dfc8048c72ba48a8c45e188d811e5efd7e49b387effc8fb17e97936dde5bf6" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.1-cp314-cp314t-manylinux1_i686.manylinux_2_28_i686.manylinux_2_5_i686.whl", hash = "sha256:3f2f725aa3e909b3c5fdb8192490bdd8e1495e85906af74fe6e34a2a77ba0673" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.1-cp314-cp314t-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl", hash = "sha256:9ee68b21909686eeb21dfcba2c3b81fee70dcf38b140dcd5aa70680995fa3aa5" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.1-cp314-cp314t-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:724b1b270cb13ea2e6503476e34541a0b1f62280bc997eab443f87790202033d" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.1-cp314-cp314t-manylinux_2_31_riscv64.manylinux_2_39_riscv64.whl", hash = "sha256:916abf1ac5cf7eb16bc540a5bf75c71c43a676f5c52fcb9fe75a2bd75fb944e8" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.1-cp314-cp314t-musllinux_1_2_aarch64.whl", hash = "sha256:776483fd35b58d8afe3acbd9988d5de592ab6da2d2a865edfdbc9fdb43e7c486" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.1-cp314-cp314t-musllinux_1_2_i686.whl", hash = "sha256:b6f3b96617e9852703f5b633ea01315ca45c77e879584f283c44127f0f1ec564" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.1-cp314-cp314t-musllinux_1_2_riscv64.whl", hash = "sha256:bd63e7b74661fed317212fab774e2a648bc4bb09b35f25474f8e3325d2945cd7" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.1-cp314-cp314t-musllinux_1_2_x86_64.whl", hash = "sha256:933082f161bbb3e9f90d00990dc956120f608cdbcaeea15c4d897f56ef4fe416" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.1-cp314-cp314t-win32.whl", hash = "sha256:18be793c4c87de2965e1c0f060f03d9e5aff66cfeae8e1dbe6e5b88056ec153f" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.1-cp314-cp314t-win_amd64.whl", hash = "sha256:0e42e0ec0cd3e0d851cb3c91f770c9301f48647cb2877cb78f74bdaa07639a79" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.1-cp314-cp314t-win_arm64.whl", hash = "sha256:eaecf47ef10c72ece9a2a92118257da87e460e113b83cc0d2905cbbe931792b4" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/coverage/coverage-7.13.1-py3-none-any.whl", hash = "sha256:2016745cb3ba554469d02819d78958b571792bb68e31302610e898f80dd3a573" },
 ]
 
 [[package]]
@@ -502,21 +514,21 @@ wheels = [
 
 [[package]]
 name = "elastic-transport"
-version = "9.2.0"
+version = "9.2.1"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
 dependencies = [
     { name = "certifi" },
     { name = "sniffio" },
     { name = "urllib3" },
 ]
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/elastic-transport/elastic_transport-9.2.0.tar.gz", hash = "sha256:0331466ca8febdb7d168c0fbf159294b0066492733b51da94f4dd28a0ee596cd" }
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/elastic-transport/elastic_transport-9.2.1.tar.gz", hash = "sha256:97d9abd638ba8aa90faa4ca1bf1a18bde0fe2088fbc8757f2eb7b299f205773d" }
 wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/elastic-transport/elastic_transport-9.2.0-py3-none-any.whl", hash = "sha256:f52b961e58e6b76d488993286907f61a6ddccbdae8e0135ce8d369227b6282d8" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/elastic-transport/elastic_transport-9.2.1-py3-none-any.whl", hash = "sha256:39e1a25e486af34ce7aa1bc9005d1c736f1b6fb04c9b64ea0604ded5a61fc1d4" },
 ]
 
 [[package]]
 name = "elasticsearch"
-version = "9.2.0"
+version = "9.2.1"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
 dependencies = [
     { name = "anyio" },
@@ -525,18 +537,9 @@ dependencies = [
     { name = "sniffio" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/elasticsearch/elasticsearch-9.2.0.tar.gz", hash = "sha256:99656baa34b10130402b6c38429feddf7aee1c3247566e8f95f0d0267fe9f9ab" }
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/elasticsearch/elasticsearch-9.2.1.tar.gz", hash = "sha256:97f473418e8976611349757287ac982acf12f4e305182863d985d5a031c36830" }
 wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/elasticsearch/elasticsearch-9.2.0-py3-none-any.whl", hash = "sha256:87090fe98c515ec0fce82f633fe11d7e90e04d93581b6b3e05de29efe4cc8b74" },
-]
-
-[[package]]
-name = "exceptiongroup"
-version = "1.3.1"
-source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/exceptiongroup/exceptiongroup-1.3.1.tar.gz", hash = "sha256:8b412432c6055b0b7d14c310000ae93352ed6754f70fa8f7c34141f91c4e3219" }
-wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/exceptiongroup/exceptiongroup-1.3.1-py3-none-any.whl", hash = "sha256:a7a39a3bd276781e98394987d3a5701d0c4edffb633bb7a5144577f82c773598" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/elasticsearch/elasticsearch-9.2.1-py3-none-any.whl", hash = "sha256:8665f5a0b4d29a7c2772851c05ea8a09279abb7928b7d727524613bd61d75958" },
 ]
 
 [[package]]
@@ -1023,11 +1026,11 @@ sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi
 
 [[package]]
 name = "humanize"
-version = "4.14.0"
+version = "4.15.0"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/humanize/humanize-4.14.0.tar.gz", hash = "sha256:2fa092705ea640d605c435b1ca82b2866a1b601cdf96f076d70b79a855eba90d" }
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/humanize/humanize-4.15.0.tar.gz", hash = "sha256:1dd098483eb1c7ee8e32eb2e99ad1910baefa4b75c3aff3a82f4d78688993b10" }
 wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/humanize/humanize-4.14.0-py3-none-any.whl", hash = "sha256:d57701248d040ad456092820e6fde56c930f17749956ac47f4f655c0c547bfff" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/humanize/humanize-4.15.0-py3-none-any.whl", hash = "sha256:b1186eb9f5a9749cd9cb8565aee77919dd7c8d076161cf44d70e59e3301e1769" },
 ]
 
 [[package]]
@@ -1050,14 +1053,14 @@ wheels = [
 
 [[package]]
 name = "importlib-metadata"
-version = "8.7.0"
+version = "8.7.1"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
 dependencies = [
     { name = "zipp" },
 ]
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/importlib-metadata/importlib_metadata-8.7.0.tar.gz", hash = "sha256:d13b81ad223b890aa16c5471f2ac3056cf76c5f10f82d6f9292f0b415f389000" }
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/importlib-metadata/importlib_metadata-8.7.1.tar.gz", hash = "sha256:49fef1ae6440c182052f407c8d34a68f72efc36db9ca90dc0113398f2fdde8bb" }
 wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/importlib-metadata/importlib_metadata-8.7.0-py3-none-any.whl", hash = "sha256:e5dd1551894c77868a30651cef00984d50e1002d06942a7101d34870c5f02afd" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/importlib-metadata/importlib_metadata-8.7.1-py3-none-any.whl", hash = "sha256:5a1f80bf1daa489495071efbb095d75a634cf28a8bc299581244063b53176151" },
 ]
 
 [[package]]
@@ -1229,7 +1232,7 @@ wheels = [
 
 [[package]]
 name = "kombu"
-version = "5.6.1"
+version = "5.6.2"
 source = { registry = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/simple/" }
 dependencies = [
     { name = "amqp" },
@@ -1237,9 +1240,9 @@ dependencies = [
     { name = "tzdata" },
     { name = "vine" },
 ]
-sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/kombu/kombu-5.6.1.tar.gz", hash = "sha256:90f1febb57ad4f53ca327a87598191b2520e0c793c75ea3b88d98e3b111282e4" }
+sdist = { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/kombu/kombu-5.6.2.tar.gz", hash = "sha256:8060497058066c6f5aed7c26d7cd0d3b574990b09de842a8c5aaed0b92cc5a55" }
 wheels = [
-    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/kombu/kombu-5.6.1-py3-none-any.whl", hash = "sha256:b69e3f5527ec32fc5196028a36376501682973e9620d6175d1c3d4eaf7e95409" },
+    { url = "https://europe-west3-python.pkg.dev/zeitonline-engineering/pypi-zon/kombu/kombu-5.6.2-py3-none-any.whl", hash = "sha256:efcfc559da324d41d61ca311b0c64965ea35b4c55cc04ee36e55386145dace93" },
 ]
 
 [[package]]
@@ -2885,7 +2888,7 @@ wheels = [
 
 [[package]]
 name = "vivi-core"
-version = "7.246.0.dev0"
+version = "7.251.0.dev0"
 source = { editable = "." }
 dependencies = [
     { name = "beautifulsoup4" },
