@@ -4,6 +4,9 @@ import logging
 import pendulum
 import transaction
 
+from zeit.cms.content.sources import FEATURE_TOGGLES
+from zeit.workflow.interfaces import ITimeBasedPublishing
+from zeit.workflow.scheduled.interfaces import IScheduledOperations
 import zeit.cms.testing
 import zeit.cms.workflow
 import zeit.workflow.testing
@@ -117,3 +120,108 @@ class TimeBasedEndToEndTest(zeit.workflow.testing.FunctionalTestCase):
         _publish_scheduled_content()
         self.assertFalse(zeit.cms.workflow.interfaces.IPublishInfo(self.content).published)
         self.assertNotEllipsis(f'...Publishing {self.content.uniqueId}...', self.log.getvalue())
+
+
+class TimeBasedScheduledOperationsTest(zeit.workflow.testing.FunctionalTestCase):
+    def setUp(self):
+        super().setUp()
+        self.content = self.repository['testcontent']
+
+    def test_setting_released_from_creates_publish_operation(self):
+        info = ITimeBasedPublishing(self.content)
+        future_time = pendulum.now('UTC').add(hours=2)
+        info.release_period = (future_time, None)
+
+        ops = IScheduledOperations(self.content)
+        publish_ops = [op for op in ops.list(operation='publish') if not op.property_changes]
+
+        self.assertEqual(1, len(publish_ops))
+        self.assertEqual(future_time, publish_ops[0].scheduled_on)
+
+    def test_setting_released_to_creates_retract_operation(self):
+        info = ITimeBasedPublishing(self.content)
+        future_time = pendulum.now('UTC').add(hours=3)
+        info.release_period = (None, future_time)
+
+        ops = IScheduledOperations(self.content)
+        retract_ops = [op for op in ops.list(operation='retract') if not op.property_changes]
+
+        self.assertEqual(1, len(retract_ops))
+        self.assertEqual(future_time, retract_ops[0].scheduled_on)
+
+    def test_updating_released_from_updates_existing_operation(self):
+        info = ITimeBasedPublishing(self.content)
+        time1 = pendulum.now('UTC').add(hours=1)
+        time2 = pendulum.now('UTC').add(hours=2)
+
+        info.release_period = (time1, None)
+        ops = IScheduledOperations(self.content)
+        op_id_before = ops.list(operation='publish')[0].id
+
+        info.release_period = (time2, None)
+        ops_after = [op for op in ops.list(operation='publish') if not op.property_changes]
+
+        self.assertEqual(1, len(ops_after))
+        self.assertEqual(op_id_before, ops_after[0].id)
+        self.assertEqual(time2, ops_after[0].scheduled_on)
+
+    def test_clearing_released_from_removes_operation(self):
+        info = ITimeBasedPublishing(self.content)
+        info.release_period = (pendulum.now('UTC').add(hours=1), None)
+
+        ops = IScheduledOperations(self.content)
+        self.assertEqual(1, len(ops.list(operation='publish')))
+
+        info.release_period = (None, None)
+        self.assertEqual(
+            0, len([op for op in ops.list(operation='publish') if not op.property_changes])
+        )
+
+    def test_past_timestamp_removes_operation(self):
+        info = ITimeBasedPublishing(self.content)
+        info.release_period = (pendulum.now('UTC').add(hours=1), None)
+
+        ops = IScheduledOperations(self.content)
+        self.assertEqual(1, len(ops.list(operation='publish')))
+
+        info.release_period = (pendulum.now('UTC').subtract(hours=1), None)
+        self.assertEqual(
+            0, len([op for op in ops.list(operation='publish') if not op.property_changes])
+        )
+
+    def test_does_not_remove_operations_with_property_changes(self):
+        ops = IScheduledOperations(self.content)
+        future_time = pendulum.now('UTC').add(hours=2)
+        op_id = ops.add('publish', future_time, property_changes={'access': 'abo'})
+
+        info = ITimeBasedPublishing(self.content)
+        info.release_period = (None, None)
+
+        all_ops = ops.list(operation='publish')
+        self.assertEqual(1, len(all_ops))
+        self.assertEqual(op_id, all_ops[0].id)
+
+    def test_setting_release_period_tuple(self):
+        info = ITimeBasedPublishing(self.content)
+        from_time = pendulum.now('UTC').add(hours=1)
+        to_time = pendulum.now('UTC').add(hours=3)
+
+        info.release_period = (from_time, to_time)
+
+        ops = IScheduledOperations(self.content)
+        publish_ops = [op for op in ops.list(operation='publish') if not op.property_changes]
+        retract_ops = [op for op in ops.list(operation='retract') if not op.property_changes]
+
+        self.assertEqual(1, len(publish_ops))
+        self.assertEqual(1, len(retract_ops))
+        self.assertEqual(from_time, publish_ops[0].scheduled_on)
+        self.assertEqual(to_time, retract_ops[0].scheduled_on)
+
+    def test_feature_toggle_disabled_skips_sync(self):
+        FEATURE_TOGGLES.unset('use_scheduled_operations')
+
+        info = ITimeBasedPublishing(self.content)
+        info.release_period = (pendulum.now('UTC').add(hours=2), None)
+
+        ops = IScheduledOperations(self.content)
+        self.assertEqual(0, len(ops.list(operation='publish')))

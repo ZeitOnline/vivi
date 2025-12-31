@@ -19,6 +19,7 @@
   <include package="zeit.reach" />
   <include package="zeit.workflow.browser" />
   <include package="zeit.workflow.json" />
+  <include package="zeit.workflow.scheduled" />
 
   <!-- Allow test user to create and move areas -->
   <grant

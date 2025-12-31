@@ -16,7 +16,6 @@ from zeit.cms.repository.interfaces import IAutomaticallyRenameable
 import zeit.content.article.interfaces
 import zeit.edit.browser.form
 import zeit.workflow.interfaces
-import zeit.workflow.scheduled.interfaces
 
 
 class WorkflowTimeContainer(zeit.edit.browser.form.FoldableFormGroup):
@@ -29,29 +28,6 @@ class Timebased(zeit.edit.browser.form.InlineForm):
     form_fields = zope.formlib.form.FormFields(zeit.workflow.interfaces.IContentWorkflow).select(
         'release_period'
     )
-
-    def _create_or_update_operation(self, ops, op_type, scheduled_on):
-        scheduled_op = next((op for op in ops.list(op_type) if not op.property_changes), None)
-        if scheduled_on and scheduled_on >= pendulum.now('UTC'):
-            if scheduled_op:
-                ops.update(scheduled_op.id, scheduled_on=scheduled_on)
-            else:
-                ops.add(op_type, scheduled_on)
-        elif scheduled_op:
-            ops.remove(scheduled_op.id)
-
-    def _success_handler(self):
-        if not FEATURE_TOGGLES.find('use_scheduled_operations'):
-            return
-
-        ops = zeit.workflow.scheduled.interfaces.IScheduledOperations(self.context)
-
-        released_from, released_to = None, None
-        if released_period := self.widgets['release_period'].getInputValue():
-            released_from, released_to = released_period
-
-        self._create_or_update_operation(ops, 'publish', released_from)
-        self._create_or_update_operation(ops, 'retract', released_to)
 
 
 class WorkflowContainer(zeit.edit.browser.form.FoldableFormGroup):
