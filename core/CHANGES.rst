@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.251.0 (2025-12-31)
+--------------------
+
+- WCM-799: support all content objects to work with scheduled operations using timebased workflow
+
+
 7.250.0 (2025-12-30)
 --------------------
 
