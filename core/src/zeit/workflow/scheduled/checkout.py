@@ -65,6 +65,9 @@ def create_operations_from_release_period(context, event):
     if zeit.cms.workingcopy.interfaces.IWorkingcopy.providedBy(event.newParent):
         return
 
+    if context.uniqueId is None:
+        return
+
     # reload to get content from db for the uuid
     content = zeit.cms.interfaces.ICMSContent(context.uniqueId)
     content_id = zeit.cms.content.interfaces.IUUID(content, None)
