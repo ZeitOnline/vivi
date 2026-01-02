@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.253.0 (2026-01-02)
+--------------------
+
+- WCM-1249: Add retresco main entities to vivi
+
+
 7.252.0 (2026-01-02)
 --------------------
 
