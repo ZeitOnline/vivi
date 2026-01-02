@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Tue Dec 30 15:09:36 2025\n"
+"POT-Creation-Date: Fri Jan  2 12:04:31 2026\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -848,6 +848,7 @@ msgid "Remote timestamp URL"
 msgstr ""
 
 #: zeit/cms/content/metadata.py:147
+#: zeit/workflow/scheduled/operations.py:310
 msgid "Access changed from \"${old}\" to \"${new}\""
 msgstr ""
 
@@ -1330,11 +1331,11 @@ msgstr ""
 msgid "View article in TMS"
 msgstr ""
 
-#: zeit/cms/tagging/interfaces.py:77
+#: zeit/cms/tagging/interfaces.py:79
 msgid "Too few keywords given."
 msgstr ""
 
-#: zeit/cms/tagging/interfaces.py:82
+#: zeit/cms/tagging/interfaces.py:84
 #: zeit/content/article/edit/browser/form.py:101
 msgid "Keywords"
 msgstr ""
@@ -5020,31 +5021,27 @@ msgstr ""
 msgid "When the operation was executed or cancelled. NULL means still pending."
 msgstr ""
 
-#: zeit/workflow/scheduled/operations.py:303
-msgid "${name} changed from \"${old}\" to \"${new}\""
-msgstr ""
-
-#: zeit/workflow/scheduled/operations.py:422
+#: zeit/workflow/scheduled/operations.py:454
 msgid "scheduled-publish-add"
 msgstr ""
 
-#: zeit/workflow/scheduled/operations.py:423
+#: zeit/workflow/scheduled/operations.py:455
 msgid "scheduled-retract-add"
 msgstr ""
 
-#: zeit/workflow/scheduled/operations.py:424
+#: zeit/workflow/scheduled/operations.py:456
 msgid "scheduled-publish-with-access-properties"
 msgstr ""
 
-#: zeit/workflow/scheduled/operations.py:425
+#: zeit/workflow/scheduled/operations.py:457
 msgid "scheduled-publish-with-channels-properties"
 msgstr ""
 
-#: zeit/workflow/scheduled/operations.py:426
+#: zeit/workflow/scheduled/operations.py:458
 msgid "scheduled-retract-with-access-properties"
 msgstr ""
 
-#: zeit/workflow/scheduled/operations.py:427
+#: zeit/workflow/scheduled/operations.py:459
 msgid "scheduled-retract-with-channels-properties"
 msgstr ""
 

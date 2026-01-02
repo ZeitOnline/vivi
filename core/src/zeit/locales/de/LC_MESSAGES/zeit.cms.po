@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Tue Dec 30 15:09:36 2025\n"
+"POT-Creation-Date: Fri Jan  2 12:04:31 2026\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -809,7 +809,7 @@ msgstr "Remote Bild URL"
 msgid "Remote timestamp URL"
 msgstr "Remote Zeitstempel URL"
 
-#: zeit/cms/content/metadata.py:147
+#: zeit/cms/content/metadata.py:147 zeit/workflow/scheduled/operations.py:310
 msgid "Access changed from \"${old}\" to \"${new}\""
 msgstr "Verfügbarkeit geändert von \"${old}\" nach \"${new}\""
 
@@ -1302,11 +1302,11 @@ msgstr "TMS-Ansicht"
 msgid "View article in TMS"
 msgstr "Im TMS anzeigen"
 
-#: zeit/cms/tagging/interfaces.py:77
+#: zeit/cms/tagging/interfaces.py:79
 msgid "Too few keywords given."
 msgstr "Bitte mindestens 3 Schlagworte vergeben."
 
-#: zeit/cms/tagging/interfaces.py:82
+#: zeit/cms/tagging/interfaces.py:84
 #: zeit/content/article/edit/browser/form.py:101
 msgid "Keywords"
 msgstr "Schlagworte"
@@ -4977,31 +4977,27 @@ msgstr ""
 "Wann wurde der Vorgang ausgeführt oder abgebrochen worden ist. NULL "
 "bedeutet, dass er noch aussteht."
 
-#: zeit/workflow/scheduled/operations.py:303
-msgid "${name} changed from \"${old}\" to \"${new}\""
-msgstr "${name} wurde von „${old}“ in „${new}“ geändert"
-
-#: zeit/workflow/scheduled/operations.py:422
+#: zeit/workflow/scheduled/operations.py:454
 msgid "scheduled-publish-add"
 msgstr "Automatisch veröffentlichen am ${date}"
 
-#: zeit/workflow/scheduled/operations.py:423
+#: zeit/workflow/scheduled/operations.py:455
 msgid "scheduled-retract-add"
 msgstr "Automatisch zurückziehen am ${date}"
 
-#: zeit/workflow/scheduled/operations.py:424
+#: zeit/workflow/scheduled/operations.py:456
 msgid "scheduled-publish-with-access-properties"
 msgstr "Automatisch veröffentlichen mit Status-Änderung am ${date}"
 
-#: zeit/workflow/scheduled/operations.py:425
+#: zeit/workflow/scheduled/operations.py:457
 msgid "scheduled-publish-with-channels-properties"
 msgstr "Automatisch veröffentlichen mit Channel-Änderung am ${date}"
 
-#: zeit/workflow/scheduled/operations.py:426
+#: zeit/workflow/scheduled/operations.py:458
 msgid "scheduled-retract-with-access-properties"
 msgstr "Automatisch zurückziehen mit Status-Änderung am ${date}"
 
-#: zeit/workflow/scheduled/operations.py:427
+#: zeit/workflow/scheduled/operations.py:459
 msgid "scheduled-retract-with-channels-properties"
 msgstr "Automatisch zurückziehen mit Channel-Änderung am ${date}"
 
@@ -5091,6 +5087,9 @@ msgstr "Format"
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:53
 msgid "with info"
 msgstr "mit Info"
+
+#~ msgid "${name} changed from \"${old}\" to \"${new}\""
+#~ msgstr "${name} wurde von „${old}“ in „${new}“ geändert"
 
 #~ msgid "Scheduled ${op} ${properties}for ${date}"
 #~ msgstr "Automatisch ${op} ${properties}am ${date}"
