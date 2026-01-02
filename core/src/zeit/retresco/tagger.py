@@ -165,7 +165,7 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
         return node[0]
 
     def _create_tag(self, node):
-        main = bool(node.get('main', False))
+        main = node.get('main') == 'yes'
         tag = Tag(node.text, node.get('type', ''), main=main)
         if tag.code in self.pinned:
             tag.pinned = True
