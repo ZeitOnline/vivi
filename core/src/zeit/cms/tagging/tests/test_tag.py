@@ -143,3 +143,16 @@ class TagTest(zeit.retresco.testing.FunctionalTestCase):
 
     def test_from_code_returns_None_if_invalid_code_given(self):
         self.assertEqual(None, zeit.cms.tagging.tag.Tag.from_code('invalid-code'))
+
+    def test_equality_includes_pinned_and_main_flags(self):
+        tag1 = zeit.cms.tagging.tag.Tag('Berlin', 'Location', main=True)
+        tag1.pinned = True
+        tag2 = zeit.cms.tagging.tag.Tag('Berlin', 'Location', main=True)
+        tag2.pinned = True
+        tag3 = zeit.cms.tagging.tag.Tag('Berlin', 'Location', main=False)
+        tag3.pinned = True
+        tag4 = zeit.cms.tagging.tag.Tag('Berlin', 'Location', main=True)
+        tag4.pinned = False
+        self.assertEqual(tag1, tag2)
+        self.assertNotEqual(tag1, tag3)  # different main
+        self.assertNotEqual(tag1, tag4)  # different pinned
