@@ -1,6 +1,6 @@
 <p id="breaking-retract"
    i18n:domain="zeit.cms">
-   <tal:block condition="python: view.homepage_banner_enabled and view.banner_published and view.banner_matches">
+   <tal:block condition="python: view.is_breaking and view.banner_published and view.banner_matches">
   <span i18n:translate="">Breaking news banner</span>:
   <span tal:replace="structure view/banner/@@published-icon" />
   <a class="button"
