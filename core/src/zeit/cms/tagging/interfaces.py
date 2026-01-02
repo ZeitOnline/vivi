@@ -56,6 +56,8 @@ class ITag(zeit.cms.interfaces.ICMSContent):
 
     title = zope.schema.TextLine(title='Title for display in UI')
 
+    main = zope.schema.Bool(title='Entity is main entity of document')
+
 
 class IWhitelist(zope.interface.Interface):
     """The whitelist contains all selectable tags providing `ITag`."""

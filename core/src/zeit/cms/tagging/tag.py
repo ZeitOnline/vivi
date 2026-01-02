@@ -54,7 +54,7 @@ class Tag:
     # This is stored in DAV properties, changing it requires a mass-migration.
     SEPARATOR = '☃'
 
-    def __init__(self, label, entity_type, link=None):
+    def __init__(self, label, entity_type, link=None, main=False):
         self.label = label or ''
         self.entity_type = entity_type
         self.pinned = False  # pinned state is set from outside after init
@@ -64,6 +64,7 @@ class Tag:
         # the TMS-provided path to the corresponding topicpage; without a
         # leading slash, so it plays nice with route_url() which already has
         # the slash.
+        self.main = main
 
     @zope.cachedescriptors.property.Lazy
     def code(self):
@@ -82,11 +83,12 @@ class Tag:
     def __eq__(self, other):
         # XXX this is not a generic equality check. From a domain perspective,
         # two tags are the same when their codes are the same. However, since
-        # we want to edit ``pinned``, and formlib compares the *list* of
-        # keywords, which uses == on the items, we need to include pinned here.
+        # we want to edit ``pinned`` and ``main``, and formlib compares the
+        # *list* of keywords, which uses == on the items, we need to include
+        # pinned and main here.
         if not zeit.cms.tagging.interfaces.ITag.providedBy(other):
             return False
-        return self.code == other.code and self.pinned == other.pinned
+        return self.code == other.code and self.pinned == other.pinned and self.main == other.main
 
     def __ne__(self, other):
         return not self.__eq__(other)

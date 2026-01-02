@@ -59,7 +59,7 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
 
     def __getitem__(self, key):
         node = self._find_tag_node(key)
-        tag = self._create_tag(node.text, node.get('type', ''))
+        tag = self._create_tag(node)
         return tag
 
     def __setitem__(self, key, value):
@@ -76,7 +76,7 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
 
     def values(self):
         tags = self.to_xml()
-        return (self._create_tag(node.text, node.get('type', '')) for node in tags.iterchildren())
+        return (self._create_tag(node) for node in tags.iterchildren())
 
     def get(self, key, default=None):
         try:
@@ -164,8 +164,9 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
             raise KeyError(key)
         return node[0]
 
-    def _create_tag(self, label, entity_type):
-        tag = Tag(label, entity_type)
+    def _create_tag(self, node):
+        main = node.get('main') == 'yes'
+        tag = Tag(node.text, node.get('type', ''), main=main)
         if tag.code in self.pinned:
             tag.pinned = True
         # XXX it is not understood by the writer, whether we really need this.
@@ -175,6 +176,8 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
 
     def _serialize_tag(self, tag):
         E = lxml.builder.E
+        if tag.main:
+            return E.tag(tag.label, type=tag.entity_type or '', main='yes')
         return E.tag(tag.label, type=tag.entity_type or '')
 
     def _find_pinned_tags(self):
@@ -183,7 +186,7 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
         for code in self.pinned:
             try:
                 node = self._find_tag_node(code, xml)
-                result.append(self._create_tag(node.text, node.get('type', '')))
+                result.append(self._create_tag(node))
             except KeyError:
                 pass
         return result

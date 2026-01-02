@@ -53,7 +53,7 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
         article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/article')
         with checked_out(article) as co:
             co.keywords = (
-                zeit.cms.tagging.tag.Tag('Code1', 'keyword'),
+                zeit.cms.tagging.tag.Tag('Code1', 'keyword', main=True),
                 zeit.cms.tagging.tag.Tag('Code2', 'keyword'),
             )
         article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/article')
@@ -64,6 +64,13 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
         self.assertEqual([], data['rtr_organisations'])
         self.assertEqual([], data['rtr_persons'])
         self.assertEqual([], data['rtr_products'])
+        self.assertEqual(['Code1'], data['rtr_keywords_main'])
+        self.assertEqual([], data['rtr_events_main'])
+        self.assertEqual([], data['rtr_locations_main'])
+        self.assertEqual([], data['rtr_organisations_main'])
+        self.assertEqual([], data['rtr_persons_main'])
+        self.assertEqual([], data['rtr_products_main'])
+
         self.assertStartsWith('<ns0:rankedTags ', data['payload']['tagging']['keywords'])
         self.assertStartsWith(
             str(pendulum.today().year), data['payload']['document'].pop('date_last_checkout')

@@ -46,8 +46,13 @@ class TMS:
     def generate_keyword_list(self, response):
         result = []
         for entity_type in zeit.retresco.interfaces.ENTITY_TYPES:
-            for keyword in response.get('rtr_{}s'.format(entity_type), ()):
-                result.append(zeit.cms.tagging.tag.Tag(label=keyword, entity_type=entity_type))
+            for keyword in response.get(entity_type.external, ()):
+                main = keyword in response.get(entity_type.main, ())
+                result.append(
+                    zeit.cms.tagging.tag.Tag(
+                        label=keyword, entity_type=entity_type.internal, main=main
+                    )
+                )
         return result
 
     def get_keywords(self, search_string, entity_type=None):

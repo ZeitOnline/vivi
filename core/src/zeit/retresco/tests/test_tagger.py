@@ -125,6 +125,12 @@ class TestTagger(zeit.retresco.testing.FunctionalTestCase, zeit.retresco.testing
         tagger['☃Berlin'] = Tag('Berlin', entity_type='Location')
         self.assertEqual('Location', tagger['Location☃Berlin'].entity_type)
 
+    def test_setitem_should_set_main_flag(self):
+        tagger = Tagger(ExampleContentType())
+        tagger['☃Berlin'] = Tag('Berlin', entity_type='Location', main=True)
+        self.assertEqual('Location', tagger['Location☃Berlin'].entity_type)
+        self.assertEqual(True, tagger['Location☃Berlin'].main)
+
     def test_iter_should_be_sorted_by_document_order(self):
         content = create_testcontent()
         self.set_tags(
@@ -370,6 +376,39 @@ class TestTagger(zeit.retresco.testing.FunctionalTestCase, zeit.retresco.testing
         tagger = Tagger(content)
         snowman = tagger['Snowpeople☃Snowman Tag']
         self.assertEqual(['Snowman Tag', 'Snowpeople'], [snowman.label, snowman.entity_type])
+
+    def test_main_flag_roundtrip_serialization(self):
+        tagger = Tagger(ExampleContentType())
+        tagger['Location☃Berlin'] = Tag('Berlin', entity_type='Location', main=True)
+        # Read back from storage
+        retrieved = tagger['Location☃Berlin']
+        self.assertTrue(retrieved.main)
+
+    def test_main_attribute_missing_in_xml_defaults_to_false(self):
+        """Test that missing main attribute in XML is interpreted as False."""
+        content = create_testcontent()
+        self.set_tags(content, """<tag type="Location">Berlin</tag>""")
+        tagger = Tagger(content)
+        self.assertFalse(tagger['Location☃Berlin'].main)
+
+    def test_main_attribute_yes_in_xml_is_true(self):
+        content = create_testcontent()
+        self.set_tags(content, """<tag type="Location" main="yes">Berlin</tag>""")
+        tagger = Tagger(content)
+        self.assertTrue(tagger['Location☃Berlin'].main)
+
+    def test_main_attribute_other_values_are_false(self):
+        content = create_testcontent()
+        # Test 'no' value
+        self.set_tags(content, """<tag type="Location" main="no">Berlin</tag>""")
+        tagger = Tagger(content)
+        self.assertFalse(tagger['Location☃Berlin'].main)
+        # Test empty string
+        self.set_tags(content, """<tag type="Location" main="">Paris</tag>""")
+        self.assertFalse(tagger['Location☃Paris'].main)
+        # Test arbitrary value
+        self.set_tags(content, """<tag type="Location" main="true">London</tag>""")
+        self.assertFalse(tagger['Location☃London'].main)
 
 
 class TaggerUpdateTest(
