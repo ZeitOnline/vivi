@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.252.0 (2026-01-02)
+--------------------
+
+- WCM-1067: add retract banner to article if pushed from within the article
+
+
 7.251.0 (2025-12-31)
 --------------------
 
