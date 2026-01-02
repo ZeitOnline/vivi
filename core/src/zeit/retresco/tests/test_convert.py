@@ -136,7 +136,7 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
                 'serie': 'Autotest',
                 'show_commentthread': True,
                 'template': 'article',
-                'year': int(year),
+                'year': 2025,
             },
             data['payload']['document'],
         )
