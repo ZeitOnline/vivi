@@ -82,7 +82,6 @@ class MobileBase(Base):
             'mobile_title',
             'mobile_text',
             'mobile_uses_image',
-            'homepage_banner',
             'mobile_image',
             'mobile_buttons',
         )

@@ -265,6 +265,7 @@ class RetractBannerTest(zeit.content.article.testing.SeleniumTestCase):
         # Make Somalia breaking news, so the retract section is shown.
         article = ICMSContent('http://xml.zeit.de/article')
         with zeit.cms.checkout.helper.checked_out(article) as co:
+            zeit.content.article.interfaces.IBreakingNews(co).is_breaking = True
             push = zeit.push.interfaces.IPushMessages(co)
             message_config = [{'type': 'homepage', 'enabled': True}]
             push.message_config = message_config

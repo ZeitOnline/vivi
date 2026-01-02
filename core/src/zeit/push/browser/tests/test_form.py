@@ -34,7 +34,7 @@ class SocialFormTest(zeit.push.testing.BrowserTestCase):
         push = zeit.push.interfaces.IPushMessages(article)
         # No entries for Facebook Magazin and Campus are created, since they
         # are not included in the base form.
-        self.assertEqual(3, len(push.message_config))
+        self.assertEqual(2, len(push.message_config))
         self.assertEqual(
             (
                 {
@@ -46,7 +46,6 @@ class SocialFormTest(zeit.push.testing.BrowserTestCase):
                     'uses_image': 0,
                     'variant': 'manual',
                 },
-                {'enabled': 0, 'type': 'homepage'},
                 {'account': 'fb-test', 'override_text': 'fb-main', 'type': 'facebook'},
             ),
             push.message_config,
@@ -58,7 +57,7 @@ class SocialFormTest(zeit.push.testing.BrowserTestCase):
         b.getControl('Apply').click()
         article = self.get_article()
         push = zeit.push.interfaces.IPushMessages(article)
-        self.assertEqual(3, len(push.message_config))
+        self.assertEqual(2, len(push.message_config))
         self.assertEqual(
             (
                 {
@@ -70,7 +69,6 @@ class SocialFormTest(zeit.push.testing.BrowserTestCase):
                     'uses_image': 0,
                     'variant': 'manual',
                 },
-                {'enabled': 0, 'type': 'homepage'},
                 {'account': 'fb-test', 'override_text': 'fb-main', 'type': 'facebook'},
             ),
             push.message_config,

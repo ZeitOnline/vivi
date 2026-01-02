@@ -46,7 +46,16 @@ class Mobile(zeit.push.browser.form.MobileBase, zeit.edit.browser.form.InlineFor
     def mobile_form_fields(self):
         fields = self.FormFieldsFactory(IAuthorPush)
         fields['author_enabled'].custom_widget = HideOnFalseWidget
-        fields += super().mobile_form_fields
+        fields += self.FormFieldsFactory(zeit.push.interfaces.IAccountData).select(
+            'mobile_enabled',
+            'mobile_payload_template',
+            'mobile_title',
+            'mobile_text',
+            'mobile_uses_image',
+            'homepage_banner',
+            'mobile_image',
+            'mobile_buttons',
+        )
         return fields
 
     @zope.formlib.form.action(_('Apply'), condition=zope.formlib.form.haveInputWidgets)
@@ -57,6 +66,10 @@ class Mobile(zeit.push.browser.form.MobileBase, zeit.edit.browser.form.InlineFor
         current = accountdata.mobile_image
         if current != previous:
             accountdata._set_mobile_service(image_set_manually=True)
+        # homepage banners require urgent processing
+        if data.get('homepage_banner'):
+            breaking = zeit.content.article.interfaces.IBreakingNews(self.context)
+            breaking.is_breaking = True
 
 
 class IAuthorPush(zope.interface.Interface):
