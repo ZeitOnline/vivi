@@ -79,6 +79,7 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
             'artbox_thema',
             'audio_speechbert',
             'genre',
+            'disable_quote_normalization',
             'template',
             'header_layout',
             'header_color',

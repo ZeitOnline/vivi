@@ -69,7 +69,9 @@ class ArticleContentForms(zeit.edit.browser.form.FoldableFormGroup):
 class ArticleContentHead(zeit.edit.browser.form.InlineForm, zeit.cms.browser.form.CharlimitMixin):
     legend = _('')
     prefix = 'article-content-head'
-    form_fields = FormFields(ICommonMetadata).select('supertitle', 'title', 'subtitle')
+    form_fields = FormFields(ICommonMetadata).select(
+        'supertitle', 'title', 'subtitle'
+    ) + FormFields(IArticle).select('disable_quote_normalization')
 
     def setUpWidgets(self, *args, **kw):
         super().setUpWidgets(*args, **kw)

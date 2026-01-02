@@ -61,6 +61,10 @@ class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
         title=_('Show in-article player'), required=False, default=True
     )
 
+    disable_quote_normalization = zope.schema.Bool(
+        title=_('Do not replace quote characters'), required=False, default=False
+    )
+
     main_image = zeit.cms.content.interfaces.ReferenceField(
         title=_('Image'),
         description=_('Drag an image group here'),

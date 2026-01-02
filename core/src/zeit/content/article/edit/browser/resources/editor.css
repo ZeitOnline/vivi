@@ -241,6 +241,10 @@
   display: none;
 }
 
+.type-article #form-article-content-head .fieldname-disable_quote_normalization .label label {
+  display: inline;
+}
+
 .type-article #edit-form-article-content.editable-area #article-content-head\.supertitle,
 .type-article #edit-form-teaser #teaser-supertitle\.teaserSupertitle {
   font-size: 11px;
