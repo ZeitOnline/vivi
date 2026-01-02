@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+7.254.0 (2026-01-02)
+--------------------
+
+- WCM-799: improve work log messages
+
+- WCM-1067: set is_breaking property for articles if banner is set
+
+
 7.253.0 (2026-01-02)
 --------------------
 
