@@ -297,18 +297,21 @@ class RepositoryScheduledOperations(grok.Adapter, ScheduledOperationsBase):
                     setattr(co, name, new_value)
                     log.debug(f'Replaced property {name} = {new_value}')
 
-                translated_name = zope.i18n.translate(name, target_language='de')
-                objectlog.log(
-                    self.context,
-                    _(
-                        '${name} changed from "${old}" to "${new}"',
-                        mapping={
-                            'name': translated_name,
-                            'old': old_value,
-                            'new': actual_new_value,
-                        },
-                    ),
-                )
+                # Stakeholder do not want to log changes to the channels
+                # because it is mostly information for SEO
+                if name == 'channels':
+                    continue
+
+                if name == 'access':
+                    access_old_translation = field.source.factory.getTitle(co, old_value)
+                    access_new_translation = field.source.factory.getTitle(co, actual_new_value)
+                    objectlog.log(
+                        self.context,
+                        _(
+                            'Access changed from "${old}" to "${new}"',
+                            mapping={'old': access_old_translation, 'new': access_new_translation},
+                        ),
+                    )
 
     def _get_field_for_property(self, content, property_name):
         """Get the schema field definition for a property."""
