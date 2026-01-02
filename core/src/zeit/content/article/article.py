@@ -452,16 +452,20 @@ def normalize_quotation_marks(context, event):
         if FEATURE_TOGGLES.find('normalize_quotes')
         else normalize_quotes_to_inch_sign
     )
-    normalize(context.xml.find('body'))
+
+    disable_normalization = getattr(context, 'disable_quote_normalization', False)
+    normalize(context.xml.find('body'), disable_normalization=disable_normalization)
 
     teaser = context.xml.find('teaser')
     if teaser is not None:
         normalize(teaser)
 
 
-def normalize_quotes(node):
-    # Skip locked spans
+def normalize_quotes(node, disable_normalization=False):
     if node.tag == 'span' and node.get('class') == 'locked':
+        return
+
+    if disable_normalization and node.tag in ('title', 'subtitle', 'supertitle'):
         return
 
     qc = QuoteCharacters()
@@ -472,10 +476,10 @@ def normalize_quotes(node):
         node.tail = qc.open.sub(r'»\1', node.tail)
         node.tail = qc.close.sub(r'\1«', node.tail)
     for child in node.iterchildren():
-        normalize_quotes(child)
+        normalize_quotes(child, disable_normalization=disable_normalization)
 
 
-def normalize_quotes_to_inch_sign(node):
+def normalize_quotes_to_inch_sign(node, disable_normalization=False):
     # Skip locked spans
     if node.tag == 'span' and node.get('class') == 'locked':
         return
@@ -486,7 +490,7 @@ def normalize_quotes_to_inch_sign(node):
     if node.tail:
         node.tail = qc.chars.sub('"', node.tail)
     for child in node.iterchildren():
-        normalize_quotes_to_inch_sign(child)
+        normalize_quotes_to_inch_sign(child, disable_normalization=disable_normalization)
 
 
 @zope.interface.implementer(zeit.content.article.interfaces.ISpeechbertChecksum)
